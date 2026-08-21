@@ -190,34 +190,46 @@ if __name__ == "__main__":
 class SpeechOutDelta(nn.Module):
     """Cognition -> talker conditioning. The other half of the bridge.
 
-    The talker (CosyVoice2 lineage, 20-block llama, 768 hidden) conditions on
+    The talker (CosyVoice2 lineage) conditions on
 
-        merged[t] = emb_text(token_ids[t]) + L2norm(proj_semantic(llm_hidden[t]))
+        merged[t] = emb_text(ids[t]) + proj_semantic(llm_hidden[t])
 
-    measured from the tts GGUF and tts-condition-graph.cpp. Two consequences
-    shape this module, and both make the job easier than the input delta's:
+    where proj_semantic is, from the measured graph:
 
-    1. The hidden term is **L2-NORMALISED** before use. Scale is discarded, so
-       this only has to point in the right direction. A cosine objective is
-       therefore the honest one -- training on MSE would spend capacity
-       matching a magnitude the talker throws away.
+        linear2(ReLU(linear1(x)))  then  F.normalize(..., dim=-1)
 
-    2. Text alone does NOT steer content. A zero-conditioning baseline was
-       measured twice and produces fluent English BABBLE -- real speech,
-       wrong words. The talker was trained with the hidden term present at
-       every position, so speech that follows the text REQUIRES this module.
-       That is why there is no "just send it the text" shortcut.
+    SCALE IS LOAD-BEARING, and it is easy to talk yourself out of that. The
+    normalisation sits at the END, so it is tempting to conclude only direction
+    matters and emit unit vectors. That holds only for a pure linear map with
+    no bias. Here linear1 has a bias and there is a ReLU between the layers:
+
+        proj(k*x) != k*proj(x)          bias does not scale
+        ReLU(k*z) != k*ReLU(z)          for a sign-changing z
+
+    so feeding a unit vector into a projector calibrated on Qwen3-8B's actual
+    hidden magnitudes lands in the wrong part of the ReLU and changes the
+    direction that comes out. The output is therefore pinned to the teacher's
+    norm rather than normalised -- the same lesson as the input delta's
+    `embed_norm`, where unpinned output scale drifted to 4.44x and diverged.
+
+    Text alone does NOT steer content: zero-conditioning was measured twice
+    and produces fluent English babble -- real speech, wrong words. There is
+    no text-only fallback for speech that follows the words.
 
     Gemma E4B is 2560-wide; the talker expects Qwen3-8B's 4096.
     """
 
     def __init__(self, cognition_dim: int = 2560,
-                 talker_dim: int = QWEN3_8B_HIDDEN, hidden: int = 0):
+                 talker_dim: int = QWEN3_8B_HIDDEN, hidden: int = 0,
+                 target_norm: float | None = None):
         super().__init__()
         if cognition_dim < 1 or talker_dim < 1:
             raise ValueError("dims must be positive")
         self.cognition_dim = cognition_dim
         self.talker_dim = talker_dim
+        # Measured from the teacher's hidden states; None leaves scale free,
+        # which is what diverged last time.
+        self.target_norm = target_norm
         if hidden:
             self.net = nn.Sequential(nn.Linear(cognition_dim, hidden), nn.GELU(),
                                      nn.Linear(hidden, talker_dim))
@@ -225,14 +237,23 @@ class SpeechOutDelta(nn.Module):
             self.net = nn.Linear(cognition_dim, talker_dim)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        """Returns a UNIT vector per position — the talker normalises anyway,
-        so emitting anything else invites a scale the model cannot use and a
-        loss that rewards matching it."""
         y = self.net(x)
-        return y / (y.norm(dim=-1, keepdim=True) + 1e-6)
+        if self.target_norm:
+            # Pin the magnitude the projector's ReLU and biases expect.
+            y = y / (y.norm(dim=-1, keepdim=True) + 1e-6) * self.target_norm
+        return y
 
     @staticmethod
     def loss(pred: torch.Tensor, target: torch.Tensor) -> torch.Tensor:
-        """Cosine distance. Direction is all the talker reads."""
-        t = target / (target.norm(dim=-1, keepdim=True) + 1e-6)
-        return (1.0 - (pred * t).sum(-1)).mean()
+        """MSE, because magnitude reaches the talker through a biased ReLU.
+
+        A cosine objective would be right if proj_semantic were linear; it is
+        not, so training on direction alone leaves the scale free to drift
+        somewhere the projector was never calibrated for.
+        """
+        return torch.nn.functional.mse_loss(pred, target)
+
+    @staticmethod
+    def norm_of(target: torch.Tensor) -> float:
+        """Mean teacher norm — what to pass as target_norm."""
+        return float(target.norm(dim=-1).mean())

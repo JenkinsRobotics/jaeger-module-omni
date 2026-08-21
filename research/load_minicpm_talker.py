@@ -79,6 +79,14 @@ _BLOCK_MAP = {
 }
 
 
+def _undo_llama_cpp_qk_permute(weight: torch.Tensor,
+                                n_heads: int = 12) -> torch.Tensor:
+    """Restore GGUF rotary Q/K rows to Hugging Face Llama layout."""
+    head_dim = weight.shape[0] // n_heads
+    return (weight.reshape(n_heads, head_dim // 2, 2, weight.shape[1])
+            .transpose(1, 2).reshape_as(weight).contiguous())
+
+
 class ConditionProjector(nn.Module):
     """proj_semantic / proj_spk: 4096 -> 768, ReLU between, L2-norm after.
 
@@ -171,7 +179,8 @@ class MiniCPMTalker(nn.Module):
     def generate_code_chunks(self, chunks: list[tuple[torch.Tensor, bool]],
                              max_codes: int = 500,
                              stop_at_eos: bool = True,
-                             wrap_conditions: bool = True) -> torch.Tensor:
+                             wrap_conditions: bool = True,
+                             cpp_final_two_phase: bool = True) -> torch.Tensor:
         """Generate codes across streaming text chunks with one Talker cache.
 
         ``chunks`` contains already-merged ``emb_text + projected_hidden``
@@ -188,9 +197,8 @@ class MiniCPMTalker(nn.Module):
         out: list[torch.Tensor] = []
         past = None
 
-        for merged, text_finished in chunks:
-            seq = (self.finish_condition(merged, text_finished)
-                   if wrap_conditions else merged)
+        def generate_phase(seq: torch.Tensor) -> None:
+            nonlocal past
             for _ in range(max_codes):
                 r = self.body(inputs_embeds=seq, past_key_values=past, use_cache=True)
                 past = r.past_key_values
@@ -215,6 +223,22 @@ class MiniCPMTalker(nn.Module):
                 out.append(code)
                 seq = self.emb_code(code)
 
+        for merged, text_finished in chunks:
+            if not wrap_conditions:
+                generate_phase(merged)
+                continue
+
+            # The measured llama.cpp simplex runtime first generates from
+            # [text_chunk, audio_bos].  On the final chunk, after that phase
+            # reaches EOS, it appends [text_eos, audio_bos] to the SAME cache
+            # and generates one final phase.  Preserve this cadence because it
+            # is the reference that produced our known-good WAVs.
+            generate_phase(self.finish_condition(
+                merged, text_finished and not cpp_final_two_phase))
+            if text_finished and cpp_final_two_phase:
+                empty = merged[:, :0]
+                generate_phase(self.finish_condition(empty, True))
+
         return torch.cat(out, dim=1) if out else torch.zeros(1, 0, dtype=torch.long)
 
 
@@ -229,6 +253,13 @@ def load(gguf_path=TTS_GGUF) -> MiniCPMTalker:
             _, n, rest = g.split(".", 2)
             name = rest.rsplit(".", 1)[0]
             kind = rest.rsplit(".", 1)[1]
+            if name in ("attn_q", "attn_k") and kind == "weight":
+                # The GGUF stores llama.cpp's rotary-paired row layout.  HF's
+                # LlamaModel expects the original layout.  Without this
+                # inverse permutation, known-good reference codes had PPL
+                # 211 and only 51% top-25 coverage; with it, PPL is 21 and
+                # coverage 87%, with all measured phase EOS tokens rank 1.
+                t = _undo_llama_cpp_qk_permute(t)
             state[f"body.layers.{n}.{_BLOCK_MAP[name]}.{kind}"] = t
         elif g == "token_embd.weight":
             state["body.embed_tokens.weight"] = t
@@ -239,7 +270,11 @@ def load(gguf_path=TTS_GGUF) -> MiniCPMTalker:
         elif g == "emb_code.0.weight":
             state["emb_code.weight"] = t
         elif g == "head_code.0.weight":
-            state["head_code.weight"] = t
+            # This auxiliary GGUF tensor is stored [hidden, codes], unlike
+            # PyTorch Linear's [codes, hidden].  A reshape preserves the
+            # element count but scrambles every output row; transpose it.
+            # The C++ loader logs the same explicit transpose.
+            state["head_code.weight"] = t.T.contiguous()
         elif g.startswith("projector_semantic."):
             state["proj_semantic." + g.split(".", 1)[1]] = t.squeeze()
         elif g.startswith("projector_spk."):

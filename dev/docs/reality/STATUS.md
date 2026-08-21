@@ -4,6 +4,24 @@
 > this file in the same commit — see `CONVENTIONS.md` → "STATUS stays
 > truthful."
 
+## Reality reset — 2026-08-21
+
+The only accepted product target is the integrated no-text-handoff
+audio-to-audio graph defined in `dev/OMNI_ACCEPTANCE.md`.
+
+- Native Gemma audio input is real and freshly reproduced at 10/12 (83% of
+  the legacy 12/12), but it is audio-in/text-out only.
+- The MiniCPM Talker/Token2Wav port now renders speech from exact reference
+  condition tensors. Two GGUF import defects were fixed: Q/K required the
+  inverse llama.cpp rotary permutation and `head_code` required a transpose.
+- Gemma hidden states are not yet connected to that Talker. The current CLI
+  emits no audio waveform.
+- Therefore the strict integrated Jaeger Omni score is **0/12**, not 10/12 or
+  83%. Those are component/input figures. MiniCPM-o remains the only verified
+  complete audio-to-audio reference.
+- The prior Whisper-transcript-hint input acceptance in VoiceLLM-Playground is
+  a well-engineered fallback/legacy test, not evidence for this architecture.
+
 ## Current state — 2026-08-19
 
 - **Repo:** `jaeger_agent_omni` — native multimodal neural agent for JaegerOS

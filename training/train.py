@@ -409,6 +409,15 @@ def main() -> int:
     ap.add_argument("--stage", default="stage3_warmup",
                     choices=["stage3_warmup", "stage4_distill"])
     ap.add_argument("--steps", type=int, default=None)
+    # Activation memory scales with batch x sequence x layers. A 135M backbone
+    # took batch 8 comfortably; E4B is 42 layers of 2560 with a ~350-token
+    # audio prefix and OOMed MPS at 42.4 GiB on that same setting. Lower the
+    # micro-batch and raise grad_accum: batch*grad_accum is unchanged, so the
+    # optimisation behaves identically on a fraction of the live activations.
+    ap.add_argument("--batch", type=int, default=None,
+                    help="micro-batch (E4B wants 1-2; small backbones take 8)")
+    ap.add_argument("--grad-accum", type=int, default=None,
+                    help="raise this by the same factor --batch drops")
     ap.add_argument("--device", default=None)
     ap.add_argument("--out", default="runs/run",
                     help="checkpoint prefix, resolved against the repo root")
@@ -425,6 +434,10 @@ def main() -> int:
     make = warmup if args.stage == "stage3_warmup" else distill_cfg
     cfg = make(args.backbone or "stub://tiny",
                **({"arch": "scratch", "whisper_id": "stub"} if args.stub else {}))
+    if args.batch is not None:
+        cfg.batch_size = args.batch
+    if args.grad_accum is not None:
+        cfg.grad_accum = args.grad_accum
     if args.steps:
         cfg.max_steps = args.steps
         cfg.warmup_steps = min(cfg.warmup_steps, max(1, args.steps // 10))

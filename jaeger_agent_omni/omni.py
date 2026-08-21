@@ -1,13 +1,17 @@
-"""The pipeline. One process, one graph, no text between modules.
+"""The current no-transcript input path — not yet the complete Omni pipeline.
 
     mic ─► audio encoder ─► E4B ─► text tokens
                              │
-                             └──► hidden states ─► talker ─► token2wav ─► speaker
+                             └──► hidden states ──X  talker   (not wired yet)
 
-There is NO transcription step anywhere in that chain. Audio becomes
+There is NO transcription step on the implemented input chain. Audio becomes
 embeddings and stays embeddings until the backbone emits language. That is the
 entire point of this repository: the sequential stack sends TEXT between
 modules and loses everything text cannot carry.
+
+Do not call this module audio-to-audio or end-to-end Omni yet.  The Talker
+port is now independently alive, but Gemma states do not condition it and this
+CLI emits no waveform.  Component scores here cannot satisfy Omni acceptance.
 
 Run it:
 
@@ -70,20 +74,81 @@ def build(model_path: str = MODEL, front_end: str = "tower", delta_path=None):
                "eos": {proc.tokenizer.eos_token_id}}
 
 
-def one_turn(s, meta, audio, max_tokens: int = 48) -> tuple[str, float]:
-    """Audio in, text out. No transcript is produced at any point."""
+def one_turn(s, meta, audio, max_tokens: int = 48,
+             collect_hidden: bool = False) -> tuple[str, float]:
+    """Audio in, text out. No transcript is produced at any point.
+
+    `collect_hidden` also retains the per-token cognition states, which is what
+    speech out conditions on -- see speak().
+    """
     s.reset()
     s.open_turn()
     for i in range(0, len(audio), 1600):            # 100 ms chunks, streaming
         s.feed_audio(audio[i:i + 1600])
     t0 = time.monotonic()
     s.end_of_turn()
-    reply = s.respond(max_tokens=max_tokens, eos_ids=meta["eos"])
+    reply = s.respond(max_tokens=max_tokens, eos_ids=meta["eos"],
+                      collect_hidden=collect_hidden)
     return reply, (time.monotonic() - t0) * 1000
 
 
-def bench(cases_dir: str, model_path: str, front_end: str, delta_path=None) -> int:
-    """Score the omni path against the same cases legacy and MiniCPM ran."""
+def speak(session, text: str, out_path: str, ref_audio=None,
+          delta_path: str = "training/runs/speech_out_delta.pt") -> str:
+    """Reply -> waveform, conditioned on the cognition states, not the words.
+
+        merged[t] = emb_text(ids[t]) + L2norm(proj_semantic(hidden[t]))
+
+    `session.hidden` must already be populated by respond(collect_hidden=True).
+    Passing text alone is NOT a fallback: zero-conditioning was measured twice
+    and produces fluent English babble -- real speech, wrong words -- so a
+    missing delta is an error, never a degraded mode that ships silently.
+
+    Voice cloning happens at the vocoder: token2wav's `set_ref_audio` embeds
+    the reference speaker via campplus. Load the Soul, you loaded the voice.
+    """
+    import torch
+
+    from jaeger_agent_omni.neural.delta import SpeechOutDelta
+
+    hidden = getattr(session, "hidden", None)
+    if not hidden:
+        raise RuntimeError(
+            "no hidden states — call respond(collect_hidden=True). Speech "
+            "conditioned on text alone babbles; there is no text-only path.")
+    if not Path(delta_path).exists():
+        raise RuntimeError(
+            f"SpeechOutDelta not trained ({delta_path}).\n"
+            f"  Until it is, speech out produces babble, not these words.\n"
+            f"  The audible-today route is research/t2w_client.py --say.")
+
+    import numpy as np
+    ck = torch.load(delta_path, map_location="cpu")
+    state = ck.get("state", ck) if isinstance(ck, dict) else ck
+    # target_norm travels WITH the weights. Rebuilding without it leaves the
+    # output scale free, and scale reaches the talker through a biased ReLU:
+    # unit vectors vs teacher-scale ones project to cosine 0.176 -- almost
+    # orthogonal conditioning, which sounds exactly like an undertrained delta.
+    tn = ck.get("target_norm") if isinstance(ck, dict) else None
+    if tn is None:
+        raise RuntimeError(
+            f"{delta_path} has no target_norm; refusing to guess the output "
+            "scale — the wrong one produces confident babble, not an error.")
+    d = SpeechOutDelta(cognition_dim=session.hidden[0].shape[-1],
+                       target_norm=tn)
+    d.load_state_dict(state)
+    d.eval()
+    h = torch.from_numpy(np.stack([np.array(x, copy=False).reshape(-1)
+                                   for x in hidden])).float()
+    with torch.no_grad():
+        cond = d(h.unsqueeze(0))          # unit vectors, talker-space
+
+    from research.t2w_client import speak as t2w_speak      # noqa: E402
+    return t2w_speak(text, out_path, ref_audio=ref_audio, conditioning=cond)
+
+
+def bench(cases_dir: str, model_path: str, front_end: str, delta_path=None,
+          out_path: str = "research/omni_bench.json") -> int:
+    """Score the no-transcript input path; this is not audio-output proof."""
     import statistics as st
 
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "research"))
@@ -111,7 +176,8 @@ def bench(cases_dir: str, model_path: str, front_end: str, delta_path=None) -> i
     print(f"legacy reference   12/12 = 100%   (text between modules)")
     print(f"ratio to legacy    {100*n/len(rows)/100*100/100:.0%} accuracy"
           .replace('%%', '%'))
-    out = Path("research/omni_bench.json")
+    out = Path(out_path)
+    out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps({"front_end": front_end, "correct": n,
                                "n": len(rows), "median_ms": med,
                                "rows": rows}, indent=1))
@@ -128,11 +194,12 @@ def selfcheck() -> int:
     stack wearing a different name.
     """
     import inspect
-    code = "".join(inspect.getsource(f) for f in (build, one_turn, bench, main))
+    code = "".join(inspect.getsource(f)
+                   for f in (build, one_turn, bench, speak, main))
     for banned, why in (("transcribe(", "calls an ASR decoder"),
                         ("feed_text(", "injects a transcript into the cache")):
         assert banned not in code, f"omni path {why}"
-    for fn in (build, one_turn, bench):
+    for fn in (build, one_turn, bench, speak):
         assert fn.__doc__, f"{fn.__name__} needs a docstring"
     print("omni: no transcription step, no text injection, entry points OK")
     return 0
@@ -147,19 +214,28 @@ def main() -> int:
     ap.add_argument("--front-end", default="tower", choices=("tower", "delta"))
     ap.add_argument("--delta", default="training/runs/delta_e4b.pt")
     ap.add_argument("--model", default=MODEL)
+    ap.add_argument("--out", default="research/omni_bench.json")
+    ap.add_argument("--speak", action="store_true",
+                    help="also synthesise the reply (needs a trained SpeechOutDelta)")
+    ap.add_argument("--ref-audio", default=None, help="voice to clone")
+    ap.add_argument("--out-wav", default="reply.wav")
     ap.add_argument("--selfcheck", action="store_true")
     a = ap.parse_args()
 
     if a.selfcheck:
         return selfcheck()
     if a.bench:
-        return bench(a.bench, a.model, a.front_end, a.delta)
+        return bench(a.bench, a.model, a.front_end, a.delta, a.out)
     if a.wav:
         from jaeger_agent_omni.app import read_wav
         s, meta = build(a.model, a.front_end, a.delta)
         s.warmup()
-        reply, ms = one_turn(s, meta, read_wav(Path(a.wav)))
+        reply, ms = one_turn(s, meta, read_wav(Path(a.wav)),
+                             collect_hidden=a.speak)
         print(f"{ms:.0f} ms  {reply!r}")
+        if a.speak:
+            wav = speak(s, reply, a.out_wav, ref_audio=a.ref_audio)
+            print(f"spoke -> {wav}")
         return 0
     ap.print_help()
     return 1
