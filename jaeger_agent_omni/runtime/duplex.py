@@ -1,0 +1,297 @@
+"""Always-on duplex loop — mic and camera both streaming, continuously.
+
+MiniCPM's omni mode interleaves modalities in TIME: a video frame, a second of
+audio, a frame, a second, so the model sees the room evolving while you speak.
+Sequence order carries the timeline; there is no fusion module. This reproduces
+that on native Gemma.
+
+    mic     ────────────────────────────────────────  never closes
+    camera  ──┬────────┬────────┬────────┬─────────  1 frame / N seconds
+              ▼        ▼        ▼        ▼
+    cache   [img][aud][img][aud][img][aud]...        one interleaved stream
+                                          │
+                              turn-end says "my turn"
+                                          ▼
+                                      respond, cancellable
+
+Two rules that make it feel live rather than batched:
+
+  DROP, DON'T QUEUE. If encoding falls behind the clock, discard the frame or
+  chunk instead of building a backlog. A backlog means the model answers
+  questions about a room that has moved on — worse than missing a frame.
+
+  VISION IS THE BUDGET. Fully warmed, M1 Max / E4B 4-bit:
+
+      per frame          1035 ms   tower + scatter + LM prefill of 280 tokens
+      per second audio    118 ms   8x realtime headroom
+
+  Reference point, same Mac: MiniCPM-o does audio+vision prefill in 379 ms.
+  It is ~2.7x faster and the reason is architectural, not tuning — its
+  perceiver resampler emits 64 tokens per image where Gemma's tower emits 280.
+  4.4x the tokens, 2.7x the time.
+
+  So `frame_interval_s` is a duty-cycle dial:
+
+      1 s   -> 104% of realtime   impossible
+      5 s   ->  21%               comfortable, and the demo bar
+      10 s  ->  10%               background awareness
+
+  Resolution is NOT a dial: the processor normalises every input to 672x912,
+  so a 224px frame costs the same as a 640px one. Only the interval matters.
+
+  WARM BOTH PATHS before the loop (`warmup()` and `warmup_vision()`). Unwarmed
+  vision costs 5-13 s on first frames, which reads as a quadratic blowup when
+  it is only MLX compiling — that misreading cost an hour here.
+
+    python -m jaeger_agent_omni.runtime.duplex     # self-check, no devices
+"""
+
+from __future__ import annotations
+
+import time
+from dataclasses import dataclass, field
+
+AUDIO_CHUNK_S = 1.0
+FRAME_INTERVAL_S = 5.0      # ~2.2 s per frame measured; see the module note
+MAX_LAG_S = 0.5             # beyond this, drop rather than queue
+
+
+@dataclass
+class DuplexStats:
+    audio_chunks: int = 0
+    frames: int = 0
+    frames_dropped: int = 0
+    audio_dropped: int = 0
+    turns: int = 0
+    interrupts: int = 0
+    max_lag_s: float = 0.0
+
+    def __str__(self) -> str:
+        return (f"{self.turns} turns · {self.audio_chunks} audio chunks · "
+                f"{self.frames} frames ({self.frames_dropped} dropped) · "
+                f"{self.interrupts} interrupts · peak lag {self.max_lag_s*1000:.0f}ms")
+
+
+class DuplexLoop:
+    """Drives a StreamingSession from live sources at wall-clock rate.
+
+    Sources are callables so the loop is testable without hardware and works
+    the same against a mic, a file, or a test double:
+
+        audio_source()  -> float32 samples since last call (or None)
+        frame_source()  -> HWC image array (or None)
+        turn_ended()    -> bool: has the user finished speaking?
+        on_reply(text)  -> speak it
+        user_speaking() -> bool: barge-in signal while we are replying
+    """
+
+    def __init__(self, session, audio_source, frame_source=None,
+                 turn_ended=None, on_reply=None, user_speaking=None,
+                 frame_interval_s: float = FRAME_INTERVAL_S,
+                 max_lag_s: float = MAX_LAG_S, clock=time.monotonic):
+        self.session = session
+        self.audio_source = audio_source
+        self.frame_source = frame_source
+        self.turn_ended = turn_ended or (lambda: False)
+        self.on_reply = on_reply or (lambda text: None)
+        self.user_speaking = user_speaking or (lambda: False)
+        self.frame_interval_s = frame_interval_s
+        self.max_lag_s = max_lag_s
+        self.clock = clock
+        self.stats = DuplexStats()
+        self._next_frame_at = 0.0
+        self._last_drain = 0.0
+        self._running = False
+
+    def stop(self):
+        self._running = False
+
+    # -- one tick ------------------------------------------------------------
+    def _lag(self) -> float:
+        """How far behind the incoming stream we are.
+
+        Measured as time since the last source read, NOT time elapsed within
+        the current tick. The first version charged every source for work done
+        earlier in the same tick, so one slow vision frame starved audio for
+        the rest of the loop — 1 audio chunk in 18 seconds. Lag is a property
+        of the stream, not of who ran first.
+        """
+        return self.clock() - self._last_drain
+
+    def _pump_vision(self, now: float):
+        """A frame on the interval — the timeline, not every frame available."""
+        if self.frame_source is None or now < self._next_frame_at:
+            return
+        if self._lag() > self.max_lag_s:
+            # Behind the clock: a stale frame is worse than no frame, and
+            # vision is the expensive one to skip.
+            self.stats.frames_dropped += 1
+            self._next_frame_at = now + self.frame_interval_s
+            return
+        frame = self.frame_source()
+        self._next_frame_at = now + self.frame_interval_s
+        if frame is None:
+            return
+        self.session.feed_image(frame)
+        self.stats.frames += 1
+        self._last_drain = self.clock()
+
+    def _pump_audio(self, now: float):
+        samples = self.audio_source()
+        if samples is None or len(samples) == 0:
+            return
+        lag = self._lag()
+        self.stats.max_lag_s = max(self.stats.max_lag_s, lag)
+        if lag > self.max_lag_s:
+            # Audio is cheap (~118 ms/s); dropping it means we are badly behind.
+            self.stats.audio_dropped += 1
+            self._last_drain = self.clock()
+            return
+        self.stats.audio_chunks += self.session.feed_audio(samples)
+        self._last_drain = self.clock()
+
+    def _respond(self):
+        """Answer, watching for barge-in on every token."""
+        self.session.end_of_turn()
+
+        def on_token(_tid, _n):
+            if self.user_speaking():
+                self.session.cancel()
+
+        text = self.session.respond(max_tokens=96, eos_ids=self.eos_ids,
+                                    on_token=on_token)
+        self.stats.turns += 1
+        if self.session._cancelled:
+            # Interrupted: drop the half-said reply, keep the conversation.
+            self.session.interrupt()
+            self.stats.interrupts += 1
+        if text.strip():
+            self.on_reply(text)
+        self.session.resume_listening()
+
+    def run(self, eos_ids=(), max_seconds: float | None = None,
+            tick_s: float = 0.05):
+        """Listen, watch, answer, repeat. Blocks until stop() or the budget."""
+        self.eos_ids = eos_ids
+        self._running = True
+        started = self.clock()
+        self.session.open_turn()
+        self._next_frame_at = started
+        self._last_drain = self.clock()
+
+        while self._running:
+            now = self.clock()
+            if max_seconds is not None and now - started >= max_seconds:
+                break
+            self._pump_vision(now)
+            self._pump_audio(now)
+            if self.turn_ended():
+                self._respond()
+            elapsed = self.clock() - now
+            if elapsed < tick_s:
+                time.sleep(tick_s - elapsed)
+        return self.stats
+
+
+def demo():
+    """Interleaving, drop-don't-queue, and barge-in, on a fake clock."""
+    import numpy as np
+
+    class FakeSession:
+        def __init__(self):
+            self.stream, self.n_prefilled = [], 0
+            self._cancelled = False
+            self.replies = 0
+
+        def open_turn(self):
+            self.stream.append("open")
+
+        def feed_audio(self, s):
+            self.stream.append("a")
+            return 1
+
+        def feed_image(self, f):
+            self.stream.append("v")
+
+        def end_of_turn(self):
+            self.stream.append("eot")
+
+        def respond(self, max_tokens=0, eos_ids=(), on_token=None):
+            if on_token:
+                on_token(1, 1)
+            return "" if self._cancelled else "reply"
+
+        def cancel(self):
+            self._cancelled = True
+
+        def interrupt(self):
+            self.stream.append("rewind")
+            self._cancelled = False
+            return 3
+
+        def resume_listening(self):
+            self.stream.append("resume")
+
+    # --- interleaving: vision on its interval, audio every tick ------------
+    t = [0.0]
+    clock = lambda: t[0]
+    sess = FakeSession()
+    frames = [np.zeros((2, 2, 3), np.uint8)] * 100
+    loop = DuplexLoop(sess, audio_source=lambda: np.zeros(16000, np.float32),
+                      frame_source=lambda: frames.pop() if frames else None,
+                      frame_interval_s=2.0, clock=clock)
+    loop.eos_ids = ()
+    loop.session.open_turn()
+    loop._next_frame_at = 0.0
+    loop._last_drain = 0.0
+    for _ in range(5):
+        loop._last_drain = t[0]     # keeping up: never behind on a fake clock
+        loop._pump_vision(t[0])
+        loop._pump_audio(t[0])
+        t[0] += 1.0
+    # 5 seconds, frame every 2s -> frames at 0, 2, 4
+    assert loop.stats.frames == 3, loop.stats.frames
+    assert loop.stats.audio_chunks == 5
+    # Frames land at t=0,2,4 with audio every second between them — the
+    # timeline is carried by sequence order, exactly as MiniCPM does it.
+    assert "".join(x for x in sess.stream if x in "av") == "vaavaava", sess.stream
+
+    # --- drop, don't queue -------------------------------------------------
+    slow = [0.0]
+    def slow_clock():
+        slow[0] += 1.0          # every read advances a second: always "behind"
+        return slow[0]
+    s2 = FakeSession()
+    l2 = DuplexLoop(s2, audio_source=lambda: np.zeros(16000, np.float32),
+                    frame_source=lambda: np.zeros((2, 2, 3), np.uint8),
+                    max_lag_s=0.5, clock=slow_clock)
+    l2._last_drain = 0.0            # far behind: every read advances a second
+    l2._pump_vision(slow[0])
+    l2._pump_audio(slow[0])
+    assert l2.stats.frames_dropped == 1, "stale frame must be dropped"
+    assert l2.stats.audio_dropped == 1, "stale audio must be dropped"
+    assert "v" not in s2.stream and "a" not in s2.stream
+
+    # --- barge-in during a reply rewinds and keeps listening ---------------
+    s3 = FakeSession()
+    l3 = DuplexLoop(s3, audio_source=lambda: None,
+                    user_speaking=lambda: True, clock=clock)
+    l3.eos_ids = ()
+    l3._respond()
+    assert l3.stats.interrupts == 1
+    assert "rewind" in s3.stream and "resume" in s3.stream
+    assert s3.stream.index("rewind") < s3.stream.index("resume")
+
+    # a quiet reply still resumes listening
+    s4 = FakeSession()
+    l4 = DuplexLoop(s4, audio_source=lambda: None, clock=clock)
+    l4.eos_ids = ()
+    l4._respond()
+    assert l4.stats.interrupts == 0 and "resume" in s4.stream
+
+    print(f"runtime.duplex: interleave a/v, drop-don't-queue, barge-in OK "
+          f"({loop.stats})")
+
+
+if __name__ == "__main__":
+    demo()

@@ -40,6 +40,41 @@ and measured. The remaining latency is dominated by generation, exactly as
 predicted — which is why Stage 5's incremental prefill, not the projector, is
 where the conversational win lands.
 
+### ALWAYS-ON DUPLEX LOOP RUNS — mic + camera streaming — 2026-08-20 night
+
+`runtime/duplex.py` drives the session from live sources at wall-clock rate,
+interleaving modalities in time the way MiniCPM's omni_contents does:
+
+```text
+mic     ────────────────────────────────  never closes
+camera  ──┬──────────┬──────────┬───────  1 frame / interval
+cache   [img][aud][aud][img][aud]...      one interleaved stream
+```
+
+Verified live: spoken question + two camera frames -> "I see two yellow
+circles on a blue background." It counted the frames it was shown.
+
+**Vision performance, finally measured properly.** Three earlier numbers
+(13.5 s, 2.2 s) were MLX warmup contamination. Fully warmed:
+
+```text
+ours      1035 ms/frame   tower + scatter + LM prefill (280 tokens)
+MiniCPM    379 ms         audio+vision, same Mac, C++ (64 tokens/image)
+audio      118 ms/s       8x realtime headroom
+```
+
+MiniCPM is ~2.7x faster on vision and it is architectural: their perceiver
+resampler emits 64 tokens per image, Gemma's tower emits 280. 4.4x tokens,
+2.7x time. Resolution is not a lever — the processor normalises everything to
+672x912, so a 224 px frame costs the same as 640 px. Only `frame_interval_s`
+matters: 5 s = 21% duty cycle, which meets the demo bar.
+
+**Two bugs fixed in the loop**, both about liveness rather than correctness:
+lag was measured as time-within-tick, so one slow vision frame starved audio
+for the rest of the run (1 audio chunk in 18 s); and the drop guard now
+charges each source only for its own staleness. Drop-don't-queue is the rule —
+a backlog means answering about a room that has moved on.
+
 ### OMNI INPUT COMPLETE — audio + vision + text, one cache — 2026-08-20 night
 
 Spoken question ABOUT an image, answered from both at once:

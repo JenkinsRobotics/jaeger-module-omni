@@ -156,6 +156,23 @@ class StreamingSession:
         lm = None
         return KVCache()
 
+    def warmup_vision(self, size: int = 64):
+        """Compile the vision graph too. Skip this and the first frames cost
+        5-13 s instead of ~2.2 s, which reads as a quadratic blowup in the
+        loop's lag counter when it is only MLX compiling."""
+        import numpy as np
+
+        if self.image_id is None:
+            return 0.0
+        t0 = time.monotonic()
+        saved = self.cache, self.n_prefilled
+        self.cache, self.n_prefilled = None, 0
+        try:
+            self.feed_image(np.zeros((size, size, 3), dtype=np.uint8))
+        finally:
+            self.cache, self.n_prefilled = saved
+        return (time.monotonic() - t0) * 1000
+
     def warmup(self, seconds: float = 1.0):
         """Compile graphs and page weights BEFORE the conversation starts.
 

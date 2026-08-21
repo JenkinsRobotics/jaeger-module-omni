@@ -23,6 +23,7 @@ PACKAGE_MODULES = [
     "jaeger_agent_omni.prompt",
     "jaeger_agent_omni.runtime.gemma_audio",
     "jaeger_agent_omni.runtime.session",
+    "jaeger_agent_omni.runtime.duplex",
     "jaeger_agent_omni.neural.base",
     "jaeger_agent_omni.neural.audio",
     "jaeger_agent_omni.neural.heads",
