@@ -26,6 +26,25 @@ accuracy — a 0.85 teacher-forced score coexisted with 120% WER in this repo.
 
     python training/ab_projectors.py --list
     python training/ab_projectors.py --variant ultravox --steps 1500 ...
+
+## First result — random init, synthetic structured input, NOT trained
+
+    variant     params   tok/s   cross-cos   class-sep
+    minicpm      9.18M   10.00      0.9347      0.0406
+    ours         9.18M   10.00      0.9317      0.0437   <- best separation
+    ultravox    48.51M    6.25      0.0048      0.0069
+    hybrid      32.78M   10.00      0.0090      0.0242
+
+RMSNorm decorrelates outputs hard (0.93 -> 0.005), which is presumably why
+Ultravox never needed an output scale pin — their normalisation does that job
+structurally. But class separation inverts the ranking: the pinned variant
+keeps same-source clips closest, Ultravox spreads EVERYTHING apart including
+what should stay together.
+
+Read this as architectural bias at initialisation, not trained quality — the
+honest ranking is free-running WER after training. What it does establish:
+our current design is not obviously wrong, and Ultravox costs 5x the params
+and 3x the compute for fewer tokens per second.
 """
 
 from __future__ import annotations
