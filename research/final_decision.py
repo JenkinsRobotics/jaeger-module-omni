@@ -25,6 +25,7 @@ recorded so the decision is reviewable:
 from __future__ import annotations
 
 import argparse
+import re
 import json
 import statistics
 import sys
@@ -35,8 +36,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 
 def graded(reply: str, answers: list) -> bool:
-    r = reply.lower()
-    hits = sum(a.lower() in r for a in answers)
+    # Punctuation-insensitive: "T-A-C." must count for "tac".
+    r = re.sub(r"[^a-z0-9 ]", "", reply.lower())
+    hits = sum(re.sub(r"[^a-z0-9 ]", "", a.lower()) in r for a in answers)
     # Multi-answer cases (name three colours) need most of them; single-answer
     # cases just need theirs.
     return hits >= (2 if len(answers) >= 3 else 1)
