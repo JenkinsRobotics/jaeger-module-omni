@@ -350,9 +350,23 @@ class StreamingSession:
         self.timing = TurnTiming()
         self.open_turn()
 
-    def respond(self, max_tokens: int = 64, eos_ids=(), on_token=None) -> str:
+    def respond(self, max_tokens: int = 64, eos_ids=(), on_token=None,
+                collect_hidden: bool = False) -> str:
         """Generate from the already-warm cache. First token is nearly free
-        because the utterance was prefilled while it was being spoken."""
+        because the utterance was prefilled while it was being spoken.
+
+        `collect_hidden` fills `self.hidden` with one vector per generated
+        token — the LAST decoder layer's output, captured before the final
+        RMSNorm (mlx_vlm's `hidden_sink` matches HF's hidden_states here).
+
+        That is the term the talker conditions on:
+
+            merged[t] = emb_text(ids[t]) + L2norm(proj_semantic(hidden[t]))
+
+        Text alone babbles — measured twice — so speech that follows the words
+        needs these, not the transcript. Collecting is opt-in because it holds
+        one 2560-wide vector per token that text-only callers never read.
+        """
         import mlx.core as mx
 
         if self.n_prefilled == 0:
@@ -362,6 +376,7 @@ class StreamingSession:
         mx.eval(tok)
 
         out_ids, t0, first_done = [], time.monotonic(), None
+        self.hidden = [] if collect_hidden else None
         self.cancel_latency_ms = None
         # Where the reply starts, so an interrupt can rewind exactly this far.
         self._generation_start = self.n_prefilled
@@ -381,9 +396,22 @@ class StreamingSession:
                 first_done = time.monotonic()
                 self.timing.first_token_ms = (first_done - t0) * 1000
             step_emb, step_per_layer = self._embed_ids([int(tok.item())])
+            sink = [] if collect_hidden else None
             o = self.model.language_model(inputs_embeds=step_emb,
                                           per_layer_inputs=step_per_layer,
-                                          cache=self.cache)
+                                          cache=self.cache,
+                                          **({"hidden_sink": sink}
+                                             if collect_hidden else {}))
+            if collect_hidden:
+                # sink holds the step's hidden state; fall back to the output
+                # object rather than silently appending nothing, which would
+                # desynchronise hidden[] from out_ids and corrupt the audio.
+                h = sink[0] if sink else getattr(o, "hidden_states", None)
+                if h is None:
+                    raise RuntimeError(
+                        "collect_hidden requested but the model exposed no "
+                        "hidden state — speech out cannot be conditioned")
+                self.hidden.append(h[:, -1, :])
             self.n_prefilled += 1
             logits = o.logits if hasattr(o, "logits") else o
             tok = mx.argmax(logits[:, -1, :], axis=-1)

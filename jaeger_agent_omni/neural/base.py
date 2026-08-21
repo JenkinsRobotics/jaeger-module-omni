@@ -230,3 +230,16 @@ def demo():
 
 if __name__ == "__main__":
     demo()
+
+def hidden_size_of(backbone) -> int:
+    """A backbone's cognition width, wherever its config keeps it.
+
+    MULTIMODAL configs (Gemma4Config) put hidden_size on the TEXT config;
+    plain causal LMs keep it at the top level. Reading the wrong one raises
+    AttributeError at best -- and at worst, on a config that has both, builds
+    a projector of the wrong width that fails silently much later.
+    """
+    cfg = getattr(backbone, "config", backbone)
+    if hasattr(cfg, "get_text_config"):
+        return cfg.get_text_config().hidden_size
+    return cfg.hidden_size

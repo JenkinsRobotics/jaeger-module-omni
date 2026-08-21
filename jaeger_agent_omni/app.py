@@ -29,7 +29,7 @@ from pathlib import Path
 import numpy as np
 
 from .capture import SAMPLE_RATE, CaptureWriter
-from .neural import JaegerAudioProjector
+from .neural import JaegerAudioProjector, hidden_size_of
 from .outputs import CognitiveOutput
 from .performance_spec import neutral
 from .prompt import ChatWrapper
@@ -126,7 +126,7 @@ class OmniApp:
         self.language = language
         self.capture = CaptureWriter(capture_to) if capture_to else None
 
-        cog_dim = backbone.config.hidden_size
+        cog_dim = hidden_size_of(backbone)
         if path == "omni":
             if projector is None:
                 projector = JaegerAudioProjector(

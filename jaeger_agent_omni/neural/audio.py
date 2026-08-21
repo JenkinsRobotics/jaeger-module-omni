@@ -58,7 +58,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from .base import ModalityProjector, pooled_tokens, register
+from .base import ModalityProjector, pooled_tokens, register, hidden_size_of
 
 WHISPER_FRAME_RATE = 50      # frames per second out of the encoder
 WHISPER_PAD_FRAMES = 1500    # 30 s — also the streaming KV-cache depth
@@ -108,7 +108,7 @@ class JaegerAudioProjector(ModalityProjector):
         """
         emb = backbone.get_input_embeddings().weight
         return cls(audio_dim=audio_dim,
-                   cognition_dim=backbone.config.hidden_size,
+                   cognition_dim=hidden_size_of(backbone),
                    embed_norm=emb.norm(dim=-1).mean().item(), **kw)
 
     def project(self, x: torch.Tensor) -> torch.Tensor:

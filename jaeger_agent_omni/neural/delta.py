@@ -185,3 +185,54 @@ def demo():
 
 if __name__ == "__main__":
     demo()
+
+
+class SpeechOutDelta(nn.Module):
+    """Cognition -> talker conditioning. The other half of the bridge.
+
+    The talker (CosyVoice2 lineage, 20-block llama, 768 hidden) conditions on
+
+        merged[t] = emb_text(token_ids[t]) + L2norm(proj_semantic(llm_hidden[t]))
+
+    measured from the tts GGUF and tts-condition-graph.cpp. Two consequences
+    shape this module, and both make the job easier than the input delta's:
+
+    1. The hidden term is **L2-NORMALISED** before use. Scale is discarded, so
+       this only has to point in the right direction. A cosine objective is
+       therefore the honest one -- training on MSE would spend capacity
+       matching a magnitude the talker throws away.
+
+    2. Text alone does NOT steer content. A zero-conditioning baseline was
+       measured twice and produces fluent English BABBLE -- real speech,
+       wrong words. The talker was trained with the hidden term present at
+       every position, so speech that follows the text REQUIRES this module.
+       That is why there is no "just send it the text" shortcut.
+
+    Gemma E4B is 2560-wide; the talker expects Qwen3-8B's 4096.
+    """
+
+    def __init__(self, cognition_dim: int = 2560,
+                 talker_dim: int = QWEN3_8B_HIDDEN, hidden: int = 0):
+        super().__init__()
+        if cognition_dim < 1 or talker_dim < 1:
+            raise ValueError("dims must be positive")
+        self.cognition_dim = cognition_dim
+        self.talker_dim = talker_dim
+        if hidden:
+            self.net = nn.Sequential(nn.Linear(cognition_dim, hidden), nn.GELU(),
+                                     nn.Linear(hidden, talker_dim))
+        else:
+            self.net = nn.Linear(cognition_dim, talker_dim)
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        """Returns a UNIT vector per position — the talker normalises anyway,
+        so emitting anything else invites a scale the model cannot use and a
+        loss that rewards matching it."""
+        y = self.net(x)
+        return y / (y.norm(dim=-1, keepdim=True) + 1e-6)
+
+    @staticmethod
+    def loss(pred: torch.Tensor, target: torch.Tensor) -> torch.Tensor:
+        """Cosine distance. Direction is all the talker reads."""
+        t = target / (target.norm(dim=-1, keepdim=True) + 1e-6)
+        return (1.0 - (pred * t).sum(-1)).mean()

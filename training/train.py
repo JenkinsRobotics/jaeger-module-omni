@@ -338,7 +338,7 @@ def real_setup(cfg: TrainConfig, corpus: str, device: str):
         print(f"arch: minicpm_delta — their encoder (fine-tuned, frozen) + "
               f"their projector (21M, frozen)")
         print(f"delta: {delta.n_params()/1e3:.0f}K trainable, "
-              f"{front.cognition_dim} -> {backbone.config.hidden_size}, "
+              f"{front.cognition_dim} -> {_hidden_size(backbone)}, "
               f"embed_norm {emb_norm:.2f}")
     else:
         whisper = WhisperModel.from_pretrained(cfg.whisper_id, dtype=dtype)

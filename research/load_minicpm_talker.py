@@ -145,6 +145,16 @@ class MiniCPMTalker(nn.Module):
             merged = torch.cat([merged, bos.expand(merged.shape[0], -1, -1)], 1)
         return merged
 
+    def finish_condition(self, merged: torch.Tensor,
+                         text_finished: bool) -> torch.Tensor:
+        """Append the official per-chunk sentinels to pre-merged embeddings."""
+        if text_finished:
+            eos = self.emb_text(torch.tensor([[TEXT_EOS_ID]],
+                                             device=merged.device))
+            merged = torch.cat([merged, eos.expand(merged.shape[0], -1, -1)], 1)
+        bos = self.emb_text(torch.tensor([[AUDIO_BOS_ID]], device=merged.device))
+        return torch.cat([merged, bos.expand(merged.shape[0], -1, -1)], 1)
+
     @torch.no_grad()
     def generate_codes(self, merged: torch.Tensor, max_codes: int = 600,
                        stop_at_eos: bool = True) -> torch.Tensor:
@@ -153,37 +163,58 @@ class MiniCPMTalker(nn.Module):
         This intentionally has no minimum-token floor: their Python
         ``TTSStreamingGenerator`` permits EOS from the first sampled code.
         """
+        return self.generate_code_chunks([(merged, False)], max_codes=max_codes,
+                                         stop_at_eos=stop_at_eos,
+                                         wrap_conditions=False)
+
+    @torch.no_grad()
+    def generate_code_chunks(self, chunks: list[tuple[torch.Tensor, bool]],
+                             max_codes: int = 500,
+                             stop_at_eos: bool = True,
+                             wrap_conditions: bool = True) -> torch.Tensor:
+        """Generate codes across streaming text chunks with one Talker cache.
+
+        ``chunks`` contains already-merged ``emb_text + projected_hidden``
+        tensors and a final-text flag.  Each call appends audio_bos; the final
+        call inserts text_eos immediately before it.  The KV cache and
+        repetition history persist across chunks, matching OpenBMB's
+        ``TTSStreamingGenerator``.
+        """
         from transformers.generation.logits_process import TopKLogitsWarper
         from transformers.generation.logits_process import TopPLogitsWarper
 
         top_p = TopPLogitsWarper(SAMPLING["top_p"], min_tokens_to_keep=3)
         top_k = TopKLogitsWarper(SAMPLING["top_k"], min_tokens_to_keep=3)
-        seq = merged
-        out = []
+        out: list[torch.Tensor] = []
         past = None
-        for i in range(max_codes):
-            r = self.body(inputs_embeds=seq, past_key_values=past, use_cache=True)
-            past = r.past_key_values
-            logits = self.head_code(r.last_hidden_state[:, -1]).float()
 
-            recent = out[-SAMPLING["penalty_window"]:]
-            if recent:
-                idx = torch.cat(recent, 1)
-                freq = F.one_hot(idx, logits.shape[-1]).sum(1)
-                alpha = SAMPLING["repetition_penalty"] ** freq
-                logits = torch.where(logits < 0, logits * alpha, logits / alpha)
+        for merged, text_finished in chunks:
+            seq = (self.finish_condition(merged, text_finished)
+                   if wrap_conditions else merged)
+            for _ in range(max_codes):
+                r = self.body(inputs_embeds=seq, past_key_values=past, use_cache=True)
+                past = r.past_key_values
+                logits = self.head_code(r.last_hidden_state[:, -1]).float()
 
-            logits = logits / SAMPLING["temperature"]
-            dummy_ids = torch.cat(out, 1) if out else torch.empty(
-                logits.shape[0], 0, dtype=torch.long, device=logits.device)
-            logits = top_p(dummy_ids, logits)
-            logits = top_k(dummy_ids, logits)
-            code = torch.multinomial(F.softmax(logits, dim=-1), 1)
+                recent = out[-SAMPLING["penalty_window"]:]
+                if recent:
+                    idx = torch.cat(recent, 1)
+                    freq = F.one_hot(idx, logits.shape[-1]).sum(1)
+                    alpha = SAMPLING["repetition_penalty"] ** freq
+                    logits = torch.where(logits < 0, logits * alpha, logits / alpha)
 
-            if stop_at_eos and code.item() == CODE_EOS:
-                break
-            out.append(code)
-            seq = self.emb_code(code)
+                logits = logits / SAMPLING["temperature"]
+                history = torch.cat(out, 1) if out else torch.empty(
+                    logits.shape[0], 0, dtype=torch.long, device=logits.device)
+                logits = top_p(history, logits)
+                logits = top_k(history, logits)
+                code = torch.multinomial(F.softmax(logits, dim=-1), 1)
+
+                if stop_at_eos and code.item() == CODE_EOS:
+                    break
+                out.append(code)
+                seq = self.emb_code(code)
+
         return torch.cat(out, dim=1) if out else torch.zeros(1, 0, dtype=torch.long)
 
 

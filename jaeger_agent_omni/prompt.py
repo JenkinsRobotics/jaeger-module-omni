@@ -1,5 +1,7 @@
 """Splice audio embeddings into the backbone's chat template.
 
+from .neural.base import hidden_size_of
+
 An instruct backbone expects its conversation markers. Handed bare embeddings
 with no template, it has no idea it is in a dialogue and falls back to generic
 instruction-following — observed directly:
@@ -98,7 +100,7 @@ class ChatWrapper:
 
     def _embed(self, ids: torch.Tensor, batch: int) -> torch.Tensor:
         if ids.numel() == 0:
-            hidden = self.backbone.config.hidden_size
+            hidden = hidden_size_of(self.backbone)
             return torch.zeros(batch, 0, hidden, device=self.device, dtype=self.dtype)
         emb = self.backbone.get_input_embeddings()(ids.unsqueeze(0))
         return emb.expand(batch, -1, -1).to(self.dtype)
