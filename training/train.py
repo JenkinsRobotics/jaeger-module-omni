@@ -60,7 +60,7 @@ class Trainer:
 
         # Fail loudly on a dim mismatch. Broadcasting one of these silently is
         # how a run burns a day producing noise.
-        want = backbone.config.hidden_size
+        want = _hidden_size(backbone)
         if projector.cognition_dim != want:
             raise ValueError(
                 f"projector emits {projector.cognition_dim}, backbone wants {want}. "
@@ -293,6 +293,16 @@ class Trainer:
         return self.step
 
 
+def _hidden_size(backbone) -> int:
+    """Multimodal configs (Gemma4Config) keep hidden_size on the TEXT config;
+    plain causal LMs keep it at the top. Reading the wrong one is silent until
+    the projector emits the wrong width."""
+    cfg = backbone.config
+    if hasattr(cfg, "get_text_config"):
+        return cfg.get_text_config().hidden_size
+    return cfg.hidden_size
+
+
 def real_setup(cfg: TrainConfig, corpus: str, device: str):
     """Load real models + corpus. Returns (encoder_fn, backbone, projector, loader).
 
@@ -322,7 +332,7 @@ def real_setup(cfg: TrainConfig, corpus: str, device: str):
         encoder, front = load_front_end()
         encoder = encoder.to(device, dtype).eval()
         delta = DeltaAdapter(source_dim=front.cognition_dim,
-                             cognition_dim=backbone.config.hidden_size,
+                             cognition_dim=_hidden_size(backbone),
                              embed_norm=emb_norm)
         projector = MiniCPMDeltaPath(front, delta).to(device)
         print(f"arch: minicpm_delta — their encoder (fine-tuned, frozen) + "
