@@ -11,12 +11,13 @@ so each new specialist is a known job rather than a research question.
 Heads go the other way — cognition state out to a decision or a control signal.
 """
 
-from .audio import JaegerAudioProjector
+from .audio import JaegerAudioProjector, MiniCPMRemappedProjector
 from .base import ModalityProjector, REGISTRY, get, pooled_tokens, register, hidden_size_of, embedding_norm_of
 from .delta import DeltaAdapter, MiniCPMDeltaPath, SpeechOutDelta
 from .gate import AudioGate, embed
 from .heads import TurnEndDetector, TurnEndHead, turn_end_loss
-from .speech import GemmaTalkerConditioner, SpeechConditionerConfig
+from .speech import (GemmaQwenHiddenBridge, GemmaTalkerConditioner,
+                     HiddenBridgeConfig, SpeechConditionerConfig, TokenIdBridge)
 
 __all__ = [
     "embedding_norm_of",
@@ -27,7 +28,11 @@ __all__ = [
     "SpeechOutDelta",
     "GemmaTalkerConditioner",
     "SpeechConditionerConfig",
+    "GemmaQwenHiddenBridge",
+    "HiddenBridgeConfig",
+    "TokenIdBridge",
     "JaegerAudioProjector",
+    "MiniCPMRemappedProjector",
     "ModalityProjector",
     "REGISTRY",
     "TurnEndDetector",

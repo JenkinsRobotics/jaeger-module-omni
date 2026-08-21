@@ -124,6 +124,46 @@ class JaegerAudioProjector(ModalityProjector):
         return x
 
 
+class MiniCPMRemappedProjector(ModalityProjector):
+    """One MiniCPM-shaped adapter whose output is Gemma space directly.
+
+    This is deliberately *not* ``MiniCPM projector -> DeltaAdapter``. The
+    first affine is MiniCPM's frozen 1024->4096 layer; the second affine is
+    MiniCPM's 4096->4096 layer composed with a Qwen->Gemma map and then
+    trained in place as 4096->2560. Runtime therefore has one projector:
+
+        tuned Whisper -> ReLU(linear1) -> AvgPool5 -> linear2 -> Gemma
+
+    Moving the affine ``linear2`` after AvgPool5 is mathematically exact and
+    avoids applying the 4096->2560 matrix five times more often than needed.
+    """
+
+    modality = "audio"
+
+    def __init__(self, audio_dim: int = WHISPER_MEDIUM_DIM,
+                 cognition_dim: int = 2560, intermediate_dim: int = 4096,
+                 stride: int = MINICPM_POOL_STEP):
+        super().__init__(input_dim=audio_dim, cognition_dim=cognition_dim,
+                         stride=stride, frame_rate=WHISPER_FRAME_RATE,
+                         max_frames=WHISPER_PAD_FRAMES)
+        self.intermediate_dim = intermediate_dim
+        self.linear1 = nn.Linear(audio_dim, intermediate_dim)
+        self.linear2 = nn.Linear(intermediate_dim, cognition_dim)
+
+    def freeze_minicpm_base(self) -> "MiniCPMRemappedProjector":
+        """Freeze MiniCPM's imported layer; only the remapped layer trains."""
+        self.linear1.requires_grad_(False)
+        return self
+
+    def project(self, x: torch.Tensor) -> torch.Tensor:
+        x = F.relu(self.linear1(x))
+        x = self.pool(x)
+        return self.linear2(x)
+
+    def n_trainable(self) -> int:
+        return sum(p.numel() for p in self.parameters() if p.requires_grad)
+
+
 def demo():
     torch.manual_seed(0)
     cognition_dim = 2048
@@ -195,6 +235,20 @@ def demo():
     reloaded = JaegerAudioProjector(audio_dim=64, cognition_dim=32)
     reloaded.load_state_dict(scaled.state_dict())
     assert abs(float(reloaded.embed_norm) - 3.2) < 1e-5, float(reloaded.embed_norm)
+
+    # The requested one-adapter path keeps MiniCPM's 4096-wide hidden layer
+    # but emits Gemma width directly. Pooling before the final affine must be
+    # exactly equivalent to MiniCPM's pool-after ordering because that affine
+    # is linear (including its bias under average pooling).
+    one = MiniCPMRemappedProjector(audio_dim=16, cognition_dim=12,
+                                   intermediate_dim=20).freeze_minicpm_base()
+    x = torch.randn(2, 50, 16)
+    got = one(x)
+    hidden = F.relu(one.linear1(x))
+    reference = one.pool(one.linear2(hidden))
+    assert got.shape == (2, 10, 12)
+    assert torch.allclose(got, reference, atol=1e-6)
+    assert one.n_trainable() == one.linear2.weight.numel() + one.linear2.bias.numel()
 
     print(f"neural.audio  {proj.n_params()/1e6:5.1f}M params  "
           f"{proj.tokens_per_second:.0f} tok/s  1024 -> {cognition_dim}")

@@ -40,7 +40,11 @@ import sys
 import time
 from pathlib import Path
 
-SYSTEM = "You are a helpful assistant. Answer in one short sentence."
+SYSTEM = (
+    "You are a voice assistant. Answer the spoken question directly in one "
+    "short sentence. Do not mention images unless the user explicitly asks "
+    "about an image."
+)
 MODEL = "/Users/jonathanjenkins/models/gemma-4-e4b-it-mlx-full"
 
 
@@ -120,7 +124,7 @@ def condition_session(session, conditioner):
 
 
 def condition_session_token_bridge(session, talker, token_bridge,
-                                   hidden_map_path,
+                                   hidden_map_path=None, hidden_bridge=None,
                                    teacher_hidden_norm: float = 72.6281):
     """Exact Talker lexical embeddings plus mapped Gemma hidden tensors.
 
@@ -142,14 +146,20 @@ def condition_session_token_bridge(session, talker, token_bridge,
     dtype = next(talker.parameters()).dtype
     qwen_ids = qwen_ids.to(device)
     aligned = aligned.to(device=device, dtype=dtype)
-    mapping = torch.from_numpy(np.load(hidden_map_path)).to(
-        device=device, dtype=dtype)
-    if mapping.shape != (aligned.shape[-1], 4096):
-        raise ValueError(f"hidden map {mapping.shape} != "
-                         f"({aligned.shape[-1]}, 4096)")
-    qwen_hidden = aligned @ mapping
-    qwen_hidden = qwen_hidden / qwen_hidden.norm(
-        dim=-1, keepdim=True).clamp(min=1e-6) * teacher_hidden_norm
+    if hidden_bridge is not None:
+        hidden_bridge = hidden_bridge.to(device=device, dtype=dtype)
+        qwen_hidden = hidden_bridge(aligned)
+    else:
+        if hidden_map_path is None:
+            raise ValueError("a learned hidden bridge or linear map is required")
+        mapping = torch.from_numpy(np.load(hidden_map_path)).to(
+            device=device, dtype=dtype)
+        if mapping.shape != (aligned.shape[-1], 4096):
+            raise ValueError(f"hidden map {mapping.shape} != "
+                             f"({aligned.shape[-1]}, 4096)")
+        qwen_hidden = aligned @ mapping
+        qwen_hidden = qwen_hidden / qwen_hidden.norm(
+            dim=-1, keepdim=True).clamp(min=1e-6) * teacher_hidden_norm
     with torch.no_grad():
         return talker.emb_text(qwen_ids) + talker.proj_semantic(qwen_hidden)
 

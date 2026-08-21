@@ -13,12 +13,20 @@ PCM. The first four-case waveform proof measured 1/4 semantic and 14.6% word
 accuracy. An offline-compiled token-ID bridge (runtime integer/tensor operations
 only) raised the same cases to 3/4 semantic and 67.9% mean word accuracy.
 
-That is still not an 80% product pass. The full 12-case waveform run, >=80%
-word accuracy, live output overlap, and duplex barge-in remain open. Warm
-latency under the current machine load is not reportable as a model number:
-macOS had 43.5 GB swap in use and the all-resident graph made Gemma vary from
-0.4 s to 20 s. Metal-F16 Talker executes but has not yet matched CPU sampled
-quality.
+The later full 12-case waveform run is now 10/12 semantic (83.3%) with 93.5%
+mean spoken-word accuracy. Talker-to-Token2Wav is genuinely incremental on all
+cases and median first audio is 2040.9 ms. This clears the core waveform
+quality/streaming sub-gate. It is still not the complete product pass: the run
+was file-fed rather than wall-clock paced, output barge-in was not exercised,
+legacy-relative latency is not yet within the written gate, and provenance
+hashing is incomplete.
+
+Input architecture must not be conflated with that result. The 10/12 run uses
+Gemma E4B's native tower. The user-requested owned input path is MiniCPM-tuned
+Whisper followed by ONE MiniCPM-shaped projector whose final affine is remapped
+and trained to emit Gemma's 2560-wide space directly. The older frozen 4096
+MiniCPM projector plus a separate 4096->2560 delta is a historical experiment,
+not the target. A 1,000-utterance single-projector alignment run is in progress.
 
 The only accepted product target is the integrated no-text-handoff
 audio-to-audio graph defined in `dev/OMNI_ACCEPTANCE.md`.
@@ -28,8 +36,9 @@ audio-to-audio graph defined in `dev/OMNI_ACCEPTANCE.md`.
 - The MiniCPM Talker/Token2Wav port now renders speech from exact reference
   condition tensors. Two GGUF import defects were fixed: Q/K required the
   inverse llama.cpp rotary permutation and `head_code` required a transpose.
-- Gemma hidden states are now connected to Talker in the research benchmark,
-  but the output path remains below the acceptance thresholds above.
+- Gemma hidden states are now connected to Talker in the research benchmark;
+  the output path clears the core quality/streaming sub-gate but not the full
+  latency, pacing, barge-in, and provenance acceptance thresholds above.
 - The prior Whisper-transcript-hint input acceptance in VoiceLLM-Playground is
   a well-engineered fallback/legacy test, not evidence for this architecture.
 

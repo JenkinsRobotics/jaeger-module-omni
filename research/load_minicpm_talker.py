@@ -189,15 +189,44 @@ class MiniCPMTalker(nn.Module):
         repetition history persist across chunks, matching OpenBMB's
         ``TTSStreamingGenerator``.
         """
+        streamed = self.iter_code_chunks(
+            chunks, max_codes=max_codes, stop_at_eos=stop_at_eos,
+            wrap_conditions=wrap_conditions,
+            cpp_final_two_phase=cpp_final_two_phase)
+        codes = [torch.tensor(part, dtype=torch.long,
+                              device=next(self.parameters()).device)
+                 for part, _ in streamed]
+        return (torch.cat(codes).unsqueeze(0) if codes else
+                torch.zeros(1, 0, dtype=torch.long,
+                            device=next(self.parameters()).device))
+
+    @torch.no_grad()
+    def iter_code_chunks(self, chunks: list[tuple[torch.Tensor, bool]],
+                         max_codes: int = 500,
+                         stop_at_eos: bool = True,
+                         wrap_conditions: bool = True,
+                         cpp_final_two_phase: bool = True,
+                         stream_chunk_size: int = 25):
+        """Yield speech-code chunks while autoregressive generation is live.
+
+        One code is deliberately retained until EOS, so every full chunk can
+        be sent to Token2Wav with ``last_chunk=False`` and the final non-empty
+        chunk can carry ``last_chunk=True``. This gives the vocoder real work
+        before Talker finishes without guessing where the utterance ends.
+        """
         from transformers.generation.logits_process import TopKLogitsWarper
         from transformers.generation.logits_process import TopPLogitsWarper
+
+        if stream_chunk_size < 1:
+            raise ValueError("stream_chunk_size must be positive")
 
         top_p = TopPLogitsWarper(SAMPLING["top_p"], min_tokens_to_keep=3)
         top_k = TopKLogitsWarper(SAMPLING["top_k"], min_tokens_to_keep=3)
         out: list[torch.Tensor] = []
+        pending: list[int] = []
         past = None
 
-        def generate_phase(seq: torch.Tensor) -> None:
+        def generate_phase(seq: torch.Tensor):
             nonlocal past
             for _ in range(max_codes):
                 r = self.body(inputs_embeds=seq, past_key_values=past, use_cache=True)
@@ -221,11 +250,17 @@ class MiniCPMTalker(nn.Module):
                 if stop_at_eos and code.item() == CODE_EOS:
                     break
                 out.append(code)
+                pending.append(int(code.item()))
                 seq = self.emb_code(code)
+                # Retain one token so the final service call is never empty.
+                if len(pending) > stream_chunk_size:
+                    part = pending[:stream_chunk_size]
+                    del pending[:stream_chunk_size]
+                    yield part, False
 
         for merged, text_finished in chunks:
             if not wrap_conditions:
-                generate_phase(merged)
+                yield from generate_phase(merged)
                 continue
 
             # The measured llama.cpp simplex runtime first generates from
@@ -233,13 +268,14 @@ class MiniCPMTalker(nn.Module):
             # reaches EOS, it appends [text_eos, audio_bos] to the SAME cache
             # and generates one final phase.  Preserve this cadence because it
             # is the reference that produced our known-good WAVs.
-            generate_phase(self.finish_condition(
+            yield from generate_phase(self.finish_condition(
                 merged, text_finished and not cpp_final_two_phase))
             if text_finished and cpp_final_two_phase:
                 empty = merged[:, :0]
-                generate_phase(self.finish_condition(empty, True))
+                yield from generate_phase(self.finish_condition(empty, True))
 
-        return torch.cat(out, dim=1) if out else torch.zeros(1, 0, dtype=torch.long)
+        if pending:
+            yield pending, True
 
 
 def load(gguf_path=TTS_GGUF) -> MiniCPMTalker:

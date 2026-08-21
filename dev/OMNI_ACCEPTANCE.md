@@ -43,6 +43,11 @@ prosody, and duplex behavior is the next bar.
 ## Current evidence (2026-08-21)
 
 - No-transcript Gemma input: 10/12, 83% of legacy, freshly reproduced.
+- That 10/12 input result uses Gemma E4B's native audio tower. It is not
+  evidence for the requested Whisper adapter. The requested input graph is
+  now explicitly `MiniCPM-tuned Whisper -> one MiniCPM-shaped projector whose
+  final affine emits 2560-wide Gemma embeddings directly -> Gemma`; the old
+  `MiniCPM projector -> separate delta -> Gemma` experiment is not the target.
 - The complete strict graph now executes and writes cloned-voice PCM. The
   first learned-conditioner pilot scored only 1/4 semantic and 14.6% mean word
   accuracy.
@@ -50,9 +55,15 @@ prosody, and duplex behavior is the next bar.
   tensor-only Gemma-ID -> Qwen-ID bridge improved the same four unseen cases
   to 3/4 semantic and 67.9% mean word accuracy. q01 failed upstream because
   Gemma answered that no image was supplied; the speech output followed it.
-- This is not an 80% pass: only four cases have end-to-end waveform scores,
-  mean word accuracy is below 80%, live Talker-to-vocoder overlap is not wired,
-  and barge-in has not been exercised through the audio-output graph.
+- A full 12-case native-tower waveform run now scores 10/12 semantic (83.3%)
+  and 93.5% mean spoken-word accuracy. Talker yields codes while it is still
+  decoding and Token2Wav emitted multiple live chunks on every case; median
+  first audio was 2040.9 ms. This passes the core semantic/intelligibility/
+  streaming sub-gate, not the complete acceptance gate.
+- Complete acceptance remains false: this file also requires <=1.25x legacy
+  latency under a matched warm run, wall-clock-paced input, output-side
+  barge-in, and complete model/WAV/hash provenance. The current file-fed run
+  did not exercise those requirements.
 - A warm-resident run exposed severe unified-memory contention with 43.5 GB
   system swap. CPU Talker is more reproducible today; the Metal-F16 path runs
   but has not matched its sampled output quality or clean latency yet.

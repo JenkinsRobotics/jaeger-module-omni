@@ -141,6 +141,50 @@ class TokenIdBridge:
         return qwen_ids, torch.cat(rows, dim=1)
 
 
+@dataclass(frozen=True)
+class HiddenBridgeConfig:
+    source_dim: int = 2560
+    target_dim: int = 4096
+    rank: int = 128
+    target_norm: float = 72.6281
+
+
+class GemmaQwenHiddenBridge(nn.Module):
+    """Learn Gemma cognition -> Qwen cognition for Talker semantics."""
+
+    def __init__(self, config: HiddenBridgeConfig | None = None):
+        super().__init__()
+        self.config = config or HiddenBridgeConfig()
+        c = self.config
+        self.norm = nn.RMSNorm(c.source_dim)
+        self.net = nn.Sequential(nn.Linear(c.source_dim, c.rank, bias=False),
+                                 nn.GELU(),
+                                 nn.Linear(c.rank, c.target_dim, bias=False))
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        y = self.net(self.norm(x))
+        return F.normalize(y, dim=-1) * self.config.target_norm
+
+    @staticmethod
+    def loss(predicted: torch.Tensor, target: torch.Tensor) -> torch.Tensor:
+        cosine = 1.0 - F.cosine_similarity(predicted, target, dim=-1).mean()
+        norm_target = F.normalize(target, dim=-1) * predicted.norm(
+            dim=-1, keepdim=True).detach()
+        return cosine + 0.02 * F.mse_loss(predicted, norm_target)
+
+    def checkpoint(self) -> dict:
+        return {"format": "jaeger-gemma-qwen-hidden-v1",
+                "config": asdict(self.config), "state": self.state_dict()}
+
+    @classmethod
+    def from_checkpoint(cls, checkpoint: dict) -> "GemmaQwenHiddenBridge":
+        if checkpoint.get("format") != "jaeger-gemma-qwen-hidden-v1":
+            raise ValueError("not a Gemma-Qwen hidden bridge checkpoint")
+        model = cls(HiddenBridgeConfig(**checkpoint["config"]))
+        model.load_state_dict(checkpoint["state"])
+        return model.eval()
+
+
 def demo() -> None:
     torch.manual_seed(0)
     cfg = SpeechConditionerConfig(cognition_dim=32, token_dim=32,
@@ -162,6 +206,10 @@ def demo() -> None:
     qids, repeated = bridge.expand([0, 1], torch.randn(1, 2, 4))
     assert qids.tolist() == [[9, 10, 11]] and repeated.shape == (1, 3, 4)
     assert torch.equal(repeated[:, 1], repeated[:, 2])
+    hb = GemmaQwenHiddenBridge(HiddenBridgeConfig(32, 48, 8, 7.0))
+    hy = hb(torch.randn(2, 5, 32))
+    assert hy.shape == (2, 5, 48)
+    assert torch.allclose(hy.norm(dim=-1), torch.full((2, 5), 7.0), atol=1e-4)
     print("neural.speech: tensor-only boundary, ID expansion, guards, checkpoint OK")
 
 

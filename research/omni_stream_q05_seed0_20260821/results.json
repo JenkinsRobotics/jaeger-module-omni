@@ -1,0 +1,68 @@
+{
+  "format": "jaeger-omni-audio-bench-v1",
+  "architecture": {
+    "graph": "PCM->audio_encoder->Gemma->conditioner->Talker->Token2Wav->PCM",
+    "transcript_or_decoded_text_handoff": false,
+    "conditioner": "exact-token-bridge+hidden-map",
+    "token_bridge": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/training/runs/gemma_to_qwen_token_ids.npz",
+    "hidden_map": null,
+    "hidden_bridge": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/training/runs/gemma_qwen_hidden_rank128.pt"
+  },
+  "generation": {
+    "seed": 0,
+    "temperature": 0.8,
+    "top_p": 0.85,
+    "top_k": 25,
+    "stream_output": true
+  },
+  "rows": [
+    {
+      "case": "q05",
+      "answers": [
+        "eight"
+      ],
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q05.wav",
+      "output_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/omni_stream_q05_seed0_20260821/q05.wav",
+      "input_samples_received": 30042,
+      "input_samples_consumed": 30042,
+      "gemma_reply_log_only": "A spider has eight legs.",
+      "gemma_tokens": 6,
+      "gemma_hidden_shape": [
+        6,
+        2560
+      ],
+      "talker_condition_shape": [
+        1,
+        6,
+        768
+      ],
+      "speech_codes": 43,
+      "output_seconds": 1.6,
+      "reply_ms": 363.7,
+      "condition_ms": 20.1,
+      "talker_ms": null,
+      "vocoder_ms": null,
+      "talker_vocoder_ms": 3473.0,
+      "first_audio_ms": 2573.2,
+      "stream_chunks": 2,
+      "talker_streaming": true,
+      "vocoder_first_chunk_ms": 2189.4,
+      "wall_clock_paced_input": false,
+      "barge_in_tested": false,
+      "transcript_handoff": false,
+      "metric_transcript": "A spider has a legs.",
+      "semantic_ok": false,
+      "output_wer": 0.2,
+      "output_word_accuracy": 0.8
+    }
+  ],
+  "score": {
+    "semantic_correct": 0,
+    "n": 1,
+    "semantic_ratio_to_legacy_12_of_12": 0.0,
+    "mean_output_word_accuracy": 0.8,
+    "median_first_audio_ms": 2573.2,
+    "streaming_output": true,
+    "strict_80_percent_pass": false
+  }
+}

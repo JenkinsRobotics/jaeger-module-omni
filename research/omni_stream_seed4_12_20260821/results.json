@@ -1,0 +1,503 @@
+{
+  "format": "jaeger-omni-audio-bench-v1",
+  "architecture": {
+    "graph": "PCM->audio_encoder->Gemma->conditioner->Talker->Token2Wav->PCM",
+    "transcript_or_decoded_text_handoff": false,
+    "conditioner": "exact-token-bridge+hidden-map",
+    "token_bridge": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/training/runs/gemma_to_qwen_token_ids.npz",
+    "hidden_map": null,
+    "hidden_bridge": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/training/runs/gemma_qwen_hidden_rank128.pt"
+  },
+  "generation": {
+    "seed": 4,
+    "temperature": 0.8,
+    "top_p": 0.85,
+    "top_k": 25,
+    "stream_output": true
+  },
+  "rows": [
+    {
+      "case": "q00",
+      "answers": [
+        "four"
+      ],
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q00.wav",
+      "output_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/omni_stream_seed4_12_20260821/q00.wav",
+      "input_samples_received": 18800,
+      "input_samples_consumed": 18800,
+      "gemma_reply_log_only": "Two plus two equals four.",
+      "gemma_tokens": 6,
+      "gemma_hidden_shape": [
+        6,
+        2560
+      ],
+      "talker_condition_shape": [
+        1,
+        6,
+        768
+      ],
+      "speech_codes": 49,
+      "output_seconds": 1.84,
+      "reply_ms": 314.9,
+      "condition_ms": 14.3,
+      "talker_ms": null,
+      "vocoder_ms": null,
+      "talker_vocoder_ms": 3486.9,
+      "first_audio_ms": 2224.7,
+      "stream_chunks": 2,
+      "talker_streaming": true,
+      "vocoder_first_chunk_ms": 1895.4,
+      "wall_clock_paced_input": false,
+      "barge_in_tested": false,
+      "transcript_handoff": false,
+      "metric_transcript": "2 plus 2 equals 4.",
+      "semantic_ok": true,
+      "output_wer": 0.0,
+      "output_word_accuracy": 1.0
+    },
+    {
+      "case": "q01",
+      "answers": [
+        "blue"
+      ],
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q01.wav",
+      "output_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/omni_stream_seed4_12_20260821/q01.wav",
+      "input_samples_received": 21587,
+      "input_samples_consumed": 21587,
+      "gemma_reply_log_only": "The color is red.",
+      "gemma_tokens": 5,
+      "gemma_hidden_shape": [
+        5,
+        2560
+      ],
+      "talker_condition_shape": [
+        1,
+        5,
+        768
+      ],
+      "speech_codes": 31,
+      "output_seconds": 1.12,
+      "reply_ms": 309.4,
+      "condition_ms": 3.6,
+      "talker_ms": null,
+      "vocoder_ms": null,
+      "talker_vocoder_ms": 2429.7,
+      "first_audio_ms": 1993.4,
+      "stream_chunks": 2,
+      "talker_streaming": true,
+      "vocoder_first_chunk_ms": 1680.4,
+      "wall_clock_paced_input": false,
+      "barge_in_tested": false,
+      "transcript_handoff": false,
+      "metric_transcript": "The color is red.",
+      "semantic_ok": false,
+      "output_wer": 0.0,
+      "output_word_accuracy": 1.0
+    },
+    {
+      "case": "q02",
+      "answers": [
+        "seven"
+      ],
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q02.wav",
+      "output_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/omni_stream_seed4_12_20260821/q02.wav",
+      "input_samples_received": 22611,
+      "input_samples_consumed": 22611,
+      "gemma_reply_log_only": "There are seven days in a week.",
+      "gemma_tokens": 8,
+      "gemma_hidden_shape": [
+        8,
+        2560
+      ],
+      "talker_condition_shape": [
+        1,
+        8,
+        768
+      ],
+      "speech_codes": 35,
+      "output_seconds": 1.28,
+      "reply_ms": 373.0,
+      "condition_ms": 4.4,
+      "talker_ms": null,
+      "vocoder_ms": null,
+      "talker_vocoder_ms": 2419.6,
+      "first_audio_ms": 1883.4,
+      "stream_chunks": 2,
+      "talker_streaming": true,
+      "vocoder_first_chunk_ms": 1506.0,
+      "wall_clock_paced_input": false,
+      "barge_in_tested": false,
+      "transcript_handoff": false,
+      "metric_transcript": "There are seven days a week.",
+      "semantic_ok": true,
+      "output_wer": 0.1429,
+      "output_word_accuracy": 0.8571
+    },
+    {
+      "case": "q03",
+      "answers": [
+        "paris"
+      ],
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q03.wav",
+      "output_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/omni_stream_seed4_12_20260821/q03.wav",
+      "input_samples_received": 26231,
+      "input_samples_consumed": 26231,
+      "gemma_reply_log_only": " The capital of France is Paris.",
+      "gemma_tokens": 7,
+      "gemma_hidden_shape": [
+        7,
+        2560
+      ],
+      "talker_condition_shape": [
+        1,
+        7,
+        768
+      ],
+      "speech_codes": 55,
+      "output_seconds": 1.96,
+      "reply_ms": 356.3,
+      "condition_ms": 4.2,
+      "talker_ms": null,
+      "vocoder_ms": null,
+      "talker_vocoder_ms": 3958.9,
+      "first_audio_ms": 2015.4,
+      "stream_chunks": 3,
+      "talker_streaming": true,
+      "vocoder_first_chunk_ms": 1654.9,
+      "wall_clock_paced_input": false,
+      "barge_in_tested": false,
+      "transcript_handoff": false,
+      "metric_transcript": "The capital of France is Paris.",
+      "semantic_ok": true,
+      "output_wer": 0.0,
+      "output_word_accuracy": 1.0
+    },
+    {
+      "case": "q04",
+      "answers": [
+        "seven"
+      ],
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q04.wav",
+      "output_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/omni_stream_seed4_12_20260821/q04.wav",
+      "input_samples_received": 21401,
+      "input_samples_consumed": 21401,
+      "gemma_reply_log_only": "Ten minus three is seven.",
+      "gemma_tokens": 6,
+      "gemma_hidden_shape": [
+        6,
+        2560
+      ],
+      "talker_condition_shape": [
+        1,
+        6,
+        768
+      ],
+      "speech_codes": 44,
+      "output_seconds": 1.64,
+      "reply_ms": 328.4,
+      "condition_ms": 3.5,
+      "talker_ms": null,
+      "vocoder_ms": null,
+      "talker_vocoder_ms": 3120.5,
+      "first_audio_ms": 2001.0,
+      "stream_chunks": 2,
+      "talker_streaming": true,
+      "vocoder_first_chunk_ms": 1669.1,
+      "wall_clock_paced_input": false,
+      "barge_in_tested": false,
+      "transcript_handoff": false,
+      "metric_transcript": "10 minus 3 is 7.",
+      "semantic_ok": true,
+      "output_wer": 0.0,
+      "output_word_accuracy": 1.0
+    },
+    {
+      "case": "q05",
+      "answers": [
+        "eight"
+      ],
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q05.wav",
+      "output_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/omni_stream_seed4_12_20260821/q05.wav",
+      "input_samples_received": 30042,
+      "input_samples_consumed": 30042,
+      "gemma_reply_log_only": "A spider has eight legs.",
+      "gemma_tokens": 6,
+      "gemma_hidden_shape": [
+        6,
+        2560
+      ],
+      "talker_condition_shape": [
+        1,
+        6,
+        768
+      ],
+      "speech_codes": 40,
+      "output_seconds": 1.48,
+      "reply_ms": 338.0,
+      "condition_ms": 5.4,
+      "talker_ms": null,
+      "vocoder_ms": null,
+      "talker_vocoder_ms": 3027.5,
+      "first_audio_ms": 2188.2,
+      "stream_chunks": 2,
+      "talker_streaming": true,
+      "vocoder_first_chunk_ms": 1844.8,
+      "wall_clock_paced_input": false,
+      "barge_in_tested": false,
+      "transcript_handoff": false,
+      "metric_transcript": "A spider has eight legs.",
+      "semantic_ok": true,
+      "output_wer": 0.0,
+      "output_word_accuracy": 1.0
+    },
+    {
+      "case": "q06",
+      "answers": [
+        "jupiter"
+      ],
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q06.wav",
+      "output_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/omni_stream_seed4_12_20260821/q06.wav",
+      "input_samples_received": 22887,
+      "input_samples_consumed": 22887,
+      "gemma_reply_log_only": " Jupiter is the largest planet in our solar system.",
+      "gemma_tokens": 10,
+      "gemma_hidden_shape": [
+        10,
+        2560
+      ],
+      "talker_condition_shape": [
+        1,
+        10,
+        768
+      ],
+      "speech_codes": 76,
+      "output_seconds": 2.68,
+      "reply_ms": 414.7,
+      "condition_ms": 4.9,
+      "talker_ms": null,
+      "vocoder_ms": null,
+      "talker_vocoder_ms": 7373.1,
+      "first_audio_ms": 2016.5,
+      "stream_chunks": 4,
+      "talker_streaming": true,
+      "vocoder_first_chunk_ms": 1597.0,
+      "wall_clock_paced_input": false,
+      "barge_in_tested": false,
+      "transcript_handoff": false,
+      "metric_transcript": "Jupiter is the largest planet in our solar system.",
+      "semantic_ok": true,
+      "output_wer": 0.0,
+      "output_word_accuracy": 1.0
+    },
+    {
+      "case": "q07",
+      "answers": [
+        "twenty five"
+      ],
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q07.wav",
+      "output_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/omni_stream_seed4_12_20260821/q07.wav",
+      "input_samples_received": 22887,
+      "input_samples_consumed": 22887,
+      "gemma_reply_log_only": "Five times five is twenty-five.",
+      "gemma_tokens": 8,
+      "gemma_hidden_shape": [
+        8,
+        2560
+      ],
+      "talker_condition_shape": [
+        1,
+        8,
+        768
+      ],
+      "speech_codes": 64,
+      "output_seconds": 2.32,
+      "reply_ms": 417.4,
+      "condition_ms": 8.4,
+      "talker_ms": null,
+      "vocoder_ms": null,
+      "talker_vocoder_ms": 4291.9,
+      "first_audio_ms": 2007.7,
+      "stream_chunks": 3,
+      "talker_streaming": true,
+      "vocoder_first_chunk_ms": 1582.0,
+      "wall_clock_paced_input": false,
+      "barge_in_tested": false,
+      "transcript_handoff": false,
+      "metric_transcript": "5 times 5 is 25.",
+      "semantic_ok": true,
+      "output_wer": 0.0,
+      "output_word_accuracy": 1.0
+    },
+    {
+      "case": "q08",
+      "answers": [
+        "autumn"
+      ],
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q08.wav",
+      "output_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/omni_stream_seed4_12_20260821/q08.wav",
+      "input_samples_received": 27160,
+      "input_samples_consumed": 27160,
+      "gemma_reply_log_only": "Autumn comes after summer.",
+      "gemma_tokens": 5,
+      "gemma_hidden_shape": [
+        5,
+        2560
+      ],
+      "talker_condition_shape": [
+        1,
+        6,
+        768
+      ],
+      "speech_codes": 41,
+      "output_seconds": 1.52,
+      "reply_ms": 315.3,
+      "condition_ms": 3.7,
+      "talker_ms": null,
+      "vocoder_ms": null,
+      "talker_vocoder_ms": 3081.2,
+      "first_audio_ms": 2065.3,
+      "stream_chunks": 2,
+      "talker_streaming": true,
+      "vocoder_first_chunk_ms": 1746.3,
+      "wall_clock_paced_input": false,
+      "barge_in_tested": false,
+      "transcript_handoff": false,
+      "metric_transcript": "The autumn comes after summer.",
+      "semantic_ok": true,
+      "output_wer": 0.25,
+      "output_word_accuracy": 0.75
+    },
+    {
+      "case": "q09",
+      "answers": [
+        "twenty four"
+      ],
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q09.wav",
+      "output_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/omni_stream_seed4_12_20260821/q09.wav",
+      "input_samples_received": 22611,
+      "input_samples_consumed": 22611,
+      "gemma_reply_log_only": "There are 24 hours in a day.",
+      "gemma_tokens": 10,
+      "gemma_hidden_shape": [
+        10,
+        2560
+      ],
+      "talker_condition_shape": [
+        1,
+        10,
+        768
+      ],
+      "speech_codes": 49,
+      "output_seconds": 1.84,
+      "reply_ms": 419.2,
+      "condition_ms": 7.0,
+      "talker_ms": null,
+      "vocoder_ms": null,
+      "talker_vocoder_ms": 3355.6,
+      "first_audio_ms": 2116.8,
+      "stream_chunks": 2,
+      "talker_streaming": true,
+      "vocoder_first_chunk_ms": 1690.6,
+      "wall_clock_paced_input": false,
+      "barge_in_tested": false,
+      "transcript_handoff": false,
+      "metric_transcript": "There are 24 hours in a day.",
+      "semantic_ok": true,
+      "output_wer": 0.0,
+      "output_word_accuracy": 1.0
+    },
+    {
+      "case": "q10",
+      "answers": [
+        "zero degrees celsius"
+      ],
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q10.wav",
+      "output_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/omni_stream_seed4_12_20260821/q10.wav",
+      "input_samples_received": 26788,
+      "input_samples_consumed": 26788,
+      "gemma_reply_log_only": " The freezing point of water is 0 degrees Celsius or 32 degrees Fahrenheit.",
+      "gemma_tokens": 17,
+      "gemma_hidden_shape": [
+        17,
+        2560
+      ],
+      "talker_condition_shape": [
+        1,
+        17,
+        768
+      ],
+      "speech_codes": 116,
+      "output_seconds": 4.16,
+      "reply_ms": 559.4,
+      "condition_ms": 7.2,
+      "talker_ms": null,
+      "vocoder_ms": null,
+      "talker_vocoder_ms": 9312.3,
+      "first_audio_ms": 2161.6,
+      "stream_chunks": 5,
+      "talker_streaming": true,
+      "vocoder_first_chunk_ms": 1594.9,
+      "wall_clock_paced_input": false,
+      "barge_in_tested": false,
+      "transcript_handoff": false,
+      "metric_transcript": "A freezing point of water is zero degrees Celsius or 32 degrees Finite.",
+      "semantic_ok": true,
+      "output_wer": 0.1538,
+      "output_word_accuracy": 0.8462
+    },
+    {
+      "case": "q11",
+      "answers": [
+        "shakespeare"
+      ],
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q11.wav",
+      "output_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/omni_stream_seed4_12_20260821/q11.wav",
+      "input_samples_received": 25561,
+      "input_samples_consumed": 25561,
+      "gemma_reply_log_only": "Romeo and Juliet is a tragedy about two young lovers from feuding families.",
+      "gemma_tokens": 15,
+      "gemma_hidden_shape": [
+        15,
+        2560
+      ],
+      "talker_condition_shape": [
+        1,
+        17,
+        768
+      ],
+      "speech_codes": 110,
+      "output_seconds": 3.92,
+      "reply_ms": 520.7,
+      "condition_ms": 8.6,
+      "talker_ms": null,
+      "vocoder_ms": null,
+      "talker_vocoder_ms": 9277.6,
+      "first_audio_ms": 2287.8,
+      "stream_chunks": 5,
+      "talker_streaming": true,
+      "vocoder_first_chunk_ms": 1758.5,
+      "wall_clock_paced_input": false,
+      "barge_in_tested": false,
+      "transcript_handoff": false,
+      "metric_transcript": "Romo and Juliette is a tragedy out two young lovers from feuding families.",
+      "semantic_ok": false,
+      "output_wer": 0.2308,
+      "output_word_accuracy": 0.7692
+    }
+  ],
+  "score": {
+    "semantic_correct": 10,
+    "n": 12,
+    "semantic_ratio_to_legacy_12_of_12": 0.8333333333333334,
+    "mean_output_word_accuracy": 0.9352,
+    "median_first_audio_ms": 2040.9,
+    "streaming_output": true,
+    "lossless_input": true,
+    "wall_clock_paced_input": false,
+    "output_barge_in_tested": false,
+    "legacy_relative_latency_pass": false,
+    "provenance_complete": false,
+    "core_audio_quality_streaming_pass": true,
+    "strict_80_percent_pass": false
+  }
+}

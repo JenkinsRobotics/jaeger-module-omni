@@ -87,6 +87,51 @@ def load_front_end(gguf_path=AUDIO_GGUF):
     return load_encoder(gguf_path), load_projector(gguf_path)
 
 
+def load_remapped_front_end(map_path: str | Path | None = None,
+                            adapter_path: str | Path | None = None,
+                            gguf_path=AUDIO_GGUF):
+    """Load tuned Whisper plus ONE MiniCPM-shaped Gemma projector.
+
+    ``adapter_path`` is a trained ``.npz`` containing a 2560x4096 weight and
+    2560 bias. Without it, ``map_path`` must contain the offline Qwen->Gemma
+    4096x2560 map used to compose MiniCPM's original final affine. There is no
+    separate post-projector delta in either case.
+    """
+    import numpy as np
+
+    from jaeger_agent_omni.neural import MiniCPMRemappedProjector
+
+    encoder = load_encoder(gguf_path)
+    original = load_projector(gguf_path)
+    projector = MiniCPMRemappedProjector()
+    with torch.no_grad():
+        projector.linear1.weight.copy_(original.linear1.weight)
+        projector.linear1.bias.copy_(original.linear1.bias)
+        if adapter_path is not None:
+            saved = np.load(adapter_path)
+            weight = torch.from_numpy(saved["weight"].astype(np.float32))
+            bias = torch.from_numpy(saved["bias"].astype(np.float32))
+        else:
+            if map_path is None:
+                raise ValueError("need adapter_path or map_path")
+            mapping = torch.from_numpy(np.load(map_path).astype(np.float32))
+            if mapping.shape != (4096, 2560):
+                raise ValueError(f"Qwen->Gemma map {tuple(mapping.shape)} != "
+                                 "(4096, 2560)")
+            weight = mapping.T @ original.linear2.weight
+            bias = mapping.T @ original.linear2.bias
+        if weight.shape != projector.linear2.weight.shape:
+            raise ValueError(f"adapter weight {tuple(weight.shape)} != "
+                             f"{tuple(projector.linear2.weight.shape)}")
+        if bias.shape != projector.linear2.bias.shape:
+            raise ValueError(f"adapter bias {tuple(bias.shape)} != "
+                             f"{tuple(projector.linear2.bias.shape)}")
+        projector.linear2.weight.copy_(weight)
+        projector.linear2.bias.copy_(bias)
+    projector.freeze_minicpm_base()
+    return encoder, projector
+
+
 def main() -> int:
     import torch.nn.functional as F
 

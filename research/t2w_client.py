@@ -178,6 +178,45 @@ def synthesize_with_client(client: Token2WavClient, code_list: list,
                  "chunks": len(pieces)}
 
 
+def synthesize_code_stream_with_client(client: Token2WavClient, code_chunks,
+                                       out_wav: str | Path) -> tuple[Path, dict]:
+    """Consume live ``(codes, last_chunk)`` output from a Talker generator.
+
+    Timing begins before the first generator step, so ``first_chunk_ms`` is
+    the honest Talker-plus-vocoder delay after conditioning has completed.
+    """
+    import tempfile
+    import time
+    import wave
+
+    client.reset()
+    pieces, first_ms, code_count = [], None, 0
+    started = time.monotonic()
+    with tempfile.TemporaryDirectory() as tmp:
+        for i, (chunk, last_chunk) in enumerate(code_chunks):
+            if not chunk:
+                continue
+            code_count += len(chunk)
+            part = Path(tmp) / f"part{i:03d}.wav"
+            r = client.process(chunk, part, last_chunk=bool(last_chunk))
+            if r.get("output_path"):
+                if first_ms is None:
+                    first_ms = (time.monotonic() - started) * 1000
+                with wave.open(str(part)) as w:
+                    pieces.append((w.getframerate(), w.readframes(w.getnframes())))
+    if not pieces:
+        raise RuntimeError("service produced no audio for the live code stream")
+    out = Path(out_wav)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    with wave.open(str(out), "wb") as w:
+        w.setnchannels(1); w.setsampwidth(2); w.setframerate(pieces[0][0])
+        for _, raw in pieces:
+            w.writeframes(raw)
+    return out, {"first_chunk_ms": round(first_ms, 1),
+                 "total_ms": round((time.monotonic() - started) * 1000, 1),
+                 "chunks": len(pieces), "speech_codes": code_count}
+
+
 MAX_REF_S = 9.5     # the flow caps the reference at 1000 mel frames (~10 s)
 
 

@@ -1,0 +1,80 @@
+{
+ "front_end": "tower",
+ "correct": 10,
+ "n": 12,
+ "median_ms": 360.38958304561675,
+ "rows": [
+  {
+   "case": "q00",
+   "ok": true,
+   "ms": 304.4177498668432,
+   "reply": "Two plus two equals four."
+  },
+  {
+   "case": "q01",
+   "ok": false,
+   "ms": 305.79437501728535,
+   "reply": "The color is red."
+  },
+  {
+   "case": "q02",
+   "ok": true,
+   "ms": 369.40550012513995,
+   "reply": "There are seven days in a week."
+  },
+  {
+   "case": "q03",
+   "ok": true,
+   "ms": 351.37366596609354,
+   "reply": " The capital of France is Paris."
+  },
+  {
+   "case": "q04",
+   "ok": true,
+   "ms": 327.36279093660414,
+   "reply": "Ten minus three is seven."
+  },
+  {
+   "case": "q05",
+   "ok": true,
+   "ms": 335.29220800846815,
+   "reply": "A spider has eight legs."
+  },
+  {
+   "case": "q06",
+   "ok": true,
+   "ms": 410.9631250612438,
+   "reply": " Jupiter is the largest planet in our solar system."
+  },
+  {
+   "case": "q07",
+   "ok": true,
+   "ms": 371.6891249641776,
+   "reply": "Five times five is twenty-five."
+  },
+  {
+   "case": "q08",
+   "ok": true,
+   "ms": 313.0497911479324,
+   "reply": "Autumn comes after summer."
+  },
+  {
+   "case": "q09",
+   "ok": true,
+   "ms": 410.4912499897182,
+   "reply": "There are 24 hours in a day."
+  },
+  {
+   "case": "q10",
+   "ok": true,
+   "ms": 557.4329579249024,
+   "reply": " The freezing point of water is 0 degrees Celsius or 32 degrees Fahren"
+  },
+  {
+   "case": "q11",
+   "ok": false,
+   "ms": 522.1070409752429,
+   "reply": "Romeo and Juliet is a tragedy about two young lovers from feuding fami"
+  }
+ ]
+}
