@@ -48,6 +48,38 @@ text   ─► tokenizer ─────────┘        │
 
 # The evidence
 
+## CORRECTION: audio fidelity measured directly, and the gap is small
+
+Answer-correctness conflates audio quality with model quality. Measuring the
+audio path alone — same backbone, same prompt, "repeat exactly what was said",
+scored as WER against known text:
+
+```text
+native (Gemma tower)   12.2% pooled WER   1551 ms   9/12 clips PERFECT
+legacy (whisper)        7.3% pooled WER   3770 ms
+```
+
+The native tower hears nearly as well as Whisper. The earlier "25% audio
+comprehension gap" was wrong on two counts:
+
+  1. A reasoning-channel leak ("<|channel>thought Thinking Process...") was
+     appended after CORRECT transcriptions and counted as insertions —
+     224% pooled WER before stripping it, 12.2% after. That measured a
+     formatting quirk, not fidelity.
+  2. Only TWO of the three answer failures were audio at all:
+
+```text
+q11 "spell cat backwards"   heard "drawkcab"        AUDIO
+q12 "two four six eight"    heard "2 4 6"           AUDIO  (dropped a word)
+q8  "how many continents"   heard PERFECTLY,
+                            answered "no continents" BRAIN
+```
+
+So the input problem is smaller and better-shaped than stated: a ~5 point WER
+gap and a leaky output format, not a broken front end. That reopens native as
+the primary input, with the delta as the way to close the remaining 5 points
+if it proves out at E4B width.
+
 ## Input: the delta, because accuracy is in Whisper and speed is in streaming
 
 12 spoken questions, streamed as a mic delivers them, clock starting at silence:
