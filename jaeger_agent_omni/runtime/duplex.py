@@ -52,6 +52,7 @@ import time
 from dataclasses import dataclass, field
 
 AUDIO_CHUNK_S = 1.0
+SAMPLE_RATE = 16000
 FRAME_INTERVAL_S = 5.0      # ~2.2 s per frame measured; see the module note
 MAX_LAG_S = 0.5             # beyond this, drop rather than queue
 
@@ -59,6 +60,7 @@ MAX_LAG_S = 0.5             # beyond this, drop rather than queue
 @dataclass
 class DuplexStats:
     audio_chunks: int = 0
+    endpoint_events: list = field(default_factory=list)
     frames: int = 0
     frames_dropped: int = 0
     audio_dropped: int = 0
@@ -69,7 +71,9 @@ class DuplexStats:
     def __str__(self) -> str:
         return (f"{self.turns} turns · {self.audio_chunks} audio chunks · "
                 f"{self.frames} frames ({self.frames_dropped} dropped) · "
-                f"{self.interrupts} interrupts · peak lag {self.max_lag_s*1000:.0f}ms")
+                f"{self.interrupts} interrupts · peak lag {self.max_lag_s*1000:.0f}ms"
+                + (f" · endpoint {'/'.join(self.endpoint_events[:4])}"
+                   if self.endpoint_events else ""))
 
 
 class DuplexLoop:
@@ -92,7 +96,15 @@ class DuplexLoop:
         self.session = session
         self.audio_source = audio_source
         self.frame_source = frame_source
-        self.turn_ended = turn_ended or (lambda: False)
+        # No turn_ended supplied means HANDS-FREE: detect the end of speech
+        # from the audio itself. `turn_ended=False` would leave the model
+        # waiting to be told a turn is over, which is not always-on at all.
+        self.endpoint = None
+        if turn_ended is None:
+            from .endpoint import Endpoint
+            self.endpoint = Endpoint()
+            turn_ended = self._endpoint_says_ended
+        self.turn_ended = turn_ended
         self.on_reply = on_reply or (lambda text: None)
         self.user_speaking = user_speaking or (lambda: False)
         self.frame_interval_s = frame_interval_s
@@ -136,10 +148,29 @@ class DuplexLoop:
         self.stats.frames += 1
         self._last_drain = self.clock()
 
+    def _endpoint_says_ended(self) -> bool:
+        return bool(self.endpoint and self.endpoint.ended)
+
+    def _watch_endpoint(self, samples):
+        """Feed the endpoint the same audio the model gets, frame by frame.
+
+        `probably_ended` is the speculation point: the reply can start here,
+        ~510 ms before the turn formally closes. That gap IS the latency win
+        over a per-frame LISTEN/SPEAK poll.
+        """
+        if self.endpoint is None:
+            return
+        n = int(SAMPLE_RATE * self.endpoint.frame_ms / 1000)
+        for i in range(0, len(samples) - n + 1, n):
+            ev = self.endpoint.push(samples[i:i + n])
+            if ev:
+                self.stats.endpoint_events.append(ev)
+
     def _pump_audio(self, now: float):
         samples = self.audio_source()
         if samples is None or len(samples) == 0:
             return
+        self._watch_endpoint(samples)
         lag = self._lag()
         self.stats.max_lag_s = max(self.stats.max_lag_s, lag)
         if lag > self.max_lag_s:
@@ -167,6 +198,8 @@ class DuplexLoop:
             self.stats.interrupts += 1
         if text.strip():
             self.on_reply(text)
+        if self.endpoint is not None:
+            self.endpoint.reset()      # else `ended` latches and every tick answers
         self.session.resume_listening()
 
     def run(self, eos_ids=(), max_seconds: float | None = None,
@@ -292,6 +325,41 @@ def demo():
     print(f"runtime.duplex: interleave a/v, drop-don't-queue, barge-in OK "
           f"({loop.stats})")
 
+
+
+    # HANDS-FREE. No turn_ended callback: the loop must notice the turn ended
+    # from the audio alone and answer. Without this the pipeline is push-to-talk
+    # wearing an always-on label.
+    class _S:
+        def __init__(self): self.replies = 0; self._cancelled = False
+        def open_turn(self): pass
+        def feed_audio(self, x): return 1
+        def end_of_turn(self): pass
+        def respond(self, **kw): self.replies += 1; return "answer"
+        def interrupt(self): pass
+        def resume_listening(self): pass
+        def cancel(self): pass
+
+    loud, hush = [0.3] * (SAMPLE_RATE // 10), [0.0] * (SAMPLE_RATE // 10)
+    src = iter([loud] * 8 + [hush] * 8)
+    tick = [0.0]
+
+    def _clock():
+        tick[0] += 0.05
+        return tick[0]
+
+    sess = _S()
+    hf = DuplexLoop(sess, audio_source=lambda: next(src, None), clock=_clock)
+    assert hf.endpoint is not None, "no turn_ended must mean hands-free"
+    hs = hf.run(eos_ids=(), max_seconds=3.0, tick_s=0.0)
+    for want in ("speech_start", "probably_ended", "speech_end"):
+        assert want in hs.endpoint_events, f"missing {want}: {hs.endpoint_events}"
+    # speculation must precede the commit -- that gap is the latency win
+    assert (hs.endpoint_events.index("probably_ended")
+            < hs.endpoint_events.index("speech_end"))
+    assert sess.replies >= 1, "hands-free must answer with no external signal"
+    print("runtime.duplex: hands-free turn detection OK "
+          f"({'/'.join(hs.endpoint_events)})")
 
 if __name__ == "__main__":
     demo()

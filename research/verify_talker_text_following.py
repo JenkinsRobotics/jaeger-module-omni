@@ -80,7 +80,10 @@ def main() -> int:
     print("2/4 talker: condition = emb_text + L2norm(proj(hidden)), + audio_bos")
     from load_minicpm_talker import load as load_talker
     talker = load_talker()
-    merged = talker.condition(text_ids, llm_hidden=hidden)
+    # One-shot proof: this is the final text chunk, so OpenBMB's generator
+    # appends text_eos before audio_bos.  Omitting text_eos was the reason the
+    # earlier port ran to 600 codes and ignored the requested sentence.
+    merged = talker.condition(text_ids, llm_hidden=hidden, text_finished=True)
     codes = talker.generate_codes(merged, max_codes=600)
     print(f"    {codes.shape[1]} codes, {codes.unique().numel()} distinct")
 

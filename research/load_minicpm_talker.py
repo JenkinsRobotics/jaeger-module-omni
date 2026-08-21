@@ -64,11 +64,11 @@ AUDIO_BOS_ID = 151687       # appended after the text condition, starts codes
 TEXT_EOS_ID = 151692        # injected before the final code batch
 CODE_EOS = 6561             # last code id = end of speech in code space
 
-# Their sampling, aligned with modeling_minicpmo's TTSSamplingParams
-# (omni.cpp :5793-5800): the talker loops under greedy decoding.
+# Their sampling, aligned with modeling_minicpmo.py's TTSSamplingParams and
+# gen_logits().  min_p exists in the public dataclass but is not applied by
+# the official streaming generator.
 SAMPLING = dict(temperature=0.8, top_p=0.85, top_k=25,
-                repetition_penalty=1.05, penalty_window=16, min_p=0.01)
-MIN_NEW_TOKENS = 100        # simplex floor — stops premature EOS (omni.cpp)
+                repetition_penalty=1.05, penalty_window=16)
 
 _BLOCK_MAP = {
     "attn_q": "self_attn.q_proj", "attn_k": "self_attn.k_proj",
@@ -117,16 +117,28 @@ class MiniCPMTalker(nn.Module):
 
     def condition(self, text_ids: torch.Tensor,
                   llm_hidden: torch.Tensor | None = None,
+                  text_finished: bool = True,
                   add_audio_bos: bool = True) -> torch.Tensor:
         """The measured conditioning: text embedding + normalised hidden,
-        then the audio_bos embedding that tells the talker to start emitting
-        codes (omni.cpp: 'condition = cat([condition, audio_bos_embeds])').
+        then text_eos for the final text chunk and audio_bos to start codes.
+
+        The text_eos ordering is load-bearing.  OpenBMB's authoritative
+        TTSStreamingGenerator does, in order::
+
+            condition + [text_eos if text_finished] + [audio_bos]
+
+        The earlier port omitted text_eos and consequently ran to the token
+        cap while producing speech unrelated to the requested sentence.
 
         `llm_hidden=None` is the zero-conditioning baseline — text alone.
         """
         merged = self.emb_text(text_ids)
         if llm_hidden is not None:
             merged = merged + self.proj_semantic(llm_hidden)
+        if text_finished:
+            eos = self.emb_text(torch.tensor([[TEXT_EOS_ID]],
+                                             device=text_ids.device))
+            merged = torch.cat([merged, eos.expand(merged.shape[0], -1, -1)], 1)
         if add_audio_bos:
             bos = self.emb_text(torch.tensor([[AUDIO_BOS_ID]],
                                              device=text_ids.device))
@@ -135,11 +147,17 @@ class MiniCPMTalker(nn.Module):
 
     @torch.no_grad()
     def generate_codes(self, merged: torch.Tensor, max_codes: int = 600,
-                       min_new: int = MIN_NEW_TOKENS,
                        stop_at_eos: bool = True) -> torch.Tensor:
-        """Autoregressive speech codes, sampled the way their runtime does:
-        temp 0.8, top_k 25, top_p 0.85, min_p 0.01, repetition penalty 1.05
-        over the last 16, EOS suppressed for the first `min_new` tokens."""
+        """Autoregressive speech codes using OpenBMB's official sampling.
+
+        This intentionally has no minimum-token floor: their Python
+        ``TTSStreamingGenerator`` permits EOS from the first sampled code.
+        """
+        from transformers.generation.logits_process import TopKLogitsWarper
+        from transformers.generation.logits_process import TopPLogitsWarper
+
+        top_p = TopPLogitsWarper(SAMPLING["top_p"], min_tokens_to_keep=3)
+        top_k = TopKLogitsWarper(SAMPLING["top_k"], min_tokens_to_keep=3)
         seq = merged
         out = []
         past = None
@@ -151,29 +169,18 @@ class MiniCPMTalker(nn.Module):
             recent = out[-SAMPLING["penalty_window"]:]
             if recent:
                 idx = torch.cat(recent, 1)
-                gathered = logits.gather(1, idx)
-                penal = torch.where(gathered > 0,
-                                    gathered / SAMPLING["repetition_penalty"],
-                                    gathered * SAMPLING["repetition_penalty"])
-                logits.scatter_(1, idx, penal)
-            if i < min_new:
-                logits[:, CODE_EOS] = float("-inf")
+                freq = F.one_hot(idx, logits.shape[-1]).sum(1)
+                alpha = SAMPLING["repetition_penalty"] ** freq
+                logits = torch.where(logits < 0, logits * alpha, logits / alpha)
 
             logits = logits / SAMPLING["temperature"]
-            k = SAMPLING["top_k"]
-            kth = logits.topk(k, dim=-1).values[:, -1:]
-            logits = logits.masked_fill(logits < kth, float("-inf"))
-            probs = F.softmax(logits, dim=-1)
-            sorted_p, sorted_i = probs.sort(dim=-1, descending=True)
-            cum = sorted_p.cumsum(-1)
-            cut = cum - sorted_p >= SAMPLING["top_p"]        # keep first over-threshold
-            sorted_p = sorted_p.masked_fill(cut, 0.0)
-            sorted_p = sorted_p.masked_fill(
-                sorted_p < SAMPLING["min_p"] * sorted_p[:, :1], 0.0)
-            pick = torch.multinomial(sorted_p / sorted_p.sum(-1, keepdim=True), 1)
-            code = sorted_i.gather(1, pick)
+            dummy_ids = torch.cat(out, 1) if out else torch.empty(
+                logits.shape[0], 0, dtype=torch.long, device=logits.device)
+            logits = top_p(dummy_ids, logits)
+            logits = top_k(dummy_ids, logits)
+            code = torch.multinomial(F.softmax(logits, dim=-1), 1)
 
-            if stop_at_eos and code.item() == CODE_EOS and i >= min_new:
+            if stop_at_eos and code.item() == CODE_EOS:
                 break
             out.append(code)
             seq = self.emb_code(code)
