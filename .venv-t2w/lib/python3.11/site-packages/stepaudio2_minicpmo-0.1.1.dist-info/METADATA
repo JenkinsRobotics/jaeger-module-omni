@@ -1,0 +1,27 @@
+Metadata-Version: 2.4
+Name: stepaudio2-minicpmo
+Version: 0.1.1
+Summary: StepAudio2: Audio tokenizer and TTS model
+Home-page: https://github.com/stepfun-ai/Step-Audio2
+Author: StepFun AI
+Author-email: 
+License-Expression: Apache-2.0
+Keywords: audio,tts,tokenizer,stepaudio2
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.10
+Requires-Dist: torch>=2.3.0
+Requires-Dist: torchaudio>=2.3.0
+Requires-Dist: transformers>=4.49.0
+Requires-Dist: librosa
+Requires-Dist: s3tokenizer
+Requires-Dist: onnxruntime
+Requires-Dist: numpy
+Requires-Dist: hyperpyyaml
+Requires-Dist: diffusers
+Dynamic: home-page
+Dynamic: requires-python
