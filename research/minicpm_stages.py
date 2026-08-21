@@ -64,9 +64,12 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--n", type=int, default=12)
     ap.add_argument("--out", default=str(HERE / "minicpm_stages.json"))
+    ap.add_argument("--work", type=Path, default=HERE / "stage_bench_out",
+                    help="fresh per-round engine artifacts; never reuse the "
+                         "evidence directory for a different run")
     args = ap.parse_args()
 
-    work = HERE / "stage_bench_out"
+    work = args.work
     work.mkdir(parents=True, exist_ok=True)
     enginelog = HERE / "stage_bench_engine.log"
 
@@ -113,7 +116,11 @@ def main() -> int:
         prefill_s = time.perf_counter() - t0
 
         t0 = time.perf_counter()                       # ---- STAGE B: the LLM
-        lib.omni_c_stream_decode(ctx, str(work).encode(), 0)
+        # The final argument is the artifact round, not a boolean.  Passing
+        # zero for every question silently overwrote the previous teacher
+        # hidden states and left us with one training example despite a 12
+        # case benchmark.  Keep every answer independently addressable.
+        lib.omni_c_stream_decode(ctx, str(work).encode(), i)
         decode_s = time.perf_counter() - t0
 
         chunks = []

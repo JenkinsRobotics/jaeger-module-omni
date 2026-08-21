@@ -92,11 +92,12 @@ def one_turn(s, meta, audio, max_tokens: int = 48,
     return reply, (time.monotonic() - t0) * 1000
 
 
-def speak(session, text: str, out_path: str, ref_audio=None,
-          delta_path: str = "training/runs/speech_out_delta.pt") -> str:
-    """Reply -> waveform, conditioned on the cognition states, not the words.
+def speak(session, out_path: str, ref_audio=None,
+          conditioner_path: str = "training/runs/gemma_talker_conditioner.pt") -> str:
+    """Gemma tensors -> Talker codes -> waveform, with no text handoff.
 
-        merged[t] = emb_text(ids[t]) + L2norm(proj_semantic(hidden[t]))
+        (Gemma token embeddings, Gemma hidden states) -> merged condition
+        merged condition -> Talker -> speech codes -> Token2Wav -> PCM
 
     `session.hidden` must already be populated by respond(collect_hidden=True).
     Passing text alone is NOT a fallback: zero-conditioning was measured twice
@@ -108,42 +109,40 @@ def speak(session, text: str, out_path: str, ref_audio=None,
     """
     import torch
 
-    from jaeger_agent_omni.neural.delta import SpeechOutDelta
-
     hidden = getattr(session, "hidden", None)
     if not hidden:
         raise RuntimeError(
             "no hidden states — call respond(collect_hidden=True). Speech "
             "conditioned on text alone babbles; there is no text-only path.")
-    if not Path(delta_path).exists():
+    output_ids = getattr(session, "output_ids", ())
+    if len(output_ids) != len(hidden):
+        raise RuntimeError(f"speech tensors desynchronised: {len(output_ids)} ids "
+                           f"for {len(hidden)} hidden states")
+    if not Path(conditioner_path).exists():
         raise RuntimeError(
-            f"SpeechOutDelta not trained ({delta_path}).\n"
+            f"GemmaTalkerConditioner not trained ({conditioner_path}).\n"
             f"  Until it is, speech out produces babble, not these words.\n"
-            f"  The audible-today route is research/t2w_client.py --say.")
+            f"  Component-only Talker proof: research/verify_talker_port.py")
 
     import numpy as np
-    ck = torch.load(delta_path, map_location="cpu")
-    state = ck.get("state", ck) if isinstance(ck, dict) else ck
-    # target_norm travels WITH the weights. Rebuilding without it leaves the
-    # output scale free, and scale reaches the talker through a biased ReLU:
-    # unit vectors vs teacher-scale ones project to cosine 0.176 -- almost
-    # orthogonal conditioning, which sounds exactly like an undertrained delta.
-    tn = ck.get("target_norm") if isinstance(ck, dict) else None
-    if tn is None:
-        raise RuntimeError(
-            f"{delta_path} has no target_norm; refusing to guess the output "
-            "scale — the wrong one produces confident babble, not an error.")
-    d = SpeechOutDelta(cognition_dim=session.hidden[0].shape[-1],
-                       target_norm=tn)
-    d.load_state_dict(state)
-    d.eval()
+    from jaeger_agent_omni.neural.speech import GemmaTalkerConditioner
+
+    ck = torch.load(conditioner_path, map_location="cpu", weights_only=False)
+    conditioner = GemmaTalkerConditioner.from_checkpoint(ck)
     h = torch.from_numpy(np.stack([np.array(x, copy=False).reshape(-1)
                                    for x in hidden])).float()
+    token_emb, _ = session._embed_ids(list(output_ids))
+    token_emb = torch.from_numpy(np.array(token_emb, copy=False)).float()
     with torch.no_grad():
-        cond = d(h.unsqueeze(0))          # unit vectors, talker-space
+        cond = conditioner(token_emb, h.unsqueeze(0))
 
-    from research.t2w_client import speak as t2w_speak      # noqa: E402
-    return t2w_speak(text, out_path, ref_audio=ref_audio, conditioning=cond)
+    from research.load_minicpm_talker import load as load_talker
+    from research.t2w_client import synthesize
+    talker = load_talker()
+    with torch.no_grad():
+        codes = talker.generate_code_chunks([(cond, True)])
+    synthesize(codes[0].tolist(), out_path, ref_audio)
+    return str(out_path)
 
 
 def bench(cases_dir: str, model_path: str, front_end: str, delta_path=None,
@@ -234,7 +233,7 @@ def main() -> int:
                              collect_hidden=a.speak)
         print(f"{ms:.0f} ms  {reply!r}")
         if a.speak:
-            wav = speak(s, reply, a.out_wav, ref_audio=a.ref_audio)
+            wav = speak(s, a.out_wav, ref_audio=a.ref_audio)
             print(f"spoke -> {wav}")
         return 0
     ap.print_help()

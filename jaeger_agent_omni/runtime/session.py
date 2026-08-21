@@ -207,6 +207,10 @@ class StreamingSession:
         self.cancel_latency_ms = None
         self._generation_start = 0
         self._turn_tail = ""
+        # Tensor consumers use these directly.  The decoded return string is
+        # for a terminal/log only and must never become the speech handoff.
+        self.output_ids: tuple[int, ...] = ()
+        self.hidden = None
 
     # -- listening ----------------------------------------------------------
     def _ensure_cache(self):
@@ -419,6 +423,7 @@ class StreamingSession:
 
         if first_done is not None:
             self.timing.decode_ms = (time.monotonic() - first_done) * 1000
+        self.output_ids = tuple(out_ids)
         return self.processor.tokenizer.decode(out_ids)
 
 

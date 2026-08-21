@@ -22,3 +22,9 @@ step "prosody: does the tower carry delivery" \
 step "minicpm: stage A/B/C on the same 12 wavs" \
   $PY research/minicpm_stages.py --n 12
 echo "SWEEP COMPLETE" | tee -a "$LOG"
+
+# NOTE for future runs: never end a monitored pipeline with `tail -N`. It
+# buffers the whole stream until the process exits, so a live run looks like
+# it is producing nothing. Redirect to a file and tail the FILE instead:
+#     cmd 2>&1 | tee run.log        # watchable
+#     cmd 2>&1 | grep ... | tail -30  # invisible until exit
