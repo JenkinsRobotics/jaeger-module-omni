@@ -57,6 +57,17 @@ class TrainConfig:
     # model is trained for. Prefixes put mid-utterance audio in-distribution
     # and supply turn-end labels for free. Set 0.0 only to reproduce a
     # whole-utterance-only baseline.
+    # Truncated clips exist to supervise TURN-END: a mid-utterance clip is
+    # "still speaking" (0), a whole one is "ended" (1). Their transcript no
+    # longer matches their audio, so dataset.py gives them no transcription
+    # labels at all.
+    #
+    # Stage 3 trains transcription and nothing else, so every truncated clip
+    # costs a full forward+backward through a 4B backbone and contributes
+    # exactly zero gradient. At 0.3 that is 30% of the run doing nothing --
+    # and before the empty-target guard it was 30% of the run producing NaN.
+    # `warmup()` therefore sets this to 0.0; the turn-end head, when it is
+    # built, is what should turn it back up.
     prefix_fraction: float = 0.3
     max_audio_s: float = 30.0          # whisper's context ceiling
 
@@ -128,6 +139,7 @@ def warmup(backbone_id: str, **kw) -> TrainConfig:
     """
     kw.setdefault("lr", 3e-4)
     kw.setdefault("max_steps", 20_000)
+    kw.setdefault("prefix_fraction", 0.0)   # see the field comment
     return TrainConfig(stage="stage3_warmup", backbone_id=backbone_id, **kw)
 
 
