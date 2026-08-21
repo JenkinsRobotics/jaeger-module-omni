@@ -45,16 +45,40 @@ def word_list(n: int = 16000, min_len: int = 2, max_len: int = 9) -> list:
     return seen[:n]
 
 
+def embedding_table(model_id: str):
+    """Read ONLY the embedding tensor from the shards.
+
+    Instantiating the model to reach one tensor costs 15 GB for E4B and buys
+    nothing -- safetensors is memory-mapped and indexed, so the row block can
+    be pulled straight out.
+    """
+    import json
+
+    import torch
+    from huggingface_hub import snapshot_download
+    from safetensors import safe_open
+
+    root = Path(snapshot_download(model_id, allow_patterns=["*.safetensors*",
+                                                            "*.json"]))
+    idx = root / "model.safetensors.index.json"
+    shards = ([root / "model.safetensors"] if not idx.exists()
+              else sorted({root / v for v in
+                           json.loads(idx.read_text())["weight_map"].values()}))
+    for shard in shards:
+        with safe_open(str(shard), framework="pt") as f:
+            for k in f.keys():
+                if k.endswith("embed_tokens.weight") or k == "model.embed_tokens.weight":
+                    return f.get_tensor(k).to(torch.float32)
+    raise SystemExit(f"no embed_tokens.weight in {model_id}")
+
+
 def embed_words(model_id: str, words: list, prefix: str = " "):
     """Mean of the token-embedding rows a word maps to, per word."""
     import numpy as np
-    import torch
-    from transformers import AutoModelForCausalLM, AutoTokenizer
+    from transformers import AutoTokenizer
 
     tok = AutoTokenizer.from_pretrained(model_id)
-    m = AutoModelForCausalLM.from_pretrained(model_id, dtype=torch.float32)
-    table = m.get_input_embeddings().weight.detach()
-    del m
+    table = embedding_table(model_id)
 
     rows, keep = [], []
     for i, w in enumerate(words):
