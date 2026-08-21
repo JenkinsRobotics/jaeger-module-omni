@@ -125,7 +125,8 @@ CORPORA = {c.key: c for c in [
            "~500 h parliamentary. Accented English, public domain."),
     Corpus("fleurs", "google/fleurs", "en_us", "train",
            "transcription", 1, "CC BY 4.0",
-           "~10 h read, many languages available. Small and clean."),
+           "~10 h read, many languages available. Small and clean.",
+           verified=True),      # 2596 turns fetched live 2026-08-20
     Corpus("ami", "edinburghcstr/ami", "ihm", "train",
            "text", 2, "CC BY 4.0",
            "Real meeting rooms, distance mics, overlap. Tier 2 far-field.",
