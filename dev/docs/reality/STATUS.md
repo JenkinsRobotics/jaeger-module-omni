@@ -40,6 +40,29 @@ and measured. The remaining latency is dominated by generation, exactly as
 predicted — which is why Stage 5's incremental prefill, not the projector, is
 where the conversational win lands.
 
+### Zero-conditioning disproven; hidden states are load-bearing — 2026-08-20 late
+
+Second synthesis attempt with the FULL measured cadence — audio_bos (151687),
+text_eos (151692), code EOS (6561), their exact sampling (t 0.8 / top_p 0.85 /
+top_k 25 / rep 1.05 / min 100 tokens) — still produces fluent babble:
+whisper hears "I'm not going to be a good one" for "We choose to go to the
+moon." Same failure as attempt one, now with the cadence ruled out.
+
+Conclusion, measured twice: **the talker does not follow text without the
+L2-normalised hidden-state term.** It was trained with that term at every
+position; text embeddings alone are out-of-distribution and it improvises
+fluently. The output side therefore has a hard dependency order:
+
+```text
+1. real Qwen3-8B hidden states  -> verify the talker follows text (one-time
+                                   download, also the output-delta teacher)
+2. output delta                 -> backbone hidden -> Qwen tts space, trained
+                                   on paired text through both models
+```
+
+Silver lining: babble in a cloned voice through the whole ported stack is the
+strongest possible verification of the code->audio half.
+
 ### First audible speech out — 2026-08-20 evening
 
 `text -> talker (our port) -> speech codes -> token2wav (their service) -> wav`

@@ -105,9 +105,8 @@ def speak(text: str, out_wav: str | Path, ref_audio: str | Path | None = None,
     talker = load_talker()
     tok = AutoTokenizer.from_pretrained("Qwen/Qwen2.5-0.5B")
     ids = tok(text, return_tensors="pt").input_ids.clamp(max=N_TEXT_VOCAB - 1)
-    merged = talker.condition(ids)                     # zero-conditioning baseline
-    codes = talker.generate_codes(merged, max_codes=max_codes,
-                                  temperature=0.8)     # sampling: greedy loops
+    merged = talker.condition(ids)         # text + audio_bos; zero LLM hidden
+    codes = talker.generate_codes(merged, max_codes=max_codes)
     code_list = codes[0].tolist()
 
     if not ref_audio:

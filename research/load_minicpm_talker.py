@@ -13,10 +13,17 @@ Two findings that shape the speech delta:
   1. The LLM hidden state is L2-NORMALIZED before conditioning — direction
      only, scale discarded. Our delta (backbone -> 4096) only has to point
      right.
-  2. The talker READS TEXT through Qwen's vocab (emb_text, 152064). Text is
-     re-tokenizable from any backbone, so a ZERO-CONDITIONING baseline —
-     text embeddings alone, hidden term zeroed — is runnable with NO trained
-     delta at all. That is the text->speech baseline the matrix wants.
+  2. The talker READS TEXT through Qwen's vocab (emb_text, 152064) — but a
+     zero-conditioning baseline (text alone, hidden term absent) is
+     **disproven as a text-follower**: with the full measured cadence
+     (audio_bos, their sampling, min-token floor) it produces FLUENT
+     ENGLISH BABBLE — real speech, wrong words. The talker was trained with
+     the normalised hidden term at every position; without it the text
+     embedding alone does not steer content. Consequence: text-faithful
+     speech out REQUIRES hidden-state conditioning — real Qwen states to
+     verify the port, then our output delta (backbone -> Qwen space) to own
+     it. The babble result is still a full-pipeline success: codes ->
+     token2wav -> intelligible cloned-voice audio, twice verified.
 
 Not ported here: token2wav (CosyVoice2 flow-matching + HiFi-GAN, 700 MB of
 GGUF). Until it is, "speech out" means speech CODES whose statistics we can
@@ -50,6 +57,18 @@ N_TEXT_VOCAB = 152064       # Qwen's text vocab, read by emb_text
 N_CODES = 6562              # CosyVoice2 speech codes (+specials)
 HIDDEN = 768
 QWEN_HIDDEN = 4096
+
+# Special TEXT-vocab tokens the talker's condition sequence uses, measured
+# from omni.cpp (:5274, :5306). Both go through emb_text like ordinary text.
+AUDIO_BOS_ID = 151687       # appended after the text condition, starts codes
+TEXT_EOS_ID = 151692        # injected before the final code batch
+CODE_EOS = 6561             # last code id = end of speech in code space
+
+# Their sampling, aligned with modeling_minicpmo's TTSSamplingParams
+# (omni.cpp :5793-5800): the talker loops under greedy decoding.
+SAMPLING = dict(temperature=0.8, top_p=0.85, top_k=25,
+                repetition_penalty=1.05, penalty_window=16, min_p=0.01)
+MIN_NEW_TOKENS = 100        # simplex floor — stops premature EOS (omni.cpp)
 
 _BLOCK_MAP = {
     "attn_q": "self_attn.q_proj", "attn_k": "self_attn.k_proj",
@@ -97,36 +116,68 @@ class MiniCPMTalker(nn.Module):
         self.proj_spk = ConditionProjector()
 
     def condition(self, text_ids: torch.Tensor,
-                  llm_hidden: torch.Tensor | None = None) -> torch.Tensor:
-        """The measured conditioning: text embedding + normalised hidden.
+                  llm_hidden: torch.Tensor | None = None,
+                  add_audio_bos: bool = True) -> torch.Tensor:
+        """The measured conditioning: text embedding + normalised hidden,
+        then the audio_bos embedding that tells the talker to start emitting
+        codes (omni.cpp: 'condition = cat([condition, audio_bos_embeds])').
 
         `llm_hidden=None` is the zero-conditioning baseline — text alone.
         """
         merged = self.emb_text(text_ids)
         if llm_hidden is not None:
             merged = merged + self.proj_semantic(llm_hidden)
+        if add_audio_bos:
+            bos = self.emb_text(torch.tensor([[AUDIO_BOS_ID]],
+                                             device=text_ids.device))
+            merged = torch.cat([merged, bos.expand(merged.shape[0], -1, -1)], 1)
         return merged
 
     @torch.no_grad()
-    def generate_codes(self, merged: torch.Tensor, max_codes: int = 200,
-                       temperature: float = 0.0) -> torch.Tensor:
-        """Autoregressive speech codes from a conditioning prefix. Greedy by
-        default; the reference uses sampling with repetition handling (RAS) —
-        good enough for statistics, not for final audio quality."""
+    def generate_codes(self, merged: torch.Tensor, max_codes: int = 600,
+                       min_new: int = MIN_NEW_TOKENS,
+                       stop_at_eos: bool = True) -> torch.Tensor:
+        """Autoregressive speech codes, sampled the way their runtime does:
+        temp 0.8, top_k 25, top_p 0.85, min_p 0.01, repetition penalty 1.05
+        over the last 16, EOS suppressed for the first `min_new` tokens."""
         seq = merged
         out = []
         past = None
-        for _ in range(max_codes):
+        for i in range(max_codes):
             r = self.body(inputs_embeds=seq, past_key_values=past, use_cache=True)
             past = r.past_key_values
-            logits = self.head_code(r.last_hidden_state[:, -1])
-            if temperature > 0:
-                code = torch.multinomial(F.softmax(logits / temperature, -1), 1)
-            else:
-                code = logits.argmax(-1, keepdim=True)
+            logits = self.head_code(r.last_hidden_state[:, -1]).float()
+
+            recent = out[-SAMPLING["penalty_window"]:]
+            if recent:
+                idx = torch.cat(recent, 1)
+                gathered = logits.gather(1, idx)
+                penal = torch.where(gathered > 0,
+                                    gathered / SAMPLING["repetition_penalty"],
+                                    gathered * SAMPLING["repetition_penalty"])
+                logits.scatter_(1, idx, penal)
+            if i < min_new:
+                logits[:, CODE_EOS] = float("-inf")
+
+            logits = logits / SAMPLING["temperature"]
+            k = SAMPLING["top_k"]
+            kth = logits.topk(k, dim=-1).values[:, -1:]
+            logits = logits.masked_fill(logits < kth, float("-inf"))
+            probs = F.softmax(logits, dim=-1)
+            sorted_p, sorted_i = probs.sort(dim=-1, descending=True)
+            cum = sorted_p.cumsum(-1)
+            cut = cum - sorted_p >= SAMPLING["top_p"]        # keep first over-threshold
+            sorted_p = sorted_p.masked_fill(cut, 0.0)
+            sorted_p = sorted_p.masked_fill(
+                sorted_p < SAMPLING["min_p"] * sorted_p[:, :1], 0.0)
+            pick = torch.multinomial(sorted_p / sorted_p.sum(-1, keepdim=True), 1)
+            code = sorted_i.gather(1, pick)
+
+            if stop_at_eos and code.item() == CODE_EOS and i >= min_new:
+                break
             out.append(code)
             seq = self.emb_code(code)
-        return torch.cat(out, dim=1)
+        return torch.cat(out, dim=1) if out else torch.zeros(1, 0, dtype=torch.long)
 
 
 def load(gguf_path=TTS_GGUF) -> MiniCPMTalker:
@@ -184,7 +235,7 @@ def main() -> int:
     ids = tok("We choose to go to the moon.", return_tensors="pt").input_ids
     ids = ids.clamp(max=N_TEXT_VOCAB - 1)
     merged = talker.condition(ids, llm_hidden=None)
-    codes = talker.generate_codes(merged, max_codes=120)
+    codes = talker.generate_codes(merged, max_codes=160)
 
     uniq = codes.unique().numel()
     top = codes.mode().values.item()
