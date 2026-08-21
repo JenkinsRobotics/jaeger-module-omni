@@ -40,6 +40,25 @@ and measured. The remaining latency is dominated by generation, exactly as
 predicted — which is why Stage 5's incremental prefill, not the projector, is
 where the conversational win lands.
 
+### OMNI INPUT COMPLETE — audio + vision + text, one cache — 2026-08-20 night
+
+Spoken question ABOUT an image, answered from both at once:
+
+```text
+image  640x480: yellow circle on blue, red bar      -> 280 soft tokens
+audio  "What shapes and colors do you see in this picture?"
+jaeger "I see a blue background, a yellow circle, and a red rectangle."
+       372 tokens prefilled | wait 730 ms
+```
+
+Vision cost one preprocessing call and nothing architectural: the same
+placeholder-scatter mechanism as audio, into the same 2560-wide stream, the
+same KV cache. That is the omni property — modalities are not fused by a
+special module, they are interleaved in one sequence.
+
+Input side vs MiniCPM: **complete**. Remaining gap is output — voice, and the
+turn-end decision.
+
 ### BARGE-IN WORKS, with context preserved — 2026-08-20 night
 
 A real interruption, end to end on native E4B:

@@ -75,6 +75,8 @@ class StreamingSession:
         self.boa_id = cfg.get("boa_token_id")
         self.eoa_id = cfg.get("eoa_token_id")
         self.audio_id = cfg.get("audio_token_id")
+        self.image_id = cfg.get("image_token_id")
+        self.n_image_tokens = cfg.get("vision_soft_tokens_per_image", 280)
         self.reset()
 
     # -- chat scaffolding ---------------------------------------------------
@@ -234,6 +236,39 @@ class StreamingSession:
         """All work done under the user's speech: encoding plus LM prefill."""
         return self.timing.overlapped_ms + self.prefiller.state.overlapped_ms
 
+    def feed_image(self, image) -> int:
+        """An image into the same cache as audio and text.
+
+        This is what makes the runtime omni rather than voice: every modality
+        reduces to embeddings scattered over placeholder tokens in ONE stream,
+        so vision costs a preprocessing call and nothing architectural.
+        Measured: 280 soft tokens per image, same 2560-wide space audio lands
+        in.
+
+        `image` is anything the processor's image_processor accepts (HWC uint8
+        array, PIL image). Frames arriving during speech are hidden work, same
+        as audio chunks.
+        """
+        import mlx.core as mx
+        import numpy as np
+
+        if self.image_id is None:
+            raise ValueError("this model declares no image_token_id")
+        ip = getattr(self.processor, "image_processor", None)
+        if ip is None:
+            raise ValueError("processor has no image_processor")
+
+        out = ip(images=[np.asarray(image)], return_tensors="np")
+        feats = out[0] if isinstance(out, tuple) else out
+        px = mx.array(feats["pixel_values"])
+        ids = mx.array([[self.image_id] * self.n_image_tokens])
+        emb = self.model.get_input_embeddings(input_ids=ids, pixel_values=px)
+        embeds, per_layer = ((emb[0], emb[1]) if isinstance(emb, tuple)
+                             else (getattr(emb, "inputs_embeds", emb),
+                                   getattr(emb, "per_layer_inputs", None)))
+        self.timing.overlapped_ms += self._prefill(embeds, per_layer)
+        return embeds.shape[1]
+
     def feed_text(self, text: str) -> int:
         """Text into the same cache — omni means one stream, many modalities."""
         import mlx.core as mx
@@ -390,7 +425,7 @@ def demo():
 
         @staticmethod
         def get_input_embeddings(input_ids=None, audio_features=None,
-                                 input_features_mask=None):
+                                 input_features_mask=None, pixel_values=None):
             n = input_ids.shape[1] if hasattr(input_ids, "shape") else 1
             return FakeArr(n), None
 
@@ -474,6 +509,32 @@ def demo():
     s2.warmup(0.1)
     assert s2.cache is None and s2.n_prefilled == 0
     assert s2.prefiller.state.n_chunks == 0
+
+    # Vision enters the SAME cache through the same placeholder mechanism —
+    # that is the omni claim, so it gets asserted.
+    s_v = StreamingSession(FakeModel(), None, FakePrefiller(),
+                           cache_factory=FakeCache,
+                           config={"audio_token_id": 1, "image_token_id": 9,
+                                   "vision_soft_tokens_per_image": 4})
+    s_v.processor = type("P", (), {
+        "image_processor": lambda *a, **k: ({"pixel_values": [[0]]},)})()
+    import numpy as _np
+    n_img = s_v.feed_image(_np.zeros((4, 4, 3), dtype=_np.uint8))
+    assert n_img == 4, n_img
+    assert s_v.n_prefilled == 4
+    s_v.feed_audio(None)
+    assert s_v.n_prefilled == 29, "audio and vision must share one stream"
+    assert all(c.n == 29 for c in s_v.cache)
+
+    # A model without vision must refuse rather than silently no-op.
+    s_nv = StreamingSession(FakeModel(), None, FakePrefiller(),
+                            cache_factory=FakeCache, config={"audio_token_id": 1})
+    try:
+        s_nv.feed_image(_np.zeros((4, 4, 3), dtype=_np.uint8))
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("missing image_token_id must raise")
 
     # Barge-in must keep the conversation: rewind the abandoned reply out of
     # the cache, keep everything the user said before it.
