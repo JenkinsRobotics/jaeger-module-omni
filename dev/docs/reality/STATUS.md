@@ -40,6 +40,32 @@ and measured. The remaining latency is dominated by generation, exactly as
 predicted — which is why Stage 5's incremental prefill, not the projector, is
 where the conversational win lands.
 
+### Duplex runtime v1 on native Gemma; the bottleneck is NOT the encoder
+
+Full multimodal E4B located un-gated (`mlx-community/gemma-4-e4b-it-OptiQ-4bit`
+— 751 audio-tower tensors; the earlier local MLX copy was text-only), so the
+tower is drivable from Python. Measured on it:
+
+```text
+1 s of audio            -> 25 audio tokens     MiniCPM's exact cadence
+chunked == whole-file   33 tokens either way   incremental prefill is VALID
+audio_tower call        4 ms
+embed_audio -> 2560     E4B's real hidden width
+LLM prefill over audio  148 ms
+decode                  19 ms/token
+```
+
+`runtime/gemma_audio.py` implements chunked prefill against the native tower —
+buffering, overlap accounting, and a guard against the feature extractor's
+silent ~2 s truncation cliff.
+
+**Correction to a long-running assumption.** Hiding the encoder behind speech
+saves ~0 ms; at 4 ms it was never the bottleneck. The 148 ms of LANGUAGE-MODEL
+prefill is what overlapping actually buys, so v2 must run the LM's prefill per
+chunk with a KV cache, not just the tower. The ~950 ms in the legacy stack was
+VAD hangover plus Whisper's autoregressive decode — neither of which exists on
+this path at all.
+
 ### Three-way audio comparison — 2026-08-20 night
 
 Same clip ("What is two plus two?", synthesised speech) into three systems:
