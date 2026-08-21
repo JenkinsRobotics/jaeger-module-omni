@@ -70,6 +70,9 @@ def main() -> int:
     ap.add_argument("--model",
                     default="/Users/jonathanjenkins/models/gemma-4-e4b-it-mlx-full")
     ap.add_argument("--whisper", default="openai/whisper-medium.en")
+    ap.add_argument("--whisper-device", default="mps",
+                    help="HF whisper on CPU is ~5x slower than MPS and made an "
+                         "earlier legacy measurement look 5x worse than it is")
     ap.add_argument("--out", default=None)
     args = ap.parse_args()
 
@@ -94,14 +97,16 @@ def main() -> int:
             from transformers import (WhisperForConditionalGeneration,
                                       WhisperProcessor)
             wp = WhisperProcessor.from_pretrained(args.whisper)
-            wm = WhisperForConditionalGeneration.from_pretrained(args.whisper).eval()
+            wm = WhisperForConditionalGeneration.from_pretrained(
+                args.whisper).to(args.whisper_device).eval()
 
         for c in cases:
             audio = read_wav(Path(args.cases) / f"{c['key']}.wav")
             t0 = time.monotonic()
             if mode == "legacy":
                 feats = wp(audio, sampling_rate=16000,
-                           return_tensors="pt").input_features
+                           return_tensors="pt").input_features.to(
+                               args.whisper_device)
                 with torch.no_grad():
                     ids = wm.generate(feats)
                 heard = wp.batch_decode(ids, skip_special_tokens=True)[0]

@@ -40,7 +40,8 @@ def graded(reply: str, answers: list) -> bool:
     return hits >= (2 if len(answers) >= 3 else 1)
 
 
-def run(mode, cases, cases_dir, model_path, whisper_id="openai/whisper-medium.en"):
+def run(mode, cases, cases_dir, model_path, whisper_id="openai/whisper-medium.en",
+        whisper_device="mps"):
     import mlx.core as mx
     from mlx_vlm.models.cache import KVCache
     from mlx_vlm.utils import load
@@ -57,12 +58,15 @@ def run(mode, cases, cases_dir, model_path, whisper_id="openai/whisper-medium.en
         from transformers import (WhisperForConditionalGeneration,
                                   WhisperProcessor)
         wproc = WhisperProcessor.from_pretrained(whisper_id)
-        wmodel = WhisperForConditionalGeneration.from_pretrained(whisper_id).eval()
+        # MPS, not CPU: HF whisper on CPU is ~5x slower and made an earlier
+        # legacy measurement read 11.8s when it is really ~0.6s.
+        wmodel = WhisperForConditionalGeneration.from_pretrained(
+            whisper_id).to(whisper_device).eval()
 
         def transcribe(audio):
             import torch
             feats = wproc(audio, sampling_rate=16000,
-                          return_tensors="pt").input_features
+                          return_tensors="pt").input_features.to(whisper_device)
             with torch.no_grad():
                 ids = wmodel.generate(feats)
             return wproc.batch_decode(ids, skip_special_tokens=True)[0].strip()
