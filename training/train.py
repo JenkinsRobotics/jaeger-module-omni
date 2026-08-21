@@ -101,6 +101,44 @@ class Trainer:
         # backbone is a plain nn.Module.
         return embeds.to(self.dtype)
 
+    def _per_layer(self, n_prefix, labels):
+        """Gemma E4B feeds a 256-wide vector per token PER LAYER (42 of them)
+        beside the ordinary embedding. Returns None for backbones without it.
+
+        It matters how this is obtained. Calling forward() with inputs_embeds
+        and no input_ids makes transformers try to RECOVER the ids by comparing
+        every embedding against the whole vocab matrix -- [1,T,1,2560] against
+        [1,1,262144,2560], a 29 GiB allocation that then fails anyway, because
+        projector-produced audio embeddings are not in the vocab by
+        construction. That failure is what made E4B look untrainable here and
+        sent us to a 135M stand-in, whose scores measured the stand-in.
+
+        So build them from PLACEHOLDER ids -- the audio token across the audio
+        prefix, real ids after -- and pass them in explicitly. forward()
+        accepts per_layer_inputs; it only refuses it alongside input_ids.
+        """
+        lm = getattr(self.backbone, "language_model", None)
+        if lm is None:
+            lm = getattr(getattr(self.backbone, "model", None), "language_model", None)
+        if lm is None or not hasattr(lm, "get_per_layer_inputs"):
+            return None                      # stub, or a plain text backbone
+        cfg = self.backbone.config
+        text_cfg = cfg.get_text_config() if hasattr(cfg, "get_text_config") else cfg
+        if not getattr(text_cfg, "hidden_size_per_layer_input", None):
+            return None
+
+        audio_id = getattr(cfg, "audio_token_id", None)
+        if audio_id is None:
+            audio_id = getattr(text_cfg, "pad_token_id", 0) or 0
+        if labels is not None:
+            dev, dt = labels.device, labels.dtype
+        else:
+            dev, dt = next(self.backbone.parameters()).device, torch.long
+        ids = torch.full(tuple(n_prefix), audio_id, dtype=dt, device=dev)
+        if labels is not None:
+            ids = torch.cat([ids, labels.clamp(min=0)], dim=1)
+        return lm.get_per_layer_inputs(ids, None)
+
     def student(self, waveform, labels=None, want_hidden: bool = False,
                 durations=None):
         """Audio prefix + teacher-forced target, LLaVA-style.
@@ -120,8 +158,10 @@ class Trainer:
         if self.wrapper is not None:
             prefix, _ = self.wrapper.wrap(prefix)
         if labels is None:
+            ple = self._per_layer(prefix.shape[:2], None)
+            kw = {"per_layer_inputs": ple} if ple is not None else {}
             return self.backbone(inputs_embeds=prefix,
-                                 output_hidden_states=want_hidden), None
+                                 output_hidden_states=want_hidden, **kw), None
 
         embed = self.backbone.get_input_embeddings()
         # clamp: IGNORE_INDEX is not a valid vocabulary index. It stays in the
@@ -133,7 +173,10 @@ class Trainer:
                           dtype=labels.dtype, device=labels.device)
         full_labels = torch.cat([mask, labels], dim=1)
 
-        out = self.backbone(inputs_embeds=inputs, output_hidden_states=want_hidden)
+        ple = self._per_layer(prefix.shape[:2], labels)
+        kw = {"per_layer_inputs": ple} if ple is not None else {}
+        out = self.backbone(inputs_embeds=inputs,
+                            output_hidden_states=want_hidden, **kw)
         return out, full_labels
 
     def train_step(self, batch) -> dict:

@@ -19,8 +19,18 @@ REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 STAMP="$(date +%Y%m%d-%H%M%S)"
 LOG="$REPO/training/runs/nightly-$STAMP.log"
 
-: "${BACKBONE:?set BACKBONE to the cognition model id}"
+: "${BACKBONE:=google/gemma-4-E4B-it}"
 : "${WHISPER:=openai/whisper-medium}"
+
+# E4B is the ONLY supported backbone. A projector is valid solely for the
+# backbone it was trained against, and training into a small stand-in measures
+# the stand-in: our delta scored 33% free-running against SmolLM2-135M, which
+# said nothing about the bridge because a 135M brain cannot answer the
+# questions regardless. If BACKBONE is overridden, say so loudly.
+case "$BACKBONE" in
+  *E4B*|*e4b*) ;;
+  *) echo "WARNING: backbone is $BACKBONE, not gemma-4-E4B-it."           "Results will NOT be comparable to any measured pipeline." >&2 ;;
+esac
 : "${STAGE:=stage3_warmup}"
 : "${STEPS:=100000}"
 
