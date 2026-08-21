@@ -40,6 +40,53 @@ and measured. The remaining latency is dominated by generation, exactly as
 predicted — which is why Stage 5's incremental prefill, not the projector, is
 where the conversational win lands.
 
+### Three-way audio comparison — 2026-08-20 night
+
+Same clip ("What is two plus two?", synthesised speech) into three systems:
+
+```text
+gemma-4-E4B NATIVE audio    "What is two plus two"      perfect, zero training
+  (ggml-org Q4 GGUF + mmproj, llama-mtmd-cli --jinja; the E4B audio tower is
+   streaming-causal: attention_context_right=0)
+
+our delta @ step 1000       "The answer is 23."         understood it was
+  (MiniCPM front end -> 2.4M delta -> SmolLM2-135M)     arithmetic; answered
+                                                        (old assistant prompt),
+                                                        wrong number — 135M
+                                                        backbone, mid-training
+
+MiniCPM-o 4.5 (C++ defaults) Chinese persona self-intro — the test harness
+  hardcodes a zh voice-clone system prompt and uses the input clip as the
+  VOICE SAMPLE. Not a fair content read; redo via llama-omni-server with an
+  EN prompt.
+
+ultravox-v0_6-gemma-3-27b   queued (GGUF exists; too big beside training)
+```
+
+**Consequence, and it is the big one: the production input side is already
+solved by Google.** E4B's native tower transcribed perfectly from a Q4 GGUF
+with no adapter and no training, and it is built causal/streaming. The local
+MLX 4-bit copy is text-only (963 missing tower params) — the ggml-org GGUF +
+mmproj is the runnable native path today.
+
+Where our work redirects, with the input side native:
+
+```text
+speech OUT        nothing native exists. Talker + output delta remains the
+                  only path to their expressive cloned voice — and the whole
+                  delta pipeline just proved itself on the input side.
+paralinguistics   test whether native E4B audio hears tone/emotion or is
+                  ASR-flavoured; the MiniCPM front end stays as the
+                  paralinguistic branch if so.
+duplex runtime    turn-end, barge-in, PerformanceSpec, avatar — unchanged.
+harness lessons   embed_norm, prompt provenance, prefix augmentation, WER
+                  evals — all transfer to the output delta.
+```
+
+Lane B's own result is quietly respectable: audio -> "this is an arithmetic
+question, answer it" through a 135M backbone and a 2.4M single-linear delta at
+step 1000. The architecture works; the backbone is just tiny.
+
 ### Zero-conditioning disproven; hidden states are load-bearing — 2026-08-20 late
 
 Second synthesis attempt with the FULL measured cadence — audio_bos (151687),
