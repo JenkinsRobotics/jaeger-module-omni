@@ -46,8 +46,11 @@ class GemmaTalkerConditioner(nn.Module):
         self.gate = nn.Sequential(
             nn.Linear(c.cognition_dim + c.token_dim, c.talker_dim),
             nn.Sigmoid())
-        self.out_norm = nn.RMSNorm(c.talker_dim)
         self.out_scale = nn.Parameter(torch.tensor(1.0))
+        # Begin as a lexical bridge. A random contextual branch overwhelms a
+        # useful pretrained token map before it has learned anything.
+        nn.init.zeros_(self.hidden_path[-1].weight)
+        nn.init.zeros_(self.hidden_path[-1].bias)
 
     def forward(self, token_embeddings: torch.Tensor,
                 hidden_states: torch.Tensor) -> torch.Tensor:
@@ -67,7 +70,7 @@ class GemmaTalkerConditioner(nn.Module):
         lexical = self.token_path(te)
         semantic = self.hidden_path(hs)
         mix = self.gate(torch.cat((te, hs), dim=-1))
-        return self.out_norm(lexical + mix * semantic) * self.out_scale
+        return (lexical + mix * semantic) * self.out_scale
 
     @staticmethod
     def loss(predicted: torch.Tensor, target: torch.Tensor) -> torch.Tensor:
@@ -79,12 +82,12 @@ class GemmaTalkerConditioner(nn.Module):
         return mse + 0.1 * cosine
 
     def checkpoint(self) -> dict:
-        return {"format": "jaeger-gemma-talker-conditioner-v1",
+        return {"format": "jaeger-gemma-talker-conditioner-v2",
                 "config": asdict(self.config), "state": self.state_dict()}
 
     @classmethod
     def from_checkpoint(cls, checkpoint: dict) -> "GemmaTalkerConditioner":
-        if checkpoint.get("format") != "jaeger-gemma-talker-conditioner-v1":
+        if checkpoint.get("format") != "jaeger-gemma-talker-conditioner-v2":
             raise ValueError("not a Jaeger Gemma-to-Talker conditioner checkpoint")
         model = cls(SpeechConditionerConfig(**checkpoint["config"]))
         model.load_state_dict(checkpoint["state"])

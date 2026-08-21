@@ -70,8 +70,9 @@ def build(model_path: str = MODEL, front_end: str = "tower", delta_path=None):
 
     s = StreamingSession(m, proc, prefiller, cache_factory=KVCache,
                          config=cfg, system=SYSTEM)
-    return s, {"model": model_path, "front_end": front_end,
-               "eos": {proc.tokenizer.eos_token_id}}
+    eos = cfg.get("eos_token_id", proc.tokenizer.eos_token_id)
+    eos = {int(x) for x in (eos if isinstance(eos, list) else [eos])}
+    return s, {"model": model_path, "front_end": front_end, "eos": eos}
 
 
 def one_turn(s, meta, audio, max_tokens: int = 48,
@@ -125,14 +126,16 @@ def speak(session, out_path: str, ref_audio=None,
             f"  Component-only Talker proof: research/verify_talker_port.py")
 
     import numpy as np
+    import mlx.core as mx
     from jaeger_agent_omni.neural.speech import GemmaTalkerConditioner
 
     ck = torch.load(conditioner_path, map_location="cpu", weights_only=False)
     conditioner = GemmaTalkerConditioner.from_checkpoint(ck)
-    h = torch.from_numpy(np.stack([np.array(x, copy=False).reshape(-1)
+    h = torch.from_numpy(np.stack([np.array(x.astype(mx.float32), copy=False).reshape(-1)
                                    for x in hidden])).float()
     token_emb, _ = session._embed_ids(list(output_ids))
-    token_emb = torch.from_numpy(np.array(token_emb, copy=False)).float()
+    token_emb = torch.from_numpy(np.array(
+        token_emb.astype(mx.float32), copy=False)).float()
     with torch.no_grad():
         cond = conditioner(token_emb, h.unsqueeze(0))
 
@@ -218,6 +221,8 @@ def main() -> int:
                     help="also synthesise the reply (needs a trained SpeechOutDelta)")
     ap.add_argument("--ref-audio", default=None, help="voice to clone")
     ap.add_argument("--out-wav", default="reply.wav")
+    ap.add_argument("--speech-conditioner",
+                    default="training/runs/gemma_talker_conditioner.pt")
     ap.add_argument("--selfcheck", action="store_true")
     a = ap.parse_args()
 
@@ -233,7 +238,8 @@ def main() -> int:
                              collect_hidden=a.speak)
         print(f"{ms:.0f} ms  {reply!r}")
         if a.speak:
-            wav = speak(s, a.out_wav, ref_audio=a.ref_audio)
+            wav = speak(s, a.out_wav, ref_audio=a.ref_audio,
+                        conditioner_path=a.speech_conditioner)
             print(f"spoke -> {wav}")
         return 0
     ap.print_help()

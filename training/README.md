@@ -189,3 +189,21 @@ licences         several corpora are research-only or need an access
 cd training && ../.venv/bin/python data.py
 cd training && ../.venv/bin/python config.py
 ```
+
+## Never disable the MPS watermark
+
+`PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0` removes PyTorch's allocation ceiling.
+It does not create memory; it removes the error that tells you there is none.
+
+Measured consequence: a run that should have failed fast at 42 GiB instead
+allocated past physical RAM and drove swap to 41.5 GB of 43 GB. The process
+sat in uninterruptible I/O at 12% CPU for twelve minutes, producing nothing,
+with no error anywhere -- indistinguishable from "training is slow".
+
+An OOM is a **measurement**. Read it and shrink the batch:
+
+    --batch 1 --grad-accum 32     # effective batch unchanged, 8x fewer
+                                  # live activations
+
+E4B is 42 layers of 2560 with a ~350-token audio prefix. batch 8 was fine at
+135M and is not fine here.

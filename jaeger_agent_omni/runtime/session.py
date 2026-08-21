@@ -426,6 +426,41 @@ class StreamingSession:
         self.output_ids = tuple(out_ids)
         return self.processor.tokenizer.decode(out_ids)
 
+    def force_tokens(self, token_ids) -> tuple[object, list]:
+        """Offline distillation helper: feed known token IDs into this cache.
+
+        Returns Gemma token embeddings and contextual hidden states with one
+        row per ID.  It deliberately accepts/returns tensors rather than text;
+        callers may use text to construct IDs while building a teacher corpus,
+        but this method cannot become a runtime text bridge by accident.
+        """
+        import mlx.core as mx
+
+        ids = tuple(int(i) for i in token_ids)
+        if not ids:
+            raise ValueError("force_tokens needs at least one token ID")
+        if self.n_prefilled == 0:
+            raise ValueError("nothing prefilled — teacher tokens need context")
+        embeddings, states = [], []
+        for tid in ids:
+            step_emb, step_per_layer = self._embed_ids([tid])
+            sink = []
+            out = self.model.language_model(inputs_embeds=step_emb,
+                                             per_layer_inputs=step_per_layer,
+                                             cache=self.cache,
+                                             hidden_sink=sink)
+            h = sink[0] if sink else getattr(out, "hidden_states", None)
+            if h is None:
+                raise RuntimeError("model exposed no hidden state for distillation")
+            embeddings.append(step_emb)
+            states.append(h[:, -1, :])
+            self.n_prefilled += 1
+        self.output_ids = ids
+        self.hidden = states
+        joined = mx.concatenate(embeddings, axis=1)
+        mx.eval(joined, *states)
+        return joined, states
+
 
 def demo():
     """Cache-reuse accounting and cancellation, with a stand-in model."""

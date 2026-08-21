@@ -1,6 +1,6 @@
 ggml_metal_device_init: tensor API disabled for pre-M5 and pre-A19 devices
 ggml_metal_library_init: using embedded metal library
-ggml_metal_library_init: loaded in 10.704 sec
+ggml_metal_library_init: loaded in 0.034 sec
 ggml_metal_rsets_init: creating a residency set collection (keep_alive = 180 s)
 ggml_metal_device_init: GPU name:   MTL0 (Apple M1 Max)
 ggml_metal_device_init: GPU family: MTLGPUFamilyApple7  (1007)
@@ -745,7 +745,7 @@ sched_reserve:       MTL0 compute buffer size =   312.38 MiB
 sched_reserve:        CPU compute buffer size =    24.01 MiB
 sched_reserve: graph nodes  = 1266
 sched_reserve: graph splits = 2
-sched_reserve: reserve took 41.46 ms, sched copies = 1
+sched_reserve: reserve took 38.59 ms, sched copies = 1
 llama_model_loader: loaded meta data with 30 key-value pairs and 193 tensors from /Users/jonathanjenkins/models/MiniCPM-o-4_5-gguf/tts/MiniCPM-o-4_5-tts-F16.gguf (version GGUF V3 (latest))
 llama_model_loader: Dumping metadata keys/values. Note: KV overrides do not apply in this output.
 llama_model_loader: - kv   0:                       general.architecture str              = llama
@@ -1232,7 +1232,7 @@ sched_reserve:       MTL0 compute buffer size =   312.82 MiB
 sched_reserve:        CPU compute buffer size =    11.01 MiB
 sched_reserve: graph nodes  = 626
 sched_reserve: graph splits = 2
-sched_reserve: reserve took 15.67 ms, sched copies = 1
+sched_reserve: reserve took 92.15 ms, sched copies = 1
 ggml_metal_init: allocating
 ggml_metal_init: found device: Apple M1 Max
 ggml_metal_init: picking default device: Apple M1 Max
@@ -1248,191 +1248,191 @@ ggml_metal_init: use graph optimize = true
 flowGGUFModelLoader: init_backend device=gpu:0, gpu_idx=0, backend=MTL0
 voc_hg2_model: CPU backend using 8 threads
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_concat', name = 'kernel_concat'
-ggml_metal_library_compile_pipeline: loaded kernel_concat                                 0x105956420 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_concat                                 0x101ac9840 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_cpy_f32_f32', name = 'kernel_cpy_f32_f32'
-ggml_metal_library_compile_pipeline: loaded kernel_cpy_f32_f32                            0x105957220 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_cpy_f32_f32                            0x101aca040 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_get_rows_f32', name = 'kernel_get_rows_f32'
-ggml_metal_library_compile_pipeline: loaded kernel_get_rows_f32                           0x105957a20 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_get_rows_f32                           0x101aca840 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_f32_f32', name = 'kernel_mul_mm_f32_f32_bci=0_bco=1_ne12=1_ne13=1_r2=1_r3=1'
-ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_f32_f32_bci=0_bco=1_ne12=1_ne13=1_r2=1_r3=1      0x105958020 | th_max =  832 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_f32_f32_bci=0_bco=1_ne12=1_ne13=1_r2=1_r3=1      0x101acb040 | th_max =  832 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_bin_fuse_f32_f32_f32_4', name = 'kernel_bin_fuse_f32_f32_f32_4_op=0_nf=1_rb=1_cb=0'
-ggml_metal_library_compile_pipeline: loaded kernel_bin_fuse_f32_f32_f32_4_op=0_nf=1_rb=1_cb=0      0x105958620 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_bin_fuse_f32_f32_f32_4_op=0_nf=1_rb=1_cb=0      0x101acb340 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_norm_mul_add_f32_4', name = 'kernel_norm_mul_add_f32_4'
-ggml_metal_library_compile_pipeline: loaded kernel_norm_mul_add_f32_4                     0x105958920 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_norm_mul_add_f32_4                     0x101acb640 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_unary_f32_f32_4', name = 'kernel_unary_f32_f32_4_op=10_cnt=1'
-ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_4_op=10_cnt=1            0x105958f20 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_4_op=10_cnt=1            0x101acb940 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_im2col_f32', name = 'kernel_im2col_f32'
-ggml_metal_library_compile_pipeline: loaded kernel_im2col_f32                             0x92ce10000 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_im2col_f32                             0xbf3870000 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_unary_f32_f32_4', name = 'kernel_unary_f32_f32_4_op=18_cnt=1'
-ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_4_op=18_cnt=1            0x92ce10300 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_4_op=18_cnt=1            0xbf3870300 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_bin_fuse_f32_f32_f32_4', name = 'kernel_bin_fuse_f32_f32_f32_4_op=0_nf=1_rb=0_cb=0'
-ggml_metal_library_compile_pipeline: loaded kernel_bin_fuse_f32_f32_f32_4_op=0_nf=1_rb=0_cb=0      0x92ce10600 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_bin_fuse_f32_f32_f32_4_op=0_nf=1_rb=0_cb=0      0xbf3870600 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_repeat_f32', name = 'kernel_repeat_f32'
-ggml_metal_library_compile_pipeline: loaded kernel_repeat_f32                             0x92ce10900 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_repeat_f32                             0xbf3870900 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_f32_f32', name = 'kernel_mul_mm_f32_f32_bci=0_bco=1_ne12=8_ne13=1_r2=1_r3=1'
-ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_f32_f32_bci=0_bco=1_ne12=8_ne13=1_r2=1_r3=1      0x92ce10c00 | th_max =  832 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_f32_f32_bci=0_bco=1_ne12=8_ne13=1_r2=1_r3=1      0xbf3870c00 | th_max =  832 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_arange_f32', name = 'kernel_arange_f32'
-ggml_metal_library_compile_pipeline: loaded kernel_arange_f32                             0x92ce10f00 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_arange_f32                             0xbf3870f00 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_unary_f32_f32_4', name = 'kernel_unary_f32_f32_4_op=10_cnt=0'
-ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_4_op=10_cnt=0            0x92ce11200 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_4_op=10_cnt=0            0xbf3871200 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_soft_max_f32_4', name = 'kernel_soft_max_f32_4'
-ggml_metal_library_compile_pipeline: loaded kernel_soft_max_f32_4                         0x92ce11500 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_soft_max_f32_4                         0xbf3871500 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_f32_f32', name = 'kernel_mul_mm_f32_f32_bci=1_bco=1_ne12=8_ne13=1_r2=1_r3=1'
-ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_f32_f32_bci=1_bco=1_ne12=8_ne13=1_r2=1_r3=1      0x92ce11800 | th_max =  896 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_f32_f32_bci=1_bco=1_ne12=8_ne13=1_r2=1_r3=1      0xbf3871800 | th_max =  896 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_unary_f32_f32_4', name = 'kernel_unary_f32_f32_4_op=106_cnt=0'
-ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_4_op=106_cnt=0           0x92ce11b00 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_4_op=106_cnt=0           0xbf3871b00 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_unary_f32_f32_4', name = 'kernel_unary_f32_f32_4_op=13_cnt=1'
-ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_4_op=13_cnt=1            0x92ce11e00 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_4_op=13_cnt=1            0xbf3871e00 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_sum_rows_f32_f32_4', name = 'kernel_sum_rows_f32_f32_4_op=10'
-ggml_metal_library_compile_pipeline: loaded kernel_sum_rows_f32_f32_4_op=10               0x92ce12100 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_sum_rows_f32_f32_4_op=10               0xbf3872100 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_bin_fuse_f32_f32_f32', name = 'kernel_bin_fuse_f32_f32_f32_op=0_nf=1_rb=1_cb=0'
-ggml_metal_library_compile_pipeline: loaded kernel_bin_fuse_f32_f32_f32_op=0_nf=1_rb=1_cb=0      0x92ce12400 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_bin_fuse_f32_f32_f32_op=0_nf=1_rb=1_cb=0      0xbf3872400 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_unary_f32_f32', name = 'kernel_unary_f32_f32_op=14_cnt=1'
-ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_op=14_cnt=1              0x92ce12700 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_op=14_cnt=1              0xbf3872700 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_bin_fuse_f32_f32_f32_4', name = 'kernel_bin_fuse_f32_f32_f32_4_op=3_nf=1_rb=1_cb=0'
-ggml_metal_library_compile_pipeline: loaded kernel_bin_fuse_f32_f32_f32_4_op=3_nf=1_rb=1_cb=0      0x92ce12a00 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_bin_fuse_f32_f32_f32_4_op=3_nf=1_rb=1_cb=0      0xbf3872a00 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mv_f32_f32_4', name = 'kernel_mul_mv_f32_f32_4_nsg=2_ne12=1_r2=1_r3=1'
-ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_f32_f32_4_nsg=2_ne12=1_r2=1_r3=1      0x92ce12d00 | th_max =  768 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_f32_f32_4_nsg=2_ne12=1_r2=1_r3=1      0xbf3872d00 | th_max =  768 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_f32_f32', name = 'kernel_mul_mm_f32_f32_bci=0_bco=1_ne12=2_ne13=1_r2=2_r3=1'
-ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_f32_f32_bci=0_bco=1_ne12=2_ne13=1_r2=2_r3=1      0x92ce13000 | th_max =  832 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_f32_f32_bci=0_bco=1_ne12=2_ne13=1_r2=2_r3=1      0xbf3873000 | th_max =  832 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_norm_f32_4', name = 'kernel_norm_f32_4'
-ggml_metal_library_compile_pipeline: loaded kernel_norm_f32_4                             0x92ce13300 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_norm_f32_4                             0xbf3873300 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_unary_f32_f32', name = 'kernel_unary_f32_f32_op=10_cnt=1'
-ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_op=10_cnt=1              0x92ce13600 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_op=10_cnt=1              0xbf3873600 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_timestep_embedding_f32', name = 'kernel_timestep_embedding_f32'
-ggml_metal_library_compile_pipeline: loaded kernel_timestep_embedding_f32                 0x92ce13900 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_timestep_embedding_f32                 0xbf3873900 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mv_ext_f32_f32_r1_2', name = 'kernel_mul_mv_ext_f32_f32_r1_2_nsg=2_nxpsg=16_ne12=1_r2=1_r3=1'
-ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_ext_f32_f32_r1_2_nsg=2_nxpsg=16_ne12=1_r2=1_r3=1      0x92ce13c00 | th_max =  832 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_ext_f32_f32_r1_2_nsg=2_nxpsg=16_ne12=1_r2=1_r3=1      0xbf3873c00 | th_max =  832 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_unary_f32_f32_4', name = 'kernel_unary_f32_f32_4_op=106_cnt=1'
-ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_4_op=106_cnt=1           0x92c25c000 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_4_op=106_cnt=1           0xbf34c8000 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mv_f32_f32_4', name = 'kernel_mul_mv_f32_f32_4_nsg=4_ne12=2_r2=2_r3=1'
-ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_f32_f32_4_nsg=4_ne12=2_r2=2_r3=1      0x92c25c300 | th_max =  768 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_f32_f32_4_nsg=4_ne12=2_r2=2_r3=1      0xbf34c8300 | th_max =  768 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_bin_fuse_f32_f32_f32_4', name = 'kernel_bin_fuse_f32_f32_f32_4_op=2_nf=1_rb=0_cb=0'
-ggml_metal_library_compile_pipeline: loaded kernel_bin_fuse_f32_f32_f32_4_op=2_nf=1_rb=0_cb=0      0x92c25c600 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_bin_fuse_f32_f32_f32_4_op=2_nf=1_rb=0_cb=0      0xbf34c8600 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_f32_f32', name = 'kernel_mul_mm_f32_f32_bci=0_bco=1_ne12=16_ne13=1_r2=1_r3=1'
-ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_f32_f32_bci=0_bco=1_ne12=16_ne13=1_r2=1_r3=1      0x92c25c900 | th_max =  832 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_f32_f32_bci=0_bco=1_ne12=16_ne13=1_r2=1_r3=1      0xbf34c8900 | th_max =  832 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_unary_f32_f32_4', name = 'kernel_unary_f32_f32_4_op=114_cnt=0'
-ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_4_op=114_cnt=0           0x92c25cc00 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_4_op=114_cnt=0           0xbf34c8c00 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_bin_fuse_f32_f32_f32_4', name = 'kernel_bin_fuse_f32_f32_f32_4_op=1_nf=1_rb=0_cb=0'
-ggml_metal_library_compile_pipeline: loaded kernel_bin_fuse_f32_f32_f32_4_op=1_nf=1_rb=0_cb=0      0x92c25cf00 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_bin_fuse_f32_f32_f32_4_op=1_nf=1_rb=0_cb=0      0xbf34c8f00 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_unary_f32_f32_4', name = 'kernel_unary_f32_f32_4_op=17_cnt=0'
-ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_4_op=17_cnt=0            0x92c25d200 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_4_op=17_cnt=0            0xbf34c9200 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_unary_f32_f32_4', name = 'kernel_unary_f32_f32_4_op=100_cnt=0'
-ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_4_op=100_cnt=0           0x92c25d500 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_4_op=100_cnt=0           0xbf34c9500 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_unary_f32_f32_4', name = 'kernel_unary_f32_f32_4_op=103_cnt=0'
-ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_4_op=103_cnt=0           0x92c25d800 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_4_op=103_cnt=0           0xbf34c9800 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_rms_norm_mul_f32_4', name = 'kernel_rms_norm_mul_f32_4'
-ggml_metal_library_compile_pipeline: loaded kernel_rms_norm_mul_f32_4                     0x92c25db00 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_rms_norm_mul_f32_4                     0xbf34c9b00 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_q8_0_f32', name = 'kernel_mul_mm_q8_0_f32_bci=0_bco=1_ne12=1_ne13=1_r2=1_r3=1'
-ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_q8_0_f32_bci=0_bco=1_ne12=1_ne13=1_r2=1_r3=1      0x92c25de00 | th_max =  896 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_q8_0_f32_bci=0_bco=1_ne12=1_ne13=1_r2=1_r3=1      0xbf34c9e00 | th_max =  896 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_set_rows_f16_i64', name = 'kernel_set_rows_f16_i64'
-ggml_metal_library_compile_pipeline: loaded kernel_set_rows_f16_i64                       0x92c25e100 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_set_rows_f16_i64                       0xbf34ca100 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_rope_neox_f32', name = 'kernel_rope_neox_f32_imrope=0'
-ggml_metal_library_compile_pipeline: loaded kernel_rope_neox_f32_imrope=0                 0x92c25e400 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_rope_neox_f32_imrope=0                 0xbf34ca400 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_flash_attn_ext_vec_f16_dk128_dv128', name = 'kernel_flash_attn_ext_vec_f16_dk128_dv128_mask=1_sink=0_bias=0_scap=0_kvpad=0_ns10=1024_ns20=1024_nsg=1_nwg=32'
-ggml_metal_library_compile_pipeline: loaded kernel_flash_attn_ext_vec_f16_dk128_dv128_mask=1_sink=0_bias=0_scap=0_kvpad=0_ns10=1024_ns20=1024_nsg=1_nwg=32      0x92c25e700 | th_max =  448 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_flash_attn_ext_vec_f16_dk128_dv128_mask=1_sink=0_bias=0_scap=0_kvpad=0_ns10=1024_ns20=1024_nsg=1_nwg=32      0xbf34ca700 | th_max =  448 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_flash_attn_ext_vec_reduce', name = 'kernel_flash_attn_ext_vec_reduce_dv=128_nwg=32'
-ggml_metal_library_compile_pipeline: loaded kernel_flash_attn_ext_vec_reduce_dv=128_nwg=32      0x92c25ea00 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_flash_attn_ext_vec_reduce_dv=128_nwg=32      0xbf34caa00 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_swiglu_f32', name = 'kernel_swiglu_f32'
-ggml_metal_library_compile_pipeline: loaded kernel_swiglu_f32                             0x92c25ed00 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_swiglu_f32                             0xbf34cad00 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mv_q8_0_f32', name = 'kernel_mul_mv_q8_0_f32_nsg=4_ne12=1_r2=1_r3=1'
-ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_q8_0_f32_nsg=4_ne12=1_r2=1_r3=1      0x92c25f000 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_q8_0_f32_nsg=4_ne12=1_r2=1_r3=1      0xbf34cb000 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_im2col_f16', name = 'kernel_im2col_f16'
-ggml_metal_library_compile_pipeline: loaded kernel_im2col_f16                             0x92c25f300 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_im2col_f16                             0xbf34cb300 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_f16_f16', name = 'kernel_mul_mm_f16_f16_bci=1_bco=1_ne12=1_ne13=1_r2=1_r3=1'
-ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_f16_f16_bci=1_bco=1_ne12=1_ne13=1_r2=1_r3=1      0x92c25f600 | th_max =  896 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_f16_f16_bci=1_bco=1_ne12=1_ne13=1_r2=1_r3=1      0xbf34cb600 | th_max =  896 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_bin_fuse_f32_f32_f32', name = 'kernel_bin_fuse_f32_f32_f32_op=0_nf=1_rb=0_cb=1'
-ggml_metal_library_compile_pipeline: loaded kernel_bin_fuse_f32_f32_f32_op=0_nf=1_rb=0_cb=1      0x92c25f900 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_bin_fuse_f32_f32_f32_op=0_nf=1_rb=0_cb=1      0xbf34cb900 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_unary_f32_f32', name = 'kernel_unary_f32_f32_op=103_cnt=0'
-ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_op=103_cnt=0             0x92c25fc00 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_op=103_cnt=0             0xbf34cbc00 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_f16_f16', name = 'kernel_mul_mm_f16_f16_bci=0_bco=1_ne12=1_ne13=1_r2=1_r3=1'
-ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_f16_f16_bci=0_bco=1_ne12=1_ne13=1_r2=1_r3=1      0x92ce70000 | th_max =  896 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_f16_f16_bci=0_bco=1_ne12=1_ne13=1_r2=1_r3=1      0xbf38c4000 | th_max =  896 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_f16_f32', name = 'kernel_mul_mm_f16_f32_bci=0_bco=1_ne12=1_ne13=1_r2=1_r3=1'
-ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_f16_f32_bci=0_bco=1_ne12=1_ne13=1_r2=1_r3=1      0x92ce70300 | th_max =  896 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_f16_f32_bci=0_bco=1_ne12=1_ne13=1_r2=1_r3=1      0xbf38c4300 | th_max =  896 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_cpy_f32_f16', name = 'kernel_cpy_f32_f16'
-ggml_metal_library_compile_pipeline: loaded kernel_cpy_f32_f16                            0x92ce70600 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_cpy_f32_f16                            0xbf38c4600 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_cpy_f16_f16', name = 'kernel_cpy_f16_f16'
-ggml_metal_library_compile_pipeline: loaded kernel_cpy_f16_f16                            0x92ce70900 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_cpy_f16_f16                            0xbf38c4900 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_f16_f32', name = 'kernel_mul_mm_f16_f32_bci=0_bco=1_ne12=16_ne13=1_r2=1_r3=1'
-ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_f16_f32_bci=0_bco=1_ne12=16_ne13=1_r2=1_r3=1      0x92ce70c00 | th_max =  896 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_f16_f32_bci=0_bco=1_ne12=16_ne13=1_r2=1_r3=1      0xbf38c4c00 | th_max =  896 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_soft_max_f32', name = 'kernel_soft_max_f32'
-ggml_metal_library_compile_pipeline: loaded kernel_soft_max_f32                           0x92ce70f00 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_soft_max_f32                           0xbf38c4f00 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_f16_f32', name = 'kernel_mul_mm_f16_f32_bci=1_bco=1_ne12=16_ne13=1_r2=1_r3=1'
-ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_f16_f32_bci=1_bco=1_ne12=16_ne13=1_r2=1_r3=1      0x92ce71200 | th_max =  896 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_f16_f32_bci=1_bco=1_ne12=16_ne13=1_r2=1_r3=1      0xbf38c5200 | th_max =  896 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_unary_f32_f32_4', name = 'kernel_unary_f32_f32_4_op=101_cnt=0'
-ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_4_op=101_cnt=0           0x92ce71500 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_4_op=101_cnt=0           0xbf38c5500 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_pool_1d_avg_f32', name = 'kernel_pool_1d_avg_f32'
-ggml_metal_library_compile_pipeline: loaded kernel_pool_1d_avg_f32                        0x92ce71800 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_pool_1d_avg_f32                        0xbf38c5800 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_flash_attn_ext_blk', name = 'kernel_flash_attn_ext_blk_nqptg=8_ncpsg=64'
-ggml_metal_library_compile_pipeline: loaded kernel_flash_attn_ext_blk_nqptg=8_ncpsg=64      0x92ce71b00 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_flash_attn_ext_blk_nqptg=8_ncpsg=64      0xbf38c5b00 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_flash_attn_ext_f16_dk128_dv128', name = 'kernel_flash_attn_ext_f16_dk128_dv128_mask=1_sinks=0_bias=0_scap=0_kvpad=0_bcm=1_ns10=1024_ns20=1024_nsg=4'
-ggml_metal_library_compile_pipeline: loaded kernel_flash_attn_ext_f16_dk128_dv128_mask=1_sinks=0_bias=0_scap=0_kvpad=0_bcm=1_ns10=1024_ns20=1024_nsg=4      0x92ce71e00 | th_max =  704 | th_width =   32
-02:23:34.272 === omni_init start
-02:23:34.272 media_type = 1, duplex_mode = 0, base_output_dir = /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out
-02:23:34.272 === omni_init: loading new LLM model
-02:23:43.737 === omni_init: loading TTS model
-02:23:43.738 TTS model: loading with n_gpu_layers=100
-02:23:45.006 TTS sampler: temp=0.80, top_p=0.85, top_k=25, rep_penalty=1.05
-02:23:45.006 TTS: loading weights from GGUF (emb_code, emb_text, projector_semantic, head_code)...
-02:23:45.556 TTS: head_code shape: dim0=6562, dim1=768, will transpose to [6562, 768]
-02:23:45.566 TTS: head_code loaded, verifying first few values:
-02:23:45.566   head_code_weight[0] = 0.01361084 (expect ~0.01385498)
-02:23:45.566   head_code_weight[1] = -0.01660156 (expect ~-0.01647949)
-02:23:45.566   head_code_weight[768] = 0.04101562 (this is weight[1, 0], expect ~0.04150391)
-02:23:45.606 TTS: weights loaded successfully
-02:23:45.606 Projector: loading from /Users/jonathanjenkins/models/MiniCPM-o-4_5-gguf/tts/MiniCPM-o-4_5-projector-F16.gguf
-02:23:45.616 Projector: loaded successfully
-02:23:45.616 === omni_init: loading APM model
-02:23:46.321 APM: init from /Users/jonathanjenkins/models/MiniCPM-o-4_5-gguf/audio/MiniCPM-o-4_5-audio-F16.gguf
-02:23:46.324 Token2Wav: found models in /Users/jonathanjenkins/models/MiniCPM-o-4_5-gguf/token2wav-gguf
-02:23:46.324 Token2Wav: all model files found, initializing session...
-02:23:46.327 Token2Wav: non-CUDA backend, vocoder using CPU for better performance
-02:23:46.330 Token2Wav: using prompt_cache from /Users/jonathanjenkins/models/MiniCPM-o-4_5-gguf/token2wav-gguf/prompt_cache.gguf
-02:23:47.738 Token2Wav: initialized successfully
-02:23:47.738 Python T2W: script_dir=./tools/omni/pyt2w, model_dir=./tools/omni/pyt2w/token2wav
-02:23:47.738 Token2Wav: 使用 C++ 实现
-02:23:47.738 === omni_init success: ctx_llama = 0x105922310
-02:23:47.743 omni_set_language: setting language to 'en'
-02:23:47.743 omni_set_language: prompts updated for language 'en', system_prompt_initialized reset to false
-02:23:47.750 stream_prefill: n_past = 0
+ggml_metal_library_compile_pipeline: loaded kernel_flash_attn_ext_f16_dk128_dv128_mask=1_sinks=0_bias=0_scap=0_kvpad=0_bcm=1_ns10=1024_ns20=1024_nsg=4      0xbf38c5e00 | th_max =  704 | th_width =   32
+09:42:17.249 === omni_init start
+09:42:17.249 media_type = 1, duplex_mode = 0, base_output_dir = research/teacher12_20260821
+09:42:17.249 === omni_init: loading new LLM model
+09:42:27.606 === omni_init: loading TTS model
+09:42:27.607 TTS model: loading with n_gpu_layers=100
+09:42:28.754 TTS sampler: temp=0.80, top_p=0.85, top_k=25, rep_penalty=1.05
+09:42:28.754 TTS: loading weights from GGUF (emb_code, emb_text, projector_semantic, head_code)...
+09:42:29.981 TTS: head_code shape: dim0=6562, dim1=768, will transpose to [6562, 768]
+09:42:30.100 TTS: head_code loaded, verifying first few values:
+09:42:30.100   head_code_weight[0] = 0.01361084 (expect ~0.01385498)
+09:42:30.101   head_code_weight[1] = -0.01660156 (expect ~-0.01647949)
+09:42:30.101   head_code_weight[768] = 0.04101562 (this is weight[1, 0], expect ~0.04150391)
+09:42:30.169 TTS: weights loaded successfully
+09:42:30.169 Projector: loading from /Users/jonathanjenkins/models/MiniCPM-o-4_5-gguf/tts/MiniCPM-o-4_5-projector-F16.gguf
+09:42:30.176 Projector: loaded successfully
+09:42:30.177 === omni_init: loading APM model
+09:42:31.160 APM: init from /Users/jonathanjenkins/models/MiniCPM-o-4_5-gguf/audio/MiniCPM-o-4_5-audio-F16.gguf
+09:42:31.160 Token2Wav: found models in /Users/jonathanjenkins/models/MiniCPM-o-4_5-gguf/token2wav-gguf
+09:42:31.161 Token2Wav: all model files found, initializing session...
+09:42:31.162 Token2Wav: non-CUDA backend, vocoder using CPU for better performance
+09:42:31.162 Token2Wav: using prompt_cache from /Users/jonathanjenkins/models/MiniCPM-o-4_5-gguf/token2wav-gguf/prompt_cache.gguf
+09:42:32.942 Token2Wav: initialized successfully
+09:42:32.944 Python T2W: script_dir=./tools/omni/pyt2w, model_dir=./tools/omni/pyt2w/token2wav
+09:42:32.944 Token2Wav: 使用 C++ 实现
+09:42:32.947 === omni_init success: ctx_llama = 0xbf3138000
+09:42:32.975 omni_set_language: setting language to 'en'
+09:42:33.026 omni_set_language: prompts updated for language 'en', system_prompt_initialized reset to false
+09:42:33.038 stream_prefill: n_past = 0
  voice_clone_prompt = <|im_start|>system
 Clone the voice in the provided audio prompt.
 <|audio_start|>
  assistant_prompt = <|audio_end|>Please assist users while maintaining this voice style. Please answer the user's questions seriously and in a high quality. Please chat with the user in a highly human-like and oral style. You are a helpful assistant developed by ModelBest: MiniCPM-Omni.<|im_end|>
 <|im_start|>user
 
-02:23:47.750 system prompt ref_audio: /Users/jonathanjenkins/GITHUB/VoiceLLM-Playground/Omni Model/Minicpm 4.5o /assets/ref_english.wav
-02:23:47.956 system prompt ref_audio embedding: n_pos=83
-02:23:48.193 🔒 n_keep 设置为 155 (system prompt tokens)，这部分永远不会被滑动窗口删除
-02:23:48.193 stream_prefill(index=0): system prompt 初始化完成，ref_audio 已在其中 prefill
-02:23:48.193 [SW] system_prompt registered: preserve_length=155 (will be protected from sliding)
-02:23:48.193 n_past = 155
-02:23:48.193 
+09:42:33.038 system prompt ref_audio: /Users/jonathanjenkins/GITHUB/VoiceLLM-Playground/Omni Model/Minicpm 4.5o /assets/ref_english.wav
+09:42:33.319 system prompt ref_audio embedding: n_pos=83
+09:42:33.592 🔒 n_keep 设置为 155 (system prompt tokens)，这部分永远不会被滑动窗口删除
+09:42:33.592 stream_prefill(index=0): system prompt 初始化完成，ref_audio 已在其中 prefill
+09:42:33.592 [SW] system_prompt registered: preserve_length=155 (will be protected from sliding)
+09:42:33.592 n_past = 155
+09:42:33.592 
 
 c++ finish stream_prefill(index=0). n_past=155, n_keep=155, n_ctx=8192
 
-02:23:48.233 stream_prefill(index=1): processing user audio: /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/bench_audio/q00.wav
-02:23:48.366 stream_prefill(index=1): user audio embedding: n_pos=12
-02:23:48.490 
+09:42:33.630 stream_prefill(index=1): processing user audio: /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/bench_audio/q00.wav
+09:42:33.764 stream_prefill(index=1): user audio embedding: n_pos=12
+09:42:33.888 
 
 c++ finish stream_prefill(index=1). n_past=169, n_keep=155, n_ctx=8192
 
-02:23:48.490 📍 stream_decode 开始: n_past=169, n_keep=155, n_ctx=8192, duplex_mode=0
-02:23:48.490 stream_decode: create tts thread (simplex mode)
-02:23:48.490 stream_decode: create t2w thread
-02:23:48.490 wait prefill done
-02:23:48.490 📍 [单工TTS] 添加 assistant prompt: "<|im_end|>
+09:42:33.888 📍 stream_decode 开始: n_past=169, n_keep=155, n_ctx=8192, duplex_mode=0
+09:42:33.888 stream_decode: create tts thread (simplex mode)
+09:42:33.888 stream_decode: create t2w thread
+09:42:33.888 T2W thread (C++) started
+09:42:33.888 wait prefill done
+09:42:33.888 📍 [单工TTS] 添加 assistant prompt: "<|im_end|>
 <|im_start|>assistant
 <think>
 
 </think>
 
 <|tts_bos|>", n_past=169
-02:23:48.490 T2W thread (C++) started
-02:23:48.490 TTS: 创建单工模式输出目录: /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000
-02:23:48.491 TTS thread started
-02:23:48.518 📍 [单工TTS] assistant prompt 完成, n_past=179
-02:23:48.518 LLM decode: max_tgt_len = 8192, n_predict = -1, n_ctx = 8192
+09:42:33.889 TTS: 创建单工模式输出目录: research/teacher12_20260821/round_000
+09:42:33.889 TTS thread started
+09:42:33.916 📍 [单工TTS] assistant prompt 完成, n_past=179
+09:42:33.916 LLM decode: max_tgt_len = 8192, n_predict = -1, n_ctx = 8192
 set_embeddings: value = 1
 set_embeddings: value = 0
 set_embeddings: value = 1
@@ -1447,29 +1447,45 @@ set_embeddings: value = 1
 set_embeddings: value = 0
 set_embeddings: value = 1
 set_embeddings: value = 0
-02:23:48.843 LLM: detected end token, set llm_generation_done=true
-02:23:48.843 LLM->TTS: text='Two plus two is four.', n_tokens=6, hidden_size=24576, n_embd=4096, token_ids=[11613 5519 1378 374 3040 13]
-02:23:48.843 📍 Decode 结束: n_past=186, 剩余空间=8006, 无需滑窗
-02:23:48.843 📍 轮次 1 结束，记录边界于 n_past=186
-02:23:48.843 TTS<-LLM: chunk_idx=0, text='Two plus two is four.', n_tokens=6, hidden_size=24576, token_ids=[11613 5519 1378 374 3040 13]
-02:23:48.843 TTS: after queue pop - speek_done=0, llm_finish=1, llm_text.empty=0, token_ids.size=6
-02:23:48.843 TTS: before empty check - response.empty=0, response='Two plus two is four.', llm_finish=1
+09:42:34.229 LLM: detected end token, set llm_generation_done=true
+09:42:34.229 LLM->TTS: text='Two plus two equals four.', n_tokens=6, hidden_size=24576, n_embd=4096, token_ids=[11613 5519 1378 16819 3040 13]
+09:42:34.229 📍 Decode 结束: n_past=186, 剩余空间=8006, 无需滑窗
+09:42:34.229 📍 轮次 1 结束，记录边界于 n_past=186
+09:42:34.229 TTS<-LLM: chunk_idx=0, text='Two plus two equals four.', n_tokens=6, hidden_size=24576, token_ids=[11613 5519 1378 16819 3040 13]
+09:42:34.229 TTS: after queue pop - speek_done=0, llm_finish=1, llm_text.empty=0, token_ids.size=6
+09:42:34.229 TTS: before empty check - response.empty=0, response='Two plus two equals four.', llm_finish=1
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mv_ext_q8_0_f32_r1_5', name = 'kernel_mul_mv_ext_q8_0_f32_r1_5_nsg=2_nxpsg=8_ne12=1_r2=1_r3=1'
-ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_ext_q8_0_f32_r1_5_nsg=2_nxpsg=8_ne12=1_r2=1_r3=1      0x92ce72100 | th_max =  640 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_ext_q8_0_f32_r1_5_nsg=2_nxpsg=8_ne12=1_r2=1_r3=1      0xbf38c6100 | th_max =  640 | th_width =   32
 TTS condition graph: initialized (vocab=152064, hidden=768)
 set_embeddings: value = 1
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mv_ext_f16_f32_r1_4', name = 'kernel_mul_mv_ext_f16_f32_r1_4_nsg=2_nxpsg=8_ne12=1_r2=1_r3=1'
-ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_ext_f16_f32_r1_4_nsg=2_nxpsg=8_ne12=1_r2=1_r3=1      0x92ce72400 | th_max =  832 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_ext_f16_f32_r1_4_nsg=2_nxpsg=8_ne12=1_r2=1_r3=1      0xbf38c6400 | th_max =  832 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_rope_norm_f32', name = 'kernel_rope_norm_f32_imrope=0'
-ggml_metal_library_compile_pipeline: loaded kernel_rope_norm_f32_imrope=0                 0x92ce72700 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_rope_norm_f32_imrope=0                 0xbf38c6700 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_flash_attn_ext_vec_f16_dk64_dv64', name = 'kernel_flash_attn_ext_vec_f16_dk64_dv64_mask=1_sink=0_bias=0_scap=0_kvpad=0_ns10=768_ns20=768_nsg=1_nwg=32'
-ggml_metal_library_compile_pipeline: loaded kernel_flash_attn_ext_vec_f16_dk64_dv64_mask=1_sink=0_bias=0_scap=0_kvpad=0_ns10=768_ns20=768_nsg=1_nwg=32      0x92ce72a00 | th_max =  768 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_flash_attn_ext_vec_f16_dk64_dv64_mask=1_sink=0_bias=0_scap=0_kvpad=0_ns10=768_ns20=768_nsg=1_nwg=32      0xbf38c6a00 | th_max =  768 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_flash_attn_ext_vec_reduce', name = 'kernel_flash_attn_ext_vec_reduce_dv=64_nwg=32'
-ggml_metal_library_compile_pipeline: loaded kernel_flash_attn_ext_vec_reduce_dv=64_nwg=32      0x92ce72d00 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_flash_attn_ext_vec_reduce_dv=64_nwg=32      0xbf38c6d00 | th_max = 1024 | th_width =   32
 set_embeddings: value = 1
 set_embeddings: value = 1
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mv_f16_f32_4', name = 'kernel_mul_mv_f16_f32_4_nsg=4_ne12=1_r2=1_r3=1'
-ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_f16_f32_4_nsg=4_ne12=1_r2=1_r3=1      0x92ce73000 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_f16_f32_4_nsg=4_ne12=1_r2=1_r3=1      0xbf38c7000 | th_max = 1024 | th_width =   32
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
 set_embeddings: value = 1
 set_embeddings: value = 1
 set_embeddings: value = 1
@@ -1505,68 +1521,68 @@ set_embeddings: value = 1
 set_embeddings: value = 1
 set_embeddings: value = 1
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_bin_fuse_f32_f32_f32', name = 'kernel_bin_fuse_f32_f32_f32_op=0_nf=1_rb=0_cb=0'
-ggml_metal_library_compile_pipeline: loaded kernel_bin_fuse_f32_f32_f32_op=0_nf=1_rb=0_cb=0      0x92ce73300 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_bin_fuse_f32_f32_f32_op=0_nf=1_rb=0_cb=0      0xbf38c7300 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_unary_f32_f32', name = 'kernel_unary_f32_f32_op=10_cnt=0'
-ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_op=10_cnt=0              0x92ce73600 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_op=10_cnt=0              0xbf38c7600 | th_max = 1024 | th_width =   32
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_f32_f32', name = 'kernel_mul_mm_f32_f32_bci=1_bco=1_ne12=16_ne13=1_r2=1_r3=1'
-ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_f32_f32_bci=1_bco=1_ne12=16_ne13=1_r2=1_r3=1      0x92ce73900 | th_max =  896 | th_width =   32
-02:23:48.843 TTS: DEBUG before has_llm_data - token_ids.size=6, hidden_states.size=24576, n_embd=4096
-02:23:48.843 TTS: has_llm_data=1, token_ids=6, hidden_states=24576, n_embd=4096, llm_finish=1
-02:23:48.843 TTS: n_tokens_orig=6, n_tokens_filtered=6 (filtered 0 special tokens)
-02:23:48.845 📍 为下一轮准备: eval <|im_end|>\n<|im_start|>user\n, n_past=191
-02:23:49.681 TTS: saved merged embeddings (text) to /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/llm_debug/chunk_0/merged_embeddings.txt
-02:23:49.681 TTS Simplex: generating audio tokens for chunk 0 (n_tokens=6, tts_n_embd=768)
-02:23:49.681 TTS Simplex: 在 prefill 前添加 audio_bos (chunk_idx=0, new_size=7)
-02:23:49.681 TTS Simplex: first chunk - cleared KV cache
-02:23:49.681 TTS Simplex: first chunk - cleared tts_all_generated_tokens and tts_token_buffer
-02:23:49.683 TTS Simplex: prefill completed, n_past_tts=7
-02:23:49.683 TTS Simplex: sampler created
-02:23:49.683 TTS simplex: is_audio_bos=true (first audio token)
-02:23:49.722 TTS Simplex Phase1: token 1/500: rel_id=4778
-02:23:49.732 TTS Simplex Phase1: token 2/500: rel_id=5343
-02:23:49.742 TTS Simplex Phase1: token 3/500: rel_id=2166
-02:23:49.751 TTS Simplex Phase1: token 4/500: rel_id=3591
-02:23:49.761 TTS Simplex Phase1: token 5/500: rel_id=4898
-02:23:49.878 TTS Simplex Phase1: EOS token at step 16
-02:23:49.878 TTS Simplex: is_final_text_chunk=true, will enter Phase 2 for text_eos_embed
-02:23:49.878 TTS Simplex Phase2: injecting text_eos_embed + audio_bos at n_past=22
-02:23:49.879 TTS Simplex Phase2: text_eos_embed injected, n_past=23
-02:23:49.885 TTS Simplex Phase2: audio_bos injected, n_past=24, starting final generation
-02:23:49.999 TTS Simplex Phase2: yield 25 tokens 到 T2W
-02:23:49.999 T2W线程(C++): 轮次切换 (-1 -> 0)，更新输出目录
-02:23:50.000 T2W线程(C++): 新输出目录 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav
-02:23:50.293 TTS Simplex Phase2: EOS at step 18 (final end)
-02:23:50.293 TTS Simplex: chunk 结束，tts_token_buffer 剩余 7 tokens (保留等下一个 chunk)
-02:23:50.293 TTS Simplex: is_final_text_chunk=true, flush 剩余 7 tokens 从 tts_token_buffer
-02:23:50.293 TTS Simplex: generated 32 audio tokens for chunk 0
-02:23:50.293 TTS Simplex: chunk 0 first tokens: [4778 5343 2166 3591 4898 ], last tokens: [4218 4299 4299 4299 1707 ]
-02:23:50.293 TTS Simplex: updated tts_n_past_accumulated=42, total_generated_tokens=32
-02:23:50.295 TTS: finished processing all chunks
-02:23:50.295 TTS: 单工模式轮次结束，下一轮 round_idx=1
-02:23:50.295 TTS: sent is_final=true to T2W queue (turn end)
-02:23:50.592 🎉 首响时间 (First Audio Response): 2102ms
-02:23:50.592 T2W线程: wav_0.wav | 0.84s audio | 591.8ms inference | RTF=0.70 | t=2102ms | queue_wait=0.0ms
-02:23:50.955 T2W线程: wav_1.wav | 0.56s audio | 362.2ms inference | RTF=0.65 | t=2464ms | queue_wait=298.9ms
-02:23:50.955 T2W线程: 写入结束标记 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav/generation_done.flag (last_wav=1)
-02:23:50.955 T2W线程: 轮次结束后更新输出目录为 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_001/tts_wav
-02:23:51.023 stream_prefill(index=2): processing user audio: /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/bench_audio/q01.wav
-02:23:51.059 stream_prefill(index=2): user audio embedding: n_pos=14
-02:23:51.182 
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_f32_f32_bci=1_bco=1_ne12=16_ne13=1_r2=1_r3=1      0xbf38c7900 | th_max =  896 | th_width =   32
+09:42:34.229 TTS: DEBUG before has_llm_data - token_ids.size=6, hidden_states.size=24576, n_embd=4096
+09:42:34.229 TTS: has_llm_data=1, token_ids=6, hidden_states=24576, n_embd=4096, llm_finish=1
+09:42:34.230 TTS: n_tokens_orig=6, n_tokens_filtered=6 (filtered 0 special tokens)
+09:42:34.238 📍 为下一轮准备: eval <|im_end|>\n<|im_start|>user\n, n_past=191
+09:42:38.980 TTS: saved merged embeddings (text) to research/teacher12_20260821/round_000/llm_debug/chunk_0/merged_embeddings.txt
+09:42:38.980 TTS Simplex: generating audio tokens for chunk 0 (n_tokens=6, tts_n_embd=768)
+09:42:38.980 TTS Simplex: 在 prefill 前添加 audio_bos (chunk_idx=0, new_size=7)
+09:42:38.981 TTS Simplex: first chunk - cleared KV cache
+09:42:38.981 TTS Simplex: first chunk - cleared tts_all_generated_tokens and tts_token_buffer
+09:42:39.002 TTS Simplex: prefill completed, n_past_tts=7
+09:42:39.004 TTS Simplex: sampler created
+09:42:39.004 TTS simplex: is_audio_bos=true (first audio token)
+09:42:39.423 TTS Simplex Phase1: token 1/500: rel_id=1736
+09:42:39.434 TTS Simplex Phase1: token 2/500: rel_id=2112
+09:42:39.445 TTS Simplex Phase1: token 3/500: rel_id=4434
+09:42:39.456 TTS Simplex Phase1: token 4/500: rel_id=2355
+09:42:39.467 TTS Simplex Phase1: token 5/500: rel_id=3373
+09:42:39.703 TTS Simplex Phase1: yield 25 tokens 到 T2W (step 25, buffer=25)
+09:42:39.703 TTS Simplex Phase1: token 25/500: rel_id=4299
+09:42:39.703 T2W线程(C++): 轮次切换 (-1 -> 0)，更新输出目录
+09:42:39.703 T2W线程(C++): 新输出目录 research/teacher12_20260821/round_000/tts_wav
+09:42:40.291 TTS Simplex Phase1: EOS token at step 39
+09:42:40.291 TTS Simplex: is_final_text_chunk=true, will enter Phase 2 for text_eos_embed
+09:42:40.291 TTS Simplex Phase2: injecting text_eos_embed + audio_bos at n_past=45
+09:42:40.291 TTS Simplex Phase2: text_eos_embed injected, n_past=46
+09:42:40.317 TTS Simplex Phase2: audio_bos injected, n_past=47, starting final generation
+09:42:40.568 TTS Simplex Phase2: EOS at step 11 (final end)
+09:42:40.568 TTS Simplex: chunk 结束，tts_token_buffer 剩余 23 tokens (保留等下一个 chunk)
+09:42:40.568 TTS Simplex: is_final_text_chunk=true, flush 剩余 23 tokens 从 tts_token_buffer
+09:42:40.568 TTS Simplex: generated 48 audio tokens for chunk 0
+09:42:40.568 TTS Simplex: chunk 0 first tokens: [1736 2112 4434 2355 3373 ], last tokens: [1652 3814 1627 1869 4299 ]
+09:42:40.568 TTS Simplex: updated tts_n_past_accumulated=58, total_generated_tokens=48
+09:42:40.569 TTS: finished processing all chunks
+09:42:40.569 TTS: 单工模式轮次结束，下一轮 round_idx=1
+09:42:40.569 TTS: sent is_final=true to T2W queue (turn end)
+09:42:41.396 🎉 首响时间 (First Audio Response): 7508ms
+09:42:41.396 T2W线程: wav_0.wav | 0.84s audio | 1692.1ms inference | RTF=2.01 | t=7508ms | queue_wait=0.0ms
+09:42:43.264 T2W线程: wav_1.wav | 1.20s audio | 1867.0ms inference | RTF=1.56 | t=9376ms | queue_wait=828.0ms
+09:42:43.269 T2W线程: 写入结束标记 research/teacher12_20260821/round_000/tts_wav/generation_done.flag (last_wav=1)
+09:42:43.269 T2W线程: 轮次结束后更新输出目录为 research/teacher12_20260821/round_001/tts_wav
+09:42:43.354 stream_prefill(index=2): processing user audio: /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/bench_audio/q01.wav
+09:42:43.406 stream_prefill(index=2): user audio embedding: n_pos=14
+09:42:43.540 
 
 c++ finish stream_prefill(index=2). n_past=207, n_keep=155, n_ctx=8192
 
-02:23:51.182 📍 [轮次同步] 调用方指定 round_idx=0，当前 simplex_round_idx=1，强制同步
-02:23:51.182 📍 stream_decode 开始: n_past=207, n_keep=155, n_ctx=8192, duplex_mode=0
-02:23:51.182 wait prefill done
-02:23:51.182 📍 [单工TTS] 添加 assistant prompt: "<|im_end|>
+09:42:43.540 📍 stream_decode 开始: n_past=207, n_keep=155, n_ctx=8192, duplex_mode=0
+09:42:43.540 wait prefill done
+09:42:43.540 📍 [单工TTS] 添加 assistant prompt: "<|im_end|>
 <|im_start|>assistant
 <think>
 
 </think>
 
 <|tts_bos|>", n_past=207
-02:23:51.209 📍 [单工TTS] assistant prompt 完成, n_past=217
-02:23:51.209 LLM decode: max_tgt_len = 8192, n_predict = -1, n_ctx = 8192
+09:42:43.568 📍 [单工TTS] assistant prompt 完成, n_past=217
+09:42:43.568 LLM decode: max_tgt_len = 8192, n_predict = -1, n_ctx = 8192
 set_embeddings: value = 1
 set_embeddings: value = 0
 set_embeddings: value = 1
@@ -1579,16 +1595,16 @@ set_embeddings: value = 1
 set_embeddings: value = 0
 set_embeddings: value = 1
 set_embeddings: value = 0
-02:23:51.471 LLM: detected end token, set llm_generation_done=true
-02:23:51.471 LLM->TTS: text='The sky is blue.', n_tokens=5, hidden_size=20480, n_embd=4096, token_ids=[785 12884 374 6303 13]
-02:23:51.471 📍 Decode 结束: n_past=223, 剩余空间=7969, 无需滑窗
-02:23:51.471 📍 轮次 2 结束，记录边界于 n_past=223
-02:23:51.471 TTS<-LLM: chunk_idx=0, text='The sky is blue.', n_tokens=5, hidden_size=20480, token_ids=[785 12884 374 6303 13]
-02:23:51.471 TTS: after queue pop - speek_done=0, llm_finish=1, llm_text.empty=0, token_ids.size=5
-02:23:51.471 TTS: before empty check - response.empty=0, response='The sky is blue.', llm_finish=1
+09:42:43.836 LLM: detected end token, set llm_generation_done=true
+09:42:43.836 LLM->TTS: text='The sky is blue.', n_tokens=5, hidden_size=20480, n_embd=4096, token_ids=[785 12884 374 6303 13]
+09:42:43.836 📍 Decode 结束: n_past=223, 剩余空间=7969, 无需滑窗
+09:42:43.836 📍 轮次 2 结束，记录边界于 n_past=223
+09:42:43.836 TTS<-LLM: chunk_idx=0, text='The sky is blue.', n_tokens=5, hidden_size=20480, token_ids=[785 12884 374 6303 13]
+09:42:43.836 TTS: after queue pop - speek_done=0, llm_finish=1, llm_text.empty=0, token_ids.size=5
+09:42:43.836 TTS: before empty check - response.empty=0, response='The sky is blue.', llm_finish=1
 set_embeddings: value = 1
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mv_ext_f16_f32_r1_3', name = 'kernel_mul_mv_ext_f16_f32_r1_3_nsg=2_nxpsg=8_ne12=1_r2=1_r3=1'
-ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_ext_f16_f32_r1_3_nsg=2_nxpsg=8_ne12=1_r2=1_r3=1      0x92ce73c00 | th_max =  832 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_ext_f16_f32_r1_3_nsg=2_nxpsg=8_ne12=1_r2=1_r3=1      0xbf38c7c00 | th_max =  832 | th_width =   32
 set_embeddings: value = 1
 set_embeddings: value = 1
 set_embeddings: value = 1
@@ -1632,64 +1648,66 @@ set_embeddings: value = 1
 set_embeddings: value = 1
 set_embeddings: value = 1
 set_embeddings: value = 1
-02:23:51.471 TTS: DEBUG before has_llm_data - token_ids.size=5, hidden_states.size=20480, n_embd=4096
-02:23:51.471 TTS: has_llm_data=1, token_ids=5, hidden_states=20480, n_embd=4096, llm_finish=1
-02:23:51.472 TTS: n_tokens_orig=5, n_tokens_filtered=5 (filtered 0 special tokens)
-02:23:51.473 📍 为下一轮准备: eval <|im_end|>\n<|im_start|>user\n, n_past=228
-02:23:51.479 TTS: saved merged embeddings (text) to /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/llm_debug/chunk_0/merged_embeddings.txt
-02:23:51.479 TTS Simplex: generating audio tokens for chunk 0 (n_tokens=5, tts_n_embd=768)
-02:23:51.479 TTS Simplex: 在 prefill 前添加 audio_bos (chunk_idx=0, new_size=6)
-02:23:51.479 TTS Simplex: first chunk - cleared KV cache
-02:23:51.479 TTS Simplex: first chunk - cleared tts_all_generated_tokens and tts_token_buffer
-02:23:51.771 TTS Simplex: prefill completed, n_past_tts=6
-02:23:51.771 TTS Simplex: sampler created
-02:23:51.771 TTS simplex: is_audio_bos=true (first audio token)
-02:23:51.788 TTS Simplex Phase1: token 1/500: rel_id=3707
-02:23:51.797 TTS Simplex Phase1: token 2/500: rel_id=4299
-02:23:51.806 TTS Simplex Phase1: token 3/500: rel_id=4218
-02:23:51.819 TTS Simplex Phase1: token 4/500: rel_id=2031
-02:23:51.829 TTS Simplex Phase1: token 5/500: rel_id=1887
-02:23:52.063 TTS Simplex Phase1: yield 25 tokens 到 T2W (step 25, buffer=25)
-02:23:52.063 TTS Simplex Phase1: token 25/500: rel_id=3478
-02:23:52.063 T2W线程(C++): 轮次切换 (1 -> 0)，更新输出目录
-02:23:52.063 T2W线程(C++): 新输出目录 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav
-02:23:52.461 TTS Simplex Phase1: EOS token at step 36
-02:23:52.461 TTS Simplex: is_final_text_chunk=true, will enter Phase 2 for text_eos_embed
-02:23:52.461 TTS Simplex Phase2: injecting text_eos_embed + audio_bos at n_past=41
-02:23:52.462 TTS Simplex Phase2: text_eos_embed injected, n_past=42
-02:23:52.468 TTS Simplex Phase2: audio_bos injected, n_past=43, starting final generation
-02:23:52.530 TTS Simplex Phase2: EOS at step 5 (final end)
-02:23:52.530 TTS Simplex: chunk 结束，tts_token_buffer 剩余 14 tokens (保留等下一个 chunk)
-02:23:52.530 TTS Simplex: is_final_text_chunk=true, flush 剩余 14 tokens 从 tts_token_buffer
-02:23:52.530 TTS Simplex: generated 39 audio tokens for chunk 0
-02:23:52.530 TTS Simplex: chunk 0 first tokens: [3707 4299 4218 2031 1887 ], last tokens: [1785 4299 4299 4299 6081 ]
-02:23:52.530 TTS Simplex: updated tts_n_past_accumulated=48, total_generated_tokens=39
-02:23:52.530 TTS: finished processing all chunks
-02:23:52.530 TTS: 单工模式轮次结束，下一轮 round_idx=1
-02:23:52.530 TTS: sent is_final=true to T2W queue (turn end)
-02:23:52.631 🎉 首响时间 (First Audio Response): 1448ms
-02:23:52.631 T2W线程: wav_0.wav | 1.00s audio | 567.2ms inference | RTF=0.57 | t=1448ms | queue_wait=0.0ms
-02:23:53.209 T2W线程: wav_1.wav | 0.84s audio | 577.6ms inference | RTF=0.69 | t=2026ms | queue_wait=101.3ms
-02:23:53.209 T2W线程: 写入结束标记 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav/generation_done.flag (last_wav=1)
-02:23:53.209 T2W线程: 轮次结束后更新输出目录为 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_001/tts_wav
-02:23:53.249 stream_prefill(index=3): processing user audio: /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/bench_audio/q02.wav
-02:23:53.289 stream_prefill(index=3): user audio embedding: n_pos=15
-02:23:53.415 
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+09:42:43.836 TTS: DEBUG before has_llm_data - token_ids.size=5, hidden_states.size=20480, n_embd=4096
+09:42:43.836 TTS: has_llm_data=1, token_ids=5, hidden_states=20480, n_embd=4096, llm_finish=1
+09:42:43.836 TTS: 创建单工模式输出目录: research/teacher12_20260821/round_001
+09:42:43.836 TTS: n_tokens_orig=5, n_tokens_filtered=5 (filtered 0 special tokens)
+09:42:43.839 📍 为下一轮准备: eval <|im_end|>\n<|im_start|>user\n, n_past=228
+09:42:43.846 TTS: saved merged embeddings (text) to research/teacher12_20260821/round_001/llm_debug/chunk_0/merged_embeddings.txt
+09:42:43.846 TTS Simplex: generating audio tokens for chunk 0 (n_tokens=5, tts_n_embd=768)
+09:42:43.846 TTS Simplex: 在 prefill 前添加 audio_bos (chunk_idx=0, new_size=6)
+09:42:43.846 TTS Simplex: first chunk - cleared KV cache
+09:42:43.846 TTS Simplex: first chunk - cleared tts_all_generated_tokens and tts_token_buffer
+09:42:43.848 TTS Simplex: prefill completed, n_past_tts=6
+09:42:43.848 TTS Simplex: sampler created
+09:42:43.848 TTS simplex: is_audio_bos=true (first audio token)
+09:42:43.905 TTS Simplex Phase1: token 1/500: rel_id=1750
+09:42:43.914 TTS Simplex Phase1: token 2/500: rel_id=1752
+09:42:43.922 TTS Simplex Phase1: token 3/500: rel_id=2259
+09:42:43.932 TTS Simplex Phase1: token 4/500: rel_id=2216
+09:42:43.942 TTS Simplex Phase1: token 5/500: rel_id=5157
+09:42:44.120 TTS Simplex Phase1: yield 25 tokens 到 T2W (step 25, buffer=25)
+09:42:44.120 TTS Simplex Phase1: token 25/500: rel_id=2166
+09:42:44.720 TTS Simplex Phase1: EOS token at step 42
+09:42:44.720 TTS Simplex: is_final_text_chunk=true, will enter Phase 2 for text_eos_embed
+09:42:44.720 TTS Simplex Phase2: injecting text_eos_embed + audio_bos at n_past=47
+09:42:44.721 TTS Simplex Phase2: text_eos_embed injected, n_past=48
+09:42:44.731 TTS Simplex Phase2: audio_bos injected, n_past=49, starting final generation
+09:42:44.765 TTS Simplex Phase2: EOS at step 3 (final end)
+09:42:44.765 TTS Simplex: chunk 结束，tts_token_buffer 剩余 18 tokens (保留等下一个 chunk)
+09:42:44.765 TTS Simplex: is_final_text_chunk=true, flush 剩余 18 tokens 从 tts_token_buffer
+09:42:44.765 TTS Simplex: generated 43 audio tokens for chunk 0
+09:42:44.765 TTS Simplex: chunk 0 first tokens: [1750 1752 2259 2216 5157 ], last tokens: [3402 3645 3648 1869 4299 ]
+09:42:44.765 TTS Simplex: updated tts_n_past_accumulated=52, total_generated_tokens=43
+09:42:44.765 TTS: finished processing all chunks
+09:42:44.765 TTS: 单工模式轮次结束，下一轮 round_idx=2
+09:42:44.765 TTS: sent is_final=true to T2W queue (turn end)
+09:42:45.394 🎉 首响时间 (First Audio Response): 1854ms
+09:42:45.394 T2W线程: wav_1000.wav | 1.00s audio | 1273.1ms inference | RTF=1.27 | t=1854ms | queue_wait=0.0ms
+09:42:46.726 T2W线程: wav_1001.wav | 1.00s audio | 1329.3ms inference | RTF=1.33 | t=3186ms | queue_wait=628.9ms
+09:42:46.727 T2W线程: 写入结束标记 research/teacher12_20260821/round_001/tts_wav/generation_done.flag (last_wav=1001)
+09:42:46.727 T2W线程: 轮次结束后更新输出目录为 research/teacher12_20260821/round_002/tts_wav
+09:42:46.767 stream_prefill(index=3): processing user audio: /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/bench_audio/q02.wav
+09:42:46.807 stream_prefill(index=3): user audio embedding: n_pos=15
+09:42:46.934 
 
 c++ finish stream_prefill(index=3). n_past=245, n_keep=155, n_ctx=8192
 
-02:23:53.415 📍 [轮次同步] 调用方指定 round_idx=0，当前 simplex_round_idx=1，强制同步
-02:23:53.415 📍 stream_decode 开始: n_past=245, n_keep=155, n_ctx=8192, duplex_mode=0
-02:23:53.415 wait prefill done
-02:23:53.415 📍 [单工TTS] 添加 assistant prompt: "<|im_end|>
+09:42:46.934 📍 stream_decode 开始: n_past=245, n_keep=155, n_ctx=8192, duplex_mode=0
+09:42:46.934 wait prefill done
+09:42:46.934 📍 [单工TTS] 添加 assistant prompt: "<|im_end|>
 <|im_start|>assistant
 <think>
 
 </think>
 
 <|tts_bos|>", n_past=245
-02:23:53.442 📍 [单工TTS] assistant prompt 完成, n_past=255
-02:23:53.442 LLM decode: max_tgt_len = 8192, n_predict = -1, n_ctx = 8192
+09:42:46.962 📍 [单工TTS] assistant prompt 完成, n_past=255
+09:42:46.962 LLM decode: max_tgt_len = 8192, n_predict = -1, n_ctx = 8192
 set_embeddings: value = 1
 set_embeddings: value = 0
 set_embeddings: value = 1
@@ -1704,13 +1722,13 @@ set_embeddings: value = 1
 set_embeddings: value = 0
 set_embeddings: value = 1
 set_embeddings: value = 0
-02:23:53.732 LLM: detected end token, set llm_generation_done=true
-02:23:53.732 LLM->TTS: text='Seven days in a week.', n_tokens=6, hidden_size=24576, n_embd=4096, token_ids=[59528 2849 304 264 2003 13]
-02:23:53.732 📍 Decode 结束: n_past=262, 剩余空间=7930, 无需滑窗
-02:23:53.732 📍 轮次 3 结束，记录边界于 n_past=262
-02:23:53.732 TTS<-LLM: chunk_idx=0, text='Seven days in a week.', n_tokens=6, hidden_size=24576, token_ids=[59528 2849 304 264 2003 13]
-02:23:53.732 TTS: after queue pop - speek_done=0, llm_finish=1, llm_text.empty=0, token_ids.size=6
-02:23:53.732 TTS: before empty check - response.empty=0, response='Seven days in a week.', llm_finish=1
+09:42:47.257 LLM: detected end token, set llm_generation_done=true
+09:42:47.257 LLM->TTS: text='Seven days in a week.', n_tokens=6, hidden_size=24576, n_embd=4096, token_ids=[59528 2849 304 264 2003 13]
+09:42:47.257 📍 Decode 结束: n_past=262, 剩余空间=7930, 无需滑窗
+09:42:47.257 📍 轮次 3 结束，记录边界于 n_past=262
+09:42:47.257 TTS<-LLM: chunk_idx=0, text='Seven days in a week.', n_tokens=6, hidden_size=24576, token_ids=[59528 2849 304 264 2003 13]
+09:42:47.257 TTS: after queue pop - speek_done=0, llm_finish=1, llm_text.empty=0, token_ids.size=6
+09:42:47.257 TTS: before empty check - response.empty=0, response='Seven days in a week.', llm_finish=1
 set_embeddings: value = 1
 set_embeddings: value = 1
 set_embeddings: value = 1
@@ -1750,71 +1768,62 @@ set_embeddings: value = 1
 set_embeddings: value = 1
 set_embeddings: value = 1
 set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-02:23:53.732 TTS: DEBUG before has_llm_data - token_ids.size=6, hidden_states.size=24576, n_embd=4096
-02:23:53.732 TTS: has_llm_data=1, token_ids=6, hidden_states=24576, n_embd=4096, llm_finish=1
-02:23:53.732 TTS: n_tokens_orig=6, n_tokens_filtered=6 (filtered 0 special tokens)
-02:23:53.734 📍 为下一轮准备: eval <|im_end|>\n<|im_start|>user\n, n_past=267
-02:23:53.740 TTS: saved merged embeddings (text) to /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/llm_debug/chunk_0/merged_embeddings.txt
-02:23:53.740 TTS Simplex: generating audio tokens for chunk 0 (n_tokens=6, tts_n_embd=768)
-02:23:53.740 TTS Simplex: 在 prefill 前添加 audio_bos (chunk_idx=0, new_size=7)
-02:23:53.740 TTS Simplex: first chunk - cleared KV cache
-02:23:53.740 TTS Simplex: first chunk - cleared tts_all_generated_tokens and tts_token_buffer
-02:23:53.741 TTS Simplex: prefill completed, n_past_tts=7
-02:23:53.741 TTS Simplex: sampler created
-02:23:53.741 TTS simplex: is_audio_bos=true (first audio token)
-02:23:53.800 TTS Simplex Phase1: token 1/500: rel_id=3947
-02:23:53.808 TTS Simplex Phase1: token 2/500: rel_id=2112
-02:23:53.817 TTS Simplex Phase1: token 3/500: rel_id=4299
-02:23:53.825 TTS Simplex Phase1: token 4/500: rel_id=4299
-02:23:53.833 TTS Simplex Phase1: token 5/500: rel_id=4299
-02:23:54.02:23:5400.002 002 T2W线程(C++): 轮次切换 (1 -> 0)，更新输出目录
-02:23:54.002 T2W线程(C++): 新输出目录 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav
-TTS Simplex Phase1: yield 25 tokens 到 T2W (step 25, buffer=25)
-02:23:54.002 TTS Simplex Phase1: token 25/500: rel_id=5179
-02:23:54.269 TTS Simplex Phase1: EOS token at step 31
-02:23:54.269 TTS Simplex: is_final_text_chunk=true, will enter Phase 2 for text_eos_embed
-02:23:54.269 TTS Simplex Phase2: injecting text_eos_embed + audio_bos at n_past=37
-02:23:54.270 TTS Simplex Phase2: text_eos_embed injected, n_past=38
-02:23:54.275 TTS Simplex Phase2: audio_bos injected, n_past=39, starting final generation
-02:23:54.416 TTS Simplex Phase2: EOS at step 12 (final end)
-02:23:54.416 TTS Simplex: chunk 结束，tts_token_buffer 剩余 16 tokens (保留等下一个 chunk)
-02:23:54.416 TTS Simplex: is_final_text_chunk=true, flush 剩余 16 tokens 从 tts_token_buffer
-02:23:54.416 TTS Simplex: generated 41 audio tokens for chunk 0
-02:23:54.416 TTS Simplex: chunk 0 first tokens: [3947 2112 4299 4299 4299 ], last tokens: [2112 1464 165 3000 1461 ]
-02:23:54.416 TTS Simplex: updated tts_n_past_accumulated=51, total_generated_tokens=41
-02:23:54.416 TTS: finished processing all chunks
-02:23:54.416 TTS: 单工模式轮次结束，下一轮 round_idx=1
-02:23:54.416 TTS: sent is_final=true to T2W queue (turn end)
-02:23:54.710 🎉 首响时间 (First Audio Response): 1294ms
-02:23:54.710 T2W线程: wav_0.wav | 1.00s audio | 707.4ms inference | RTF=0.71 | t=1294ms | queue_wait=0.1ms
-02:23:55.426 T2W线程: wav_1.wav | 0.92s audio | 715.9ms inference | RTF=0.78 | t=2011ms | queue_wait=293.9ms
-02:23:55.426 T2W线程: 写入结束标记 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav/generation_done.flag (last_wav=1)
-02:23:55.426 T2W线程: 轮次结束后更新输出目录为 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_001/tts_wav
-02:23:55.473 stream_prefill(index=4): processing user audio: /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/bench_audio/q03.wav
-02:23:55.512 stream_prefill(index=4): user audio embedding: n_pos=17
-02:23:55.638 
+09:42:47.257 TTS: DEBUG before has_llm_data - token_ids.size=6, hidden_states.size=24576, n_embd=4096
+09:42:47.257 TTS: has_llm_data=1, token_ids=6, hidden_states=24576, n_embd=4096, llm_finish=1
+09:42:47.258 TTS: 创建单工模式输出目录: research/teacher12_20260821/round_002
+09:42:47.258 TTS: n_tokens_orig=6, n_tokens_filtered=6 (filtered 0 special tokens)
+09:42:47.259 📍 为下一轮准备: eval <|im_end|>\n<|im_start|>user\n, n_past=267
+09:42:47.273 TTS: saved merged embeddings (text) to research/teacher12_20260821/round_002/llm_debug/chunk_0/merged_embeddings.txt
+09:42:47.273 TTS Simplex: generating audio tokens for chunk 0 (n_tokens=6, tts_n_embd=768)
+09:42:47.273 TTS Simplex: 在 prefill 前添加 audio_bos (chunk_idx=0, new_size=7)
+09:42:47.273 TTS Simplex: first chunk - cleared KV cache
+09:42:47.273 TTS Simplex: first chunk - cleared tts_all_generated_tokens and tts_token_buffer
+09:42:47.276 TTS Simplex: prefill completed, n_past_tts=7
+09:42:47.276 TTS Simplex: sampler created
+09:42:47.276 TTS simplex: is_audio_bos=true (first audio token)
+09:42:47.335 TTS Simplex Phase1: token 1/500: rel_id=3922
+09:42:47.343 TTS Simplex Phase1: token 2/500: rel_id=6374
+09:42:47.351 TTS Simplex Phase1: token 3/500: rel_id=6374
+09:42:47.359 TTS Simplex Phase1: token 4/500: rel_id=64
+09:42:47.367 TTS Simplex Phase1: token 5/500: rel_id=2921
+09:42:47.543 TTS Simplex Phase1: yield 25 tokens 到 T2W (step 25, buffer=25)
+09:42:47.543 TTS Simplex Phase1: token 25/500: rel_id=3644
+09:42:47.893 TTS Simplex Phase1: EOS token at step 34
+09:42:47.893 TTS Simplex: is_final_text_chunk=true, will enter Phase 2 for text_eos_embed
+09:42:47.893 TTS Simplex Phase2: injecting text_eos_embed + audio_bos at n_past=40
+09:42:47.894 TTS Simplex Phase2: text_eos_embed injected, n_past=41
+09:42:47.898 TTS Simplex Phase2: audio_bos injected, n_past=42, starting final generation
+09:42:47.917 TTS Simplex Phase2: EOS at step 2 (final end)
+09:42:47.917 TTS Simplex: chunk 结束，tts_token_buffer 剩余 9 tokens (保留等下一个 chunk)
+09:42:47.917 TTS Simplex: is_final_text_chunk=true, flush 剩余 9 tokens 从 tts_token_buffer
+09:42:47.917 TTS Simplex: generated 34 audio tokens for chunk 0
+09:42:47.917 TTS Simplex: chunk 0 first tokens: [3922 6374 6374 64 2921 ], last tokens: [566 2139 1788 168 168 ]
+09:42:47.917 TTS Simplex: updated tts_n_past_accumulated=44, total_generated_tokens=34
+09:42:47.918 TTS: finished processing all chunks
+09:42:47.918 TTS: 单工模式轮次结束，下一轮 round_idx=3
+09:42:47.918 TTS: sent is_final=true to T2W queue (turn end)
+09:42:48.690 🎉 首响时间 (First Audio Response): 1756ms
+09:42:48.690 T2W线程: wav_2000.wav | 1.00s audio | 1145.6ms inference | RTF=1.15 | t=1756ms | queue_wait=0.0ms
+09:42:49.332 T2W线程: wav_2001.wav | 0.64s audio | 641.0ms inference | RTF=1.00 | t=2398ms | queue_wait=772.9ms
+09:42:49.332 T2W线程: 写入结束标记 research/teacher12_20260821/round_002/tts_wav/generation_done.flag (last_wav=2001)
+09:42:49.332 T2W线程: 轮次结束后更新输出目录为 research/teacher12_20260821/round_003/tts_wav
+09:42:49.353 stream_prefill(index=4): processing user audio: /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/bench_audio/q03.wav
+09:42:49.398 stream_prefill(index=4): user audio embedding: n_pos=17
+09:42:49.527 
 
 c++ finish stream_prefill(index=4). n_past=286, n_keep=155, n_ctx=8192
 
-02:23:55.638 📍 [轮次同步] 调用方指定 round_idx=0，当前 simplex_round_idx=1，强制同步
-02:23:55.638 📍 stream_decode 开始: n_past=286, n_keep=155, n_ctx=8192, duplex_mode=0
-02:23:55.638 wait prefill done
-02:23:55.638 📍 [单工TTS] 添加 assistant prompt: "<|im_end|>
+09:42:49.527 📍 stream_decode 开始: n_past=286, n_keep=155, n_ctx=8192, duplex_mode=0
+09:42:49.527 wait prefill done
+09:42:49.527 📍 [单工TTS] 添加 assistant prompt: "<|im_end|>
 <|im_start|>assistant
 <think>
 
 </think>
 
 <|tts_bos|>", n_past=286
-02:23:55.665 📍 [单工TTS] assistant prompt 完成, n_past=296
-02:23:55.666 LLM decode: max_tgt_len = 8192, n_predict = -1, n_ctx = 8192
+09:42:49.555 📍 [单工TTS] assistant prompt 完成, n_past=296
+09:42:49.555 LLM decode: max_tgt_len = 8192, n_predict = -1, n_ctx = 8192
 set_embeddings: value = 1
 set_embeddings: value = 0
 set_embeddings: value = 1
@@ -1831,13 +1840,13 @@ set_embeddings: value = 1
 set_embeddings: value = 0
 set_embeddings: value = 1
 set_embeddings: value = 0
-02:23:55.987 LLM: detected end token, set llm_generation_done=true
-02:23:55.987 LLM->TTS: text='The capital of France is Paris.', n_tokens=7, hidden_size=28672, n_embd=4096, token_ids=[785 6722 315 9625 374 12095 13]
-02:23:55.987 📍 Decode 结束: n_past=304, 剩余空间=7888, 无需滑窗
-02:23:55.987 📍 轮次 4 结束，记录边界于 n_past=304
-02:23:55.987 TTS<-LLM: chunk_idx=0, text='The capital of France is Paris.', n_tokens=7, hidden_size=28672, token_ids=[785 6722 315 9625 374 12095 13]
-02:23:55.987 TTS: after queue pop - speek_done=0, llm_finish=1, llm_text.empty=0, token_ids.size=7
-02:23:55.987 TTS: before empty check - response.empty=0, response='The capital of France is Paris.', llm_finish=1
+09:42:49.874 LLM: detected end token, set llm_generation_done=true
+09:42:49.874 LLM->TTS: text='The capital of France is Paris.', n_tokens=7, hidden_size=28672, n_embd=4096, token_ids=[785 6722 315 9625 374 12095 13]
+09:42:49.874 📍 Decode 结束: n_past=304, 剩余空间=7888, 无需滑窗
+09:42:49.874 📍 轮次 4 结束，记录边界于 n_past=304
+09:42:49.874 TTS<-LLM: chunk_idx=0, text='The capital of France is Paris.', n_tokens=7, hidden_size=28672, token_ids=[785 6722 315 9625 374 12095 13]
+09:42:49.874 TTS: after queue pop - speek_done=0, llm_finish=1, llm_text.empty=0, token_ids.size=7
+09:42:49.874 TTS: before empty check - response.empty=0, response='The capital of France is Paris.', llm_finish=1
 set_embeddings: value = 1
 set_embeddings: value = 1
 set_embeddings: value = 1
@@ -1888,64 +1897,73 @@ set_embeddings: value = 1
 set_embeddings: value = 1
 set_embeddings: value = 1
 set_embeddings: value = 1
-02:23:55.987 TTS: DEBUG before has_llm_data - token_ids.size=7, hidden_states.size=28672, n_embd=4096
-02:23:55.987 TTS: has_llm_data=1, token_ids=7, hidden_states=28672, n_embd=4096, llm_finish=1
-02:23:55.987 TTS: n_tokens_orig=7, n_tokens_filtered=7 (filtered 0 special tokens)
-02:23:55.989 📍 为下一轮准备: eval <|im_end|>\n<|im_start|>user\n, n_past=309
-02:23:56.014 TTS: saved merged embeddings (text) to /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/llm_debug/chunk_0/merged_embeddings.txt
-02:23:56.014 TTS Simplex: generating audio tokens for chunk 0 (n_tokens=7, tts_n_embd=768)
-02:23:56.015 TTS Simplex: 在 prefill 前添加 audio_bos (chunk_idx=0, new_size=8)
-02:23:56.064 TTS Simplex: first chunk - cleared KV cache
-02:23:56.064 TTS Simplex: first chunk - cleared tts_all_generated_tokens and tts_token_buffer
-02:23:56.070 TTS Simplex: prefill completed, n_past_tts=8
-02:23:56.070 TTS Simplex: sampler created
-02:23:56.071 TTS simplex: is_audio_bos=true (first audio token)
-02:23:56.114 TTS Simplex Phase1: token 1/500: rel_id=71
-02:23:56.123 TTS Simplex Phase1: token 2/500: rel_id=1194
-02:23:56.131 TTS Simplex Phase1: token 3/500: rel_id=168
-02:23:56.139 TTS Simplex Phase1: token 4/500: rel_id=2436
-02:23:56.147 TTS Simplex Phase1: token 5/500: rel_id=1463
-02:02:23:23:5656.00.325325 T2W线程(C++): 轮次切换 (1 -> 0)，更新输出目录
- TTS Simplex Phase1: yield 25 tokens 到 T2W (step 25, buffer=25)
-02:23:56.325 TTS Simplex Phase1: token 25/500: rel_id=2988
-02:23:56.325 T2W线程(C++): 新输出目录 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav
-02:23:56.889 TTS Simplex Phase1: EOS token at step 44
-02:23:56.889 TTS Simplex: is_final_text_chunk=true, will enter Phase 2 for text_eos_embed
-02:23:56.889 TTS Simplex Phase2: injecting text_eos_embed + audio_bos at n_past=51
-02:23:56.889 TTS Simplex Phase2: text_eos_embed injected, n_past=52
-02:23:56.903 TTS Simplex Phase2: audio_bos injected, n_past=53, starting final generation
-02:23:56.968 TTS Simplex Phase2: EOS at step 3 (final end)
-02:23:56.968 TTS Simplex: chunk 结束，tts_token_buffer 剩余 20 tokens (保留等下一个 chunk)
-02:23:56.968 TTS Simplex: is_final_text_chunk=true, flush 剩余 20 tokens 从 tts_token_buffer
-02:23:56.968 TTS Simplex: generated 45 audio tokens for chunk 0
-02:23:56.968 TTS Simplex: chunk 0 first tokens: [71 1194 168 2436 1463 ], last tokens: [6373 6372 1782 4299 4218 ]
-02:23:56.968 TTS Simplex: updated tts_n_past_accumulated=56, total_generated_tokens=45
-02:23:56.969 TTS: finished processing all chunks
-02:23:56.969 TTS: 单工模式轮次结束，下一轮 round_idx=1
-02:23:56.969 TTS: sent is_final=true to T2W queue (turn end)
-02:23:57.575 🎉 首响时间 (First Audio Response): 1936ms
-02:23:57.575 T2W线程: wav_0.wav | 1.00s audio | 1248.6ms inference | RTF=1.25 | t=1936ms | queue_wait=0.1ms
-02:23:58.261 T2W线程: wav_1.wav | 1.08s audio | 670.5ms inference | RTF=0.62 | t=2623ms | queue_wait=607.3ms
-02:23:58.262 T2W线程: 写入结束标记 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav/generation_done.flag (last_wav=1)
-02:23:58.262 T2W线程: 轮次结束后更新输出目录为 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_001/tts_wav
-02:23:58.307 stream_prefill(index=5): processing user audio: /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/bench_audio/q04.wav
-02:23:58.351 stream_prefill(index=5): user audio embedding: n_pos=14
-02:23:58.477 
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+09:42:49.874 TTS: DEBUG before has_llm_data - token_ids.size=7, hidden_states.size=28672, n_embd=4096
+09:42:49.874 TTS: has_llm_data=1, token_ids=7, hidden_states=28672, n_embd=4096, llm_finish=1
+09:42:49.874 TTS: 创建单工模式输出目录: research/teacher12_20260821/round_003
+09:42:49.874 TTS: n_tokens_orig=7, n_tokens_filtered=7 (filtered 0 special tokens)
+09:42:49.875 📍 为下一轮准备: eval <|im_end|>\n<|im_start|>user\n, n_past=309
+09:42:49.891 TTS: saved merged embeddings (text) to research/teacher12_20260821/round_003/llm_debug/chunk_0/merged_embeddings.txt
+09:42:49.891 TTS Simplex: generating audio tokens for chunk 0 (n_tokens=7, tts_n_embd=768)
+09:42:49.891 TTS Simplex: 在 prefill 前添加 audio_bos (chunk_idx=0, new_size=8)
+09:42:49.891 TTS Simplex: first chunk - cleared KV cache
+09:42:49.891 TTS Simplex: first chunk - cleared tts_all_generated_tokens and tts_token_buffer
+09:42:49.893 TTS Simplex: prefill completed, n_past_tts=8
+09:42:49.893 TTS Simplex: sampler created
+09:42:49.893 TTS simplex: is_audio_bos=true (first audio token)
+09:42:49.943 TTS Simplex Phase1: token 1/500: rel_id=1745
+09:42:49.951 TTS Simplex Phase1: token 2/500: rel_id=2085
+09:42:49.960 TTS Simplex Phase1: token 3/500: rel_id=73
+09:42:49.969 TTS Simplex Phase1: token 4/500: rel_id=948
+09:42:49.977 TTS Simplex Phase1: token 5/500: rel_id=168
+09:42:50.145 TTS Simplex Phase1: yield 25 tokens 到 T2W (step 25, buffer=25)
+09:42:50.145 TTS Simplex Phase1: token 25/500: rel_id=2935
+09:42:50.715 TTS Simplex Phase1: yield 25 tokens 到 T2W (step 50, buffer=25)
+09:42:50.715 TTS Simplex Phase1: token 50/500: rel_id=6486
+09:42:50.736 TTS Simplex Phase1: EOS token at step 52
+09:42:50.736 TTS Simplex: is_final_text_chunk=true, will enter Phase 2 for text_eos_embed
+09:42:50.736 TTS Simplex Phase2: injecting text_eos_embed + audio_bos at n_past=59
+09:42:50.737 TTS Simplex Phase2: text_eos_embed injected, n_past=60
+09:42:50.744 TTS Simplex Phase2: audio_bos injected, n_past=61, starting final generation
+09:42:50.779 TTS Simplex Phase2: EOS at step 3 (final end)
+09:42:50.779 TTS Simplex: chunk 结束，tts_token_buffer 剩余 3 tokens (保留等下一个 chunk)
+09:42:50.779 TTS Simplex: is_final_text_chunk=true, flush 剩余 3 tokens 从 tts_token_buffer
+09:42:50.779 TTS Simplex: generated 53 audio tokens for chunk 0
+09:42:50.779 TTS Simplex: chunk 0 first tokens: [1745 2085 73 948 168 ], last tokens: [1788 6486 6082 4218 6405 ]
+09:42:50.779 TTS Simplex: updated tts_n_past_accumulated=64, total_generated_tokens=53
+09:42:50.780 TTS: finished processing all chunks
+09:42:50.780 TTS: 单工模式轮次结束，下一轮 round_idx=4
+09:42:50.780 TTS: sent is_final=true to T2W queue (turn end)
+09:42:50.973 🎉 首响时间 (First Audio Response): 1446ms
+09:42:50.973 T2W线程: wav_3000.wav | 1.00s audio | 827.4ms inference | RTF=0.83 | t=1446ms | queue_wait=0.0ms
+09:42:51.622 T2W线程: wav_3001.wav | 1.00s audio | 648.5ms inference | RTF=0.65 | t=2095ms | queue_wait=257.6ms
+09:42:52.278 T2W线程: wav_3002.wav | 0.40s audio | 655.3ms inference | RTF=1.64 | t=2751ms | queue_wait=257.6ms
+09:42:52.278 T2W线程: 写入结束标记 research/teacher12_20260821/round_003/tts_wav/generation_done.flag (last_wav=3002)
+09:42:52.278 T2W线程: 轮次结束后更新输出目录为 research/teacher12_20260821/round_004/tts_wav
+09:42:52.304 stream_prefill(index=5): processing user audio: /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/bench_audio/q04.wav
+09:42:52.347 stream_prefill(index=5): user audio embedding: n_pos=14
+09:42:52.473 
 
 c++ finish stream_prefill(index=5). n_past=325, n_keep=155, n_ctx=8192
 
-02:23:58.477 📍 [轮次同步] 调用方指定 round_idx=0，当前 simplex_round_idx=1，强制同步
-02:23:58.477 📍 stream_decode 开始: n_past=325, n_keep=155, n_ctx=8192, duplex_mode=0
-02:23:58.477 wait prefill done
-02:23:58.477 📍 [单工TTS] 添加 assistant prompt: "<|im_end|>
+09:42:52.473 📍 stream_decode 开始: n_past=325, n_keep=155, n_ctx=8192, duplex_mode=0
+09:42:52.473 wait prefill done
+09:42:52.473 📍 [单工TTS] 添加 assistant prompt: "<|im_end|>
 <|im_start|>assistant
 <think>
 
 </think>
 
 <|tts_bos|>", n_past=325
-02:23:58.504 📍 [单工TTS] assistant prompt 完成, n_past=335
-02:23:58.504 LLM decode: max_tgt_len = 8192, n_predict = -1, n_ctx = 8192
+09:42:52.501 📍 [单工TTS] assistant prompt 完成, n_past=335
+09:42:52.501 LLM decode: max_tgt_len = 8192, n_predict = -1, n_ctx = 8192
 set_embeddings: value = 1
 set_embeddings: value = 0
 set_embeddings: value = 1
@@ -1960,13 +1978,13 @@ set_embeddings: value = 1
 set_embeddings: value = 0
 set_embeddings: value = 1
 set_embeddings: value = 0
-02:23:58.796 LLM: detected end token, set llm_generation_done=true
-02:23:58.797 LLM->TTS: text='Ten minus three equals seven.', n_tokens=6, hidden_size=24576, n_embd=4096, token_ids=[32687 27283 2326 16819 8094 13]
-02:23:58.797 📍 Decode 结束: n_past=342, 剩余空间=7850, 无需滑窗
-02:23:58.797 📍 轮次 5 结束，记录边界于 n_past=342
-02:23:58.797 TTS<-LLM: chunk_idx=0, text='Ten minus three equals seven.', n_tokens=6, hidden_size=24576, token_ids=[32687 27283 2326 16819 8094 13]
-02:23:58.797 TTS: after queue pop - speek_done=0, llm_finish=1, llm_text.empty=0, token_ids.size=6
-02:23:58.797 TTS: before empty check - response.empty=0, response='Ten minus three equals seven.', llm_finish=1
+09:42:52.809 LLM: detected end token, set llm_generation_done=true
+09:42:52.809 LLM->TTS: text='Ten minus three equals seven.', n_tokens=6, hidden_size=24576, n_embd=4096, token_ids=[32687 27283 2326 16819 8094 13]
+09:42:52.809 📍 Decode 结束: n_past=342, 剩余空间=7850, 无需滑窗
+09:42:52.809 📍 轮次 5 结束，记录边界于 n_past=342
+09:42:52.809 TTS<-LLM: chunk_idx=0, text='Ten minus three equals seven.', n_tokens=6, hidden_size=24576, token_ids=[32687 27283 2326 16819 8094 13]
+09:42:52.809 TTS: after queue pop - speek_done=0, llm_finish=1, llm_text.empty=0, token_ids.size=6
+09:42:52.809 TTS: before empty check - response.empty=0, response='Ten minus three equals seven.', llm_finish=1
 set_embeddings: value = 1
 set_embeddings: value = 1
 set_embeddings: value = 1
@@ -2020,76 +2038,62 @@ set_embeddings: value = 1
 set_embeddings: value = 1
 set_embeddings: value = 1
 set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-02:23:58.797 TTS: DEBUG before has_llm_data - token_ids.size=6, hidden_states.size=24576, n_embd=4096
-02:23:58.797 TTS: has_llm_data=1, token_ids=6, hidden_states=24576, n_embd=4096, llm_finish=1
-02:23:58.797 TTS: n_tokens_orig=6, n_tokens_filtered=6 (filtered 0 special tokens)
-02:23:58.800 📍 为下一轮准备: eval <|im_end|>\n<|im_start|>user\n, n_past=347
-02:23:58.805 TTS: saved merged embeddings (text) to /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/llm_debug/chunk_0/merged_embeddings.txt
-02:23:58.805 TTS Simplex: generating audio tokens for chunk 0 (n_tokens=6, tts_n_embd=768)
-02:23:58.805 TTS Simplex: 在 prefill 前添加 audio_bos (chunk_idx=0, new_size=7)
-02:23:58.805 TTS Simplex: first chunk - cleared KV cache
-02:23:58.805 TTS Simplex: first chunk - cleared tts_all_generated_tokens and tts_token_buffer
-02:23:58.806 TTS Simplex: prefill completed, n_past_tts=7
-02:23:58.806 TTS Simplex: sampler created
-02:23:58.806 TTS simplex: is_audio_bos=true (first audio token)
-02:23:58.867 TTS Simplex Phase1: token 1/500: rel_id=3733
-02:23:58.875 TTS Simplex Phase1: token 2/500: rel_id=3658
-02:23:58.883 TTS Simplex Phase1: token 3/500: rel_id=5
-02:23:58.892 TTS Simplex Phase1: token 4/500: rel_id=1557
-02:23:58.900 TTS Simplex Phase1: token 5/500: rel_id=6258
-02:0223:59.068 T2W线程(C++): 轮次切换 (1 -> 0)，更新输出目录
-02:23:59.068 T2W线程(C++): 新输出目录 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav
-:23:59.068 TTS Simplex Phase1: yield 25 tokens 到 T2W (step 25, buffer=25)
-02:23:59.068 TTS Simplex Phase1: token 25/500: rel_id=3562
-02:23:59.511 TTS Simplex Phase1: EOS token at step 45
-02:23:59.511 TTS Simplex: is_final_text_chunk=true, will enter Phase 2 for text_eos_embed
-02:23:59.511 TTS Simplex Phase2: injecting text_eos_embed + audio_bos at n_past=51
-02:23:59.512 TTS Simplex Phase2: text_eos_embed injected, n_past=52
-02:23:59.519 TTS Simplex Phase2: audio_bos injected, n_past=53, starting final generation
-02:23:59.635 TTS Simplex Phase2: yield 25 tokens 到 T2W
-02:23:59.647 🎉 首响时间 (First Audio Response): 1169ms
-02:23:59.647 T2W线程: wav_0.wav | 1.00s audio | 578.9ms inference | RTF=0.58 | t=1169ms | queue_wait=0.0ms
-02:23:59.958 TTS Simplex Phase2: EOS at step 15 (final end)
-02:23:59.958 TTS Simplex: chunk 结束，tts_token_buffer 剩余 8 tokens (保留等下一个 chunk)
-02:23:59.958 TTS Simplex: is_final_text_chunk=true, flush 剩余 8 tokens 从 tts_token_buffer
-02:23:59.958 TTS Simplex: generated 58 audio tokens for chunk 0
-02:23:59.958 TTS Simplex: chunk 0 first tokens: [3733 3658 5 1557 6258 ], last tokens: [3975 4299 4218 4299 6162 ]
-02:23:59.958 TTS Simplex: updated tts_n_past_accumulated=68, total_generated_tokens=58
-02:23:59.958 TTS: finished processing all chunks
-02:23:59.958 TTS: 单工模式轮次结束，下一轮 round_idx=1
-02:23:59.958 TTS: sent is_final=true to T2W queue (turn end)
-02:24:00.204 T2W线程: wav_1.wav | 1.00s audio | 556.3ms inference | RTF=0.56 | t=1726ms | queue_wait=12.1ms
-02:24:00.598 T2W线程: wav_2.wav | 0.60s audio | 393.4ms inference | RTF=0.66 | t=2120ms | queue_wait=245.8ms
-02:24:00.598 T2W线程: 写入结束标记 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav/generation_done.flag (last_wav=2)
-02:24:00.598 T2W线程: 轮次结束后更新输出目录为 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_001/tts_wav
-02:24:00.629 stream_prefill(index=6): processing user audio: /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/bench_audio/q05.wav
-02:24:00.683 stream_prefill(index=6): user audio embedding: n_pos=19
-02:24:00.810 
+09:42:52.809 TTS: DEBUG before has_llm_data - token_ids.size=6, hidden_states.size=24576, n_embd=4096
+09:42:52.809 TTS: has_llm_data=1, token_ids=6, hidden_states=24576, n_embd=4096, llm_finish=1
+09:42:52.809 TTS: 创建单工模式输出目录: research/teacher12_20260821/round_004
+09:42:52.809 TTS: n_tokens_orig=6, n_tokens_filtered=6 (filtered 0 special tokens)
+09:42:52.811 📍 为下一轮准备: eval <|im_end|>\n<|im_start|>user\n, n_past=347
+09:42:52.818 TTS: saved merged embeddings (text) to research/teacher12_20260821/round_004/llm_debug/chunk_0/merged_embeddings.txt
+09:42:52.818 TTS Simplex: generating audio tokens for chunk 0 (n_tokens=6, tts_n_embd=768)
+09:42:52.818 TTS Simplex: 在 prefill 前添加 audio_bos (chunk_idx=0, new_size=7)
+09:42:52.818 TTS Simplex: first chunk - cleared KV cache
+09:42:52.818 TTS Simplex: first chunk - cleared tts_all_generated_tokens and tts_token_buffer
+09:42:52.819 TTS Simplex: prefill completed, n_past_tts=7
+09:42:52.819 TTS Simplex: sampler created
+09:42:52.819 TTS simplex: is_audio_bos=true (first audio token)
+09:42:52.878 TTS Simplex Phase1: token 1/500: rel_id=1736
+09:42:52.886 TTS Simplex Phase1: token 2/500: rel_id=2139
+09:42:52.894 TTS Simplex Phase1: token 3/500: rel_id=4432
+09:42:52.903 TTS Simplex Phase1: token 4/500: rel_id=741
+09:42:52.911 TTS Simplex Phase1: token 5/500: rel_id=2192
+09:42:53.086 TTS Simplex Phase1: yield 25 tokens 到 T2W (step 25, buffer=25)
+09:42:53.086 TTS Simplex Phase1: token 25/500: rel_id=960
+09:42:53.657 TTS Simplex Phase1: EOS token at step 46
+09:42:53.657 TTS Simplex: is_final_text_chunk=true, will enter Phase 2 for text_eos_embed
+09:42:53.657 TTS Simplex Phase2: injecting text_eos_embed + audio_bos at n_past=52
+09:42:53.658 TTS Simplex Phase2: text_eos_embed injected, n_past=53
+09:42:53.664 TTS Simplex Phase2: audio_bos injected, n_past=54, starting final generation
+09:42:53.710 TTS Simplex Phase2: EOS at step 4 (final end)
+09:42:53.710 TTS Simplex: chunk 结束，tts_token_buffer 剩余 23 tokens (保留等下一个 chunk)
+09:42:53.710 TTS Simplex: is_final_text_chunk=true, flush 剩余 23 tokens 从 tts_token_buffer
+09:42:53.710 TTS Simplex: generated 48 audio tokens for chunk 0
+09:42:53.710 TTS Simplex: chunk 0 first tokens: [1736 2139 4432 741 2192 ], last tokens: [4299 6486 6486 4218 6082 ]
+09:42:53.710 TTS Simplex: updated tts_n_past_accumulated=58, total_generated_tokens=48
+09:42:53.711 TTS: finished processing all chunks
+09:42:53.711 TTS: 单工模式轮次结束，下一轮 round_idx=5
+09:42:53.711 TTS: sent is_final=true to T2W queue (turn end)
+09:42:53.977 🎉 首响时间 (First Audio Response): 1503ms
+09:42:53.977 T2W线程: wav_4000.wav | 1.00s audio | 889.8ms inference | RTF=0.89 | t=1503ms | queue_wait=0.0ms
+09:42:55.138 T2W线程: wav_4001.wav | 1.20s audio | 1160.0ms inference | RTF=0.97 | t=2664ms | queue_wait=266.7ms
+09:42:55.138 T2W线程: 写入结束标记 research/teacher12_20260821/round_004/tts_wav/generation_done.flag (last_wav=4001)
+09:42:55.138 T2W线程: 轮次结束后更新输出目录为 research/teacher12_20260821/round_005/tts_wav
+09:42:55.183 stream_prefill(index=6): processing user audio: /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/bench_audio/q05.wav
+09:42:55.234 stream_prefill(index=6): user audio embedding: n_pos=19
+09:42:55.364 
 
 c++ finish stream_prefill(index=6). n_past=368, n_keep=155, n_ctx=8192
 
-02:24:00.810 📍 [轮次同步] 调用方指定 round_idx=0，当前 simplex_round_idx=1，强制同步
-02:24:00.810 📍 stream_decode 开始: n_past=368, n_keep=155, n_ctx=8192, duplex_mode=0
-02:24:00.810 wait prefill done
-02:24:00.810 📍 [单工TTS] 添加 assistant prompt: "<|im_end|>
+09:42:55.364 📍 stream_decode 开始: n_past=368, n_keep=155, n_ctx=8192, duplex_mode=0
+09:42:55.364 wait prefill done
+09:42:55.364 📍 [单工TTS] 添加 assistant prompt: "<|im_end|>
 <|im_start|>assistant
 <think>
 
 </think>
 
 <|tts_bos|>", n_past=368
-02:24:00.838 📍 [单工TTS] assistant prompt 完成, n_past=378
-02:24:00.838 LLM decode: max_tgt_len = 8192, n_predict = -1, n_ctx = 8192
+09:42:55.391 📍 [单工TTS] assistant prompt 完成, n_past=378
+09:42:55.391 LLM decode: max_tgt_len = 8192, n_predict = -1, n_ctx = 8192
 set_embeddings: value = 1
 set_embeddings: value = 0
 set_embeddings: value = 1
@@ -2098,19 +2102,13 @@ set_embeddings: value = 1
 set_embeddings: value = 0
 set_embeddings: value = 1
 set_embeddings: value = 0
-set_embeddings: value = 1
-set_embeddings: value = 0
-set_embeddings: value = 1
-set_embeddings: value = 0
-set_embeddings: value = 1
-set_embeddings: value = 0
-02:24:01.127 LLM: detected end token, set llm_generation_done=true
-02:24:01.127 LLM->TTS: text='Spiders have eight legs.', n_tokens=6, hidden_size=24576, n_embd=4096, token_ids=[6406 13269 614 8063 14201 13]
-02:24:01.127 📍 Decode 结束: n_past=385, 剩余空间=7807, 无需滑窗
-02:24:01.127 📍 轮次 6 结束，记录边界于 n_past=385
-02:24:01.127 TTS<-LLM: chunk_idx=0, text='Spiders have eight legs.', n_tokens=6, hidden_size=24576, token_ids=[6406 13269 614 8063 14201 13]
-02:24:01.127 TTS: after queue pop - speek_done=0, llm_finish=1, llm_text.empty=0, token_ids.size=6
-02:24:01.127 TTS: before empty check - response.empty=0, response='Spiders have eight legs.', llm_finish=1
+09:42:55.599 LLM: detected end token, set llm_generation_done=true
+09:42:55.599 LLM->TTS: text='Eight legs.', n_tokens=3, hidden_size=12288, n_embd=4096, token_ids=[59085 14201 13]
+09:42:55.599 📍 Decode 结束: n_past=382, 剩余空间=7810, 无需滑窗
+09:42:55.599 📍 轮次 6 结束，记录边界于 n_past=382
+09:42:55.599 TTS<-LLM: chunk_idx=0, text='Eight legs.', n_tokens=3, hidden_size=12288, token_ids=[59085 14201 13]
+09:42:55.599 TTS: after queue pop - speek_done=0, llm_finish=1, llm_text.empty=0, token_ids.size=3
+09:42:55.599 TTS: before empty check - response.empty=0, response='Eight legs.', llm_finish=1
 set_embeddings: value = 1
 set_embeddings: value = 1
 set_embeddings: value = 1
@@ -2146,81 +2144,61 @@ set_embeddings: value = 1
 set_embeddings: value = 1
 set_embeddings: value = 1
 set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-02:24:01.127 TTS: DEBUG before has_llm_data - token_ids.size=6, hidden_states.size=24576, n_embd=4096
-02:24:01.127 TTS: has_llm_data=1, token_ids=6, hidden_states=24576, n_embd=4096, llm_finish=1
-02:24:01.128 TTS: n_tokens_orig=6, n_tokens_filtered=6 (filtered 0 special tokens)
-02:24:01.129 📍 为下一轮准备: eval <|im_end|>\n<|im_start|>user\n, n_past=390
-02:24:01.140 TTS: saved merged embeddings (text) to /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/llm_debug/chunk_0/merged_embeddings.txt
-02:24:01.140 TTS Simplex: generating audio tokens for chunk 0 (n_tokens=6, tts_n_embd=768)
-02:24:01.140 TTS Simplex: 在 prefill 前添加 audio_bos (chunk_idx=0, new_size=7)
-02:24:01.140 TTS Simplex: first chunk - cleared KV cache
-02:24:01.140 TTS Simplex: first chunk - cleared tts_all_generated_tokens and tts_token_buffer
-02:24:01.141 TTS Simplex: prefill completed, n_past_tts=7
-02:24:01.141 TTS Simplex: sampler created
-02:24:01.141 TTS simplex: is_audio_bos=true (first audio token)
-02:24:01.198 TTS Simplex Phase1: token 1/500: rel_id=3923
-02:24:01.206 TTS Simplex Phase1: token 2/500: rel_id=3435
-02:24:01.214 TTS Simplex Phase1: token 3/500: rel_id=5645
-02:24:01.222 TTS Simplex Phase1: token 4/500: rel_id=6374
-02:24:01.230 TTS Simplex Phase1: token 5/500: rel_id=3456
-02:24:001.397 T2W线程(C++): 轮次切换 (1 -> 0)，更新输出目录
-2:24:01.397 TTS Simplex Phase1: yield 25 tokens 到 T2W (step 25, buffer=25)
-02:02:24:24:01.0100.397 TTS Simplex Phase1: token 25/500: rel_id=4760
-397 T2W线程(C++): 新输出目录 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav
-02:24:01.883 TTS Simplex Phase1: EOS token at step 47
-02:24:01.883 TTS Simplex: is_final_text_chunk=true, will enter Phase 2 for text_eos_embed
-02:24:01.883 TTS Simplex Phase2: injecting text_eos_embed + audio_bos at n_past=53
-02:24:01.884 TTS Simplex Phase2: text_eos_embed injected, n_past=54
-02:24:01.890 TTS Simplex Phase2: audio_bos injected, n_past=55, starting final generation
-02:24:01.914 TTS Simplex Phase2: EOS at step 2 (final end)
-02:24:01.914 TTS Simplex: chunk 结束，tts_token_buffer 剩余 22 tokens (保留等下一个 chunk)
-02:24:01.914 TTS Simplex: is_final_text_chunk=true, flush 剩余 22 tokens 从 tts_token_buffer
-02:24:01.914 TTS Simplex: generated 47 audio tokens for chunk 0
-02:24:01.914 TTS Simplex: chunk 0 first tokens: [3923 3435 5645 6374 3456 ], last tokens: [6372 1788 4299 3975 6486 ]
-02:24:01.914 TTS Simplex: updated tts_n_past_accumulated=57, total_generated_tokens=47
-02:24:01.915 TTS: finished processing all chunks
-02:24:01.915 TTS: 单工模式轮次结束，下一轮 round_idx=1
-02:24:01.915 TTS: sent is_final=true to T2W queue (turn end)
-02:24:02.092 🎉 首响时间 (First Audio Response): 1281ms
-02:24:02.092 T2W线程: wav_0.wav | 1.00s audio | 694.1ms inference | RTF=0.69 | t=1281ms | queue_wait=0.0ms
-02:24:02.633 T2W线程: wav_1.wav | 1.16s audio | 541.4ms inference | RTF=0.47 | t=1822ms | queue_wait=177.3ms
-02:24:02.634 T2W线程: 写入结束标记 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav/generation_done.flag (last_wav=1)
-02:24:02.634 T2W线程: 轮次结束后更新输出目录为 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_001/tts_wav
-02:24:02.687 stream_prefill(index=7): processing user audio: /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/bench_audio/q06.wav
-02:24:02.730 stream_prefill(index=7): user audio embedding: n_pos=15
-02:24:02.857 
+09:42:55.599 TTS: DEBUG before has_llm_data - token_ids.size=3, hidden_states.size=12288, n_embd=4096
+09:42:55.599 TTS: has_llm_data=1, token_ids=3, hidden_states=12288, n_embd=4096, llm_finish=1
+09:42:55.599 TTS: 创建单工模式输出目录: research/teacher12_20260821/round_005
+09:42:55.600 TTS: n_tokens_orig=3, n_tokens_filtered=3 (filtered 0 special tokens)
+09:42:55.601 📍 为下一轮准备: eval <|im_end|>\n<|im_start|>user\n, n_past=387
+09:42:55.611 TTS: saved merged embeddings (text) to research/teacher12_20260821/round_005/llm_debug/chunk_0/merged_embeddings.txt
+09:42:55.611 TTS Simplex: generating audio tokens for chunk 0 (n_tokens=3, tts_n_embd=768)
+09:42:55.611 TTS Simplex: 在 prefill 前添加 audio_bos (chunk_idx=0, new_size=4)
+09:42:55.611 TTS Simplex: first chunk - cleared KV cache
+09:42:55.611 TTS Simplex: first chunk - cleared tts_all_generated_tokens and tts_token_buffer
+09:42:55.612 TTS Simplex: prefill completed, n_past_tts=4
+09:42:55.612 TTS Simplex: sampler created
+09:42:55.612 TTS simplex: is_audio_bos=true (first audio token)
+09:42:55.676 TTS Simplex Phase1: token 1/500: rel_id=1490
+09:42:55.684 TTS Simplex Phase1: token 2/500: rel_id=4299
+09:42:55.726 TTS Simplex Phase1: token 3/500: rel_id=4218
+09:42:55.734 TTS Simplex Phase1: token 4/500: rel_id=1708
+09:42:55.743 TTS Simplex Phase1: token 5/500: rel_id=8
+09:42:55.896 TTS Simplex Phase1: EOS token at step 22
+09:42:55.896 TTS Simplex: is_final_text_chunk=true, will enter Phase 2 for text_eos_embed
+09:42:55.896 TTS Simplex Phase2: injecting text_eos_embed + audio_bos at n_past=25
+09:42:55.896 TTS Simplex Phase2: text_eos_embed injected, n_past=26
+09:42:55.902 TTS Simplex Phase2: audio_bos injected, n_past=27, starting final generation
+09:42:55.942 TTS Simplex Phase2: yield 25 tokens 到 T2W
+09:42:56.241 TTS Simplex Phase2: EOS at step 10 (final end)
+09:42:56.241 TTS Simplex: chunk 结束，tts_token_buffer 剩余 5 tokens (保留等下一个 chunk)
+09:42:56.241 TTS Simplex: is_final_text_chunk=true, flush 剩余 5 tokens 从 tts_token_buffer
+09:42:56.241 TTS Simplex: generated 30 audio tokens for chunk 0
+09:42:56.241 TTS Simplex: chunk 0 first tokens: [1490 4299 4218 1708 8 ], last tokens: [765 1461 6486 6486 4218 ]
+09:42:56.241 TTS Simplex: updated tts_n_past_accumulated=37, total_generated_tokens=30
+09:42:56.241 TTS: finished processing all chunks
+09:42:56.241 TTS: 单工模式轮次结束，下一轮 round_idx=6
+09:42:56.241 TTS: sent is_final=true to T2W queue (turn end)
+09:42:57.339 🎉 首响时间 (First Audio Response): 1975ms
+09:42:57.339 T2W线程: wav_5000.wav | 1.00s audio | 1396.1ms inference | RTF=1.40 | t=1975ms | queue_wait=0.0ms
+09:42:57.860 T2W线程: wav_5001.wav | 0.48s audio | 520.2ms inference | RTF=1.08 | t=2496ms | queue_wait=1098.6ms
+09:42:57.861 T2W线程: 写入结束标记 research/teacher12_20260821/round_005/tts_wav/generation_done.flag (last_wav=5001)
+09:42:57.861 T2W线程: 轮次结束后更新输出目录为 research/teacher12_20260821/round_006/tts_wav
+09:42:57.895 stream_prefill(index=7): processing user audio: /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/bench_audio/q06.wav
+09:42:57.941 stream_prefill(index=7): user audio embedding: n_pos=15
+09:42:58.069 
 
-c++ finish stream_prefill(index=7). n_past=407, n_keep=155, n_ctx=8192
+c++ finish stream_prefill(index=7). n_past=404, n_keep=155, n_ctx=8192
 
-02:24:02.857 📍 [轮次同步] 调用方指定 round_idx=0，当前 simplex_round_idx=1，强制同步
-02:24:02.857 📍 stream_decode 开始: n_past=407, n_keep=155, n_ctx=8192, duplex_mode=0
-02:24:02.857 wait prefill done
-02:24:02.857 📍 [单工TTS] 添加 assistant prompt: "<|im_end|>
+09:42:58.069 📍 stream_decode 开始: n_past=404, n_keep=155, n_ctx=8192, duplex_mode=0
+09:42:58.069 wait prefill done
+09:42:58.069 📍 [单工TTS] 添加 assistant prompt: "<|im_end|>
 <|im_start|>assistant
 <think>
 
 </think>
 
-<|tts_bos|>", n_past=407
-02:24:02.884 📍 [单工TTS] assistant prompt 完成, n_past=417
-02:24:02.884 LLM decode: max_tgt_len = 8192, n_predict = -1, n_ctx = 8192
+<|tts_bos|>", n_past=404
+09:42:58.097 📍 [单工TTS] assistant prompt 完成, n_past=414
+09:42:58.097 LLM decode: max_tgt_len = 8192, n_predict = -1, n_ctx = 8192
 set_embeddings: value = 1
 set_embeddings: value = 0
 set_embeddings: value = 1
@@ -2237,13 +2215,13 @@ set_embeddings: value = 1
 set_embeddings: value = 0
 set_embeddings: value = 1
 set_embeddings: value = 0
-02:24:03.203 LLM: detected end token, set llm_generation_done=true
-02:24:03.203 LLM->TTS: text='Jupiter is the largest planet.', n_tokens=7, hidden_size=28672, n_embd=4096, token_ids=[41 19519 374 279 7772 11580 13]
-02:24:03.203 📍 Decode 结束: n_past=425, 剩余空间=7767, 无需滑窗
-02:24:03.203 📍 轮次 7 结束，记录边界于 n_past=425
-02:24:03.203 TTS<-LLM: chunk_idx=0, text='Jupiter is the largest planet.', n_tokens=7, hidden_size=28672, token_ids=[41 19519 374 279 7772 11580 13]
-02:24:03.203 TTS: after queue pop - speek_done=0, llm_finish=1, llm_text.empty=0, token_ids.size=7
-02:24:03.203 TTS: before empty check - response.empty=0, response='Jupiter is the largest planet.', llm_finish=1
+09:42:58.442 LLM: detected end token, set llm_generation_done=true
+09:42:58.442 LLM->TTS: text='Jupiter is the largest planet.', n_tokens=7, hidden_size=28672, n_embd=4096, token_ids=[41 19519 374 279 7772 11580 13]
+09:42:58.442 📍 Decode 结束: n_past=422, 剩余空间=7770, 无需滑窗
+09:42:58.442 📍 轮次 7 结束，记录边界于 n_past=422
+09:42:58.442 TTS<-LLM: chunk_idx=0, text='Jupiter is the largest planet.', n_tokens=7, hidden_size=28672, token_ids=[41 19519 374 279 7772 11580 13]
+09:42:58.442 TTS: after queue pop - speek_done=0, llm_finish=1, llm_text.empty=0, token_ids.size=7
+09:42:58.442 TTS: before empty check - response.empty=0, response='Jupiter is the largest planet.', llm_finish=1
 set_embeddings: value = 1
 set_embeddings: value = 1
 set_embeddings: value = 1
@@ -2291,75 +2269,62 @@ set_embeddings: value = 1
 set_embeddings: value = 1
 set_embeddings: value = 1
 set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-02:24:03.203 TTS: DEBUG before has_llm_data - token_ids.size=7, hidden_states.size=28672, n_embd=4096
-02:24:03.203 TTS: has_llm_data=1, token_ids=7, hidden_states=28672, n_embd=4096, llm_finish=1
-02:24:03.203 TTS: n_tokens_orig=7, n_tokens_filtered=7 (filtered 0 special tokens)
-02:24:03.205 📍 为下一轮准备: eval <|im_end|>\n<|im_start|>user\n, n_past=430
-02:24:03.210 TTS: saved merged embeddings (text) to /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/llm_debug/chunk_0/merged_embeddings.txt
-02:24:03.210 TTS Simplex: generating audio tokens for chunk 0 (n_tokens=7, tts_n_embd=768)
-02:24:03.211 TTS Simplex: 在 prefill 前添加 audio_bos (chunk_idx=0, new_size=8)
-02:24:03.211 TTS Simplex: first chunk - cleared KV cache
-02:24:03.211 TTS Simplex: first chunk - cleared tts_all_generated_tokens and tts_token_buffer
-02:24:03.211 TTS Simplex: prefill completed, n_past_tts=8
-02:24:03.211 TTS Simplex: sampler created
-02:24:03.211 TTS simplex: is_audio_bos=true (first audio token)
-02:24:03.278 TTS Simplex Phase1: token 1/500: rel_id=1979
-02:24:03.290 TTS Simplex Phase1: token 2/500: rel_id=4839
-02:24:03.299 TTS Simplex Phase1: token 3/500: rel_id=1698
-02:24:03.307 TTS Simplex Phase1: token 4/500: rel_id=6317
-02:24:03.315 TTS Simplex Phase1: token 5/500: rel_id=4851
-02:02:24:03.483 T2W线程(C++): 轮次切换 (1 -> 0)，更新输出目录
-02:24:03.483 T2W线程(C++): 新输出目录 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav
-24:03.483 TTS Simplex Phase1: yield 25 tokens 到 T2W (step 25, buffer=25)
-02:24:03.483 TTS Simplex Phase1: token 25/500: rel_id=2741
-02:24:03.993 TTS Simplex Phase1: EOS token at step 48
-02:24:03.993 TTS Simplex: is_final_text_chunk=true, will enter Phase 2 for text_eos_embed
-02:24:03.993 TTS Simplex Phase2: injecting text_eos_embed + audio_bos at n_past=55
-02:24:03.993 TTS Simplex Phase2: text_eos_embed injected, n_past=56
-02:24:04.000 TTS Simplex Phase2: audio_bos injected, n_past=57, starting final generation
-02:24:04.029 🎉 首响时间 (First Audio Response): 1171ms
-02:24:04.029 T2W线程: wav_0.wav | 1.00s audio | 544.4ms inference | RTF=0.54 | t=1171ms | queue_wait=0.0ms
-02:24:04.034 TTS Simplex Phase2: yield 25 tokens 到 T2W
-02:24:04.260 TTS Simplex Phase2: EOS at step 5 (final end)
-02:24:04.260 TTS Simplex: chunk 结束，tts_token_buffer 剩余 1 tokens (保留等下一个 chunk)
-02:24:04.260 TTS Simplex: is_final_text_chunk=true, flush 剩余 1 tokens 从 tts_token_buffer
-02:24:04.260 TTS Simplex: generated 51 audio tokens for chunk 0
-02:24:04.260 TTS Simplex: chunk 0 first tokens: [1979 4839 1698 6317 4851 ], last tokens: [735 4299 4299 4299 4218 ]
-02:24:04.260 TTS Simplex: updated tts_n_past_accumulated=62, total_generated_tokens=51
-02:24:04.261 TTS: finished processing all chunks
-02:24:04.261 TTS: 单工模式轮次结束，下一轮 round_idx=1
-02:24:04.261 TTS: sent is_final=true to T2W queue (turn end)
-02:24:04.559 T2W线程: wav_1.wav | 1.00s audio | 524.0ms inference | RTF=0.52 | t=1701ms | queue_wait=0.0ms
-02:24:04.903 T2W线程: wav_2.wav | 0.32s audio | 344.2ms inference | RTF=1.08 | t=2046ms | queue_wait=298.4ms
-02:24:04.903 T2W线程: 写入结束标记 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav/generation_done.flag (last_wav=2)
-02:24:04.903 T2W线程: 轮次结束后更新输出目录为 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_001/tts_wav
-02:24:04.941 stream_prefill(index=8): processing user audio: /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/bench_audio/q07.wav
-02:24:04.986 stream_prefill(index=8): user audio embedding: n_pos=15
-02:24:05.112 
+09:42:58.442 TTS: DEBUG before has_llm_data - token_ids.size=7, hidden_states.size=28672, n_embd=4096
+09:42:58.442 TTS: has_llm_data=1, token_ids=7, hidden_states=28672, n_embd=4096, llm_finish=1
+09:42:58.442 TTS: 创建单工模式输出目录: research/teacher12_20260821/round_006
+09:42:58.443 TTS: n_tokens_orig=7, n_tokens_filtered=7 (filtered 0 special tokens)
+09:42:58.444 📍 为下一轮准备: eval <|im_end|>\n<|im_start|>user\n, n_past=427
+09:42:58.455 TTS: saved merged embeddings (text) to research/teacher12_20260821/round_006/llm_debug/chunk_0/merged_embeddings.txt
+09:42:58.455 TTS Simplex: generating audio tokens for chunk 0 (n_tokens=7, tts_n_embd=768)
+09:42:58.455 TTS Simplex: 在 prefill 前添加 audio_bos (chunk_idx=0, new_size=8)
+09:42:58.455 TTS Simplex: first chunk - cleared KV cache
+09:42:58.455 TTS Simplex: first chunk - cleared tts_all_generated_tokens and tts_token_buffer
+09:42:58.456 TTS Simplex: prefill completed, n_past_tts=8
+09:42:58.456 TTS Simplex: sampler created
+09:42:58.456 TTS simplex: is_audio_bos=true (first audio token)
+09:42:58.552 TTS Simplex Phase1: token 1/500: rel_id=2068
+09:42:58.574 TTS Simplex Phase1: token 2/500: rel_id=4758
+09:42:58.583 TTS Simplex Phase1: token 3/500: rel_id=1943
+09:42:58.591 TTS Simplex Phase1: token 4/500: rel_id=5340
+09:42:58.630 TTS Simplex Phase1: token 5/500: rel_id=1443
+09:42:58.976 TTS Simplex Phase1: yield 25 tokens 到 T2W (step 25, buffer=25)
+09:42:58.976 TTS Simplex Phase1: token 25/500: rel_id=5167
+09:42:59.642 TTS Simplex Phase1: EOS token at step 42
+09:42:59.642 TTS Simplex: is_final_text_chunk=true, will enter Phase 2 for text_eos_embed
+09:42:59.642 TTS Simplex Phase2: injecting text_eos_embed + audio_bos at n_past=49
+09:42:59.643 TTS Simplex Phase2: text_eos_embed injected, n_past=50
+09:42:59.651 TTS Simplex Phase2: audio_bos injected, n_past=51, starting final generation
+09:42:59.679 TTS Simplex Phase2: EOS at step 2 (final end)
+09:42:59.679 TTS Simplex: chunk 结束，tts_token_buffer 剩余 17 tokens (保留等下一个 chunk)
+09:42:59.679 TTS Simplex: is_final_text_chunk=true, flush 剩余 17 tokens 从 tts_token_buffer
+09:42:59.679 TTS Simplex: generated 42 audio tokens for chunk 0
+09:42:59.679 TTS Simplex: chunk 0 first tokens: [2068 4758 1943 5340 1443 ], last tokens: [2943 1488 4299 6486 4218 ]
+09:42:59.679 TTS Simplex: updated tts_n_past_accumulated=53, total_generated_tokens=42
+09:42:59.680 TTS: finished processing all chunks
+09:42:59.680 TTS: 单工模式轮次结束，下一轮 round_idx=7
+09:42:59.680 TTS: sent is_final=true to T2W queue (turn end)
+09:42:59.886 🎉 首响时间 (First Audio Response): 1817ms
+09:42:59.886 T2W线程: wav_6000.wav | 1.00s audio | 909.6ms inference | RTF=0.91 | t=1817ms | queue_wait=0.0ms
+09:43:00.659 T2W线程: wav_6001.wav | 0.96s audio | 772.0ms inference | RTF=0.80 | t=2589ms | queue_wait=207.3ms
+09:43:00.659 T2W线程: 写入结束标记 research/teacher12_20260821/round_006/tts_wav/generation_done.flag (last_wav=6001)
+09:43:00.659 T2W线程: 轮次结束后更新输出目录为 research/teacher12_20260821/round_007/tts_wav
+09:43:00.714 stream_prefill(index=8): processing user audio: /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/bench_audio/q07.wav
+09:43:00.766 stream_prefill(index=8): user audio embedding: n_pos=15
+09:43:00.896 
 
-c++ finish stream_prefill(index=8). n_past=447, n_keep=155, n_ctx=8192
+c++ finish stream_prefill(index=8). n_past=444, n_keep=155, n_ctx=8192
 
-02:24:05.112 📍 [轮次同步] 调用方指定 round_idx=0，当前 simplex_round_idx=1，强制同步
-02:24:05.112 📍 stream_decode 开始: n_past=447, n_keep=155, n_ctx=8192, duplex_mode=0
-02:24:05.112 wait prefill done
-02:24:05.112 📍 [单工TTS] 添加 assistant prompt: "<|im_end|>
+09:43:00.896 📍 stream_decode 开始: n_past=444, n_keep=155, n_ctx=8192, duplex_mode=0
+09:43:00.896 wait prefill done
+09:43:00.896 📍 [单工TTS] 添加 assistant prompt: "<|im_end|>
 <|im_start|>assistant
 <think>
 
 </think>
 
-<|tts_bos|>", n_past=447
-02:24:05.139 📍 [单工TTS] assistant prompt 完成, n_past=457
-02:24:05.139 LLM decode: max_tgt_len = 8192, n_predict = -1, n_ctx = 8192
+<|tts_bos|>", n_past=444
+09:43:00.925 📍 [单工TTS] assistant prompt 完成, n_past=454
+09:43:00.925 LLM decode: max_tgt_len = 8192, n_predict = -1, n_ctx = 8192
 set_embeddings: value = 1
 set_embeddings: value = 0
 set_embeddings: value = 1
@@ -2376,13 +2341,15 @@ set_embeddings: value = 1
 set_embeddings: value = 0
 set_embeddings: value = 1
 set_embeddings: value = 0
-02:24:05.457 LLM: detected end token, set llm_generation_done=true
-02:24:05.457 LLM->TTS: text='Five times five equals twenty five.', n_tokens=7, hidden_size=28672, n_embd=4096, token_ids=[37020 3039 4236 16819 17073 4236 13]
-02:24:05.457 📍 Decode 结束: n_past=465, 剩余空间=7727, 无需滑窗
-02:24:05.457 📍 轮次 8 结束，记录边界于 n_past=465
-02:24:05.457 TTS<-LLM: chunk_idx=0, text='Five times five equals twenty five.', n_tokens=7, hidden_size=28672, token_ids=[37020 3039 4236 16819 17073 4236 13]
-02:24:05.457 TTS: after queue pop - speek_done=0, llm_finish=1, llm_text.empty=0, token_ids.size=7
-02:24:05.457 TTS: before empty check - response.empty=0, response='Five times five equals twenty five.', llm_finish=1
+set_embeddings: value = 1
+set_embeddings: value = 0
+09:43:01.304 LLM: detected end token, set llm_generation_done=true
+09:43:01.304 LLM->TTS: text='Five times five equals 25.', n_tokens=8, hidden_size=32768, n_embd=4096, token_ids=[37020 3039 4236 16819 220 17 20 13]
+09:43:01.304 📍 Decode 结束: n_past=463, 剩余空间=7729, 无需滑窗
+09:43:01.304 📍 轮次 8 结束，记录边界于 n_past=463
+09:43:01.304 TTS<-LLM: chunk_idx=0, text='Five times five equals 25.', n_tokens=8, hidden_size=32768, token_ids=[37020 3039 4236 16819 220 17 20 13]
+09:43:01.304 TTS: after queue pop - speek_done=0, llm_finish=1, llm_text.empty=0, token_ids.size=8
+09:43:01.304 TTS: before empty check - response.empty=0, response='Five times five equals 25.', llm_finish=1
 set_embeddings: value = 1
 set_embeddings: value = 1
 set_embeddings: value = 1
@@ -2437,70 +2404,62 @@ set_embeddings: value = 1
 set_embeddings: value = 1
 set_embeddings: value = 1
 set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-02:24:05.457 TTS: DEBUG before has_llm_data - token_ids.size=7, hidden_states.size=28672, n_embd=4096
-02:24:05.457 TTS: has_llm_data=1, token_ids=7, hidden_states=28672, n_embd=4096, llm_finish=1
-02:24:05.457 TTS: n_tokens_orig=7, n_tokens_filtered=7 (filtered 0 special tokens)
-02:24:05.459 📍 为下一轮准备: eval <|im_end|>\n<|im_start|>user\n, n_past=470
-02:24:05.466 TTS: saved merged embeddings (text) to /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/llm_debug/chunk_0/merged_embeddings.txt
-02:24:05.466 TTS Simplex: generating audio tokens for chunk 0 (n_tokens=7, tts_n_embd=768)
-02:24:05.466 TTS Simplex: 在 prefill 前添加 audio_bos (chunk_idx=0, new_size=8)
-02:24:05.466 TTS Simplex: first chunk - cleared KV cache
-02:24:05.466 TTS Simplex: first chunk - cleared tts_all_generated_tokens and tts_token_buffer
-02:24:05.467 TTS Simplex: prefill completed, n_past_tts=8
-02:24:05.467 TTS Simplex: sampler created
-02:24:05.467 TTS simplex: is_audio_bos=true (first audio token)
-02:24:05.532 TTS Simplex Phase1: token 1/500: rel_id=4943
-02:24:05.541 TTS Simplex Phase1: token 2/500: rel_id=6320
-02:24:05.550 TTS Simplex Phase1: token 3/500: rel_id=3890
-02:24:05.558 TTS Simplex Phase1: token 4/500: rel_id=4544
-02:24:05.567 TTS Simplex Phase1: token 5/500: rel_id=4858
-02:24:05.737 TTS Simplex Phase1: yield 25 tokens 到 T2W (step 25, buffer=25)
-02:24:05.737 TTS Simplex Phase1: token 25/500: rel_id=2753
-02:24:05.737 T2W线程(C++): 轮次切换 (1 -> 0)，更新输出目录
-02:24:05.737 T2W线程(C++): 新输出目录 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav
-02:24:06.134 TTS Simplex Phase1: EOS token at step 42
-02:24:06.134 TTS Simplex: is_final_text_chunk=true, will enter Phase 2 for text_eos_embed
-02:24:06.134 TTS Simplex Phase2: injecting text_eos_embed + audio_bos at n_past=49
-02:24:06.135 TTS Simplex Phase2: text_eos_embed injected, n_past=50
-02:24:06.140 TTS Simplex Phase2: audio_bos injected, n_past=51, starting final generation
-02:24:06.251 TTS Simplex Phase2: yield 25 tokens 到 T2W
-02:24:06.251 🎉 首响时间 (First Audio Response): 1138ms
-02:24:06.251 T2W线程: wav_0.wav | 1.00s audio | 513.3ms inference | RTF=0.51 | t=1138ms | queue_wait=0.0ms
-02:24:06.501 TTS Simplex Phase2: EOS at step 13 (final end)
-02:24:06.501 TTS Simplex: chunk 结束，tts_token_buffer 剩余 3 tokens (保留等下一个 chunk)
-02:24:06.501 TTS Simplex: is_final_text_chunk=true, flush 剩余 3 tokens 从 tts_token_buffer
-02:24:06.501 TTS Simplex: generated 53 audio tokens for chunk 0
-02:24:06.501 TTS Simplex: chunk 0 first tokens: [4943 6320 3890 4544 4858 ], last tokens: [6534 6183 3753 1458 2031 ]
-02:24:06.501 TTS Simplex: updated tts_n_past_accumulated=64, total_generated_tokens=53
-02:24:06.502 TTS: finished processing all chunks
-02:24:06.502 TTS: 单工模式轮次结束，下一轮 round_idx=1
-02:24:06.502 TTS: sent is_final=true to T2W queue (turn end)
-02:24:06.754 T2W线程: wav_1.wav | 1.00s audio | 502.0ms inference | RTF=0.50 | t=1641ms | queue_wait=0.3ms
-02:24:07.188 T2W线程: wav_2.wav | 0.40s audio | 431.6ms inference | RTF=1.08 | t=2075ms | queue_wait=252.8ms
-02:24:07.189 T2W线程: 写入结束标记 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav/generation_done.flag (last_wav=2)
-02:24:07.189 T2W线程: 轮次结束后更新输出目录为 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_001/tts_wav
-02:24:07.269 stream_prefill(index=9): processing user audio: /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/bench_audio/q08.wav
-02:24:07.324 stream_prefill(index=9): user audio embedding: n_pos=17
-02:24:07.454 
+09:43:01.304 TTS: DEBUG before has_llm_data - token_ids.size=8, hidden_states.size=32768, n_embd=4096
+09:43:01.304 TTS: has_llm_data=1, token_ids=8, hidden_states=32768, n_embd=4096, llm_finish=1
+09:43:01.305 TTS: 创建单工模式输出目录: research/teacher12_20260821/round_007
+09:43:01.305 TTS: n_tokens_orig=8, n_tokens_filtered=8 (filtered 0 special tokens)
+09:43:01.307 📍 为下一轮准备: eval <|im_end|>\n<|im_start|>user\n, n_past=468
+09:43:01.317 TTS: saved merged embeddings (text) to research/teacher12_20260821/round_007/llm_debug/chunk_0/merged_embeddings.txt
+09:43:01.317 TTS Simplex: generating audio tokens for chunk 0 (n_tokens=8, tts_n_embd=768)
+09:43:01.317 TTS Simplex: 在 prefill 前添加 audio_bos (chunk_idx=0, new_size=9)
+09:43:01.317 TTS Simplex: first chunk - cleared KV cache
+09:43:01.317 TTS Simplex: first chunk - cleared tts_all_generated_tokens and tts_token_buffer
+09:43:01.319 TTS Simplex: prefill completed, n_past_tts=9
+09:43:01.319 TTS Simplex: sampler created
+09:43:01.319 TTS simplex: is_audio_bos=true (first audio token)
+09:43:01.536 TTS Simplex Phase1: token 1/500: rel_id=6457
+09:43:01.545 TTS Simplex Phase1: token 2/500: rel_id=1404
+09:43:01.559 TTS Simplex Phase1: token 3/500: rel_id=1946
+09:43:01.568 TTS Simplex Phase1: token 4/500: rel_id=4544
+09:43:01.582 TTS Simplex Phase1: token 5/500: rel_id=2169
+09:43:01.801 TTS Simplex Phase1: yield 25 tokens 到 T2W (step 25, buffer=25)
+09:43:01.801 TTS Simplex Phase1: token 25/500: rel_id=635
+09:43:02.355 TTS Simplex Phase1: EOS token at step 47
+09:43:02.355 TTS Simplex: is_final_text_chunk=true, will enter Phase 2 for text_eos_embed
+09:43:02.355 TTS Simplex Phase2: injecting text_eos_embed + audio_bos at n_past=55
+09:43:02.356 TTS Simplex Phase2: text_eos_embed injected, n_past=56
+09:43:02.375 TTS Simplex Phase2: audio_bos injected, n_past=57, starting final generation
+09:43:02.495 TTS Simplex Phase2: EOS at step 4 (final end)
+09:43:02.495 TTS Simplex: chunk 结束，tts_token_buffer 剩余 24 tokens (保留等下一个 chunk)
+09:43:02.495 TTS Simplex: is_final_text_chunk=true, flush 剩余 24 tokens 从 tts_token_buffer
+09:43:02.495 TTS Simplex: generated 49 audio tokens for chunk 0
+09:43:02.495 TTS Simplex: chunk 0 first tokens: [6457 1404 1946 4544 2169 ], last tokens: [224 1597 6183 1458 1785 ]
+09:43:02.495 TTS Simplex: updated tts_n_past_accumulated=61, total_generated_tokens=49
+09:43:02.504 TTS: finished processing all chunks
+09:43:02.504 TTS: 单工模式轮次结束，下一轮 round_idx=8
+09:43:02.504 TTS: sent is_final=true to T2W queue (turn end)
+09:43:02.853 🎉 首响时间 (First Audio Response): 1956ms
+09:43:02.853 T2W线程: wav_7000.wav | 1.00s audio | 1051.8ms inference | RTF=1.05 | t=1956ms | queue_wait=0.0ms
+09:43:03.787 T2W线程: wav_7001.wav | 1.24s audio | 933.6ms inference | RTF=0.75 | t=2891ms | queue_wait=358.4ms
+09:43:03.788 T2W线程: 写入结束标记 research/teacher12_20260821/round_007/tts_wav/generation_done.flag (last_wav=7001)
+09:43:03.788 T2W线程: 轮次结束后更新输出目录为 research/teacher12_20260821/round_008/tts_wav
+09:43:03.860 stream_prefill(index=9): processing user audio: /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/bench_audio/q08.wav
+09:43:03.919 stream_prefill(index=9): user audio embedding: n_pos=17
+09:43:04.049 
 
-c++ finish stream_prefill(index=9). n_past=489, n_keep=155, n_ctx=8192
+c++ finish stream_prefill(index=9). n_past=487, n_keep=155, n_ctx=8192
 
-02:24:07.454 📍 [轮次同步] 调用方指定 round_idx=0，当前 simplex_round_idx=1，强制同步
-02:24:07.454 📍 stream_decode 开始: n_past=489, n_keep=155, n_ctx=8192, duplex_mode=0
-02:24:07.454 wait prefill done
-02:24:07.454 📍 [单工TTS] 添加 assistant prompt: "<|im_end|>
+09:43:04.049 📍 stream_decode 开始: n_past=487, n_keep=155, n_ctx=8192, duplex_mode=0
+09:43:04.049 wait prefill done
+09:43:04.049 📍 [单工TTS] 添加 assistant prompt: "<|im_end|>
 <|im_start|>assistant
 <think>
 
 </think>
 
-<|tts_bos|>", n_past=489
-02:24:07.482 📍 [单工TTS] assistant prompt 完成, n_past=499
-02:24:07.482 LLM decode: max_tgt_len = 8192, n_predict = -1, n_ctx = 8192
+<|tts_bos|>", n_past=487
+09:43:04.077 📍 [单工TTS] assistant prompt 完成, n_past=497
+09:43:04.077 LLM decode: max_tgt_len = 8192, n_predict = -1, n_ctx = 8192
 set_embeddings: value = 1
 set_embeddings: value = 0
 set_embeddings: value = 1
@@ -2517,13 +2476,17 @@ set_embeddings: value = 1
 set_embeddings: value = 0
 set_embeddings: value = 1
 set_embeddings: value = 0
-02:24:07.805 LLM: detected end token, set llm_generation_done=true
-02:24:07.805 LLM->TTS: text='The season after summer is autumn.', n_tokens=7, hidden_size=28672, n_embd=4096, token_ids=[785 3200 1283 7324 374 41674 13]
-02:24:07.805 📍 Decode 结束: n_past=507, 剩余空间=7685, 无需滑窗
-02:24:07.805 📍 轮次 9 结束，记录边界于 n_past=507
-02:24:07.805 TTS<-LLM: chunk_idx=0, text='The season after summer is autumn.', n_tokens=7, hidden_size=28672, token_ids=[785 3200 1283 7324 374 41674 13]
-02:24:07.805 TTS: after queue pop - speek_done=0, llm_finish=1, llm_text.empty=0, token_ids.size=7
-02:24:07.805 TTS: before empty check - response.empty=0, response='The season after summer is autumn.', llm_finish=1
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+09:43:04.458 LLM: detected end token, set llm_generation_done=true
+09:43:04.458 LLM->TTS: text='The season that comes after summer is autumn.', n_tokens=9, hidden_size=36864, n_embd=4096, token_ids=[785 3200 429 4041 1283 7324 374 41674 13]
+09:43:04.458 📍 Decode 结束: n_past=507, 剩余空间=7685, 无需滑窗
+09:43:04.458 📍 轮次 9 结束，记录边界于 n_past=507
+09:43:04.458 TTS<-LLM: chunk_idx=0, text='The season that comes after summer is autumn.', n_tokens=9, hidden_size=36864, token_ids=[785 3200 429 4041 1283 7324 374 41674 13]
+09:43:04.458 TTS: after queue pop - speek_done=0, llm_finish=1, llm_text.empty=0, token_ids.size=9
+09:43:04.458 TTS: before empty check - response.empty=0, response='The season that comes after summer is autumn.', llm_finish=1
 set_embeddings: value = 1
 set_embeddings: value = 1
 set_embeddings: value = 1
@@ -2576,64 +2539,81 @@ set_embeddings: value = 1
 set_embeddings: value = 1
 set_embeddings: value = 1
 set_embeddings: value = 1
-02:24:07.805 TTS: DEBUG before has_llm_data - token_ids.size=7, hidden_states.size=28672, n_embd=4096
-02:24:07.805 TTS: has_llm_data=1, token_ids=7, hidden_states=28672, n_embd=4096, llm_finish=1
-02:24:07.805 TTS: n_tokens_orig=7, n_tokens_filtered=7 (filtered 0 special tokens)
-02:24:07.808 📍 为下一轮准备: eval <|im_end|>\n<|im_start|>user\n, n_past=512
-02:24:07.815 TTS: saved merged embeddings (text) to /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/llm_debug/chunk_0/merged_embeddings.txt
-02:24:07.815 TTS Simplex: generating audio tokens for chunk 0 (n_tokens=7, tts_n_embd=768)
-02:24:07.815 TTS Simplex: 在 prefill 前添加 audio_bos (chunk_idx=0, new_size=8)
-02:24:07.815 TTS Simplex: first chunk - cleared KV cache
-02:24:07.815 TTS Simplex: first chunk - cleared tts_all_generated_tokens and tts_token_buffer
-02:24:07.817 TTS Simplex: prefill completed, n_past_tts=8
-02:24:07.817 TTS Simplex: sampler created
-02:24:07.817 TTS simplex: is_audio_bos=true (first audio token)
-02:24:07.876 TTS Simplex Phase1: token 1/500: rel_id=2234
-02:24:07.884 TTS Simplex Phase1: token 2/500: rel_id=5158
-02:24:07.892 TTS Simplex Phase1: token 3/500: rel_id=6374
-02:24:07.900 TTS Simplex Phase1: token 4/500: rel_id=6377
-02:24:07.909 TTS Simplex Phase1: token 5/500: rel_id=2256
-02:24:08.02:079 TTS Simplex Phase1: yield 25 tokens 到 T2W (step 25, buffer=25)
-02:24:08.079 TTS Simplex Phase1: token 25/500: rel_id=2836
-24:08.079 T2W线程(C++): 轮次切换 (1 -> 0)，更新输出目录
-02:24:08.079 T2W线程(C++): 新输出目录 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav
-02:24:08.424 TTS Simplex Phase1: EOS token at step 37
-02:24:08.424 TTS Simplex: is_final_text_chunk=true, will enter Phase 2 for text_eos_embed
-02:24:08.424 TTS Simplex Phase2: injecting text_eos_embed + audio_bos at n_past=44
-02:24:08.425 TTS Simplex Phase2: text_eos_embed injected, n_past=45
-02:24:08.429 TTS Simplex Phase2: audio_bos injected, n_past=46, starting final generation
-02:24:08.619 TTS Simplex Phase2: EOS at step 12 (final end)
-02:24:08.619 TTS Simplex: chunk 结束，tts_token_buffer 剩余 22 tokens (保留等下一个 chunk)
-02:24:08.619 TTS Simplex: is_final_text_chunk=true, flush 剩余 22 tokens 从 tts_token_buffer
-02:24:08.619 TTS Simplex: generated 47 audio tokens for chunk 0
-02:24:08.619 TTS Simplex: chunk 0 first tokens: [2234 5158 6374 6377 2256 ], last tokens: [4312 3990 4299 6486 3895 ]
-02:24:08.619 TTS Simplex: updated tts_n_past_accumulated=58, total_generated_tokens=47
-02:24:08.619 TTS: finished processing all chunks
-02:24:08.619 TTS: 单工模式轮次结束，下一轮 round_idx=1
-02:24:08.619 TTS: sent is_final=true to T2W queue (turn end)
-02:24:09.079 🎉 首响时间 (First Audio Response): 1624ms
-02:24:09.079 T2W线程: wav_0.wav | 1.00s audio | 999.8ms inference | RTF=1.00 | t=1624ms | queue_wait=0.0ms
-02:24:09.945 T2W线程: wav_1.wav | 1.16s audio | 866.1ms inference | RTF=0.75 | t=2491ms | queue_wait=460.3ms
-02:24:09.946 T2W线程: 写入结束标记 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav/generation_done.flag (last_wav=1)
-02:24:09.946 T2W线程: 轮次结束后更新输出目录为 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_001/tts_wav
-02:24:10.015 stream_prefill(index=10): processing user audio: /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/bench_audio/q09.wav
-02:24:10.062 stream_prefill(index=10): user audio embedding: n_pos=15
-02:24:10.190 
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+09:43:04.458 TTS: DEBUG before has_llm_data - token_ids.size=9, hidden_states.size=36864, n_embd=4096
+09:43:04.458 TTS: has_llm_data=1, token_ids=9, hidden_states=36864, n_embd=4096, llm_finish=1
+09:43:04.458 TTS: 创建单工模式输出目录: research/teacher12_20260821/round_008
+09:43:04.458 TTS: n_tokens_orig=9, n_tokens_filtered=9 (filtered 0 special tokens)
+09:43:04.460 📍 为下一轮准备: eval <|im_end|>\n<|im_start|>user\n, n_past=512
+09:43:04.471 TTS: saved merged embeddings (text) to research/teacher12_20260821/round_008/llm_debug/chunk_0/merged_embeddings.txt
+09:43:04.471 TTS Simplex: generating audio tokens for chunk 0 (n_tokens=9, tts_n_embd=768)
+09:43:04.471 TTS Simplex: 在 prefill 前添加 audio_bos (chunk_idx=0, new_size=10)
+09:43:04.471 TTS Simplex: first chunk - cleared KV cache
+09:43:04.471 TTS Simplex: first chunk - cleared tts_all_generated_tokens and tts_token_buffer
+09:43:04.475 TTS Simplex: prefill completed, n_past_tts=10
+09:43:04.475 TTS Simplex: sampler created
+09:43:04.475 TTS simplex: is_audio_bos=true (first audio token)
+09:43:04.533 TTS Simplex Phase1: token 1/500: rel_id=2004
+09:43:04.541 TTS Simplex Phase1: token 2/500: rel_id=74
+09:43:04.553 TTS Simplex Phase1: token 3/500: rel_id=59
+09:43:04.564 TTS Simplex Phase1: token 4/500: rel_id=5482
+09:43:04.572 TTS Simplex Phase1: token 5/500: rel_id=6377
+09:43:04.746 TTS Simplex Phase1: yield 25 tokens 到 T2W (step 25, buffer=25)
+09:43:04.746 TTS Simplex Phase1: token 25/500: rel_id=64
+09:43:05.442 TTS Simplex Phase1: yield 25 tokens 到 T2W (step 50, buffer=25)
+09:43:05.442 TTS Simplex Phase1: token 50/500: rel_id=1757
+09:43:05.624 TTS Simplex Phase1: EOS token at step 62
+09:43:05.624 TTS Simplex: is_final_text_chunk=true, will enter Phase 2 for text_eos_embed
+09:43:05.624 TTS Simplex Phase2: injecting text_eos_embed + audio_bos at n_past=71
+09:43:05.624 TTS Simplex Phase2: text_eos_embed injected, n_past=72
+09:43:05.641 TTS Simplex Phase2: audio_bos injected, n_past=73, starting final generation
+09:43:05.695 TTS Simplex Phase2: EOS at step 3 (final end)
+09:43:05.695 TTS Simplex: chunk 结束，tts_token_buffer 剩余 13 tokens (保留等下一个 chunk)
+09:43:05.695 TTS Simplex: is_final_text_chunk=true, flush 剩余 13 tokens 从 tts_token_buffer
+09:43:05.695 TTS Simplex: generated 63 audio tokens for chunk 0
+09:43:05.695 TTS Simplex: chunk 0 first tokens: [2004 74 59 5482 6377 ], last tokens: [1800 4056 4299 2112 4218 ]
+09:43:05.695 TTS Simplex: updated tts_n_past_accumulated=76, total_generated_tokens=63
+09:43:05.696 TTS: finished processing all chunks
+09:43:05.696 TTS: 单工模式轮次结束，下一轮 round_idx=9
+09:43:05.696 TTS: sent is_final=true to T2W queue (turn end)
+09:43:05.747 🎉 首响时间 (First Audio Response): 1698ms
+09:43:05.747 T2W线程: wav_8000.wav | 1.00s audio | 1000.9ms inference | RTF=1.00 | t=1698ms | queue_wait=0.0ms
+09:43:06.578 T2W线程: wav_8001.wav | 1.00s audio | 830.3ms inference | RTF=0.83 | t=2529ms | queue_wait=305.6ms
+09:43:07.150 T2W线程: wav_8002.wav | 0.80s audio | 571.3ms inference | RTF=0.71 | t=3101ms | queue_wait=305.6ms
+09:43:07.150 T2W线程: 写入结束标记 research/teacher12_20260821/round_008/tts_wav/generation_done.flag (last_wav=8002)
+09:43:07.150 T2W线程: 轮次结束后更新输出目录为 research/teacher12_20260821/round_009/tts_wav
+09:43:07.231 stream_prefill(index=10): processing user audio: /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/bench_audio/q09.wav
+09:43:07.284 stream_prefill(index=10): user audio embedding: n_pos=15
+09:43:07.413 
 
 c++ finish stream_prefill(index=10). n_past=529, n_keep=155, n_ctx=8192
 
-02:24:10.190 📍 [轮次同步] 调用方指定 round_idx=0，当前 simplex_round_idx=1，强制同步
-02:24:10.190 📍 stream_decode 开始: n_past=529, n_keep=155, n_ctx=8192, duplex_mode=0
-02:24:10.190 wait prefill done
-02:24:10.190 📍 [单工TTS] 添加 assistant prompt: "<|im_end|>
+09:43:07.413 📍 stream_decode 开始: n_past=529, n_keep=155, n_ctx=8192, duplex_mode=0
+09:43:07.413 wait prefill done
+09:43:07.413 📍 [单工TTS] 添加 assistant prompt: "<|im_end|>
 <|im_start|>assistant
 <think>
 
 </think>
 
 <|tts_bos|>", n_past=529
-02:24:10.218 📍 [单工TTS] assistant prompt 完成, n_past=539
-02:24:10.218 LLM decode: max_tgt_len = 8192, n_predict = -1, n_ctx = 8192
+09:43:07.441 📍 [单工TTS] assistant prompt 完成, n_past=539
+09:43:07.441 LLM decode: max_tgt_len = 8192, n_predict = -1, n_ctx = 8192
 set_embeddings: value = 1
 set_embeddings: value = 0
 set_embeddings: value = 1
@@ -2650,17 +2630,13 @@ set_embeddings: value = 1
 set_embeddings: value = 0
 set_embeddings: value = 1
 set_embeddings: value = 0
-set_embeddings: value = 1
-set_embeddings: value = 0
-set_embeddings: value = 1
-set_embeddings: value = 0
-02:24:10.601 LLM: detected end token, set llm_generation_done=true
-02:24:10.601 LLM->TTS: text='There are twenty four hours in a day.', n_tokens=9, hidden_size=36864, n_embd=4096, token_ids=[3862 525 17073 3040 4115 304 264 1899 13]
-02:24:10.601 📍 Decode 结束: n_past=549, 剩余空间=7643, 无需滑窗
-02:24:10.601 📍 轮次 10 结束，记录边界于 n_past=549
-02:24:10.601 TTS<-LLM: chunk_idx=0, text='There are twenty four hours in a day.', n_tokens=9, hidden_size=36864, token_ids=[3862 525 17073 3040 4115 304 264 1899 13]
-02:24:10.601 TTS: after queue pop - speek_done=0, llm_finish=1, llm_text.empty=0, token_ids.size=9
-02:24:10.601 TTS: before empty check - response.empty=0, response='There are twenty four hours in a day.', llm_finish=1
+09:43:07.765 LLM: detected end token, set llm_generation_done=true
+09:43:07.766 LLM->TTS: text='Twenty-four hours in a day.', n_tokens=7, hidden_size=28672, n_embd=4096, token_ids=[75796 41017 4115 304 264 1899 13]
+09:43:07.766 📍 Decode 结束: n_past=547, 剩余空间=7645, 无需滑窗
+09:43:07.766 📍 轮次 10 结束，记录边界于 n_past=547
+09:43:07.766 TTS<-LLM: chunk_idx=0, text='Twenty-four hours in a day.', n_tokens=7, hidden_size=28672, token_ids=[75796 41017 4115 304 264 1899 13]
+09:43:07.766 TTS: after queue pop - speek_done=0, llm_finish=1, llm_text.empty=0, token_ids.size=7
+09:43:07.766 TTS: before empty check - response.empty=0, response='Twenty-four hours in a day.', llm_finish=1
 set_embeddings: value = 1
 set_embeddings: value = 1
 set_embeddings: value = 1
@@ -2715,209 +2691,81 @@ set_embeddings: value = 1
 set_embeddings: value = 1
 set_embeddings: value = 1
 set_embeddings: value = 1
-02:24:10.601 TTS: DEBUG before has_llm_data - token_ids.size=9, hidden_states.size=36864, n_embd=4096
-02:24:10.601 TTS: has_llm_data=1, token_ids=9, hidden_states=36864, n_embd=4096, llm_finish=1
-02:24:10.602 TTS: n_tokens_orig=9, n_tokens_filtered=9 (filtered 0 special tokens)
-02:24:10.603 📍 为下一轮准备: eval <|im_end|>\n<|im_start|>user\n, n_past=554
-02:24:10.623 TTS: saved merged embeddings (text) to /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/llm_debug/chunk_0/merged_embeddings.txt
-02:24:10.623 TTS Simplex: generating audio tokens for chunk 0 (n_tokens=9, tts_n_embd=768)
-02:24:10.623 TTS Simplex: 在 prefill 前添加 audio_bos (chunk_idx=0, new_size=10)
-02:24:10.623 TTS Simplex: first chunk - cleared KV cache
-02:24:10.623 TTS Simplex: first chunk - cleared tts_all_generated_tokens and tts_token_buffer
-02:24:10.627 TTS Simplex: prefill completed, n_past_tts=10
-02:24:10.627 TTS Simplex: sampler created
-02:24:10.627 TTS simplex: is_audio_bos=true (first audio token)
-02:24:10.714 TTS Simplex Phase1: token 1/500: rel_id=1744
-02:24:10.723 TTS Simplex Phase1: token 2/500: rel_id=63
-02:24:10.732 TTS Simplex Phase1: token 3/500: rel_id=4760
-02:24:10.745 TTS Simplex Phase1: token 4/500: rel_id=6058
-02:24:10.756 TTS Simplex Phase1: token 5/500: rel_id=6293
-02:24:10.953 TTS Simplex Phase1: yield 25 tokens 到 T2W (step 25, buffer=25)
-02:24:10.953 TTS Simplex Phase1: token 25/500: rel_id=5915
-02:24:10.953 T2W线程(C++): 轮次切换 (1 -> 0)，更新输出目录
-02:24:10.953 T2W线程(C++): 新输出目录 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav
-02:24:11.421 TTS Simplex Phase1: EOS token at step 40
-02:24:11.421 TTS Simplex: is_final_text_chunk=true, will enter Phase 2 for text_eos_embed
-02:24:11.421 TTS Simplex Phase2: injecting text_eos_embed + audio_bos at n_past=49
-02:24:11.421 TTS Simplex Phase2: text_eos_embed injected, n_past=50
-02:24:11.433 TTS Simplex Phase2: audio_bos injected, n_past=51, starting final generation
-02:24:11.649 TTS Simplex Phase2: EOS at step 11 (final end)
-02:24:11.649 TTS Simplex: chunk 结束，tts_token_buffer 剩余 24 tokens (保留等下一个 chunk)
-02:24:11.649 TTS Simplex: is_final_text_chunk=true, flush 剩余 24 tokens 从 tts_token_buffer
-02:24:11.649 TTS Simplex: generated 49 audio tokens for chunk 0
-02:24:11.649 TTS Simplex: chunk 0 first tokens: [1744 63 4760 6058 6293 ], last tokens: [359 1115 368 2527 3246 ]
-02:24:11.649 TTS Simplex: updated tts_n_past_accumulated=62, total_generated_tokens=49
-02:24:11.649 TTS: finished processing all chunks
-02:24:11.649 TTS: 单工模式轮次结束，下一轮 round_idx=1
-02:24:11.649 TTS: sent is_final=true to T2W queue (turn end)
-02:24:11.966 🎉 首响时间 (First Audio Response): 1776ms
-02:24:11.966 T2W线程: wav_0.wav | 1.00s audio | 1012.1ms inference | RTF=1.01 | t=1776ms | queue_wait=0.1ms
-02:24:12.915 T2W线程: wav_1.wav | 1.24s audio | 948.2ms inference | RTF=0.76 | t=2725ms | queue_wait=317.1ms
-02:24:12.915 T2W线程: 写入结束标记 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav/generation_done.flag (last_wav=1)
-02:24:12.915 T2W线程: 轮次结束后更新输出目录为 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_001/tts_wav
-02:24:13.010 stream_prefill(index=11): processing user audio: /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/bench_audio/q10.wav
-02:24:13.066 stream_prefill(index=11): user audio embedding: n_pos=17
-02:24:13.196 
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+09:43:07.766 TTS: DEBUG before has_llm_data - token_ids.size=7, hidden_states.size=28672, n_embd=4096
+09:43:07.766 TTS: has_llm_data=1, token_ids=7, hidden_states=28672, n_embd=4096, llm_finish=1
+09:43:07.766 TTS: 创建单工模式输出目录: research/teacher12_20260821/round_009
+09:43:07.766 TTS: n_tokens_orig=7, n_tokens_filtered=7 (filtered 0 special tokens)
+09:43:07.767 📍 为下一轮准备: eval <|im_end|>\n<|im_start|>user\n, n_past=552
+09:43:07.775 TTS: saved merged embeddings (text) to research/teacher12_20260821/round_009/llm_debug/chunk_0/merged_embeddings.txt
+09:43:07.775 TTS Simplex: generating audio tokens for chunk 0 (n_tokens=7, tts_n_embd=768)
+09:43:07.775 TTS Simplex: 在 prefill 前添加 audio_bos (chunk_idx=0, new_size=8)
+09:43:07.775 TTS Simplex: first chunk - cleared KV cache
+09:43:07.775 TTS Simplex: first chunk - cleared tts_all_generated_tokens and tts_token_buffer
+09:43:07.776 TTS Simplex: prefill completed, n_past_tts=8
+09:43:07.776 TTS Simplex: sampler created
+09:43:07.776 TTS simplex: is_audio_bos=true (first audio token)
+09:43:07.836 TTS Simplex Phase1: token 1/500: rel_id=5164
+09:43:07.845 TTS Simplex Phase1: token 2/500: rel_id=2355
+09:43:07.854 TTS Simplex Phase1: token 3/500: rel_id=6480
+09:43:07.862 TTS Simplex Phase1: token 4/500: rel_id=3588
+09:43:07.871 TTS Simplex Phase1: token 5/500: rel_id=2876
+09:43:08.092 TTS Simplex Phase1: yield 25 tokens 到 T2W (step 25, buffer=25)
+09:43:08.092 TTS Simplex Phase1: token 25/500: rel_id=6007
+09:43:08.604 TTS Simplex Phase1: yield 25 tokens 到 T2W (step 50, buffer=25)
+09:43:08.604 TTS Simplex Phase1: token 50/500: rel_id=1951
+09:43:08.743 🎉 首响时间 (First Audio Response): 1330ms
+09:43:08.743 T2W线程: wav_9000.wav | 1.00s audio | 651.0ms inference | RTF=0.65 | t=1330ms | queue_wait=0.0ms
+09:43:09.018 TTS Simplex Phase1: EOS token at step 65
+09:43:09.018 TTS Simplex: is_final_text_chunk=true, will enter Phase 2 for text_eos_embed
+09:43:09.018 TTS Simplex Phase2: injecting text_eos_embed + audio_bos at n_past=72
+09:43:09.019 TTS Simplex Phase2: text_eos_embed injected, n_past=73
+09:43:09.029 TTS Simplex Phase2: audio_bos injected, n_past=74, starting final generation
+09:43:09.058 TTS Simplex Phase2: EOS at step 2 (final end)
+09:43:09.058 TTS Simplex: chunk 结束，tts_token_buffer 剩余 15 tokens (保留等下一个 chunk)
+09:43:09.058 TTS Simplex: is_final_text_chunk=true, flush 剩余 15 tokens 从 tts_token_buffer
+09:43:09.058 TTS Simplex: generated 65 audio tokens for chunk 0
+09:43:09.058 TTS Simplex: chunk 0 first tokens: [5164 2355 6480 3588 2876 ], last tokens: [359 386 467 2834 2527 ]
+09:43:09.058 TTS Simplex: updated tts_n_past_accumulated=76, total_generated_tokens=65
+09:43:09.058 TTS: finished processing all chunks
+09:43:09.058 TTS: 单工模式轮次结束，下一轮 round_idx=10
+09:43:09.058 TTS: sent is_final=true to T2W queue (turn end)
+09:43:09.658 T2W线程: wav_9001.wav | 1.00s audio | 914.3ms inference | RTF=0.91 | t=2245ms | queue_wait=139.4ms
+09:43:10.820 T2W线程: wav_9002.wav | 0.88s audio | 1161.8ms inference | RTF=1.32 | t=3407ms | queue_wait=600.5ms
+09:43:10.820 T2W线程: 写入结束标记 research/teacher12_20260821/round_009/tts_wav/generation_done.flag (last_wav=9002)
+09:43:10.820 T2W线程: 轮次结束后更新输出目录为 research/teacher12_20260821/round_010/tts_wav
+09:43:10.850 stream_prefill(index=11): processing user audio: /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/bench_audio/q10.wav
+09:43:10.907 stream_prefill(index=11): user audio embedding: n_pos=17
+09:43:11.036 
 
-c++ finish stream_prefill(index=11). n_past=573, n_keep=155, n_ctx=8192
+c++ finish stream_prefill(index=11). n_past=571, n_keep=155, n_ctx=8192
 
-02:24:13.196 📍 [轮次同步] 调用方指定 round_idx=0，当前 simplex_round_idx=1，强制同步
-02:24:13.196 📍 stream_decode 开始: n_past=573, n_keep=155, n_ctx=8192, duplex_mode=0
-02:24:13.196 wait prefill done
-02:24:13.196 📍 [单工TTS] 添加 assistant prompt: "<|im_end|>
+09:43:11.036 📍 stream_decode 开始: n_past=571, n_keep=155, n_ctx=8192, duplex_mode=0
+09:43:11.036 wait prefill done
+09:43:11.036 📍 [单工TTS] 添加 assistant prompt: "<|im_end|>
 <|im_start|>assistant
 <think>
 
 </think>
 
-<|tts_bos|>", n_past=573
-02:24:13.225 📍 [单工TTS] assistant prompt 完成, n_past=583
-02:24:13.225 LLM decode: max_tgt_len = 8192, n_predict = -1, n_ctx = 8192
-set_embeddings: value = 1
-set_embeddings: value = 0
-set_embeddings: value = 1
-set_embeddings: value = 0
-set_embeddings: value = 1
-set_embeddings: value = 0
-set_embeddings: value = 1
-set_embeddings: value = 0
-set_embeddings: value = 1
-set_embeddings: value = 0
-set_embeddings: value = 1
-set_embeddings: value = 0
-set_embeddings: value = 1
-set_embeddings: value = 0
-set_embeddings: value = 1
-set_embeddings: value = 0
-02:24:13.562 LLM: detected end token, set llm_generation_done=true
-02:24:13.562 LLM->TTS: text='Water freezes at zero degrees Celsius.', n_tokens=7, hidden_size=28672, n_embd=4096, token_ids=[28253 93377 518 7168 12348 61347 13]
-02:24:13.562 📍 Decode 结束: n_past=591, 剩余空间=7601, 无需滑窗
-02:24:13.562 📍 轮次 11 结束，记录边界于 n_past=591
-02:24:13.563 TTS<-LLM: chunk_idx=0, text='Water freezes at zero degrees Celsius.', n_tokens=7, hidden_size=28672, token_ids=[28253 93377 518 7168 12348 61347 13]
-02:24:13.563 TTS: after queue pop - speek_done=0, llm_finish=1, llm_text.empty=0, token_ids.size=7
-02:24:13.563 TTS: before empty check - response.empty=0, response='Water freezes at zero degrees Celsius.', llm_finish=1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-set_embeddings: value = 1
-02:24:13.563 TTS: DEBUG before has_llm_data - token_ids.size=7, hidden_states.size=28672, n_embd=4096
-02:24:13.563 TTS: has_llm_data=1, token_ids=7, hidden_states=28672, n_embd=4096, llm_finish=1
-02:24:13.563 TTS: n_tokens_orig=7, n_tokens_filtered=7 (filtered 0 special tokens)
-02:24:13.565 📍 为下一轮准备: eval <|im_end|>\n<|im_start|>user\n, n_past=596
-02:24:13.577 TTS: saved merged embeddings (text) to /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/llm_debug/chunk_0/merged_embeddings.txt
-02:24:13.577 TTS Simplex: generating audio tokens for chunk 0 (n_tokens=7, tts_n_embd=768)
-02:24:13.578 TTS Simplex: 在 prefill 前添加 audio_bos (chunk_idx=0, new_size=8)
-02:24:13.578 TTS Simplex: first chunk - cleared KV cache
-02:24:13.578 TTS Simplex: first chunk - cleared tts_all_generated_tokens and tts_token_buffer
-02:24:13.580 TTS Simplex: prefill completed, n_past_tts=8
-02:24:13.580 TTS Simplex: sampler created
-02:24:13.580 TTS simplex: is_audio_bos=true (first audio token)
-02:24:13.712 TTS Simplex Phase1: token 1/500: rel_id=1490
-02:24:13.721 TTS Simplex Phase1: token 2/500: rel_id=4299
-02:24:13.730 TTS Simplex Phase1: token 3/500: rel_id=2031
-02:24:13.744 TTS Simplex Phase1: token 4/500: rel_id=2032
-02:24:13.754 TTS Simplex Phase1: token 5/500: rel_id=2186
-02:24:13.950 TTS Simplex Phase1: yield 25 tokens 到 T2W (step 25, buffer=25)
-02:24:13.950 TTS Simplex Phase1: token 25/500: rel_id=5656
-02:24:13.950 T2W线程(C++): 轮次切换 (1 -> 0)，更新输出目录
-02:24:13.950 T2W线程(C++): 新输出目录 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav
-02:24:14.417 TTS Simplex Phase1: yield 25 tokens 到 T2W (step 50, buffer=25)
-02:24:14.417 TTS Simplex Phase1: token 50/500: rel_id=5644
-02:24:14.488 TTS Simplex Phase1: EOS token at step 56
-02:24:14.488 TTS Simplex: is_final_text_chunk=true, will enter Phase 2 for text_eos_embed
-02:24:14.488 TTS Simplex Phase2: injecting text_eos_embed + audio_bos at n_past=63
-02:24:14.489 TTS Simplex Phase2: text_eos_embed injected, n_past=64
-02:24:14.496 TTS Simplex Phase2: audio_bos injected, n_past=65, starting final generation
-02:24:14.520 TTS Simplex Phase2: EOS at step 2 (final end)
-02:24:14.520 TTS Simplex: chunk 结束，tts_token_buffer 剩余 6 tokens (保留等下一个 chunk)
-02:24:14.520 TTS Simplex: is_final_text_chunk=true, flush 剩余 6 tokens 从 tts_token_buffer
-02:24:14.520 TTS Simplex: generated 56 audio tokens for chunk 0
-02:24:14.520 TTS Simplex: chunk 0 first tokens: [1490 4299 2031 2032 2186 ], last tokens: [6130 6129 1461 4218 2031 ]
-02:24:14.520 TTS Simplex: updated tts_n_past_accumulated=67, total_generated_tokens=56
-02:24:14.521 TTS: finished processing all chunks
-02:24:14.521 TTS: 单工模式轮次结束，下一轮 round_idx=1
-02:24:14.521 TTS: sent is_final=true to T2W queue (turn end)
-02:24:14.577 🎉 首响时间 (First Audio Response): 1380ms
-02:24:14.577 T2W线程: wav_0.wav | 1.00s audio | 626.2ms inference | RTF=0.63 | t=1380ms | queue_wait=0.0ms
-02:24:15.175 T2W线程: wav_1.wav | 1.00s audio | 597.3ms inference | RTF=0.60 | t=1978ms | queue_wait=159.6ms
-02:24:15.628 T2W线程: wav_2.wav | 0.52s audio | 452.7ms inference | RTF=0.87 | t=2431ms | queue_wait=159.6ms
-02:24:15.628 T2W线程: 写入结束标记 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav/generation_done.flag (last_wav=2)
-02:24:15.628 T2W线程: 轮次结束后更新输出目录为 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_001/tts_wav
-02:24:15.695 stream_prefill(index=12): processing user audio: /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/bench_audio/q11.wav
-02:24:15.746 stream_prefill(index=12): user audio embedding: n_pos=16
-02:24:15.874 
-
-c++ finish stream_prefill(index=12). n_past=614, n_keep=155, n_ctx=8192
-
-02:24:15.874 📍 [轮次同步] 调用方指定 round_idx=0，当前 simplex_round_idx=1，强制同步
-02:24:15.874 📍 stream_decode 开始: n_past=614, n_keep=155, n_ctx=8192, duplex_mode=0
-02:24:15.874 wait prefill done
-02:24:15.874 📍 [单工TTS] 添加 assistant prompt: "<|im_end|>
-<|im_start|>assistant
-<think>
-
-</think>
-
-<|tts_bos|>", n_past=614
-02:24:15.902 📍 [单工TTS] assistant prompt 完成, n_past=624
-02:24:15.902 LLM decode: max_tgt_len = 8192, n_predict = -1, n_ctx = 8192
+<|tts_bos|>", n_past=571
+09:43:11.064 📍 [单工TTS] assistant prompt 完成, n_past=581
+09:43:11.064 LLM decode: max_tgt_len = 8192, n_predict = -1, n_ctx = 8192
 set_embeddings: value = 1
 set_embeddings: value = 0
 set_embeddings: value = 1
@@ -2938,29 +2786,30 @@ set_embeddings: value = 1
 set_embeddings: value = 0
 set_embeddings: value = 1
 set_embeddings: value = 0
-02:24:16.278 LLM->TTS: text='Romeo and Juliet were written by William Shakespeare', n_tokens=10, hidden_size=40960, n_embd=4096, token_ids=[49 635 78 323 71024 1033 5326 553 12375 41382]
-02:24:16.278 TTS<-LLM: chunk_idx=0, text='Romeo and Juliet were written by William Shakespeare', n_tokens=10, hidden_size=40960, token_ids=[49 635 78 323 71024 1033 5326 553 12375 41382]
-02:24:16.278 TTS: after queue pop - speek_done=0, llm_finish=0, llm_text.empty=0, token_ids.size=10
-02:24:16.278 TTS: before empty check - response.empty=0, response='Romeo and Juliet were written by William Shakespea', llm_finish=0
+09:43:11.448 LLM->TTS: text='The freezing point of water is 0 degrees Celsius', n_tokens=10, hidden_size=40960, n_embd=4096, token_ids=[785 42218 1459 315 3015 374 220 15 12348 61347]
+09:43:11.448 TTS<-LLM: chunk_idx=0, text='The freezing point of water is 0 degrees Celsius', n_tokens=10, hidden_size=40960, token_ids=[785 42218 1459 315 3015 374 220 15 12348 61347]
+09:43:11.448 TTS: after queue pop - speek_done=0, llm_finish=0, llm_text.empty=0, token_ids.size=10
+09:43:11.448 TTS: before empty check - response.empty=0, response='The freezing point of water is 0 degrees Celsius', llm_finish=0
 set_embeddings: value = 1
 set_embeddings: value = 1
 set_embeddings: value = 1
 set_embeddings: value = 0
-02:24:16.278 TTS: DEBUG before has_llm_data - token_ids.size=10, hidden_states.size=40960, n_embd=4096
-02:24:16.278 TTS: has_llm_data=1, token_ids=10, hidden_states=40960, n_embd=4096, llm_finish=0
-02:24:16.279 TTS: n_tokens_orig=10, n_tokens_filtered=10 (filtered 0 special tokens)
-02:24:16.292 TTS: saved merged embeddings (text) to /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/llm_debug/chunk_0/merged_embeddings.txt
-02:24:16.292 TTS Simplex: generating audio tokens for chunk 0 (n_tokens=10, tts_n_embd=768)
-02:24:16.292 TTS Simplex: 在 prefill 前添加 audio_bos (chunk_idx=0, new_size=11)
-02:24:16.292 TTS Simplex: first chunk - cleared KV cache
-02:24:16.292 TTS Simplex: first chunk - cleared tts_all_generated_tokens and tts_token_buffer
-02:24:16.294 TTS Simplex: prefill completed, n_past_tts=11
-02:24:16.294 TTS Simplex: sampler created
-02:24:16.294 TTS simplex: is_audio_bos=true (first audio token)
+09:43:11.448 TTS: DEBUG before has_llm_data - token_ids.size=10, hidden_states.size=40960, n_embd=4096
+09:43:11.448 TTS: has_llm_data=1, token_ids=10, hidden_states=40960, n_embd=4096, llm_finish=0
+09:43:11.448 TTS: 创建单工模式输出目录: research/teacher12_20260821/round_010
+09:43:11.448 TTS: n_tokens_orig=10, n_tokens_filtered=10 (filtered 0 special tokens)
+09:43:11.462 TTS: saved merged embeddings (text) to research/teacher12_20260821/round_010/llm_debug/chunk_0/merged_embeddings.txt
+09:43:11.462 TTS Simplex: generating audio tokens for chunk 0 (n_tokens=10, tts_n_embd=768)
+09:43:11.462 TTS Simplex: 在 prefill 前添加 audio_bos (chunk_idx=0, new_size=11)
+09:43:11.462 TTS Simplex: first chunk - cleared KV cache
+09:43:11.462 TTS Simplex: first chunk - cleared tts_all_generated_tokens and tts_token_buffer
+09:43:11.464 TTS Simplex: prefill completed, n_past_tts=11
+09:43:11.464 TTS Simplex: sampler created
+09:43:11.464 TTS simplex: is_audio_bos=true (first audio token)
 set_embeddings: value = 1
 set_embeddings: value = 0
-02:24:16.368 LLM: detected end token, set llm_generation_done=true
-02:24:16.368 LLM->TTS: text='.', n_tokens=1, hidden_size=4096, n_embd=4096, token_ids=[13]
+09:43:11.513 LLM: detected end token, set llm_generation_done=true
+09:43:11.513 LLM->TTS: text='.', n_tokens=1, hidden_size=4096, n_embd=4096, token_ids=[13]
 set_embeddings: value = 1
 set_embeddings: value = 1
 set_embeddings: value = 1
@@ -3004,29 +2853,34 @@ set_embeddings: value = 1
 set_embeddings: value = 1
 set_embeddings: value = 1
 set_embeddings: value = 1
-02:24:16.368 📍 Decode 结束: n_past=636, 剩余空间=7556, 无需滑窗
-02:24:16.368 📍 轮次 12 结束，记录边界于 n_past=636
-02:24:16.370 📍 为下一轮准备: eval <|im_end|>\n<|im_start|>user\n, n_past=641
-02:24:16.373 TTS Simplex Phase1: token 1/500: rel_id=3950
-02:24:16.430 TTS Simplex Phase1: token 2/500: rel_id=2158
-02:24:16.438 TTS Simplex Phase1: token 3/500: rel_id=4367
-02:24:16.447 TTS Simplex Phase1: token 4/500: rel_id=1928
-02:24:16.455 TTS Simplex Phase1: token 5/500: rel_id=704
-02:24:02:24:16.628 T2W线程(C++): 轮次切换 (1 -> 0)，更新输出目录
-02:16.24:1600.628 T2W线程(C++): 新输出目录 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav
-628 TTS Simplex Phase1: yield 25 tokens 到 T2W (step 25, buffer=25)
-02:24:16.628 TTS Simplex Phase1: token 25/500: rel_id=5094
-02:24:17.045 TTS Simplex Phase1: EOS token at step 44
-02:24:17.045 TTS Simplex: chunk 结束，tts_token_buffer 剩余 18 tokens (保留等下一个 chunk)
-02:24:17.045 TTS Simplex: generated 43 audio tokens for chunk 0
-02:24:17.045 TTS Simplex: chunk 0 first tokens: [3950 2158 4367 1928 704 ], last tokens: [4516 1519 5205 5856 5857 ]
-02:24:17.045 TTS Simplex: updated tts_n_past_accumulated=54, total_generated_tokens=43
-02:24:17.045 TTS<-LLM: chunk_idx=1, text='.', n_tokens=1, hidden_size=4096, token_ids=[13]
-02:24:17.045 TTS: after queue pop - speek_done=0, llm_finish=1, llm_text.empty=0, token_ids.size=1
-02:24:17.045 TTS: before empty check - response.empty=0, response='.', llm_finish=1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+09:43:11.513 📍 Decode 结束: n_past=593, 剩余空间=7599, 无需滑窗
+09:43:11.513 📍 轮次 11 结束，记录边界于 n_past=593
+09:43:11.515 📍 为下一轮准备: eval <|im_end|>\n<|im_start|>user\n, n_past=598
+09:43:11.522 TTS Simplex Phase1: token 1/500: rel_id=1848
+09:43:11.576 TTS Simplex Phase1: token 2/500: rel_id=2260
+09:43:11.585 TTS Simplex Phase1: token 3/500: rel_id=2405
+09:43:11.593 TTS Simplex Phase1: token 4/500: rel_id=4347
+09:43:11.601 TTS Simplex Phase1: token 5/500: rel_id=6534
+09:43:11.771 TTS Simplex Phase1: yield 25 tokens 到 T2W (step 25, buffer=25)
+09:43:11.771 TTS Simplex Phase1: token 25/500: rel_id=2490
+09:43:12.334 TTS Simplex Phase1: EOS token at step 50
+09:43:12.334 TTS Simplex Phase1: token 50/500: rel_id=6561
+09:43:12.334 TTS Simplex: chunk 结束，tts_token_buffer 剩余 24 tokens (保留等下一个 chunk)
+09:43:12.334 TTS Simplex: generated 49 audio tokens for chunk 0
+09:43:12.334 TTS Simplex: chunk 0 first tokens: [1848 2260 2405 4347 6534 ], last tokens: [4454 3722 6382 3963 6150 ]
+09:43:12.334 TTS Simplex: updated tts_n_past_accumulated=60, total_generated_tokens=49
+09:43:12.334 TTS<-LLM: chunk_idx=1, text='.', n_tokens=1, hidden_size=4096, token_ids=[13]
+09:43:12.334 TTS: after queue pop - speek_done=0, llm_finish=1, llm_text.empty=0, token_ids.size=1
+09:43:12.334 TTS: before empty check - response.empty=0, response='.', llm_finish=1
 set_embeddings: value = 1
 ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mv_ext_f16_f32_r1_2', name = 'kernel_mul_mv_ext_f16_f32_r1_2_nsg=2_nxpsg=16_ne12=1_r2=1_r3=1'
-ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_ext_f16_f32_r1_2_nsg=2_nxpsg=16_ne12=1_r2=1_r3=1      0x92c344000 | th_max =  896 | th_width =   32
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_ext_f16_f32_r1_2_nsg=2_nxpsg=16_ne12=1_r2=1_r3=1      0xbf3574000 | th_max =  896 | th_width =   32
 set_embeddings: value = 1
 set_embeddings: value = 1
 set_embeddings: value = 1
@@ -3061,42 +2915,203 @@ set_embeddings: value = 1
 set_embeddings: value = 1
 set_embeddings: value = 1
 set_embeddings: value = 1
-02:24:17.045 TTS: DEBUG before has_llm_data - token_ids.size=1, hidden_states.size=4096, n_embd=4096
-02:24:17.045 TTS: has_llm_data=1, token_ids=1, hidden_states=4096, n_embd=4096, llm_finish=1
-02:24:17.045 TTS: n_tokens_orig=1, n_tokens_filtered=1 (filtered 0 special tokens)
-02:24:17.049 TTS: saved merged embeddings (text) to /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/llm_debug/chunk_1/merged_embeddings.txt
-02:24:17.049 TTS Simplex: generating audio tokens for chunk 1 (n_tokens=1, tts_n_embd=768)
-02:24:17.049 TTS Simplex: 在 prefill 前添加 audio_bos (chunk_idx=1, new_size=2)
-02:24:17.049 TTS Simplex: chunk 1 - keeping KV cache, n_past_tts=54
-02:24:17.056 TTS Simplex: prefill completed, n_past_tts=56
-02:24:17.056 TTS Simplex: sampler created
-02:24:17.066 TTS Simplex Phase1: token 1/500: rel_id=1887
-02:24:17.079 TTS Simplex Phase1: token 2/500: rel_id=2163
-02:24:17.093 TTS Simplex Phase1: token 3/500: rel_id=3485
-02:24:17.105 TTS Simplex Phase1: token 4/500: rel_id=3650
-02:24:17.118 TTS Simplex Phase1: token 5/500: rel_id=224
-02:24:17.153 TTS Simplex Phase1: yield 25 tokens 到 T2W (step 7, buffer=25)
-02:24:17.167 TTS Simplex Phase1: EOS token at step 8
-02:24:17.167 TTS Simplex: is_final_text_chunk=true, will enter Phase 2 for text_eos_embed
-02:24:17.167 TTS Simplex Phase2: injecting text_eos_embed + audio_bos at n_past=63
-02:24:17.167 TTS Simplex Phase2: text_eos_embed injected, n_past=64
-02:24:17.175 TTS Simplex Phase2: audio_bos injected, n_past=65, starting final generation
-02:24:17.353 🎉 首响时间 (First Audio Response): 1478ms
-02:24:17.353 T2W线程: wav_0.wav | 1.00s audio | 724.0ms inference | RTF=0.72 | t=1478ms | queue_wait=0.0ms
-02:24:17.742 TTS Simplex Phase2: EOS at step 25 (final end)
-02:24:17.742 TTS Simplex: chunk 结束，tts_token_buffer 剩余 24 tokens (保留等下一个 chunk)
-02:24:17.742 TTS Simplex: is_final_text_chunk=true, flush 剩余 24 tokens 从 tts_token_buffer
-02:24:17.742 TTS Simplex: generated 31 audio tokens for chunk 1
-02:24:17.742 TTS Simplex: chunk 1 first tokens: [1887 2163 3485 3650 224 ], last tokens: [1649 1658 3817 3808 1785 ]
-02:24:17.742 TTS Simplex: updated tts_n_past_accumulated=90, total_generated_tokens=74
-02:24:17.742 TTS: finished processing all chunks
-02:24:17.742 TTS: 单工模式轮次结束，下一轮 round_idx=1
-02:24:17.742 TTS: sent is_final=true to T2W queue (turn end)
-02:24:17.964 T2W线程: wav_1.wav | 1.00s audio | 611.0ms inference | RTF=0.61 | t=2089ms | queue_wait=199.7ms
-02:24:18.542 T2W线程: wav_2.wav | 1.24s audio | 577.2ms inference | RTF=0.47 | t=2667ms | queue_wait=222.4ms
-02:24:18.542 T2W线程: 写入结束标记 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav/generation_done.flag (last_wav=2)
-02:24:18.542 T2W线程: 轮次结束后更新输出目录为 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_001/tts_wav
-02:24:18.609 T2W(C++) 线程: 停止
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+09:43:12.334 TTS: DEBUG before has_llm_data - token_ids.size=1, hidden_states.size=4096, n_embd=4096
+09:43:12.334 TTS: has_llm_data=1, token_ids=1, hidden_states=4096, n_embd=4096, llm_finish=1
+09:43:12.334 TTS: n_tokens_orig=1, n_tokens_filtered=1 (filtered 0 special tokens)
+09:43:12.341 TTS: saved merged embeddings (text) to research/teacher12_20260821/round_010/llm_debug/chunk_1/merged_embeddings.txt
+09:43:12.341 TTS Simplex: generating audio tokens for chunk 1 (n_tokens=1, tts_n_embd=768)
+09:43:12.341 TTS Simplex: 在 prefill 前添加 audio_bos (chunk_idx=1, new_size=2)
+09:43:12.341 TTS Simplex: chunk 1 - keeping KV cache, n_past_tts=60
+09:43:12.344 TTS Simplex: prefill completed, n_past_tts=62
+09:43:12.344 TTS Simplex: sampler created
+09:43:12.356 TTS Simplex Phase1: yield 25 tokens 到 T2W (step 1, buffer=25)
+09:43:12.356 TTS Simplex Phase1: token 1/500: rel_id=6393
+09:43:12.367 TTS Simplex Phase1: token 2/500: rel_id=6141
+09:43:12.380 TTS Simplex Phase1: token 3/500: rel_id=2510
+09:43:12.392 TTS Simplex Phase1: token 4/500: rel_id=5020
+09:43:12.404 TTS Simplex Phase1: token 5/500: rel_id=4607
+09:43:12.688 TTS Simplex Phase1: token 25/500: rel_id=4671
+09:43:12.700 TTS Simplex Phase1: EOS token at step 26
+09:43:12.700 TTS Simplex: is_final_text_chunk=true, will enter Phase 2 for text_eos_embed
+09:43:12.700 TTS Simplex Phase2: injecting text_eos_embed + audio_bos at n_past=87
+09:43:12.701 TTS Simplex Phase2: text_eos_embed injected, n_past=88
+09:43:12.708 TTS Simplex Phase2: audio_bos injected, n_past=89, starting final generation
+09:43:12.724 TTS Simplex Phase2: yield 25 tokens 到 T2W
+09:43:12.726 🎉 首响时间 (First Audio Response): 1689ms
+09:43:12.726 T2W线程: wav_10000.wav | 1.00s audio | 953.9ms inference | RTF=0.95 | t=1689ms | queue_wait=0.0ms
+09:43:13.248 TTS Simplex Phase2: EOS at step 24 (final end)
+09:43:13.248 TTS Simplex: chunk 结束，tts_token_buffer 剩余 22 tokens (保留等下一个 chunk)
+09:43:13.248 TTS Simplex: is_final_text_chunk=true, flush 剩余 22 tokens 从 tts_token_buffer
+09:43:13.248 TTS Simplex: generated 48 audio tokens for chunk 1
+09:43:13.248 TTS Simplex: chunk 1 first tokens: [6393 6141 2510 5020 4607 ], last tokens: [4299 4299 4299 4299 3894 ]
+09:43:13.248 TTS Simplex: updated tts_n_past_accumulated=113, total_generated_tokens=97
+09:43:13.249 TTS: finished processing all chunks
+09:43:13.249 TTS: 单工模式轮次结束，下一轮 round_idx=11
+09:43:13.249 TTS: sent is_final=true to T2W queue (turn end)
+09:43:13.843 T2W线程: wav_10001.wav | 1.00s audio | 1116.8ms inference | RTF=1.12 | t=2806ms | queue_wait=370.1ms
+09:43:14.839 T2W线程: wav_10002.wav | 1.00s audio | 994.7ms inference | RTF=0.99 | t=3802ms | queue_wait=370.1ms
+09:43:15.704 T2W线程: wav_10003.wav | 1.16s audio | 864.2ms inference | RTF=0.74 | t=4667ms | queue_wait=1590.3ms
+09:43:15.704 T2W线程: 写入结束标记 research/teacher12_20260821/round_010/tts_wav/generation_done.flag (last_wav=10003)
+09:43:15.704 T2W线程: 轮次结束后更新输出目录为 research/teacher12_20260821/round_011/tts_wav
+09:43:15.774 stream_prefill(index=12): processing user audio: /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/bench_audio/q11.wav
+09:43:15.836 stream_prefill(index=12): user audio embedding: n_pos=16
+09:43:15.974 
+
+c++ finish stream_prefill(index=12). n_past=616, n_keep=155, n_ctx=8192
+
+09:43:15.974 📍 stream_decode 开始: n_past=616, n_keep=155, n_ctx=8192, duplex_mode=0
+09:43:15.974 wait prefill done
+09:43:15.974 📍 [单工TTS] 添加 assistant prompt: "<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+<|tts_bos|>", n_past=616
+09:43:16.002 📍 [单工TTS] assistant prompt 完成, n_past=626
+09:43:16.002 LLM decode: max_tgt_len = 8192, n_predict = -1, n_ctx = 8192
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+09:43:16.386 LLM->TTS: text='Romeo and Juliet was written by Shakespeare.', n_tokens=10, hidden_size=40960, n_embd=4096, token_ids=[49 635 78 323 71024 572 5326 553 41382 13]
+09:43:16.386 TTS<-LLM: chunk_idx=0, text='Romeo and Juliet was written by Shakespeare.', n_tokens=10, hidden_size=40960, token_ids=[49 635 78 323 71024 572 5326 553 41382 13]
+09:43:16.386 TTS: after queue pop - speek_done=0, llm_finish=0, llm_text.empty=0, token_ids.size=10
+09:43:16.386 TTS: before empty check - response.empty=0, response='Romeo and Juliet was written by Shakespeare.', llm_finish=0
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 0
+09:43:16.386 TTS: DEBUG before has_llm_data - token_ids.size=10, hidden_states.size=40960, n_embd=4096
+09:43:16.386 TTS: has_llm_data=1, token_ids=10, hidden_states=40960, n_embd=4096, llm_finish=0
+09:43:16.386 TTS: 创建单工模式输出目录: research/teacher12_20260821/round_011
+09:43:16.387 TTS: n_tokens_orig=10, n_tokens_filtered=10 (filtered 0 special tokens)
+09:43:16.404 TTS: saved merged embeddings (text) to research/teacher12_20260821/round_011/llm_debug/chunk_0/merged_embeddings.txt
+09:43:16.404 TTS Simplex: generating audio tokens for chunk 0 (n_tokens=10, tts_n_embd=768)
+09:43:16.405 TTS Simplex: 在 prefill 前添加 audio_bos (chunk_idx=0, new_size=11)
+09:43:16.405 TTS Simplex: first chunk - cleared KV cache
+09:43:16.405 TTS Simplex: first chunk - cleared tts_all_generated_tokens and tts_token_buffer
+09:43:16.406 TTS Simplex: prefill completed, n_past_tts=11
+09:43:16.406 TTS Simplex: sampler created
+09:43:16.406 TTS simplex: is_audio_bos=true (first audio token)
+09:43:16.415 LLM: detected end token, set llm_generation_done=true
+09:43:16.415 LLM->TTS: text='', n_tokens=0, hidden_size=0, n_embd=4096, token_ids=[]
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+09:43:16.415 📍 Decode 结束: n_past=637, 剩余空间=7555, 无需滑窗
+09:43:16.415 📍 轮次 12 结束，记录边界于 n_past=637
+09:43:16.417 📍 为下一轮准备: eval <|im_end|>\n<|im_start|>user\n, n_past=642
+09:43:16.648 TTS Simplex Phase1: token 1/500: rel_id=1736
+09:43:16.663 TTS Simplex Phase1: token 2/500: rel_id=2074
+09:43:16.671 TTS Simplex Phase1: token 3/500: rel_id=2180
+09:43:16.680 TTS Simplex Phase1: token 4/500: rel_id=1676
+09:43:16.688 TTS Simplex Phase1: token 5/500: rel_id=2756
+09:43:16.888 TTS Simplex Phase1: yield 25 tokens 到 T2W (step 25, buffer=25)
+09:43:16.888 TTS Simplex Phase1: token 25/500: rel_id=2834
+09:43:17.445 TTS Simplex Phase1: yield 25 tokens 到 T2W (step 50, buffer=25)
+09:43:17.445 TTS Simplex Phase1: token 50/500: rel_id=3650
+09:43:17.492 TTS Simplex Phase1: EOS token at step 53
+09:43:17.492 TTS Simplex: chunk 结束，tts_token_buffer 剩余 2 tokens (保留等下一个 chunk)
+09:43:17.492 TTS Simplex: generated 52 audio tokens for chunk 0
+09:43:17.492 TTS Simplex: chunk 0 first tokens: [1736 2074 2180 1676 2756 ], last tokens: [2160 1298 3650 638 4515 ]
+09:43:17.492 TTS Simplex: updated tts_n_past_accumulated=63, total_generated_tokens=52
+09:43:17.493 TTS: after queue pop - speek_done=0, llm_finish=1, llm_text.empty=1, token_ids.size=0
+09:43:17.493 TTS: before empty check - response.empty=1, response='', llm_finish=1
+09:43:17.493 TTS: received llm_finish=true with no data, finalizing (tts_token_buffer=2)
+09:43:17.493 TTS: flushed 2 remaining tokens from tts_token_buffer
+09:43:17.493 TTS: 单工模式轮次结束，下一轮 round_idx=12
+09:43:17.493 TTS: sent is_final=true to T2W (llm_finish with no data)
+09:43:17.493 TTS: finished processing all chunks (llm_finish with no data path)
+09:43:17.916 🎉 首响时间 (First Audio Response): 1941ms
+09:43:17.916 T2W线程: wav_11000.wav | 1.00s audio | 1027.7ms inference | RTF=1.03 | t=1941ms | queue_wait=0.0ms
+09:43:18.859 T2W线程: wav_11001.wav | 1.00s audio | 942.0ms inference | RTF=0.94 | t=2884ms | queue_wait=471.1ms
+09:43:19.430 T2W线程: wav_11002.wav | 0.36s audio | 571.1ms inference | RTF=1.59 | t=3455ms | queue_wait=471.1ms
+09:43:19.430 T2W线程: 写入结束标记 research/teacher12_20260821/round_011/tts_wav/generation_done.flag (last_wav=11002)
+09:43:19.430 T2W线程: 轮次结束后更新输出目录为 research/teacher12_20260821/round_012/tts_wav
+09:43:19.584 T2W(C++) 线程: 停止
 ggml_metal_free: deallocating
 ~llama_context:       MTL0 compute buffer size is 312.8164 MiB, matches expectation of 312.8164 MiB
 ~llama_context:        CPU compute buffer size is  11.0137 MiB, matches expectation of  11.0137 MiB
