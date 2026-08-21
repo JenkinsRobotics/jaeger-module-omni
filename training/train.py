@@ -231,7 +231,18 @@ class Trainer:
         self.projector.load_state_dict(ck["projector"])
         if "optimizer" in ck:
             self.opt.load_state_dict(ck["optimizer"])
-            self.sched.load_state_dict(ck["scheduler"])
+            prev_total = ck.get("scheduler", {}).get("total_steps")
+            if prev_total == self.cfg.max_steps:
+                self.sched.load_state_dict(ck["scheduler"])
+            else:
+                # The run was extended (or shortened): restoring the old
+                # schedule verbatim would crash one step past the old horizon.
+                # Keep the fresh schedule built for the NEW horizon and
+                # fast-forward it to the resumed step — cheap, it is only math.
+                for _ in range(ck["step"]):
+                    self.sched.step()
+                print(f"train: schedule horizon {prev_total} -> "
+                      f"{self.cfg.max_steps}; rebuilt and fast-forwarded")
         self.step = ck["step"]
         self.history = ck.get("history", [])
         return self.step
@@ -378,8 +389,9 @@ def main() -> int:
               f"(mid-utterance audio in-distribution; val stays whole)")
 
     trainer = Trainer(cfg, enc, lm, proj, device=device, wrapper=wrapper)
+    n_train = sum(p.numel() for p in proj.parameters() if p.requires_grad)
     print(f"train: {cfg.stage} on {device}, {cfg.max_steps} steps, "
-          f"{proj.n_params()/1e3:.0f}K trainable, {proj.tokens_per_second:.0f} tok/s")
+          f"{n_train/1e3:.0f}K trainable, {proj.tokens_per_second:.0f} tok/s")
 
     def batches():
         """Stub batches are fixed; real ones cycle the corpus."""
@@ -552,6 +564,17 @@ def demo():
         assert len(t2.history) == len(trainer.history)
         for a, b in zip(proj2.parameters(), trainer.projector.parameters()):
             assert torch.equal(a, b), "weights not restored"
+
+        # Extending a run: resume with a LARGER max_steps must rebuild the
+        # schedule, not crash one step past the old horizon (hit for real
+        # when the corpus quadrupled mid-day).
+        cfg_long = TrainConfig(**{**cfg.to_dict(), "max_steps": cfg.max_steps * 3})
+        enc3, lm3, proj3, _ = stub_setup(cfg_long, "cpu")
+        t_ext = Trainer(cfg_long, enc3, lm3, proj3, device="cpu")
+        assert t_ext.load(path) == cfg.max_steps
+        for _ in range(cfg.max_steps + 5):       # step PAST the old horizon
+            t_ext.train_step(batch)
+        assert t_ext.step == cfg.max_steps * 2 + 5
 
         # A checkpoint from another backbone must be refused, not loaded.
         other = TrainConfig(**{**cfg.to_dict(), "backbone_id": "someone/else"})
