@@ -1,206 +1,229 @@
-<h1 align="center">{{REPO_NAME}}</h1>
+<h1 align="center">Jaeger Agent Omni</h1>
 
 <p align="center">
-  <em>{{DESCRIPTION}}</em>
+  <em>Native multimodal neural agent for JaegerOS — audio straight to cognition, no text bridge</em>
 </p>
 
 <p align="center">
-  <a href="https://github.com/JenkinsRobotics/{{REPO_NAME}}/releases"><img src="https://img.shields.io/badge/version-0.1.0-2EA44F?style=for-the-badge" alt="Version"></a>
+  <img src="https://img.shields.io/badge/status-research-F0A020?style=for-the-badge" alt="Research">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-2EA44F?style=for-the-badge" alt="License"></a>
-  <img src="https://img.shields.io/badge/python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.11+">
-  <img src="https://img.shields.io/badge/JaegerOS-pinned-58A6FF?style=for-the-badge" alt="JaegerOS pinned">
+  <img src="https://img.shields.io/badge/python-3.11.9-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.11.9">
 </p>
 
 ---
 
-> ## Replace-these checklist (delete this block once done)
->
-> - [ ] `{{REPO_NAME}}` — every occurrence, this file + `docs/index.html` + `pyproject.toml.example`
-> - [ ] `{{DESCRIPTION}}` — one-line description, this file + `docs/index.html`
-> - [ ] `{{package_name}}` — the Python import name (snake_case) — rename the
->       `{{package_name}}/` directory itself, and every path inside it
-> - [ ] Fill in `{{package_name}}/module.yaml` (drop the `.example`
->       suffix from every `*.example` file once real values are in)
-> - [ ] Pin a real JaegerOS version range in `pyproject.toml.example`
->       (see [Ecosystem links](#ecosystem-links))
-> - [ ] Seed `dev/docs/reality/STATUS.md` with today's date and truth
-> - [ ] Enable GitHub Pages from `docs/` (see `docs/SITE.md`)
-> - [ ] Pick a LICENSE (Apache-2.0 shipped by default — swap if this repo
->       needs different terms)
-> - [ ] Building a project (a robot, a rig) instead of a module? Use
->       [`workspace/`](workspace/) instead of `{{package_name}}/` — see
->       [`workspace/README.md`](workspace/README.md) for its own checklist
-
----
+> **Research repo.** Nothing here ships yet. `jaeger_agent_omni/node.py` is a
+> stub; `module.yaml` declares the contract the staged build is working toward.
+> See [`dev/docs/reality/STATUS.md`](dev/docs/reality/STATUS.md) for what
+> actually runs today.
 
 ## What it is
 
-`{{REPO_NAME}}` is a **{{DESCRIPTION}}** built on
-[JaegerOS](https://github.com/JenkinsRobotics/JaegerOS) — the framework
-layer of the Jaeger ecosystem (Bus · Node · modules/slots · supervisor ·
-safety · contract · capability layer). This repo doesn't fork or edit
-JaegerOS; it **pins** a release and builds on top of it, the same way a
-ROS package builds on ROS.
+The current Jaeger voice stack is sequential, and text is the transfer format
+between every stage:
 
-This template scaffolds three different repo shapes. Pick the one that
-matches what you're building — see [`CONVENTIONS.md`](CONVENTIONS.md)
-for the full picture and when to reach for each:
-
-- **Module repo** (the `{{package_name}}/` directory at this repo's
-  root) — a self-contained capability (`module.yaml` + `config.py` +
-  `node.py` + tests) that plugs into **any** JaegerOS project through a
-  **slot** (see [`jaeger_os/nodes/kokoro_tts/`](https://github.com/JenkinsRobotics/JaegerOS/tree/master/jaeger_os/nodes/kokoro_tts)
-  for the canonical shape this mirrors). Use this when you're building
-  one swappable engine (a TTS backend, an STT backend, …) meant to be
-  used by many different projects.
-- **Workspace repo** (the [`workspace/`](workspace/) directory) — a
-  project that owns a **Body's bringup**: `topology.yaml` (controllers,
-  capabilities, e-stop scope), `manifest.toml` (the node graph that
-  actually boots), `unit.yaml` (this physical/simulated unit's identity
-  + live-verified gate), and `bringup/boot.py` (links → adapters →
-  e-stop → capabilities → runtime). Mirrors JaegerOS's own reference
-  hardware package, `jaeger_os/hardware/packages/jp01/`. Use this when
-  you're standing up a robot, a rig, or any other physical/simulated
-  body — see [`workspace/README.md`](workspace/README.md) to start.
-- **Suite app** — a project that owns a **Mind-facing product**: its
-  own faces (chat window, tray, voice), assembling JaegerOS + Jaeger AI
-  + whichever modules it needs (the `jaeger.toml` / `jaeger.windowed.toml`
-  manifest shapes in [Jaeger-AI](https://github.com/JenkinsRobotics/Jaeger-AI)
-  are the reference). Use this when you're building an agentic product
-  surface rather than a hardware bringup. **(planned)** — this template
-  doesn't scaffold a suite-app skeleton yet; start from Jaeger-AI itself
-  and pin forward rather than improvising one from this repo.
-
-See [`CONVENTIONS.md`](CONVENTIONS.md) for the rules every repo in the
-ecosystem follows, and the tier map in
-[Ecosystem links](#ecosystem-links). For the formal version of that
-tier map — five compositional roles (NODE, MODULE,
-PACKAGE/WORKSPACE, APP, DISTRIBUTION), a ROS comparison, and
-marketplace tagging — see [`TAXONOMY.md`](TAXONOMY.md). See
-[`examples/`](examples/README.md) for six worked concept mappings
-(a bare TTS module, a chatbot, JP01's own head, a lidar+SLAM demo, a
-six-axis arm, and JP01 itself) that exercise the taxonomy against
-real and archetypal apps, honest about what already exists versus
-what still needs building.
-
-## Install
-
-```bash
-git clone https://github.com/JenkinsRobotics/{{REPO_NAME}}.git
-cd {{REPO_NAME}}
-python3 -m venv .venv && source .venv/bin/activate
-cp pyproject.toml.example pyproject.toml   # after filling in the pin — see checklist above
-pip install -e .
+```text
+mic → whisper → TEXT → llm → TEXT → tts → speaker
 ```
 
-This repo depends on a **pinned** `jaeger-os` release — it does not
-vendor or fork the framework. See `pyproject.toml.example` for where the
-version range is declared.
+That works, ships today, and has a ceiling. Every conversion costs latency, and
+everything not expressible as words — prosody, hesitation, emotion, who is
+speaking — is discarded at the first arrow and cannot be recovered at the last.
 
-## Quick start
+Omni removes text as the mandatory bridge:
 
-```bash
-# Run this module's contract smoke test — proves module.yaml parses,
-# the factory builds a live node, and the bus contract round-trips —
-# all without touching real hardware or models.
-pytest {{package_name}}/tests
-
-# Or run it directly:
-python -m {{package_name}}.tests.test_module_contract
+```text
+mic → whisper encoder → JaegerAudioProjector → gemma-4-E4B
+                                                    │
+                                             PerformanceSpec
+                                    ┌───────────────┼───────────────┐
+                                    ▼               ▼               ▼
+                                  text        cloned TTS         avatar
+                              tools / logs       audio             rig
 ```
 
-Wire the module into a running JaegerOS instance by pointing its module
-discovery at this package (see JaegerOS's `jaeger_os/core/modules.py` for
-how `discover_modules()` walks module roots) — or, for a project-tier
-repo, declare it in your instance's manifest.
+Audio reaches cognition as learned representations. Text remains available as a
+parallel output — it is no longer the only road.
 
-## Module layout
+## Parallel to jaeger-agent, not a replacement
 
-The canonical shape every module/hardware-package repo in the ecosystem
-follows, mirroring [`jaeger_os/nodes/kokoro_tts/`](https://github.com/JenkinsRobotics/JaegerOS/tree/master/jaeger_os/nodes/kokoro_tts)
-in JaegerOS itself:
-
-```
-{{package_name}}/
-├── __init__.py            ← exports the factory (module.yaml's `factory:` target)
-├── module.yaml.example    ← the manifest: slot, topics, tools, requires_*
-├── config.py.example      ← this module's settings-catalog schema slice
-├── node.py.example        ← the four-phase Node (setup → tick → teardown → health)
-├── docs/                  ← this module's own design notes
-│   └── DESIGN.md.example
-└── tests/
-    └── test_module_contract.py.example   ← the module-contract smoke test
+```text
+jaeger-agent          sequential pipeline, text as the transfer format
+                      ships today, keeps shipping
+jaeger-agent-omni     neural module integration, tensors as the transfer format
+                      research, proves its own path
 ```
 
-One copy of every truth: the manifest (`module.yaml`) is the single
-source for what this module consumes, produces, and requires — nothing
-else in the repo should restate it.
+Nothing here patches, imports from, or depends on `jaeger-agent`. Omni runs its
+own `whisper → text → gemma` teacher to generate training targets. The two
+converge later at the **slot** level, when Omni ships a module a project can
+select instead of the sequential stack.
 
-## Workspace layout
+## Layout
 
-The project-tier shape — a repo that brings up a Body (or any project
-that owns its own bringup), mirroring JaegerOS's own reference hardware
-package (`jaeger_os/hardware/packages/jp01/`):
-
-```
-workspace/
-├── README.md                  ← what a workspace repo is, and why these files
-├── topology.yaml.example      ← controllers, capabilities, safety — the
-│                                 Body's capability declaration
-├── manifest.toml.example      ← [[node]] graph: engine modules bind by
-│                                 slot=, the hardware package binds by factory
-├── unit.yaml.example          ← this unit's identity + live-verified gate
-├── requirements.txt.example   ← the pinned-stack pattern (JaegerOS +
-│                                 modules @ tag)
-├── bringup/
-│   └── boot.py.example         ← links → adapters → e-stop → capabilities
-│                                  → runtime
-└── SAFETY_CHECKLIST.md        ← walk before any live (non-simulated) run
+```text
+jaeger_agent_omni/   the runtime
+  neural/              modality projectors and heads
+    base.py              ModalityProjector — the shared contract
+    audio.py             JaegerAudioProjector (MiniCPM port)
+    heads.py             TurnEndHead — our <|speak|>/<|listen|>
+  capture.py           turn log format + transcript-confidence gate
+  streaming.py         1 s chunking + rolling encoder cache
+  performance_spec.py  voice + face intent
+  outputs.py           text / speech / tool-call routing
+  module.yaml          the slot contract
+research/            experiment harness — stubs, wiring, GGUF inspection
+training/            corpus policy, losses, run config, the training loop
+dev/                 the plan, the long-term architecture, measured findings
 ```
 
-Start at [`workspace/README.md`](workspace/README.md) if this repo is a
-workspace rather than a module — it has its own replace-these checklist.
+**Where things live:** `jaeger_agent_omni/` is what runs — contracts and neural
+modules. `research/` is the harness that proves them (stubs, end-to-end wiring,
+inspection tools) and is not shipped. `training/` is everything that only
+matters while learning weights.
 
-## Development
+## Neural modules
 
-```bash
-pytest {{package_name}}/tests    # module-contract smoke test
-ruff check                       # lint, if configured
+Every specialist reaches cognition the same way, and that is the point:
+
+```text
+audio    → whisper encoder → JaegerAudioProjector  ─┐
+vision   → SigLIP          → JaegerVisionProjector ─┼→ shared cognition
+memory   → retrieval net   → JaegerMemoryProjector ─┘
 ```
 
-Follow [`CONVENTIONS.md`](CONVENTIONS.md) — especially: no doc describes
-behavior the code doesn't implement yet (mark it `(planned)` instead),
-and `dev/docs/reality/STATUS.md` stays truthful — any commit that changes
-behavior updates it in the same commit.
+`neural/base.py` owns the arithmetic every modality needs — trim the encoder's
+padding, compress time, project into cognition's width — so adding a modality
+is a known job rather than a research question. **A neural tool is just another
+projector.**
 
-CI (`.github/workflows/ci.yml`) runs the test suite and, if this repo
-sits below the Mind in the dependency graph, the nervous-system dependency
-check (see `CONVENTIONS.md` → "The connection rule").
+The rule for what becomes neural: text stays where the answer *is* a symbol
+(`get_time`, `file_read`, `calculate`), and latents take over where text throws
+the answer away (`look_at`, `listen`, episodic recall, motion).
+
+## Run it
+
+```sh
+# voice in, cognition out — the text path works today
+python -m jaeger_agent_omni --audio clip.wav --backbone <hf-id>
+
+# every turn becomes training data for the path meant to replace it
+python -m jaeger_agent_omni --audio clip.wav --backbone <hf-id> \
+    --capture-to corpus/
+
+# no transcript anywhere; nonsense until the projector is trained
+python -m jaeger_agent_omni --audio clip.wav --backbone <hf-id> --path omni \
+    --projector training/runs/run_stage3_warmup.pt
+```
+
+Verified end to end on real models (whisper-tiny + SmolLM2-135M, CPU, 1.3 s of
+speech):
+
+```text
+text   transcribe 390ms + generate 990ms   →  a correct answer about 2+2
+omni   encode 181ms + project 3ms          →  no transcript computed at all
+```
+
+Whisper's autoregressive decode (508 ms) becomes encode-only (181 ms). The rest
+is generation — which is why Stage 5's incremental prefill, not the projector,
+is where the conversational win lands.
+
+No audio handy? `say --data-format=LEI16@16000 -o clip.wav "what is two plus two"`
+
+## Train it
+
+```sh
+# turn any long audio into a corpus (segmented, transcribed, confidence-scored)
+python training/import_audio.py --audio speech.wav --out corpus/
+
+# Stage 3 warmup — audio -> transcript, projector only, backbone frozen
+python training/train.py --corpus corpus/ --backbone <hf-id>
+
+# unattended: resumes, stops on a budget, survives SIGTERM
+BACKBONE=<hf-id> training/nightly.sh corpus/ 6
+
+# how much does the projector lose against a transcript?
+python training/evaluate.py --corpus corpus/ --backbone <hf-id> \
+    --projector training/runs/run_stage3_warmup.pt
+```
+
+Evaluation is on a **held-out split** — deterministic, hashed by turn id, so
+tonight's validation set is not tomorrow's training set. On a small corpus that
+distinction is everything: the same projector scored 0.91 on data it had seen
+and 0.35 on data it had not.
+
+## Model artifacts
+
+What we train ships in the standard adapter layout — safetensors weights, a
+config naming the exact pairing, and a model card:
+
+```text
+artifacts/<name>/
+    adapter_config.json         architecture + pairing + provenance
+    adapter_model.safetensors   only the trained weights
+    README.md                   model card
+```
+
+```sh
+python -m jaeger_agent_omni.artifacts list
+python -m jaeger_agent_omni.artifacts export training/runs/<ckpt>.pt artifacts/<name>
+python demo.py --backbone <id> --path omni --projector artifacts/<name>
+```
+
+A training checkpoint (optimizer state + frozen passengers, 112 MB) is not a
+release artifact (the 2.4M-param adapter alone, 9 MB). Frozen third-party
+weights are referenced by provenance, never redistributed — MiniCPM's front end
+reloads from the local GGUF at load time.
+
+## Run the checks
+
+```sh
+python -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt
+.venv/bin/python research/check_all.py
+```
+
+Eighteen modules, ~15 seconds, fully offline, no model weights required. That
+includes a real 120-step training run against stub models — a broken loop fails
+here in seconds rather than an hour into a rented GPU:
+
+```sh
+python training/train.py --stub --steps 400
+```
+
+## Built on measurement, not recollection
+
+The architecture is ported from MiniCPM-o 4.5 — read out of its weights and its
+`llama.cpp` implementation, not from papers. `research/inspect_gguf.py` reads
+GGUF headers without loading weights;
+[`dev/minicpm-o measured architecture.md`](dev/minicpm-o%20measured%20architecture.md)
+records what was found and tags every claim MEASURED / SOURCE / API / UNKNOWN.
+
+Things that came out of that and would have been guessed wrong:
+
+```text
+projector      Linear → ReLU → Linear → AvgPool(k=5, s=5)
+               ReLU not GELU; no LayerNorm; pool AFTER the linears
+no resampler   no perceiver, no learned queries. Selection is the LLM's
+               attention's job, not the projector's.
+streaming      1 s chunks through a rolling 1500-frame encoder cache —
+               Whisper's 30 s window becomes cache depth, not padding
+turn-taking    <|speak|> / <|listen|> are vocabulary tokens. Turn-taking is
+               learned, not a silence timeout.
+```
+
+## Documents
+
+| Document | What it is |
+|---|---|
+| [Near-term plan](dev/jaeger%20agent%20omni0%20immediate%20development.md) | The staged build, tracks, and what we are explicitly not doing |
+| [Long-term architecture](dev/jaeger%20long%20term%20neural%20architecture.md) | Where this is going; governs, unchanged |
+| [MiniCPM-o measured](dev/minicpm-o%20measured%20architecture.md) | Reference architecture, from the artifact |
+| [Reference questions](dev/reference%20architecture%20minicpm-o%204.md) | The original question set the above answers |
+| [Legacy pipeline measured](dev/legacy%20pipeline%20measured.md) | What our own working stack costs, and what Omni must not rebuild |
 
 ## Ecosystem links
 
-- [JaegerOS](https://github.com/JenkinsRobotics/JaegerOS) — the framework
-  this repo pins (Bus · Node · modules/slots · supervisor · safety ·
-  contract · capability layer). You build on it; you don't edit it.
-- [Jaeger-AI](https://github.com/JenkinsRobotics/Jaeger-AI) — the turnkey
-  agentic product (the Mind): loop, tools, skills, memory, persona, local
-  inference, and its own faces (chat app, TUI, voice).
-- [JP01](https://github.com/JenkinsRobotics/JP01) — the reference
-  hardware Jaeger (the Body); the first repo to consume out-of-tree
-  modules and hardware packages the way this template scaffolds.
-
----
-
-## License
-
-[Apache-2.0](LICENSE) © Jenkins Robotics
-
-## Standalone use
-
-Every module runs by itself — no agent, no app:
-
-    python -m {{package_name}} --smoke
-
-See `__main__.py` (from the `.example`). Inputs/outputs are declared in
-`module.yaml` (`consumes`/`produces` topics, `tools`, `requires_*`) — the
-slot contract IS the interface.
+- [JaegerOS](https://github.com/JenkinsRobotics/JaegerOS) — framework layer
+- [JaegerWhisperSTT](https://github.com/JenkinsRobotics/JaegerWhisperSTT) — the `stt` slot; its `OfflineTranscriber` batch-transcribes our corpus
+- [`CONVENTIONS.md`](CONVENTIONS.md) · [`TAXONOMY.md`](TAXONOMY.md)

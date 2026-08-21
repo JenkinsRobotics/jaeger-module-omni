@@ -1,0 +1,11 @@
+# Pinned: transformers v5 renamed `torch_dtype` -> `dtype` on from_pretrained.
+# stage0_access.py uses the v5 spelling — don't drop to v4 without editing it.
+torch==2.13.0
+transformers==5.15.1
+accelerate
+numpy==2.4.6
+
+# Public corpora (training/fetch_dataset.py). soundfile decodes the audio —
+# datasets v5 would otherwise want torchcodec, which drags in ffmpeg.
+datasets
+soundfile

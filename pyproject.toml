@@ -1,0 +1,43 @@
+# jaeger_agent_omni — packaging + dev-tooling config.
+#
+# Modelled on JaegerWhisperSTT: package at the repo root (not src/), version
+# single-sourced from the package's __init__.py, runtime deps from
+# requirements.txt.
+
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "jaeger_agent_omni"
+description = "Native multimodal neural agent for JaegerOS — audio straight to cognition, no text bridge"
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
+dynamic = ["version", "dependencies"]
+
+# The pin every module/hardware-package/project repo carries: the range
+# of JaegerOS releases this repo is proven against. Contract changes on
+# the JaegerOS side (topics, module.yaml fields, the capability-layer
+# API) bump this range — see CONVENTIONS.md "Versioning & pinning".
+# jaeger-os is not on PyPI yet; until it is, pin via requirements.txt
+# (e.g. a git URL or VCS ref) rather than here.
+dependencies = [
+    # "jaeger-os>=0.9,<0.10",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7", "ruff"]
+
+[tool.setuptools.dynamic]
+version = {attr = "jaeger_agent_omni.__version__"}
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["jaeger_agent_omni*"]
+
+[tool.pytest.ini_options]
+testpaths = ["jaeger_agent_omni/tests", "research", "training"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"

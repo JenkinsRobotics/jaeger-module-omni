@@ -62,6 +62,20 @@ htmlcov/
 # Operator/instance state, if this repo ever runs standalone
 .jaeger_os/
 
+# Template-only ignores. An INSTANTIATED repo commits its real config —
+# JaegerWhisperSTT tracks both pyproject.toml and module.yaml. Removed the
+# pyproject.toml ignore for that reason.
 # Real (non-example) config generated from the .example templates —
 # keep the templates tracked, never the filled-in versions.
-pyproject.toml
+.DS_Store
+
+# Training checkpoints — big, reproducible from configs/ + the corpus.
+training/runs/
+
+# Third-party sources kept locally for reading, never vendored.
+reference/*
+!reference/README.md
+
+# Audio samples are large and are inputs, not source.
+training/samples/*.wav
+training/samples/*.mp3
