@@ -1,0 +1,163 @@
+{
+  "format": "jaeger-omni-audio-bench-v1",
+  "architecture": {
+    "graph": "PCM->audio_encoder->Gemma->conditioner->Talker->Token2Wav->PCM",
+    "transcript_or_decoded_text_handoff": false,
+    "conditioner": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/training/runs/gemma_talker_conditioner_v2_pilot.pt"
+  },
+  "rows": [
+    {
+      "case": "q00",
+      "answers": [
+        "four"
+      ],
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q00.wav",
+      "output_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/omni_audio_pilot4_20260821/q00.wav",
+      "input_samples_received": 18800,
+      "input_samples_consumed": 18800,
+      "gemma_reply_log_only": "Two plus two equals four.",
+      "gemma_tokens": 6,
+      "gemma_hidden_shape": [
+        6,
+        2560
+      ],
+      "talker_condition_shape": [
+        1,
+        6,
+        768
+      ],
+      "speech_codes": 167,
+      "output_seconds": 5.96,
+      "reply_ms": 295.1,
+      "condition_ms": 26.9,
+      "talker_ms": 7194.7,
+      "vocoder_ms": 19506.5,
+      "first_audio_ms": 27023.2,
+      "stream_chunks": 1,
+      "wall_clock_paced_input": false,
+      "barge_in_tested": false,
+      "transcript_handoff": false,
+      "metric_transcript": "Fiend Cadda. fake. or. summer.",
+      "semantic_ok": false,
+      "output_wer": 1.0,
+      "output_word_accuracy": 0.0
+    },
+    {
+      "case": "q01",
+      "answers": [
+        "blue"
+      ],
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q01.wav",
+      "output_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/omni_audio_pilot4_20260821/q01.wav",
+      "input_samples_received": 21587,
+      "input_samples_consumed": 21587,
+      "gemma_reply_log_only": "The color of the image is not provided.",
+      "gemma_tokens": 9,
+      "gemma_hidden_shape": [
+        9,
+        2560
+      ],
+      "talker_condition_shape": [
+        1,
+        9,
+        768
+      ],
+      "speech_codes": 92,
+      "output_seconds": 3.32,
+      "reply_ms": 389.0,
+      "condition_ms": 10.4,
+      "talker_ms": 3277.2,
+      "vocoder_ms": 15538.5,
+      "first_audio_ms": 19215.1,
+      "stream_chunks": 1,
+      "wall_clock_paced_input": false,
+      "barge_in_tested": false,
+      "transcript_handoff": false,
+      "metric_transcript": "not Clint Malkasov, those is not mad.",
+      "semantic_ok": false,
+      "output_wer": 0.75,
+      "output_word_accuracy": 0.25
+    },
+    {
+      "case": "q02",
+      "answers": [
+        "seven"
+      ],
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q02.wav",
+      "output_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/omni_audio_pilot4_20260821/q02.wav",
+      "input_samples_received": 22611,
+      "input_samples_consumed": 22611,
+      "gemma_reply_log_only": "There are seven days in a week.",
+      "gemma_tokens": 8,
+      "gemma_hidden_shape": [
+        8,
+        2560
+      ],
+      "talker_condition_shape": [
+        1,
+        8,
+        768
+      ],
+      "speech_codes": 245,
+      "output_seconds": 8.72,
+      "reply_ms": 376.2,
+      "condition_ms": 10.5,
+      "talker_ms": 8491.6,
+      "vocoder_ms": 22188.8,
+      "first_audio_ms": 31067.2,
+      "stream_chunks": 1,
+      "wall_clock_paced_input": false,
+      "barge_in_tested": false,
+      "transcript_handoff": false,
+      "metric_transcript": "Steya by the IBS EIS in ARPAI. Steya dias is IO N. Dop",
+      "semantic_ok": false,
+      "output_wer": 1.7143,
+      "output_word_accuracy": 0.0
+    },
+    {
+      "case": "q03",
+      "answers": [
+        "paris"
+      ],
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q03.wav",
+      "output_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/omni_audio_pilot4_20260821/q03.wav",
+      "input_samples_received": 26231,
+      "input_samples_consumed": 26231,
+      "gemma_reply_log_only": "The capital of France is Paris.",
+      "gemma_tokens": 7,
+      "gemma_hidden_shape": [
+        7,
+        2560
+      ],
+      "talker_condition_shape": [
+        1,
+        7,
+        768
+      ],
+      "speech_codes": 63,
+      "output_seconds": 2.28,
+      "reply_ms": 360.4,
+      "condition_ms": 10.1,
+      "talker_ms": 2335.8,
+      "vocoder_ms": 14486.7,
+      "first_audio_ms": 17193.0,
+      "stream_chunks": 1,
+      "wall_clock_paced_input": false,
+      "barge_in_tested": false,
+      "transcript_handoff": false,
+      "metric_transcript": "What to learn of alibis is paris.",
+      "semantic_ok": true,
+      "output_wer": 0.6667,
+      "output_word_accuracy": 0.3333
+    }
+  ],
+  "score": {
+    "semantic_correct": 1,
+    "n": 4,
+    "semantic_ratio_to_legacy_12_of_12": 0.25,
+    "mean_output_word_accuracy": 0.1458,
+    "median_first_audio_ms": 23119.2,
+    "streaming_output": false,
+    "strict_80_percent_pass": false
+  }
+}

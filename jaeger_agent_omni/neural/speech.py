@@ -16,6 +16,7 @@ from dataclasses import asdict, dataclass
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import numpy as np
 
 
 @dataclass(frozen=True)
@@ -94,6 +95,52 @@ class GemmaTalkerConditioner(nn.Module):
         return model.eval()
 
 
+class TokenIdBridge:
+    """Deterministic Gemma-ID -> Qwen-ID expansion without runtime text.
+
+    The table is compiled offline from tokenizer vocabularies. Production
+    receives integer IDs and aligned hidden tensors only. When one Gemma token
+    expands to several Qwen tokens, its contextual state is repeated so the
+    Talker's lexical and semantic streams remain exactly aligned.
+    """
+
+    def __init__(self, offsets: np.ndarray, values: np.ndarray):
+        self.offsets = np.asarray(offsets, dtype=np.int64)
+        self.values = np.asarray(values, dtype=np.int64)
+        if self.offsets.ndim != 1 or self.values.ndim != 1:
+            raise ValueError("token bridge arrays must be flat")
+        if len(self.offsets) < 2 or self.offsets[0] != 0:
+            raise ValueError("invalid token bridge offsets")
+        if self.offsets[-1] != len(self.values):
+            raise ValueError("token bridge payload length mismatch")
+
+    @classmethod
+    def load(cls, path) -> "TokenIdBridge":
+        data = np.load(path)
+        return cls(data["offsets"], data["values"])
+
+    def expand(self, source_ids, hidden_states: torch.Tensor
+               ) -> tuple[torch.Tensor, torch.Tensor]:
+        ids = [int(x) for x in source_ids]
+        if hidden_states.ndim != 3 or hidden_states.shape[0] != 1:
+            raise ValueError("hidden_states must be [1, tokens, width]")
+        if hidden_states.shape[1] != len(ids):
+            raise ValueError("one hidden state is required per source token")
+        target, rows = [], []
+        for i, token_id in enumerate(ids):
+            if token_id < 0 or token_id + 1 >= len(self.offsets):
+                raise ValueError(f"source token {token_id} outside bridge")
+            lo, hi = self.offsets[token_id:token_id + 2]
+            mapped = self.values[lo:hi].tolist()
+            target.extend(mapped)
+            rows.extend([hidden_states[:, i:i + 1]] * len(mapped))
+        if not target:
+            raise ValueError("source sequence mapped to no Talker tokens")
+        qwen_ids = torch.tensor([target], dtype=torch.long,
+                                device=hidden_states.device)
+        return qwen_ids, torch.cat(rows, dim=1)
+
+
 def demo() -> None:
     torch.manual_seed(0)
     cfg = SpeechConditionerConfig(cognition_dim=32, token_dim=32,
@@ -111,7 +158,11 @@ def demo() -> None:
         pass
     else:
         raise AssertionError("misaligned token/hidden sequences must fail")
-    print("neural.speech: tensor-only boundary, guards, checkpoint OK")
+    bridge = TokenIdBridge(np.array([0, 1, 3]), np.array([9, 10, 11]))
+    qids, repeated = bridge.expand([0, 1], torch.randn(1, 2, 4))
+    assert qids.tolist() == [[9, 10, 11]] and repeated.shape == (1, 3, 4)
+    assert torch.equal(repeated[:, 1], repeated[:, 2])
+    print("neural.speech: tensor-only boundary, ID expansion, guards, checkpoint OK")
 
 
 if __name__ == "__main__":

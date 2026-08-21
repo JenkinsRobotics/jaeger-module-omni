@@ -1,0 +1,58 @@
+{
+  "format": "jaeger-omni-audio-bench-v1",
+  "architecture": {
+    "graph": "PCM->audio_encoder->Gemma->conditioner->Talker->Token2Wav->PCM",
+    "transcript_or_decoded_text_handoff": false,
+    "conditioner": "exact-token-bridge+hidden-map",
+    "token_bridge": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/training/runs/gemma_to_qwen_token_ids.npz",
+    "hidden_map": "/Users/jonathanjenkins/GITHUB/VoiceLLM-Playground/Omni Model/gemma-backbone/W_rev.npy"
+  },
+  "rows": [
+    {
+      "case": "q00",
+      "answers": [
+        "four"
+      ],
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q00.wav",
+      "output_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/omni_audio_tokenbridge_mps1_20260821/q00.wav",
+      "input_samples_received": 18800,
+      "input_samples_consumed": 18800,
+      "gemma_reply_log_only": "Two plus two equals four.",
+      "gemma_tokens": 6,
+      "gemma_hidden_shape": [
+        6,
+        2560
+      ],
+      "talker_condition_shape": [
+        1,
+        6,
+        768
+      ],
+      "speech_codes": 65,
+      "output_seconds": 2.36,
+      "reply_ms": 499.7,
+      "condition_ms": 4605.6,
+      "talker_ms": 2955.8,
+      "vocoder_ms": 6820.0,
+      "first_audio_ms": 11390.1,
+      "stream_chunks": 3,
+      "vocoder_first_chunk_ms": 3329.0,
+      "wall_clock_paced_input": false,
+      "barge_in_tested": false,
+      "transcript_handoff": false,
+      "metric_transcript": "2 plus 2 holes for 2.",
+      "semantic_ok": false,
+      "output_wer": 1.0,
+      "output_word_accuracy": 0.0
+    }
+  ],
+  "score": {
+    "semantic_correct": 0,
+    "n": 1,
+    "semantic_ratio_to_legacy_12_of_12": 0.0,
+    "mean_output_word_accuracy": 0.0,
+    "median_first_audio_ms": 11390.1,
+    "streaming_output": true,
+    "strict_80_percent_pass": false
+  }
+}

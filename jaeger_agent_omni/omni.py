@@ -93,6 +93,67 @@ def one_turn(s, meta, audio, max_tokens: int = 48,
     return reply, (time.monotonic() - t0) * 1000
 
 
+def condition_session(session, conditioner):
+    """Convert a completed Gemma generation to Talker conditions.
+
+    This is the architectural seam under test: tensors in, tensors out. It
+    cannot accept a decoded answer string.
+    """
+    import mlx.core as mx
+    import numpy as np
+    import torch
+
+    hidden = getattr(session, "hidden", None)
+    if not hidden:
+        raise RuntimeError("no hidden states — call respond(collect_hidden=True)")
+    output_ids = getattr(session, "output_ids", ())
+    if len(output_ids) != len(hidden):
+        raise RuntimeError(f"speech tensors desynchronised: {len(output_ids)} ids "
+                           f"for {len(hidden)} hidden states")
+    h = torch.from_numpy(np.stack([np.array(
+        x.astype(mx.float32), copy=False).reshape(-1) for x in hidden])).float()
+    token_emb, _ = session._embed_ids(list(output_ids))
+    token_emb = torch.from_numpy(np.array(
+        token_emb.astype(mx.float32), copy=False)).float()
+    with torch.no_grad():
+        return conditioner(token_emb, h.unsqueeze(0))
+
+
+def condition_session_token_bridge(session, talker, token_bridge,
+                                   hidden_map_path,
+                                   teacher_hidden_norm: float = 72.6281):
+    """Exact Talker lexical embeddings plus mapped Gemma hidden tensors.
+
+    The token bridge is compiled offline. Runtime performs integer lookup and
+    tensor math only: no tokenizer, decode, string, or TTS text request.
+    """
+    import mlx.core as mx
+    import numpy as np
+    import torch
+
+    hidden = getattr(session, "hidden", None)
+    ids = getattr(session, "output_ids", ())
+    if not hidden or len(ids) != len(hidden):
+        raise RuntimeError("Gemma IDs and hidden states are missing or misaligned")
+    h = torch.from_numpy(np.stack([np.array(
+        x.astype(mx.float32), copy=False).reshape(-1) for x in hidden])).float()
+    qwen_ids, aligned = token_bridge.expand(ids, h.unsqueeze(0))
+    device = next(talker.parameters()).device
+    dtype = next(talker.parameters()).dtype
+    qwen_ids = qwen_ids.to(device)
+    aligned = aligned.to(device=device, dtype=dtype)
+    mapping = torch.from_numpy(np.load(hidden_map_path)).to(
+        device=device, dtype=dtype)
+    if mapping.shape != (aligned.shape[-1], 4096):
+        raise ValueError(f"hidden map {mapping.shape} != "
+                         f"({aligned.shape[-1]}, 4096)")
+    qwen_hidden = aligned @ mapping
+    qwen_hidden = qwen_hidden / qwen_hidden.norm(
+        dim=-1, keepdim=True).clamp(min=1e-6) * teacher_hidden_norm
+    with torch.no_grad():
+        return talker.emb_text(qwen_ids) + talker.proj_semantic(qwen_hidden)
+
+
 def speak(session, out_path: str, ref_audio=None,
           conditioner_path: str = "training/runs/gemma_talker_conditioner.pt") -> str:
     """Gemma tensors -> Talker codes -> waveform, with no text handoff.
@@ -110,34 +171,17 @@ def speak(session, out_path: str, ref_audio=None,
     """
     import torch
 
-    hidden = getattr(session, "hidden", None)
-    if not hidden:
-        raise RuntimeError(
-            "no hidden states — call respond(collect_hidden=True). Speech "
-            "conditioned on text alone babbles; there is no text-only path.")
-    output_ids = getattr(session, "output_ids", ())
-    if len(output_ids) != len(hidden):
-        raise RuntimeError(f"speech tensors desynchronised: {len(output_ids)} ids "
-                           f"for {len(hidden)} hidden states")
     if not Path(conditioner_path).exists():
         raise RuntimeError(
             f"GemmaTalkerConditioner not trained ({conditioner_path}).\n"
             f"  Until it is, speech out produces babble, not these words.\n"
             f"  Component-only Talker proof: research/verify_talker_port.py")
 
-    import numpy as np
-    import mlx.core as mx
     from jaeger_agent_omni.neural.speech import GemmaTalkerConditioner
 
     ck = torch.load(conditioner_path, map_location="cpu", weights_only=False)
     conditioner = GemmaTalkerConditioner.from_checkpoint(ck)
-    h = torch.from_numpy(np.stack([np.array(x.astype(mx.float32), copy=False).reshape(-1)
-                                   for x in hidden])).float()
-    token_emb, _ = session._embed_ids(list(output_ids))
-    token_emb = torch.from_numpy(np.array(
-        token_emb.astype(mx.float32), copy=False)).float()
-    with torch.no_grad():
-        cond = conditioner(token_emb, h.unsqueeze(0))
+    cond = condition_session(session, conditioner)
 
     from research.load_minicpm_talker import load as load_talker
     from research.t2w_client import synthesize
@@ -197,7 +241,8 @@ def selfcheck() -> int:
     """
     import inspect
     code = "".join(inspect.getsource(f)
-                   for f in (build, one_turn, bench, speak, main))
+                   for f in (build, one_turn, bench, condition_session,
+                             condition_session_token_bridge, speak, main))
     for banned, why in (("transcribe(", "calls an ASR decoder"),
                         ("feed_text(", "injects a transcript into the cache")):
         assert banned not in code, f"omni path {why}"

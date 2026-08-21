@@ -396,6 +396,13 @@ def stub_batch(cfg: TrainConfig, vocab: int, device: str, seed: int = 0):
             "labels": torch.randint(0, vocab, (n, 10), generator=g).to(device)}
 
 
+def _is_small(backbone_id: str) -> bool:
+    """Small backbones keep fp32 for numerical headroom; big ones cannot
+    afford it. The threshold is memory, not accuracy."""
+    small = ("stub", "135m", "360m", "-tiny", "smollm")
+    return any(t in backbone_id.lower() for t in small)
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--stub", action="store_true",
@@ -453,7 +460,14 @@ def main() -> int:
         cfg.whisper_id = args.whisper
         cfg.arch = args.arch
         cfg.__post_init__()
-        cfg.dtype = "fp32" if device in ("cpu", "mps") else cfg.dtype
+        # DTYPE IS A MEMORY DECISION, not a precision preference. fp32 was
+        # harmless against a 135M backbone (0.5 GB) and is fatal at 4B:
+        # E4B is 14.0 GB in bf16 and 27.9 GB in fp32, so fp32 on a 32 GB
+        # machine guarantees swap thrash -- measured, the process sat in
+        # uninterruptible I/O at 12% CPU producing nothing.
+        # bf16 on MPS is verified working (research/e4b_fit.py, 16.6 GB peak).
+        if device in ("cpu", "mps"):
+            cfg.dtype = "fp32" if _is_small(cfg.backbone_id) else "bf16"
         (enc, lm, proj, dl, val_dl, ds, val_ds,
          wrapper) = real_setup(cfg, args.corpus, device)
         print(f"corpus: {len(ds)} train / {len(val_ds)} val turns from {args.corpus}")

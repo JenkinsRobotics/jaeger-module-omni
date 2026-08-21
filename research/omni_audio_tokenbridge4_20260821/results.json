@@ -1,0 +1,165 @@
+{
+  "format": "jaeger-omni-audio-bench-v1",
+  "architecture": {
+    "graph": "PCM->audio_encoder->Gemma->conditioner->Talker->Token2Wav->PCM",
+    "transcript_or_decoded_text_handoff": false,
+    "conditioner": "exact-token-bridge+hidden-map",
+    "token_bridge": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/training/runs/gemma_to_qwen_token_ids.npz",
+    "hidden_map": "/Users/jonathanjenkins/GITHUB/VoiceLLM-Playground/Omni Model/gemma-backbone/W_rev.npy"
+  },
+  "rows": [
+    {
+      "case": "q00",
+      "answers": [
+        "four"
+      ],
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q00.wav",
+      "output_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/omni_audio_tokenbridge4_20260821/q00.wav",
+      "input_samples_received": 18800,
+      "input_samples_consumed": 18800,
+      "gemma_reply_log_only": "Two plus two equals four.",
+      "gemma_tokens": 6,
+      "gemma_hidden_shape": [
+        6,
+        2560
+      ],
+      "talker_condition_shape": [
+        1,
+        6,
+        768
+      ],
+      "speech_codes": 50,
+      "output_seconds": 1.88,
+      "reply_ms": 298.8,
+      "condition_ms": 31.1,
+      "talker_ms": 1752.3,
+      "vocoder_ms": 16130.8,
+      "first_audio_ms": 18213.0,
+      "stream_chunks": 1,
+      "wall_clock_paced_input": false,
+      "barge_in_tested": false,
+      "transcript_handoff": false,
+      "metric_transcript": "2 plus 2 equals 4.",
+      "semantic_ok": true,
+      "output_wer": 0.6,
+      "output_word_accuracy": 0.4
+    },
+    {
+      "case": "q01",
+      "answers": [
+        "blue"
+      ],
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q01.wav",
+      "output_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/omni_audio_tokenbridge4_20260821/q01.wav",
+      "input_samples_received": 21587,
+      "input_samples_consumed": 21587,
+      "gemma_reply_log_only": "The color of the image is not provided.",
+      "gemma_tokens": 9,
+      "gemma_hidden_shape": [
+        9,
+        2560
+      ],
+      "talker_condition_shape": [
+        1,
+        9,
+        768
+      ],
+      "speech_codes": 42,
+      "output_seconds": 1.56,
+      "reply_ms": 404.6,
+      "condition_ms": 28.4,
+      "talker_ms": 1903.1,
+      "vocoder_ms": 16145.9,
+      "first_audio_ms": 18482.1,
+      "stream_chunks": 1,
+      "wall_clock_paced_input": false,
+      "barge_in_tested": false,
+      "transcript_handoff": false,
+      "metric_transcript": "Color of the image isn't provided.",
+      "semantic_ok": false,
+      "output_wer": 0.375,
+      "output_word_accuracy": 0.625
+    },
+    {
+      "case": "q02",
+      "answers": [
+        "seven"
+      ],
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q02.wav",
+      "output_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/omni_audio_tokenbridge4_20260821/q02.wav",
+      "input_samples_received": 22611,
+      "input_samples_consumed": 22611,
+      "gemma_reply_log_only": "There are seven days in a week.",
+      "gemma_tokens": 8,
+      "gemma_hidden_shape": [
+        8,
+        2560
+      ],
+      "talker_condition_shape": [
+        1,
+        8,
+        768
+      ],
+      "speech_codes": 50,
+      "output_seconds": 1.88,
+      "reply_ms": 380.9,
+      "condition_ms": 29.2,
+      "talker_ms": 1962.4,
+      "vocoder_ms": 15824.5,
+      "first_audio_ms": 18197.0,
+      "stream_chunks": 1,
+      "wall_clock_paced_input": false,
+      "barge_in_tested": false,
+      "transcript_handoff": false,
+      "metric_transcript": "We are seven days in a week.",
+      "semantic_ok": true,
+      "output_wer": 0.1429,
+      "output_word_accuracy": 0.8571
+    },
+    {
+      "case": "q03",
+      "answers": [
+        "paris"
+      ],
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q03.wav",
+      "output_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/omni_audio_tokenbridge4_20260821/q03.wav",
+      "input_samples_received": 26231,
+      "input_samples_consumed": 26231,
+      "gemma_reply_log_only": "The capital of France is Paris.",
+      "gemma_tokens": 7,
+      "gemma_hidden_shape": [
+        7,
+        2560
+      ],
+      "talker_condition_shape": [
+        1,
+        7,
+        768
+      ],
+      "speech_codes": 62,
+      "output_seconds": 2.24,
+      "reply_ms": 361.6,
+      "condition_ms": 28.8,
+      "talker_ms": 2444.2,
+      "vocoder_ms": 15500.1,
+      "first_audio_ms": 18334.7,
+      "stream_chunks": 1,
+      "wall_clock_paced_input": false,
+      "barge_in_tested": false,
+      "transcript_handoff": false,
+      "metric_transcript": "the capital of France, Paris.",
+      "semantic_ok": true,
+      "output_wer": 0.1667,
+      "output_word_accuracy": 0.8333
+    }
+  ],
+  "score": {
+    "semantic_correct": 3,
+    "n": 4,
+    "semantic_ratio_to_legacy_12_of_12": 0.75,
+    "mean_output_word_accuracy": 0.6788,
+    "median_first_audio_ms": 18273.8,
+    "streaming_output": false,
+    "strict_80_percent_pass": false
+  }
+}

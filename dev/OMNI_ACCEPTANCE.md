@@ -43,9 +43,16 @@ prosody, and duplex behavior is the next bar.
 ## Current evidence (2026-08-21)
 
 - No-transcript Gemma input: 10/12, 83% of legacy, freshly reproduced.
-- Talker/Token2Wav boundary: functional from exact MiniCPM condition tensors
-  after fixing GGUF Q/K layout and code-head orientation.  This is a component
-  proof, not an end-to-end Jaeger pass.
-- Gemma-to-Talker speech conditioner: not trained or wired.
-- Strict integrated Jaeger score: 0/12 because the required output PCM is
-  absent.  Component successes do not override this result.
+- The complete strict graph now executes and writes cloned-voice PCM. The
+  first learned-conditioner pilot scored only 1/4 semantic and 14.6% mean word
+  accuracy.
+- Replacing its weak learned lexical map with an offline-compiled, runtime
+  tensor-only Gemma-ID -> Qwen-ID bridge improved the same four unseen cases
+  to 3/4 semantic and 67.9% mean word accuracy. q01 failed upstream because
+  Gemma answered that no image was supplied; the speech output followed it.
+- This is not an 80% pass: only four cases have end-to-end waveform scores,
+  mean word accuracy is below 80%, live Talker-to-vocoder overlap is not wired,
+  and barge-in has not been exercised through the audio-output graph.
+- A warm-resident run exposed severe unified-memory contention with 43.5 GB
+  system swap. CPU Talker is more reproducible today; the Metal-F16 path runs
+  but has not matched its sampled output quality or clean latency yet.

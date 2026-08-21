@@ -6,6 +6,20 @@
 
 ## Reality reset — 2026-08-21
 
+Update later the same day: the strict graph is no longer mechanically zero.
+PCM now reaches Gemma through its audio tower; Gemma token IDs and hidden
+tensors reach Talker without a decoded string; Token2Wav writes cloned-voice
+PCM. The first four-case waveform proof measured 1/4 semantic and 14.6% word
+accuracy. An offline-compiled token-ID bridge (runtime integer/tensor operations
+only) raised the same cases to 3/4 semantic and 67.9% mean word accuracy.
+
+That is still not an 80% product pass. The full 12-case waveform run, >=80%
+word accuracy, live output overlap, and duplex barge-in remain open. Warm
+latency under the current machine load is not reportable as a model number:
+macOS had 43.5 GB swap in use and the all-resident graph made Gemma vary from
+0.4 s to 20 s. Metal-F16 Talker executes but has not yet matched CPU sampled
+quality.
+
 The only accepted product target is the integrated no-text-handoff
 audio-to-audio graph defined in `dev/OMNI_ACCEPTANCE.md`.
 
@@ -14,11 +28,8 @@ audio-to-audio graph defined in `dev/OMNI_ACCEPTANCE.md`.
 - The MiniCPM Talker/Token2Wav port now renders speech from exact reference
   condition tensors. Two GGUF import defects were fixed: Q/K required the
   inverse llama.cpp rotary permutation and `head_code` required a transpose.
-- Gemma hidden states are not yet connected to that Talker. The current CLI
-  emits no audio waveform.
-- Therefore the strict integrated Jaeger Omni score is **0/12**, not 10/12 or
-  83%. Those are component/input figures. MiniCPM-o remains the only verified
-  complete audio-to-audio reference.
+- Gemma hidden states are now connected to Talker in the research benchmark,
+  but the output path remains below the acceptance thresholds above.
 - The prior Whisper-transcript-hint input acceptance in VoiceLLM-Playground is
   a well-engineered fallback/legacy test, not evidence for this architecture.
 

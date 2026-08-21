@@ -29,6 +29,7 @@ PACKAGE_MODULES = [
     "jaeger_agent_omni.neural.heads",
     "jaeger_agent_omni.neural.gate",
     "jaeger_agent_omni.neural.delta",
+    "jaeger_agent_omni.neural.speech",
     "jaeger_agent_omni.app",
     "jaeger_agent_omni.artifacts",
 ]

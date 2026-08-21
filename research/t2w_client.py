@@ -79,6 +79,10 @@ class Token2WavClient:
         return self._call(cmd="process", tokens=[int(t) for t in tokens],
                           last_chunk=last_chunk, output_path=str(output_path))
 
+    def reset(self) -> dict:
+        """Reset streaming caches while keeping model and cloned voice warm."""
+        return self._call(cmd="reset")
+
     def close(self):
         try:
             if self.proc.poll() is None:
@@ -129,36 +133,49 @@ def synthesize(code_list: list, out_wav: str | Path, ref_audio: str | Path,
     service's stream cache carrying state — the same 25-token cadence their
     C++ uses. Each call yields its slice of 24 kHz audio; we concatenate.
     """
-    import tempfile
-    import wave
-
     ref_audio = _clip_reference(ref_audio)
-    pieces = []
-    with tempfile.TemporaryDirectory() as tmp, Token2WavClient() as t2w:
+    with Token2WavClient() as t2w:
         t2w.init(device=device)
         t2w.set_ref_audio(ref_audio)
-        chunks = [code_list[i:i + CHUNK_TOKENS]
-                  for i in range(0, len(code_list), CHUNK_TOKENS)]
+        return synthesize_with_client(t2w, code_list, out_wav)[0]
+
+
+def synthesize_with_client(client: Token2WavClient, code_list: list,
+                           out_wav: str | Path) -> tuple[Path, dict]:
+    """Render one utterance on an already-loaded, voice-cloned service.
+
+    Returns the concatenated WAV and timing for the first emitted audio chunk.
+    This is the production lifecycle: reset caches between turns, not weights.
+    """
+    import tempfile
+    import time
+    import wave
+
+    client.reset()
+    pieces, first_ms = [], None
+    started = time.monotonic()
+    chunks = [code_list[i:i + CHUNK_TOKENS]
+              for i in range(0, len(code_list), CHUNK_TOKENS)]
+    with tempfile.TemporaryDirectory() as tmp:
         for i, chunk in enumerate(chunks):
             part = Path(tmp) / f"part{i:03d}.wav"
-            r = t2w.process(chunk, part, last_chunk=(i == len(chunks) - 1))
+            r = client.process(chunk, part, last_chunk=(i == len(chunks) - 1))
             if r.get("output_path"):
+                if first_ms is None:
+                    first_ms = (time.monotonic() - started) * 1000
                 with wave.open(str(part)) as w:
-                    pieces.append((w.getframerate(),
-                                   w.readframes(w.getnframes())))
-
+                    pieces.append((w.getframerate(), w.readframes(w.getnframes())))
     if not pieces:
         raise RuntimeError("service produced no audio for any chunk")
-    rate = pieces[0][0]
     out = Path(out_wav)
     out.parent.mkdir(parents=True, exist_ok=True)
     with wave.open(str(out), "wb") as w:
-        w.setnchannels(1)
-        w.setsampwidth(2)
-        w.setframerate(rate)
+        w.setnchannels(1); w.setsampwidth(2); w.setframerate(pieces[0][0])
         for _, raw in pieces:
             w.writeframes(raw)
-    return out
+    return out, {"first_chunk_ms": round(first_ms, 1),
+                 "total_ms": round((time.monotonic() - started) * 1000, 1),
+                 "chunks": len(pieces)}
 
 
 MAX_REF_S = 9.5     # the flow caps the reference at 1000 mel frames (~10 s)
