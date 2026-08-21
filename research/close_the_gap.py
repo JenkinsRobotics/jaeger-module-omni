@@ -31,13 +31,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 SYSTEM = "You are a helpful assistant. Answer in one short sentence."
 
 
-def graded(reply: str, answers: list) -> bool:
-    # Strip punctuation before matching. A spelled answer comes back as
-    # "T-A-C." and a substring test for "tac" misses it — that bug scored a
-    # correct hybrid answer as wrong and made the mode look worse than legacy.
-    r = re.sub(r"[^a-z0-9 ]", "", reply.lower())
-    hits = sum(re.sub(r"[^a-z0-9 ]", "", a.lower()) in r for a in answers)
-    return hits >= (2 if len(answers) >= 3 else 1)
+from grading import graded                                       # noqa: E402
 
 
 def run(mode, cases, cases_dir, model_path, whisper_id="openai/whisper-medium.en",

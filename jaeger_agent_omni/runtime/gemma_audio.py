@@ -2,7 +2,7 @@
 
 The finding that makes always-on duplex buildable without training an encoder:
 
-    1 s of audio -> 25 audio tokens          (MiniCPM's exact cadence)
+    1 s of audio -> 25 audio tokens          (MiniCPM spends 10 for the same second)
     chunked encoding == whole-file encoding  (33 tokens either way, measured)
     tower attention_context_right = 0        (causal — no future needed)
 
@@ -37,7 +37,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 
 SAMPLE_RATE = 16000
-CHUNK_S = 1.0                      # 1 s -> 25 tokens, their cadence
+CHUNK_S = 1.0                      # 1 s -> 25 tokens (the tower's rate, not ours)
 CHUNK_SAMPLES = int(SAMPLE_RATE * CHUNK_S)
 TOKENS_PER_CHUNK = 25
 FE_SAFE_SAMPLES = int(SAMPLE_RATE * 1.5)   # under the ~2 s truncation cliff
