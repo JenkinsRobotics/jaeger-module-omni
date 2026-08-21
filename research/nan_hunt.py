@@ -51,22 +51,46 @@ def main() -> int:
     print(f"backbone hidden {hidden_size_of(backbone)}  "
           f"dtype {next(backbone.parameters()).dtype}")
 
+    from train import Trainer
+    tr = Trainer(cfg, enc, backbone, proj, device=dev, wrapper=wrapper)
+
     it = iter(dl)
-    for trial in range(6):
+    for trial in range(12):
         batch = next(it)
-        wav = batch["waveform"].to(dev)
-        print(f"\n--- batch {trial}  waveform {tuple(wav.shape)} ---")
-        ok = check("waveform", wav)
+        # EXACTLY what the training loop feeds (train.py:557): features are
+        # cast to the trainer dtype -- bf16 -- before the encoder sees them.
+        feats = batch["features"].to(dev, tr.dtype)
+        labels = batch["labels"].to(dev)
+        dur = batch.get("durations")
+        print(f"\n--- batch {trial}  features {tuple(feats.shape)}  "
+              f"dur {[round(d,1) for d in (dur or [])][:3]} ---")
+        ok = check("mel features (bf16)", feats)
+        import torch
+        f32 = batch["features"].to(dev, torch.float32)
+        print(f"  {'mel range':24s} fp32 [{f32.min():.2f}, {f32.max():.2f}]  "
+              f"bf16 [{feats.float().min():.2f}, {feats.float().max():.2f}]")
         with torch.no_grad():
-            feats = enc(wav) if callable(enc) else None
-        if feats is not None:
-            h = feats.last_hidden_state if hasattr(feats, "last_hidden_state") else feats
-            ok &= check("whisper encoder", h)
-            with torch.no_grad():
-                p = proj(h, duration_s=None) if "duration" in proj.forward.__code__.co_varnames else proj(h)
-            ok &= check("projector+delta", p)
+            e32 = tr.encoder.float()(f32).last_hidden_state
+            tr.encoder.to(tr.dtype)
+        check("encoder(fp32 mel)", e32)
+        with torch.no_grad():
+            e16 = tr.encoder(feats).last_hidden_state
+        ok &= check("encoder(bf16 mel)", e16)
+
+        import torch
+        with torch.no_grad():
+            prefix = tr.audio_prefix(feats, dur)
+        ok &= check("projector+delta out", prefix)
+        if prefix is not None:
+            n = prefix.norm(dim=-1)
+            print(f"  {'prefix token norms':24s} mean {n.mean():.2f}  "
+                  f"min {n.min():.2f}  max {n.max():.2f}")
+
+        with torch.no_grad():
+            out, full = tr.student(feats, labels=labels, durations=dur)
+        ok &= check("backbone logits", out.logits)
         if not ok:
-            print("  ^^ first non-finite stage found")
+            print("  ^^ FIRST NON-FINITE STAGE")
             break
     return 0
 

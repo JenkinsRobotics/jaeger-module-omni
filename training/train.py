@@ -62,7 +62,8 @@ class Trainer:
         # machine -- bf16 halved the weights and the run still thrashed to
         # 0.08 GB free. Recomputing activations in the backward pass trades
         # ~30% step time for the difference between running and swapping.
-        if getattr(backbone, "supports_gradient_checkpointing", False):
+        if (getattr(backbone, "supports_gradient_checkpointing", False)
+                and not getattr(cfg, "no_checkpointing", False)):
             backbone.gradient_checkpointing_enable(
                 gradient_checkpointing_kwargs={"use_reentrant": False})
             # use_reentrant=False is required: the reentrant implementation
@@ -109,12 +110,26 @@ class Trainer:
         """waveform/features -> [B, n_audio_tokens, cognition_dim]."""
         with torch.no_grad():
             audio = self.encoder(waveform).last_hidden_state
-        # Trim when durations are known: untrimmed, every clip costs the token
-        # budget of a full 30 s window regardless of its real length.
-        if durations is not None and len(set(durations)) == 1:
-            embeds = self.projector(audio.float(), duration_s=durations[0])
+        # Trim to real duration: whisper pads every clip to 30 s / 1500 frames,
+        # so an untrimmed 1.4 s utterance costs the same 300 cognition tokens
+        # as a 30 s one.
+        #
+        # The old condition was `len(set(durations)) == 1`, which is ALWAYS
+        # true at batch 1 and almost never true above it -- measured batches
+        # read [1.8, 1.4, 16.1], so every clip silently took the full budget.
+        # That is a large part of why batch 8 OOMed at 42.4 GiB, and it read
+        # as "E4B needs more memory" rather than as a bug.
+        #
+        # Trim per item to the batch's longest clip: correct for every item,
+        # and still a large saving whenever the batch is not full of 30 s
+        # audio. Per-item ragged trimming would need a padding mask through
+        # the projector, which is not worth it until a measurement says so.
+        audio = audio.float()
+        if durations:
+            longest = max(durations)
+            embeds = self.projector(audio, duration_s=longest)
         else:
-            embeds = self.projector(audio.float())
+            embeds = self.projector(audio)
         # self.dtype, not backbone.dtype — nn.Module has no .dtype and the stub
         # backbone is a plain nn.Module.
         return embeds.to(self.dtype)
@@ -486,6 +501,9 @@ def main() -> int:
     # in fp32 against a 135M backbone can walk straight into non-finite
     # territory at 4B -- measured: loss went nan at step 120 on lr 3e-4.
     ap.add_argument("--lr", type=float, default=None)
+    # Isolates checkpointing as a NaN suspect: it recomputes activations in
+    # bf16 during backward, the one link in the chain not yet tested alone.
+    ap.add_argument("--no-checkpointing", action="store_true")
     ap.add_argument("--batch", type=int, default=None,
                     help="micro-batch (E4B wants 1-2; small backbones take 8)")
     ap.add_argument("--grad-accum", type=int, default=None,
@@ -506,6 +524,7 @@ def main() -> int:
     make = warmup if args.stage == "stage3_warmup" else distill_cfg
     cfg = make(args.backbone or "stub://tiny",
                **({"arch": "scratch", "whisper_id": "stub"} if args.stub else {}))
+    cfg.no_checkpointing = args.no_checkpointing
     if args.lr is not None:
         cfg.lr = args.lr
     if args.batch is not None:

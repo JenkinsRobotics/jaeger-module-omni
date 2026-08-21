@@ -77,16 +77,32 @@ def kl_loss(student_logits: torch.Tensor, teacher_logits: torch.Tensor,
     Compares only the final position because that is where the two streams are
     aligned: both have just consumed the whole question and are about to answer.
     """
-    s = F.log_softmax(student_logits[:, -1] / temperature, dim=-1)
-    t = F.softmax(teacher_logits[:, -1].detach() / temperature, dim=-1)
+    # fp32 for the same reason as response_loss: these are softmaxes over a
+    # 262k vocabulary, and bf16 cannot hold the normaliser.
+    s = F.log_softmax(student_logits[:, -1].float() / temperature, dim=-1)
+    t = F.softmax(teacher_logits[:, -1].detach().float() / temperature, dim=-1)
     return F.kl_div(s, t, reduction="batchmean") * (temperature ** 2)
 
 
 def response_loss(logits: torch.Tensor, labels: torch.Tensor,
                   ignore_index: int = -100) -> torch.Tensor:
-    """Standard shifted causal LM cross-entropy on the response tokens."""
+    """Standard shifted causal LM cross-entropy on the response tokens.
+
+    IN FP32, ALWAYS. cross_entropy runs log_softmax, whose normaliser sums
+    over the vocabulary -- 262,144 terms for Gemma. bf16 carries ~3 decimal
+    digits, which cannot accumulate a sum that long without losing it, and
+    the result goes non-finite.
+
+    Measured: the forward pass was entirely clean (logits finite, |x| ~ 30,
+    bf16 and fp32 encoders agreeing to 3 significant figures) while the loss
+    went NaN. Two learning-rate changes did nothing because it was never an
+    optimisation problem -- it was the reduction dtype.
+
+    Casting costs one fp32 copy of the logits; at batch 1 that is ~400 MB and
+    it buys a loss that exists.
+    """
     return F.cross_entropy(
-        logits[:, :-1].reshape(-1, logits.shape[-1]),
+        logits[:, :-1].reshape(-1, logits.shape[-1]).float(),
         labels[:, 1:].reshape(-1),
         ignore_index=ignore_index)
 
