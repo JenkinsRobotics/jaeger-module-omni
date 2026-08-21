@@ -40,6 +40,31 @@ and measured. The remaining latency is dominated by generation, exactly as
 predicted — which is why Stage 5's incremental prefill, not the projector, is
 where the conversational win lands.
 
+### First audible speech out — 2026-08-20 evening
+
+`text -> talker (our port) -> speech codes -> token2wav (their service) -> wav`
+produced 14.2 s of **intelligible cloned-voice English**, round-tripped through
+whisper. It said the wrong words — fluent speech, not the requested text — and
+that split is the diagnosis:
+
+```text
+token2wav      VERIFIED  codes -> fluent English in the reference voice.
+                         Driven via OpenBMB's own pyt2w JSON service from an
+                         isolated venv (.venv-t2w); no flow-matching port.
+talker port    ALIVE, conditioning incomplete. Zero-conditioning free-runs in
+                         speech space instead of reading the text. The missing
+                         piece is their input cadence: 25-token text/code
+                         interleaving with <|tts_bos|>/<|chunk_eos|>, plus
+                         proj_spk speaker conditioning — all readable in
+                         omni.cpp.
+```
+
+Shims that made it run on a Mac (research/t2w_bootstrap.py): .cuda() no-ops +
+device='cuda' factory remaps (stepaudio2 hardcodes both), ruamel.yaml pinned
+to 0.17 for HyperPyYAML. Flow constraints measured: reference audio and each
+generation window cap at 1000 mel frames (~10 s), hence 25-token streaming
+chunks with the service cache carrying state — the same cadence as their C++.
+
 ### Copy-their-baseline architecture + demo GUI — 2026-08-20
 
 Direction change, at Jonathan's call, and the measurements back it:

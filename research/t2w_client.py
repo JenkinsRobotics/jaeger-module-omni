@@ -28,7 +28,9 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 T2W_VENV_PY = REPO / ".venv-t2w" / "bin" / "python"
-SERVICE = Path.home() / "GITHUB/llama.cpp-omni/tools/omni/pyt2w/token2wav_service.py"
+# Launched through the bootstrap, which no-ops .cuda() — stepaudio2 hardcodes
+# it and the service's device argument never reaches that call.
+SERVICE = REPO / "research" / "t2w_bootstrap.py"
 MODEL_DIR = Path.home() / "models/MiniCPM-o-4_5-token2wav/assets/token2wav"
 
 
@@ -42,6 +44,13 @@ class Token2WavClient:
                                      stdout=subprocess.PIPE,
                                      stderr=subprocess.DEVNULL, text=True,
                                      bufsize=1)
+        if service_cmd is None:
+            # The real service prints a ready banner before accepting
+            # commands. Consume it, or the first command reads the banner as
+            # its own response.
+            banner = json.loads(self.proc.stdout.readline())
+            if banner.get("status") not in ("ok", "ready"):
+                raise RuntimeError(f"service failed to start: {banner}")
 
     def _call(self, **cmd) -> dict:
         if self.proc.poll() is not None:
@@ -101,12 +110,83 @@ def speak(text: str, out_wav: str | Path, ref_audio: str | Path | None = None,
                                   temperature=0.8)     # sampling: greedy loops
     code_list = codes[0].tolist()
 
-    with Token2WavClient() as t2w:
-        t2w.init(device=device)
-        if ref_audio:
-            t2w.set_ref_audio(ref_audio)
-        t2w.process(code_list, out_wav, last_chunk=True)
+    if not ref_audio:
+        raise ValueError("ref_audio is required: the flow model conditions on "
+                         "a speaker reference (the measured campplus/prompt-"
+                         "cache design) and will refuse without one")
+    synthesize(code_list, out_wav, ref_audio, device=device)
     return Path(out_wav)
+
+
+CHUNK_TOKENS = 25       # their C++ sends 25-token chunks (chunk_main=25, 1 s)
+
+
+def synthesize(code_list: list, out_wav: str | Path, ref_audio: str | Path,
+               device: str = "cpu") -> Path:
+    """Codes -> waveform through the streaming service.
+
+    The flow's attention window covers prompt + generated mels together
+    (1000 frames ~ 10 s), so long generations MUST go chunk by chunk with the
+    service's stream cache carrying state — the same 25-token cadence their
+    C++ uses. Each call yields its slice of 24 kHz audio; we concatenate.
+    """
+    import tempfile
+    import wave
+
+    ref_audio = _clip_reference(ref_audio)
+    pieces = []
+    with tempfile.TemporaryDirectory() as tmp, Token2WavClient() as t2w:
+        t2w.init(device=device)
+        t2w.set_ref_audio(ref_audio)
+        chunks = [code_list[i:i + CHUNK_TOKENS]
+                  for i in range(0, len(code_list), CHUNK_TOKENS)]
+        for i, chunk in enumerate(chunks):
+            part = Path(tmp) / f"part{i:03d}.wav"
+            r = t2w.process(chunk, part, last_chunk=(i == len(chunks) - 1))
+            if r.get("output_path"):
+                with wave.open(str(part)) as w:
+                    pieces.append((w.getframerate(),
+                                   w.readframes(w.getnframes())))
+
+    if not pieces:
+        raise RuntimeError("service produced no audio for any chunk")
+    rate = pieces[0][0]
+    out = Path(out_wav)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    with wave.open(str(out), "wb") as w:
+        w.setnchannels(1)
+        w.setsampwidth(2)
+        w.setframerate(rate)
+        for _, raw in pieces:
+            w.writeframes(raw)
+    return out
+
+
+MAX_REF_S = 9.5     # the flow caps the reference at 1000 mel frames (~10 s)
+
+
+def _clip_reference(path: str | Path) -> Path:
+    """Trim a long reference to the flow's window. Measured, not guessed:
+    a 27 s reference fails with 'expanded size (1000) must match (1354)'."""
+    import tempfile
+    import wave
+
+    import numpy as np
+
+    with wave.open(str(path)) as w:
+        rate = w.getframerate()
+        n = w.getnframes()
+        if n / rate <= MAX_REF_S:
+            return Path(path)
+        raw = w.readframes(int(MAX_REF_S * rate))
+
+    out = Path(tempfile.gettempdir()) / f"t2w_ref_{Path(path).stem}.wav"
+    with wave.open(str(out), "wb") as w:
+        w.setnchannels(1)
+        w.setsampwidth(2)
+        w.setframerate(rate)
+        w.writeframes(raw)
+    return out
 
 
 def main() -> int:
@@ -114,7 +194,10 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--say", default="We choose to go to the moon.")
     ap.add_argument("--out", default=str(REPO / "training/runs/t2w_test.wav"))
-    ap.add_argument("--ref-audio", default=None, help="voice to clone")
+    ap.add_argument("--ref-audio",
+                    default=str(REPO / "training/samples/jfk_moon.wav"),
+                    help="voice to clone — REQUIRED by the flow model; "
+                         "defaults to the JFK sample")
     ap.add_argument("--device", default="cpu")
     args = ap.parse_args()
 
