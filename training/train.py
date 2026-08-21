@@ -97,6 +97,7 @@ class Trainer:
         self.weights = (DistillWeights.warmup() if cfg.stage == "stage3_warmup"
                         else DistillWeights.distill())
         self.step = 0
+        self.nonfinite = 0
         self.history = []
 
     def teacher(self, token_ids):
@@ -214,10 +215,38 @@ class Trainer:
             teacher_logits=tea.logits if tea is not None else None,
             labels=full_labels)
 
+        # NON-FINITE GUARD. One bad batch must not kill a run. Measured: an
+        # E4B run reached step 120, went loss=nan / grad=0.00, and kept
+        # "training" for the rest of its budget producing a dead checkpoint.
+        # A NaN that is stepped on poisons every weight; a NaN that is skipped
+        # costs one batch. Skipping is strictly better, and silence is not --
+        # if it happens constantly the run is broken and must say so.
+        if not torch.isfinite(loss):
+            self.opt.zero_grad(set_to_none=True)
+            self.nonfinite += 1
+            self.step += 1
+            self.sched.step()
+            if self.nonfinite > max(20, self.cfg.max_steps // 20):
+                raise RuntimeError(
+                    f"{self.nonfinite} non-finite losses — the run is broken, "
+                    "not unlucky. Lower lr, or check for empty audio prefixes "
+                    "from prefix_fraction truncation.")
+            return {"step": self.step, "loss": float("nan"), "grad_norm": 0.0,
+                    "lr": self.sched.get_last_lr()[0], "skipped": 1, **parts}
+
         loss.backward()
         grad_norm = torch.nn.utils.clip_grad_norm_(
             [p for p in self.projector.parameters() if p.requires_grad],
             self.cfg.grad_clip)
+        if not torch.isfinite(grad_norm):
+            # Finite loss can still yield non-finite grads in bf16.
+            self.opt.zero_grad(set_to_none=True)
+            self.nonfinite += 1
+            self.step += 1
+            self.sched.step()
+            return {"step": self.step, "loss": loss.item(), "grad_norm": 0.0,
+                    "lr": self.sched.get_last_lr()[0], "skipped": 1, **parts}
+
         self.opt.step()
         self.sched.step()
         self.step += 1
@@ -438,6 +467,10 @@ def main() -> int:
     # audio prefix and OOMed MPS at 42.4 GiB on that same setting. Lower the
     # micro-batch and raise grad_accum: batch*grad_accum is unchanged, so the
     # optimisation behaves identically on a fraction of the live activations.
+    # bf16 carries ~3 decimal digits against fp32's ~7. A learning rate tuned
+    # in fp32 against a 135M backbone can walk straight into non-finite
+    # territory at 4B -- measured: loss went nan at step 120 on lr 3e-4.
+    ap.add_argument("--lr", type=float, default=None)
     ap.add_argument("--batch", type=int, default=None,
                     help="micro-batch (E4B wants 1-2; small backbones take 8)")
     ap.add_argument("--grad-accum", type=int, default=None,
@@ -458,6 +491,8 @@ def main() -> int:
     make = warmup if args.stage == "stage3_warmup" else distill_cfg
     cfg = make(args.backbone or "stub://tiny",
                **({"arch": "scratch", "whisper_id": "stub"} if args.stub else {}))
+    if args.lr is not None:
+        cfg.lr = args.lr
     if args.batch is not None:
         cfg.batch_size = args.batch
     if args.grad_accum is not None:

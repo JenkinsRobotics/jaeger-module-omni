@@ -174,16 +174,54 @@ class OmniApp:
         with torch.no_grad():
             return enc(self._features(audio)).last_hidden_state
 
+    def _per_layer(self, ids):
+        """Per-layer inputs for backbones that need them (Gemma E4B: 256 dims
+        per token per layer). None for everything else."""
+        lm = getattr(self.backbone, "language_model", None)
+        if lm is None:
+            lm = getattr(getattr(self.backbone, "model", None), "language_model", None)
+        if lm is None or not hasattr(lm, "get_per_layer_inputs"):
+            return None
+        cfg = self.backbone.config
+        tcfg = cfg.get_text_config() if hasattr(cfg, "get_text_config") else cfg
+        if not getattr(tcfg, "hidden_size_per_layer_input", None):
+            return None
+        return lm.get_per_layer_inputs(ids, None)
+
     def _generate_from_embeds(self, embeds):
+        """Greedy decode from an audio prefix.
+
+        HF's .generate(inputs_embeds=...) cannot be used with Gemma E4B: with
+        no input_ids it tries to RECOVER them by comparing every embedding
+        against the whole vocab matrix -- [1,T,1,2560] against
+        [1,1,262144,2560], a 29 GiB allocation that then fails anyway, because
+        projector-produced audio embeddings are not in the vocab.
+
+        So decode manually and supply per_layer_inputs from placeholder ids,
+        the same way StreamingSession does on the MLX side.
+        """
         import torch
+
+        eos = self.tokenizer.eos_token_id
+        pad = self.tokenizer.pad_token_id or eos
+        n = embeds.shape[1]
+        dev = embeds.device
+        ids = torch.full((1, n), pad, dtype=torch.long, device=dev)
+        out_ids, cache = [], None
         with torch.no_grad():
-            out = self.backbone.generate(
-                inputs_embeds=embeds,
-                max_new_tokens=self.max_new_tokens,
-                do_sample=False,
-                pad_token_id=self.tokenizer.pad_token_id
-                or self.tokenizer.eos_token_id)
-        return self.tokenizer.decode(out[0], skip_special_tokens=True).strip()
+            for _ in range(self.max_new_tokens):
+                ple = self._per_layer(ids)
+                kw = {"per_layer_inputs": ple} if ple is not None else {}
+                o = self.backbone(inputs_embeds=embeds, use_cache=False, **kw)
+                nxt = int(o.logits[:, -1, :].argmax(-1).item())
+                if nxt == eos:
+                    break
+                out_ids.append(nxt)
+                step = self.backbone.get_input_embeddings()(
+                    torch.tensor([[nxt]], device=dev)).to(embeds.dtype)
+                embeds = torch.cat([embeds, step], dim=1)
+                ids = torch.cat([ids, torch.tensor([[nxt]], device=dev)], dim=1)
+        return self.tokenizer.decode(out_ids, skip_special_tokens=True).strip()
 
     def listen(self, audio: np.ndarray) -> tuple:
         """Audio in -> (CognitiveOutput, Timing). The whole app in one call."""
