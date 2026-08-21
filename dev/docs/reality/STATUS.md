@@ -40,6 +40,52 @@ and measured. The remaining latency is dominated by generation, exactly as
 predicted — which is why Stage 5's incremental prefill, not the projector, is
 where the conversational win lands.
 
+### BENCHMARK: ours 4/5 correct at 0.35x realtime — 2026-08-20 night
+
+Five spoken questions (8.4 s of `say`-generated audio, known answers), fed as
+a mic would deliver them. Clock starts when the user STOPS talking:
+
+```text
+[ours] q1 OK  446ms (0.38x)  "Two plus two equals four."
+[ours] q2 OK  737ms (0.45x)  "The capital of France is Paris."
+[ours] q3 ..  491ms (0.29x)  "There are 365 days in a year."   <- misheard week/year
+[ours] q4 OK  547ms (0.35x)  "The three primary colors are red, yellow, and blue."
+[ours] q5 OK  537ms (0.24x)  "The first moon landing was in 1969."
+
+ours      4/5 correct · median 537 ms · 0.35x realtime
+```
+
+Faster than the speech it consumed, which is what streaming prefill buys. The
+one miss is a mishearing ("days in a week" -> answered about a year), not a
+reasoning failure — a 4-bit small model behaviour.
+
+**The other two pipelines are NOT fairly measured yet, and the numbers should
+not be quoted:**
+
+```text
+ultravox   BLOCKED. Ships adapter-only (model.safetensors is the projector);
+           the base LLM comes from config.text_model_id = Meta's GATED
+           Llama-3.2-1B. UltravoxConfig.__init__ resolves it before any
+           override applies — tried config patch, AutoConfig kwarg, direct
+           AutoModel. Needs Meta access, not more code.
+minicpm    HARNESS MISMATCH. llama-omni-cli --test uses the input clip as a
+           voice-cloning REFERENCE and answers with its Chinese persona
+           intro; it never reads the audio as a question. Latencies real,
+           correctness meaningless. Needs llama-omni-server + EN prompt.
+```
+
+Two findings that survive regardless:
+
+  * Ultravox distributes **adapter-only with the base referenced by id** —
+    exactly what `jaeger_agent_omni.artifacts` does. Independent confirmation
+    our artifact design matches field practice.
+  * Every Ultravox variant targets a model with NO native audio (Llama, Gemma
+    2/3). It exists to give audio to LLMs that lack it. Gemma 4 has it.
+
+The architectural question — Ultravox's stack-8/SwiGLU/RMSNorm vs MiniCPM's
+pool-5/ReLU — is answerable without their weights, and
+`training/ab_projectors.py` already implements both against one baseline.
+
 ### ALWAYS-ON DUPLEX LOOP RUNS — mic + camera streaming — 2026-08-20 night
 
 `runtime/duplex.py` drives the session from live sources at wall-clock rate,
