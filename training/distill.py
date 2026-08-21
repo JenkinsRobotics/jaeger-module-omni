@@ -101,10 +101,24 @@ def response_loss(logits: torch.Tensor, labels: torch.Tensor,
     Casting costs one fp32 copy of the logits; at batch 1 that is ~400 MB and
     it buys a loss that exists.
     """
-    return F.cross_entropy(
-        logits[:, :-1].reshape(-1, logits.shape[-1]).float(),
-        labels[:, 1:].reshape(-1),
-        ignore_index=ignore_index)
+    flat_logits = logits[:, :-1].reshape(-1, logits.shape[-1]).float()
+    flat_labels = labels[:, 1:].reshape(-1)
+
+    # A batch can legitimately contain NOTHING to learn from. `prefix_fraction`
+    # truncates ~30% of clips mid-utterance, and a truncated clip's transcript
+    # no longer matches its audio, so dataset.py deliberately gives it no
+    # transcription labels — it exists to supervise turn-end, which Stage 3
+    # does not train. cross_entropy over an all-ignored target averages across
+    # an EMPTY set and returns NaN, not zero.
+    #
+    # That NaN cost most of a day. Everything upstream measured clean —
+    # prefix finite at norm 61.75, logits finite at |x| 30 — because nothing
+    # upstream was wrong. The guard only found it once it printed
+    # `label_tokens 0/1` instead of the fact that something had gone wrong.
+    if not (flat_labels != ignore_index).any():
+        return flat_logits.sum() * 0.0        # keeps the graph, contributes 0
+
+    return F.cross_entropy(flat_logits, flat_labels, ignore_index=ignore_index)
 
 
 def total_loss(w: DistillWeights, *, student_hidden=None, teacher_hidden=None,

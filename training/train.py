@@ -252,6 +252,22 @@ class Trainer:
         # costs one batch. Skipping is strictly better, and silence is not --
         # if it happens constantly the run is broken and must say so.
         if not torch.isfinite(loss):
+            # Report WHAT broke, not just that something did. Guessing which
+            # batch is degenerate has cost several runs; the batch knows.
+            if self.nonfinite < 3:
+                with torch.no_grad():
+                    pre = self.audio_prefix(batch["waveform"],
+                                            batch.get("durations"))
+                    lab = batch["labels"]
+                    n_real = int((lab != IGNORE_INDEX).sum())
+                    print(f"    NONFINITE step {self.step}: "
+                          f"durations {[round(float(d),2) for d in (batch.get('durations') or [])][:4]} "
+                          f"prefix {tuple(pre.shape)} "
+                          f"finite={bool(torch.isfinite(pre).all())} "
+                          f"norm {float(pre.norm(dim=-1).mean()):.2f} "
+                          f"logits_finite={bool(torch.isfinite(out.logits).all())} "
+                          f"|logit|max {float(out.logits.abs().max()):.1f} "
+                          f"label_tokens {n_real}/{lab.numel()}", flush=True)
             self.opt.zero_grad(set_to_none=True)
             self._micro = 0            # a poisoned window must not be stepped
             self.nonfinite += 1
