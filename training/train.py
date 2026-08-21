@@ -99,6 +99,7 @@ class Trainer:
                         else DistillWeights.distill())
         self.step = 0
         self.nonfinite = 0
+        self._micro = 0
         self.history = []
 
     def teacher(self, token_ids):
@@ -213,8 +214,22 @@ class Trainer:
         return out, full_labels
 
     def train_step(self, batch) -> dict:
+        """One micro-batch. Steps the optimiser only every grad_accum calls.
+
+        grad_accum existed in the config and in an `effective_batch` property
+        and was USED NOWHERE -- every micro-batch stepped immediately, so
+        `--batch 1 --grad-accum 32` was plain batch 1, not an equivalent of
+        batch 32. That is an 8x cut in gradient averaging against the old
+        batch 8 default, and it showed: grad norms 215-259 and loss bouncing
+        6.05 -> 4.89 -> 7.91 rather than trending.
+
+        Losses are divided by grad_accum so the accumulated gradient is the
+        MEAN over the window, matching what a real batch of that size gives.
+        """
         self.projector.train()
-        self.opt.zero_grad(set_to_none=True)
+        accum = max(1, int(getattr(self.cfg, "grad_accum", 1)))
+        if self._micro == 0:
+            self.opt.zero_grad(set_to_none=True)
 
         need_teacher = self.weights.hidden > 0 or self.weights.kl > 0
         out, full_labels = self.student(
@@ -238,6 +253,7 @@ class Trainer:
         # if it happens constantly the run is broken and must say so.
         if not torch.isfinite(loss):
             self.opt.zero_grad(set_to_none=True)
+            self._micro = 0            # a poisoned window must not be stepped
             self.nonfinite += 1
             self.step += 1
             self.sched.step()
@@ -249,13 +265,22 @@ class Trainer:
             return {"step": self.step, "loss": float("nan"), "grad_norm": 0.0,
                     "lr": self.sched.get_last_lr()[0], "skipped": 1, **parts}
 
-        loss.backward()
+        (loss / accum).backward()
+        self._micro += 1
+        if self._micro < accum:
+            # Mid-window: gradients keep accumulating, nothing is stepped.
+            self.step += 1
+            return {"step": self.step, "loss": loss.item(), "grad_norm": 0.0,
+                    "lr": self.sched.get_last_lr()[0], "accumulating": 1,
+                    **parts}
+        self._micro = 0
         grad_norm = torch.nn.utils.clip_grad_norm_(
             [p for p in self.projector.parameters() if p.requires_grad],
             self.cfg.grad_clip)
         if not torch.isfinite(grad_norm):
             # Finite loss can still yield non-finite grads in bf16.
             self.opt.zero_grad(set_to_none=True)
+            self._micro = 0
             self.nonfinite += 1
             self.step += 1
             self.sched.step()
