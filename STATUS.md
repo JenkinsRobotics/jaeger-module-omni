@@ -152,3 +152,74 @@ Fixed. E4B trains at **0.58 s/step in 16.6 GB** — 2000 steps in 19 minutes.
 2. train SpeechOutDelta -> audible speech that follows the words.
 3. vision is 1035 ms/frame against MiniCPM's 379 ms. Not yet touched.
 ```
+
+---
+
+# The E4B bug ledger
+
+Seven blockers, all in code calibrated against a 135M stand-in. None were
+hardware. Each presented as "E4B does not fit on this machine", which is what
+justified the stand-in — so the substitution was self-perpetuating: it made
+the real backbone look impossible while silently mis-calibrating every knob.
+
+```text
+per_layer_inputs   E4B feeds 256 dims per token per layer. Passing embeds
+                   without ids makes transformers recover the ids by
+                   comparing against all 262144 vocab rows: 29 GiB, and it
+                   fails at any size because projector embeddings are not in
+                   the vocab.
+hidden_size        Gemma4Config is multimodal — get_text_config(). 4 sites.
+batch_size 8       fine at 135M, 42.4 GiB at 4B. --batch 1 --grad-accum 32
+                   keeps the effective batch and the optimisation identical.
+dtype fp32         0.5 GB at 135M, 27.9 GB at 4B. Size-aware now.
+trimming           `len(set(durations)) == 1` is always true at batch 1 and
+                   never above it, so trimming never ran: every clip cost the
+                   full 30 s / 300-token budget. 46% waste on a real batch.
+embed_scale        `.weight.norm()` reads 1.20; the model receives 61.75
+                   (x sqrt(2560)). The audio prefix was 51x quieter than the
+                   text beside it. Would have produced a useless adapter even
+                   without the NaN.
+no NaN guard       a run reached step 120, went nan, and kept "training" for
+                   the rest of its budget producing a dead checkpoint.
+```
+
+## The NaN hunt, including the wrong turns
+
+Asserted a root cause three times, wrong twice. Recording that because the
+pattern matters more than the answer.
+
+```text
+RULED OUT BY MEASUREMENT
+  bf16 encoder      fp32 vs bf16 agree to 3 sig figs across 12 batches
+  bf16 CE forward   finite at logit scales 12 / 30 / 60
+  bf16 CE backward  finite, |g|max identical to fp32
+  embed_scale       a real bug, fixed — NaN persisted, so not the cause
+  learning rate     changed twice on theory, no effect either time
+  embed_norm pin    prefix norms exactly 61.75, no drift
+
+STILL UNDER TEST
+  gradient checkpointing — recomputes 42 layers of activations in bf16
+  during backward. The only link never tested alone, and the only thing
+  ADDED on the day the NaNs began.
+```
+
+Every fix that worked came from reading an error or measuring the specific
+thing. Every fix that failed came from reasoning at a distance. That is the
+same lesson as `sweep.sh` (one GPU job at a time) and `grading.py` (one
+grader, all failures pinned), learned a third time.
+
+## Numbers that were wrong today, and why
+
+```text
+11.8 s legacy      whisper on CPU, not MPS
+48.5 s legacy      a stale job had the GPU
+RTF 1.23           same stale job
+17.1 s legacy      the parallel agent's benchmark, 12 GB and 73% CPU
+9/12 MiniCPM       "twenty-five" normalised to "twentyfive"
+11/12 legacy       "24" not matched against "twenty four"
+"fits at 16.6 GB"  measured at seq 64, batch 1 — a case training never runs
+"90+ accuracy"     teacher-forced; free-running was 33%
+```
+
+Two causes, over and over: **something else was on the machine**, or **the
+measurement was of a different thing than the claim**.
