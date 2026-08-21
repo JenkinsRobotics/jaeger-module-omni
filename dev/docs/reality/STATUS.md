@@ -40,6 +40,46 @@ and measured. The remaining latency is dominated by generation, exactly as
 predicted — which is why Stage 5's incremental prefill, not the projector, is
 where the conversational win lands.
 
+### ULTRAVOX RUNNING IN OUR PIPELINE (weights, not just design)
+
+Their published model will not load on transformers v5 — the v4-era loader
+dies in `tie_weights` on meta tensors, after the config unconditionally
+fetches Meta's gated Llama repo. Four blockers cleared (gated id, peft,
+relative imports, config bypass) before that version wall.
+
+So we lifted the weights instead, which is what we wanted anyway.
+`research/load_ultravox.py` loads their TRAINED projector into our own
+`ABProjector`:
+
+```text
+                     cross-clip   class-sep   params   tok/s
+MiniCPM  (trained)      0.9052        —        21.0M   10.00
+Ultravox (trained)      0.6829      0.0485     46.1M    6.25
+ours     (delta,init)   0.9317      0.0437      9.2M   10.00
+```
+
+Their projector is **markedly more discriminative on trained weights** — the
+RMSNorm is doing real work, not just stabilising init. It costs 2.2x MiniCPM's
+parameters for 62% of the token rate.
+
+Shapes, read from `model.safetensors` and asserted in the selfcheck:
+
+```text
+ln_pre    (10240,)       RMSNorm over STACKED input (1280 x 8 frames)
+linear_1  (4096, 10240)  4096 = 2048 x 2, SwiGLU halves it
+ln_mid    (2048,)        projector_ln_mid=True
+linear_2  (2048, 2048)   -> Llama 3.2 1B width; no biases anywhere
+```
+
+They also ship `audio_tower` weights — a FINE-TUNED Whisper, exactly as
+MiniCPM does. Two independent teams, neither shipping stock Whisper. Our delta
+architecture (freeze their tuned front end, train only the bridge) is the
+common shape.
+
+Their normalisation choice is the one our from-scratch run punished: it
+collapsed to a constant until we pinned output scale. Ultravox solved the same
+instability structurally, and their trained numbers say it works.
+
 ### BENCHMARK: ours 4/5 correct at 0.35x realtime — 2026-08-20 night
 
 Five spoken questions (8.4 s of `say`-generated audio, known answers), fed as
