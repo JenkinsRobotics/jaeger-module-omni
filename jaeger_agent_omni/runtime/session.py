@@ -1,0 +1,443 @@
+"""Streaming duplex session — the LM prefills WHILE the user is still talking.
+
+The measurement that shaped this (M1 Max, E4B 4-bit):
+
+    audio tower encode        4 ms      never the bottleneck
+    LM prefill over audio   148 ms      <- the real cost, and it is hideable
+    decode                   19 ms/token
+
+So the tower is not what we overlap; the LANGUAGE MODEL is. Each 1 s chunk is
+encoded AND pushed through the LM into a persistent KV cache as it arrives. At
+end-of-speech the cache already holds the whole utterance, and only the last
+partial chunk remains — turning a 148 ms wait into roughly one chunk's worth.
+
+    speech .....................|
+    encode+prefill  ▁▁▁▁▁▁▁▁▁▁▁▁|          all of this is free
+                                 ▔▔▔       only this is waiting
+                                    decode
+
+Measured steady state (M1 Max, E4B 4-bit): ~118 ms of work per 1000 ms of
+audio — 8x realtime headroom, so the runtime keeps up with a live mic.
+The FIRST chunk costs ~963 ms (MLX graph compilation); call `warmup()` before
+the conversation or the user's opening sentence is the one that stutters.
+
+Same session accepts text and (later) vision, because they all reduce to
+embeddings entering one KV cache — which is what makes this an omni runtime
+rather than a voice one.
+
+    python -m jaeger_agent_omni.runtime.session      # self-check, no model
+"""
+
+from __future__ import annotations
+
+import time
+from dataclasses import dataclass, field
+
+
+@dataclass
+class TurnTiming:
+    """Time the LISTENER waits, separated from work hidden under speech."""
+
+    overlapped_ms: float = 0.0      # done while they were still talking: free
+    tail_ms: float = 0.0            # last chunk, after they stopped
+    first_token_ms: float = 0.0     # cache -> first generated token
+    decode_ms: float = 0.0
+
+    @property
+    def wait_ms(self) -> float:
+        """What the human experiences: everything after they stop speaking."""
+        return self.tail_ms + self.first_token_ms + self.decode_ms
+
+    def __str__(self) -> str:
+        return (f"wait {self.wait_ms:.0f}ms "
+                f"(tail {self.tail_ms:.0f} + first-token {self.first_token_ms:.0f} "
+                f"+ decode {self.decode_ms:.0f}) | {self.overlapped_ms:.0f}ms hidden")
+
+
+class StreamingSession:
+    """One conversation turn's worth of streaming state.
+
+    Holds a KV cache across chunks. `feed_audio` is safe to call from an audio
+    callback; `respond` is called once the turn-end decision fires.
+    """
+
+    def __init__(self, model, processor, prefiller, cache_factory=None,
+                 system: str | None = None, config: dict | None = None):
+        self.model = model
+        self.processor = processor
+        self.prefiller = prefiller
+        self._make_cache = cache_factory or self._default_cache
+        self.system = system
+        # Gemma brackets audio with its own markers inside the turn structure.
+        # Feeding bare embeddings produces fluent garbage — the same failure the
+        # delta path hit, for the same reason. Ids come from the model config.
+        cfg = config or {}
+        self.boa_id = cfg.get("boa_token_id")
+        self.eoa_id = cfg.get("eoa_token_id")
+        self.audio_id = cfg.get("audio_token_id")
+        self.reset()
+
+    # -- chat scaffolding ---------------------------------------------------
+    def _embed_ids(self, ids):
+        """Token ids -> (embeddings, per_layer_inputs), via the model's own
+        assembly so embed_scale and per-layer inputs are handled exactly as in
+        a normal forward pass."""
+        import mlx.core as mx
+
+        arr = mx.array([ids])
+        out = self.model.get_input_embeddings(input_ids=arr)
+        if isinstance(out, tuple):
+            return out[0], out[1]
+        # InputEmbeddingsFeatures: per_layer_inputs is [B, T, n_layers, d] —
+        # one vector per token PER LAYER. Dropping it yields fluent garbage.
+        return getattr(out, "inputs_embeds", out), getattr(out, "per_layer_inputs", None)
+
+    def _embed_audio_chunk(self, features):
+        """Audio features -> (embeddings, per_layer_inputs) via the model's own
+        assembly.
+
+        The naive route — splice raw tower output into the stream — is wrong on
+        E4B twice over: token embeddings are multiplied by `embed_scale`, and
+        every position (audio included) needs a 256-wide `per_layer_inputs`
+        vector for each of the 42 layers. Building a run of `<|audio|>`
+        placeholder ids and letting `get_input_embeddings` masked-scatter the
+        features in gets both right, exactly as a normal forward pass would.
+        """
+        import mlx.core as mx
+
+        mel, valid = features
+        # POLARITY. The feature extractor returns a VALIDITY mask (True = real
+        # audio). `get_input_embeddings` expects `input_features_mask` and
+        # inverts it internally (audio_mask = ~mask); the tower's `audio_mask`
+        # is a PADDING mask (True = ignore). Passing validity straight into
+        # audio_mask marks every frame invalid, the tower zeroes them, and the
+        # model answers as if it heard silence — fluent, on-topic-for-a-chatbot,
+        # and completely unrelated to the audio. Measured, not theorised.
+        n = self.prefiller.n_tokens_for(mel, ~valid)
+        ids = mx.array([[self.audio_id] * n])
+        out = self.model.get_input_embeddings(input_ids=ids,
+                                              audio_features=mel,
+                                              input_features_mask=valid)
+        if isinstance(out, tuple):
+            return out[0], out[1]
+        return (getattr(out, "inputs_embeds", out),
+                getattr(out, "per_layer_inputs", None))
+
+    def open_turn(self):
+        """Prefill everything that precedes the user's audio: bos, system,
+        the user turn header, and the begin-audio marker."""
+        tok = self.processor.tokenizer
+        msgs = ([{"role": "system", "content": self.system}] if self.system else [])
+        msgs.append({"role": "user", "content": "\x00A\x00"})
+        rendered = tok.apply_chat_template(msgs, add_generation_prompt=True,
+                                           tokenize=False)
+        head, tail = rendered.split("\x00A\x00", 1)
+        self._turn_tail = tail
+        ids = tok(head, add_special_tokens=False).input_ids
+        if self.boa_id is not None:
+            ids = ids + [self.boa_id]
+        emb, per_layer = self._embed_ids(ids)
+        self.timing.overlapped_ms += self._prefill(emb, per_layer)
+
+    def close_turn(self):
+        """End-audio marker plus the model turn header — after this the next
+        token generated is the reply's first word."""
+        tok = self.processor.tokenizer
+        ids = ([self.eoa_id] if self.eoa_id is not None else [])
+        ids += tok(self._turn_tail, add_special_tokens=False).input_ids
+        emb, per_layer = self._embed_ids(ids)
+        self.timing.tail_ms += self._prefill(emb, per_layer)
+
+    @staticmethod
+    def _default_cache():
+        from mlx_vlm.models.cache import KVCache
+        lm = None
+        return KVCache()
+
+    def warmup(self, seconds: float = 1.0):
+        """Compile graphs and page weights BEFORE the conversation starts.
+
+        Measured, and it is not subtle: the first chunk costs ~963 ms of MLX
+        graph compilation while every chunk after is ~118 ms. Skip this and the
+        first thing a user ever says is the one turn that stutters. Runs on
+        silence, then throws the cache away.
+        """
+        import numpy as np
+
+        t0 = time.monotonic()
+        saved = self.cache, self.n_prefilled
+        self.cache, self.n_prefilled = None, 0
+        try:
+            emb = self.prefiller.mels(
+                np.zeros(int(16000 * seconds), dtype=np.float32))
+            e, pl = self._embed_audio_chunk(emb)
+            self._prefill(e, pl)
+        finally:
+            self.cache, self.n_prefilled = saved
+            self.prefiller.reset()
+        return (time.monotonic() - t0) * 1000
+
+    def reset(self):
+        """New turn. Cache is per-turn; conversation history is the caller's."""
+        self.cache = None
+        self.timing = TurnTiming()
+        self.n_prefilled = 0
+        self.prefiller.reset()
+        self._cancelled = False
+        self._turn_tail = ""
+
+    # -- listening ----------------------------------------------------------
+    def _ensure_cache(self):
+        if self.cache is None:
+            n_layers = len(self.model.language_model.model.layers)
+            self.cache = [self._make_cache() for _ in range(n_layers)]
+        return self.cache
+
+    def _prefill(self, embeds, per_layer=None) -> float:
+        """Push embeddings through the LM into the KV cache. Returns ms.
+
+        `per_layer` is not optional decoration on E4B: the model feeds per-layer
+        embeddings alongside the main stream, and omitting them produces fluent
+        garbage rather than an error. Text segments carry theirs; audio
+        segments correctly have none.
+        """
+        import mlx.core as mx
+
+        t0 = time.monotonic()
+        out = self.model.language_model(inputs_embeds=embeds,
+                                        per_layer_inputs=per_layer,
+                                        cache=self._ensure_cache())
+        logits = out.logits if hasattr(out, "logits") else out
+        mx.eval(logits)
+        self._last_logits = logits
+        self.n_prefilled += embeds.shape[1]
+        return (time.monotonic() - t0) * 1000
+
+    def feed_audio(self, samples) -> int:
+        """Mic samples in. Whole chunks are encoded AND prefilled immediately —
+        this is the work that disappears under the user's own speech."""
+        chunks_before = self.prefiller.state.n_chunks
+        self.prefiller.push(samples)
+        new = self.prefiller.state.n_chunks - chunks_before
+        # Encode time is booked by the prefiller; prefill time is booked here.
+        # Both happened while the user was speaking, so both are hidden.
+        for emb in self.prefiller.state.embeds[chunks_before:]:
+            e, pl = self._embed_audio_chunk(emb)
+            self.timing.overlapped_ms += self._prefill(e, pl)
+        return new
+
+    @property
+    def hidden_ms(self) -> float:
+        """All work done under the user's speech: encoding plus LM prefill."""
+        return self.timing.overlapped_ms + self.prefiller.state.overlapped_ms
+
+    def feed_text(self, text: str) -> int:
+        """Text into the same cache — omni means one stream, many modalities."""
+        import mlx.core as mx
+
+        ids = self.processor.tokenizer(text, add_special_tokens=False).input_ids
+        embeds, per_layer = self._embed_ids(ids)
+        self.timing.overlapped_ms += self._prefill(embeds, per_layer)
+        return embeds.shape[1]
+
+    def end_of_turn(self, close: bool = True):
+        """Speech stopped: flush the tail. This part IS the wait."""
+        t0 = time.monotonic()
+        tail_start = len(self.prefiller.state.embeds)
+        self.prefiller.flush()
+        for emb in self.prefiller.state.embeds[tail_start:]:
+            e, pl = self._embed_audio_chunk(emb)
+            self._prefill(e, pl)
+        self.timing.tail_ms += (time.monotonic() - t0) * 1000
+        if close and self._turn_tail:
+            self.close_turn()
+
+    # -- speaking -----------------------------------------------------------
+    def cancel(self):
+        """Barge-in: stop generating. The caller drops any queued audio."""
+        self._cancelled = True
+
+    def respond(self, max_tokens: int = 64, eos_ids=()) -> str:
+        """Generate from the already-warm cache. First token is nearly free
+        because the utterance was prefilled while it was being spoken."""
+        import mlx.core as mx
+
+        if self.n_prefilled == 0:
+            raise ValueError("nothing prefilled — feed audio or text first")
+
+        tok = mx.argmax(self._last_logits[:, -1, :], axis=-1)
+        mx.eval(tok)
+
+        out_ids, t0, first_done = [], time.monotonic(), None
+        for _ in range(max_tokens):
+            if self._cancelled:
+                break
+            tid = int(tok.item())
+            if tid in eos_ids:
+                break
+            out_ids.append(tid)
+            if first_done is None:
+                first_done = time.monotonic()
+                self.timing.first_token_ms = (first_done - t0) * 1000
+            step_emb, step_per_layer = self._embed_ids([int(tok.item())])
+            o = self.model.language_model(inputs_embeds=step_emb,
+                                          per_layer_inputs=step_per_layer,
+                                          cache=self.cache)
+            logits = o.logits if hasattr(o, "logits") else o
+            tok = mx.argmax(logits[:, -1, :], axis=-1)
+            mx.eval(tok)
+
+        if first_done is not None:
+            self.timing.decode_ms = (time.monotonic() - first_done) * 1000
+        return self.processor.tokenizer.decode(out_ids)
+
+
+def demo():
+    """Cache-reuse accounting and cancellation, with a stand-in model."""
+
+    class FakeArr:
+        def __init__(self, n):
+            self.shape = (1, n, 8)
+
+        def __getitem__(self, idx):        # logits[:, -1, :]
+            return self
+
+        def __iter__(self):                # never unpack an array as a tuple
+            raise TypeError("FakeArr is not iterable")
+
+        def __invert__(self):              # ~validity -> padding mask
+            return self
+
+        def __mul__(self, k):              # embed_scale
+            return self
+
+        __rmul__ = __mul__
+
+    class FakeCache:
+        def __init__(self):
+            self.n = 0
+
+    class FakeLM:
+        class model:
+            layers = [1, 2, 3]
+            embed_scale = 1.0
+
+            @staticmethod
+            def embed_tokens(ids):
+                return FakeArr(1)
+
+        def __call__(self, inputs_embeds=None, cache=None, per_layer_inputs=None):
+            assert cache is not None, "prefill must reuse the cache"
+            assert hasattr(inputs_embeds, "shape"), \
+                "prefill received un-embedded input — mels must go through " \
+                "get_input_embeddings first"
+            for c in cache:
+                c.n += inputs_embeds.shape[1]
+            return type("O", (), {"logits": FakeArr(inputs_embeds.shape[1])})()
+
+    class FakeModel:
+        language_model = FakeLM()
+
+        @staticmethod
+        def get_input_embeddings(input_ids=None, audio_features=None,
+                                 input_features_mask=None):
+            n = input_ids.shape[1] if hasattr(input_ids, "shape") else 1
+            return FakeArr(n), None
+
+    class FakePrefiller:
+        def __init__(self):
+            from .gemma_audio import PrefillState
+            self.state = PrefillState()
+
+        def n_tokens_for(self, mel, pad_mask=None):
+            return mel.shape[1]
+
+        def push(self, samples):
+            self.state.embeds.append((FakeArr(25), FakeArr(25)))
+            self.state.n_chunks += 1
+            self.state.n_tokens += 25
+            self.state.overlapped_ms += 4.0
+
+        def flush(self):
+            self.state.embeds.append((FakeArr(7), FakeArr(7)))
+            self.state.n_tokens += 7
+
+        def reset(self):
+            self.state.reset()
+
+    class FakeIds:
+        def __init__(self, n):
+            self.shape = (1, n)
+
+    import mlx.core as _mx
+    _mx.array = lambda x, **k: FakeIds(
+        len(x[0]) if isinstance(x, list) and x and isinstance(x[0], list) else 1)
+
+    s = StreamingSession(FakeModel(), None, FakePrefiller(),
+                         cache_factory=FakeCache,
+                         config={"audio_token_id": 1, "boa_token_id": 2,
+                                 "eoa_token_id": 3})
+
+    # Each chunk prefills into the SAME cache — that is the whole mechanism.
+    assert s.feed_audio(None) == 1
+    assert s.feed_audio(None) == 1
+    assert s.n_prefilled == 50, s.n_prefilled
+    assert len(s.cache) == 3, "one cache per layer"
+    assert all(c.n == 50 for c in s.cache), "cache must accumulate across chunks"
+    assert s.timing.overlapped_ms > 0
+
+    # The tail is charged to the wait, never to the hidden column.
+    hidden_before = s.timing.overlapped_ms
+    s.end_of_turn(close=False)
+    assert s.timing.tail_ms >= 0.0
+    assert s.timing.overlapped_ms == hidden_before, "tail must not count as free"
+    assert s.n_prefilled == 57
+    assert all(c.n == 57 for c in s.cache)
+
+    # wait_ms excludes overlapped work — the number a human actually feels.
+    assert s.timing.wait_ms == (s.timing.tail_ms + s.timing.first_token_ms
+                                + s.timing.decode_ms)
+
+    # Encoding and prefill are both hidden under speech.
+    assert s.hidden_ms > s.timing.overlapped_ms, "encode time must be counted too"
+
+    # Cancellation stops generation immediately (barge-in).
+    s._cancelled = True
+    s._last_logits = FakeArr(1)
+    import mlx.core as mx
+    mx.argmax = lambda a, axis=None: type("T", (), {"item": lambda self: 0,
+                                                    "__getitem__": lambda s, i: s})()
+    mx.eval = lambda *a, **k: None
+
+    class T:
+        @staticmethod
+        def decode(ids):
+            return "".join(map(str, ids))
+
+    s.processor = type("P", (), {"tokenizer": T})()
+    assert s.respond(max_tokens=10) == "", "cancel must yield nothing"
+
+    # warmup must not leave state behind — the next real turn starts clean.
+    s2 = StreamingSession(FakeModel(), None, FakePrefiller(),
+                          cache_factory=FakeCache)
+    s2.prefiller.mels = lambda x: (FakeArr(25), FakeArr(25))
+    s2.warmup(0.1)
+    assert s2.cache is None and s2.n_prefilled == 0
+    assert s2.prefiller.state.n_chunks == 0
+
+    # Reset clears cache and timing for the next turn.
+    s.reset()
+    assert s.cache is None and s.n_prefilled == 0
+    try:
+        s.respond()
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("respond with an empty cache must raise")
+
+    print("runtime.session: chunked prefill into one KV cache, "
+          "wait/hidden split, cancellation OK")
+
+
+if __name__ == "__main__":
+    demo()

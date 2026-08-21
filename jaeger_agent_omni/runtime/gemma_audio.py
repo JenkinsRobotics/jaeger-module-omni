@@ -81,18 +81,43 @@ class GemmaAudioPrefiller:
         self._buf = None
 
     # -- encoding -----------------------------------------------------------
-    def encode_chunk(self, samples):
-        """waveform chunk -> projected embeddings ready for the text stream."""
+    def mels(self, samples):
+        """waveform chunk -> (mel features, VALIDITY mask: True = real audio).
+
+        Stops at mels on purpose. The model's `get_input_embeddings` runs the
+        tower AND `embed_audio` itself inside its audio scatter, so handing it
+        anything further along double-encodes: 1536-wide tower output gets
+        re-fed to a tower expecting 128-bin mels, and the matmul shape gives
+        the game away (12288 = 8 x 1536).
+        """
         import mlx.core as mx
         import numpy as np
 
         feats = self.fe(np.asarray(samples, dtype=np.float32),
                         sampling_rate=SAMPLE_RATE, return_tensors="np")
         keys = list(feats.keys())
-        mel = mx.array(np.array(feats[keys[0]]))
-        mask = mx.array(np.array(feats[keys[1]]))
-        tokens, _ = self.model.audio_tower(mel, mask)
-        return self.model.embed_audio(tokens)
+        return (mx.array(np.array(feats[keys[0]])),
+                mx.array(np.array(feats[keys[1]])))
+
+    def n_tokens_for(self, mel, pad_mask=None) -> int:
+        """Audio tokens a mel chunk occupies — needed to size the placeholder
+        run before the model scatters features into it.
+
+        `pad_mask` is the tower's convention: True = IGNORE this frame. That is
+        the inverse of the feature extractor's validity mask.
+        """
+        return int(self.model.audio_tower(mel, pad_mask)[0].shape[1])
+
+    def encode_chunk(self, samples):
+        """Tower features, for callers driving the tower directly (probes, the
+        gate). The streaming path uses `mels()` instead."""
+        mel, valid = self.mels(samples)
+        return self.model.audio_tower(mel, ~valid)[0]
+
+    def project(self, features):
+        """Raw tower features -> language-model width. Only for direct-drive
+        callers; the streaming path lets the model project during scatter."""
+        return self.model.embed_audio(features)
 
     def push(self, samples) -> int:
         """Push mic samples. Encodes whole chunks; returns chunks prefilled.
@@ -112,9 +137,9 @@ class GemmaAudioPrefiller:
             chunk, self._buf = (self._buf[:self.chunk_samples],
                                 self._buf[self.chunk_samples:])
             t0 = time.monotonic()
-            emb = self.encode_chunk(chunk)
+            emb = self.mels(chunk)
             self.state.embeds.append(emb)
-            self.state.n_tokens += emb.shape[1]
+            self.state.n_tokens += TOKENS_PER_CHUNK
             self.state.n_chunks += 1
             # Counted as overlapped: the user is still speaking while this runs.
             self.state.overlapped_ms += (time.monotonic() - t0) * 1000
@@ -131,9 +156,8 @@ class GemmaAudioPrefiller:
         if self._buf is None or len(self._buf) == 0:
             return 0.0
         t0 = time.monotonic()
-        emb = self.encode_chunk(self._buf)
+        emb = self.mels(self._buf)
         self.state.embeds.append(emb)
-        self.state.n_tokens += emb.shape[1]
         self._buf = None
         return (time.monotonic() - t0) * 1000
 
@@ -164,7 +188,7 @@ def demo():
     class FakeModel:
         """Stands in for the measured behaviour: ~25 tokens per second."""
 
-        def audio_tower(self, mel, mask):
+        def audio_tower(self, mel, mask=None):
             secs = mel.shape[1] / 99.0            # ~99 mel frames per second
             return FakeEmb(max(1, round(25 * secs))), None
 
@@ -177,6 +201,11 @@ def demo():
             n = max(1, int(len(x) / SAMPLE_RATE * 99))
             return {"mel": np.zeros((1, n, 128), dtype=np.float32),
                     "mask": np.ones((1, n), dtype=bool)}
+
+    # mels() returns mx arrays; the stub keeps numpy, which is shape-compatible
+    # for every assertion below.
+    import mlx.core as _mx
+    _mx.array = lambda a, **k: a
 
     import numpy as np
     p = GemmaAudioPrefiller.__new__(GemmaAudioPrefiller)
@@ -205,7 +234,8 @@ def demo():
     tail_ms = p.flush()
     assert p.pending_samples == 0 and tail_ms >= 0.0
     assert p.state.overlapped_ms == before, "tail must not count as free"
-    assert p.state.n_tokens > 4 * TOKENS_PER_CHUNK
+    assert p.state.n_tokens == 4 * TOKENS_PER_CHUNK, \
+        "flush appends mels; token count is settled at scatter time"
 
     # Concatenation happens over the accumulated chunks, not raw audio.
     assert len(p.state.embeds) == 5

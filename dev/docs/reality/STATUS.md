@@ -40,6 +40,47 @@ and measured. The remaining latency is dominated by generation, exactly as
 predicted — which is why Stage 5's incremental prefill, not the projector, is
 where the conversational win lands.
 
+### STREAMING DUPLEX WORKS on native Gemma 4 E4B — 2026-08-20 night
+
+Spoken question in, correct spoken-content answer out, prefilled while the
+user was still talking:
+
+```text
+[1.3 s clip]  "Two plus two equals four."            wait 523 ms
+[3.9 s clip]  "The capital of France is Paris. It's  wait 930 ms
+               known for its iconic landmarks like
+               the Eiffel Tower, Louvre Museum..."
+
+first-token 0 ms · tail 219-279 ms · ~1 s of work hidden under speech
+```
+
+100 ms mic packets -> 1 s chunks -> tower -> KV-cached LM prefill per chunk ->
+answer. No VAD hangover, no ASR decode, no adapter trained by us.
+
+Four real bugs found getting here, none of which raised an error:
+
+```text
+per_layer_inputs dropped   E4B feeds a 256-wide vector per token PER LAYER
+                           (42 of them). Omitting it -> fluent garbage.
+double-encoding            get_input_embeddings runs the tower AND
+                           embed_audio inside its scatter, so it wants MELS,
+                           not tower output (12288 = 8 x 1536 gave it away).
+tower mask required        n_tokens_for(mel, None) crashes inside the tower.
+MASK POLARITY INVERTED     the feature extractor returns a VALIDITY mask
+                           (True = real audio); the tower wants a PADDING
+                           mask (True = ignore). Passing validity straight
+                           through marked every frame invalid, the tower
+                           zeroed them, and the model answered as if it heard
+                           silence — fluent, on-topic-for-a-chatbot, unrelated
+                           to the audio. This was the "I'm here to help" bug.
+```
+
+Gemma sizes, from configs: only **E4B declares a streaming-causal tower**
+(context_left 13, context_right 0, 12 conformer layers, 1024-wide). 12B has an
+audio tower (640-wide) with no context fields declared; 26B-A4B exposes none.
+The smallest model is the realtime one — it is Google's on-device line. That
+matches the split jaeger-agent already had: E4B realtime, 26B deep think.
+
 ### Duplex runtime v1 on native Gemma; the bottleneck is NOT the encoder
 
 Full multimodal E4B located un-gated (`mlx-community/gemma-4-e4b-it-OptiQ-4bit`
