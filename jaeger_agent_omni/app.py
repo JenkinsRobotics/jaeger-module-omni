@@ -167,7 +167,10 @@ class OmniApp:
 
     def _encoder_states(self, audio: np.ndarray):
         import torch
-        enc = getattr(self.whisper, "model", self.whisper).encoder
+        # Accept a full WhisperModel, a WhisperForConditionalGeneration, or a
+        # bare encoder (what a delta artifact supplies — THEIR fine-tuned one).
+        m = getattr(self.whisper, "model", self.whisper)
+        enc = getattr(m, "encoder", m)
         with torch.no_grad():
             return enc(self._features(audio)).last_hidden_state
 

@@ -84,6 +84,8 @@ def export(checkpoint_path: str | Path, out_dir: str | Path) -> Path:
             "stage": cfg.get("stage"),
             "steps": ck.get("step"),
             "chat_wrapped": ck.get("chat_wrapped", False),
+            # None on legacy checkpoints = the old assistant default.
+            "system_prompt": ck.get("system_prompt"),
             "prefix_fraction": cfg.get("prefix_fraction"),
             "final_loss": round(last.get("loss", float("nan")), 4) if last else None,
             "final_target_acc": round(last.get("target_acc", 0.0), 4) if last else None,

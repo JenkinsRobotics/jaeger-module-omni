@@ -12,11 +12,11 @@
   },
   "training": {
     "stage": "stage3_warmup",
-    "steps": 125,
+    "steps": 1000,
     "chat_wrapped": true,
     "prefix_fraction": 0.3,
-    "final_loss": 4.7554,
-    "final_target_acc": 0.2443
+    "final_loss": 1.2984,
+    "final_target_acc": 0.8473
   },
   "format_version": 1,
   "source_dim": 4096

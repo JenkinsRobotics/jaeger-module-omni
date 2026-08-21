@@ -88,17 +88,30 @@ def main() -> int:
     processor, whisper, tokenizer, backbone = load_models(
         args.whisper, args.backbone, device=device, need_decoder=True)
 
-    ck = torch.load(args.projector, map_location=device, weights_only=False)
-    projector = JaegerAudioProjector(audio_dim=whisper.config.d_model,
-                                     cognition_dim=ck["cognition_dim"],
-                                     embed_norm=ck.get("embed_norm") or None)
-    if not ck.get("chat_wrapped", False):
-        print("NOTE this checkpoint predates chat-template wrapping. It was "
-              "trained on bare embeddings and is being evaluated inside the "
-              "template — expect worse, not better.")
-    projector.load_state_dict(ck["projector"])
-    print(f"projector: step {ck['step']}, dim {ck['cognition_dim']}, "
-          f"embed_norm {ck.get('embed_norm', 0):.2f}")
+    if Path(args.projector).is_dir():
+        # Artifact directory. For a delta artifact this also swaps in THEIR
+        # fine-tuned encoder — the pairing the delta was trained against;
+        # evaluating on stock whisper would silently break it.
+        from jaeger_agent_omni.artifacts import load_audio_path
+        enc, projector = load_audio_path(args.projector)
+        if enc is not None:
+            class _W:                      # transcription still needs the
+                pass                       # full whisper; omni path needs
+            omni_whisper = enc             # their encoder only
+        else:
+            omni_whisper = whisper
+        print(f"artifact: {args.projector}")
+    else:
+        ck = torch.load(args.projector, map_location=device, weights_only=False)
+        projector = JaegerAudioProjector(audio_dim=whisper.config.d_model,
+                                         cognition_dim=ck["cognition_dim"],
+                                         embed_norm=ck.get("embed_norm") or None)
+        if not ck.get("chat_wrapped", False):
+            print("NOTE this checkpoint predates chat-template wrapping.")
+        projector.load_state_dict(ck["projector"])
+        omni_whisper = whisper
+        print(f"projector: step {ck['step']}, dim {ck['cognition_dim']}, "
+              f"embed_norm {ck.get('embed_norm', 0):.2f}")
 
     # Held-out turns only — the same split the run trained against.
     val = CaptureDataset(args.corpus, processor, tokenizer, split="val",
@@ -109,8 +122,21 @@ def main() -> int:
 
     text_app = OmniApp(processor, whisper, tokenizer, backbone, path="text",
                        device=device, max_new_tokens=48)
-    omni_app = OmniApp(processor, whisper, tokenizer, backbone, path="omni",
+    omni_app = OmniApp(processor, omni_whisper, tokenizer, backbone, path="omni",
                        projector=projector, device=device, max_new_tokens=48)
+    # Evaluate under the prompt the artifact was trained with, read from its
+    # config — a train/eval prompt mismatch reads as a worse model. None on
+    # legacy artifacts means the old assistant default, which OmniApp already
+    # uses.
+    import json as _json
+    from jaeger_agent_omni.prompt import ChatWrapper
+    if Path(args.projector).is_dir():
+        _cfg = _json.loads((Path(args.projector) / "adapter_config.json").read_text())
+        trained_prompt = _cfg.get("training", {}).get("system_prompt")
+        if trained_prompt:
+            omni_app.wrapper = ChatWrapper(tokenizer, backbone,
+                                           system=trained_prompt, device=device)
+            print(f"eval prompt: from artifact ({trained_prompt[:40]!r}...)")
 
     text_pairs, omni_pairs = [], []
     for i, turn in enumerate(turns):

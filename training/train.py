@@ -32,7 +32,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "research"))
 
 from jaeger_agent_omni.neural import JaegerAudioProjector      # noqa: E402
-from jaeger_agent_omni.prompt import ChatWrapper               # noqa: E402
+from jaeger_agent_omni.prompt import (ChatWrapper, DEFAULT_SYSTEM,  # noqa: E402
+                                      WARMUP_SYSTEM)
 from config import TrainConfig, distill as distill_cfg, warmup  # noqa: E402
 from dataset import IGNORE_INDEX  # noqa: E402
 from distill import DistillWeights, agreement_rate, total_loss  # noqa: E402
@@ -206,6 +207,7 @@ class Trainer:
                 "embed_norm": float(self.projector.embed_norm),
                 "modality": self.projector.modality,
                 "chat_wrapped": self.wrapper is not None,
+                "system_prompt": getattr(self.wrapper, "system", None),
                 "history": self.history}
         if resumable:
             blob["optimizer"] = self.opt.state_dict()
@@ -294,9 +296,13 @@ def real_setup(cfg: TrainConfig, corpus: str, device: str):
         print(f"projector: {projector.n_params()/1e3:.0f}K params, "
               f"embed_norm pinned to {float(projector.embed_norm):.2f}")
 
-    wrapper = ChatWrapper(tokenizer, backbone, device=device)
+    # Stage-matched system prompt: warmup repeats, distill answers. Training
+    # "repeat" under an "answer" prompt manufactures refusal boilerplate.
+    system = WARMUP_SYSTEM if cfg.stage == "stage3_warmup" else DEFAULT_SYSTEM
+    wrapper = ChatWrapper(tokenizer, backbone, system=system, device=device)
     print(f"prompt: audio spliced into the chat template "
-          f"({wrapper.overhead_tokens} template tokens per turn)")
+          f"({wrapper.overhead_tokens} template tokens; "
+          f"system={'warmup/repeat' if system is WARMUP_SYSTEM else 'assistant'})")
 
     common = dict(stage=cfg.stage, min_confidence=cfg.min_confidence,
                   max_audio_s=cfg.max_audio_s, val_fraction=cfg.val_fraction)

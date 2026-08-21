@@ -38,6 +38,17 @@ DEFAULT_SYSTEM = (
     "Answer in plain conversational English."
 )
 
+# Stage 3 warmup trains the model to REPEAT the utterance. Training that task
+# under the assistant prompt teaches a contradiction — and it shows at
+# inference as chat-refusal boilerplate ("I'm sorry for the confusion...")
+# whenever audio grounding is weak. Measured on the first free-running delta
+# eval: clips either transcribe nearly perfectly or refuse entirely. The
+# system prompt must match the stage's task.
+WARMUP_SYSTEM = (
+    "Listen to the user and repeat exactly what they said, word for word. "
+    "Output only their words."
+)
+
 
 class ChatWrapper:
     """Builds the token embeddings that bracket a span of audio.
@@ -50,6 +61,9 @@ class ChatWrapper:
                  device=None, dtype=None):
         self.tokenizer = tokenizer
         self.backbone = backbone
+        self.system = system            # recorded into checkpoints/artifacts:
+                                        # a train/eval prompt mismatch reads
+                                        # as a worse model
         self.device = device or next(backbone.parameters()).device
         self.dtype = dtype or next(backbone.parameters()).dtype
 
