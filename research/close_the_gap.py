@@ -70,6 +70,13 @@ def run(mode, cases, cases_dir, model_path, whisper_id="openai/whisper-medium.en
                                 cache_factory=KVCache, config=cfg, system=SYSTEM)
 
     fresh().warmup()
+    if mode in ("legacy", "hybrid"):
+        # warmup() only warms GEMMA. Whisper's first MPS calls pay cold-kernel
+        # cost -- unwarmed, legacy ramped 8898ms -> 800ms across the run and
+        # its median read 16992ms for a pipeline that settles near 800ms.
+        import numpy as _np
+        for _ in range(2):
+            transcribe(_np.zeros(16000, dtype=_np.float32))
     rows = []
 
     for c in cases:

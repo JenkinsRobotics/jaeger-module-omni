@@ -1,0 +1,296 @@
+{
+ "legacy": [
+  {
+   "case": "q00",
+   "ok": true,
+   "wait_ms": 8898.20274990052,
+   "rt": 7.540849788051289,
+   "reply": "Two plus two equals four.<turn|><turn|><turn|><turn|>",
+   "regraded": true
+  },
+  {
+   "case": "q01",
+   "ok": true,
+   "wait_ms": 38722.11158298887,
+   "rt": 28.683045617028792,
+   "reply": "The sky is blue.<turn|><turn|><turn|><turn|>",
+   "regraded": true
+  },
+  {
+   "case": "q02",
+   "ok": true,
+   "wait_ms": 19292.373209027573,
+   "rt": 13.682534190799698,
+   "reply": "There are seven days in a week.<turn|><turn|><turn|>><turn|>",
+   "regraded": true
+  },
+  {
+   "case": "q03",
+   "ok": true,
+   "wait_ms": 19223.45354198478,
+   "rt": 11.721618013405354,
+   "reply": "The capital of France is Paris.<turn|><turn|><turn|><turn|>",
+   "regraded": true
+  },
+  {
+   "case": "q04",
+   "ok": true,
+   "wait_ms": 23111.734041012824,
+   "rt": 17.247562717173746,
+   "reply": "Ten minus three is seven.<turn|><turn|><turn|><turn|>",
+   "regraded": true
+  },
+  {
+   "case": "q05",
+   "ok": true,
+   "wait_ms": 31120.08262402378,
+   "rt": 16.553235438310523,
+   "reply": "A spider has eight legs.<turn|><turn|><turn|>><turn|>",
+   "regraded": true
+  },
+  {
+   "case": "q06",
+   "ok": true,
+   "wait_ms": 31267.695499118418,
+   "rt": 21.86552132805484,
+   "reply": "Jupiter is the largest planet.<turn|><turn|><turn|><turn|>",
+   "regraded": true
+  },
+  {
+   "case": "q07",
+   "ok": true,
+   "wait_ms": 14761.4434172865,
+   "rt": 10.322687704396154,
+   "reply": "Five times five is twenty-five.<turn|><turn|><turn|><turn|>",
+   "regraded": true
+  },
+  {
+   "case": "q08",
+   "ok": true,
+   "wait_ms": 7558.878249954432,
+   "rt": 4.446398970561431,
+   "reply": "Autumn comes after summer.<turn|><turn|><turn|><turn|>",
+   "regraded": true
+  },
+  {
+   "case": "q09",
+   "ok": true,
+   "wait_ms": 2218.0614569224417,
+   "rt": 1.5730932318598878,
+   "reply": "There are 24 hours in a day.<turn|><turn|><turn|><turn|>",
+   "regraded": true
+  },
+  {
+   "case": "q10",
+   "ok": true,
+   "wait_ms": 1238.9495421666652,
+   "rt": 0.7418859533932127,
+   "reply": "The freezing point of water is 0 degrees Celsius or 32 degre",
+   "regraded": true
+  },
+  {
+   "case": "q11",
+   "ok": true,
+   "wait_ms": 800.294250017032,
+   "rt": 0.500183906260645,
+   "reply": "William Shakespeare wrote Romeo and Juliet.<turn|><turn|><tu",
+   "regraded": true
+  }
+ ],
+ "native": [
+  {
+   "case": "q00",
+   "ok": true,
+   "wait_ms": 488.75983292236924,
+   "rt": 0.414203248239296,
+   "reply": "Two plus two equals four.<turn|><turn|><turn|><turn|>",
+   "regraded": true
+  },
+  {
+   "case": "q01",
+   "ok": false,
+   "wait_ms": 492.0773340854794,
+   "rt": 0.36450172895220695,
+   "reply": "The color of the image is not provided.<turn|><turn|><turn|>",
+   "regraded": true
+  },
+  {
+   "case": "q02",
+   "ok": true,
+   "wait_ms": 432.6934579294175,
+   "rt": 0.30687479285774294,
+   "reply": "There are seven days in a week.<turn|><turn|>",
+   "regraded": true
+  },
+  {
+   "case": "q03",
+   "ok": true,
+   "wait_ms": 454.24233307130635,
+   "rt": 0.27697703236055266,
+   "reply": "The capital of France is Paris.<turn|><turn|><turn|><turn|><",
+   "regraded": true
+  },
+  {
+   "case": "q04",
+   "ok": true,
+   "wait_ms": 410.54070787504315,
+   "rt": 0.3063736625933158,
+   "reply": "Ten minus three is seven.<turn|><turn|><turn|><turn|>",
+   "regraded": true
+  },
+  {
+   "case": "q05",
+   "ok": true,
+   "wait_ms": 442.9532920476049,
+   "rt": 0.23561345321681115,
+   "reply": "A spider has eight legs.<turn|><turn|><|channel>",
+   "regraded": true
+  },
+  {
+   "case": "q06",
+   "ok": true,
+   "wait_ms": 481.80783283896744,
+   "rt": 0.33692855443284436,
+   "reply": "Jupiter is the largest planet in our solar system.<turn|>",
+   "regraded": true
+  },
+  {
+   "case": "q07",
+   "ok": true,
+   "wait_ms": 498.56245797127485,
+   "rt": 0.348645075504388,
+   "reply": "Five times five is twenty-five.<turn|><turn|><turn|><turn|>",
+   "regraded": true
+  },
+  {
+   "case": "q08",
+   "ok": true,
+   "wait_ms": 397.7362918667495,
+   "rt": 0.23396252462749972,
+   "reply": "Autumn comes after summer.<turn|><turn|>ear<turn|>",
+   "regraded": true
+  },
+  {
+   "case": "q09",
+   "ok": true,
+   "wait_ms": 472.9444158729166,
+   "rt": 0.3354215715410756,
+   "reply": "There are 24 hours in a day.<turn|><turn|><|channel>",
+   "regraded": true
+  },
+  {
+   "case": "q10",
+   "ok": true,
+   "wait_ms": 623.4906250610948,
+   "rt": 0.37334767967730226,
+   "reply": "The freezing point of water is 0 degrees Celsius or 32 degre",
+   "regraded": true
+  },
+  {
+   "case": "q11",
+   "ok": false,
+   "wait_ms": 660.0604590494186,
+   "rt": 0.4125377869058866,
+   "reply": "Romeo and Juliet is a tragic play about two young lovers fro",
+   "regraded": true
+  }
+ ],
+ "hybrid": [
+  {
+   "case": "q00",
+   "ok": true,
+   "wait_ms": 62076.91362500191,
+   "rt": 52.60755391949314,
+   "reply": "Two plus two equals four.<turn|><turn|><turn|><turn|><turn|>",
+   "regraded": true
+  },
+  {
+   "case": "q01",
+   "ok": true,
+   "wait_ms": 33626.04349991307,
+   "rt": 24.908180370305974,
+   "reply": "The sky is blue.<turn|><turn|><turn|><turn|>",
+   "regraded": true
+  },
+  {
+   "case": "q02",
+   "ok": true,
+   "wait_ms": 76451.44737511873,
+   "rt": 54.22088466320478,
+   "reply": "There are seven days in a week.<turn|><turn|>ear<turn|>",
+   "regraded": true
+  },
+  {
+   "case": "q03",
+   "ok": true,
+   "wait_ms": 84380.98816690035,
+   "rt": 51.45182205298802,
+   "reply": "The capital of France is Paris.<turn|><turn|><turn|><turn|><",
+   "regraded": true
+  },
+  {
+   "case": "q04",
+   "ok": true,
+   "wait_ms": 73079.75283404812,
+   "rt": 54.53712898063292,
+   "reply": "Ten minus three is seven.<turn|><turn|><turn|><turn|><turn|>",
+   "regraded": true
+  },
+  {
+   "case": "q05",
+   "ok": true,
+   "wait_ms": 68554.29337499663,
+   "rt": 36.465049667551405,
+   "reply": "A spider has eight legs.<turn|><turn|>ear<turn|>",
+   "regraded": true
+  },
+  {
+   "case": "q06",
+   "ok": true,
+   "wait_ms": 77368.0994999595,
+   "rt": 54.10356608388776,
+   "reply": "Jupiter is the largest planet in our solar system.<turn|>ear",
+   "regraded": true
+  },
+  {
+   "case": "q07",
+   "ok": true,
+   "wait_ms": 61548.37183281779,
+   "rt": 43.040819463508946,
+   "reply": "Five times five is twenty-five.<turn|><turn|>ear<turn|>",
+   "regraded": true
+  },
+  {
+   "case": "q08",
+   "ok": true,
+   "wait_ms": 41255.69120817818,
+   "rt": 24.26805365186952,
+   "reply": "Autumn comes after summer.<turn|><turn|>earlier<turn|>",
+   "regraded": true
+  },
+  {
+   "case": "q09",
+   "ok": true,
+   "wait_ms": 55875.790333142504,
+   "rt": 39.62822009442731,
+   "reply": "There are 24 hours in a day.<turn|><turn|>ear<turn|>",
+   "regraded": true
+  },
+  {
+   "case": "q10",
+   "ok": true,
+   "wait_ms": 62205.71183296852,
+   "rt": 37.24892924129851,
+   "reply": "The freezing point of water is 0 degrees Celsius or 32 degre",
+   "regraded": true
+  },
+  {
+   "case": "q11",
+   "ok": true,
+   "wait_ms": 56746.74658384174,
+   "rt": 35.46671661490109,
+   "reply": "William Shakespeare wrote Romeo and Juliet.<turn|><turn|>ear",
+   "regraded": true
+  }
+ ]
+}

@@ -1,0 +1,93 @@
+=== pipelines: legacy/native/hybrid on cases12 ===
+/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/lib/python3.11/site-packages/transformers/audio_utils.py:723: UserWarning: At least one mel filter has all zero values. The value for `num_mel_filters` (128) may be set too high. Or, the value for `num_frequency_bins` (257) may be set too low.
+  warnings.warn(
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+python(5108) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+--- legacy ---
+  q00  OK   8898ms  'Two plus two equals four.<turn|><turn|><turn|>' asr 8379ms · 'What is 2 plus 2?'
+  q01  OK  38722ms  'The sky is blue.<turn|><turn|><turn|><turn|>' asr 7393ms · 'What color is the sky?'
+  q02  OK  19292ms  'There are seven days in a week.<turn|><turn|><' asr 18612ms · 'How many days in a week?'
+  q03  OK  19223ms  'The capital of France is Paris.<turn|><turn|><' asr 11758ms · 'What is the capital of France?'
+  q04  OK  23112ms  'Ten minus three is seven.<turn|><turn|><turn|>' asr 18031ms · 'What is 10 minus 3?'
+  q05  OK  31120ms  'A spider has eight legs.<turn|><turn|><turn|>>' asr 15260ms · 'How many legs does a spider have?'
+  q06  OK  31268ms  'Jupiter is the largest planet.<turn|><turn|><t' asr 17121ms · 'What is the largest planet?'
+  q07  OK  14761ms  'Five times five is twenty-five.<turn|><turn|><' asr 14406ms · 'What is five times five?'
+  q08  OK   7559ms  'Autumn comes after summer.<turn|><turn|><turn|' asr 7281ms · 'What season comes after summer?'
+  q09  ..   2218ms  'There are 24 hours in a day.<turn|><turn|><tur' asr 1837ms · 'How many hours in a day?'
+  q10  OK   1239ms  'The freezing point of water is 0 degrees Celsi' asr 666ms · 'What is the freezing point of water?'
+  q11  OK    800ms  'William Shakespeare wrote Romeo and Juliet.<tu' asr 467ms · 'Who wrote Romeo and Juliet?'
+--- native ---
+  q00  OK    489ms  'Two plus two equals four.<turn|><turn|><turn|>' 
+  q01  ..    492ms  'The color of the image is not provided.<turn|>' 
+  q02  OK    433ms  'There are seven days in a week.<turn|><turn|>' 
+  q03  OK    454ms  'The capital of France is Paris.<turn|><turn|><' 
+  q04  OK    411ms  'Ten minus three is seven.<turn|><turn|><turn|>' 
+  q05  OK    443ms  'A spider has eight legs.<turn|><turn|><|channe' 
+  q06  OK    482ms  'Jupiter is the largest planet in our solar sys' 
+  q07  OK    499ms  'Five times five is twenty-five.<turn|><turn|><' 
+  q08  OK    398ms  'Autumn comes after summer.<turn|><turn|>ear<tu' 
+  q09  ..    473ms  'There are 24 hours in a day.<turn|><turn|><|ch' 
+  q10  OK    623ms  'The freezing point of water is 0 degrees Celsi' 
+  q11  ..    660ms  'Romeo and Juliet is a tragic play about two yo' 
+--- hybrid ---
+  q00  OK  62077ms  'Two plus two equals four.<turn|><turn|><turn|>' asr 18820ms
+  q01  OK  33626ms  'The sky is blue.<turn|><turn|><turn|><turn|>' asr 22201ms
+  q02  OK  76451ms  'There are seven days in a week.<turn|><turn|>e' asr 18747ms
+  q03  OK  84381ms  'The capital of France is Paris.<turn|><turn|><' asr 20790ms
+  q04  OK  73080ms  'Ten minus three is seven.<turn|><turn|><turn|>' asr 21522ms
+  q05  OK  68554ms  'A spider has eight legs.<turn|><turn|>ear<turn' asr 22066ms
+  q06  OK  77368ms  'Jupiter is the largest planet in our solar sys' asr 21081ms
+  q07  OK  61548ms  'Five times five is twenty-five.<turn|><turn|>e' asr 22039ms
+  q08  OK  41256ms  'Autumn comes after summer.<turn|><turn|>earlie' asr 19159ms
+  q09  ..  55876ms  'There are 24 hours in a day.<turn|><turn|>ear<' asr 17180ms
+  q10  OK  62206ms  'The freezing point of water is 0 degrees Celsi' asr 19499ms
+  q11  OK  56747ms  'William Shakespeare wrote Romeo and Juliet.<tu' asr 18723ms
+mode         accuracy   median ms  realtime
+legacy       11/12     92%      16992    11.02x
+native        9/12     75%        477     0.34x
+hybrid       11/12     92%      62141    41.33x
+=== done ===
+=== prosody: does the tower carry delivery ===
+/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/lib/python3.11/site-packages/transformers/audio_utils.py:723: UserWarning: At least one mel filter has all zero values. The value for `num_mel_filters` (128) may be set too high. Or, the value for `num_frequency_bins` (257) may be set too low.
+  warnings.warn(
+python(9049) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+Traceback (most recent call last):
+  File "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/prosody_carry.py", line 104, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/prosody_carry.py", line 78, in main
+    pros = [embed(synth(SENTENCE, f, p)) for _, f in PROSODY]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/prosody_carry.py", line 78, in <listcomp>
+    pros = [embed(synth(SENTENCE, f, p)) for _, f in PROSODY]
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/prosody_carry.py", line 70, in embed
+    ids = mx.array([[pre.audio_id] * n])
+                     ^^^^^^^^^^^^
+AttributeError: 'GemmaAudioPrefiller' object has no attribute 'audio_id'
+=== done ===
+=== minicpm: stage A/B/C on the same 12 wavs ===
+load 24.24s  (MiniCPM-o-4_5-Q8_0.gguf)
+ref prefill 0.44s  (8.2s audio)
+q00 OK  pre 0.26s dec 0.36s wav 2@1.77s  'Two plus two is four. __END_OF_TURN__'
+q01 OK  pre 0.16s dec 0.29s wav 2@1.18s  'The sky is blue. __END_OF_TURN__'
+q02 OK  pre 0.17s dec 0.32s wav 2@1.02s  'Seven days in a week. __END_OF_TURN__'
+q03 OK  pre 0.17s dec 0.35s wav 2@1.59s  'The capital of France is Paris. __END_OF_TURN__'
+q04 OK  pre 0.17s dec 0.32s wav 3@0.87s  'Ten minus three equals seven. __END_OF_TURN__'
+q05 OK  pre 0.18s dec 0.32s wav 2@0.97s  'Spiders have eight legs. __END_OF_TURN__'
+q06 OK  pre 0.17s dec 0.35s wav 3@0.87s  'Jupiter is the largest planet. __END_OF_TURN__'
+q07 OK  pre 0.17s dec 0.35s wav 3@0.81s  'Five times five equals twenty five. __END_OF_TURN__'
+q08 OK  pre 0.18s dec 0.35s wav 2@1.33s  'The season after summer is autumn. __END_OF_TURN__'
+q09 OK  pre 0.17s dec 0.41s wav 2@1.42s  'There are twenty four hours in a day. __END_OF_TURN__'
+q10 OK  pre 0.19s dec 0.37s wav 3@1.04s  'Water freezes at zero degrees Celsius. __END_OF_TURN__'
+q11 OK  pre 0.18s dec 0.50s wav 3@1.00s  'Romeo and Juliet were written by William Shakespeare . __END_OF_TURN__'
+  STAGE C  first_audio_ms_median      1380
+  STAGE C  first_audio_n              11
+  STAGE C  vocoder_ms_median          578.2
+  STAGE C  rtf_median                 0.675
+  STAGE C  chunk_audio_s_median       1.0
+  STAGE C  chunks_n                   26
+STAGE B accuracy 12/12 = 100%
+wrote /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/minicpm_stages.json
+=== done ===
+SWEEP COMPLETE

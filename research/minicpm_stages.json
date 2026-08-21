@@ -1,22 +1,31 @@
 {
   "model": "MiniCPM-o-4_5-Q8_0.gguf",
-  "load_s": 27.73,
-  "ref_prefill_s": 0.9,
+  "load_s": 24.24,
+  "ref_prefill_s": 0.44,
   "n": 12,
   "correct": 12,
   "accuracy": 1.0,
+  "stage_c": {
+    "first_audio_ms_median": 1380,
+    "first_audio_n": 11,
+    "vocoder_ms_median": 578.2,
+    "rtf_median": 0.675,
+    "chunk_audio_s_median": 1.0,
+    "chunks_n": 26
+  },
+  "engine_log": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_engine.log",
   "rows": [
     {
       "i": 0,
       "audio_s": 1.18,
       "expected": "four",
-      "text": "Two plus two equals four. __END_OF_TURN__",
+      "text": "Two plus two is four. __END_OF_TURN__",
       "correct": true,
-      "prefill_s": 0.26,
-      "decode_s": 0.361,
-      "first_wav_s": 2.455,
-      "n_wav": 3,
-      "prefill_ratio": 0.221
+      "prefill_s": 0.257,
+      "decode_s": 0.355,
+      "first_wav_s": 1.767,
+      "n_wav": 2,
+      "prefill_ratio": 0.218
     },
     {
       "i": 1,
@@ -24,23 +33,23 @@
       "expected": "blue",
       "text": "The sky is blue. __END_OF_TURN__",
       "correct": true,
-      "prefill_s": 0.162,
-      "decode_s": 0.299,
-      "first_wav_s": null,
-      "n_wav": 0,
-      "prefill_ratio": 0.12
+      "prefill_s": 0.16,
+      "decode_s": 0.291,
+      "first_wav_s": 1.175,
+      "n_wav": 2,
+      "prefill_ratio": 0.118
     },
     {
       "i": 2,
       "audio_s": 1.41,
       "expected": "seven",
-      "text": "There are seven days in a week. __END_OF_TURN__",
+      "text": "Seven days in a week. __END_OF_TURN__",
       "correct": true,
-      "prefill_s": 0.286,
-      "decode_s": 0.376,
-      "first_wav_s": null,
-      "n_wav": 0,
-      "prefill_ratio": 0.203
+      "prefill_s": 0.165,
+      "decode_s": 0.319,
+      "first_wav_s": 1.018,
+      "n_wav": 2,
+      "prefill_ratio": 0.117
     },
     {
       "i": 3,
@@ -48,11 +57,11 @@
       "expected": "paris",
       "text": "The capital of France is Paris. __END_OF_TURN__",
       "correct": true,
-      "prefill_s": 0.275,
-      "decode_s": 0.397,
-      "first_wav_s": null,
-      "n_wav": 0,
-      "prefill_ratio": 0.168
+      "prefill_s": 0.165,
+      "decode_s": 0.351,
+      "first_wav_s": 1.586,
+      "n_wav": 2,
+      "prefill_ratio": 0.101
     },
     {
       "i": 4,
@@ -60,11 +69,11 @@
       "expected": "seven",
       "text": "Ten minus three equals seven. __END_OF_TURN__",
       "correct": true,
-      "prefill_s": 0.247,
-      "decode_s": 0.336,
-      "first_wav_s": null,
-      "n_wav": 0,
-      "prefill_ratio": 0.184
+      "prefill_s": 0.17,
+      "decode_s": 0.323,
+      "first_wav_s": 0.869,
+      "n_wav": 3,
+      "prefill_ratio": 0.127
     },
     {
       "i": 5,
@@ -72,11 +81,11 @@
       "expected": "eight",
       "text": "Spiders have eight legs. __END_OF_TURN__",
       "correct": true,
-      "prefill_s": 0.303,
-      "decode_s": 0.324,
-      "first_wav_s": null,
-      "n_wav": 0,
-      "prefill_ratio": 0.161
+      "prefill_s": 0.182,
+      "decode_s": 0.319,
+      "first_wav_s": 0.969,
+      "n_wav": 2,
+      "prefill_ratio": 0.097
     },
     {
       "i": 6,
@@ -84,72 +93,71 @@
       "expected": "jupiter",
       "text": "Jupiter is the largest planet. __END_OF_TURN__",
       "correct": true,
-      "prefill_s": 0.26,
-      "decode_s": 0.351,
-      "first_wav_s": null,
-      "n_wav": 0,
-      "prefill_ratio": 0.182
+      "prefill_s": 0.169,
+      "decode_s": 0.348,
+      "first_wav_s": 0.869,
+      "n_wav": 3,
+      "prefill_ratio": 0.118
     },
     {
       "i": 7,
       "audio_s": 1.43,
       "expected": "twenty five",
-      "text": "Five times five is twenty-five. __END_OF_TURN__",
+      "text": "Five times five equals twenty five. __END_OF_TURN__",
       "correct": true,
-      "prefill_s": 0.354,
-      "decode_s": 0.36,
-      "first_wav_s": null,
-      "n_wav": 0,
-      "prefill_ratio": 0.247
+      "prefill_s": 0.171,
+      "decode_s": 0.347,
+      "first_wav_s": 0.815,
+      "n_wav": 3,
+      "prefill_ratio": 0.12
     },
     {
       "i": 8,
       "audio_s": 1.7,
       "expected": "autumn",
-      "text": "Fall comes after summer. __END_OF_TURN__",
+      "text": "The season after summer is autumn. __END_OF_TURN__",
       "correct": true,
-      "prefill_s": 0.291,
-      "decode_s": 0.357,
-      "first_wav_s": null,
-      "n_wav": 0,
-      "prefill_ratio": 0.171
+      "prefill_s": 0.185,
+      "decode_s": 0.354,
+      "first_wav_s": 1.328,
+      "n_wav": 2,
+      "prefill_ratio": 0.109
     },
     {
       "i": 9,
       "audio_s": 1.41,
       "expected": "twenty four",
-      "text": "There are twenty-four hours in a day. __END_OF_TURN__",
+      "text": "There are twenty four hours in a day. __END_OF_TURN__",
       "correct": true,
-      "prefill_s": 0.271,
+      "prefill_s": 0.175,
       "decode_s": 0.414,
-      "first_wav_s": null,
-      "n_wav": 0,
-      "prefill_ratio": 0.192
+      "first_wav_s": 1.42,
+      "n_wav": 2,
+      "prefill_ratio": 0.124
     },
     {
       "i": 10,
       "audio_s": 1.67,
       "expected": "zero",
-      "text": "Water freezes at zero degrees. __END_OF_TURN__",
+      "text": "Water freezes at zero degrees Celsius. __END_OF_TURN__",
       "correct": true,
-      "prefill_s": 0.288,
-      "decode_s": 0.325,
-      "first_wav_s": null,
-      "n_wav": 0,
-      "prefill_ratio": 0.172
+      "prefill_s": 0.186,
+      "decode_s": 0.369,
+      "first_wav_s": 1.04,
+      "n_wav": 3,
+      "prefill_ratio": 0.111
     },
     {
       "i": 11,
       "audio_s": 1.6,
       "expected": "shakespeare",
-      "text": "Romeo and Juliet was written by Shakespeare. __END_OF_TURN__",
+      "text": "Romeo and Juliet were written by William Shakespeare . __END_OF_TURN__",
       "correct": true,
-      "prefill_s": 0.268,
-      "decode_s": 0.443,
-      "first_wav_s": null,
-      "n_wav": 0,
-      "prefill_ratio": 0.168
+      "prefill_s": 0.18,
+      "decode_s": 0.495,
+      "first_wav_s": 1.004,
+      "n_wav": 3,
+      "prefill_ratio": 0.112
     }
-  ],
-  "grader": "punctuation->space, autumn|fall accepted"
+  ]
 }

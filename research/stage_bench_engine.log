@@ -1,0 +1,3109 @@
+ggml_metal_device_init: tensor API disabled for pre-M5 and pre-A19 devices
+ggml_metal_library_init: using embedded metal library
+ggml_metal_library_init: loaded in 10.704 sec
+ggml_metal_rsets_init: creating a residency set collection (keep_alive = 180 s)
+ggml_metal_device_init: GPU name:   MTL0 (Apple M1 Max)
+ggml_metal_device_init: GPU family: MTLGPUFamilyApple7  (1007)
+ggml_metal_device_init: GPU family: MTLGPUFamilyCommon3 (3003)
+ggml_metal_device_init: GPU family: MTLGPUFamilyMetal4  (5002)
+ggml_metal_device_init: simdgroup reduction   = true
+ggml_metal_device_init: simdgroup matrix mul. = true
+ggml_metal_device_init: has unified memory    = true
+ggml_metal_device_init: has bfloat            = true
+ggml_metal_device_init: has tensor            = false
+ggml_metal_device_init: use residency sets    = true
+ggml_metal_device_init: use shared buffers    = true
+ggml_metal_device_init: recommendedMaxWorkingSetSize  = 26800.60 MB
+llama_model_loader: loaded meta data with 27 key-value pairs and 399 tensors from /Users/jonathanjenkins/models/MiniCPM-o-4_5-gguf/MiniCPM-o-4_5-Q8_0.gguf (version GGUF V3 (latest))
+llama_model_loader: Dumping metadata keys/values. Note: KV overrides do not apply in this output.
+llama_model_loader: - kv   0:                       general.architecture str              = qwen3
+llama_model_loader: - kv   1:                               general.type str              = model
+llama_model_loader: - kv   2:                               general.name str              = Llm
+llama_model_loader: - kv   3:                         general.size_label str              = 8.2B
+llama_model_loader: - kv   4:                          qwen3.block_count u32              = 36
+llama_model_loader: - kv   5:                       qwen3.context_length u32              = 40960
+llama_model_loader: - kv   6:                     qwen3.embedding_length u32              = 4096
+llama_model_loader: - kv   7:                  qwen3.feed_forward_length u32              = 12288
+llama_model_loader: - kv   8:                 qwen3.attention.head_count u32              = 32
+llama_model_loader: - kv   9:              qwen3.attention.head_count_kv u32              = 8
+llama_model_loader: - kv  10:                       qwen3.rope.freq_base f32              = 1000000.000000
+llama_model_loader: - kv  11:     qwen3.attention.layer_norm_rms_epsilon f32              = 0.000001
+llama_model_loader: - kv  12:                 qwen3.attention.key_length u32              = 128
+llama_model_loader: - kv  13:               qwen3.attention.value_length u32              = 128
+llama_model_loader: - kv  14:                       tokenizer.ggml.model str              = gpt2
+llama_model_loader: - kv  15:                         tokenizer.ggml.pre str              = qwen2
+llama_model_loader: - kv  16:                      tokenizer.ggml.tokens arr[str,151748]  = ["!", "\"", "#", "$", "%", "&", "'", ...
+llama_model_loader: - kv  17:                  tokenizer.ggml.token_type arr[i32,151748]  = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...
+llama_model_loader: - kv  18:                      tokenizer.ggml.merges arr[str,151387]  = ["Ġ Ġ", "ĠĠ ĠĠ", "i n", "Ġ t",...
+llama_model_loader: - kv  19:                tokenizer.ggml.bos_token_id u32              = 151644
+llama_model_loader: - kv  20:                tokenizer.ggml.eos_token_id u32              = 151645
+llama_model_loader: - kv  21:            tokenizer.ggml.unknown_token_id u32              = 128244
+llama_model_loader: - kv  22:            tokenizer.ggml.padding_token_id u32              = 151643
+llama_model_loader: - kv  23:               tokenizer.ggml.add_bos_token bool             = false
+llama_model_loader: - kv  24:                    tokenizer.chat_template str              = {%- if tools %}\n    {{- '<|im_start|>...
+llama_model_loader: - kv  25:               general.quantization_version u32              = 2
+llama_model_loader: - kv  26:                          general.file_type u32              = 7
+llama_model_loader: - type  f32:  145 tensors
+llama_model_loader: - type q8_0:  254 tensors
+print_info: file format = GGUF V3 (latest)
+print_info: file type   = Q8_0
+print_info: file size   = 8.10 GiB (8.50 BPW) 
+llama_prepare_model_devices: using device MTL0 (Apple M1 Max) (unknown id) - 25558 MiB free
+init_tokenizer: initializing tokenizer for type 2
+load: 0 unused tokens
+load: control token: 151742 '<|timbre_26|>' is not marked as EOG
+load: control token: 151740 '<|timbre_24|>' is not marked as EOG
+load: control token: 151737 '<|timbre_21|>' is not marked as EOG
+load: control token: 151735 '<|timbre_19|>' is not marked as EOG
+load: control token: 151734 '<|timbre_18|>' is not marked as EOG
+load: control token: 151733 '<|timbre_17|>' is not marked as EOG
+load: control token: 151731 '<|timbre_15|>' is not marked as EOG
+load: control token: 151730 '<|timbre_14|>' is not marked as EOG
+load: control token: 151729 '<|timbre_13|>' is not marked as EOG
+load: control token: 151728 '<|timbre_12|>' is not marked as EOG
+load: control token: 151726 '<|timbre_10|>' is not marked as EOG
+load: control token: 151725 '<|timbre_9|>' is not marked as EOG
+load: control token: 151723 '<|timbre_7|>' is not marked as EOG
+load: control token: 151722 '<|tts_pad|>' is not marked as EOG
+load: control token: 151721 '<|chunk_tts_eos|>' is not marked as EOG
+load: control token: 151719 '<|chunk_bos|>' is not marked as EOG
+load: control token: 151717 '<|turn_eos|>' is not marked as EOG
+load: control token: 151716 '<|turn_bos|>' is not marked as EOG
+load: control token: 151715 '<|pitch_end|>' is not marked as EOG
+load: control token: 151714 '<|pitch_start|>' is not marked as EOG
+load: control token: 151713 '<|speed_end|>' is not marked as EOG
+load: control token: 151712 '<|speed_start|>' is not marked as EOG
+load: control token: 151709 '<|vad_end|>' is not marked as EOG
+load: control token: 151708 '<|vad_start|>' is not marked as EOG
+load: control token: 151707 '<|interrupt|>' is not marked as EOG
+load: control token: 151706 '<|speak|>' is not marked as EOG
+load: control token: 151705 '<|listen|>' is not marked as EOG
+load: control token: 151701 '<|spk|>' is not marked as EOG
+load: control token: 151700 '<|spk_bos|>' is not marked as EOG
+load: control token: 151699 '<|audio_end|>' is not marked as EOG
+load: control token: 151696 '</image_save_to>' is not marked as EOG
+load: control token: 151695 '<image_save_to>' is not marked as EOG
+load: control token: 151691 '<perception>' is not marked as EOG
+load: control token: 151687 '<focus>' is not marked as EOG
+load: control token: 151682 '</image_id>' is not marked as EOG
+load: control token: 151677 '<point>' is not marked as EOG
+load: control token: 151675 '<quad>' is not marked as EOG
+load: control token: 151674 '</box>' is not marked as EOG
+load: control token: 151671 '<ref>' is not marked as EOG
+load: control token: 151659 '<|fim_prefix|>' is not marked as EOG
+load: control token: 151656 '<|video_pad|>' is not marked as EOG
+load: control token: 151655 '<|image_pad|>' is not marked as EOG
+load: control token: 151653 '<|vision_end|>' is not marked as EOG
+load: control token: 151652 '<|vision_start|>' is not marked as EOG
+load: control token: 151651 '<|quad_end|>' is not marked as EOG
+load: control token: 151649 '<|box_end|>' is not marked as EOG
+load: control token: 151648 '<|box_start|>' is not marked as EOG
+load: control token: 151646 '<|object_ref_start|>' is not marked as EOG
+load: control token: 151644 '<|im_start|>' is not marked as EOG
+load: control token: 151661 '<|fim_suffix|>' is not marked as EOG
+load: control token: 151647 '<|object_ref_end|>' is not marked as EOG
+load: control token: 151673 '<box>' is not marked as EOG
+load: control token: 151676 '</quad>' is not marked as EOG
+load: control token: 151681 '<image_id>' is not marked as EOG
+load: control-looking token: 128247 '</s>' was not control-type; this is probably a bug in the model. its type will be overridden
+load: control token: 128244 '<unk>' is not marked as EOG
+load: control token: 151660 '<|fim_middle|>' is not marked as EOG
+load: control token: 151741 '<|timbre_25|>' is not marked as EOG
+load: control token: 151683 '<unit>' is not marked as EOG
+load: control token: 151732 '<|timbre_16|>' is not marked as EOG
+load: control token: 151670 '</image>' is not marked as EOG
+load: control token: 151727 '<|timbre_11|>' is not marked as EOG
+load: control token: 151654 '<|vision_pad|>' is not marked as EOG
+load: control token: 151746 '<|timbre_30|>' is not marked as EOG
+load: control token: 151650 '<|quad_start|>' is not marked as EOG
+load: control token: 151736 '<|timbre_20|>' is not marked as EOG
+load: control token: 151738 '<|timbre_22|>' is not marked as EOG
+load: control token: 151693 '<source_image>' is not marked as EOG
+load: control token: 151669 '<image>' is not marked as EOG
+load: control token: 151690 '</line>' is not marked as EOG
+load: control token: 151743 '<|timbre_27|>' is not marked as EOG
+load: control token: 151672 '</ref>' is not marked as EOG
+load: control token: 151680 '</slice>' is not marked as EOG
+load: control token: 151684 '</unit>' is not marked as EOG
+load: control token: 151698 '<|audio|>' is not marked as EOG
+load: control token: 151703 '<|tts_bos|>' is not marked as EOG
+load: control token: 151747 '<|timbre_31|>' is not marked as EOG
+load: control token: 151711 '<|emotion_end|>' is not marked as EOG
+load: control token: 151688 '</focus>' is not marked as EOG
+load: control token: 151689 '<line>' is not marked as EOG
+load: control token: 151685 '<answer>' is not marked as EOG
+load: control token: 151679 '<slice>' is not marked as EOG
+load: control token: 151704 '<|tts_eos|>' is not marked as EOG
+load: control token: 151694 '</source_image>' is not marked as EOG
+load: control token: 151692 '</perception>' is not marked as EOG
+load: control token: 151697 '<|audio_start|>' is not marked as EOG
+load: control token: 151745 '<|timbre_29|>' is not marked as EOG
+load: control token: 151744 '<|timbre_28|>' is not marked as EOG
+load: control token: 151678 '</point>' is not marked as EOG
+load: control token: 151720 '<|chunk_tts_bos|>' is not marked as EOG
+load: control token: 151718 '<|chunk_eos|>' is not marked as EOG
+load: control token: 151739 '<|timbre_23|>' is not marked as EOG
+load: control token: 151724 '<|timbre_8|>' is not marked as EOG
+load: control token: 151686 '</answer>' is not marked as EOG
+load: control token: 151702 '<|spk_eos|>' is not marked as EOG
+load: control token: 151710 '<|emotion_start|>' is not marked as EOG
+load: printing all EOG tokens:
+load:   - 128247 ('</s>')
+load:   - 151643 ('<|endoftext|>')
+load:   - 151645 ('<|im_end|>')
+load:   - 151662 ('<|fim_pad|>')
+load:   - 151663 ('<|repo_name|>')
+load:   - 151664 ('<|file_sep|>')
+load: special tokens cache size = 107
+load: token to piece cache size = 0.9319 MB
+print_info: arch                  = qwen3
+print_info: vocab_only            = 0
+print_info: no_alloc              = 0
+print_info: n_ctx_train           = 40960
+print_info: n_embd                = 4096
+print_info: n_embd_inp            = 4096
+print_info: n_layer               = 36
+print_info: n_head                = 32
+print_info: n_head_kv             = 8
+print_info: n_rot                 = 128
+print_info: n_swa                 = 0
+print_info: is_swa_any            = 0
+print_info: n_embd_head_k         = 128
+print_info: n_embd_head_v         = 128
+print_info: n_gqa                 = 4
+print_info: n_embd_k_gqa          = 1024
+print_info: n_embd_v_gqa          = 1024
+print_info: f_norm_eps            = 0.0e+00
+print_info: f_norm_rms_eps        = 1.0e-06
+print_info: f_clamp_kqv           = 0.0e+00
+print_info: f_max_alibi_bias      = 0.0e+00
+print_info: f_logit_scale         = 0.0e+00
+print_info: f_attn_scale          = 0.0e+00
+print_info: f_attn_value_scale    = 0.0000
+print_info: n_ff                  = 12288
+print_info: n_expert              = 0
+print_info: n_expert_used         = 0
+print_info: n_expert_groups       = 0
+print_info: n_group_used          = 0
+print_info: causal attn           = 1
+print_info: pooling type          = -1
+print_info: rope type             = 2
+print_info: rope scaling          = linear
+print_info: freq_base_train       = 1000000.0
+print_info: freq_scale_train      = 1
+print_info: n_ctx_orig_yarn       = 40960
+print_info: rope_yarn_log_mul     = 0.0000
+print_info: rope_finetuned        = unknown
+print_info: model type            = 8B
+print_info: model params          = 8.19 B
+print_info: general.name          = Llm
+print_info: vocab type            = BPE
+print_info: n_vocab               = 151748
+print_info: n_merges              = 151387
+print_info: BOS token             = 151644 '<|im_start|>'
+print_info: EOS token             = 151645 '<|im_end|>'
+print_info: EOT token             = 151645 '<|im_end|>'
+print_info: UNK token             = 128244 '<unk>'
+print_info: PAD token             = 151643 '<|endoftext|>'
+print_info: LF token              = 198 'Ċ'
+print_info: FIM PRE token         = 151659 '<|fim_prefix|>'
+print_info: FIM SUF token         = 151661 '<|fim_suffix|>'
+print_info: FIM MID token         = 151660 '<|fim_middle|>'
+print_info: FIM PAD token         = 151662 '<|fim_pad|>'
+print_info: FIM REP token         = 151663 '<|repo_name|>'
+print_info: FIM SEP token         = 151664 '<|file_sep|>'
+print_info: EOG token             = 128247 '</s>'
+print_info: EOG token             = 151643 '<|endoftext|>'
+print_info: EOG token             = 151645 '<|im_end|>'
+print_info: EOG token             = 151662 '<|fim_pad|>'
+print_info: EOG token             = 151663 '<|repo_name|>'
+print_info: EOG token             = 151664 '<|file_sep|>'
+print_info: max token length      = 256
+load_tensors: loading model tensors, this can take a while... (mmap = true, direct_io = false)
+load_tensors: layer   0 assigned to device MTL0, is_swa = 0
+load_tensors: layer   1 assigned to device MTL0, is_swa = 0
+load_tensors: layer   2 assigned to device MTL0, is_swa = 0
+load_tensors: layer   3 assigned to device MTL0, is_swa = 0
+load_tensors: layer   4 assigned to device MTL0, is_swa = 0
+load_tensors: layer   5 assigned to device MTL0, is_swa = 0
+load_tensors: layer   6 assigned to device MTL0, is_swa = 0
+load_tensors: layer   7 assigned to device MTL0, is_swa = 0
+load_tensors: layer   8 assigned to device MTL0, is_swa = 0
+load_tensors: layer   9 assigned to device MTL0, is_swa = 0
+load_tensors: layer  10 assigned to device MTL0, is_swa = 0
+load_tensors: layer  11 assigned to device MTL0, is_swa = 0
+load_tensors: layer  12 assigned to device MTL0, is_swa = 0
+load_tensors: layer  13 assigned to device MTL0, is_swa = 0
+load_tensors: layer  14 assigned to device MTL0, is_swa = 0
+load_tensors: layer  15 assigned to device MTL0, is_swa = 0
+load_tensors: layer  16 assigned to device MTL0, is_swa = 0
+load_tensors: layer  17 assigned to device MTL0, is_swa = 0
+load_tensors: layer  18 assigned to device MTL0, is_swa = 0
+load_tensors: layer  19 assigned to device MTL0, is_swa = 0
+load_tensors: layer  20 assigned to device MTL0, is_swa = 0
+load_tensors: layer  21 assigned to device MTL0, is_swa = 0
+load_tensors: layer  22 assigned to device MTL0, is_swa = 0
+load_tensors: layer  23 assigned to device MTL0, is_swa = 0
+load_tensors: layer  24 assigned to device MTL0, is_swa = 0
+load_tensors: layer  25 assigned to device MTL0, is_swa = 0
+load_tensors: layer  26 assigned to device MTL0, is_swa = 0
+load_tensors: layer  27 assigned to device MTL0, is_swa = 0
+load_tensors: layer  28 assigned to device MTL0, is_swa = 0
+load_tensors: layer  29 assigned to device MTL0, is_swa = 0
+load_tensors: layer  30 assigned to device MTL0, is_swa = 0
+load_tensors: layer  31 assigned to device MTL0, is_swa = 0
+load_tensors: layer  32 assigned to device MTL0, is_swa = 0
+load_tensors: layer  33 assigned to device MTL0, is_swa = 0
+load_tensors: layer  34 assigned to device MTL0, is_swa = 0
+load_tensors: layer  35 assigned to device MTL0, is_swa = 0
+load_tensors: layer  36 assigned to device MTL0, is_swa = 0
+create_tensor: loading tensor token_embd.weight
+create_tensor: loading tensor output_norm.weight
+create_tensor: loading tensor output.weight
+create_tensor: loading tensor blk.0.attn_norm.weight
+create_tensor: loading tensor blk.0.attn_q.weight
+create_tensor: loading tensor blk.0.attn_k.weight
+create_tensor: loading tensor blk.0.attn_v.weight
+create_tensor: loading tensor blk.0.attn_output.weight
+create_tensor: loading tensor blk.0.attn_k_norm.weight
+create_tensor: loading tensor blk.0.attn_q_norm.weight
+create_tensor: loading tensor blk.0.ffn_norm.weight
+create_tensor: loading tensor blk.0.ffn_gate.weight
+create_tensor: loading tensor blk.0.ffn_down.weight
+create_tensor: loading tensor blk.0.ffn_up.weight
+create_tensor: loading tensor blk.1.attn_norm.weight
+create_tensor: loading tensor blk.1.attn_q.weight
+create_tensor: loading tensor blk.1.attn_k.weight
+create_tensor: loading tensor blk.1.attn_v.weight
+create_tensor: loading tensor blk.1.attn_output.weight
+create_tensor: loading tensor blk.1.attn_k_norm.weight
+create_tensor: loading tensor blk.1.attn_q_norm.weight
+create_tensor: loading tensor blk.1.ffn_norm.weight
+create_tensor: loading tensor blk.1.ffn_gate.weight
+create_tensor: loading tensor blk.1.ffn_down.weight
+create_tensor: loading tensor blk.1.ffn_up.weight
+create_tensor: loading tensor blk.2.attn_norm.weight
+create_tensor: loading tensor blk.2.attn_q.weight
+create_tensor: loading tensor blk.2.attn_k.weight
+create_tensor: loading tensor blk.2.attn_v.weight
+create_tensor: loading tensor blk.2.attn_output.weight
+create_tensor: loading tensor blk.2.attn_k_norm.weight
+create_tensor: loading tensor blk.2.attn_q_norm.weight
+create_tensor: loading tensor blk.2.ffn_norm.weight
+create_tensor: loading tensor blk.2.ffn_gate.weight
+create_tensor: loading tensor blk.2.ffn_down.weight
+create_tensor: loading tensor blk.2.ffn_up.weight
+create_tensor: loading tensor blk.3.attn_norm.weight
+create_tensor: loading tensor blk.3.attn_q.weight
+create_tensor: loading tensor blk.3.attn_k.weight
+create_tensor: loading tensor blk.3.attn_v.weight
+create_tensor: loading tensor blk.3.attn_output.weight
+create_tensor: loading tensor blk.3.attn_k_norm.weight
+create_tensor: loading tensor blk.3.attn_q_norm.weight
+create_tensor: loading tensor blk.3.ffn_norm.weight
+create_tensor: loading tensor blk.3.ffn_gate.weight
+create_tensor: loading tensor blk.3.ffn_down.weight
+create_tensor: loading tensor blk.3.ffn_up.weight
+create_tensor: loading tensor blk.4.attn_norm.weight
+create_tensor: loading tensor blk.4.attn_q.weight
+create_tensor: loading tensor blk.4.attn_k.weight
+create_tensor: loading tensor blk.4.attn_v.weight
+create_tensor: loading tensor blk.4.attn_output.weight
+create_tensor: loading tensor blk.4.attn_k_norm.weight
+create_tensor: loading tensor blk.4.attn_q_norm.weight
+create_tensor: loading tensor blk.4.ffn_norm.weight
+create_tensor: loading tensor blk.4.ffn_gate.weight
+create_tensor: loading tensor blk.4.ffn_down.weight
+create_tensor: loading tensor blk.4.ffn_up.weight
+create_tensor: loading tensor blk.5.attn_norm.weight
+create_tensor: loading tensor blk.5.attn_q.weight
+create_tensor: loading tensor blk.5.attn_k.weight
+create_tensor: loading tensor blk.5.attn_v.weight
+create_tensor: loading tensor blk.5.attn_output.weight
+create_tensor: loading tensor blk.5.attn_k_norm.weight
+create_tensor: loading tensor blk.5.attn_q_norm.weight
+create_tensor: loading tensor blk.5.ffn_norm.weight
+create_tensor: loading tensor blk.5.ffn_gate.weight
+create_tensor: loading tensor blk.5.ffn_down.weight
+create_tensor: loading tensor blk.5.ffn_up.weight
+create_tensor: loading tensor blk.6.attn_norm.weight
+create_tensor: loading tensor blk.6.attn_q.weight
+create_tensor: loading tensor blk.6.attn_k.weight
+create_tensor: loading tensor blk.6.attn_v.weight
+create_tensor: loading tensor blk.6.attn_output.weight
+create_tensor: loading tensor blk.6.attn_k_norm.weight
+create_tensor: loading tensor blk.6.attn_q_norm.weight
+create_tensor: loading tensor blk.6.ffn_norm.weight
+create_tensor: loading tensor blk.6.ffn_gate.weight
+create_tensor: loading tensor blk.6.ffn_down.weight
+create_tensor: loading tensor blk.6.ffn_up.weight
+create_tensor: loading tensor blk.7.attn_norm.weight
+create_tensor: loading tensor blk.7.attn_q.weight
+create_tensor: loading tensor blk.7.attn_k.weight
+create_tensor: loading tensor blk.7.attn_v.weight
+create_tensor: loading tensor blk.7.attn_output.weight
+create_tensor: loading tensor blk.7.attn_k_norm.weight
+create_tensor: loading tensor blk.7.attn_q_norm.weight
+create_tensor: loading tensor blk.7.ffn_norm.weight
+create_tensor: loading tensor blk.7.ffn_gate.weight
+create_tensor: loading tensor blk.7.ffn_down.weight
+create_tensor: loading tensor blk.7.ffn_up.weight
+create_tensor: loading tensor blk.8.attn_norm.weight
+create_tensor: loading tensor blk.8.attn_q.weight
+create_tensor: loading tensor blk.8.attn_k.weight
+create_tensor: loading tensor blk.8.attn_v.weight
+create_tensor: loading tensor blk.8.attn_output.weight
+create_tensor: loading tensor blk.8.attn_k_norm.weight
+create_tensor: loading tensor blk.8.attn_q_norm.weight
+create_tensor: loading tensor blk.8.ffn_norm.weight
+create_tensor: loading tensor blk.8.ffn_gate.weight
+create_tensor: loading tensor blk.8.ffn_down.weight
+create_tensor: loading tensor blk.8.ffn_up.weight
+create_tensor: loading tensor blk.9.attn_norm.weight
+create_tensor: loading tensor blk.9.attn_q.weight
+create_tensor: loading tensor blk.9.attn_k.weight
+create_tensor: loading tensor blk.9.attn_v.weight
+create_tensor: loading tensor blk.9.attn_output.weight
+create_tensor: loading tensor blk.9.attn_k_norm.weight
+create_tensor: loading tensor blk.9.attn_q_norm.weight
+create_tensor: loading tensor blk.9.ffn_norm.weight
+create_tensor: loading tensor blk.9.ffn_gate.weight
+create_tensor: loading tensor blk.9.ffn_down.weight
+create_tensor: loading tensor blk.9.ffn_up.weight
+create_tensor: loading tensor blk.10.attn_norm.weight
+create_tensor: loading tensor blk.10.attn_q.weight
+create_tensor: loading tensor blk.10.attn_k.weight
+create_tensor: loading tensor blk.10.attn_v.weight
+create_tensor: loading tensor blk.10.attn_output.weight
+create_tensor: loading tensor blk.10.attn_k_norm.weight
+create_tensor: loading tensor blk.10.attn_q_norm.weight
+create_tensor: loading tensor blk.10.ffn_norm.weight
+create_tensor: loading tensor blk.10.ffn_gate.weight
+create_tensor: loading tensor blk.10.ffn_down.weight
+create_tensor: loading tensor blk.10.ffn_up.weight
+create_tensor: loading tensor blk.11.attn_norm.weight
+create_tensor: loading tensor blk.11.attn_q.weight
+create_tensor: loading tensor blk.11.attn_k.weight
+create_tensor: loading tensor blk.11.attn_v.weight
+create_tensor: loading tensor blk.11.attn_output.weight
+create_tensor: loading tensor blk.11.attn_k_norm.weight
+create_tensor: loading tensor blk.11.attn_q_norm.weight
+create_tensor: loading tensor blk.11.ffn_norm.weight
+create_tensor: loading tensor blk.11.ffn_gate.weight
+create_tensor: loading tensor blk.11.ffn_down.weight
+create_tensor: loading tensor blk.11.ffn_up.weight
+create_tensor: loading tensor blk.12.attn_norm.weight
+create_tensor: loading tensor blk.12.attn_q.weight
+create_tensor: loading tensor blk.12.attn_k.weight
+create_tensor: loading tensor blk.12.attn_v.weight
+create_tensor: loading tensor blk.12.attn_output.weight
+create_tensor: loading tensor blk.12.attn_k_norm.weight
+create_tensor: loading tensor blk.12.attn_q_norm.weight
+create_tensor: loading tensor blk.12.ffn_norm.weight
+create_tensor: loading tensor blk.12.ffn_gate.weight
+create_tensor: loading tensor blk.12.ffn_down.weight
+create_tensor: loading tensor blk.12.ffn_up.weight
+create_tensor: loading tensor blk.13.attn_norm.weight
+create_tensor: loading tensor blk.13.attn_q.weight
+create_tensor: loading tensor blk.13.attn_k.weight
+create_tensor: loading tensor blk.13.attn_v.weight
+create_tensor: loading tensor blk.13.attn_output.weight
+create_tensor: loading tensor blk.13.attn_k_norm.weight
+create_tensor: loading tensor blk.13.attn_q_norm.weight
+create_tensor: loading tensor blk.13.ffn_norm.weight
+create_tensor: loading tensor blk.13.ffn_gate.weight
+create_tensor: loading tensor blk.13.ffn_down.weight
+create_tensor: loading tensor blk.13.ffn_up.weight
+create_tensor: loading tensor blk.14.attn_norm.weight
+create_tensor: loading tensor blk.14.attn_q.weight
+create_tensor: loading tensor blk.14.attn_k.weight
+create_tensor: loading tensor blk.14.attn_v.weight
+create_tensor: loading tensor blk.14.attn_output.weight
+create_tensor: loading tensor blk.14.attn_k_norm.weight
+create_tensor: loading tensor blk.14.attn_q_norm.weight
+create_tensor: loading tensor blk.14.ffn_norm.weight
+create_tensor: loading tensor blk.14.ffn_gate.weight
+create_tensor: loading tensor blk.14.ffn_down.weight
+create_tensor: loading tensor blk.14.ffn_up.weight
+create_tensor: loading tensor blk.15.attn_norm.weight
+create_tensor: loading tensor blk.15.attn_q.weight
+create_tensor: loading tensor blk.15.attn_k.weight
+create_tensor: loading tensor blk.15.attn_v.weight
+create_tensor: loading tensor blk.15.attn_output.weight
+create_tensor: loading tensor blk.15.attn_k_norm.weight
+create_tensor: loading tensor blk.15.attn_q_norm.weight
+create_tensor: loading tensor blk.15.ffn_norm.weight
+create_tensor: loading tensor blk.15.ffn_gate.weight
+create_tensor: loading tensor blk.15.ffn_down.weight
+create_tensor: loading tensor blk.15.ffn_up.weight
+create_tensor: loading tensor blk.16.attn_norm.weight
+create_tensor: loading tensor blk.16.attn_q.weight
+create_tensor: loading tensor blk.16.attn_k.weight
+create_tensor: loading tensor blk.16.attn_v.weight
+create_tensor: loading tensor blk.16.attn_output.weight
+create_tensor: loading tensor blk.16.attn_k_norm.weight
+create_tensor: loading tensor blk.16.attn_q_norm.weight
+create_tensor: loading tensor blk.16.ffn_norm.weight
+create_tensor: loading tensor blk.16.ffn_gate.weight
+create_tensor: loading tensor blk.16.ffn_down.weight
+create_tensor: loading tensor blk.16.ffn_up.weight
+create_tensor: loading tensor blk.17.attn_norm.weight
+create_tensor: loading tensor blk.17.attn_q.weight
+create_tensor: loading tensor blk.17.attn_k.weight
+create_tensor: loading tensor blk.17.attn_v.weight
+create_tensor: loading tensor blk.17.attn_output.weight
+create_tensor: loading tensor blk.17.attn_k_norm.weight
+create_tensor: loading tensor blk.17.attn_q_norm.weight
+create_tensor: loading tensor blk.17.ffn_norm.weight
+create_tensor: loading tensor blk.17.ffn_gate.weight
+create_tensor: loading tensor blk.17.ffn_down.weight
+create_tensor: loading tensor blk.17.ffn_up.weight
+create_tensor: loading tensor blk.18.attn_norm.weight
+create_tensor: loading tensor blk.18.attn_q.weight
+create_tensor: loading tensor blk.18.attn_k.weight
+create_tensor: loading tensor blk.18.attn_v.weight
+create_tensor: loading tensor blk.18.attn_output.weight
+create_tensor: loading tensor blk.18.attn_k_norm.weight
+create_tensor: loading tensor blk.18.attn_q_norm.weight
+create_tensor: loading tensor blk.18.ffn_norm.weight
+create_tensor: loading tensor blk.18.ffn_gate.weight
+create_tensor: loading tensor blk.18.ffn_down.weight
+create_tensor: loading tensor blk.18.ffn_up.weight
+create_tensor: loading tensor blk.19.attn_norm.weight
+create_tensor: loading tensor blk.19.attn_q.weight
+create_tensor: loading tensor blk.19.attn_k.weight
+create_tensor: loading tensor blk.19.attn_v.weight
+create_tensor: loading tensor blk.19.attn_output.weight
+create_tensor: loading tensor blk.19.attn_k_norm.weight
+create_tensor: loading tensor blk.19.attn_q_norm.weight
+create_tensor: loading tensor blk.19.ffn_norm.weight
+create_tensor: loading tensor blk.19.ffn_gate.weight
+create_tensor: loading tensor blk.19.ffn_down.weight
+create_tensor: loading tensor blk.19.ffn_up.weight
+create_tensor: loading tensor blk.20.attn_norm.weight
+create_tensor: loading tensor blk.20.attn_q.weight
+create_tensor: loading tensor blk.20.attn_k.weight
+create_tensor: loading tensor blk.20.attn_v.weight
+create_tensor: loading tensor blk.20.attn_output.weight
+create_tensor: loading tensor blk.20.attn_k_norm.weight
+create_tensor: loading tensor blk.20.attn_q_norm.weight
+create_tensor: loading tensor blk.20.ffn_norm.weight
+create_tensor: loading tensor blk.20.ffn_gate.weight
+create_tensor: loading tensor blk.20.ffn_down.weight
+create_tensor: loading tensor blk.20.ffn_up.weight
+create_tensor: loading tensor blk.21.attn_norm.weight
+create_tensor: loading tensor blk.21.attn_q.weight
+create_tensor: loading tensor blk.21.attn_k.weight
+create_tensor: loading tensor blk.21.attn_v.weight
+create_tensor: loading tensor blk.21.attn_output.weight
+create_tensor: loading tensor blk.21.attn_k_norm.weight
+create_tensor: loading tensor blk.21.attn_q_norm.weight
+create_tensor: loading tensor blk.21.ffn_norm.weight
+create_tensor: loading tensor blk.21.ffn_gate.weight
+create_tensor: loading tensor blk.21.ffn_down.weight
+create_tensor: loading tensor blk.21.ffn_up.weight
+create_tensor: loading tensor blk.22.attn_norm.weight
+create_tensor: loading tensor blk.22.attn_q.weight
+create_tensor: loading tensor blk.22.attn_k.weight
+create_tensor: loading tensor blk.22.attn_v.weight
+create_tensor: loading tensor blk.22.attn_output.weight
+create_tensor: loading tensor blk.22.attn_k_norm.weight
+create_tensor: loading tensor blk.22.attn_q_norm.weight
+create_tensor: loading tensor blk.22.ffn_norm.weight
+create_tensor: loading tensor blk.22.ffn_gate.weight
+create_tensor: loading tensor blk.22.ffn_down.weight
+create_tensor: loading tensor blk.22.ffn_up.weight
+create_tensor: loading tensor blk.23.attn_norm.weight
+create_tensor: loading tensor blk.23.attn_q.weight
+create_tensor: loading tensor blk.23.attn_k.weight
+create_tensor: loading tensor blk.23.attn_v.weight
+create_tensor: loading tensor blk.23.attn_output.weight
+create_tensor: loading tensor blk.23.attn_k_norm.weight
+create_tensor: loading tensor blk.23.attn_q_norm.weight
+create_tensor: loading tensor blk.23.ffn_norm.weight
+create_tensor: loading tensor blk.23.ffn_gate.weight
+create_tensor: loading tensor blk.23.ffn_down.weight
+create_tensor: loading tensor blk.23.ffn_up.weight
+create_tensor: loading tensor blk.24.attn_norm.weight
+create_tensor: loading tensor blk.24.attn_q.weight
+create_tensor: loading tensor blk.24.attn_k.weight
+create_tensor: loading tensor blk.24.attn_v.weight
+create_tensor: loading tensor blk.24.attn_output.weight
+create_tensor: loading tensor blk.24.attn_k_norm.weight
+create_tensor: loading tensor blk.24.attn_q_norm.weight
+create_tensor: loading tensor blk.24.ffn_norm.weight
+create_tensor: loading tensor blk.24.ffn_gate.weight
+create_tensor: loading tensor blk.24.ffn_down.weight
+create_tensor: loading tensor blk.24.ffn_up.weight
+create_tensor: loading tensor blk.25.attn_norm.weight
+create_tensor: loading tensor blk.25.attn_q.weight
+create_tensor: loading tensor blk.25.attn_k.weight
+create_tensor: loading tensor blk.25.attn_v.weight
+create_tensor: loading tensor blk.25.attn_output.weight
+create_tensor: loading tensor blk.25.attn_k_norm.weight
+create_tensor: loading tensor blk.25.attn_q_norm.weight
+create_tensor: loading tensor blk.25.ffn_norm.weight
+create_tensor: loading tensor blk.25.ffn_gate.weight
+create_tensor: loading tensor blk.25.ffn_down.weight
+create_tensor: loading tensor blk.25.ffn_up.weight
+create_tensor: loading tensor blk.26.attn_norm.weight
+create_tensor: loading tensor blk.26.attn_q.weight
+create_tensor: loading tensor blk.26.attn_k.weight
+create_tensor: loading tensor blk.26.attn_v.weight
+create_tensor: loading tensor blk.26.attn_output.weight
+create_tensor: loading tensor blk.26.attn_k_norm.weight
+create_tensor: loading tensor blk.26.attn_q_norm.weight
+create_tensor: loading tensor blk.26.ffn_norm.weight
+create_tensor: loading tensor blk.26.ffn_gate.weight
+create_tensor: loading tensor blk.26.ffn_down.weight
+create_tensor: loading tensor blk.26.ffn_up.weight
+create_tensor: loading tensor blk.27.attn_norm.weight
+create_tensor: loading tensor blk.27.attn_q.weight
+create_tensor: loading tensor blk.27.attn_k.weight
+create_tensor: loading tensor blk.27.attn_v.weight
+create_tensor: loading tensor blk.27.attn_output.weight
+create_tensor: loading tensor blk.27.attn_k_norm.weight
+create_tensor: loading tensor blk.27.attn_q_norm.weight
+create_tensor: loading tensor blk.27.ffn_norm.weight
+create_tensor: loading tensor blk.27.ffn_gate.weight
+create_tensor: loading tensor blk.27.ffn_down.weight
+create_tensor: loading tensor blk.27.ffn_up.weight
+create_tensor: loading tensor blk.28.attn_norm.weight
+create_tensor: loading tensor blk.28.attn_q.weight
+create_tensor: loading tensor blk.28.attn_k.weight
+create_tensor: loading tensor blk.28.attn_v.weight
+create_tensor: loading tensor blk.28.attn_output.weight
+create_tensor: loading tensor blk.28.attn_k_norm.weight
+create_tensor: loading tensor blk.28.attn_q_norm.weight
+create_tensor: loading tensor blk.28.ffn_norm.weight
+create_tensor: loading tensor blk.28.ffn_gate.weight
+create_tensor: loading tensor blk.28.ffn_down.weight
+create_tensor: loading tensor blk.28.ffn_up.weight
+create_tensor: loading tensor blk.29.attn_norm.weight
+create_tensor: loading tensor blk.29.attn_q.weight
+create_tensor: loading tensor blk.29.attn_k.weight
+create_tensor: loading tensor blk.29.attn_v.weight
+create_tensor: loading tensor blk.29.attn_output.weight
+create_tensor: loading tensor blk.29.attn_k_norm.weight
+create_tensor: loading tensor blk.29.attn_q_norm.weight
+create_tensor: loading tensor blk.29.ffn_norm.weight
+create_tensor: loading tensor blk.29.ffn_gate.weight
+create_tensor: loading tensor blk.29.ffn_down.weight
+create_tensor: loading tensor blk.29.ffn_up.weight
+create_tensor: loading tensor blk.30.attn_norm.weight
+create_tensor: loading tensor blk.30.attn_q.weight
+create_tensor: loading tensor blk.30.attn_k.weight
+create_tensor: loading tensor blk.30.attn_v.weight
+create_tensor: loading tensor blk.30.attn_output.weight
+create_tensor: loading tensor blk.30.attn_k_norm.weight
+create_tensor: loading tensor blk.30.attn_q_norm.weight
+create_tensor: loading tensor blk.30.ffn_norm.weight
+create_tensor: loading tensor blk.30.ffn_gate.weight
+create_tensor: loading tensor blk.30.ffn_down.weight
+create_tensor: loading tensor blk.30.ffn_up.weight
+create_tensor: loading tensor blk.31.attn_norm.weight
+create_tensor: loading tensor blk.31.attn_q.weight
+create_tensor: loading tensor blk.31.attn_k.weight
+create_tensor: loading tensor blk.31.attn_v.weight
+create_tensor: loading tensor blk.31.attn_output.weight
+create_tensor: loading tensor blk.31.attn_k_norm.weight
+create_tensor: loading tensor blk.31.attn_q_norm.weight
+create_tensor: loading tensor blk.31.ffn_norm.weight
+create_tensor: loading tensor blk.31.ffn_gate.weight
+create_tensor: loading tensor blk.31.ffn_down.weight
+create_tensor: loading tensor blk.31.ffn_up.weight
+create_tensor: loading tensor blk.32.attn_norm.weight
+create_tensor: loading tensor blk.32.attn_q.weight
+create_tensor: loading tensor blk.32.attn_k.weight
+create_tensor: loading tensor blk.32.attn_v.weight
+create_tensor: loading tensor blk.32.attn_output.weight
+create_tensor: loading tensor blk.32.attn_k_norm.weight
+create_tensor: loading tensor blk.32.attn_q_norm.weight
+create_tensor: loading tensor blk.32.ffn_norm.weight
+create_tensor: loading tensor blk.32.ffn_gate.weight
+create_tensor: loading tensor blk.32.ffn_down.weight
+create_tensor: loading tensor blk.32.ffn_up.weight
+create_tensor: loading tensor blk.33.attn_norm.weight
+create_tensor: loading tensor blk.33.attn_q.weight
+create_tensor: loading tensor blk.33.attn_k.weight
+create_tensor: loading tensor blk.33.attn_v.weight
+create_tensor: loading tensor blk.33.attn_output.weight
+create_tensor: loading tensor blk.33.attn_k_norm.weight
+create_tensor: loading tensor blk.33.attn_q_norm.weight
+create_tensor: loading tensor blk.33.ffn_norm.weight
+create_tensor: loading tensor blk.33.ffn_gate.weight
+create_tensor: loading tensor blk.33.ffn_down.weight
+create_tensor: loading tensor blk.33.ffn_up.weight
+create_tensor: loading tensor blk.34.attn_norm.weight
+create_tensor: loading tensor blk.34.attn_q.weight
+create_tensor: loading tensor blk.34.attn_k.weight
+create_tensor: loading tensor blk.34.attn_v.weight
+create_tensor: loading tensor blk.34.attn_output.weight
+create_tensor: loading tensor blk.34.attn_k_norm.weight
+create_tensor: loading tensor blk.34.attn_q_norm.weight
+create_tensor: loading tensor blk.34.ffn_norm.weight
+create_tensor: loading tensor blk.34.ffn_gate.weight
+create_tensor: loading tensor blk.34.ffn_down.weight
+create_tensor: loading tensor blk.34.ffn_up.weight
+create_tensor: loading tensor blk.35.attn_norm.weight
+create_tensor: loading tensor blk.35.attn_q.weight
+create_tensor: loading tensor blk.35.attn_k.weight
+create_tensor: loading tensor blk.35.attn_v.weight
+create_tensor: loading tensor blk.35.attn_output.weight
+create_tensor: loading tensor blk.35.attn_k_norm.weight
+create_tensor: loading tensor blk.35.attn_q_norm.weight
+create_tensor: loading tensor blk.35.ffn_norm.weight
+create_tensor: loading tensor blk.35.ffn_gate.weight
+create_tensor: loading tensor blk.35.ffn_down.weight
+create_tensor: loading tensor blk.35.ffn_up.weight
+done_getting_tensors: tensor 'token_embd.weight' (q8_0) (and 0 others) cannot be used with preferred buffer type CPU_REPACK, using CPU instead
+ggml_metal_log_allocated_size: allocated buffer, size =  8298.81 MiB, ( 8299.19 / 25559.05)
+load_tensors: offloading output layer to GPU
+load_tensors: offloading 35 repeating layers to GPU
+load_tensors: offloaded 37/37 layers to GPU
+load_tensors:   CPU_Mapped model buffer size =   629.81 MiB
+load_tensors:  MTL0_Mapped model buffer size =  8298.80 MiB
+.......................................................................................
+llama_context: constructing llama_context
+llama_context: n_seq_max     = 1
+llama_context: n_ctx         = 8192
+llama_context: n_ctx_seq     = 8192
+llama_context: n_batch       = 2048
+llama_context: n_ubatch      = 512
+llama_context: causal_attn   = 1
+llama_context: flash_attn    = auto
+llama_context: kv_unified    = false
+llama_context: freq_base     = 1000000.0
+llama_context: freq_scale    = 1
+llama_context: n_rs_seq      = 0
+llama_context: n_ctx_seq (8192) < n_ctx_train (40960) -- the full capacity of the model will not be utilized
+ggml_metal_init: allocating
+ggml_metal_init: found device: Apple M1 Max
+ggml_metal_init: picking default device: Apple M1 Max
+ggml_metal_init: use fusion         = true
+ggml_metal_init: use concurrency    = true
+ggml_metal_init: use graph optimize = true
+set_abort_callback: call
+llama_context:        CPU  output buffer size =     0.58 MiB
+llama_kv_cache: layer   0: dev = MTL0
+llama_kv_cache: layer   1: dev = MTL0
+llama_kv_cache: layer   2: dev = MTL0
+llama_kv_cache: layer   3: dev = MTL0
+llama_kv_cache: layer   4: dev = MTL0
+llama_kv_cache: layer   5: dev = MTL0
+llama_kv_cache: layer   6: dev = MTL0
+llama_kv_cache: layer   7: dev = MTL0
+llama_kv_cache: layer   8: dev = MTL0
+llama_kv_cache: layer   9: dev = MTL0
+llama_kv_cache: layer  10: dev = MTL0
+llama_kv_cache: layer  11: dev = MTL0
+llama_kv_cache: layer  12: dev = MTL0
+llama_kv_cache: layer  13: dev = MTL0
+llama_kv_cache: layer  14: dev = MTL0
+llama_kv_cache: layer  15: dev = MTL0
+llama_kv_cache: layer  16: dev = MTL0
+llama_kv_cache: layer  17: dev = MTL0
+llama_kv_cache: layer  18: dev = MTL0
+llama_kv_cache: layer  19: dev = MTL0
+llama_kv_cache: layer  20: dev = MTL0
+llama_kv_cache: layer  21: dev = MTL0
+llama_kv_cache: layer  22: dev = MTL0
+llama_kv_cache: layer  23: dev = MTL0
+llama_kv_cache: layer  24: dev = MTL0
+llama_kv_cache: layer  25: dev = MTL0
+llama_kv_cache: layer  26: dev = MTL0
+llama_kv_cache: layer  27: dev = MTL0
+llama_kv_cache: layer  28: dev = MTL0
+llama_kv_cache: layer  29: dev = MTL0
+llama_kv_cache: layer  30: dev = MTL0
+llama_kv_cache: layer  31: dev = MTL0
+llama_kv_cache: layer  32: dev = MTL0
+llama_kv_cache: layer  33: dev = MTL0
+llama_kv_cache: layer  34: dev = MTL0
+llama_kv_cache: layer  35: dev = MTL0
+llama_kv_cache:       MTL0 KV buffer size =  1152.00 MiB
+llama_kv_cache: size = 1152.00 MiB (  8192 cells,  36 layers,  1/1 seqs), K (f16):  576.00 MiB, V (f16):  576.00 MiB
+llama_kv_cache: attn_rot_k = 0, n_embd_head_k_all = 128
+llama_kv_cache: attn_rot_v = 0, n_embd_head_k_all = 128
+llama_context: enumerating backends
+llama_context: backend_ptrs.size() = 3
+sched_reserve: reserving ...
+sched_reserve: max_nodes = 3192
+sched_reserve: reserving full memory module
+sched_reserve: worst-case: n_tokens = 512, n_seqs = 1, n_outputs = 1
+graph_reserve: reserving a graph for ubatch with n_tokens =    1, n_seqs =  1, n_outputs =    1
+sched_reserve: Flash Attention was auto, set to enabled
+sched_reserve: resolving fused Gated Delta Net support:
+graph_reserve: reserving a graph for ubatch with n_tokens =    1, n_seqs =  1, n_outputs =    1
+sched_reserve: fused Gated Delta Net (autoregressive) enabled
+graph_reserve: reserving a graph for ubatch with n_tokens =   16, n_seqs =  1, n_outputs =   16
+sched_reserve: fused Gated Delta Net (chunked) enabled
+graph_reserve: reserving a graph for ubatch with n_tokens =  512, n_seqs =  1, n_outputs =  512
+graph_reserve: reserving a graph for ubatch with n_tokens =    1, n_seqs =  1, n_outputs =    1
+graph_reserve: reserving a graph for ubatch with n_tokens =  512, n_seqs =  1, n_outputs =  512
+sched_reserve:       MTL0 compute buffer size =   312.38 MiB
+sched_reserve:        CPU compute buffer size =    24.01 MiB
+sched_reserve: graph nodes  = 1266
+sched_reserve: graph splits = 2
+sched_reserve: reserve took 41.46 ms, sched copies = 1
+llama_model_loader: loaded meta data with 30 key-value pairs and 193 tensors from /Users/jonathanjenkins/models/MiniCPM-o-4_5-gguf/tts/MiniCPM-o-4_5-tts-F16.gguf (version GGUF V3 (latest))
+llama_model_loader: Dumping metadata keys/values. Note: KV overrides do not apply in this output.
+llama_model_loader: - kv   0:                       general.architecture str              = llama
+llama_model_loader: - kv   1:                               general.type str              = model
+llama_model_loader: - kv   2:                               general.name str              = Tts
+llama_model_loader: - kv   3:                         general.size_label str              = 445M
+llama_model_loader: - kv   4:                          llama.block_count u32              = 20
+llama_model_loader: - kv   5:                       llama.context_length u32              = 4096
+llama_model_loader: - kv   6:                     llama.embedding_length u32              = 768
+llama_model_loader: - kv   7:                  llama.feed_forward_length u32              = 3072
+llama_model_loader: - kv   8:                 llama.attention.head_count u32              = 12
+llama_model_loader: - kv   9:              llama.attention.head_count_kv u32              = 12
+llama_model_loader: - kv  10:                       llama.rope.freq_base f32              = 10000.000000
+llama_model_loader: - kv  11:     llama.attention.layer_norm_rms_epsilon f32              = 0.000001
+llama_model_loader: - kv  12:                 llama.attention.key_length u32              = 64
+llama_model_loader: - kv  13:               llama.attention.value_length u32              = 64
+llama_model_loader: - kv  14:                          general.file_type u32              = 1
+llama_model_loader: - kv  15:                           llama.vocab_size u32              = 158626
+llama_model_loader: - kv  16:                 llama.rope.dimension_count u32              = 64
+llama_model_loader: - kv  17:               general.quantization_version u32              = 2
+llama_model_loader: - kv  18:                       tokenizer.ggml.model str              = gpt2
+llama_model_loader: - kv  19:                         tokenizer.ggml.pre str              = qwen2
+llama_model_loader: - kv  20:                      tokenizer.ggml.tokens arr[str,158626]  = ["!", "\"", "#", "$", "%", "&", "'", ...
+llama_model_loader: - kv  21:                  tokenizer.ggml.token_type arr[i32,158626]  = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...
+llama_model_loader: - kv  22:                      tokenizer.ggml.merges arr[str,151387]  = ["Ġ Ġ", "ĠĠ ĠĠ", "i n", "Ġ t",...
+llama_model_loader: - kv  23:                tokenizer.ggml.bos_token_id u32              = 151644
+llama_model_loader: - kv  24:                tokenizer.ggml.eos_token_id u32              = 151645
+llama_model_loader: - kv  25:            tokenizer.ggml.unknown_token_id u32              = 128244
+llama_model_loader: - kv  26:            tokenizer.ggml.padding_token_id u32              = 151643
+llama_model_loader: - kv  27:               tokenizer.ggml.add_bos_token bool             = false
+llama_model_loader: - kv  28:                    tokenizer.chat_template str              = {%- if tools %}\n    {{- '<|im_start|>...
+llama_model_loader: - kv  29:            tokenizer.ggml.add_space_prefix bool             = false
+llama_model_loader: - type  f32:   50 tensors
+llama_model_loader: - type  f16:  143 tensors
+print_info: file format = GGUF V3 (latest)
+print_info: file type   = F16
+print_info: file size   = 1.07 GiB (20.70 BPW) 
+llama_prepare_model_devices: using device MTL0 (Apple M1 Max) (unknown id) - 15795 MiB free
+init_tokenizer: initializing tokenizer for type 2
+load: 0 unused tokens
+load: control token: 151742 '<|timbre_26|>' is not marked as EOG
+load: control token: 151740 '<|timbre_24|>' is not marked as EOG
+load: control token: 151737 '<|timbre_21|>' is not marked as EOG
+load: control token: 151735 '<|timbre_19|>' is not marked as EOG
+load: control token: 151734 '<|timbre_18|>' is not marked as EOG
+load: control token: 151733 '<|timbre_17|>' is not marked as EOG
+load: control token: 151731 '<|timbre_15|>' is not marked as EOG
+load: control token: 151730 '<|timbre_14|>' is not marked as EOG
+load: control token: 151729 '<|timbre_13|>' is not marked as EOG
+load: control token: 151728 '<|timbre_12|>' is not marked as EOG
+load: control token: 151726 '<|timbre_10|>' is not marked as EOG
+load: control token: 151725 '<|timbre_9|>' is not marked as EOG
+load: control token: 151723 '<|timbre_7|>' is not marked as EOG
+load: control token: 151722 '<|tts_pad|>' is not marked as EOG
+load: control token: 151721 '<|chunk_tts_eos|>' is not marked as EOG
+load: control token: 151719 '<|chunk_bos|>' is not marked as EOG
+load: control token: 151717 '<|turn_eos|>' is not marked as EOG
+load: control token: 151716 '<|turn_bos|>' is not marked as EOG
+load: control token: 151715 '<|pitch_end|>' is not marked as EOG
+load: control token: 151714 '<|pitch_start|>' is not marked as EOG
+load: control token: 151713 '<|speed_end|>' is not marked as EOG
+load: control token: 151712 '<|speed_start|>' is not marked as EOG
+load: control token: 151709 '<|vad_end|>' is not marked as EOG
+load: control token: 151708 '<|vad_start|>' is not marked as EOG
+load: control token: 151707 '<|interrupt|>' is not marked as EOG
+load: control token: 151706 '<|speak|>' is not marked as EOG
+load: control token: 151705 '<|listen|>' is not marked as EOG
+load: control token: 151701 '<|spk|>' is not marked as EOG
+load: control token: 151700 '<|spk_bos|>' is not marked as EOG
+load: control token: 151699 '<|audio_end|>' is not marked as EOG
+load: control token: 151696 '</image_save_to>' is not marked as EOG
+load: control token: 151695 '<image_save_to>' is not marked as EOG
+load: control token: 151691 '<perception>' is not marked as EOG
+load: control token: 151687 '<focus>' is not marked as EOG
+load: control token: 151682 '</image_id>' is not marked as EOG
+load: control token: 151677 '<point>' is not marked as EOG
+load: control token: 151675 '<quad>' is not marked as EOG
+load: control token: 151674 '</box>' is not marked as EOG
+load: control token: 151671 '<ref>' is not marked as EOG
+load: control token: 151659 '<|fim_prefix|>' is not marked as EOG
+load: control token: 151656 '<|video_pad|>' is not marked as EOG
+load: control token: 151655 '<|image_pad|>' is not marked as EOG
+load: control token: 151653 '<|vision_end|>' is not marked as EOG
+load: control token: 151652 '<|vision_start|>' is not marked as EOG
+load: control token: 151651 '<|quad_end|>' is not marked as EOG
+load: control token: 151649 '<|box_end|>' is not marked as EOG
+load: control token: 151648 '<|box_start|>' is not marked as EOG
+load: control token: 151646 '<|object_ref_start|>' is not marked as EOG
+load: control token: 151644 '<|im_start|>' is not marked as EOG
+load: control token: 151661 '<|fim_suffix|>' is not marked as EOG
+load: control token: 151647 '<|object_ref_end|>' is not marked as EOG
+load: control token: 151673 '<box>' is not marked as EOG
+load: control token: 151676 '</quad>' is not marked as EOG
+load: control token: 151681 '<image_id>' is not marked as EOG
+load: control-looking token: 128247 '</s>' was not control-type; this is probably a bug in the model. its type will be overridden
+load: control token: 128244 '<unk>' is not marked as EOG
+load: control token: 151660 '<|fim_middle|>' is not marked as EOG
+load: control token: 151741 '<|timbre_25|>' is not marked as EOG
+load: control token: 151683 '<unit>' is not marked as EOG
+load: control token: 151732 '<|timbre_16|>' is not marked as EOG
+load: control token: 151670 '</image>' is not marked as EOG
+load: control token: 151727 '<|timbre_11|>' is not marked as EOG
+load: control token: 151654 '<|vision_pad|>' is not marked as EOG
+load: control token: 151746 '<|timbre_30|>' is not marked as EOG
+load: control token: 151650 '<|quad_start|>' is not marked as EOG
+load: control token: 151736 '<|timbre_20|>' is not marked as EOG
+load: control token: 151738 '<|timbre_22|>' is not marked as EOG
+load: control token: 151693 '<source_image>' is not marked as EOG
+load: control token: 151669 '<image>' is not marked as EOG
+load: control token: 151690 '</line>' is not marked as EOG
+load: control token: 151743 '<|timbre_27|>' is not marked as EOG
+load: control token: 151672 '</ref>' is not marked as EOG
+load: control token: 151680 '</slice>' is not marked as EOG
+load: control token: 151684 '</unit>' is not marked as EOG
+load: control token: 151698 '<|audio|>' is not marked as EOG
+load: control token: 151703 '<|tts_bos|>' is not marked as EOG
+load: control token: 151747 '<|timbre_31|>' is not marked as EOG
+load: control token: 151711 '<|emotion_end|>' is not marked as EOG
+load: control token: 151688 '</focus>' is not marked as EOG
+load: control token: 151689 '<line>' is not marked as EOG
+load: control token: 151685 '<answer>' is not marked as EOG
+load: control token: 151679 '<slice>' is not marked as EOG
+load: control token: 151704 '<|tts_eos|>' is not marked as EOG
+load: control token: 151694 '</source_image>' is not marked as EOG
+load: control token: 151692 '</perception>' is not marked as EOG
+load: control token: 151697 '<|audio_start|>' is not marked as EOG
+load: control token: 151745 '<|timbre_29|>' is not marked as EOG
+load: control token: 151744 '<|timbre_28|>' is not marked as EOG
+load: control token: 151678 '</point>' is not marked as EOG
+load: control token: 151720 '<|chunk_tts_bos|>' is not marked as EOG
+load: control token: 151718 '<|chunk_eos|>' is not marked as EOG
+load: control token: 151739 '<|timbre_23|>' is not marked as EOG
+load: control token: 151724 '<|timbre_8|>' is not marked as EOG
+load: control token: 151686 '</answer>' is not marked as EOG
+load: control token: 151702 '<|spk_eos|>' is not marked as EOG
+load: control token: 151710 '<|emotion_start|>' is not marked as EOG
+load: printing all EOG tokens:
+load:   - 128247 ('</s>')
+load:   - 151643 ('<|endoftext|>')
+load:   - 151645 ('<|im_end|>')
+load:   - 151662 ('<|fim_pad|>')
+load:   - 151663 ('<|repo_name|>')
+load:   - 151664 ('<|file_sep|>')
+load: special tokens cache size = 107
+load: token to piece cache size = 0.9319 MB
+print_info: arch                  = llama
+print_info: vocab_only            = 0
+print_info: no_alloc              = 0
+print_info: n_ctx_train           = 4096
+print_info: n_embd                = 768
+print_info: n_embd_inp            = 768
+print_info: n_layer               = 20
+print_info: n_head                = 12
+print_info: n_head_kv             = 12
+print_info: n_rot                 = 64
+print_info: n_swa                 = 0
+print_info: is_swa_any            = 0
+print_info: n_embd_head_k         = 64
+print_info: n_embd_head_v         = 64
+print_info: n_gqa                 = 1
+print_info: n_embd_k_gqa          = 768
+print_info: n_embd_v_gqa          = 768
+print_info: f_norm_eps            = 0.0e+00
+print_info: f_norm_rms_eps        = 1.0e-06
+print_info: f_clamp_kqv           = 0.0e+00
+print_info: f_max_alibi_bias      = 0.0e+00
+print_info: f_logit_scale         = 0.0e+00
+print_info: f_attn_scale          = 0.0e+00
+print_info: f_attn_value_scale    = 0.0000
+print_info: n_ff                  = 3072
+print_info: n_expert              = 0
+print_info: n_expert_used         = 0
+print_info: n_expert_groups       = 0
+print_info: n_group_used          = 0
+print_info: causal attn           = 1
+print_info: pooling type          = -1
+print_info: rope type             = 0
+print_info: rope scaling          = linear
+print_info: freq_base_train       = 10000.0
+print_info: freq_scale_train      = 1
+print_info: n_ctx_orig_yarn       = 4096
+print_info: rope_yarn_log_mul     = 0.0000
+print_info: rope_finetuned        = unknown
+print_info: model type            = ?B
+print_info: model params          = 444.94 M
+print_info: general.name          = Tts
+print_info: vocab type            = BPE
+print_info: n_vocab               = 158626
+print_info: n_merges              = 151387
+print_info: BOS token             = 151644 '<|im_start|>'
+print_info: EOS token             = 151645 '<|im_end|>'
+print_info: EOT token             = 151645 '<|im_end|>'
+print_info: UNK token             = 128244 '<unk>'
+print_info: PAD token             = 151643 '<|endoftext|>'
+print_info: LF token              = 198 'Ċ'
+print_info: FIM PRE token         = 151659 '<|fim_prefix|>'
+print_info: FIM SUF token         = 151661 '<|fim_suffix|>'
+print_info: FIM MID token         = 151660 '<|fim_middle|>'
+print_info: FIM PAD token         = 151662 '<|fim_pad|>'
+print_info: FIM REP token         = 151663 '<|repo_name|>'
+print_info: FIM SEP token         = 151664 '<|file_sep|>'
+print_info: EOG token             = 128247 '</s>'
+print_info: EOG token             = 151643 '<|endoftext|>'
+print_info: EOG token             = 151645 '<|im_end|>'
+print_info: EOG token             = 151662 '<|fim_pad|>'
+print_info: EOG token             = 151663 '<|repo_name|>'
+print_info: EOG token             = 151664 '<|file_sep|>'
+print_info: max token length      = 256
+load_tensors: loading model tensors, this can take a while... (mmap = true, direct_io = false)
+load_tensors: layer   0 assigned to device MTL0, is_swa = 0
+load_tensors: layer   1 assigned to device MTL0, is_swa = 0
+load_tensors: layer   2 assigned to device MTL0, is_swa = 0
+load_tensors: layer   3 assigned to device MTL0, is_swa = 0
+load_tensors: layer   4 assigned to device MTL0, is_swa = 0
+load_tensors: layer   5 assigned to device MTL0, is_swa = 0
+load_tensors: layer   6 assigned to device MTL0, is_swa = 0
+load_tensors: layer   7 assigned to device MTL0, is_swa = 0
+load_tensors: layer   8 assigned to device MTL0, is_swa = 0
+load_tensors: layer   9 assigned to device MTL0, is_swa = 0
+load_tensors: layer  10 assigned to device MTL0, is_swa = 0
+load_tensors: layer  11 assigned to device MTL0, is_swa = 0
+load_tensors: layer  12 assigned to device MTL0, is_swa = 0
+load_tensors: layer  13 assigned to device MTL0, is_swa = 0
+load_tensors: layer  14 assigned to device MTL0, is_swa = 0
+load_tensors: layer  15 assigned to device MTL0, is_swa = 0
+load_tensors: layer  16 assigned to device MTL0, is_swa = 0
+load_tensors: layer  17 assigned to device MTL0, is_swa = 0
+load_tensors: layer  18 assigned to device MTL0, is_swa = 0
+load_tensors: layer  19 assigned to device MTL0, is_swa = 0
+load_tensors: layer  20 assigned to device MTL0, is_swa = 0
+create_tensor: loading tensor token_embd.weight
+create_tensor: loading tensor output_norm.weight
+create_tensor: loading tensor token_embd.weight
+create_tensor: loading tensor blk.0.attn_norm.weight
+create_tensor: loading tensor blk.0.attn_q.weight
+create_tensor: loading tensor blk.0.attn_k.weight
+create_tensor: loading tensor blk.0.attn_v.weight
+create_tensor: loading tensor blk.0.attn_output.weight
+create_tensor: loading tensor blk.0.ffn_norm.weight
+create_tensor: loading tensor blk.0.ffn_gate.weight
+create_tensor: loading tensor blk.0.ffn_down.weight
+create_tensor: loading tensor blk.0.ffn_up.weight
+create_tensor: loading tensor blk.1.attn_norm.weight
+create_tensor: loading tensor blk.1.attn_q.weight
+create_tensor: loading tensor blk.1.attn_k.weight
+create_tensor: loading tensor blk.1.attn_v.weight
+create_tensor: loading tensor blk.1.attn_output.weight
+create_tensor: loading tensor blk.1.ffn_norm.weight
+create_tensor: loading tensor blk.1.ffn_gate.weight
+create_tensor: loading tensor blk.1.ffn_down.weight
+create_tensor: loading tensor blk.1.ffn_up.weight
+create_tensor: loading tensor blk.2.attn_norm.weight
+create_tensor: loading tensor blk.2.attn_q.weight
+create_tensor: loading tensor blk.2.attn_k.weight
+create_tensor: loading tensor blk.2.attn_v.weight
+create_tensor: loading tensor blk.2.attn_output.weight
+create_tensor: loading tensor blk.2.ffn_norm.weight
+create_tensor: loading tensor blk.2.ffn_gate.weight
+create_tensor: loading tensor blk.2.ffn_down.weight
+create_tensor: loading tensor blk.2.ffn_up.weight
+create_tensor: loading tensor blk.3.attn_norm.weight
+create_tensor: loading tensor blk.3.attn_q.weight
+create_tensor: loading tensor blk.3.attn_k.weight
+create_tensor: loading tensor blk.3.attn_v.weight
+create_tensor: loading tensor blk.3.attn_output.weight
+create_tensor: loading tensor blk.3.ffn_norm.weight
+create_tensor: loading tensor blk.3.ffn_gate.weight
+create_tensor: loading tensor blk.3.ffn_down.weight
+create_tensor: loading tensor blk.3.ffn_up.weight
+create_tensor: loading tensor blk.4.attn_norm.weight
+create_tensor: loading tensor blk.4.attn_q.weight
+create_tensor: loading tensor blk.4.attn_k.weight
+create_tensor: loading tensor blk.4.attn_v.weight
+create_tensor: loading tensor blk.4.attn_output.weight
+create_tensor: loading tensor blk.4.ffn_norm.weight
+create_tensor: loading tensor blk.4.ffn_gate.weight
+create_tensor: loading tensor blk.4.ffn_down.weight
+create_tensor: loading tensor blk.4.ffn_up.weight
+create_tensor: loading tensor blk.5.attn_norm.weight
+create_tensor: loading tensor blk.5.attn_q.weight
+create_tensor: loading tensor blk.5.attn_k.weight
+create_tensor: loading tensor blk.5.attn_v.weight
+create_tensor: loading tensor blk.5.attn_output.weight
+create_tensor: loading tensor blk.5.ffn_norm.weight
+create_tensor: loading tensor blk.5.ffn_gate.weight
+create_tensor: loading tensor blk.5.ffn_down.weight
+create_tensor: loading tensor blk.5.ffn_up.weight
+create_tensor: loading tensor blk.6.attn_norm.weight
+create_tensor: loading tensor blk.6.attn_q.weight
+create_tensor: loading tensor blk.6.attn_k.weight
+create_tensor: loading tensor blk.6.attn_v.weight
+create_tensor: loading tensor blk.6.attn_output.weight
+create_tensor: loading tensor blk.6.ffn_norm.weight
+create_tensor: loading tensor blk.6.ffn_gate.weight
+create_tensor: loading tensor blk.6.ffn_down.weight
+create_tensor: loading tensor blk.6.ffn_up.weight
+create_tensor: loading tensor blk.7.attn_norm.weight
+create_tensor: loading tensor blk.7.attn_q.weight
+create_tensor: loading tensor blk.7.attn_k.weight
+create_tensor: loading tensor blk.7.attn_v.weight
+create_tensor: loading tensor blk.7.attn_output.weight
+create_tensor: loading tensor blk.7.ffn_norm.weight
+create_tensor: loading tensor blk.7.ffn_gate.weight
+create_tensor: loading tensor blk.7.ffn_down.weight
+create_tensor: loading tensor blk.7.ffn_up.weight
+create_tensor: loading tensor blk.8.attn_norm.weight
+create_tensor: loading tensor blk.8.attn_q.weight
+create_tensor: loading tensor blk.8.attn_k.weight
+create_tensor: loading tensor blk.8.attn_v.weight
+create_tensor: loading tensor blk.8.attn_output.weight
+create_tensor: loading tensor blk.8.ffn_norm.weight
+create_tensor: loading tensor blk.8.ffn_gate.weight
+create_tensor: loading tensor blk.8.ffn_down.weight
+create_tensor: loading tensor blk.8.ffn_up.weight
+create_tensor: loading tensor blk.9.attn_norm.weight
+create_tensor: loading tensor blk.9.attn_q.weight
+create_tensor: loading tensor blk.9.attn_k.weight
+create_tensor: loading tensor blk.9.attn_v.weight
+create_tensor: loading tensor blk.9.attn_output.weight
+create_tensor: loading tensor blk.9.ffn_norm.weight
+create_tensor: loading tensor blk.9.ffn_gate.weight
+create_tensor: loading tensor blk.9.ffn_down.weight
+create_tensor: loading tensor blk.9.ffn_up.weight
+create_tensor: loading tensor blk.10.attn_norm.weight
+create_tensor: loading tensor blk.10.attn_q.weight
+create_tensor: loading tensor blk.10.attn_k.weight
+create_tensor: loading tensor blk.10.attn_v.weight
+create_tensor: loading tensor blk.10.attn_output.weight
+create_tensor: loading tensor blk.10.ffn_norm.weight
+create_tensor: loading tensor blk.10.ffn_gate.weight
+create_tensor: loading tensor blk.10.ffn_down.weight
+create_tensor: loading tensor blk.10.ffn_up.weight
+create_tensor: loading tensor blk.11.attn_norm.weight
+create_tensor: loading tensor blk.11.attn_q.weight
+create_tensor: loading tensor blk.11.attn_k.weight
+create_tensor: loading tensor blk.11.attn_v.weight
+create_tensor: loading tensor blk.11.attn_output.weight
+create_tensor: loading tensor blk.11.ffn_norm.weight
+create_tensor: loading tensor blk.11.ffn_gate.weight
+create_tensor: loading tensor blk.11.ffn_down.weight
+create_tensor: loading tensor blk.11.ffn_up.weight
+create_tensor: loading tensor blk.12.attn_norm.weight
+create_tensor: loading tensor blk.12.attn_q.weight
+create_tensor: loading tensor blk.12.attn_k.weight
+create_tensor: loading tensor blk.12.attn_v.weight
+create_tensor: loading tensor blk.12.attn_output.weight
+create_tensor: loading tensor blk.12.ffn_norm.weight
+create_tensor: loading tensor blk.12.ffn_gate.weight
+create_tensor: loading tensor blk.12.ffn_down.weight
+create_tensor: loading tensor blk.12.ffn_up.weight
+create_tensor: loading tensor blk.13.attn_norm.weight
+create_tensor: loading tensor blk.13.attn_q.weight
+create_tensor: loading tensor blk.13.attn_k.weight
+create_tensor: loading tensor blk.13.attn_v.weight
+create_tensor: loading tensor blk.13.attn_output.weight
+create_tensor: loading tensor blk.13.ffn_norm.weight
+create_tensor: loading tensor blk.13.ffn_gate.weight
+create_tensor: loading tensor blk.13.ffn_down.weight
+create_tensor: loading tensor blk.13.ffn_up.weight
+create_tensor: loading tensor blk.14.attn_norm.weight
+create_tensor: loading tensor blk.14.attn_q.weight
+create_tensor: loading tensor blk.14.attn_k.weight
+create_tensor: loading tensor blk.14.attn_v.weight
+create_tensor: loading tensor blk.14.attn_output.weight
+create_tensor: loading tensor blk.14.ffn_norm.weight
+create_tensor: loading tensor blk.14.ffn_gate.weight
+create_tensor: loading tensor blk.14.ffn_down.weight
+create_tensor: loading tensor blk.14.ffn_up.weight
+create_tensor: loading tensor blk.15.attn_norm.weight
+create_tensor: loading tensor blk.15.attn_q.weight
+create_tensor: loading tensor blk.15.attn_k.weight
+create_tensor: loading tensor blk.15.attn_v.weight
+create_tensor: loading tensor blk.15.attn_output.weight
+create_tensor: loading tensor blk.15.ffn_norm.weight
+create_tensor: loading tensor blk.15.ffn_gate.weight
+create_tensor: loading tensor blk.15.ffn_down.weight
+create_tensor: loading tensor blk.15.ffn_up.weight
+create_tensor: loading tensor blk.16.attn_norm.weight
+create_tensor: loading tensor blk.16.attn_q.weight
+create_tensor: loading tensor blk.16.attn_k.weight
+create_tensor: loading tensor blk.16.attn_v.weight
+create_tensor: loading tensor blk.16.attn_output.weight
+create_tensor: loading tensor blk.16.ffn_norm.weight
+create_tensor: loading tensor blk.16.ffn_gate.weight
+create_tensor: loading tensor blk.16.ffn_down.weight
+create_tensor: loading tensor blk.16.ffn_up.weight
+create_tensor: loading tensor blk.17.attn_norm.weight
+create_tensor: loading tensor blk.17.attn_q.weight
+create_tensor: loading tensor blk.17.attn_k.weight
+create_tensor: loading tensor blk.17.attn_v.weight
+create_tensor: loading tensor blk.17.attn_output.weight
+create_tensor: loading tensor blk.17.ffn_norm.weight
+create_tensor: loading tensor blk.17.ffn_gate.weight
+create_tensor: loading tensor blk.17.ffn_down.weight
+create_tensor: loading tensor blk.17.ffn_up.weight
+create_tensor: loading tensor blk.18.attn_norm.weight
+create_tensor: loading tensor blk.18.attn_q.weight
+create_tensor: loading tensor blk.18.attn_k.weight
+create_tensor: loading tensor blk.18.attn_v.weight
+create_tensor: loading tensor blk.18.attn_output.weight
+create_tensor: loading tensor blk.18.ffn_norm.weight
+create_tensor: loading tensor blk.18.ffn_gate.weight
+create_tensor: loading tensor blk.18.ffn_down.weight
+create_tensor: loading tensor blk.18.ffn_up.weight
+create_tensor: loading tensor blk.19.attn_norm.weight
+create_tensor: loading tensor blk.19.attn_q.weight
+create_tensor: loading tensor blk.19.attn_k.weight
+create_tensor: loading tensor blk.19.attn_v.weight
+create_tensor: loading tensor blk.19.attn_output.weight
+create_tensor: loading tensor blk.19.ffn_norm.weight
+create_tensor: loading tensor blk.19.ffn_gate.weight
+create_tensor: loading tensor blk.19.ffn_down.weight
+create_tensor: loading tensor blk.19.ffn_up.weight
+done_getting_tensors: partial load — used 182 of 193 tensors in the file (rest belong to a sibling model on the same .gguf)
+done_getting_tensors: tensor 'token_embd.weight' (f16) (and 0 others) cannot be used with preferred buffer type CPU_REPACK, using CPU instead
+ggml_metal_log_allocated_size: allocated buffer, size =   592.50 MiB, (10356.08 / 25559.05)
+load_tensors: offloading output layer to GPU
+load_tensors: offloading 19 repeating layers to GPU
+load_tensors: offloaded 21/21 layers to GPU
+load_tensors:   CPU_Mapped model buffer size =   232.36 MiB
+load_tensors:  MTL0_Mapped model buffer size =   592.48 MiB
+.............................llama_context: constructing llama_context
+llama_context: n_seq_max     = 1
+llama_context: n_ctx         = 8192
+llama_context: n_ctx_seq     = 8192
+llama_context: n_batch       = 2048
+llama_context: n_ubatch      = 512
+llama_context: causal_attn   = 1
+llama_context: flash_attn    = auto
+llama_context: kv_unified    = false
+llama_context: freq_base     = 10000.0
+llama_context: freq_scale    = 1
+llama_context: n_rs_seq      = 0
+llama_context: n_ctx_seq (8192) > n_ctx_train (4096) -- possible training context overflow
+ggml_metal_init: allocating
+ggml_metal_init: found device: Apple M1 Max
+ggml_metal_init: picking default device: Apple M1 Max
+ggml_metal_init: use fusion         = true
+ggml_metal_init: use concurrency    = true
+ggml_metal_init: use graph optimize = true
+set_abort_callback: call
+llama_context:        CPU  output buffer size =     0.61 MiB
+llama_kv_cache: layer   0: dev = MTL0
+llama_kv_cache: layer   1: dev = MTL0
+llama_kv_cache: layer   2: dev = MTL0
+llama_kv_cache: layer   3: dev = MTL0
+llama_kv_cache: layer   4: dev = MTL0
+llama_kv_cache: layer   5: dev = MTL0
+llama_kv_cache: layer   6: dev = MTL0
+llama_kv_cache: layer   7: dev = MTL0
+llama_kv_cache: layer   8: dev = MTL0
+llama_kv_cache: layer   9: dev = MTL0
+llama_kv_cache: layer  10: dev = MTL0
+llama_kv_cache: layer  11: dev = MTL0
+llama_kv_cache: layer  12: dev = MTL0
+llama_kv_cache: layer  13: dev = MTL0
+llama_kv_cache: layer  14: dev = MTL0
+llama_kv_cache: layer  15: dev = MTL0
+llama_kv_cache: layer  16: dev = MTL0
+llama_kv_cache: layer  17: dev = MTL0
+llama_kv_cache: layer  18: dev = MTL0
+llama_kv_cache: layer  19: dev = MTL0
+llama_kv_cache:       MTL0 KV buffer size =   480.00 MiB
+llama_kv_cache: size =  480.00 MiB (  8192 cells,  20 layers,  1/1 seqs), K (f16):  240.00 MiB, V (f16):  240.00 MiB
+llama_kv_cache: attn_rot_k = 0, n_embd_head_k_all = 64
+llama_kv_cache: attn_rot_v = 0, n_embd_head_k_all = 64
+llama_context: enumerating backends
+llama_context: backend_ptrs.size() = 3
+sched_reserve: reserving ...
+sched_reserve: max_nodes = 1464
+sched_reserve: reserving full memory module
+sched_reserve: worst-case: n_tokens = 512, n_seqs = 1, n_outputs = 1
+graph_reserve: reserving a graph for ubatch with n_tokens =    1, n_seqs =  1, n_outputs =    1
+sched_reserve: Flash Attention was auto, set to enabled
+sched_reserve: resolving fused Gated Delta Net support:
+graph_reserve: reserving a graph for ubatch with n_tokens =    1, n_seqs =  1, n_outputs =    1
+sched_reserve: fused Gated Delta Net (autoregressive) enabled
+graph_reserve: reserving a graph for ubatch with n_tokens =   16, n_seqs =  1, n_outputs =   16
+sched_reserve: fused Gated Delta Net (chunked) enabled
+graph_reserve: reserving a graph for ubatch with n_tokens =  512, n_seqs =  1, n_outputs =  512
+graph_reserve: reserving a graph for ubatch with n_tokens =    1, n_seqs =  1, n_outputs =    1
+graph_reserve: reserving a graph for ubatch with n_tokens =  512, n_seqs =  1, n_outputs =  512
+sched_reserve:       MTL0 compute buffer size =   312.82 MiB
+sched_reserve:        CPU compute buffer size =    11.01 MiB
+sched_reserve: graph nodes  = 626
+sched_reserve: graph splits = 2
+sched_reserve: reserve took 15.67 ms, sched copies = 1
+ggml_metal_init: allocating
+ggml_metal_init: found device: Apple M1 Max
+ggml_metal_init: picking default device: Apple M1 Max
+ggml_metal_init: use fusion         = true
+ggml_metal_init: use concurrency    = true
+ggml_metal_init: use graph optimize = true
+ggml_metal_init: allocating
+ggml_metal_init: found device: Apple M1 Max
+ggml_metal_init: picking default device: Apple M1 Max
+ggml_metal_init: use fusion         = true
+ggml_metal_init: use concurrency    = true
+ggml_metal_init: use graph optimize = true
+flowGGUFModelLoader: init_backend device=gpu:0, gpu_idx=0, backend=MTL0
+voc_hg2_model: CPU backend using 8 threads
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_concat', name = 'kernel_concat'
+ggml_metal_library_compile_pipeline: loaded kernel_concat                                 0x105956420 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_cpy_f32_f32', name = 'kernel_cpy_f32_f32'
+ggml_metal_library_compile_pipeline: loaded kernel_cpy_f32_f32                            0x105957220 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_get_rows_f32', name = 'kernel_get_rows_f32'
+ggml_metal_library_compile_pipeline: loaded kernel_get_rows_f32                           0x105957a20 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_f32_f32', name = 'kernel_mul_mm_f32_f32_bci=0_bco=1_ne12=1_ne13=1_r2=1_r3=1'
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_f32_f32_bci=0_bco=1_ne12=1_ne13=1_r2=1_r3=1      0x105958020 | th_max =  832 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_bin_fuse_f32_f32_f32_4', name = 'kernel_bin_fuse_f32_f32_f32_4_op=0_nf=1_rb=1_cb=0'
+ggml_metal_library_compile_pipeline: loaded kernel_bin_fuse_f32_f32_f32_4_op=0_nf=1_rb=1_cb=0      0x105958620 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_norm_mul_add_f32_4', name = 'kernel_norm_mul_add_f32_4'
+ggml_metal_library_compile_pipeline: loaded kernel_norm_mul_add_f32_4                     0x105958920 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_unary_f32_f32_4', name = 'kernel_unary_f32_f32_4_op=10_cnt=1'
+ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_4_op=10_cnt=1            0x105958f20 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_im2col_f32', name = 'kernel_im2col_f32'
+ggml_metal_library_compile_pipeline: loaded kernel_im2col_f32                             0x92ce10000 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_unary_f32_f32_4', name = 'kernel_unary_f32_f32_4_op=18_cnt=1'
+ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_4_op=18_cnt=1            0x92ce10300 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_bin_fuse_f32_f32_f32_4', name = 'kernel_bin_fuse_f32_f32_f32_4_op=0_nf=1_rb=0_cb=0'
+ggml_metal_library_compile_pipeline: loaded kernel_bin_fuse_f32_f32_f32_4_op=0_nf=1_rb=0_cb=0      0x92ce10600 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_repeat_f32', name = 'kernel_repeat_f32'
+ggml_metal_library_compile_pipeline: loaded kernel_repeat_f32                             0x92ce10900 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_f32_f32', name = 'kernel_mul_mm_f32_f32_bci=0_bco=1_ne12=8_ne13=1_r2=1_r3=1'
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_f32_f32_bci=0_bco=1_ne12=8_ne13=1_r2=1_r3=1      0x92ce10c00 | th_max =  832 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_arange_f32', name = 'kernel_arange_f32'
+ggml_metal_library_compile_pipeline: loaded kernel_arange_f32                             0x92ce10f00 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_unary_f32_f32_4', name = 'kernel_unary_f32_f32_4_op=10_cnt=0'
+ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_4_op=10_cnt=0            0x92ce11200 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_soft_max_f32_4', name = 'kernel_soft_max_f32_4'
+ggml_metal_library_compile_pipeline: loaded kernel_soft_max_f32_4                         0x92ce11500 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_f32_f32', name = 'kernel_mul_mm_f32_f32_bci=1_bco=1_ne12=8_ne13=1_r2=1_r3=1'
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_f32_f32_bci=1_bco=1_ne12=8_ne13=1_r2=1_r3=1      0x92ce11800 | th_max =  896 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_unary_f32_f32_4', name = 'kernel_unary_f32_f32_4_op=106_cnt=0'
+ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_4_op=106_cnt=0           0x92ce11b00 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_unary_f32_f32_4', name = 'kernel_unary_f32_f32_4_op=13_cnt=1'
+ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_4_op=13_cnt=1            0x92ce11e00 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_sum_rows_f32_f32_4', name = 'kernel_sum_rows_f32_f32_4_op=10'
+ggml_metal_library_compile_pipeline: loaded kernel_sum_rows_f32_f32_4_op=10               0x92ce12100 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_bin_fuse_f32_f32_f32', name = 'kernel_bin_fuse_f32_f32_f32_op=0_nf=1_rb=1_cb=0'
+ggml_metal_library_compile_pipeline: loaded kernel_bin_fuse_f32_f32_f32_op=0_nf=1_rb=1_cb=0      0x92ce12400 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_unary_f32_f32', name = 'kernel_unary_f32_f32_op=14_cnt=1'
+ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_op=14_cnt=1              0x92ce12700 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_bin_fuse_f32_f32_f32_4', name = 'kernel_bin_fuse_f32_f32_f32_4_op=3_nf=1_rb=1_cb=0'
+ggml_metal_library_compile_pipeline: loaded kernel_bin_fuse_f32_f32_f32_4_op=3_nf=1_rb=1_cb=0      0x92ce12a00 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mv_f32_f32_4', name = 'kernel_mul_mv_f32_f32_4_nsg=2_ne12=1_r2=1_r3=1'
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_f32_f32_4_nsg=2_ne12=1_r2=1_r3=1      0x92ce12d00 | th_max =  768 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_f32_f32', name = 'kernel_mul_mm_f32_f32_bci=0_bco=1_ne12=2_ne13=1_r2=2_r3=1'
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_f32_f32_bci=0_bco=1_ne12=2_ne13=1_r2=2_r3=1      0x92ce13000 | th_max =  832 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_norm_f32_4', name = 'kernel_norm_f32_4'
+ggml_metal_library_compile_pipeline: loaded kernel_norm_f32_4                             0x92ce13300 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_unary_f32_f32', name = 'kernel_unary_f32_f32_op=10_cnt=1'
+ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_op=10_cnt=1              0x92ce13600 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_timestep_embedding_f32', name = 'kernel_timestep_embedding_f32'
+ggml_metal_library_compile_pipeline: loaded kernel_timestep_embedding_f32                 0x92ce13900 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mv_ext_f32_f32_r1_2', name = 'kernel_mul_mv_ext_f32_f32_r1_2_nsg=2_nxpsg=16_ne12=1_r2=1_r3=1'
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_ext_f32_f32_r1_2_nsg=2_nxpsg=16_ne12=1_r2=1_r3=1      0x92ce13c00 | th_max =  832 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_unary_f32_f32_4', name = 'kernel_unary_f32_f32_4_op=106_cnt=1'
+ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_4_op=106_cnt=1           0x92c25c000 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mv_f32_f32_4', name = 'kernel_mul_mv_f32_f32_4_nsg=4_ne12=2_r2=2_r3=1'
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_f32_f32_4_nsg=4_ne12=2_r2=2_r3=1      0x92c25c300 | th_max =  768 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_bin_fuse_f32_f32_f32_4', name = 'kernel_bin_fuse_f32_f32_f32_4_op=2_nf=1_rb=0_cb=0'
+ggml_metal_library_compile_pipeline: loaded kernel_bin_fuse_f32_f32_f32_4_op=2_nf=1_rb=0_cb=0      0x92c25c600 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_f32_f32', name = 'kernel_mul_mm_f32_f32_bci=0_bco=1_ne12=16_ne13=1_r2=1_r3=1'
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_f32_f32_bci=0_bco=1_ne12=16_ne13=1_r2=1_r3=1      0x92c25c900 | th_max =  832 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_unary_f32_f32_4', name = 'kernel_unary_f32_f32_4_op=114_cnt=0'
+ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_4_op=114_cnt=0           0x92c25cc00 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_bin_fuse_f32_f32_f32_4', name = 'kernel_bin_fuse_f32_f32_f32_4_op=1_nf=1_rb=0_cb=0'
+ggml_metal_library_compile_pipeline: loaded kernel_bin_fuse_f32_f32_f32_4_op=1_nf=1_rb=0_cb=0      0x92c25cf00 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_unary_f32_f32_4', name = 'kernel_unary_f32_f32_4_op=17_cnt=0'
+ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_4_op=17_cnt=0            0x92c25d200 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_unary_f32_f32_4', name = 'kernel_unary_f32_f32_4_op=100_cnt=0'
+ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_4_op=100_cnt=0           0x92c25d500 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_unary_f32_f32_4', name = 'kernel_unary_f32_f32_4_op=103_cnt=0'
+ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_4_op=103_cnt=0           0x92c25d800 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_rms_norm_mul_f32_4', name = 'kernel_rms_norm_mul_f32_4'
+ggml_metal_library_compile_pipeline: loaded kernel_rms_norm_mul_f32_4                     0x92c25db00 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_q8_0_f32', name = 'kernel_mul_mm_q8_0_f32_bci=0_bco=1_ne12=1_ne13=1_r2=1_r3=1'
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_q8_0_f32_bci=0_bco=1_ne12=1_ne13=1_r2=1_r3=1      0x92c25de00 | th_max =  896 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_set_rows_f16_i64', name = 'kernel_set_rows_f16_i64'
+ggml_metal_library_compile_pipeline: loaded kernel_set_rows_f16_i64                       0x92c25e100 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_rope_neox_f32', name = 'kernel_rope_neox_f32_imrope=0'
+ggml_metal_library_compile_pipeline: loaded kernel_rope_neox_f32_imrope=0                 0x92c25e400 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_flash_attn_ext_vec_f16_dk128_dv128', name = 'kernel_flash_attn_ext_vec_f16_dk128_dv128_mask=1_sink=0_bias=0_scap=0_kvpad=0_ns10=1024_ns20=1024_nsg=1_nwg=32'
+ggml_metal_library_compile_pipeline: loaded kernel_flash_attn_ext_vec_f16_dk128_dv128_mask=1_sink=0_bias=0_scap=0_kvpad=0_ns10=1024_ns20=1024_nsg=1_nwg=32      0x92c25e700 | th_max =  448 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_flash_attn_ext_vec_reduce', name = 'kernel_flash_attn_ext_vec_reduce_dv=128_nwg=32'
+ggml_metal_library_compile_pipeline: loaded kernel_flash_attn_ext_vec_reduce_dv=128_nwg=32      0x92c25ea00 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_swiglu_f32', name = 'kernel_swiglu_f32'
+ggml_metal_library_compile_pipeline: loaded kernel_swiglu_f32                             0x92c25ed00 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mv_q8_0_f32', name = 'kernel_mul_mv_q8_0_f32_nsg=4_ne12=1_r2=1_r3=1'
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_q8_0_f32_nsg=4_ne12=1_r2=1_r3=1      0x92c25f000 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_im2col_f16', name = 'kernel_im2col_f16'
+ggml_metal_library_compile_pipeline: loaded kernel_im2col_f16                             0x92c25f300 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_f16_f16', name = 'kernel_mul_mm_f16_f16_bci=1_bco=1_ne12=1_ne13=1_r2=1_r3=1'
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_f16_f16_bci=1_bco=1_ne12=1_ne13=1_r2=1_r3=1      0x92c25f600 | th_max =  896 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_bin_fuse_f32_f32_f32', name = 'kernel_bin_fuse_f32_f32_f32_op=0_nf=1_rb=0_cb=1'
+ggml_metal_library_compile_pipeline: loaded kernel_bin_fuse_f32_f32_f32_op=0_nf=1_rb=0_cb=1      0x92c25f900 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_unary_f32_f32', name = 'kernel_unary_f32_f32_op=103_cnt=0'
+ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_op=103_cnt=0             0x92c25fc00 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_f16_f16', name = 'kernel_mul_mm_f16_f16_bci=0_bco=1_ne12=1_ne13=1_r2=1_r3=1'
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_f16_f16_bci=0_bco=1_ne12=1_ne13=1_r2=1_r3=1      0x92ce70000 | th_max =  896 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_f16_f32', name = 'kernel_mul_mm_f16_f32_bci=0_bco=1_ne12=1_ne13=1_r2=1_r3=1'
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_f16_f32_bci=0_bco=1_ne12=1_ne13=1_r2=1_r3=1      0x92ce70300 | th_max =  896 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_cpy_f32_f16', name = 'kernel_cpy_f32_f16'
+ggml_metal_library_compile_pipeline: loaded kernel_cpy_f32_f16                            0x92ce70600 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_cpy_f16_f16', name = 'kernel_cpy_f16_f16'
+ggml_metal_library_compile_pipeline: loaded kernel_cpy_f16_f16                            0x92ce70900 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_f16_f32', name = 'kernel_mul_mm_f16_f32_bci=0_bco=1_ne12=16_ne13=1_r2=1_r3=1'
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_f16_f32_bci=0_bco=1_ne12=16_ne13=1_r2=1_r3=1      0x92ce70c00 | th_max =  896 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_soft_max_f32', name = 'kernel_soft_max_f32'
+ggml_metal_library_compile_pipeline: loaded kernel_soft_max_f32                           0x92ce70f00 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_f16_f32', name = 'kernel_mul_mm_f16_f32_bci=1_bco=1_ne12=16_ne13=1_r2=1_r3=1'
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_f16_f32_bci=1_bco=1_ne12=16_ne13=1_r2=1_r3=1      0x92ce71200 | th_max =  896 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_unary_f32_f32_4', name = 'kernel_unary_f32_f32_4_op=101_cnt=0'
+ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_4_op=101_cnt=0           0x92ce71500 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_pool_1d_avg_f32', name = 'kernel_pool_1d_avg_f32'
+ggml_metal_library_compile_pipeline: loaded kernel_pool_1d_avg_f32                        0x92ce71800 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_flash_attn_ext_blk', name = 'kernel_flash_attn_ext_blk_nqptg=8_ncpsg=64'
+ggml_metal_library_compile_pipeline: loaded kernel_flash_attn_ext_blk_nqptg=8_ncpsg=64      0x92ce71b00 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_flash_attn_ext_f16_dk128_dv128', name = 'kernel_flash_attn_ext_f16_dk128_dv128_mask=1_sinks=0_bias=0_scap=0_kvpad=0_bcm=1_ns10=1024_ns20=1024_nsg=4'
+ggml_metal_library_compile_pipeline: loaded kernel_flash_attn_ext_f16_dk128_dv128_mask=1_sinks=0_bias=0_scap=0_kvpad=0_bcm=1_ns10=1024_ns20=1024_nsg=4      0x92ce71e00 | th_max =  704 | th_width =   32
+02:23:34.272 === omni_init start
+02:23:34.272 media_type = 1, duplex_mode = 0, base_output_dir = /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out
+02:23:34.272 === omni_init: loading new LLM model
+02:23:43.737 === omni_init: loading TTS model
+02:23:43.738 TTS model: loading with n_gpu_layers=100
+02:23:45.006 TTS sampler: temp=0.80, top_p=0.85, top_k=25, rep_penalty=1.05
+02:23:45.006 TTS: loading weights from GGUF (emb_code, emb_text, projector_semantic, head_code)...
+02:23:45.556 TTS: head_code shape: dim0=6562, dim1=768, will transpose to [6562, 768]
+02:23:45.566 TTS: head_code loaded, verifying first few values:
+02:23:45.566   head_code_weight[0] = 0.01361084 (expect ~0.01385498)
+02:23:45.566   head_code_weight[1] = -0.01660156 (expect ~-0.01647949)
+02:23:45.566   head_code_weight[768] = 0.04101562 (this is weight[1, 0], expect ~0.04150391)
+02:23:45.606 TTS: weights loaded successfully
+02:23:45.606 Projector: loading from /Users/jonathanjenkins/models/MiniCPM-o-4_5-gguf/tts/MiniCPM-o-4_5-projector-F16.gguf
+02:23:45.616 Projector: loaded successfully
+02:23:45.616 === omni_init: loading APM model
+02:23:46.321 APM: init from /Users/jonathanjenkins/models/MiniCPM-o-4_5-gguf/audio/MiniCPM-o-4_5-audio-F16.gguf
+02:23:46.324 Token2Wav: found models in /Users/jonathanjenkins/models/MiniCPM-o-4_5-gguf/token2wav-gguf
+02:23:46.324 Token2Wav: all model files found, initializing session...
+02:23:46.327 Token2Wav: non-CUDA backend, vocoder using CPU for better performance
+02:23:46.330 Token2Wav: using prompt_cache from /Users/jonathanjenkins/models/MiniCPM-o-4_5-gguf/token2wav-gguf/prompt_cache.gguf
+02:23:47.738 Token2Wav: initialized successfully
+02:23:47.738 Python T2W: script_dir=./tools/omni/pyt2w, model_dir=./tools/omni/pyt2w/token2wav
+02:23:47.738 Token2Wav: 使用 C++ 实现
+02:23:47.738 === omni_init success: ctx_llama = 0x105922310
+02:23:47.743 omni_set_language: setting language to 'en'
+02:23:47.743 omni_set_language: prompts updated for language 'en', system_prompt_initialized reset to false
+02:23:47.750 stream_prefill: n_past = 0
+ voice_clone_prompt = <|im_start|>system
+Clone the voice in the provided audio prompt.
+<|audio_start|>
+ assistant_prompt = <|audio_end|>Please assist users while maintaining this voice style. Please answer the user's questions seriously and in a high quality. Please chat with the user in a highly human-like and oral style. You are a helpful assistant developed by ModelBest: MiniCPM-Omni.<|im_end|>
+<|im_start|>user
+
+02:23:47.750 system prompt ref_audio: /Users/jonathanjenkins/GITHUB/VoiceLLM-Playground/Omni Model/Minicpm 4.5o /assets/ref_english.wav
+02:23:47.956 system prompt ref_audio embedding: n_pos=83
+02:23:48.193 🔒 n_keep 设置为 155 (system prompt tokens)，这部分永远不会被滑动窗口删除
+02:23:48.193 stream_prefill(index=0): system prompt 初始化完成，ref_audio 已在其中 prefill
+02:23:48.193 [SW] system_prompt registered: preserve_length=155 (will be protected from sliding)
+02:23:48.193 n_past = 155
+02:23:48.193 
+
+c++ finish stream_prefill(index=0). n_past=155, n_keep=155, n_ctx=8192
+
+02:23:48.233 stream_prefill(index=1): processing user audio: /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/bench_audio/q00.wav
+02:23:48.366 stream_prefill(index=1): user audio embedding: n_pos=12
+02:23:48.490 
+
+c++ finish stream_prefill(index=1). n_past=169, n_keep=155, n_ctx=8192
+
+02:23:48.490 📍 stream_decode 开始: n_past=169, n_keep=155, n_ctx=8192, duplex_mode=0
+02:23:48.490 stream_decode: create tts thread (simplex mode)
+02:23:48.490 stream_decode: create t2w thread
+02:23:48.490 wait prefill done
+02:23:48.490 📍 [单工TTS] 添加 assistant prompt: "<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+<|tts_bos|>", n_past=169
+02:23:48.490 T2W thread (C++) started
+02:23:48.490 TTS: 创建单工模式输出目录: /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000
+02:23:48.491 TTS thread started
+02:23:48.518 📍 [单工TTS] assistant prompt 完成, n_past=179
+02:23:48.518 LLM decode: max_tgt_len = 8192, n_predict = -1, n_ctx = 8192
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+02:23:48.843 LLM: detected end token, set llm_generation_done=true
+02:23:48.843 LLM->TTS: text='Two plus two is four.', n_tokens=6, hidden_size=24576, n_embd=4096, token_ids=[11613 5519 1378 374 3040 13]
+02:23:48.843 📍 Decode 结束: n_past=186, 剩余空间=8006, 无需滑窗
+02:23:48.843 📍 轮次 1 结束，记录边界于 n_past=186
+02:23:48.843 TTS<-LLM: chunk_idx=0, text='Two plus two is four.', n_tokens=6, hidden_size=24576, token_ids=[11613 5519 1378 374 3040 13]
+02:23:48.843 TTS: after queue pop - speek_done=0, llm_finish=1, llm_text.empty=0, token_ids.size=6
+02:23:48.843 TTS: before empty check - response.empty=0, response='Two plus two is four.', llm_finish=1
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mv_ext_q8_0_f32_r1_5', name = 'kernel_mul_mv_ext_q8_0_f32_r1_5_nsg=2_nxpsg=8_ne12=1_r2=1_r3=1'
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_ext_q8_0_f32_r1_5_nsg=2_nxpsg=8_ne12=1_r2=1_r3=1      0x92ce72100 | th_max =  640 | th_width =   32
+TTS condition graph: initialized (vocab=152064, hidden=768)
+set_embeddings: value = 1
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mv_ext_f16_f32_r1_4', name = 'kernel_mul_mv_ext_f16_f32_r1_4_nsg=2_nxpsg=8_ne12=1_r2=1_r3=1'
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_ext_f16_f32_r1_4_nsg=2_nxpsg=8_ne12=1_r2=1_r3=1      0x92ce72400 | th_max =  832 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_rope_norm_f32', name = 'kernel_rope_norm_f32_imrope=0'
+ggml_metal_library_compile_pipeline: loaded kernel_rope_norm_f32_imrope=0                 0x92ce72700 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_flash_attn_ext_vec_f16_dk64_dv64', name = 'kernel_flash_attn_ext_vec_f16_dk64_dv64_mask=1_sink=0_bias=0_scap=0_kvpad=0_ns10=768_ns20=768_nsg=1_nwg=32'
+ggml_metal_library_compile_pipeline: loaded kernel_flash_attn_ext_vec_f16_dk64_dv64_mask=1_sink=0_bias=0_scap=0_kvpad=0_ns10=768_ns20=768_nsg=1_nwg=32      0x92ce72a00 | th_max =  768 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_flash_attn_ext_vec_reduce', name = 'kernel_flash_attn_ext_vec_reduce_dv=64_nwg=32'
+ggml_metal_library_compile_pipeline: loaded kernel_flash_attn_ext_vec_reduce_dv=64_nwg=32      0x92ce72d00 | th_max = 1024 | th_width =   32
+set_embeddings: value = 1
+set_embeddings: value = 1
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mv_f16_f32_4', name = 'kernel_mul_mv_f16_f32_4_nsg=4_ne12=1_r2=1_r3=1'
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_f16_f32_4_nsg=4_ne12=1_r2=1_r3=1      0x92ce73000 | th_max = 1024 | th_width =   32
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_bin_fuse_f32_f32_f32', name = 'kernel_bin_fuse_f32_f32_f32_op=0_nf=1_rb=0_cb=0'
+ggml_metal_library_compile_pipeline: loaded kernel_bin_fuse_f32_f32_f32_op=0_nf=1_rb=0_cb=0      0x92ce73300 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_unary_f32_f32', name = 'kernel_unary_f32_f32_op=10_cnt=0'
+ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_op=10_cnt=0              0x92ce73600 | th_max = 1024 | th_width =   32
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_f32_f32', name = 'kernel_mul_mm_f32_f32_bci=1_bco=1_ne12=16_ne13=1_r2=1_r3=1'
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_f32_f32_bci=1_bco=1_ne12=16_ne13=1_r2=1_r3=1      0x92ce73900 | th_max =  896 | th_width =   32
+02:23:48.843 TTS: DEBUG before has_llm_data - token_ids.size=6, hidden_states.size=24576, n_embd=4096
+02:23:48.843 TTS: has_llm_data=1, token_ids=6, hidden_states=24576, n_embd=4096, llm_finish=1
+02:23:48.843 TTS: n_tokens_orig=6, n_tokens_filtered=6 (filtered 0 special tokens)
+02:23:48.845 📍 为下一轮准备: eval <|im_end|>\n<|im_start|>user\n, n_past=191
+02:23:49.681 TTS: saved merged embeddings (text) to /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/llm_debug/chunk_0/merged_embeddings.txt
+02:23:49.681 TTS Simplex: generating audio tokens for chunk 0 (n_tokens=6, tts_n_embd=768)
+02:23:49.681 TTS Simplex: 在 prefill 前添加 audio_bos (chunk_idx=0, new_size=7)
+02:23:49.681 TTS Simplex: first chunk - cleared KV cache
+02:23:49.681 TTS Simplex: first chunk - cleared tts_all_generated_tokens and tts_token_buffer
+02:23:49.683 TTS Simplex: prefill completed, n_past_tts=7
+02:23:49.683 TTS Simplex: sampler created
+02:23:49.683 TTS simplex: is_audio_bos=true (first audio token)
+02:23:49.722 TTS Simplex Phase1: token 1/500: rel_id=4778
+02:23:49.732 TTS Simplex Phase1: token 2/500: rel_id=5343
+02:23:49.742 TTS Simplex Phase1: token 3/500: rel_id=2166
+02:23:49.751 TTS Simplex Phase1: token 4/500: rel_id=3591
+02:23:49.761 TTS Simplex Phase1: token 5/500: rel_id=4898
+02:23:49.878 TTS Simplex Phase1: EOS token at step 16
+02:23:49.878 TTS Simplex: is_final_text_chunk=true, will enter Phase 2 for text_eos_embed
+02:23:49.878 TTS Simplex Phase2: injecting text_eos_embed + audio_bos at n_past=22
+02:23:49.879 TTS Simplex Phase2: text_eos_embed injected, n_past=23
+02:23:49.885 TTS Simplex Phase2: audio_bos injected, n_past=24, starting final generation
+02:23:49.999 TTS Simplex Phase2: yield 25 tokens 到 T2W
+02:23:49.999 T2W线程(C++): 轮次切换 (-1 -> 0)，更新输出目录
+02:23:50.000 T2W线程(C++): 新输出目录 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav
+02:23:50.293 TTS Simplex Phase2: EOS at step 18 (final end)
+02:23:50.293 TTS Simplex: chunk 结束，tts_token_buffer 剩余 7 tokens (保留等下一个 chunk)
+02:23:50.293 TTS Simplex: is_final_text_chunk=true, flush 剩余 7 tokens 从 tts_token_buffer
+02:23:50.293 TTS Simplex: generated 32 audio tokens for chunk 0
+02:23:50.293 TTS Simplex: chunk 0 first tokens: [4778 5343 2166 3591 4898 ], last tokens: [4218 4299 4299 4299 1707 ]
+02:23:50.293 TTS Simplex: updated tts_n_past_accumulated=42, total_generated_tokens=32
+02:23:50.295 TTS: finished processing all chunks
+02:23:50.295 TTS: 单工模式轮次结束，下一轮 round_idx=1
+02:23:50.295 TTS: sent is_final=true to T2W queue (turn end)
+02:23:50.592 🎉 首响时间 (First Audio Response): 2102ms
+02:23:50.592 T2W线程: wav_0.wav | 0.84s audio | 591.8ms inference | RTF=0.70 | t=2102ms | queue_wait=0.0ms
+02:23:50.955 T2W线程: wav_1.wav | 0.56s audio | 362.2ms inference | RTF=0.65 | t=2464ms | queue_wait=298.9ms
+02:23:50.955 T2W线程: 写入结束标记 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav/generation_done.flag (last_wav=1)
+02:23:50.955 T2W线程: 轮次结束后更新输出目录为 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_001/tts_wav
+02:23:51.023 stream_prefill(index=2): processing user audio: /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/bench_audio/q01.wav
+02:23:51.059 stream_prefill(index=2): user audio embedding: n_pos=14
+02:23:51.182 
+
+c++ finish stream_prefill(index=2). n_past=207, n_keep=155, n_ctx=8192
+
+02:23:51.182 📍 [轮次同步] 调用方指定 round_idx=0，当前 simplex_round_idx=1，强制同步
+02:23:51.182 📍 stream_decode 开始: n_past=207, n_keep=155, n_ctx=8192, duplex_mode=0
+02:23:51.182 wait prefill done
+02:23:51.182 📍 [单工TTS] 添加 assistant prompt: "<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+<|tts_bos|>", n_past=207
+02:23:51.209 📍 [单工TTS] assistant prompt 完成, n_past=217
+02:23:51.209 LLM decode: max_tgt_len = 8192, n_predict = -1, n_ctx = 8192
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+02:23:51.471 LLM: detected end token, set llm_generation_done=true
+02:23:51.471 LLM->TTS: text='The sky is blue.', n_tokens=5, hidden_size=20480, n_embd=4096, token_ids=[785 12884 374 6303 13]
+02:23:51.471 📍 Decode 结束: n_past=223, 剩余空间=7969, 无需滑窗
+02:23:51.471 📍 轮次 2 结束，记录边界于 n_past=223
+02:23:51.471 TTS<-LLM: chunk_idx=0, text='The sky is blue.', n_tokens=5, hidden_size=20480, token_ids=[785 12884 374 6303 13]
+02:23:51.471 TTS: after queue pop - speek_done=0, llm_finish=1, llm_text.empty=0, token_ids.size=5
+02:23:51.471 TTS: before empty check - response.empty=0, response='The sky is blue.', llm_finish=1
+set_embeddings: value = 1
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mv_ext_f16_f32_r1_3', name = 'kernel_mul_mv_ext_f16_f32_r1_3_nsg=2_nxpsg=8_ne12=1_r2=1_r3=1'
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_ext_f16_f32_r1_3_nsg=2_nxpsg=8_ne12=1_r2=1_r3=1      0x92ce73c00 | th_max =  832 | th_width =   32
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+02:23:51.471 TTS: DEBUG before has_llm_data - token_ids.size=5, hidden_states.size=20480, n_embd=4096
+02:23:51.471 TTS: has_llm_data=1, token_ids=5, hidden_states=20480, n_embd=4096, llm_finish=1
+02:23:51.472 TTS: n_tokens_orig=5, n_tokens_filtered=5 (filtered 0 special tokens)
+02:23:51.473 📍 为下一轮准备: eval <|im_end|>\n<|im_start|>user\n, n_past=228
+02:23:51.479 TTS: saved merged embeddings (text) to /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/llm_debug/chunk_0/merged_embeddings.txt
+02:23:51.479 TTS Simplex: generating audio tokens for chunk 0 (n_tokens=5, tts_n_embd=768)
+02:23:51.479 TTS Simplex: 在 prefill 前添加 audio_bos (chunk_idx=0, new_size=6)
+02:23:51.479 TTS Simplex: first chunk - cleared KV cache
+02:23:51.479 TTS Simplex: first chunk - cleared tts_all_generated_tokens and tts_token_buffer
+02:23:51.771 TTS Simplex: prefill completed, n_past_tts=6
+02:23:51.771 TTS Simplex: sampler created
+02:23:51.771 TTS simplex: is_audio_bos=true (first audio token)
+02:23:51.788 TTS Simplex Phase1: token 1/500: rel_id=3707
+02:23:51.797 TTS Simplex Phase1: token 2/500: rel_id=4299
+02:23:51.806 TTS Simplex Phase1: token 3/500: rel_id=4218
+02:23:51.819 TTS Simplex Phase1: token 4/500: rel_id=2031
+02:23:51.829 TTS Simplex Phase1: token 5/500: rel_id=1887
+02:23:52.063 TTS Simplex Phase1: yield 25 tokens 到 T2W (step 25, buffer=25)
+02:23:52.063 TTS Simplex Phase1: token 25/500: rel_id=3478
+02:23:52.063 T2W线程(C++): 轮次切换 (1 -> 0)，更新输出目录
+02:23:52.063 T2W线程(C++): 新输出目录 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav
+02:23:52.461 TTS Simplex Phase1: EOS token at step 36
+02:23:52.461 TTS Simplex: is_final_text_chunk=true, will enter Phase 2 for text_eos_embed
+02:23:52.461 TTS Simplex Phase2: injecting text_eos_embed + audio_bos at n_past=41
+02:23:52.462 TTS Simplex Phase2: text_eos_embed injected, n_past=42
+02:23:52.468 TTS Simplex Phase2: audio_bos injected, n_past=43, starting final generation
+02:23:52.530 TTS Simplex Phase2: EOS at step 5 (final end)
+02:23:52.530 TTS Simplex: chunk 结束，tts_token_buffer 剩余 14 tokens (保留等下一个 chunk)
+02:23:52.530 TTS Simplex: is_final_text_chunk=true, flush 剩余 14 tokens 从 tts_token_buffer
+02:23:52.530 TTS Simplex: generated 39 audio tokens for chunk 0
+02:23:52.530 TTS Simplex: chunk 0 first tokens: [3707 4299 4218 2031 1887 ], last tokens: [1785 4299 4299 4299 6081 ]
+02:23:52.530 TTS Simplex: updated tts_n_past_accumulated=48, total_generated_tokens=39
+02:23:52.530 TTS: finished processing all chunks
+02:23:52.530 TTS: 单工模式轮次结束，下一轮 round_idx=1
+02:23:52.530 TTS: sent is_final=true to T2W queue (turn end)
+02:23:52.631 🎉 首响时间 (First Audio Response): 1448ms
+02:23:52.631 T2W线程: wav_0.wav | 1.00s audio | 567.2ms inference | RTF=0.57 | t=1448ms | queue_wait=0.0ms
+02:23:53.209 T2W线程: wav_1.wav | 0.84s audio | 577.6ms inference | RTF=0.69 | t=2026ms | queue_wait=101.3ms
+02:23:53.209 T2W线程: 写入结束标记 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav/generation_done.flag (last_wav=1)
+02:23:53.209 T2W线程: 轮次结束后更新输出目录为 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_001/tts_wav
+02:23:53.249 stream_prefill(index=3): processing user audio: /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/bench_audio/q02.wav
+02:23:53.289 stream_prefill(index=3): user audio embedding: n_pos=15
+02:23:53.415 
+
+c++ finish stream_prefill(index=3). n_past=245, n_keep=155, n_ctx=8192
+
+02:23:53.415 📍 [轮次同步] 调用方指定 round_idx=0，当前 simplex_round_idx=1，强制同步
+02:23:53.415 📍 stream_decode 开始: n_past=245, n_keep=155, n_ctx=8192, duplex_mode=0
+02:23:53.415 wait prefill done
+02:23:53.415 📍 [单工TTS] 添加 assistant prompt: "<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+<|tts_bos|>", n_past=245
+02:23:53.442 📍 [单工TTS] assistant prompt 完成, n_past=255
+02:23:53.442 LLM decode: max_tgt_len = 8192, n_predict = -1, n_ctx = 8192
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+02:23:53.732 LLM: detected end token, set llm_generation_done=true
+02:23:53.732 LLM->TTS: text='Seven days in a week.', n_tokens=6, hidden_size=24576, n_embd=4096, token_ids=[59528 2849 304 264 2003 13]
+02:23:53.732 📍 Decode 结束: n_past=262, 剩余空间=7930, 无需滑窗
+02:23:53.732 📍 轮次 3 结束，记录边界于 n_past=262
+02:23:53.732 TTS<-LLM: chunk_idx=0, text='Seven days in a week.', n_tokens=6, hidden_size=24576, token_ids=[59528 2849 304 264 2003 13]
+02:23:53.732 TTS: after queue pop - speek_done=0, llm_finish=1, llm_text.empty=0, token_ids.size=6
+02:23:53.732 TTS: before empty check - response.empty=0, response='Seven days in a week.', llm_finish=1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+02:23:53.732 TTS: DEBUG before has_llm_data - token_ids.size=6, hidden_states.size=24576, n_embd=4096
+02:23:53.732 TTS: has_llm_data=1, token_ids=6, hidden_states=24576, n_embd=4096, llm_finish=1
+02:23:53.732 TTS: n_tokens_orig=6, n_tokens_filtered=6 (filtered 0 special tokens)
+02:23:53.734 📍 为下一轮准备: eval <|im_end|>\n<|im_start|>user\n, n_past=267
+02:23:53.740 TTS: saved merged embeddings (text) to /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/llm_debug/chunk_0/merged_embeddings.txt
+02:23:53.740 TTS Simplex: generating audio tokens for chunk 0 (n_tokens=6, tts_n_embd=768)
+02:23:53.740 TTS Simplex: 在 prefill 前添加 audio_bos (chunk_idx=0, new_size=7)
+02:23:53.740 TTS Simplex: first chunk - cleared KV cache
+02:23:53.740 TTS Simplex: first chunk - cleared tts_all_generated_tokens and tts_token_buffer
+02:23:53.741 TTS Simplex: prefill completed, n_past_tts=7
+02:23:53.741 TTS Simplex: sampler created
+02:23:53.741 TTS simplex: is_audio_bos=true (first audio token)
+02:23:53.800 TTS Simplex Phase1: token 1/500: rel_id=3947
+02:23:53.808 TTS Simplex Phase1: token 2/500: rel_id=2112
+02:23:53.817 TTS Simplex Phase1: token 3/500: rel_id=4299
+02:23:53.825 TTS Simplex Phase1: token 4/500: rel_id=4299
+02:23:53.833 TTS Simplex Phase1: token 5/500: rel_id=4299
+02:23:54.02:23:5400.002 002 T2W线程(C++): 轮次切换 (1 -> 0)，更新输出目录
+02:23:54.002 T2W线程(C++): 新输出目录 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav
+TTS Simplex Phase1: yield 25 tokens 到 T2W (step 25, buffer=25)
+02:23:54.002 TTS Simplex Phase1: token 25/500: rel_id=5179
+02:23:54.269 TTS Simplex Phase1: EOS token at step 31
+02:23:54.269 TTS Simplex: is_final_text_chunk=true, will enter Phase 2 for text_eos_embed
+02:23:54.269 TTS Simplex Phase2: injecting text_eos_embed + audio_bos at n_past=37
+02:23:54.270 TTS Simplex Phase2: text_eos_embed injected, n_past=38
+02:23:54.275 TTS Simplex Phase2: audio_bos injected, n_past=39, starting final generation
+02:23:54.416 TTS Simplex Phase2: EOS at step 12 (final end)
+02:23:54.416 TTS Simplex: chunk 结束，tts_token_buffer 剩余 16 tokens (保留等下一个 chunk)
+02:23:54.416 TTS Simplex: is_final_text_chunk=true, flush 剩余 16 tokens 从 tts_token_buffer
+02:23:54.416 TTS Simplex: generated 41 audio tokens for chunk 0
+02:23:54.416 TTS Simplex: chunk 0 first tokens: [3947 2112 4299 4299 4299 ], last tokens: [2112 1464 165 3000 1461 ]
+02:23:54.416 TTS Simplex: updated tts_n_past_accumulated=51, total_generated_tokens=41
+02:23:54.416 TTS: finished processing all chunks
+02:23:54.416 TTS: 单工模式轮次结束，下一轮 round_idx=1
+02:23:54.416 TTS: sent is_final=true to T2W queue (turn end)
+02:23:54.710 🎉 首响时间 (First Audio Response): 1294ms
+02:23:54.710 T2W线程: wav_0.wav | 1.00s audio | 707.4ms inference | RTF=0.71 | t=1294ms | queue_wait=0.1ms
+02:23:55.426 T2W线程: wav_1.wav | 0.92s audio | 715.9ms inference | RTF=0.78 | t=2011ms | queue_wait=293.9ms
+02:23:55.426 T2W线程: 写入结束标记 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav/generation_done.flag (last_wav=1)
+02:23:55.426 T2W线程: 轮次结束后更新输出目录为 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_001/tts_wav
+02:23:55.473 stream_prefill(index=4): processing user audio: /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/bench_audio/q03.wav
+02:23:55.512 stream_prefill(index=4): user audio embedding: n_pos=17
+02:23:55.638 
+
+c++ finish stream_prefill(index=4). n_past=286, n_keep=155, n_ctx=8192
+
+02:23:55.638 📍 [轮次同步] 调用方指定 round_idx=0，当前 simplex_round_idx=1，强制同步
+02:23:55.638 📍 stream_decode 开始: n_past=286, n_keep=155, n_ctx=8192, duplex_mode=0
+02:23:55.638 wait prefill done
+02:23:55.638 📍 [单工TTS] 添加 assistant prompt: "<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+<|tts_bos|>", n_past=286
+02:23:55.665 📍 [单工TTS] assistant prompt 完成, n_past=296
+02:23:55.666 LLM decode: max_tgt_len = 8192, n_predict = -1, n_ctx = 8192
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+02:23:55.987 LLM: detected end token, set llm_generation_done=true
+02:23:55.987 LLM->TTS: text='The capital of France is Paris.', n_tokens=7, hidden_size=28672, n_embd=4096, token_ids=[785 6722 315 9625 374 12095 13]
+02:23:55.987 📍 Decode 结束: n_past=304, 剩余空间=7888, 无需滑窗
+02:23:55.987 📍 轮次 4 结束，记录边界于 n_past=304
+02:23:55.987 TTS<-LLM: chunk_idx=0, text='The capital of France is Paris.', n_tokens=7, hidden_size=28672, token_ids=[785 6722 315 9625 374 12095 13]
+02:23:55.987 TTS: after queue pop - speek_done=0, llm_finish=1, llm_text.empty=0, token_ids.size=7
+02:23:55.987 TTS: before empty check - response.empty=0, response='The capital of France is Paris.', llm_finish=1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+02:23:55.987 TTS: DEBUG before has_llm_data - token_ids.size=7, hidden_states.size=28672, n_embd=4096
+02:23:55.987 TTS: has_llm_data=1, token_ids=7, hidden_states=28672, n_embd=4096, llm_finish=1
+02:23:55.987 TTS: n_tokens_orig=7, n_tokens_filtered=7 (filtered 0 special tokens)
+02:23:55.989 📍 为下一轮准备: eval <|im_end|>\n<|im_start|>user\n, n_past=309
+02:23:56.014 TTS: saved merged embeddings (text) to /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/llm_debug/chunk_0/merged_embeddings.txt
+02:23:56.014 TTS Simplex: generating audio tokens for chunk 0 (n_tokens=7, tts_n_embd=768)
+02:23:56.015 TTS Simplex: 在 prefill 前添加 audio_bos (chunk_idx=0, new_size=8)
+02:23:56.064 TTS Simplex: first chunk - cleared KV cache
+02:23:56.064 TTS Simplex: first chunk - cleared tts_all_generated_tokens and tts_token_buffer
+02:23:56.070 TTS Simplex: prefill completed, n_past_tts=8
+02:23:56.070 TTS Simplex: sampler created
+02:23:56.071 TTS simplex: is_audio_bos=true (first audio token)
+02:23:56.114 TTS Simplex Phase1: token 1/500: rel_id=71
+02:23:56.123 TTS Simplex Phase1: token 2/500: rel_id=1194
+02:23:56.131 TTS Simplex Phase1: token 3/500: rel_id=168
+02:23:56.139 TTS Simplex Phase1: token 4/500: rel_id=2436
+02:23:56.147 TTS Simplex Phase1: token 5/500: rel_id=1463
+02:02:23:23:5656.00.325325 T2W线程(C++): 轮次切换 (1 -> 0)，更新输出目录
+ TTS Simplex Phase1: yield 25 tokens 到 T2W (step 25, buffer=25)
+02:23:56.325 TTS Simplex Phase1: token 25/500: rel_id=2988
+02:23:56.325 T2W线程(C++): 新输出目录 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav
+02:23:56.889 TTS Simplex Phase1: EOS token at step 44
+02:23:56.889 TTS Simplex: is_final_text_chunk=true, will enter Phase 2 for text_eos_embed
+02:23:56.889 TTS Simplex Phase2: injecting text_eos_embed + audio_bos at n_past=51
+02:23:56.889 TTS Simplex Phase2: text_eos_embed injected, n_past=52
+02:23:56.903 TTS Simplex Phase2: audio_bos injected, n_past=53, starting final generation
+02:23:56.968 TTS Simplex Phase2: EOS at step 3 (final end)
+02:23:56.968 TTS Simplex: chunk 结束，tts_token_buffer 剩余 20 tokens (保留等下一个 chunk)
+02:23:56.968 TTS Simplex: is_final_text_chunk=true, flush 剩余 20 tokens 从 tts_token_buffer
+02:23:56.968 TTS Simplex: generated 45 audio tokens for chunk 0
+02:23:56.968 TTS Simplex: chunk 0 first tokens: [71 1194 168 2436 1463 ], last tokens: [6373 6372 1782 4299 4218 ]
+02:23:56.968 TTS Simplex: updated tts_n_past_accumulated=56, total_generated_tokens=45
+02:23:56.969 TTS: finished processing all chunks
+02:23:56.969 TTS: 单工模式轮次结束，下一轮 round_idx=1
+02:23:56.969 TTS: sent is_final=true to T2W queue (turn end)
+02:23:57.575 🎉 首响时间 (First Audio Response): 1936ms
+02:23:57.575 T2W线程: wav_0.wav | 1.00s audio | 1248.6ms inference | RTF=1.25 | t=1936ms | queue_wait=0.1ms
+02:23:58.261 T2W线程: wav_1.wav | 1.08s audio | 670.5ms inference | RTF=0.62 | t=2623ms | queue_wait=607.3ms
+02:23:58.262 T2W线程: 写入结束标记 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav/generation_done.flag (last_wav=1)
+02:23:58.262 T2W线程: 轮次结束后更新输出目录为 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_001/tts_wav
+02:23:58.307 stream_prefill(index=5): processing user audio: /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/bench_audio/q04.wav
+02:23:58.351 stream_prefill(index=5): user audio embedding: n_pos=14
+02:23:58.477 
+
+c++ finish stream_prefill(index=5). n_past=325, n_keep=155, n_ctx=8192
+
+02:23:58.477 📍 [轮次同步] 调用方指定 round_idx=0，当前 simplex_round_idx=1，强制同步
+02:23:58.477 📍 stream_decode 开始: n_past=325, n_keep=155, n_ctx=8192, duplex_mode=0
+02:23:58.477 wait prefill done
+02:23:58.477 📍 [单工TTS] 添加 assistant prompt: "<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+<|tts_bos|>", n_past=325
+02:23:58.504 📍 [单工TTS] assistant prompt 完成, n_past=335
+02:23:58.504 LLM decode: max_tgt_len = 8192, n_predict = -1, n_ctx = 8192
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+02:23:58.796 LLM: detected end token, set llm_generation_done=true
+02:23:58.797 LLM->TTS: text='Ten minus three equals seven.', n_tokens=6, hidden_size=24576, n_embd=4096, token_ids=[32687 27283 2326 16819 8094 13]
+02:23:58.797 📍 Decode 结束: n_past=342, 剩余空间=7850, 无需滑窗
+02:23:58.797 📍 轮次 5 结束，记录边界于 n_past=342
+02:23:58.797 TTS<-LLM: chunk_idx=0, text='Ten minus three equals seven.', n_tokens=6, hidden_size=24576, token_ids=[32687 27283 2326 16819 8094 13]
+02:23:58.797 TTS: after queue pop - speek_done=0, llm_finish=1, llm_text.empty=0, token_ids.size=6
+02:23:58.797 TTS: before empty check - response.empty=0, response='Ten minus three equals seven.', llm_finish=1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+02:23:58.797 TTS: DEBUG before has_llm_data - token_ids.size=6, hidden_states.size=24576, n_embd=4096
+02:23:58.797 TTS: has_llm_data=1, token_ids=6, hidden_states=24576, n_embd=4096, llm_finish=1
+02:23:58.797 TTS: n_tokens_orig=6, n_tokens_filtered=6 (filtered 0 special tokens)
+02:23:58.800 📍 为下一轮准备: eval <|im_end|>\n<|im_start|>user\n, n_past=347
+02:23:58.805 TTS: saved merged embeddings (text) to /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/llm_debug/chunk_0/merged_embeddings.txt
+02:23:58.805 TTS Simplex: generating audio tokens for chunk 0 (n_tokens=6, tts_n_embd=768)
+02:23:58.805 TTS Simplex: 在 prefill 前添加 audio_bos (chunk_idx=0, new_size=7)
+02:23:58.805 TTS Simplex: first chunk - cleared KV cache
+02:23:58.805 TTS Simplex: first chunk - cleared tts_all_generated_tokens and tts_token_buffer
+02:23:58.806 TTS Simplex: prefill completed, n_past_tts=7
+02:23:58.806 TTS Simplex: sampler created
+02:23:58.806 TTS simplex: is_audio_bos=true (first audio token)
+02:23:58.867 TTS Simplex Phase1: token 1/500: rel_id=3733
+02:23:58.875 TTS Simplex Phase1: token 2/500: rel_id=3658
+02:23:58.883 TTS Simplex Phase1: token 3/500: rel_id=5
+02:23:58.892 TTS Simplex Phase1: token 4/500: rel_id=1557
+02:23:58.900 TTS Simplex Phase1: token 5/500: rel_id=6258
+02:0223:59.068 T2W线程(C++): 轮次切换 (1 -> 0)，更新输出目录
+02:23:59.068 T2W线程(C++): 新输出目录 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav
+:23:59.068 TTS Simplex Phase1: yield 25 tokens 到 T2W (step 25, buffer=25)
+02:23:59.068 TTS Simplex Phase1: token 25/500: rel_id=3562
+02:23:59.511 TTS Simplex Phase1: EOS token at step 45
+02:23:59.511 TTS Simplex: is_final_text_chunk=true, will enter Phase 2 for text_eos_embed
+02:23:59.511 TTS Simplex Phase2: injecting text_eos_embed + audio_bos at n_past=51
+02:23:59.512 TTS Simplex Phase2: text_eos_embed injected, n_past=52
+02:23:59.519 TTS Simplex Phase2: audio_bos injected, n_past=53, starting final generation
+02:23:59.635 TTS Simplex Phase2: yield 25 tokens 到 T2W
+02:23:59.647 🎉 首响时间 (First Audio Response): 1169ms
+02:23:59.647 T2W线程: wav_0.wav | 1.00s audio | 578.9ms inference | RTF=0.58 | t=1169ms | queue_wait=0.0ms
+02:23:59.958 TTS Simplex Phase2: EOS at step 15 (final end)
+02:23:59.958 TTS Simplex: chunk 结束，tts_token_buffer 剩余 8 tokens (保留等下一个 chunk)
+02:23:59.958 TTS Simplex: is_final_text_chunk=true, flush 剩余 8 tokens 从 tts_token_buffer
+02:23:59.958 TTS Simplex: generated 58 audio tokens for chunk 0
+02:23:59.958 TTS Simplex: chunk 0 first tokens: [3733 3658 5 1557 6258 ], last tokens: [3975 4299 4218 4299 6162 ]
+02:23:59.958 TTS Simplex: updated tts_n_past_accumulated=68, total_generated_tokens=58
+02:23:59.958 TTS: finished processing all chunks
+02:23:59.958 TTS: 单工模式轮次结束，下一轮 round_idx=1
+02:23:59.958 TTS: sent is_final=true to T2W queue (turn end)
+02:24:00.204 T2W线程: wav_1.wav | 1.00s audio | 556.3ms inference | RTF=0.56 | t=1726ms | queue_wait=12.1ms
+02:24:00.598 T2W线程: wav_2.wav | 0.60s audio | 393.4ms inference | RTF=0.66 | t=2120ms | queue_wait=245.8ms
+02:24:00.598 T2W线程: 写入结束标记 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav/generation_done.flag (last_wav=2)
+02:24:00.598 T2W线程: 轮次结束后更新输出目录为 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_001/tts_wav
+02:24:00.629 stream_prefill(index=6): processing user audio: /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/bench_audio/q05.wav
+02:24:00.683 stream_prefill(index=6): user audio embedding: n_pos=19
+02:24:00.810 
+
+c++ finish stream_prefill(index=6). n_past=368, n_keep=155, n_ctx=8192
+
+02:24:00.810 📍 [轮次同步] 调用方指定 round_idx=0，当前 simplex_round_idx=1，强制同步
+02:24:00.810 📍 stream_decode 开始: n_past=368, n_keep=155, n_ctx=8192, duplex_mode=0
+02:24:00.810 wait prefill done
+02:24:00.810 📍 [单工TTS] 添加 assistant prompt: "<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+<|tts_bos|>", n_past=368
+02:24:00.838 📍 [单工TTS] assistant prompt 完成, n_past=378
+02:24:00.838 LLM decode: max_tgt_len = 8192, n_predict = -1, n_ctx = 8192
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+02:24:01.127 LLM: detected end token, set llm_generation_done=true
+02:24:01.127 LLM->TTS: text='Spiders have eight legs.', n_tokens=6, hidden_size=24576, n_embd=4096, token_ids=[6406 13269 614 8063 14201 13]
+02:24:01.127 📍 Decode 结束: n_past=385, 剩余空间=7807, 无需滑窗
+02:24:01.127 📍 轮次 6 结束，记录边界于 n_past=385
+02:24:01.127 TTS<-LLM: chunk_idx=0, text='Spiders have eight legs.', n_tokens=6, hidden_size=24576, token_ids=[6406 13269 614 8063 14201 13]
+02:24:01.127 TTS: after queue pop - speek_done=0, llm_finish=1, llm_text.empty=0, token_ids.size=6
+02:24:01.127 TTS: before empty check - response.empty=0, response='Spiders have eight legs.', llm_finish=1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+02:24:01.127 TTS: DEBUG before has_llm_data - token_ids.size=6, hidden_states.size=24576, n_embd=4096
+02:24:01.127 TTS: has_llm_data=1, token_ids=6, hidden_states=24576, n_embd=4096, llm_finish=1
+02:24:01.128 TTS: n_tokens_orig=6, n_tokens_filtered=6 (filtered 0 special tokens)
+02:24:01.129 📍 为下一轮准备: eval <|im_end|>\n<|im_start|>user\n, n_past=390
+02:24:01.140 TTS: saved merged embeddings (text) to /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/llm_debug/chunk_0/merged_embeddings.txt
+02:24:01.140 TTS Simplex: generating audio tokens for chunk 0 (n_tokens=6, tts_n_embd=768)
+02:24:01.140 TTS Simplex: 在 prefill 前添加 audio_bos (chunk_idx=0, new_size=7)
+02:24:01.140 TTS Simplex: first chunk - cleared KV cache
+02:24:01.140 TTS Simplex: first chunk - cleared tts_all_generated_tokens and tts_token_buffer
+02:24:01.141 TTS Simplex: prefill completed, n_past_tts=7
+02:24:01.141 TTS Simplex: sampler created
+02:24:01.141 TTS simplex: is_audio_bos=true (first audio token)
+02:24:01.198 TTS Simplex Phase1: token 1/500: rel_id=3923
+02:24:01.206 TTS Simplex Phase1: token 2/500: rel_id=3435
+02:24:01.214 TTS Simplex Phase1: token 3/500: rel_id=5645
+02:24:01.222 TTS Simplex Phase1: token 4/500: rel_id=6374
+02:24:01.230 TTS Simplex Phase1: token 5/500: rel_id=3456
+02:24:001.397 T2W线程(C++): 轮次切换 (1 -> 0)，更新输出目录
+2:24:01.397 TTS Simplex Phase1: yield 25 tokens 到 T2W (step 25, buffer=25)
+02:02:24:24:01.0100.397 TTS Simplex Phase1: token 25/500: rel_id=4760
+397 T2W线程(C++): 新输出目录 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav
+02:24:01.883 TTS Simplex Phase1: EOS token at step 47
+02:24:01.883 TTS Simplex: is_final_text_chunk=true, will enter Phase 2 for text_eos_embed
+02:24:01.883 TTS Simplex Phase2: injecting text_eos_embed + audio_bos at n_past=53
+02:24:01.884 TTS Simplex Phase2: text_eos_embed injected, n_past=54
+02:24:01.890 TTS Simplex Phase2: audio_bos injected, n_past=55, starting final generation
+02:24:01.914 TTS Simplex Phase2: EOS at step 2 (final end)
+02:24:01.914 TTS Simplex: chunk 结束，tts_token_buffer 剩余 22 tokens (保留等下一个 chunk)
+02:24:01.914 TTS Simplex: is_final_text_chunk=true, flush 剩余 22 tokens 从 tts_token_buffer
+02:24:01.914 TTS Simplex: generated 47 audio tokens for chunk 0
+02:24:01.914 TTS Simplex: chunk 0 first tokens: [3923 3435 5645 6374 3456 ], last tokens: [6372 1788 4299 3975 6486 ]
+02:24:01.914 TTS Simplex: updated tts_n_past_accumulated=57, total_generated_tokens=47
+02:24:01.915 TTS: finished processing all chunks
+02:24:01.915 TTS: 单工模式轮次结束，下一轮 round_idx=1
+02:24:01.915 TTS: sent is_final=true to T2W queue (turn end)
+02:24:02.092 🎉 首响时间 (First Audio Response): 1281ms
+02:24:02.092 T2W线程: wav_0.wav | 1.00s audio | 694.1ms inference | RTF=0.69 | t=1281ms | queue_wait=0.0ms
+02:24:02.633 T2W线程: wav_1.wav | 1.16s audio | 541.4ms inference | RTF=0.47 | t=1822ms | queue_wait=177.3ms
+02:24:02.634 T2W线程: 写入结束标记 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav/generation_done.flag (last_wav=1)
+02:24:02.634 T2W线程: 轮次结束后更新输出目录为 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_001/tts_wav
+02:24:02.687 stream_prefill(index=7): processing user audio: /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/bench_audio/q06.wav
+02:24:02.730 stream_prefill(index=7): user audio embedding: n_pos=15
+02:24:02.857 
+
+c++ finish stream_prefill(index=7). n_past=407, n_keep=155, n_ctx=8192
+
+02:24:02.857 📍 [轮次同步] 调用方指定 round_idx=0，当前 simplex_round_idx=1，强制同步
+02:24:02.857 📍 stream_decode 开始: n_past=407, n_keep=155, n_ctx=8192, duplex_mode=0
+02:24:02.857 wait prefill done
+02:24:02.857 📍 [单工TTS] 添加 assistant prompt: "<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+<|tts_bos|>", n_past=407
+02:24:02.884 📍 [单工TTS] assistant prompt 完成, n_past=417
+02:24:02.884 LLM decode: max_tgt_len = 8192, n_predict = -1, n_ctx = 8192
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+02:24:03.203 LLM: detected end token, set llm_generation_done=true
+02:24:03.203 LLM->TTS: text='Jupiter is the largest planet.', n_tokens=7, hidden_size=28672, n_embd=4096, token_ids=[41 19519 374 279 7772 11580 13]
+02:24:03.203 📍 Decode 结束: n_past=425, 剩余空间=7767, 无需滑窗
+02:24:03.203 📍 轮次 7 结束，记录边界于 n_past=425
+02:24:03.203 TTS<-LLM: chunk_idx=0, text='Jupiter is the largest planet.', n_tokens=7, hidden_size=28672, token_ids=[41 19519 374 279 7772 11580 13]
+02:24:03.203 TTS: after queue pop - speek_done=0, llm_finish=1, llm_text.empty=0, token_ids.size=7
+02:24:03.203 TTS: before empty check - response.empty=0, response='Jupiter is the largest planet.', llm_finish=1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+02:24:03.203 TTS: DEBUG before has_llm_data - token_ids.size=7, hidden_states.size=28672, n_embd=4096
+02:24:03.203 TTS: has_llm_data=1, token_ids=7, hidden_states=28672, n_embd=4096, llm_finish=1
+02:24:03.203 TTS: n_tokens_orig=7, n_tokens_filtered=7 (filtered 0 special tokens)
+02:24:03.205 📍 为下一轮准备: eval <|im_end|>\n<|im_start|>user\n, n_past=430
+02:24:03.210 TTS: saved merged embeddings (text) to /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/llm_debug/chunk_0/merged_embeddings.txt
+02:24:03.210 TTS Simplex: generating audio tokens for chunk 0 (n_tokens=7, tts_n_embd=768)
+02:24:03.211 TTS Simplex: 在 prefill 前添加 audio_bos (chunk_idx=0, new_size=8)
+02:24:03.211 TTS Simplex: first chunk - cleared KV cache
+02:24:03.211 TTS Simplex: first chunk - cleared tts_all_generated_tokens and tts_token_buffer
+02:24:03.211 TTS Simplex: prefill completed, n_past_tts=8
+02:24:03.211 TTS Simplex: sampler created
+02:24:03.211 TTS simplex: is_audio_bos=true (first audio token)
+02:24:03.278 TTS Simplex Phase1: token 1/500: rel_id=1979
+02:24:03.290 TTS Simplex Phase1: token 2/500: rel_id=4839
+02:24:03.299 TTS Simplex Phase1: token 3/500: rel_id=1698
+02:24:03.307 TTS Simplex Phase1: token 4/500: rel_id=6317
+02:24:03.315 TTS Simplex Phase1: token 5/500: rel_id=4851
+02:02:24:03.483 T2W线程(C++): 轮次切换 (1 -> 0)，更新输出目录
+02:24:03.483 T2W线程(C++): 新输出目录 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav
+24:03.483 TTS Simplex Phase1: yield 25 tokens 到 T2W (step 25, buffer=25)
+02:24:03.483 TTS Simplex Phase1: token 25/500: rel_id=2741
+02:24:03.993 TTS Simplex Phase1: EOS token at step 48
+02:24:03.993 TTS Simplex: is_final_text_chunk=true, will enter Phase 2 for text_eos_embed
+02:24:03.993 TTS Simplex Phase2: injecting text_eos_embed + audio_bos at n_past=55
+02:24:03.993 TTS Simplex Phase2: text_eos_embed injected, n_past=56
+02:24:04.000 TTS Simplex Phase2: audio_bos injected, n_past=57, starting final generation
+02:24:04.029 🎉 首响时间 (First Audio Response): 1171ms
+02:24:04.029 T2W线程: wav_0.wav | 1.00s audio | 544.4ms inference | RTF=0.54 | t=1171ms | queue_wait=0.0ms
+02:24:04.034 TTS Simplex Phase2: yield 25 tokens 到 T2W
+02:24:04.260 TTS Simplex Phase2: EOS at step 5 (final end)
+02:24:04.260 TTS Simplex: chunk 结束，tts_token_buffer 剩余 1 tokens (保留等下一个 chunk)
+02:24:04.260 TTS Simplex: is_final_text_chunk=true, flush 剩余 1 tokens 从 tts_token_buffer
+02:24:04.260 TTS Simplex: generated 51 audio tokens for chunk 0
+02:24:04.260 TTS Simplex: chunk 0 first tokens: [1979 4839 1698 6317 4851 ], last tokens: [735 4299 4299 4299 4218 ]
+02:24:04.260 TTS Simplex: updated tts_n_past_accumulated=62, total_generated_tokens=51
+02:24:04.261 TTS: finished processing all chunks
+02:24:04.261 TTS: 单工模式轮次结束，下一轮 round_idx=1
+02:24:04.261 TTS: sent is_final=true to T2W queue (turn end)
+02:24:04.559 T2W线程: wav_1.wav | 1.00s audio | 524.0ms inference | RTF=0.52 | t=1701ms | queue_wait=0.0ms
+02:24:04.903 T2W线程: wav_2.wav | 0.32s audio | 344.2ms inference | RTF=1.08 | t=2046ms | queue_wait=298.4ms
+02:24:04.903 T2W线程: 写入结束标记 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav/generation_done.flag (last_wav=2)
+02:24:04.903 T2W线程: 轮次结束后更新输出目录为 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_001/tts_wav
+02:24:04.941 stream_prefill(index=8): processing user audio: /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/bench_audio/q07.wav
+02:24:04.986 stream_prefill(index=8): user audio embedding: n_pos=15
+02:24:05.112 
+
+c++ finish stream_prefill(index=8). n_past=447, n_keep=155, n_ctx=8192
+
+02:24:05.112 📍 [轮次同步] 调用方指定 round_idx=0，当前 simplex_round_idx=1，强制同步
+02:24:05.112 📍 stream_decode 开始: n_past=447, n_keep=155, n_ctx=8192, duplex_mode=0
+02:24:05.112 wait prefill done
+02:24:05.112 📍 [单工TTS] 添加 assistant prompt: "<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+<|tts_bos|>", n_past=447
+02:24:05.139 📍 [单工TTS] assistant prompt 完成, n_past=457
+02:24:05.139 LLM decode: max_tgt_len = 8192, n_predict = -1, n_ctx = 8192
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+02:24:05.457 LLM: detected end token, set llm_generation_done=true
+02:24:05.457 LLM->TTS: text='Five times five equals twenty five.', n_tokens=7, hidden_size=28672, n_embd=4096, token_ids=[37020 3039 4236 16819 17073 4236 13]
+02:24:05.457 📍 Decode 结束: n_past=465, 剩余空间=7727, 无需滑窗
+02:24:05.457 📍 轮次 8 结束，记录边界于 n_past=465
+02:24:05.457 TTS<-LLM: chunk_idx=0, text='Five times five equals twenty five.', n_tokens=7, hidden_size=28672, token_ids=[37020 3039 4236 16819 17073 4236 13]
+02:24:05.457 TTS: after queue pop - speek_done=0, llm_finish=1, llm_text.empty=0, token_ids.size=7
+02:24:05.457 TTS: before empty check - response.empty=0, response='Five times five equals twenty five.', llm_finish=1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+02:24:05.457 TTS: DEBUG before has_llm_data - token_ids.size=7, hidden_states.size=28672, n_embd=4096
+02:24:05.457 TTS: has_llm_data=1, token_ids=7, hidden_states=28672, n_embd=4096, llm_finish=1
+02:24:05.457 TTS: n_tokens_orig=7, n_tokens_filtered=7 (filtered 0 special tokens)
+02:24:05.459 📍 为下一轮准备: eval <|im_end|>\n<|im_start|>user\n, n_past=470
+02:24:05.466 TTS: saved merged embeddings (text) to /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/llm_debug/chunk_0/merged_embeddings.txt
+02:24:05.466 TTS Simplex: generating audio tokens for chunk 0 (n_tokens=7, tts_n_embd=768)
+02:24:05.466 TTS Simplex: 在 prefill 前添加 audio_bos (chunk_idx=0, new_size=8)
+02:24:05.466 TTS Simplex: first chunk - cleared KV cache
+02:24:05.466 TTS Simplex: first chunk - cleared tts_all_generated_tokens and tts_token_buffer
+02:24:05.467 TTS Simplex: prefill completed, n_past_tts=8
+02:24:05.467 TTS Simplex: sampler created
+02:24:05.467 TTS simplex: is_audio_bos=true (first audio token)
+02:24:05.532 TTS Simplex Phase1: token 1/500: rel_id=4943
+02:24:05.541 TTS Simplex Phase1: token 2/500: rel_id=6320
+02:24:05.550 TTS Simplex Phase1: token 3/500: rel_id=3890
+02:24:05.558 TTS Simplex Phase1: token 4/500: rel_id=4544
+02:24:05.567 TTS Simplex Phase1: token 5/500: rel_id=4858
+02:24:05.737 TTS Simplex Phase1: yield 25 tokens 到 T2W (step 25, buffer=25)
+02:24:05.737 TTS Simplex Phase1: token 25/500: rel_id=2753
+02:24:05.737 T2W线程(C++): 轮次切换 (1 -> 0)，更新输出目录
+02:24:05.737 T2W线程(C++): 新输出目录 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav
+02:24:06.134 TTS Simplex Phase1: EOS token at step 42
+02:24:06.134 TTS Simplex: is_final_text_chunk=true, will enter Phase 2 for text_eos_embed
+02:24:06.134 TTS Simplex Phase2: injecting text_eos_embed + audio_bos at n_past=49
+02:24:06.135 TTS Simplex Phase2: text_eos_embed injected, n_past=50
+02:24:06.140 TTS Simplex Phase2: audio_bos injected, n_past=51, starting final generation
+02:24:06.251 TTS Simplex Phase2: yield 25 tokens 到 T2W
+02:24:06.251 🎉 首响时间 (First Audio Response): 1138ms
+02:24:06.251 T2W线程: wav_0.wav | 1.00s audio | 513.3ms inference | RTF=0.51 | t=1138ms | queue_wait=0.0ms
+02:24:06.501 TTS Simplex Phase2: EOS at step 13 (final end)
+02:24:06.501 TTS Simplex: chunk 结束，tts_token_buffer 剩余 3 tokens (保留等下一个 chunk)
+02:24:06.501 TTS Simplex: is_final_text_chunk=true, flush 剩余 3 tokens 从 tts_token_buffer
+02:24:06.501 TTS Simplex: generated 53 audio tokens for chunk 0
+02:24:06.501 TTS Simplex: chunk 0 first tokens: [4943 6320 3890 4544 4858 ], last tokens: [6534 6183 3753 1458 2031 ]
+02:24:06.501 TTS Simplex: updated tts_n_past_accumulated=64, total_generated_tokens=53
+02:24:06.502 TTS: finished processing all chunks
+02:24:06.502 TTS: 单工模式轮次结束，下一轮 round_idx=1
+02:24:06.502 TTS: sent is_final=true to T2W queue (turn end)
+02:24:06.754 T2W线程: wav_1.wav | 1.00s audio | 502.0ms inference | RTF=0.50 | t=1641ms | queue_wait=0.3ms
+02:24:07.188 T2W线程: wav_2.wav | 0.40s audio | 431.6ms inference | RTF=1.08 | t=2075ms | queue_wait=252.8ms
+02:24:07.189 T2W线程: 写入结束标记 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav/generation_done.flag (last_wav=2)
+02:24:07.189 T2W线程: 轮次结束后更新输出目录为 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_001/tts_wav
+02:24:07.269 stream_prefill(index=9): processing user audio: /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/bench_audio/q08.wav
+02:24:07.324 stream_prefill(index=9): user audio embedding: n_pos=17
+02:24:07.454 
+
+c++ finish stream_prefill(index=9). n_past=489, n_keep=155, n_ctx=8192
+
+02:24:07.454 📍 [轮次同步] 调用方指定 round_idx=0，当前 simplex_round_idx=1，强制同步
+02:24:07.454 📍 stream_decode 开始: n_past=489, n_keep=155, n_ctx=8192, duplex_mode=0
+02:24:07.454 wait prefill done
+02:24:07.454 📍 [单工TTS] 添加 assistant prompt: "<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+<|tts_bos|>", n_past=489
+02:24:07.482 📍 [单工TTS] assistant prompt 完成, n_past=499
+02:24:07.482 LLM decode: max_tgt_len = 8192, n_predict = -1, n_ctx = 8192
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+02:24:07.805 LLM: detected end token, set llm_generation_done=true
+02:24:07.805 LLM->TTS: text='The season after summer is autumn.', n_tokens=7, hidden_size=28672, n_embd=4096, token_ids=[785 3200 1283 7324 374 41674 13]
+02:24:07.805 📍 Decode 结束: n_past=507, 剩余空间=7685, 无需滑窗
+02:24:07.805 📍 轮次 9 结束，记录边界于 n_past=507
+02:24:07.805 TTS<-LLM: chunk_idx=0, text='The season after summer is autumn.', n_tokens=7, hidden_size=28672, token_ids=[785 3200 1283 7324 374 41674 13]
+02:24:07.805 TTS: after queue pop - speek_done=0, llm_finish=1, llm_text.empty=0, token_ids.size=7
+02:24:07.805 TTS: before empty check - response.empty=0, response='The season after summer is autumn.', llm_finish=1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+02:24:07.805 TTS: DEBUG before has_llm_data - token_ids.size=7, hidden_states.size=28672, n_embd=4096
+02:24:07.805 TTS: has_llm_data=1, token_ids=7, hidden_states=28672, n_embd=4096, llm_finish=1
+02:24:07.805 TTS: n_tokens_orig=7, n_tokens_filtered=7 (filtered 0 special tokens)
+02:24:07.808 📍 为下一轮准备: eval <|im_end|>\n<|im_start|>user\n, n_past=512
+02:24:07.815 TTS: saved merged embeddings (text) to /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/llm_debug/chunk_0/merged_embeddings.txt
+02:24:07.815 TTS Simplex: generating audio tokens for chunk 0 (n_tokens=7, tts_n_embd=768)
+02:24:07.815 TTS Simplex: 在 prefill 前添加 audio_bos (chunk_idx=0, new_size=8)
+02:24:07.815 TTS Simplex: first chunk - cleared KV cache
+02:24:07.815 TTS Simplex: first chunk - cleared tts_all_generated_tokens and tts_token_buffer
+02:24:07.817 TTS Simplex: prefill completed, n_past_tts=8
+02:24:07.817 TTS Simplex: sampler created
+02:24:07.817 TTS simplex: is_audio_bos=true (first audio token)
+02:24:07.876 TTS Simplex Phase1: token 1/500: rel_id=2234
+02:24:07.884 TTS Simplex Phase1: token 2/500: rel_id=5158
+02:24:07.892 TTS Simplex Phase1: token 3/500: rel_id=6374
+02:24:07.900 TTS Simplex Phase1: token 4/500: rel_id=6377
+02:24:07.909 TTS Simplex Phase1: token 5/500: rel_id=2256
+02:24:08.02:079 TTS Simplex Phase1: yield 25 tokens 到 T2W (step 25, buffer=25)
+02:24:08.079 TTS Simplex Phase1: token 25/500: rel_id=2836
+24:08.079 T2W线程(C++): 轮次切换 (1 -> 0)，更新输出目录
+02:24:08.079 T2W线程(C++): 新输出目录 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav
+02:24:08.424 TTS Simplex Phase1: EOS token at step 37
+02:24:08.424 TTS Simplex: is_final_text_chunk=true, will enter Phase 2 for text_eos_embed
+02:24:08.424 TTS Simplex Phase2: injecting text_eos_embed + audio_bos at n_past=44
+02:24:08.425 TTS Simplex Phase2: text_eos_embed injected, n_past=45
+02:24:08.429 TTS Simplex Phase2: audio_bos injected, n_past=46, starting final generation
+02:24:08.619 TTS Simplex Phase2: EOS at step 12 (final end)
+02:24:08.619 TTS Simplex: chunk 结束，tts_token_buffer 剩余 22 tokens (保留等下一个 chunk)
+02:24:08.619 TTS Simplex: is_final_text_chunk=true, flush 剩余 22 tokens 从 tts_token_buffer
+02:24:08.619 TTS Simplex: generated 47 audio tokens for chunk 0
+02:24:08.619 TTS Simplex: chunk 0 first tokens: [2234 5158 6374 6377 2256 ], last tokens: [4312 3990 4299 6486 3895 ]
+02:24:08.619 TTS Simplex: updated tts_n_past_accumulated=58, total_generated_tokens=47
+02:24:08.619 TTS: finished processing all chunks
+02:24:08.619 TTS: 单工模式轮次结束，下一轮 round_idx=1
+02:24:08.619 TTS: sent is_final=true to T2W queue (turn end)
+02:24:09.079 🎉 首响时间 (First Audio Response): 1624ms
+02:24:09.079 T2W线程: wav_0.wav | 1.00s audio | 999.8ms inference | RTF=1.00 | t=1624ms | queue_wait=0.0ms
+02:24:09.945 T2W线程: wav_1.wav | 1.16s audio | 866.1ms inference | RTF=0.75 | t=2491ms | queue_wait=460.3ms
+02:24:09.946 T2W线程: 写入结束标记 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav/generation_done.flag (last_wav=1)
+02:24:09.946 T2W线程: 轮次结束后更新输出目录为 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_001/tts_wav
+02:24:10.015 stream_prefill(index=10): processing user audio: /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/bench_audio/q09.wav
+02:24:10.062 stream_prefill(index=10): user audio embedding: n_pos=15
+02:24:10.190 
+
+c++ finish stream_prefill(index=10). n_past=529, n_keep=155, n_ctx=8192
+
+02:24:10.190 📍 [轮次同步] 调用方指定 round_idx=0，当前 simplex_round_idx=1，强制同步
+02:24:10.190 📍 stream_decode 开始: n_past=529, n_keep=155, n_ctx=8192, duplex_mode=0
+02:24:10.190 wait prefill done
+02:24:10.190 📍 [单工TTS] 添加 assistant prompt: "<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+<|tts_bos|>", n_past=529
+02:24:10.218 📍 [单工TTS] assistant prompt 完成, n_past=539
+02:24:10.218 LLM decode: max_tgt_len = 8192, n_predict = -1, n_ctx = 8192
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+02:24:10.601 LLM: detected end token, set llm_generation_done=true
+02:24:10.601 LLM->TTS: text='There are twenty four hours in a day.', n_tokens=9, hidden_size=36864, n_embd=4096, token_ids=[3862 525 17073 3040 4115 304 264 1899 13]
+02:24:10.601 📍 Decode 结束: n_past=549, 剩余空间=7643, 无需滑窗
+02:24:10.601 📍 轮次 10 结束，记录边界于 n_past=549
+02:24:10.601 TTS<-LLM: chunk_idx=0, text='There are twenty four hours in a day.', n_tokens=9, hidden_size=36864, token_ids=[3862 525 17073 3040 4115 304 264 1899 13]
+02:24:10.601 TTS: after queue pop - speek_done=0, llm_finish=1, llm_text.empty=0, token_ids.size=9
+02:24:10.601 TTS: before empty check - response.empty=0, response='There are twenty four hours in a day.', llm_finish=1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+02:24:10.601 TTS: DEBUG before has_llm_data - token_ids.size=9, hidden_states.size=36864, n_embd=4096
+02:24:10.601 TTS: has_llm_data=1, token_ids=9, hidden_states=36864, n_embd=4096, llm_finish=1
+02:24:10.602 TTS: n_tokens_orig=9, n_tokens_filtered=9 (filtered 0 special tokens)
+02:24:10.603 📍 为下一轮准备: eval <|im_end|>\n<|im_start|>user\n, n_past=554
+02:24:10.623 TTS: saved merged embeddings (text) to /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/llm_debug/chunk_0/merged_embeddings.txt
+02:24:10.623 TTS Simplex: generating audio tokens for chunk 0 (n_tokens=9, tts_n_embd=768)
+02:24:10.623 TTS Simplex: 在 prefill 前添加 audio_bos (chunk_idx=0, new_size=10)
+02:24:10.623 TTS Simplex: first chunk - cleared KV cache
+02:24:10.623 TTS Simplex: first chunk - cleared tts_all_generated_tokens and tts_token_buffer
+02:24:10.627 TTS Simplex: prefill completed, n_past_tts=10
+02:24:10.627 TTS Simplex: sampler created
+02:24:10.627 TTS simplex: is_audio_bos=true (first audio token)
+02:24:10.714 TTS Simplex Phase1: token 1/500: rel_id=1744
+02:24:10.723 TTS Simplex Phase1: token 2/500: rel_id=63
+02:24:10.732 TTS Simplex Phase1: token 3/500: rel_id=4760
+02:24:10.745 TTS Simplex Phase1: token 4/500: rel_id=6058
+02:24:10.756 TTS Simplex Phase1: token 5/500: rel_id=6293
+02:24:10.953 TTS Simplex Phase1: yield 25 tokens 到 T2W (step 25, buffer=25)
+02:24:10.953 TTS Simplex Phase1: token 25/500: rel_id=5915
+02:24:10.953 T2W线程(C++): 轮次切换 (1 -> 0)，更新输出目录
+02:24:10.953 T2W线程(C++): 新输出目录 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav
+02:24:11.421 TTS Simplex Phase1: EOS token at step 40
+02:24:11.421 TTS Simplex: is_final_text_chunk=true, will enter Phase 2 for text_eos_embed
+02:24:11.421 TTS Simplex Phase2: injecting text_eos_embed + audio_bos at n_past=49
+02:24:11.421 TTS Simplex Phase2: text_eos_embed injected, n_past=50
+02:24:11.433 TTS Simplex Phase2: audio_bos injected, n_past=51, starting final generation
+02:24:11.649 TTS Simplex Phase2: EOS at step 11 (final end)
+02:24:11.649 TTS Simplex: chunk 结束，tts_token_buffer 剩余 24 tokens (保留等下一个 chunk)
+02:24:11.649 TTS Simplex: is_final_text_chunk=true, flush 剩余 24 tokens 从 tts_token_buffer
+02:24:11.649 TTS Simplex: generated 49 audio tokens for chunk 0
+02:24:11.649 TTS Simplex: chunk 0 first tokens: [1744 63 4760 6058 6293 ], last tokens: [359 1115 368 2527 3246 ]
+02:24:11.649 TTS Simplex: updated tts_n_past_accumulated=62, total_generated_tokens=49
+02:24:11.649 TTS: finished processing all chunks
+02:24:11.649 TTS: 单工模式轮次结束，下一轮 round_idx=1
+02:24:11.649 TTS: sent is_final=true to T2W queue (turn end)
+02:24:11.966 🎉 首响时间 (First Audio Response): 1776ms
+02:24:11.966 T2W线程: wav_0.wav | 1.00s audio | 1012.1ms inference | RTF=1.01 | t=1776ms | queue_wait=0.1ms
+02:24:12.915 T2W线程: wav_1.wav | 1.24s audio | 948.2ms inference | RTF=0.76 | t=2725ms | queue_wait=317.1ms
+02:24:12.915 T2W线程: 写入结束标记 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav/generation_done.flag (last_wav=1)
+02:24:12.915 T2W线程: 轮次结束后更新输出目录为 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_001/tts_wav
+02:24:13.010 stream_prefill(index=11): processing user audio: /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/bench_audio/q10.wav
+02:24:13.066 stream_prefill(index=11): user audio embedding: n_pos=17
+02:24:13.196 
+
+c++ finish stream_prefill(index=11). n_past=573, n_keep=155, n_ctx=8192
+
+02:24:13.196 📍 [轮次同步] 调用方指定 round_idx=0，当前 simplex_round_idx=1，强制同步
+02:24:13.196 📍 stream_decode 开始: n_past=573, n_keep=155, n_ctx=8192, duplex_mode=0
+02:24:13.196 wait prefill done
+02:24:13.196 📍 [单工TTS] 添加 assistant prompt: "<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+<|tts_bos|>", n_past=573
+02:24:13.225 📍 [单工TTS] assistant prompt 完成, n_past=583
+02:24:13.225 LLM decode: max_tgt_len = 8192, n_predict = -1, n_ctx = 8192
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+02:24:13.562 LLM: detected end token, set llm_generation_done=true
+02:24:13.562 LLM->TTS: text='Water freezes at zero degrees Celsius.', n_tokens=7, hidden_size=28672, n_embd=4096, token_ids=[28253 93377 518 7168 12348 61347 13]
+02:24:13.562 📍 Decode 结束: n_past=591, 剩余空间=7601, 无需滑窗
+02:24:13.562 📍 轮次 11 结束，记录边界于 n_past=591
+02:24:13.563 TTS<-LLM: chunk_idx=0, text='Water freezes at zero degrees Celsius.', n_tokens=7, hidden_size=28672, token_ids=[28253 93377 518 7168 12348 61347 13]
+02:24:13.563 TTS: after queue pop - speek_done=0, llm_finish=1, llm_text.empty=0, token_ids.size=7
+02:24:13.563 TTS: before empty check - response.empty=0, response='Water freezes at zero degrees Celsius.', llm_finish=1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+02:24:13.563 TTS: DEBUG before has_llm_data - token_ids.size=7, hidden_states.size=28672, n_embd=4096
+02:24:13.563 TTS: has_llm_data=1, token_ids=7, hidden_states=28672, n_embd=4096, llm_finish=1
+02:24:13.563 TTS: n_tokens_orig=7, n_tokens_filtered=7 (filtered 0 special tokens)
+02:24:13.565 📍 为下一轮准备: eval <|im_end|>\n<|im_start|>user\n, n_past=596
+02:24:13.577 TTS: saved merged embeddings (text) to /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/llm_debug/chunk_0/merged_embeddings.txt
+02:24:13.577 TTS Simplex: generating audio tokens for chunk 0 (n_tokens=7, tts_n_embd=768)
+02:24:13.578 TTS Simplex: 在 prefill 前添加 audio_bos (chunk_idx=0, new_size=8)
+02:24:13.578 TTS Simplex: first chunk - cleared KV cache
+02:24:13.578 TTS Simplex: first chunk - cleared tts_all_generated_tokens and tts_token_buffer
+02:24:13.580 TTS Simplex: prefill completed, n_past_tts=8
+02:24:13.580 TTS Simplex: sampler created
+02:24:13.580 TTS simplex: is_audio_bos=true (first audio token)
+02:24:13.712 TTS Simplex Phase1: token 1/500: rel_id=1490
+02:24:13.721 TTS Simplex Phase1: token 2/500: rel_id=4299
+02:24:13.730 TTS Simplex Phase1: token 3/500: rel_id=2031
+02:24:13.744 TTS Simplex Phase1: token 4/500: rel_id=2032
+02:24:13.754 TTS Simplex Phase1: token 5/500: rel_id=2186
+02:24:13.950 TTS Simplex Phase1: yield 25 tokens 到 T2W (step 25, buffer=25)
+02:24:13.950 TTS Simplex Phase1: token 25/500: rel_id=5656
+02:24:13.950 T2W线程(C++): 轮次切换 (1 -> 0)，更新输出目录
+02:24:13.950 T2W线程(C++): 新输出目录 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav
+02:24:14.417 TTS Simplex Phase1: yield 25 tokens 到 T2W (step 50, buffer=25)
+02:24:14.417 TTS Simplex Phase1: token 50/500: rel_id=5644
+02:24:14.488 TTS Simplex Phase1: EOS token at step 56
+02:24:14.488 TTS Simplex: is_final_text_chunk=true, will enter Phase 2 for text_eos_embed
+02:24:14.488 TTS Simplex Phase2: injecting text_eos_embed + audio_bos at n_past=63
+02:24:14.489 TTS Simplex Phase2: text_eos_embed injected, n_past=64
+02:24:14.496 TTS Simplex Phase2: audio_bos injected, n_past=65, starting final generation
+02:24:14.520 TTS Simplex Phase2: EOS at step 2 (final end)
+02:24:14.520 TTS Simplex: chunk 结束，tts_token_buffer 剩余 6 tokens (保留等下一个 chunk)
+02:24:14.520 TTS Simplex: is_final_text_chunk=true, flush 剩余 6 tokens 从 tts_token_buffer
+02:24:14.520 TTS Simplex: generated 56 audio tokens for chunk 0
+02:24:14.520 TTS Simplex: chunk 0 first tokens: [1490 4299 2031 2032 2186 ], last tokens: [6130 6129 1461 4218 2031 ]
+02:24:14.520 TTS Simplex: updated tts_n_past_accumulated=67, total_generated_tokens=56
+02:24:14.521 TTS: finished processing all chunks
+02:24:14.521 TTS: 单工模式轮次结束，下一轮 round_idx=1
+02:24:14.521 TTS: sent is_final=true to T2W queue (turn end)
+02:24:14.577 🎉 首响时间 (First Audio Response): 1380ms
+02:24:14.577 T2W线程: wav_0.wav | 1.00s audio | 626.2ms inference | RTF=0.63 | t=1380ms | queue_wait=0.0ms
+02:24:15.175 T2W线程: wav_1.wav | 1.00s audio | 597.3ms inference | RTF=0.60 | t=1978ms | queue_wait=159.6ms
+02:24:15.628 T2W线程: wav_2.wav | 0.52s audio | 452.7ms inference | RTF=0.87 | t=2431ms | queue_wait=159.6ms
+02:24:15.628 T2W线程: 写入结束标记 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav/generation_done.flag (last_wav=2)
+02:24:15.628 T2W线程: 轮次结束后更新输出目录为 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_001/tts_wav
+02:24:15.695 stream_prefill(index=12): processing user audio: /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/bench_audio/q11.wav
+02:24:15.746 stream_prefill(index=12): user audio embedding: n_pos=16
+02:24:15.874 
+
+c++ finish stream_prefill(index=12). n_past=614, n_keep=155, n_ctx=8192
+
+02:24:15.874 📍 [轮次同步] 调用方指定 round_idx=0，当前 simplex_round_idx=1，强制同步
+02:24:15.874 📍 stream_decode 开始: n_past=614, n_keep=155, n_ctx=8192, duplex_mode=0
+02:24:15.874 wait prefill done
+02:24:15.874 📍 [单工TTS] 添加 assistant prompt: "<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+<|tts_bos|>", n_past=614
+02:24:15.902 📍 [单工TTS] assistant prompt 完成, n_past=624
+02:24:15.902 LLM decode: max_tgt_len = 8192, n_predict = -1, n_ctx = 8192
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+set_embeddings: value = 1
+set_embeddings: value = 0
+02:24:16.278 LLM->TTS: text='Romeo and Juliet were written by William Shakespeare', n_tokens=10, hidden_size=40960, n_embd=4096, token_ids=[49 635 78 323 71024 1033 5326 553 12375 41382]
+02:24:16.278 TTS<-LLM: chunk_idx=0, text='Romeo and Juliet were written by William Shakespeare', n_tokens=10, hidden_size=40960, token_ids=[49 635 78 323 71024 1033 5326 553 12375 41382]
+02:24:16.278 TTS: after queue pop - speek_done=0, llm_finish=0, llm_text.empty=0, token_ids.size=10
+02:24:16.278 TTS: before empty check - response.empty=0, response='Romeo and Juliet were written by William Shakespea', llm_finish=0
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 0
+02:24:16.278 TTS: DEBUG before has_llm_data - token_ids.size=10, hidden_states.size=40960, n_embd=4096
+02:24:16.278 TTS: has_llm_data=1, token_ids=10, hidden_states=40960, n_embd=4096, llm_finish=0
+02:24:16.279 TTS: n_tokens_orig=10, n_tokens_filtered=10 (filtered 0 special tokens)
+02:24:16.292 TTS: saved merged embeddings (text) to /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/llm_debug/chunk_0/merged_embeddings.txt
+02:24:16.292 TTS Simplex: generating audio tokens for chunk 0 (n_tokens=10, tts_n_embd=768)
+02:24:16.292 TTS Simplex: 在 prefill 前添加 audio_bos (chunk_idx=0, new_size=11)
+02:24:16.292 TTS Simplex: first chunk - cleared KV cache
+02:24:16.292 TTS Simplex: first chunk - cleared tts_all_generated_tokens and tts_token_buffer
+02:24:16.294 TTS Simplex: prefill completed, n_past_tts=11
+02:24:16.294 TTS Simplex: sampler created
+02:24:16.294 TTS simplex: is_audio_bos=true (first audio token)
+set_embeddings: value = 1
+set_embeddings: value = 0
+02:24:16.368 LLM: detected end token, set llm_generation_done=true
+02:24:16.368 LLM->TTS: text='.', n_tokens=1, hidden_size=4096, n_embd=4096, token_ids=[13]
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+02:24:16.368 📍 Decode 结束: n_past=636, 剩余空间=7556, 无需滑窗
+02:24:16.368 📍 轮次 12 结束，记录边界于 n_past=636
+02:24:16.370 📍 为下一轮准备: eval <|im_end|>\n<|im_start|>user\n, n_past=641
+02:24:16.373 TTS Simplex Phase1: token 1/500: rel_id=3950
+02:24:16.430 TTS Simplex Phase1: token 2/500: rel_id=2158
+02:24:16.438 TTS Simplex Phase1: token 3/500: rel_id=4367
+02:24:16.447 TTS Simplex Phase1: token 4/500: rel_id=1928
+02:24:16.455 TTS Simplex Phase1: token 5/500: rel_id=704
+02:24:02:24:16.628 T2W线程(C++): 轮次切换 (1 -> 0)，更新输出目录
+02:16.24:1600.628 T2W线程(C++): 新输出目录 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav
+628 TTS Simplex Phase1: yield 25 tokens 到 T2W (step 25, buffer=25)
+02:24:16.628 TTS Simplex Phase1: token 25/500: rel_id=5094
+02:24:17.045 TTS Simplex Phase1: EOS token at step 44
+02:24:17.045 TTS Simplex: chunk 结束，tts_token_buffer 剩余 18 tokens (保留等下一个 chunk)
+02:24:17.045 TTS Simplex: generated 43 audio tokens for chunk 0
+02:24:17.045 TTS Simplex: chunk 0 first tokens: [3950 2158 4367 1928 704 ], last tokens: [4516 1519 5205 5856 5857 ]
+02:24:17.045 TTS Simplex: updated tts_n_past_accumulated=54, total_generated_tokens=43
+02:24:17.045 TTS<-LLM: chunk_idx=1, text='.', n_tokens=1, hidden_size=4096, token_ids=[13]
+02:24:17.045 TTS: after queue pop - speek_done=0, llm_finish=1, llm_text.empty=0, token_ids.size=1
+02:24:17.045 TTS: before empty check - response.empty=0, response='.', llm_finish=1
+set_embeddings: value = 1
+ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mv_ext_f16_f32_r1_2', name = 'kernel_mul_mv_ext_f16_f32_r1_2_nsg=2_nxpsg=16_ne12=1_r2=1_r3=1'
+ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_ext_f16_f32_r1_2_nsg=2_nxpsg=16_ne12=1_r2=1_r3=1      0x92c344000 | th_max =  896 | th_width =   32
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+set_embeddings: value = 1
+02:24:17.045 TTS: DEBUG before has_llm_data - token_ids.size=1, hidden_states.size=4096, n_embd=4096
+02:24:17.045 TTS: has_llm_data=1, token_ids=1, hidden_states=4096, n_embd=4096, llm_finish=1
+02:24:17.045 TTS: n_tokens_orig=1, n_tokens_filtered=1 (filtered 0 special tokens)
+02:24:17.049 TTS: saved merged embeddings (text) to /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/llm_debug/chunk_1/merged_embeddings.txt
+02:24:17.049 TTS Simplex: generating audio tokens for chunk 1 (n_tokens=1, tts_n_embd=768)
+02:24:17.049 TTS Simplex: 在 prefill 前添加 audio_bos (chunk_idx=1, new_size=2)
+02:24:17.049 TTS Simplex: chunk 1 - keeping KV cache, n_past_tts=54
+02:24:17.056 TTS Simplex: prefill completed, n_past_tts=56
+02:24:17.056 TTS Simplex: sampler created
+02:24:17.066 TTS Simplex Phase1: token 1/500: rel_id=1887
+02:24:17.079 TTS Simplex Phase1: token 2/500: rel_id=2163
+02:24:17.093 TTS Simplex Phase1: token 3/500: rel_id=3485
+02:24:17.105 TTS Simplex Phase1: token 4/500: rel_id=3650
+02:24:17.118 TTS Simplex Phase1: token 5/500: rel_id=224
+02:24:17.153 TTS Simplex Phase1: yield 25 tokens 到 T2W (step 7, buffer=25)
+02:24:17.167 TTS Simplex Phase1: EOS token at step 8
+02:24:17.167 TTS Simplex: is_final_text_chunk=true, will enter Phase 2 for text_eos_embed
+02:24:17.167 TTS Simplex Phase2: injecting text_eos_embed + audio_bos at n_past=63
+02:24:17.167 TTS Simplex Phase2: text_eos_embed injected, n_past=64
+02:24:17.175 TTS Simplex Phase2: audio_bos injected, n_past=65, starting final generation
+02:24:17.353 🎉 首响时间 (First Audio Response): 1478ms
+02:24:17.353 T2W线程: wav_0.wav | 1.00s audio | 724.0ms inference | RTF=0.72 | t=1478ms | queue_wait=0.0ms
+02:24:17.742 TTS Simplex Phase2: EOS at step 25 (final end)
+02:24:17.742 TTS Simplex: chunk 结束，tts_token_buffer 剩余 24 tokens (保留等下一个 chunk)
+02:24:17.742 TTS Simplex: is_final_text_chunk=true, flush 剩余 24 tokens 从 tts_token_buffer
+02:24:17.742 TTS Simplex: generated 31 audio tokens for chunk 1
+02:24:17.742 TTS Simplex: chunk 1 first tokens: [1887 2163 3485 3650 224 ], last tokens: [1649 1658 3817 3808 1785 ]
+02:24:17.742 TTS Simplex: updated tts_n_past_accumulated=90, total_generated_tokens=74
+02:24:17.742 TTS: finished processing all chunks
+02:24:17.742 TTS: 单工模式轮次结束，下一轮 round_idx=1
+02:24:17.742 TTS: sent is_final=true to T2W queue (turn end)
+02:24:17.964 T2W线程: wav_1.wav | 1.00s audio | 611.0ms inference | RTF=0.61 | t=2089ms | queue_wait=199.7ms
+02:24:18.542 T2W线程: wav_2.wav | 1.24s audio | 577.2ms inference | RTF=0.47 | t=2667ms | queue_wait=222.4ms
+02:24:18.542 T2W线程: 写入结束标记 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_000/tts_wav/generation_done.flag (last_wav=2)
+02:24:18.542 T2W线程: 轮次结束后更新输出目录为 /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/stage_bench_out/round_001/tts_wav
+02:24:18.609 T2W(C++) 线程: 停止
+ggml_metal_free: deallocating
+~llama_context:       MTL0 compute buffer size is 312.8164 MiB, matches expectation of 312.8164 MiB
+~llama_context:        CPU compute buffer size is  11.0137 MiB, matches expectation of  11.0137 MiB
+~llama_context:        CPU compute buffer size is   0.0000 MiB, matches expectation of   0.0000 MiB
+ggml_metal_free: deallocating
+ggml_metal_free: deallocating
+~llama_context:       MTL0 compute buffer size is 312.3828 MiB, matches expectation of 312.3828 MiB
+~llama_context:        CPU compute buffer size is  24.0137 MiB, matches expectation of  24.0137 MiB
+~llama_context:        CPU compute buffer size is   0.0000 MiB, matches expectation of   0.0000 MiB
+ggml_metal_free: deallocating
