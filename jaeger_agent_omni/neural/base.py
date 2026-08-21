@@ -243,3 +243,29 @@ def hidden_size_of(backbone) -> int:
     if hasattr(cfg, "get_text_config"):
         return cfg.get_text_config().hidden_size
     return cfg.hidden_size
+
+
+def embedding_norm_of(backbone) -> float:
+    """Mean norm of the embeddings the model ACTUALLY RECEIVES.
+
+    Not `.weight.norm()`. Gemma4's embedding module is scaled --
+
+        return super().forward(input_ids) * self.embed_scale   # sqrt(2560)
+
+    -- so the raw table reads 1.20 while the model is handed 61.75, a 51x gap.
+    A projector pinned to 1.20 emits an audio prefix 51x quieter than the text
+    tokens beside it in the same sequence, and attention across positions that
+    differ 51x in magnitude goes non-finite. Measured: 31 NaN losses in 600
+    steps, unmoved by two learning-rate changes, because it was never an
+    optimisation problem.
+
+    Calling the module picks up whatever scaling it applies, for any backbone,
+    with no per-model special-casing.
+    """
+    import torch
+
+    emb = backbone.get_input_embeddings()
+    n = min(2048, emb.weight.shape[0])
+    with torch.no_grad():
+        probe = torch.arange(n, device=emb.weight.device)
+        return float(emb(probe).norm(dim=-1).mean())

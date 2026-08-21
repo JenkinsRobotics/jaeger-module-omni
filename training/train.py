@@ -368,7 +368,22 @@ def real_setup(cfg: TrainConfig, corpus: str, device: str):
     tokenizer = AutoTokenizer.from_pretrained(cfg.backbone_id)
     backbone = AutoModelForCausalLM.from_pretrained(cfg.backbone_id, dtype=dtype)
     backbone = backbone.to(device).eval()
-    emb_norm = backbone.get_input_embeddings().weight.norm(dim=-1).mean().item()
+    # MEASURE THE EMBEDDINGS THE MODEL ACTUALLY RECEIVES, not the raw table.
+    # Gemma4's embedding module is scaled:
+    #     return super().forward(input_ids) * self.embed_scale   (= sqrt(2560))
+    # so .weight.norm() reads 1.20 while the model is handed 60.7. Pinning the
+    # delta to 1.20 makes the audio prefix 50x smaller than the text tokens
+    # beside it in the same sequence, and attention over positions that differ
+    # 50x in magnitude goes non-finite -- measured: 31 NaN losses in 600 steps,
+    # unmoved by two learning-rate changes because it was never an
+    # optimisation problem.
+    # Calling the module (rather than reading .weight) picks up whatever
+    # scaling it applies, for any backbone, without special-casing Gemma.
+    _emb = backbone.get_input_embeddings()
+    with torch.no_grad():
+        _probe = torch.arange(min(2048, _emb.weight.shape[0]),
+                              device=_emb.weight.device)
+        emb_norm = _emb(_probe).norm(dim=-1).mean().item()
 
     if cfg.arch == "minicpm_delta":
         # THEIR fine-tuned encoder + THEIR projector, both frozen. Only the

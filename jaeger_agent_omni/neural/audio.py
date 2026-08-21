@@ -58,7 +58,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from .base import ModalityProjector, pooled_tokens, register, hidden_size_of
+from .base import ModalityProjector, pooled_tokens, register, hidden_size_of, embedding_norm_of
 
 WHISPER_FRAME_RATE = 50      # frames per second out of the encoder
 WHISPER_PAD_FRAMES = 1500    # 30 s — also the streaming KV-cache depth
@@ -106,10 +106,9 @@ class JaegerAudioProjector(ModalityProjector):
         Reads cognition_dim and the mean text-embedding norm from the model
         itself — the two numbers that must never be hardcoded.
         """
-        emb = backbone.get_input_embeddings().weight
         return cls(audio_dim=audio_dim,
                    cognition_dim=hidden_size_of(backbone),
-                   embed_norm=emb.norm(dim=-1).mean().item(), **kw)
+                   embed_norm=embedding_norm_of(backbone), **kw)
 
     def project(self, x: torch.Tensor) -> torch.Tensor:
         """x is expected post-`ln_post` — i.e. straight off the encoder."""
