@@ -5,6 +5,32 @@ train a Whisper→Gemma bridge for audio input.
 
 ---
 
+# Decision criteria — EXTENSIBILITY, not just today's accuracy
+
+An earlier version of this document ranked pipelines on accuracy and latency
+alone. That is the wrong frame, and the user named why: **the native tower is
+borrowed and frozen.**
+
+```text
+                    can we EXTEND it?     what it costs us
+native Gemma tower  NO. Google's weights, fixed token budget, fixed
+                    processing, no speaker branch, no prosody branch.
+                    Whatever it shipped with is permanently what we get.
+whisper + delta     YES. We own the bridge. Add a paralinguistic branch,
+                    a speaker-identity branch, swap the encoder, retrain for
+                    our domain — all without asking anyone.
+```
+
+The features we are explicitly aiming for — prosody surviving into cognition,
+speaker identity, emotion, the things a transcript destroys and that MiniCPM
+has — are exactly the things a frozen third-party tower cannot be taught.
+
+So the ranking on ACCURACY (legacy 100% > native 75%) and the ranking on
+CEILING both point away from native-as-primary. Native's real role is a
+zero-training fallback and a cheap parallel signal, not the architecture.
+
+A 109 ms latency edge does not buy a permanent capability ceiling.
+
 # Decision — REVISED after measuring legacy
 
 **Whisper's encoder bound at the TENSOR level into Gemma (the delta), our
@@ -138,9 +164,12 @@ properly; ours patched it.
 # What we are NOT doing, and why
 
 ```text
-rely on the native tower ALONE        It loses 25% against legacy on the same
-                                      backbone. Fine as a fallback and as a
-                                      cheap parallel signal; not the primary.
+rely on the native tower ALONE        Loses 25% against legacy on the same
+                                      backbone AND cannot be extended — it is
+                                      Google's frozen weights. Every feature
+                                      we are aiming for (prosody to cognition,
+                                      speaker identity, emotion) requires a
+                                      bridge we own. Fallback, not primary.
 ship the serial hybrid                92% but 18.9 s — it pays ASR latency in
                                       full, which is the thing streaming
                                       exists to remove.
