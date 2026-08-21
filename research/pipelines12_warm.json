@@ -1,0 +1,174 @@
+{
+ "legacy": [
+  {
+   "case": "q00",
+   "ok": true,
+   "wait_ms": 943.8577499240637,
+   "rt": 0.7998794490881896,
+   "reply": "Two plus two equals four.<turn|><turn|><turn|><turn|>"
+  },
+  {
+   "case": "q01",
+   "ok": true,
+   "wait_ms": 7939.016750082374,
+   "rt": 5.880753148209165,
+   "reply": "The sky is blue.<turn|><turn|><turn|><turn|>"
+  },
+  {
+   "case": "q02",
+   "ok": true,
+   "wait_ms": 17668.229666072875,
+   "rt": 12.530659337640337,
+   "reply": "There are seven days in a week.<turn|><turn|><turn|>><turn|>"
+  },
+  {
+   "case": "q03",
+   "ok": true,
+   "wait_ms": 17665.60991690494,
+   "rt": 10.771713363966429,
+   "reply": "The capital of France is Paris.<turn|><turn|><turn|><turn|>"
+  },
+  {
+   "case": "q04",
+   "ok": true,
+   "wait_ms": 32244.429541984573,
+   "rt": 24.06300712088401,
+   "reply": "Ten minus three is seven.<turn|><turn|><turn|><turn|>"
+  },
+  {
+   "case": "q05",
+   "ok": true,
+   "wait_ms": 21227.581291925162,
+   "rt": 11.291266644641045,
+   "reply": "A spider has eight legs.<turn|><turn|><turn|>><turn|>"
+  },
+  {
+   "case": "q06",
+   "ok": true,
+   "wait_ms": 16625.694583170116,
+   "rt": 11.626359848370711,
+   "reply": "Jupiter is the largest planet.<turn|><turn|><turn|><turn|>"
+  },
+  {
+   "case": "q07",
+   "ok": true,
+   "wait_ms": 12626.870041247457,
+   "rt": 8.829979049823397,
+   "reply": "Five times five is twenty-five.<turn|><turn|><turn|><turn|>"
+  },
+  {
+   "case": "q08",
+   "ok": true,
+   "wait_ms": 40970.67108214833,
+   "rt": 24.1003947542049,
+   "reply": "Autumn comes after summer.<turn|><turn|><turn|><turn|>"
+  },
+  {
+   "case": "q09",
+   "ok": true,
+   "wait_ms": 28492.671084124595,
+   "rt": 20.20756814476922,
+   "reply": "There are 24 hours in a day.<turn|><turn|><turn|><turn|>"
+  },
+  {
+   "case": "q10",
+   "ok": true,
+   "wait_ms": 8529.627041891217,
+   "rt": 5.107561102928873,
+   "reply": "The freezing point of water is 0 degrees Celsius or 32 degre"
+  },
+  {
+   "case": "q11",
+   "ok": true,
+   "wait_ms": 877.2226250730455,
+   "rt": 0.5482641406706534,
+   "reply": "William Shakespeare wrote Romeo and Juliet.<turn|><turn|><tu"
+  }
+ ],
+ "native": [
+  {
+   "case": "q00",
+   "ok": true,
+   "wait_ms": 376.3294171076268,
+   "rt": 0.3189232348369719,
+   "reply": "Two plus two equals four.<turn|><turn|><turn|><turn|>"
+  },
+  {
+   "case": "q01",
+   "ok": false,
+   "wait_ms": 489.92566717788577,
+   "rt": 0.3629079016132487,
+   "reply": "The color of the image is not provided.<turn|><turn|><turn|>"
+  },
+  {
+   "case": "q02",
+   "ok": true,
+   "wait_ms": 449.3324588984251,
+   "rt": 0.3186755027648405,
+   "reply": "There are seven days in a week.<turn|><turn|>"
+  },
+  {
+   "case": "q03",
+   "ok": true,
+   "wait_ms": 473.5520421527326,
+   "rt": 0.2887512452150809,
+   "reply": "The capital of France is Paris.<turn|><turn|><turn|><turn|><"
+  },
+  {
+   "case": "q04",
+   "ok": true,
+   "wait_ms": 423.3819169458002,
+   "rt": 0.3159566544371643,
+   "reply": "Ten minus three is seven.<turn|><turn|><turn|><turn|>"
+  },
+  {
+   "case": "q05",
+   "ok": true,
+   "wait_ms": 406.96416702121496,
+   "rt": 0.21647030160702924,
+   "reply": "A spider has eight legs.<turn|><turn|><|channel>"
+  },
+  {
+   "case": "q06",
+   "ok": true,
+   "wait_ms": 438.4360839612782,
+   "rt": 0.306598660112782,
+   "reply": "Jupiter is the largest planet in our solar system.<turn|>"
+  },
+  {
+   "case": "q07",
+   "ok": true,
+   "wait_ms": 475.0645419117063,
+   "rt": 0.3322129663718226,
+   "reply": "Five times five is twenty-five.<turn|><turn|><turn|><turn|>"
+  },
+  {
+   "case": "q08",
+   "ok": true,
+   "wait_ms": 407.6579581014812,
+   "rt": 0.23979879888322425,
+   "reply": "Autumn comes after summer.<turn|><turn|>ear<turn|>"
+  },
+  {
+   "case": "q09",
+   "ok": true,
+   "wait_ms": 476.0136669501662,
+   "rt": 0.3375983453547278,
+   "reply": "There are 24 hours in a day.<turn|><turn|><|channel>"
+  },
+  {
+   "case": "q10",
+   "ok": true,
+   "wait_ms": 633.7069999426603,
+   "rt": 0.37946526942674275,
+   "reply": "The freezing point of water is 0 degrees Celsius or 32 degre"
+  },
+  {
+   "case": "q11",
+   "ok": false,
+   "wait_ms": 611.505915876478,
+   "rt": 0.3821911974227987,
+   "reply": "Romeo and Juliet is a tragic play about two young lovers fro"
+  }
+ ]
+}
