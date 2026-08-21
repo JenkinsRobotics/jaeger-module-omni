@@ -56,6 +56,23 @@ class Trainer:
         self.device = device
         self.encoder = encoder.to(device).requires_grad_(False).eval()
         self.backbone = backbone.to(device).requires_grad_(False).eval()
+        # GRADIENT CHECKPOINTING. The backbone is frozen, but gradients must
+        # still reach the delta at the INPUT, so every one of E4B's 42 layers
+        # keeps its activations live. That is what actually exhausts a 32 GB
+        # machine -- bf16 halved the weights and the run still thrashed to
+        # 0.08 GB free. Recomputing activations in the backward pass trades
+        # ~30% step time for the difference between running and swapping.
+        if getattr(backbone, "supports_gradient_checkpointing", False):
+            backbone.gradient_checkpointing_enable(
+                gradient_checkpointing_kwargs={"use_reentrant": False})
+            # use_reentrant=False is required: the reentrant implementation
+            # silently produces no gradient when every parameter it sees is
+            # frozen, which is exactly this setup.
+            self.backbone.train()          # checkpointing is a no-op in eval()
+            for m in self.backbone.modules():
+                if isinstance(m, torch.nn.Dropout):
+                    m.p = 0.0              # train() re-enables dropout; the
+                                           # backbone must stay deterministic
         self.projector = projector.to(device)
 
         # Fail loudly on a dim mismatch. Broadcasting one of these silently is
