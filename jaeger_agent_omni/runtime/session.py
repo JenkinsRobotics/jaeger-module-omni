@@ -184,6 +184,9 @@ class StreamingSession:
         self.n_prefilled = 0
         self.prefiller.reset()
         self._cancelled = False
+        self._cancel_at = 0.0
+        self.cancel_latency_ms = None
+        self._generation_start = 0
         self._turn_tail = ""
 
     # -- listening ----------------------------------------------------------
@@ -254,10 +257,48 @@ class StreamingSession:
 
     # -- speaking -----------------------------------------------------------
     def cancel(self):
-        """Barge-in: stop generating. The caller drops any queued audio."""
+        """Barge-in: stop generating. Safe to call from an audio callback.
+
+        Cancellation lands at the next token boundary, so worst-case latency is
+        one decode step (~19 ms measured) — well under the ~200 ms of speech
+        the legacy stack requires before it even calls it a barge-in.
+        """
+        self._cancel_at = time.monotonic()
         self._cancelled = True
 
-    def respond(self, max_tokens: int = 64, eos_ids=()) -> str:
+    def interrupt(self) -> int:
+        """Abandon the half-spoken reply but KEEP the conversation.
+
+        Rewinds the KV cache to the moment before generation started, so the
+        user's original question and everything before it survive while the
+        abandoned answer does not. Starting a fresh session instead — which is
+        the obvious thing, and what a first attempt does — throws away the
+        context, and the follow-up ("what about Japan?") arrives with nothing
+        to attach to. Returns tokens discarded.
+
+        The unspoken half of a reply is also something the model should not
+        believe it said: leaving it in the cache makes the assistant act as if
+        it had finished a sentence the human cut off.
+        """
+        drop = self.n_prefilled - self._generation_start
+        if drop <= 0 or not self.cache:
+            return 0
+        if not all(getattr(c, "is_trimmable", lambda: False)() for c in self.cache):
+            raise RuntimeError("cache is not trimmable; cannot rewind an "
+                               "interrupted turn without losing history")
+        for c in self.cache:
+            c.trim(drop)
+        self.n_prefilled -= drop
+        self._cancelled = False
+        return drop
+
+    def resume_listening(self):
+        """After an interrupt: open a fresh user turn on the SAME cache."""
+        self.prefiller.reset()
+        self.timing = TurnTiming()
+        self.open_turn()
+
+    def respond(self, max_tokens: int = 64, eos_ids=(), on_token=None) -> str:
         """Generate from the already-warm cache. First token is nearly free
         because the utterance was prefilled while it was being spoken."""
         import mlx.core as mx
@@ -269,13 +310,21 @@ class StreamingSession:
         mx.eval(tok)
 
         out_ids, t0, first_done = [], time.monotonic(), None
+        self.cancel_latency_ms = None
+        # Where the reply starts, so an interrupt can rewind exactly this far.
+        self._generation_start = self.n_prefilled
         for _ in range(max_tokens):
             if self._cancelled:
+                # Barge-in: stop at the token boundary. The caller drops queued
+                # audio; nothing further is generated for this generation_id.
+                self.cancel_latency_ms = (time.monotonic() - self._cancel_at) * 1000
                 break
             tid = int(tok.item())
             if tid in eos_ids:
                 break
             out_ids.append(tid)
+            if on_token is not None:
+                on_token(tid, len(out_ids))
             if first_done is None:
                 first_done = time.monotonic()
                 self.timing.first_token_ms = (first_done - t0) * 1000
@@ -283,6 +332,7 @@ class StreamingSession:
             o = self.model.language_model(inputs_embeds=step_emb,
                                           per_layer_inputs=step_per_layer,
                                           cache=self.cache)
+            self.n_prefilled += 1
             logits = o.logits if hasattr(o, "logits") else o
             tok = mx.argmax(logits[:, -1, :], axis=-1)
             mx.eval(tok)
@@ -424,6 +474,47 @@ def demo():
     s2.warmup(0.1)
     assert s2.cache is None and s2.n_prefilled == 0
     assert s2.prefiller.state.n_chunks == 0
+
+    # Barge-in must keep the conversation: rewind the abandoned reply out of
+    # the cache, keep everything the user said before it.
+    class TrimCache(FakeCache):
+        def is_trimmable(self):
+            return True
+
+        def trim(self, n):
+            self.n -= n
+            return n
+
+    s3 = StreamingSession(FakeModel(), None, FakePrefiller(),
+                          cache_factory=TrimCache,
+                          config={"audio_token_id": 1, "boa_token_id": 2,
+                                  "eoa_token_id": 3})
+    s3.processor = type("P", (), {"tokenizer": T})()
+    s3.feed_audio(None)
+    context = s3.n_prefilled
+    s3._generation_start = context
+    s3.n_prefilled += 9                      # nine tokens of abandoned reply
+    for c in s3.cache:
+        c.n += 9
+    assert s3.interrupt() == 9, "must discard exactly the generated tokens"
+    assert s3.n_prefilled == context, "context before the reply must survive"
+    assert all(c.n == context for c in s3.cache)
+    assert s3.interrupt() == 0, "nothing left to discard is not an error"
+
+    # A cache that cannot be trimmed must say so rather than silently
+    # corrupting the conversation.
+    s4 = StreamingSession(FakeModel(), None, FakePrefiller(),
+                          cache_factory=FakeCache,
+                          config={"audio_token_id": 1})
+    s4.feed_audio(None)
+    s4._generation_start = 0
+    s4.n_prefilled += 5
+    try:
+        s4.interrupt()
+    except RuntimeError:
+        pass
+    else:
+        raise AssertionError("untrimmable cache must raise")
 
     # Reset clears cache and timing for the next turn.
     s.reset()

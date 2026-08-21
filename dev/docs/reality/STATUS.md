@@ -40,6 +40,38 @@ and measured. The remaining latency is dominated by generation, exactly as
 predicted — which is why Stage 5's incremental prefill, not the projector, is
 where the conversational win lands.
 
+### BARGE-IN WORKS, with context preserved — 2026-08-20 night
+
+A real interruption, end to end on native E4B:
+
+```text
+user   "What is the capital of France, and can you tell me something
+        interesting about it?"
+jaeger "The capital of France is Paris"        <- CUT OFF mid-sentence
+                                                  cancel latency 22.8 ms
+       interrupt(): rewound 6 abandoned tokens, kept 123 of context
+user   "Actually never mind, what about Japan?"
+jaeger "Tokyo is the capital of Japan. It's a fascinating city, blending
+        ancient traditions with futuristic technology."
+                                       barge-in -> new answer: 1689 ms
+```
+
+The user never said "capital" in the follow-up. The model resolved the
+reference because the KV cache survived the interruption.
+
+**The bug that taught us the design.** The obvious implementation — start a
+fresh session on barge-in — throws the conversation away. The follow-up then
+arrives with nothing to attach to: it answered `"Japan."` and leaked its
+reasoning channel, guessing. `interrupt()` instead rewinds the cache to the
+moment before generation started, keeping everything the user said and
+discarding only the reply they cut off. Leaving the abandoned half in would be
+just as wrong the other way — the assistant would believe it finished a
+sentence the human interrupted.
+
+Cancellation lands at a token boundary (~19 ms decode step), so worst case is
+one token. For contrast, the legacy stack needs 200 ms of speech just to
+CLASSIFY an interruption — cancellation was never the bottleneck.
+
 ### STREAMING DUPLEX WORKS on native Gemma 4 E4B — 2026-08-20 night
 
 Spoken question in, correct spoken-content answer out, prefilled while the
