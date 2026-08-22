@@ -66,6 +66,11 @@ def main() -> int:
     ap.add_argument("--list-devices", action="store_true")
     ap.add_argument("--no-speak", action="store_true",
                     help="print replies instead of speaking them")
+    ap.add_argument("--cooldown", type=float, default=4.0,
+                    help="seconds after a reply before another turn may "
+                         "close. A continuous speaker never yields the "
+                         "floor; without this the model answers every "
+                         "pause, and each reply DEAFENS it (half-duplex).")
     ap.add_argument("--record", default=None, metavar="DIR",
                     help="record raw mic AND model-fed audio for audit")
     a = ap.parse_args()
@@ -146,7 +151,48 @@ def main() -> int:
     def user_speaking():
         return level["rms"] > a.threshold and not speaking_out.is_set()
 
-    stage_ms = {"synth": [], "reply_len": []}
+    stage_ms = {"synth": [], "reply_len": [], "to_first_audio": []}
+    turn_t0 = {"t": None}          # when the turn closed (speech_end)
+
+    import queue as _q
+    say_q: _q.Queue = _q.Queue()
+
+    def _player():
+        """Sequential sentence player. Synthesises and plays each sentence as
+        it arrives, so audio starts after the FIRST sentence is generated
+        instead of after the whole reply."""
+        import soundfile as sf
+        while True:
+            sent = say_q.get()
+            if sent is None:
+                break
+            try:
+                speaking_out.set()
+                t0 = time.monotonic()
+                speak_kokoro(sent, "/tmp/_sent.wav", a.voice, a.speed)
+                stage_ms["synth"].append((time.monotonic() - t0) * 1000)
+                if turn_t0["t"] is not None:
+                    stage_ms["to_first_audio"].append(
+                        (time.monotonic() - turn_t0["t"]) * 1000)
+                    print(f"\n          [latency: turn-end -> first audio "
+                          f"{stage_ms['to_first_audio'][-1]:.0f} ms]",
+                          flush=True)
+                    turn_t0["t"] = None
+                wav, sr = sf.read("/tmp/_sent.wav", dtype="float32")
+                sd.play(wav, sr)
+                sd.wait()
+            except Exception:
+                pass
+            finally:
+                if say_q.empty():
+                    while not q.empty():
+                        try:
+                            q.get_nowait()
+                        except _q.Empty:
+                            break
+                    speaking_out.clear()
+
+    threading.Thread(target=_player, daemon=True).start()
 
     def _calibrate_echo():
         # 400 ms into playback, whatever the mic reads is OUR echo. The
@@ -192,20 +238,62 @@ def main() -> int:
                     break
             speaking_out.clear()
 
+    last_reply = {"t": 0.0}
+
     def on_reply(text):
         text = text.split("<")[0].strip()
         if not text:
             return
+        last_reply["t"] = time.monotonic()
         heard["n"] += 1
         stage_ms["reply_len"].append(len(text.split()))
         print(f"\n  \033[1mJAEGER\033[0m  {text}", flush=True)
-        if a.no_speak:
-            return
-        speaking_out.set()
-        threading.Thread(target=_play_async, args=(text,), daemon=True).start()
+        # speech already streamed sentence-by-sentence via say_q
+
+    def turn_gate():
+        # Measured: 13 replies in 90 s took input survival from 86% to 38%,
+        # because every reply is a deaf window. Rate-limit the mouth.
+        if time.monotonic() - last_reply["t"] < a.cooldown:
+            return False
+        return loop.endpoint.ended if loop.endpoint else False
+
+    tok = session.processor.tokenizer
+    _orig_respond = session.respond
+
+    def _streaming_respond(**kw):
+        turn_t0["t"] = time.monotonic()
+        ids, consumed = [], 0
+        inner = kw.get("on_token")
+
+        def on_token(tid, n):
+            nonlocal consumed
+            ids.append(tid)
+            # decode is cheap at this length; look for a finished sentence
+            text = tok.decode(ids)
+            for i in range(len(text) - 1, consumed - 1, -1):
+                if text[i] in ".!?" and i + 1 > consumed:
+                    sent = text[consumed:i + 1].split("<")[0].strip()
+                    if len(sent.split()) >= 2:
+                        say_q.put(sent)
+                        consumed = i + 1
+                    break
+            if inner:
+                inner(tid, n)
+
+        kw["on_token"] = on_token
+        out = _orig_respond(**kw)
+        tail = out[consumed:].split("<")[0].strip()
+        if len(tail.split()) >= 2:
+            say_q.put(tail)
+        return out
+
+    if not a.no_speak:
+        session.respond = _streaming_respond
 
     loop = DuplexLoop(session, audio_source=source, user_speaking=user_speaking,
-                      on_reply=on_reply)
+                      on_reply=on_reply, turn_ended=None)
+    _default_ended = loop.turn_ended
+    loop.turn_ended = turn_gate
     # A live room is never silent. The endpoint floor has to sit above the
     # room, not at a synthetic zero: measured on the Elgato, an occupied room
     # runs 0.10-0.36 RMS while speaking and does not fall to 0.012 between
@@ -264,6 +352,11 @@ def main() -> int:
     if stage_ms["synth"]:
         import statistics as st
         print(f"  synth        median {st.median(stage_ms['synth']):.0f} ms")
+    if stage_ms["to_first_audio"]:
+        import statistics as st
+        print(f"  END->AUDIO   median "
+              f"{st.median(stage_ms['to_first_audio']):.0f} ms  "
+              f"(the latency the user feels)")
     if a.record and rec["raw"]:
         import soundfile as sf
         d = Path(a.record)
