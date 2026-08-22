@@ -66,6 +66,8 @@ def main() -> int:
     ap.add_argument("--list-devices", action="store_true")
     ap.add_argument("--no-speak", action="store_true",
                     help="print replies instead of speaking them")
+    ap.add_argument("--record", default=None, metavar="DIR",
+                    help="record raw mic AND model-fed audio for audit")
     a = ap.parse_args()
 
     if a.list_devices:
@@ -98,6 +100,8 @@ def main() -> int:
         except queue.Full:
             pass
 
+    rec = {"raw": [], "fed": []}
+
     def source():
         got = []
         while True:
@@ -108,6 +112,8 @@ def main() -> int:
         if not got:
             return None
         block = np.concatenate(got)
+        if a.record:
+            rec["raw"].append(block.copy())
         if speaking_out.is_set():
             # FULL-DUPLEX-LITE. No AEC yet, so the mic hears our own voice.
             # But the user talking OVER playback is louder at the mic than
@@ -117,14 +123,19 @@ def main() -> int:
             # hears the new turn. Zeroing the mic here made interruption
             # impossible for the whole length of every reply.
             rms = float(np.sqrt(np.mean(np.square(block))))
-            if rms > max(echo_floor["rms"] * 1.8, a.threshold * 1.3):
+            if rms > max(echo_floor["rms"] * 1.4, a.threshold * 1.1):
                 sd.stop()                      # cut our voice mid-word
                 speaking_out.clear()
                 barged["n"] += 1
                 print("\n  (barge-in: you spoke over me — stopping)",
                       flush=True)
                 return block
-            return np.zeros_like(block)        # just our own echo: drop it
+            gated = np.zeros_like(block)        # just our own echo: drop it
+            if a.record:
+                rec["fed"].append(gated.copy())
+            return gated
+        if a.record:
+            rec["fed"].append(block.copy())
         return block
 
     level = {"rms": 0.0}
@@ -167,12 +178,19 @@ def main() -> int:
             threading.Thread(target=_calibrate_echo, daemon=True).start()
             sd.wait()
         finally:
-            speaking_out.clear()
-            while not q.empty():          # drop what the mic caught of US
+            # DRAIN BEFORE CLEARING. The old order (clear, then drain) threw
+            # away user speech that began as playback ended -- the audit
+            # showed "Listen and practice" reaching the model as "And
+            # practice", and "Conversation 32" misheard as "Station 32" from
+            # its clipped first syllable. Draining first removes only what
+            # was captured DURING playback (our echo); everything after the
+            # clear survives.
+            while not q.empty():
                 try:
                     q.get_nowait()
                 except queue.Empty:
                     break
+            speaking_out.clear()
 
     def on_reply(text):
         text = text.split("<")[0].strip()
@@ -246,6 +264,14 @@ def main() -> int:
     if stage_ms["synth"]:
         import statistics as st
         print(f"  synth        median {st.median(stage_ms['synth']):.0f} ms")
+    if a.record and rec["raw"]:
+        import soundfile as sf
+        d = Path(a.record)
+        d.mkdir(parents=True, exist_ok=True)
+        sf.write(str(d / "raw_mic.wav"), np.concatenate(rec["raw"]), RATE)
+        sf.write(str(d / "fed_model.wav"), np.concatenate(rec["fed"]), RATE)
+        print(f"  recorded     {d}/raw_mic.wav + fed_model.wav — audit with"
+              f" research/session_audit.py")
     return 0
 
 
