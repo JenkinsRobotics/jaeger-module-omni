@@ -1,0 +1,309 @@
+{
+  "format": "jaeger-continuous-adapter-monitor-v1",
+  "architecture": {
+    "graph": "PCM->MiniCPM_tuned_Whisper->one_remapped_projector->Gemma_monitor",
+    "transcript_runtime_handoff": false,
+    "diagnostic_only": true
+  },
+  "score": {
+    "audio_seconds": 27.089,
+    "samples_received": 433424,
+    "samples_consumed": 433424,
+    "updates": 14,
+    "revision_conflicts": 0,
+    "committed_words": 69,
+    "duplicate_commit_words": 0,
+    "best_reference_start_word": 1042,
+    "best_reference_segment_words": 68,
+    "word_edits": 9,
+    "wer": 0.1323529411764706,
+    "word_retention": 0.8676470588235294,
+    "max_wall_clock_lag_ms": 0.0,
+    "median_processing_ms": 533.95,
+    "real_time_paced": false
+  },
+  "committed_text": "we choose to go to the moon in this detached and do the other things not because they are easy but because they are hard because that goal will serve to organize and measure the best of our energies and skills because that challenge is one that we're willing to accept one we are unwilling to postone and one we intend to postone when i and the others do",
+  "updates": [
+    {
+      "audio_s": 2.0,
+      "samples_received": 32000,
+      "samples_consumed": 32000,
+      "processing_ms": 559.2,
+      "wall_clock_lag_ms": 0.0,
+      "rms": 0.141658,
+      "peak": 0.541429,
+      "hypothesis": "WE CHOOSE TO GO TO THE MOON",
+      "committed": "",
+      "new_words": [],
+      "revision_conflict": false,
+      "segment_start_s": 0.0
+    },
+    {
+      "audio_s": 4.0,
+      "samples_received": 64000,
+      "samples_consumed": 64000,
+      "processing_ms": 546.5,
+      "wall_clock_lag_ms": 0.0,
+      "rms": 0.119146,
+      "peak": 0.562243,
+      "hypothesis": "WE CHOOSE TO GO TO THE MOON IN THIS DETACHED AND DO THE OTHER THING",
+      "committed": "we choose to go to",
+      "new_words": [
+        "we",
+        "choose",
+        "to",
+        "go",
+        "to"
+      ],
+      "revision_conflict": false,
+      "segment_start_s": 0.0
+    },
+    {
+      "audio_s": 6.0,
+      "samples_received": 96000,
+      "samples_consumed": 96000,
+      "processing_ms": 636.8,
+      "wall_clock_lag_ms": 0.0,
+      "rms": 0.116879,
+      "peak": 0.578784,
+      "hypothesis": "WE CHOOSE TO GO TO THE MOON IN THIS DETACHED AND DO THE OTHER THINGS NOT BECAUSE THEY ARE EASY",
+      "committed": "we choose to go to the moon in this detached and do",
+      "new_words": [
+        "the",
+        "moon",
+        "in",
+        "this",
+        "detached",
+        "and",
+        "do"
+      ],
+      "revision_conflict": false,
+      "segment_start_s": 0.0
+    },
+    {
+      "audio_s": 8.0,
+      "samples_received": 128000,
+      "samples_consumed": 128000,
+      "processing_ms": 749.6,
+      "wall_clock_lag_ms": 0.0,
+      "rms": 0.121666,
+      "peak": 0.565783,
+      "hypothesis": "WE CHOOSE TO GO TO THE MOON IN THIS DETACHED AND DO THE OTHER THINGS NOT BECAUSE THEY ARE EASY BUT BECAUSE THEY ARE HARD",
+      "committed": "we choose to go to the moon in this detached and do the other things not because they",
+      "new_words": [
+        "the",
+        "other",
+        "things",
+        "not",
+        "because",
+        "they"
+      ],
+      "revision_conflict": false,
+      "segment_start_s": 0.0,
+      "flushed_words": [
+        "are",
+        "easy",
+        "but",
+        "because",
+        "they",
+        "are",
+        "hard"
+      ]
+    },
+    {
+      "audio_s": 10.0,
+      "samples_received": 160000,
+      "samples_consumed": 160000,
+      "processing_ms": 235.4,
+      "wall_clock_lag_ms": 0.0,
+      "rms": 0.107097,
+      "peak": 0.600848,
+      "hypothesis": "BECAUSE THAT GOAL",
+      "committed": "we choose to go to the moon in this detached and do the other things not because they are easy but because they are hard",
+      "new_words": [],
+      "revision_conflict": false,
+      "segment_start_s": 8.0
+    },
+    {
+      "audio_s": 12.0,
+      "samples_received": 192000,
+      "samples_consumed": 192000,
+      "processing_ms": 394.9,
+      "wall_clock_lag_ms": 0.0,
+      "rms": 0.143106,
+      "peak": 0.587939,
+      "hypothesis": "BECAUSE THAT GOAL WILL SERVE TO ORGANIZE",
+      "committed": "we choose to go to the moon in this detached and do the other things not because they are easy but because they are hard because",
+      "new_words": [
+        "because"
+      ],
+      "revision_conflict": false,
+      "segment_start_s": 8.0
+    },
+    {
+      "audio_s": 14.0,
+      "samples_received": 224000,
+      "samples_consumed": 224000,
+      "processing_ms": 521.4,
+      "wall_clock_lag_ms": 0.0,
+      "rms": 0.113976,
+      "peak": 0.610126,
+      "hypothesis": "BECAUSE THAT GOAL WILL SERVE TO ORGANIZE AND MEASURE THE BEST",
+      "committed": "we choose to go to the moon in this detached and do the other things not because they are easy but because they are hard because that goal will serve",
+      "new_words": [
+        "that",
+        "goal",
+        "will",
+        "serve"
+      ],
+      "revision_conflict": false,
+      "segment_start_s": 8.0
+    },
+    {
+      "audio_s": 16.0,
+      "samples_received": 256000,
+      "samples_consumed": 256000,
+      "processing_ms": 686.7,
+      "wall_clock_lag_ms": 0.0,
+      "rms": 0.106202,
+      "peak": 0.596759,
+      "hypothesis": "BECAUSE THAT GOAL WILL SERVE TO ORGANIZE AND MEASURE THE BEST OF OUR ENERGIES AND SKILLS",
+      "committed": "we choose to go to the moon in this detached and do the other things not because they are easy but because they are hard because that goal will serve to organize and measure",
+      "new_words": [
+        "to",
+        "organize",
+        "and",
+        "measure"
+      ],
+      "revision_conflict": false,
+      "segment_start_s": 8.0,
+      "flushed_words": [
+        "the",
+        "best",
+        "of",
+        "our",
+        "energies",
+        "and",
+        "skills"
+      ]
+    },
+    {
+      "audio_s": 18.0,
+      "samples_received": 288000,
+      "samples_consumed": 288000,
+      "processing_ms": 291.3,
+      "wall_clock_lag_ms": 0.0,
+      "rms": 0.136415,
+      "peak": 0.553148,
+      "hypothesis": "BECAUSE THAT CHALLENGE IS ONE THAT",
+      "committed": "we choose to go to the moon in this detached and do the other things not because they are easy but because they are hard because that goal will serve to organize and measure the best of our energies and skills",
+      "new_words": [],
+      "revision_conflict": false,
+      "segment_start_s": 16.0
+    },
+    {
+      "audio_s": 20.0,
+      "samples_received": 320000,
+      "samples_consumed": 320000,
+      "processing_ms": 436.1,
+      "wall_clock_lag_ms": 0.0,
+      "rms": 0.098882,
+      "peak": 0.573321,
+      "hypothesis": "BECAUSE THAT CHALLENGE IS ONE THAT WE'RE WILLING TO ACCEPT",
+      "committed": "we choose to go to the moon in this detached and do the other things not because they are easy but because they are hard because that goal will serve to organize and measure the best of our energies and skills because that challenge is",
+      "new_words": [
+        "because",
+        "that",
+        "challenge",
+        "is"
+      ],
+      "revision_conflict": false,
+      "segment_start_s": 16.0
+    },
+    {
+      "audio_s": 22.0,
+      "samples_received": 352000,
+      "samples_consumed": 352000,
+      "processing_ms": 648.7,
+      "wall_clock_lag_ms": 0.0,
+      "rms": 0.118163,
+      "peak": 0.534928,
+      "hypothesis": "BECAUSE THAT CHALLENGE IS ONE THAT WE'RE WILLING TO ACCEPT BECAUSE ONE WE ARE UNWILLING TO POSTHER",
+      "committed": "we choose to go to the moon in this detached and do the other things not because they are easy but because they are hard because that goal will serve to organize and measure the best of our energies and skills because that challenge is one that we're willing",
+      "new_words": [
+        "one",
+        "that",
+        "we're",
+        "willing"
+      ],
+      "revision_conflict": false,
+      "segment_start_s": 16.0
+    },
+    {
+      "audio_s": 24.0,
+      "samples_received": 384000,
+      "samples_consumed": 384000,
+      "processing_ms": 797.0,
+      "wall_clock_lag_ms": 0.0,
+      "rms": 0.076201,
+      "peak": 0.675771,
+      "hypothesis": "BECAUSE THAT CHALLENGE IS ONE THAT WE'RE WILLING TO ACCEPT ONE WE ARE UNWILLING TO POSTONE AND ONE WE INTEND TO POSTONE",
+      "committed": "we choose to go to the moon in this detached and do the other things not because they are easy but because they are hard because that goal will serve to organize and measure the best of our energies and skills because that challenge is one that we're willing",
+      "new_words": [],
+      "revision_conflict": false,
+      "segment_start_s": 16.0,
+      "flushed_words": [
+        "to",
+        "accept",
+        "one",
+        "we",
+        "are",
+        "unwilling",
+        "to",
+        "postone",
+        "and",
+        "one",
+        "we",
+        "intend",
+        "to",
+        "postone"
+      ]
+    },
+    {
+      "audio_s": 26.0,
+      "samples_received": 416000,
+      "samples_consumed": 416000,
+      "processing_ms": 253.7,
+      "wall_clock_lag_ms": 0.0,
+      "rms": 0.052309,
+      "peak": 0.489029,
+      "hypothesis": "WHEN IN THE OTHERS TOO",
+      "committed": "we choose to go to the moon in this detached and do the other things not because they are easy but because they are hard because that goal will serve to organize and measure the best of our energies and skills because that challenge is one that we're willing to accept one we are unwilling to postone and one we intend to postone",
+      "new_words": [],
+      "revision_conflict": false,
+      "segment_start_s": 24.0
+    },
+    {
+      "audio_s": 27.089,
+      "samples_received": 433424,
+      "samples_consumed": 433424,
+      "processing_ms": 291.5,
+      "wall_clock_lag_ms": 0.0,
+      "rms": 0.0314,
+      "peak": 0.330546,
+      "hypothesis": "WHEN I AND THE OTHERS DO",
+      "committed": "we choose to go to the moon in this detached and do the other things not because they are easy but because they are hard because that goal will serve to organize and measure the best of our energies and skills because that challenge is one that we're willing to accept one we are unwilling to postone and one we intend to postone",
+      "new_words": [],
+      "revision_conflict": false,
+      "segment_start_s": 24.0,
+      "flushed_words": [
+        "when",
+        "i",
+        "and",
+        "the",
+        "others",
+        "do"
+      ]
+    }
+  ]
+}
