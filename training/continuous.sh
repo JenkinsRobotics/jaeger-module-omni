@@ -8,6 +8,11 @@
 # losing the ones before it, and validation CE is recorded per round so the
 # trend is visible instead of inferred.
 #
+# --eval-examples 128, not the default 8. An 8-example validation CE swung
+# 0.1414 -> 0.1238 -> 0.1681 across rounds, which reads as overfitting and is
+# almost certainly noise: the whole point of validating is to detect a real
+# trend, and n=8 cannot. 128 of the 136 cached validation clips costs seconds.
+#
 # grep BLOCK-BUFFERS when stdout is not a terminal, so a live run writes
 # nothing to the log until 4 KB accumulates -- round 2 ran 3:45 in total
 # silence and looked hung. --line-buffered is not optional here.
@@ -49,6 +54,7 @@ for r in $(seq 1 "$ROUNDS"); do
         --max-steps "$TARGET" \
         --learning-rate 2e-5 \
         --save-every 250 \
+        --eval-examples 128 \
         --output "$CKPT" \
         $RESUME ) 2>&1 | grep --line-buffered -viE "Malloc|it/s\]" | tee -a "$LOG"
     rc=${PIPESTATUS[0]}
