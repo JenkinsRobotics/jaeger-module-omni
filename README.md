@@ -103,6 +103,25 @@ the answer away (`look_at`, `listen`, episodic recall, motion).
 
 ## Run it
 
+The canonical live demo is the donated full-duplex desktop app, now wired to
+Jaeger's audio-native runtime rather than its historical input-only path:
+
+```sh
+.venv/bin/python -m pip install -e '.[demo]'
+brew install speexdsp                  # once on macOS
+.venv/bin/python demo.py --check
+.venv/bin/python demo.py
+```
+
+It keeps listening while speaking, supports residual-speech barge-in, displays
+speaker metadata without displaying an input transcript, and exposes live
+queue/cache/AEC/latency metrics. The desktop surface also exposes the physical
+input device and callback health, and includes a selective meeting-participant
+preset. See
+[`Full DuplexDemo App/README.md`](Full%20DuplexDemo%20App/README.md).
+
+The lower-level and batch entry points remain available:
+
 ```sh
 # voice in, cognition out — the text path works today
 python -m jaeger_agent_omni --audio clip.wav --backbone <hf-id>

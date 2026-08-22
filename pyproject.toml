@@ -13,7 +13,7 @@ name = "jaeger_agent_omni"
 description = "Native multimodal neural agent for JaegerOS — audio straight to cognition, no text bridge"
 readme = "README.md"
 requires-python = ">=3.11,<3.13"
-dynamic = ["version", "dependencies"]
+dynamic = ["version"]
 
 # The pin every module/hardware-package/project repo carries: the range
 # of JaegerOS releases this repo is proven against. Contract changes on
@@ -27,6 +27,12 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=7", "ruff"]
+demo = [
+    "PySide6>=6.7",
+    "sounddevice>=0.5",
+    "soundfile>=0.12",
+    "kokoro>=0.9",
+]
 
 [tool.setuptools.dynamic]
 version = {attr = "jaeger_agent_omni.__version__"}

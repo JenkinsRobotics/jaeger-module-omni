@@ -206,11 +206,15 @@ class DuplexLoop:
         text = self.session.respond(max_tokens=96, eos_ids=self.eos_ids,
                                     on_token=on_token)
         self.stats.turns += 1
-        if self.session._cancelled:
+        interrupted = bool(self.session._cancelled)
+        if interrupted:
             # Interrupted: drop the half-said reply, keep the conversation.
             self.session.interrupt()
             self.stats.interrupts += 1
-        if text.strip():
+        # The abandoned suffix is neither something the model completed nor
+        # something the listener heard. Do not publish it as a reply or carry
+        # it into summaries after the cache rewind.
+        if text.strip() and not interrupted:
             self.on_reply(text)
         if self.endpoint is not None:
             self.endpoint.reset()      # else `ended` latches and every tick answers
@@ -272,7 +276,8 @@ def demo():
         def respond(self, max_tokens=0, eos_ids=(), on_token=None):
             if on_token:
                 on_token(1, 1)
-            return "" if self._cancelled else "reply"
+            # Real decoding returns the prefix produced before cancellation.
+            return "partial" if self._cancelled else "reply"
 
         def cancel(self):
             self._cancelled = True
@@ -328,13 +333,16 @@ def demo():
 
     # --- barge-in during a reply rewinds and keeps listening ---------------
     s3 = FakeSession()
+    published = []
     l3 = DuplexLoop(s3, audio_source=lambda: None,
-                    user_speaking=lambda: True, clock=clock)
+                    user_speaking=lambda: True, on_reply=published.append,
+                    clock=clock)
     l3.eos_ids = ()
     l3._respond()
     assert l3.stats.interrupts == 1
     assert "rewind" in s3.stream and "resume" in s3.stream
     assert s3.stream.index("rewind") < s3.stream.index("resume")
+    assert not published, "an abandoned reply prefix must not be published"
 
     # a quiet reply still resumes listening
     s4 = FakeSession()

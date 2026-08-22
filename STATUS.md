@@ -1,4 +1,4 @@
-# Jaeger Agent Omni — what works, 2026-08-21
+# Jaeger Agent Omni — what works, 2026-08-22
 
 One page. Every claim here has a command that reproduces it.
 
@@ -33,7 +33,7 @@ python -m jaeger_agent_omni.omni --bench research/cases12
 ```
 
 ```text
-omni [tower]   10/12 = 83%   median 482 ms
+omni [tower]   10/12 = 83%   median 363 ms
 legacy         12/12 = 100%  (text between modules, 9.8 GB, two model stacks)
 MiniCPM-o 4.5  12/12 = 100%  525 ms to text, 1380 ms to speech
 ```
@@ -43,16 +43,58 @@ tower's: one read audio as an image, one never named Shakespeare.
 
 | capability | state | command |
 | --- | --- | --- |
-| audio -> text, no transcript | **10/12, 482 ms** | `omni.py --bench` |
+| audio -> text, no transcript | **10/12, 363 ms** | `omni.py --bench` |
 | hands-free turn detection | **works** | `python -m jaeger_agent_omni.runtime.endpoint` |
 | always-on duplex | **works** | `python -m jaeger_agent_omni.runtime.duplex` |
-| barge-in | **22.8 ms**, context kept | same |
+| barge-in | **20.7 ms**, context kept | same |
 | omni input (a/v/text, one cache) | **works** | `research/check_all.py` |
 | speech codes -> audible cloned voice | **works** | `research/t2w_client.py --say` |
 | cognition -> talker conditioning | **built, untrained** | `neural/delta.py` |
 | whisper -> delta -> E4B | **training** | `training/train.py` |
 
-30/30 module self-checks green: `python research/check_all.py`
+31/31 module self-checks green: `python research/check_all.py`
+
+## Canonical live demo
+
+```bash
+python demo.py --check
+python demo.py
+```
+
+The donated full-duplex desktop app now runs the real Jaeger live path by
+default: Gemma audio embeddings in, Kokoro clause streaming out, SpeexDSP AEC,
+hands-free endpoints, residual barge-in, inline speaker metadata, and bounded
+rolling context. It does not display or compute an input transcript. MiniCPM-o
+remains an optional reference selector.
+
+The reciprocal VoiceLLM Playground review retained the useful product/runtime
+parts: its existing MiniCPM shim/model can be discovered read-only, the GUI now
+selects a physical input device and exposes callback failures, and a selective
+third-person meeting preset is available. Its owned-seam transcript ledger and
+Gemma transcription decoder were deliberately not imported: they are useful
+ASR research, but violate this repository's no-transcript input invariant.
+The optional native reference was then verified through this app: 25 paced
+frames yielded 22 LISTEN / 3 SPEAK, the answer “The capital of France is
+Paris,” and real playback at 0.129 peak level.
+
+Exact GUI-worker replay of the five-minute room recording, free-running at
+`--threshold 0.20 --silence-ms 700 --cooldown 20 --max-context 6000`:
+
+```text
+audio fed        300.0 / 300.0 s
+audio dropped      0.0 s
+turns              28
+interrupted gens    22 (no abandoned partial reply published)
+visible barge-ins  27
+completed replies   6
+speaker labels      A and B
+context rolls       1 (cache ended at 3054 tokens, thread continued)
+peak loop lag      347 ms
+END->AUDIO        1091 ms median across completed starts
+```
+
+The short exact-worker proof with diarization enabled produced one correct
+reply, speaker `A`, 20.0/20.0 seconds fed, zero loss, and 458 ms END->AUDIO.
 
 ---
 

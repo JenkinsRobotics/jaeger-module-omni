@@ -4,6 +4,23 @@ Run in this order. Each waits for the previous; `training/run.sh` refuses to
 start a second training run, but evaluation and generation are not guarded, so
 do not launch them beside a training job.
 
+## Live demo gate
+
+The canonical demo is now `python demo.py`. Before changing the live surface:
+
+    ./.venv/bin/python demo.py --check
+    ./.venv/bin/python -m jaeger_agent_omni.omni --selfcheck
+    ./.venv/bin/python research/check_all.py
+
+Remaining live research: continuous-double-talk AEC measures only ~0.1 dB in
+the room aggregate despite 24.1 dB on the controlled echo corpus, and long
+opening clauses still create occasional ~1 s END->AUDIO outliers.
+
+The VoiceLLM Playground reciprocal review is complete for the demo surface:
+keep its native MiniCPM build as a read-only optional reference; retain its
+device/callback-health discipline; do not import its transcript ledger or
+Gemma transcription decoder into Jaeger's input path.
+
 ## 1. Stage 3 — running now
 
     ./training/run.sh --corpus training/corpus_mixed \

@@ -79,3 +79,6 @@ reference/*
 # Audio samples are large and are inputs, not source.
 training/samples/*.wav
 training/samples/*.mp3
+
+# Full-duplex demo state (captures may contain private room audio).
+Full DuplexDemo App/runtime/
