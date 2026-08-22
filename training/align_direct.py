@@ -11,8 +11,17 @@ CTC because the sequences do not align: 5 s of audio is 50 adapter vectors but
 maybe 12 text tokens, and nobody knows which vector belongs to which word. CTC
 sums over every valid alignment instead of requiring one.
 
-This is exactly `research/adapter_readout.py` turned into a loss. That probe
-showed the trained-through-the-backbone adapter emitting
+This is exactly `research/adapter_readout.py` turned into a loss. The default
+warm-start preserves the requested architecture and values:
+
+    MiniCPM-tuned Whisper -> ONE MiniCPM-shaped adapter -> Gemma
+
+MiniCPM linear1 is copied and its linear2 is composed with the Qwen->Gemma
+ridge map, then the whole one-adapter module is trainable. There is no frozen
+Qwen-shaped output followed by a second delta. A random/stock-Whisper start is
+available only as an explicit ablation.
+
+The older trained-through-the-backbone probe emitted
 
     'The capital of France is Paris.' -> introductions niOkno ิ ิ activity ...
 
@@ -28,11 +37,15 @@ from __future__ import annotations
 import argparse, json, sys, time
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-sys.path.insert(0, str(Path(__file__).resolve().parent))
+REPO = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(REPO))
+sys.path.insert(0, str(REPO / "training"))
+sys.path.insert(0, str(REPO / "research"))
 
 GEMMA = "google/gemma-4-E4B-it"
 BLANK = 0
+DEFAULT_ALIGNMENT = (REPO.parent / "VoiceLLM-Playground" / "Omni Model" /
+                     "gemma-backbone" / "W_fwd.npy")
 
 
 def annotate(row: dict) -> str:
@@ -83,7 +96,10 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--corpus", required=True)
     ap.add_argument("--whisper", default="openai/whisper-medium.en")
-    ap.add_argument("--alignment", default="training/runs/alignment.npz")
+    ap.add_argument("--alignment", type=Path, default=DEFAULT_ALIGNMENT)
+    ap.add_argument("--init", choices=("minicpm_remap", "random"),
+                    default="minicpm_remap",
+                    help="default preserves MiniCPM's tuned Whisper/projector values")
     ap.add_argument("--steps", type=int, default=2000)
     ap.add_argument("--batch", type=int, default=4)
     ap.add_argument("--lr", type=float, default=3e-4)
@@ -99,17 +115,31 @@ def main() -> int:
     emb_norm = float(table.norm(dim=-1).mean())
     print(f"Gemma table {tuple(table.shape)}  emb_norm {emb_norm:.2f}")
 
-    # WHISPER -> ADAPTER -> GEMMA. Nothing else in the path: no MiniCPM
-    # weights, no Qwen embedding table, no ridge map. Just the two models we
-    # actually ship, and one trainable layer between them.
-    wm = WhisperModel.from_pretrained(a.whisper)
-    encoder = wm.encoder.to(dev).eval().requires_grad_(False)
-    audio_dim = wm.config.d_model
-    del wm
-    print(f"whisper encoder {audio_dim}-dim, frozen")
-
-    model = WhisperToGemma(audio_dim=audio_dim, cognition_dim=table.shape[1],
-                           embed_norm=emb_norm)
+    # The production default is the user-requested graph: MiniCPM's tuned
+    # Whisper -> ONE MiniCPM-shaped adapter retargeted into Gemma. There is no
+    # frozen 4096 output followed by an extra delta. `random` remains only as
+    # an explicit ablation.
+    if a.init == "minicpm_remap":
+        import numpy as np
+        from load_minicpm import load_front_end
+        encoder, minicpm_projector = load_front_end()
+        mapping = np.load(a.alignment)
+        model = WhisperToGemma.from_minicpm(
+            minicpm_projector, mapping, cognition_dim=table.shape[1],
+            embed_norm=emb_norm)
+        encoder = encoder.to(dev).eval().requires_grad_(False)
+        audio_dim = 1024
+        print("encoder: MiniCPM-tuned Whisper, frozen")
+        print("adapter init: MiniCPM linear1 copied + linear2 remapped to Gemma")
+    else:
+        wm = WhisperModel.from_pretrained(a.whisper)
+        encoder = wm.encoder.to(dev).eval().requires_grad_(False)
+        audio_dim = wm.config.d_model
+        del wm
+        model = WhisperToGemma(audio_dim=audio_dim,
+                               cognition_dim=table.shape[1],
+                               embed_norm=emb_norm)
+        print(f"encoder: stock Whisper {audio_dim}-dim, frozen (ablation)")
     model = model.to(dev).train()
     print(f"adapter {model.n_params()/1e6:.1f}M params, all trainable")
 
@@ -157,6 +187,15 @@ def main() -> int:
             hist.append({"step": step, "loss": float(loss)})
             print(f"  step {step:>5}  ctc {float(loss):8.4f}  "
                   f"{el/step:.2f}s/step", flush=True)
+
+        # Save periodically, not only at the end. Without this a run cannot be
+        # inspected until it finishes -- which means waiting out a run that
+        # plateaued at step 140, with no way to read out what it learned.
+        if step % max(1, a.steps // 4) == 0:
+            torch.save({"model": model.state_dict(),
+                        "cognition_dim": table.shape[1], "embed_norm": emb_norm,
+                        "arch": "whisper_to_gemma", "backbone_id": GEMMA,
+                        "history": hist, "step": step}, a.out)
 
     torch.save({"model": model.state_dict(), "cognition_dim": table.shape[1],
                 "embed_norm": emb_norm, "arch": "whisper_to_gemma",

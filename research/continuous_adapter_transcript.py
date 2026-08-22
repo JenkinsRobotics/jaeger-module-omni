@@ -9,10 +9,12 @@ accounting, levels, and final information retention.
 from __future__ import annotations
 
 import argparse
+import difflib
 import importlib.util
 import json
 import math
 import re
+import sys
 import time
 from pathlib import Path
 
@@ -22,6 +24,7 @@ REPO = Path(__file__).resolve().parent.parent
 SOURCE = (REPO.parent / "VoiceLLM-Playground" / "Omni Model" /
           "gemma-backbone" / "train_audio_adapter.py")
 DEFAULT_MODEL = Path.home() / "models/gemma-4-E4B-it-4bit-mlx"
+sys.path.insert(0, str(REPO))
 
 
 def load_source(path: Path):
@@ -57,13 +60,20 @@ def distance(a: list[str], b: list[str]) -> int:
     return row[-1]
 
 
-def best_reference_prefix(reference: list[str], hypothesis: list[str]) -> tuple[int, int]:
-    """Official text is longer than the clip; find its best leading cut."""
-    lo = max(1, len(hypothesis) - 30)
-    hi = min(len(reference), len(hypothesis) + 30)
-    choices = [(distance(reference[:n], hypothesis), n)
-               for n in range(lo, hi + 1)]
-    return min(choices)
+def best_reference_segment(reference: list[str], hypothesis: list[str]
+                           ) -> tuple[int, int, int]:
+    """Locate an excerpt inside a longer official transcript."""
+    match = difflib.SequenceMatcher(None, reference, hypothesis,
+                                    autojunk=False).find_longest_match()
+    estimated = max(0, match.a - match.b)
+    candidates = []
+    for start in range(max(0, estimated - 20),
+                       min(len(reference), estimated + 21)):
+        for n in range(max(1, len(hypothesis) - 25),
+                       min(len(reference) - start, len(hypothesis) + 25) + 1):
+            candidates.append((distance(reference[start:start + n], hypothesis),
+                               start, n))
+    return min(candidates)
 
 
 def main() -> int:
@@ -77,6 +87,8 @@ def main() -> int:
     ap.add_argument("--source", type=Path, default=SOURCE)
     ap.add_argument("--device", choices=("mps", "cpu"), default="mps")
     ap.add_argument("--step-seconds", type=float, default=2.0)
+    ap.add_argument("--segment-seconds", type=float, default=8.0,
+                    help="flush and trim committed audio at this cadence")
     ap.add_argument("--hold-words", type=int, default=2)
     ap.add_argument("--max-tokens", type=int, default=160)
     ap.add_argument("--pace", action="store_true")
@@ -110,8 +122,11 @@ def main() -> int:
     rate = 16000
     duration = len(audio) / rate
     step_samples = max(1, int(args.step_seconds * rate))
+    segment_samples = max(step_samples, int(args.segment_seconds * rate))
     previous: list[str] = []
     committed: list[str] = []
+    segment_committed: list[str] = []
+    segment_start = 0
     rows = []
     conflicts = 0
     started = time.monotonic()
@@ -124,7 +139,7 @@ def main() -> int:
             if time.monotonic() < target:
                 time.sleep(target - time.monotonic())
         t0 = time.monotonic()
-        features = front_end(audio[:end])
+        features = front_end(audio[segment_start:end])
         ids_list = prefix_ids + [0] * len(features) + suffix_ids
         ids = mx.array(ids_list, dtype=mx.int32)
         token_embeddings = model.language_model.model.embed_tokens(ids[None, :])[0]
@@ -143,11 +158,13 @@ def main() -> int:
             generated, skip_special_tokens=True).strip()
         hypothesis = words(hypothesis_text)
         common = lcp(previous, hypothesis)
-        stable_to = max(len(committed), common - args.hold_words)
-        if hypothesis[:len(committed)] != committed:
+        stable_to = max(len(segment_committed), common - args.hold_words)
+        conflict = hypothesis[:len(segment_committed)] != segment_committed
+        if conflict:
             conflicts += 1
-            stable_to = len(committed)
-        newly = hypothesis[len(committed):stable_to]
+            stable_to = len(segment_committed)
+        newly = hypothesis[len(segment_committed):stable_to]
+        segment_committed.extend(newly)
         committed.extend(newly)
         processing_ms = (time.monotonic() - t0) * 1000
         lag_ms = max(0.0, (time.monotonic() - (started + audio_s)) * 1000)
@@ -160,21 +177,31 @@ def main() -> int:
                      "rms": round(rms, 6), "peak": round(peak, 6),
                      "hypothesis": hypothesis_text,
                      "committed": " ".join(committed),
-                     "new_words": newly, "revision_conflict":
-                     hypothesis[:len(committed)] != committed})
+                     "new_words": newly, "revision_conflict": conflict,
+                     "segment_start_s": round(segment_start / rate, 3)})
         print(f"{audio_s:5.1f}s {processing_ms:5.0f}ms "
               f"commit +{' '.join(newly) if newly else '-'} | "
-              f"pending {' '.join(hypothesis[len(committed):])}", flush=True)
+              f"pending {' '.join(hypothesis[len(segment_committed):])}", flush=True)
         previous = hypothesis
 
-    # End-of-stream flush: append only the uncommitted suffix of the final
-    # hypothesis. Since committed is always a prefix, this cannot duplicate.
-    if previous[:len(committed)] == committed:
-        committed.extend(previous[len(committed):])
-    else:
-        conflicts += 1
+        at_segment_end = ((end - segment_start) >= segment_samples or
+                          end == len(audio))
+        if at_segment_end:
+            # End-of-segment is a real acoustic boundary for this diagnostic.
+            # Flush the final nonduplicated suffix, then discard that audio.
+            if hypothesis[:len(segment_committed)] == segment_committed:
+                tail = hypothesis[len(segment_committed):]
+                committed.extend(tail)
+                rows[-1]["flushed_words"] = tail
+            else:
+                conflicts += 1
+                rows[-1]["flushed_words"] = []
+            segment_start = end
+            segment_committed = []
+            previous = []
+
     reference = words(args.reference.read_text())
-    edits, ref_n = best_reference_prefix(reference, committed)
+    edits, ref_start, ref_n = best_reference_segment(reference, committed)
     report = {
         "format": "jaeger-continuous-adapter-monitor-v1",
         "architecture": {
@@ -188,7 +215,8 @@ def main() -> int:
             "updates": len(rows), "revision_conflicts": conflicts,
             "committed_words": len(committed),
             "duplicate_commit_words": 0,
-            "best_reference_prefix_words": ref_n,
+            "best_reference_start_word": ref_start,
+            "best_reference_segment_words": ref_n,
             "word_edits": edits, "wer": edits / max(1, ref_n),
             "word_retention": max(0.0, 1.0 - edits / max(1, ref_n)),
             "max_wall_clock_lag_ms": max(r["wall_clock_lag_ms"] for r in rows),

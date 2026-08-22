@@ -26,7 +26,23 @@ Gemma E4B's native tower. The user-requested owned input path is MiniCPM-tuned
 Whisper followed by ONE MiniCPM-shaped projector whose final affine is remapped
 and trained to emit Gemma's 2560-wide space directly. The older frozen 4096
 MiniCPM projector plus a separate 4096->2560 delta is a historical experiment,
-not the target. A 1,000-utterance single-projector alignment run is in progress.
+not the target.
+
+That single projector is now trained on 1,032 LibriSpeech clips from 127
+speakers. On 128 held-out utterances it retained 91.87% of 2,041 words (8.13%
+WER), with 51 exact utterances and held-out CE 0.1662. Three manually probed
+long sentences were exact except one apostrophe. This continuous transcription
+is a diagnostic view of the information entering Gemma, never a runtime text
+handoff and not a score of Gemma's assistant behavior.
+
+The paced JFK ingress monitor uses 2 s updates and bounded 8 s segments, because
+an unbounded growing prefix left the adapter's <=10 s training distribution and
+became unstable after 10-12 s. The corrected 27.1 s run consumed every one of
+433,424 samples, committed 69 words with zero duplicates/revision conflicts,
+retained 86.76% of the matching official passage (13.24% WER), and processed a
+2 s update in 1.08 s median. Cold first-update lag remains 2.63 s. Boundary
+errors and cold latency are now the input priorities, followed by controlled
+barge-in, turn detection, gain, clipping, noise, distance, and overlap tests.
 
 The only accepted product target is the integrated no-text-handoff
 audio-to-audio graph defined in `dev/OMNI_ACCEPTANCE.md`.

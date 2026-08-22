@@ -48,6 +48,17 @@ prosody, and duplex behavior is the next bar.
   now explicitly `MiniCPM-tuned Whisper -> one MiniCPM-shaped projector whose
   final affine emits 2560-wide Gemma embeddings directly -> Gemma`; the old
   `MiniCPM projector -> separate delta -> Gemma` experiment is not the target.
+- The requested one-projector input adapter is now trained on 1,032 clips from
+  127 speakers. Its lexical diagnostic on 128 held-out utterances measured
+  166 edits over 2,041 words: 8.13% WER / 91.87% word retention, with 51/128
+  utterances exact. This diagnostic text is a readout of what Gemma received;
+  it is never fed back into runtime and Gemma answer quality is scored
+  separately.
+- A wall-clock-paced 27.1 s JFK continuous monitor, using bounded 8 s segments
+  so the adapter stays inside its <=10 s training distribution, consumed all
+  433,424 samples and committed 69 words with zero duplicate commits and zero
+  revision conflicts. It measured 13.24% WER / 86.76% retention, 1.08 s median
+  processing per 2 s audio update, and 2.63 s maximum cold-start lag.
 - The complete strict graph now executes and writes cloned-voice PCM. The
   first learned-conditioner pilot scored only 1/4 semantic and 14.6% mean word
   accuracy.
