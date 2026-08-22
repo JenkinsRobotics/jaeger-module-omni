@@ -56,7 +56,8 @@ class WhisperToGemma(ModalityProjector):
 
     def __init__(self, audio_dim: int = WHISPER_DIM, cognition_dim: int = 2560,
                  mid: int = MINICPM_MID, stride: int = MINICPM_POOL_STEP,
-                 embed_norm: float | None = None):
+                 embed_norm: float | None = None, regions: bool = False,
+                 n_speakers: int = 0):
         super().__init__(input_dim=audio_dim, cognition_dim=cognition_dim,
                          stride=stride, frame_rate=WHISPER_FRAME_RATE,
                          max_frames=WHISPER_PAD_FRAMES)
@@ -70,10 +71,65 @@ class WhisperToGemma(ModalityProjector):
                              torch.tensor(float(embed_norm)) if embed_norm
                              else torch.tensor(0.0))
 
+        # STRUCTURED REGIONS — OFF BY DEFAULT, and probably a dead end.
+        #
+        # The simpler design wins: emit ONE flat run of vectors whose targets
+        # carry annotations INLINE, exactly as whisper already reports
+        # non-speech events in its own transcript stream:
+        #
+        #     " Hello there [LAUGHTER] as I was saying"
+        #     " the capital of france is paris [end]"
+        #
+        # Gemma then reads "[end]" as words it already knows, instead of as an
+        # unfamiliar slot at position 51. No learned markers, no frozen model
+        # asked to interpret novel structure, and no per_layer_inputs mismatch
+        # (every audio slot carries audio_token_id regardless, so the region
+        # tokens were never distinguishable to Gemma's per-layer machinery
+        # anyway — only to their own embeddings).
+        #
+        # Kept behind a flag so the A/B is still runnable, not because it is
+        # expected to win.
+        #
+        # The region design emits labelled slots:
+        #
+        #   [content x T]  what was said
+        #   [speaker]      who said it
+        #   [turn]         still talking, or finished
+        #
+        # all already in Gemma's embedding space, all appended into its
+        # context. Each slot can then be supervised separately -- speaker
+        # against LibriSpeech ids, turn against the free truncation labels,
+        # content against CTC -- from ONE encoder pass.
+        #
+        # MARKERS ARE NOT OPTIONAL. Gemma is frozen: it never learns that slot
+        # T+1 means "speaker". A learned marker vector per region is what makes
+        # them separable and consistent, so a frozen reader sees structure
+        # instead of three more audio tokens.
+        self.regions = regions
+        if regions:
+            self.speaker_proj = nn.Linear(mid, cognition_dim)
+            self.turn_proj = nn.Linear(mid, cognition_dim)
+            self.marker = nn.Parameter(torch.randn(3, cognition_dim) * 0.02)
+            # Auxiliary heads: training signal only, never emitted to Gemma.
+            self.turn_head = nn.Linear(cognition_dim, 1)
+            self.speaker_head = (nn.Linear(cognition_dim, n_speakers)
+                                 if n_speakers else None)
+
     def project(self, x: torch.Tensor) -> torch.Tensor:
         # ReLU and pool-AFTER-the-linears, both measured from their graph.
-        x = self.linear2(F.relu(self.linear1(x)))
+        h = F.relu(self.linear1(x))
+        x = self.linear2(h)
         x = self.pool(x)                      # base method: pools over TIME
+        if self.regions:
+            # Both slots summarise the WHOLE utterance, so they read the
+            # pre-projection hidden state pooled over all of time -- speaker
+            # identity and turn state are properties of the clip, not of any
+            # one frame.
+            summary = h.mean(dim=1)
+            spk = self.speaker_proj(summary).unsqueeze(1)
+            trn = self.turn_proj(summary).unsqueeze(1)
+            x = torch.cat([x + self.marker[0], spk + self.marker[1],
+                           trn + self.marker[2]], dim=1)
         if self.embed_norm > 0:
             # Pinned to what the backbone RECEIVES, which for Gemma is the
             # embedding table times sqrt(hidden). Pinning to the raw table
@@ -83,6 +139,49 @@ class WhisperToGemma(ModalityProjector):
 
     def n_params(self) -> int:
         return sum(p.numel() for p in self.parameters() if p.requires_grad)
+
+    def n_content(self, n_out: int) -> int:
+        """How many of the emitted tokens are transcription content."""
+        return n_out - 2 if self.regions else n_out
+
+    def aux(self, emitted: torch.Tensor) -> dict:
+        """Read the auxiliary heads off the emitted slots, for training.
+
+        These predictions are the supervision signal; Gemma consumes the SLOT
+        VECTORS, not these logits.
+        """
+        if not self.regions:
+            return {}
+        out = {"turn": self.turn_head(emitted[:, -1]).squeeze(-1)}
+        if self.speaker_head is not None:
+            out["speaker"] = self.speaker_head(emitted[:, -2])
+        return out
+
+    @classmethod
+    def warm_start(cls, minicpm_projector, cognition_dim: int = 2560,
+                   embed_norm: float | None = None):
+        """Copy MiniCPM's linear1 only; leave linear2 fresh.
+
+        linear1 (whisper 1024 -> 4096) is the layer that turns raw encoder
+        features into audio MEANING, and it transfers unchanged because the
+        input is the same whisper. linear2 has to change width anyway
+        (4096 -> 2560 instead of 4096 -> 4096), so without a ridge map it
+        starts small and learns.
+
+        This is the cheap warm start: no Qwen embedding table needed, no GGUF
+        reader, no 8 GB download. Use from_minicpm() when a ridge map exists.
+        """
+        src1, src2 = minicpm_projector.linear1, minicpm_projector.linear2
+        m = cls(audio_dim=src1.in_features, cognition_dim=cognition_dim,
+                mid=src2.out_features, embed_norm=embed_norm)
+        with torch.no_grad():
+            m.linear1.weight.copy_(src1.weight)
+            m.linear1.bias.copy_(src1.bias)
+            # Small init: the norm pin rescales the output anyway, so a large
+            # random linear2 only makes the first steps wilder.
+            nn.init.normal_(m.linear2.weight, std=0.02)
+            nn.init.zeros_(m.linear2.bias)
+        return m
 
     @classmethod
     def from_minicpm(cls, minicpm_projector, W_fwd, cognition_dim: int = 2560,
@@ -138,13 +237,39 @@ def demo() -> None:
     ours = m.linear2(F.relu(m.linear1(h)))
     assert torch.allclose(theirs, ours, atol=1e-3), (theirs - ours).abs().max()
 
-    # end to end: pooling and the norm pin
-    out = m(torch.randn(1, 1500, 1024), duration_s=5.0)
+    # end to end: pooling, regions, and the norm pin
+    m2 = WhisperToGemma.from_minicpm(src, W, cognition_dim=2560,
+                                     embed_norm=61.75)
+    m2.__init__(audio_dim=1024, cognition_dim=2560, embed_norm=61.75,
+                regions=True)   # regions default OFF; test them explicitly
+    m2.speaker_head = nn.Linear(2560, 40)          # 40 speakers, as LibriSpeech
+    out = m2(torch.randn(1, 1500, 1024), duration_s=5.0)
     assert out.shape[-1] == 2560, out.shape
+    # 5 s of a 30 s window pooled by 5 = 50 content tokens, + speaker + turn
+    assert out.shape[1] == 52, out.shape
+    assert m2.n_content(out.shape[1]) == 50
+
+    # every emitted slot must be at the scale Gemma receives, markers included
     n = out.norm(dim=-1)
-    assert torch.allclose(n, torch.full_like(n, 61.75), atol=1e-2), n.mean()
-    # trimming: 5 s of a 30 s window, pooled by 5
-    assert out.shape[1] == 50, out.shape
+    assert torch.allclose(n, torch.full_like(n, 61.75), atol=1e-2), n
+
+    # the three regions must be DISTINGUISHABLE — that is what markers buy, and
+    # a frozen reader has nothing else to go on
+    content, spk, trn = out[0, :50].mean(0), out[0, 50], out[0, 51]
+    cs = float(F.cosine_similarity(content, spk, dim=0))
+    ct = float(F.cosine_similarity(content, trn, dim=0))
+    st = float(F.cosine_similarity(spk, trn, dim=0))
+    assert max(abs(cs), abs(ct), abs(st)) < 0.95, (cs, ct, st)
+
+    # auxiliary heads read the right slots and are training-only
+    a = m2.aux(out)
+    assert a["turn"].shape == (1,), a["turn"].shape
+    assert a["speaker"].shape == (1, 40), a["speaker"].shape
+
+    # regions off = plain content, for A/B against the structured version
+    m3 = WhisperToGemma(cognition_dim=2560, embed_norm=61.75, regions=False)
+    assert m3(torch.randn(1, 1500, 1024), duration_s=5.0).shape[1] == 50
+    assert m3.aux(torch.randn(1, 50, 2560)) == {}
 
     # EVERYTHING trainable — the whole point of retargeting instead of stacking
     total = sum(p.numel() for p in m.parameters())
@@ -162,6 +287,8 @@ def demo() -> None:
     print(f"whisper_to_gemma: linear1 copied, linear2 composed, "
           f"{trainable/1e6:.1f}M params ALL trainable, norm pinned, "
           f"wrong-width map refused")
+    print(f"  regions: 50 content + speaker + turn = {out.shape[1]} slots, "
+          f"pairwise cos max {max(abs(cs), abs(ct), abs(st)):.2f} (separable)")
 
 
 if __name__ == "__main__":

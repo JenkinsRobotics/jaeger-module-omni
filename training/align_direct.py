@@ -35,10 +35,39 @@ GEMMA = "google/gemma-4-E4B-it"
 BLANK = 0
 
 
-def build_targets(tok, transcripts: list):
+def annotate(row: dict) -> str:
+    """Transcript plus INLINE annotations, the way whisper already reports
+    non-speech events in its own stream:
+
+        " Hello there [LAUGHTER] as I was saying"
+        " the capital of france is paris [end]"
+
+    No separate output heads and no special slots. These are ordinary words,
+    so a FROZEN Gemma reads them with the understanding it already has —
+    which a novel token at a novel position would not get.
+
+    turn:    [end] when the utterance completed, nothing when it was cut off
+             mid-word. That is the free supervision truncation already gives.
+    speaker: [speaker N] when the corpus knows who was talking.
+    """
+    text = (row.get("transcript") or "").strip()
+    meta = row.get("meta") or {}
+    spk = str(meta.get("speaker") or row.get("speaker") or "").strip()
+    parts = []
+    if spk:
+        parts.append(f"[speaker {spk}]")
+    parts.append(text)
+    # `turn_ended` defaults to 1: a corpus turn is a whole utterance unless
+    # the loader truncated it.
+    if float(row.get("turn_ended", 1.0)) >= 0.5:
+        parts.append("[end]")
+    return " ".join(parts)
+
+
+def build_targets(tok, rows: list):
     import torch
-    seqs = [torch.tensor(tok(t, add_special_tokens=False).input_ids)
-            for t in transcripts]
+    seqs = [torch.tensor(tok(annotate(r), add_special_tokens=False).input_ids)
+            for r in rows]
     lens = torch.tensor([len(s) for s in seqs])
     return torch.cat(seqs), lens
 
@@ -50,7 +79,6 @@ def main() -> int:
 
     from fit_alignment import embedding_table
     from jaeger_agent_omni.neural.whisper_to_gemma import WhisperToGemma
-    from load_minicpm import load_front_end
 
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--corpus", required=True)
@@ -71,20 +99,17 @@ def main() -> int:
     emb_norm = float(table.norm(dim=-1).mean())
     print(f"Gemma table {tuple(table.shape)}  emb_norm {emb_norm:.2f}")
 
-    encoder, front = load_front_end()
-    encoder = encoder.to(dev).eval().requires_grad_(False)
+    # WHISPER -> ADAPTER -> GEMMA. Nothing else in the path: no MiniCPM
+    # weights, no Qwen embedding table, no ridge map. Just the two models we
+    # actually ship, and one trainable layer between them.
+    wm = WhisperModel.from_pretrained(a.whisper)
+    encoder = wm.encoder.to(dev).eval().requires_grad_(False)
+    audio_dim = wm.config.d_model
+    del wm
+    print(f"whisper encoder {audio_dim}-dim, frozen")
 
-    W = None
-    if Path(a.alignment).exists():
-        import numpy as np
-        W = torch.tensor(np.load(a.alignment)["W_fwd"])
-        print(f"seeding from ridge map {tuple(W.shape)}")
-        model = WhisperToGemma.from_minicpm(front, W, cognition_dim=table.shape[1],
-                                            embed_norm=emb_norm)
-    else:
-        print("NO ridge map — random linear2. Run training/fit_alignment.py "
-              "first; cold start is what produced cosine -0.20.")
-        model = WhisperToGemma(cognition_dim=table.shape[1], embed_norm=emb_norm)
+    model = WhisperToGemma(audio_dim=audio_dim, cognition_dim=table.shape[1],
+                           embed_norm=emb_norm)
     model = model.to(dev).train()
     print(f"adapter {model.n_params()/1e6:.1f}M params, all trainable")
 
@@ -118,7 +143,7 @@ def main() -> int:
 
         logits = out @ table.T                              # [B, T, V]
         logp = F.log_softmax(logits.float(), dim=-1).transpose(0, 1)  # [T,B,V]
-        targets, tlens = build_targets(tok, [r["transcript"] for r in batch])
+        targets, tlens = build_targets(tok, batch)
         ilens = torch.full((len(batch),), out.shape[1], dtype=torch.long)
         loss = ctc(logp, targets.to(dev), ilens, tlens)
 

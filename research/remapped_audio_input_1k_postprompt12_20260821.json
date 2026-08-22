@@ -1,0 +1,184 @@
+{
+  "format": "jaeger-single-remapped-audio-input-v1",
+  "architecture": {
+    "graph": "PCM->MiniCPM_tuned_Whisper->one_remapped_projector->Gemma",
+    "projector": "ReLU(1024->4096 frozen)->AvgPool5->4096->2560 trained",
+    "transcript_or_decoded_text_handoff": false,
+    "adapter": "/Users/jonathanjenkins/models/gemma-audio-adapter/adapter_trained_1k.npz"
+  },
+  "score": {
+    "correct": 9,
+    "n": 12,
+    "semantic_accuracy": 0.75
+  },
+  "rows": [
+    {
+      "case": "q00",
+      "answers": [
+        "four"
+      ],
+      "ok": true,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the Request:** The user wants me to transcribe and answer the spoken question in the audio provided (though no audio is actually provided, I must assume the audio is present and needs processing). The constraints are:\n    *   Answer the question directly.\n    *   Use only one short sentence.\n    *   Output *only* the final answer (no analysis, reasoning, or thinking process).\n\n2.  **Analyze the Input (Simulated):** The input is a garbled transcription of the question: \"WHAT IS TWO PLUS TWO\". (Assuming the audio says this, as the transcription provided in the prompt is \"WHAT IS TWO PLUS TWO\").\n\n3.  **Determine the Answer:** The answer to \"What is two plus two?\" is four.\n\n4.  **Formulate the Response (Constraint Check):**\n    *   Direct answer? Yes.\n    *   One short sentence? Yes.\n    *   Only the final answer? Yes.\n\n5.  **Final Output Generation:** \"It is four.\" (Or simply \"Four.\")It is four.",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q00.wav",
+      "audio_tokens": 11,
+      "encode_project_ms": 187.2,
+      "generate_ms": 4547.9,
+      "input_samples_received": 18800,
+      "transcript_handoff": false
+    },
+    {
+      "case": "q01",
+      "answers": [
+        "blue"
+      ],
+      "ok": true,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the Request:** The user wants me to act as a voice assistant, answer a spoken question (which is currently missing/unintelligible in the prompt, but the instruction is to answer the *speech*), and provide *only* the short final answer, without any extra text or process.\n2.  **Analyze the Input Audio/Text:** The input provided is garbled/unintelligible (\"WHAT COLOR IS THE SKY\"). However, the prompt structure suggests I need to respond to the *content* of the audio.\n3.  **Identify the Core Task:** The instruction is to answer the question posed in the audio.\n4.  **Determine the Answer (Hypothetical):** If the audio is \"What color is the sky?\", the answer is \"Blue.\"\n5.  **Format the Output:** The output must be a single, short sentence.\n\n*(Self-Correction/Refinement: Since the prompt is a meta-instruction (\"Answer the speech above now. Give only the short final answer.\"), and the actual question is likely \"What color is the sky?\", I must provide the direct answer to that implied question.)*\n\n6.  **Final Answer",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q01.wav",
+      "audio_tokens": 13,
+      "encode_project_ms": 48.1,
+      "generate_ms": 4827.9,
+      "input_samples_received": 21587,
+      "transcript_handoff": false
+    },
+    {
+      "case": "q02",
+      "answers": [
+        "seven"
+      ],
+      "ok": true,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the Request:** The user wants me to transcribe/answer the speech provided in the audio segment. The output must be a single, short sentence, containing only the final answer, with no extra commentary.\n2.  **Analyze the Audio (The Speech):** The audio says: \"How many days in a week?\"\n3.  **Determine the Answer:** There are seven days in a week.\n4.  **Formulate the Response (Short Sentence):** \"There are seven days in a week.\" (Or simply, \"Seven.\")\n5.  **Select the Best Fit (Direct Answer):** Since the prompt asks for the answer to the question, providing the number is the most direct and concise response.\n\n*(Self-Correction/Refinement: The prompt asks me to answer the question, not just transcribe it. The question is \"How many days in a week?\" The answer is 7.)*\n\n6.  **Final Output Generation:** \"There are seven days in a week.\" (Or, even shorter, \"Seven.\") I will use the full sentence for clarity, as it sounds more like a helpful voice assistant.There are seven days in a week.",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q02.wav",
+      "audio_tokens": 14,
+      "encode_project_ms": 47.7,
+      "generate_ms": 4836.1,
+      "input_samples_received": 22611,
+      "transcript_handoff": false
+    },
+    {
+      "case": "q03",
+      "answers": [
+        "paris"
+      ],
+      "ok": false,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the Request:** The user wants me to act as a voice assistant, answer a spoken question (which is currently missing/implied by the prompt structure), and provide *only* the short final answer.\n2.  **Analyze the Input Audio/Text:** The input is garbled/incomplete (\"it is the capital of france\"). However, the prompt structure suggests I need to respond to a question that was asked *before* or *during* the audio segment.\n3.  **Identify the Core Task:** The instruction is to answer the question posed in the audio segment (\"it is the capital of france\").\n4.  **Determine the Missing Information:** The question itself is missing. The audio segment provided is likely the *answer* to a previous question, or it is the question itself, but it is highly unclear.\n5.  **Re-evaluate the Prompt:** The prompt says: \"Answer the speech above now. Give only the short final answer.\" The speech is: \"it is the capital of france\".\n6.  **Hypothesize the Original Question:** If the answer is \"it is the capital of France,\" the question was likely: \"What is [X",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q03.wav",
+      "audio_tokens": 16,
+      "encode_project_ms": 51.8,
+      "generate_ms": 4833.7,
+      "input_samples_received": 26231,
+      "transcript_handoff": false
+    },
+    {
+      "case": "q04",
+      "answers": [
+        "seven"
+      ],
+      "ok": true,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the Request:** The user wants me to transcribe/answer the speech provided in the audio (which is represented by the garbled text \"WHAT IS TEN MINUS THREE\"). The output must be a single, short sentence, containing only the final answer.\n2.  **Analyze the Audio/Text:** The audio seems to be saying, \"WHAT IS TEN MINUS THREE?\"\n3.  **Calculate the Answer:** $10 - 3 = 7$.\n4.  **Formulate the Response (Constraint Check):** The response must be a direct answer to the question asked in the audio, in one short sentence.\n5.  **Final Answer Generation:** The answer is \"Seven.\" (Or \"The answer is seven,\" but keeping it extremely short is better).The answer is seven.",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q04.wav",
+      "audio_tokens": 13,
+      "encode_project_ms": 52.3,
+      "generate_ms": 3411.4,
+      "input_samples_received": 21401,
+      "transcript_handoff": false
+    },
+    {
+      "case": "q05",
+      "answers": [
+        "eight"
+      ],
+      "ok": true,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the Request:** The user wants me to transcribe/answer the speech provided in the audio segment. The output must be a single, short sentence, containing only the final answer, with no extra commentary.\n2.  **Analyze the Audio:** The audio is heavily distorted, but the words are: \"HOW MANY LEGS DOES A SPIDER HAVE?\"\n3.  **Determine the Answer:** A spider has eight legs.\n4.  **Formulate the Response (Constraint Check):** The response must be a direct, short sentence.\n5.  **Final Answer Generation:** \"Eight.\" or \"It has eight legs.\" (Choosing the most concise option).It has eight legs.",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q05.wav",
+      "audio_tokens": 18,
+      "encode_project_ms": 51.7,
+      "generate_ms": 2961.1,
+      "input_samples_received": 30042,
+      "transcript_handoff": false
+    },
+    {
+      "case": "q06",
+      "answers": [
+        "jupiter"
+      ],
+      "ok": false,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the Request:** The user wants me to act as a voice assistant, answer a spoken question (which is currently missing/implied by the prompt structure), and provide *only* the short final answer.\n2.  **Analyze the Input Audio/Text:** The input provided is: \"it is the largest planet\". (The audio transcription is likely this, or something similar, but the prompt itself is just the instruction to answer the speech.)\n3.  **Identify the Goal:** Since the prompt is incomplete (it asks me to answer the speech, but the speech itself is just a fragment: \"it is the largest planet\"), I must assume the user wants me to complete the thought or provide a contextually appropriate answer if the question was implied.\n\n*Self-Correction/Refinement:* The prompt structure is unusual. It seems the user has provided the *answer* (\"it is the largest planet\") and is asking me to provide the *answer* to the question that led to that statement. However, if I treat the entire block as the input I must respond to, and the instruction is to answer the *question*, I need the question.\n\n*Re-evaluating the Role:*",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q06.wav",
+      "audio_tokens": 14,
+      "encode_project_ms": 47.9,
+      "generate_ms": 4856.6,
+      "input_samples_received": 22887,
+      "transcript_handoff": false
+    },
+    {
+      "case": "q07",
+      "answers": [
+        "twenty five"
+      ],
+      "ok": true,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the Request:** The user wants me to transcribe and answer the speech provided in the audio (which is represented by the garbled text \"it is five times five\"). The answer must be direct, in one short sentence, and contain *only* the final answer.\n2.  **Analyze the Audio/Text:** The audio is unintelligible gibberish (\"it is five times five\"). However, the prompt structure suggests the audio is a question that needs answering. Since the audio itself is garbled, I must assume the *intended* question is \"What is five times five?\" or something similar, and the answer is the calculation.\n3.  **Determine the Goal:** The goal is to provide the answer to the implied question (5 x 5 = ?).\n4.  **Calculate:** 5 multiplied by 5 equals 25.\n5.  **Formulate the Answer (Constraint Check):**\n    *   Directly answer the question? Yes.\n    *   One short sentence? Yes.\n    *   Output only the final answer? Yes.\n6.  **Final Answer:** The answer is 25. (Since the prompt is",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q07.wav",
+      "audio_tokens": 14,
+      "encode_project_ms": 39.0,
+      "generate_ms": 4898.2,
+      "input_samples_received": 22887,
+      "transcript_handoff": false
+    },
+    {
+      "case": "q08",
+      "answers": [
+        "autumn"
+      ],
+      "ok": true,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the Request:** The user wants me to transcribe and answer the speech provided in the audio segment. The output must be a single, short sentence, containing only the final answer, with no extra analysis or thought process.\n2.  **Analyze the Audio (Transcription):** The audio says: \"What season comes after summer?\"\n3.  **Determine the Answer:** The season that comes after summer is autumn (or fall).\n4.  **Formulate the Response (Constraint Check):** The answer must be a short, direct sentence.\n5.  **Final Answer Generation:** Autumn. (Or Fall, depending on preferred usage, but Autumn is generally safer/more formal.)Autumn.",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q08.wav",
+      "audio_tokens": 17,
+      "encode_project_ms": 50.3,
+      "generate_ms": 2976.9,
+      "input_samples_received": 27160,
+      "transcript_handoff": false
+    },
+    {
+      "case": "q09",
+      "answers": [
+        "twenty four"
+      ],
+      "ok": true,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the Request:** The user wants me to act as a voice assistant, answer a spoken question (which is currently missing/implied by the prompt structure), and provide *only* the short final answer.\n2.  **Analyze the Input Audio/Text:** The input provided is: \"HOW MANY HOURS IN A DAY\".\n3.  **Determine the Answer:** The number of hours in a day is 24.\n4.  **Format the Output:** The answer must be direct, short, and in one sentence.\n\n*(Self-Correction/Refinement: The prompt structure implies I need to answer the question \"How many hours in a day?\" in a concise manner.)*\n\n5.  **Final Answer Construction:** \"There are 24 hours in a day.\" (Or simply \"24.\") I will use the most natural, complete short sentence.There are 24 hours in a day.",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q09.wav",
+      "audio_tokens": 14,
+      "encode_project_ms": 39.5,
+      "generate_ms": 3877.1,
+      "input_samples_received": 22611,
+      "transcript_handoff": false
+    },
+    {
+      "case": "q10",
+      "answers": [
+        "zero degrees celsius"
+      ],
+      "ok": false,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the Request:** The user wants me to transcribe/answer the speech provided in the audio segment. The output must be a single, short sentence, containing only the final answer, with no extra commentary.\n2.  **Analyze the Audio (Simulated):** The audio segment is: \"it is the freezing point of water\".\n3.  **Formulate the Answer:** The direct transcription/answer is \"It is the freezing point of water.\"\n4.  **Review Constraints:**\n    *   Voice assistant persona. (Check)\n    *   Answer the spoken question directly. (Check)\n    *   One short sentence. (Check)\n    *   Output *only* the final answer. (Check)\n5.  **Final Output Generation:** \"It is the freezing point of water.\"It is the freezing point of water.",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q10.wav",
+      "audio_tokens": 16,
+      "encode_project_ms": 49.1,
+      "generate_ms": 3678.1,
+      "input_samples_received": 26788,
+      "transcript_handoff": false
+    },
+    {
+      "case": "q11",
+      "answers": [
+        "shakespeare"
+      ],
+      "ok": true,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the Request:** The user wants me to transcribe and answer the speech provided in the audio segment. The output must be a single, short sentence, containing only the final answer, with no extra commentary.\n2.  **Analyze the Audio (Transcription):** The audio says: \"Who wrote Romeo and Juliet?\"\n3.  **Determine the Answer:** The author of Romeo and Juliet is William Shakespeare.\n4.  **Formulate the Response (Short Sentence):** The answer must be direct and concise.\n5.  **Final Check:** Does the response meet the constraints? Yes (single, short sentence, final answer only).\n\n*(Self-Correction/Refinement: The prompt asks me to answer the question posed in the audio. The question is \"Who wrote Romeo and Juliet?\". The answer is \"William Shakespeare.\")*William Shakespeare wrote Romeo and Juliet.",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q11.wav",
+      "audio_tokens": 16,
+      "encode_project_ms": 53.6,
+      "generate_ms": 3622.1,
+      "input_samples_received": 25561,
+      "transcript_handoff": false
+    }
+  ]
+}

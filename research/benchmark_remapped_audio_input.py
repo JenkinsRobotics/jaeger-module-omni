@@ -62,11 +62,14 @@ def main() -> int:
     model, tokenizer = load(str(args.model), lazy=False)
     model.freeze(); model.eval()
     marker = source.AUDIO_MARKER
+    # Match the adapter's stage-1 chat boundary exactly (one user turn, no
+    # system turn). Gemma's E4B template places system text in a <|think|>
+    # channel; adding one here caused hundreds of hidden-reasoning tokens and
+    # made the answer score depend on the generation cap.
     rendered = tokenizer.apply_chat_template([
-        {"role": "system", "content": (
-            "You are a voice assistant. Answer the spoken question directly "
-            "in one short sentence.")},
-        {"role": "user", "content": marker},
+        {"role": "user", "content": (
+            marker + "\nAnswer the speech above now. Give only the short "
+            "final answer.")},
     ], tokenize=False, add_generation_prompt=True)
     if marker not in rendered:
         raise RuntimeError("audio marker disappeared from Gemma chat template")

@@ -1,0 +1,184 @@
+{
+  "format": "jaeger-single-remapped-audio-input-v1",
+  "architecture": {
+    "graph": "PCM->MiniCPM_tuned_Whisper->one_remapped_projector->Gemma",
+    "projector": "ReLU(1024->4096 frozen)->AvgPool5->4096->2560 trained",
+    "transcript_or_decoded_text_handoff": false,
+    "adapter": "/Users/jonathanjenkins/models/gemma-audio-adapter/adapter_trained_1k.npz"
+  },
+  "score": {
+    "correct": 0,
+    "n": 12,
+    "semantic_accuracy": 0.0
+  },
+  "rows": [
+    {
+      "case": "q00",
+      "answers": [
+        "four"
+      ],
+      "ok": false,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the input:** The user provided a very short, unclear sound/speech input: \"WHAT IS TWO PLUS TWO\". (The transcription is likely \"WHAT IS TWO PLUS TWO\").\n2.  **Determine the goal:** The persona is a voice assistant, and",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q00.wav",
+      "audio_tokens": 11,
+      "encode_project_ms": 457.9,
+      "generate_ms": 1588.2,
+      "input_samples_received": 18800,
+      "transcript_handoff": false
+    },
+    {
+      "case": "q01",
+      "answers": [
+        "blue"
+      ],
+      "ok": false,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the input:** The user provided a very short, fragmented audio input: \"WHAT COLOR IS THE SKY\". (The transcription is slightly choppy, but the meaning is clear).\n2.  **Determine the role:** I am a voice assistant.\n3.",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q01.wav",
+      "audio_tokens": 13,
+      "encode_project_ms": 48.4,
+      "generate_ms": 1246.9,
+      "input_samples_received": 21587,
+      "transcript_handoff": false
+    },
+    {
+      "case": "q02",
+      "answers": [
+        "seven"
+      ],
+      "ok": false,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the input:** The user provided a very short, fragmented audio input: \"HOW MANY DAYS IN A WEEK\". (The audio is likely a question being asked).\n2.  **Determine the goal:** The instruction is to act as a voice assistant, answer",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q02.wav",
+      "audio_tokens": 14,
+      "encode_project_ms": 50.9,
+      "generate_ms": 1250.8,
+      "input_samples_received": 22611,
+      "transcript_handoff": false
+    },
+    {
+      "case": "q03",
+      "answers": [
+        "paris"
+      ],
+      "ok": false,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the Request:** The user has provided a very short, incomplete phrase/soundbite: \"it is the capital of france\". The instruction is to act as a voice assistant, answer the *spoken question* directly, and keep the answer in *one short sentence",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q03.wav",
+      "audio_tokens": 16,
+      "encode_project_ms": 49.7,
+      "generate_ms": 1251.0,
+      "input_samples_received": 26231,
+      "transcript_handoff": false
+    },
+    {
+      "case": "q04",
+      "answers": [
+        "seven"
+      ],
+      "ok": false,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the input:** The input is a garbled or unclear sound/speech, likely a transcription error or a very muffled utterance. It sounds like \"WHAT IS TEN MINUS THREE\".\n2.  **Identify the core task:** The user is asking a question",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q04.wav",
+      "audio_tokens": 13,
+      "encode_project_ms": 46.8,
+      "generate_ms": 1252.8,
+      "input_samples_received": 21401,
+      "transcript_handoff": false
+    },
+    {
+      "case": "q05",
+      "answers": [
+        "eight"
+      ],
+      "ok": false,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the input:** The user has provided a very short, fragmented audio clip (or transcribed text) that sounds like: \"HOW MANY LEGS DOES A SPIDER HAVE\".\n2.  **Identify the core question:** The question is about the number of legs",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q05.wav",
+      "audio_tokens": 18,
+      "encode_project_ms": 53.0,
+      "generate_ms": 1254.7,
+      "input_samples_received": 30042,
+      "transcript_handoff": false
+    },
+    {
+      "case": "q06",
+      "answers": [
+        "jupiter"
+      ],
+      "ok": false,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the Request:** The user has provided a very short, incomplete phrase: \"it is the largest planet\". (The transcription is slightly garbled, but the intent is clear: \"It is the largest planet.\")\n2.  **Determine the Goal:** The",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q06.wav",
+      "audio_tokens": 14,
+      "encode_project_ms": 48.3,
+      "generate_ms": 1250.4,
+      "input_samples_received": 22887,
+      "transcript_handoff": false
+    },
+    {
+      "case": "q07",
+      "answers": [
+        "twenty five"
+      ],
+      "ok": false,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the input:** The user provided a very short, fragmented audio input: \"it is five times five\". (The transcription is likely \"it is five times five\").\n2.  **Determine the goal:** The persona is a voice assistant, and the instruction",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q07.wav",
+      "audio_tokens": 14,
+      "encode_project_ms": 40.2,
+      "generate_ms": 1253.3,
+      "input_samples_received": 22887,
+      "transcript_handoff": false
+    },
+    {
+      "case": "q08",
+      "answers": [
+        "autumn"
+      ],
+      "ok": false,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the Request:** The user wants me to act as a voice assistant. My response must be a direct answer to the spoken question, delivered in *one short sentence*.\n2.  **Analyze the Input:** The input is garbled/incomplete (\"WHAT SEASON",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q08.wav",
+      "audio_tokens": 17,
+      "encode_project_ms": 55.7,
+      "generate_ms": 1250.8,
+      "input_samples_received": 27160,
+      "transcript_handoff": false
+    },
+    {
+      "case": "q09",
+      "answers": [
+        "twenty four"
+      ],
+      "ok": false,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the input:** The user has provided a very short, fragmented audio input: \"HOW MANY HOURS IN A DAY\". (The audio quality/completeness might be low, but the transcribed text is clear enough to understand the question).\n2.  **Identify",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q09.wav",
+      "audio_tokens": 14,
+      "encode_project_ms": 40.1,
+      "generate_ms": 1245.9,
+      "input_samples_received": 22611,
+      "transcript_handoff": false
+    },
+    {
+      "case": "q10",
+      "answers": [
+        "zero degrees celsius"
+      ],
+      "ok": false,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the Request:** The user wants me to act as a voice assistant. The response must be a direct answer to the spoken question, delivered in *one short sentence*.\n2.  **Analyze the Input:** The input is a garbled/incomplete audio transcription",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q10.wav",
+      "audio_tokens": 16,
+      "encode_project_ms": 63.0,
+      "generate_ms": 1243.2,
+      "input_samples_received": 26788,
+      "transcript_handoff": false
+    },
+    {
+      "case": "q11",
+      "answers": [
+        "shakespeare"
+      ],
+      "ok": false,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the Request:** The user has provided a transcription of a spoken question/statement: \"WHOSE HOME IS JULIET\". (The transcription is slightly garbled/choppy, but the intent is clear from the context of the prompt: \"WHOSE HOME",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q11.wav",
+      "audio_tokens": 16,
+      "encode_project_ms": 52.5,
+      "generate_ms": 1247.0,
+      "input_samples_received": 25561,
+      "transcript_handoff": false
+    }
+  ]
+}

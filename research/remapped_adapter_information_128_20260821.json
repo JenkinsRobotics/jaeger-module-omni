@@ -1,0 +1,916 @@
+{
+  "format": "jaeger-remapped-adapter-information-v1",
+  "architecture": {
+    "graph": "cached_MiniCPM_Whisper->one_remapped_projector->Gemma_lexical_readout",
+    "transcript_runtime_handoff": false,
+    "adapter": "/Users/jonathanjenkins/models/gemma-audio-adapter/adapter_trained_1k.npz"
+  },
+  "score": {
+    "utterances": 128,
+    "reference_words": 2041,
+    "word_edits": 166,
+    "wer": 0.08133268005879471,
+    "word_retention": 0.9186673199412053,
+    "exact_utterances": 51,
+    "exact_ratio": 0.3984375,
+    "elapsed_s": 103.5
+  },
+  "rows": [
+    {
+      "id": "2277-149896-0000",
+      "reference": "HE WAS IN A FEVERED STATE OF MIND OWING TO THE BLIGHT HIS WIFE'S ACTION THREATENED TO CAST UPON HIS ENTIRE FUTURE",
+      "hypothesis": "HE WAS IN A FEVERED STATE OF MIND OWING TO THE BLIGHT HIS WIFE'S ACTION THREATENED TO CAST UPON HIS ENTIRE FUTURE",
+      "edits": 0,
+      "reference_words": 23
+    },
+    {
+      "id": "2277-149896-0001",
+      "reference": "HE WOULD HAVE TO PAY HER THE MONEY WHICH SHE WOULD NOW REGULARLY DEMAND OR THERE WOULD BE TROUBLE IT DID NOT MATTER WHAT HE DID",
+      "hypothesis": "HE WOULD HAVE TO PAY HER THE MONEY WHICH SHE WOULD NOW REGULARLY DEMAND OR THERE WOULD BE TROUBLE IT DID NOT MATTER WHAT HE DID",
+      "edits": 0,
+      "reference_words": 26
+    },
+    {
+      "id": "2277-149896-0002",
+      "reference": "HURSTWOOD WALKED THE FLOOR MENTALLY ARRANGING THE CHIEF POINTS OF HIS SITUATION",
+      "hypothesis": "HERSTWOOD WALKED THE FLOOR MENTALLY ARRANGING THE CHIEF POINTS OF HIS SITUATION",
+      "edits": 1,
+      "reference_words": 12
+    },
+    {
+      "id": "2277-149896-0003",
+      "reference": "HE ALSO THOUGHT OF HIS MANAGERIAL POSITION",
+      "hypothesis": "HE ALSO THOUGHT OF HIS MANAGERIAL POSITION",
+      "edits": 0,
+      "reference_words": 7
+    },
+    {
+      "id": "2277-149896-0004",
+      "reference": "HOW WOULD THE PAPERS TALK ABOUT IT",
+      "hypothesis": "HOW WOULD THE PAPERS TALK ABOUT IT",
+      "edits": 0,
+      "reference_words": 7
+    },
+    {
+      "id": "2277-149896-0005",
+      "reference": "MANY LITTLE WRINKLES GATHERED BETWEEN HIS EYES AS HE CONTEMPLATED THIS AND HIS BROW MOISTENED",
+      "hypothesis": "MANY LITTLE WHINKS GATHERED BETWEEN HIS EYES AS HE CONTEMPLATED THIS AND HIS BROW MOISTENED",
+      "edits": 1,
+      "reference_words": 15
+    },
+    {
+      "id": "2277-149896-0006",
+      "reference": "HE COULD ARRANGE THAT SATISFACTORILY FOR CARRIE WOULD BE GLAD TO WAIT IF NECESSARY",
+      "hypothesis": "HE COULD ARRANGE THAT SUCCESSFULLY FOR KERRY WOULD BE GLAD TO WAIT IF NECESSARY",
+      "edits": 2,
+      "reference_words": 14
+    },
+    {
+      "id": "2277-149896-0007",
+      "reference": "HE WOULD SEE HOW THINGS TURNED OUT TO MORROW AND THEN HE WOULD TALK TO HER THEY WERE GOING TO MEET AS USUAL",
+      "hypothesis": "HE WOULD SEE HOW THINGS TURNED OUT TOMORROW AND THEN HE WOULD TALK TO HER THEY WERE GOING TO MEET AS USUALLY",
+      "edits": 3,
+      "reference_words": 23
+    },
+    {
+      "id": "2277-149896-0008",
+      "reference": "FOR SOME REASON HE FELT AS IF SOMETHING MIGHT COME THAT WAY AND WAS RELIEVED WHEN ALL THE ENVELOPES HAD BEEN SCANNED AND NOTHING SUSPICIOUS NOTICED",
+      "hypothesis": "FOR SOME REASON HE FELT AS IF SOMETHING MIGHT COME THAT WAY AND WAS RELIEVED WHEN ALL THE ENVELOPES HAD BEEN SCANNED AND NOTHING SUSPICIOUS NOTICED",
+      "edits": 0,
+      "reference_words": 26
+    },
+    {
+      "id": "2277-149896-0009",
+      "reference": "WHILE THE DANGER HAD NOT LESSENED IT HAD NOT AS YET MATERIALISED AND WITH HIM NO NEWS WAS GOOD NEWS",
+      "hypothesis": "WELL THE DANGER HAD NOT LESSENED IT HAD NOT AS YET MATERIALIZED AND WITH HIM NO NEWS WAS GOOD NEWS",
+      "edits": 2,
+      "reference_words": 20
+    },
+    {
+      "id": "2277-149896-0010",
+      "reference": "SO LITTLE DID HE CONSIDER DROUET THAT IT NEVER ONCE OCCURRED TO HIM TO WORRY ABOUT HIS FINDING OUT",
+      "hypothesis": "SO LITTLE DID HE CONSIDER DRUAH THAT IT NEVER ONCE OCCURRED TO HIM TO WORRY ABOUT HIS FINDING OUT",
+      "edits": 1,
+      "reference_words": 19
+    },
+    {
+      "id": "2277-149896-0011",
+      "reference": "HE GREW RESTLESS AS HE RUMINATED AND THEN DECIDED THAT PERHAPS IT WAS NOTHING",
+      "hypothesis": "HE GREW RESTLESS AS HE REUMINATED AND THEN DECIDED THAT PERHAPS IT WAS NOTHING",
+      "edits": 1,
+      "reference_words": 14
+    },
+    {
+      "id": "2277-149896-0012",
+      "reference": "SHE HAD NOT BEEN ABLE TO GET AWAY THIS MORNING",
+      "hypothesis": "SHE HAD NOT BEEN ABLE TO GET AWAY THIS MORNING",
+      "edits": 0,
+      "reference_words": 10
+    },
+    {
+      "id": "2277-149896-0013",
+      "reference": "HE WOULD GET ONE TO DAY IT WOULD PROBABLY BE ON HIS DESK WHEN HE GOT BACK HE WOULD LOOK FOR IT AT ONCE",
+      "hypothesis": "HE WOULD GET ONE TODAY IT WOULD PROBABLY BE ON HIS DESK WHEN HE GOT BACK HE WOULD LOOK FOR IT AT ONCE",
+      "edits": 2,
+      "reference_words": 24
+    },
+    {
+      "id": "2277-149896-0014",
+      "reference": "AFTER A TIME HE GAVE UP WAITING AND DREARILY HEADED FOR THE MADISON CAR",
+      "hypothesis": "AFTER A TIME HE GAVE UP WAITING AND REALLY HEADED FOR THE MADISON CAR",
+      "edits": 1,
+      "reference_words": 14
+    },
+    {
+      "id": "2277-149896-0015",
+      "reference": "HE WENT IN AND EXAMINED HIS LETTERS BUT THERE WAS NOTHING FROM CARRIE",
+      "hypothesis": "HE WENT IN AND EXAMINED HIS LETTERS BUT THERE WAS NOTHING FROM KERRY",
+      "edits": 1,
+      "reference_words": 13
+    },
+    {
+      "id": "2277-149896-0016",
+      "reference": "FORTUNATELY THERE WAS NOTHING FROM HIS WIFE EITHER",
+      "hypothesis": "FORTUNATELY THERE WAS NOTHING FROM HIS WIFE EITHER",
+      "edits": 0,
+      "reference_words": 8
+    },
+    {
+      "id": "2277-149896-0017",
+      "reference": "AT ONE THIRTY HE WENT TO RECTOR'S FOR LUNCH AND WHEN HE RETURNED A MESSENGER WAS WAITING FOR HIM",
+      "hypothesis": "AT ONE THIRTY HE WENT TO RECTORS FOR LUNCH AND WHEN HE RETURNED A MESSENGER WAS WAITING FOR HIM",
+      "edits": 2,
+      "reference_words": 20
+    },
+    {
+      "id": "2277-149896-0018",
+      "reference": "HIS FIRST IMPULSE WAS TO WRITE BUT FOUR WORDS IN REPLY GO TO THE DEVIL",
+      "hypothesis": "HIS FIRST IMPULSE WAS TO WRITE BUT FOUR WORDS IN REPLY GO TO THE DEVIL",
+      "edits": 0,
+      "reference_words": 15
+    },
+    {
+      "id": "2277-149896-0019",
+      "reference": "BUT HE COMPROMISED BY TELLING THE BOY THAT THERE WOULD BE NO REPLY",
+      "hypothesis": "BUT HE COMPROMISED BY TELLING THE BOY THAT THERE WOULD BE NO REPLY",
+      "edits": 0,
+      "reference_words": 13
+    },
+    {
+      "id": "2277-149896-0020",
+      "reference": "THEN HE SAT DOWN IN HIS CHAIR AND GAZED WITHOUT SEEING CONTEMPLATING THE RESULT OF HIS WORK",
+      "hypothesis": "THEN HE SAT DOWN IN HIS CHAIR AND GAZED WITHOUT SEEING CONTEMPLATING THE RESULT OF HIS WORK",
+      "edits": 0,
+      "reference_words": 17
+    },
+    {
+      "id": "2277-149896-0021",
+      "reference": "WHAT WOULD SHE DO ABOUT THAT THE CONFOUNDED WRETCH",
+      "hypothesis": "WHAT WOULD SHE DO ABOUT THAT THE CONFOUNDED WRECK",
+      "edits": 1,
+      "reference_words": 9
+    },
+    {
+      "id": "2277-149896-0022",
+      "reference": "LATER HOWEVER HIS OLD DISCRETION ASSERTED ITSELF",
+      "hypothesis": "LATER HOWEVER HIS OLD DISCREET ASSERTERED ITSELF",
+      "edits": 2,
+      "reference_words": 7
+    },
+    {
+      "id": "2277-149896-0023",
+      "reference": "SOMETHING HAD TO BE DONE A CLIMAX WAS NEAR AND SHE WOULD NOT SIT IDLE",
+      "hypothesis": "SOMETHING HAD TO BE DONE A CLIMAX WAS NEAR AND SHE WOULD NOT SIT IDLE",
+      "edits": 0,
+      "reference_words": 15
+    },
+    {
+      "id": "2277-149896-0024",
+      "reference": "HE KNEW HER WELL ENOUGH TO KNOW THAT WHEN SHE HAD DECIDED UPON A PLAN SHE WOULD FOLLOW IT UP",
+      "hypothesis": "HE KNEW HER WELL ENOUGH TO KNOW THAT WHEN SHE HAD DECIDED UPON A PLAN SHE WOULD FOLLOW IT UP",
+      "edits": 0,
+      "reference_words": 20
+    },
+    {
+      "id": "2277-149896-0025",
+      "reference": "HE AROSE FROM HIS CHAIR AND WENT AND LOOKED OUT INTO THE STREET",
+      "hypothesis": "HE ROSE FROM HIS CHAIR AND WENT AND LOOKED OUT INTO THE STREET",
+      "edits": 1,
+      "reference_words": 13
+    },
+    {
+      "id": "2277-149896-0026",
+      "reference": "THE LONG DRIZZLE HAD BEGUN PEDESTRIANS HAD TURNED UP COLLARS AND TROUSERS AT THE BOTTOM",
+      "hypothesis": "THE LONG DRIZZLE HAD BEGUN PEDESTRIANS HAD TURNED UP COLLARS AND TROUSERS AT THE BOTTOM",
+      "edits": 0,
+      "reference_words": 15
+    },
+    {
+      "id": "2277-149896-0027",
+      "reference": "HURSTWOOD ALMOST EXCLAIMED OUT LOUD AT THE INSISTENCY OF THIS THING",
+      "hypothesis": "HERSTWOOD ALMOST EXCLAIMED OUT LOUD AT THE INSTANCE OF THIS THING",
+      "edits": 2,
+      "reference_words": 11
+    },
+    {
+      "id": "2277-149896-0028",
+      "reference": "HE PUT ON HIS HAT AND LOOKED AROUND FOR HIS UMBRELLA",
+      "hypothesis": "HE PUT ON HIS HAT AND LOOKED AROUND FOR HIS EMBRACE",
+      "edits": 1,
+      "reference_words": 11
+    },
+    {
+      "id": "2277-149896-0029",
+      "reference": "HE WOULD HAVE SOME ARRANGEMENT OF THIS THING",
+      "hypothesis": "HE WOULD HAVE SOME ARRANGEMENT OF THIS THING",
+      "edits": 0,
+      "reference_words": 8
+    },
+    {
+      "id": "2277-149896-0030",
+      "reference": "HE BEGAN TO WISH THAT HE HAD COMPROMISED IN SOME WAY OR OTHER THAT HE HAD SENT THE MONEY PERHAPS HE COULD DO IT UP HERE",
+      "hypothesis": "HE BEGAN TO WISH THAT HE HAD COMPROMISED IN SOME WAY OR OTHER THAT HE HAD SENT THE MONEY PERHAPS HE COULD DO IT UP HERE",
+      "edits": 0,
+      "reference_words": 26
+    },
+    {
+      "id": "2277-149896-0031",
+      "reference": "HE WOULD GO IN AND SEE ANYHOW HE WOULD HAVE NO ROW",
+      "hypothesis": "HE WOULD GO IN AND SEE ANYHOW HE WOULD HAVE NO ROUGH",
+      "edits": 1,
+      "reference_words": 12
+    },
+    {
+      "id": "2277-149896-0033",
+      "reference": "THEN HE RANG THE BELL NO ANSWER",
+      "hypothesis": "THEN HE RING THE BELL NO ANSWER",
+      "edits": 1,
+      "reference_words": 7
+    },
+    {
+      "id": "2277-149896-0034",
+      "reference": "HE RANG AGAIN THIS TIME HARDER STILL NO ANSWER",
+      "hypothesis": "HE RING AGAIN THIS TIME HARDER STILL NO ANSWER",
+      "edits": 1,
+      "reference_words": 9
+    },
+    {
+      "id": "2277-149897-0000",
+      "reference": "WHEN HURSTWOOD GOT BACK TO HIS OFFICE AGAIN HE WAS IN A GREATER QUANDARY THAN EVER",
+      "hypothesis": "WHEN HERSHER WOOD GOT BACK TO HIS OFFICE AGAIN HE WAS IN A GREATER CONUNDRUM THAN EVER",
+      "edits": 3,
+      "reference_words": 16
+    },
+    {
+      "id": "2277-149897-0001",
+      "reference": "HE COULD HARDLY REALISE HOW IT HAD ALL COME ABOUT",
+      "hypothesis": "HE COULD HARDLY REALIZE HOW IT HAD ALL COME ABOUT",
+      "edits": 1,
+      "reference_words": 10
+    },
+    {
+      "id": "2277-149897-0002",
+      "reference": "NO LETTER HAD COME NO WORD OF ANY KIND AND YET HERE IT WAS LATE IN THE EVENING AND SHE HAD AGREED TO MEET HIM THAT MORNING",
+      "hypothesis": "NO LETTER HAD COME NO WORD OF ANY KIND AND YET HERE IT WAS LATE IN THE EVENING AND SHE HAD AGREED TO MEET HIM THAT MORNING",
+      "edits": 0,
+      "reference_words": 27
+    },
+    {
+      "id": "2277-149897-0003",
+      "reference": "HE SAW THAT IN THE EXCITEMENT OF RECENT EVENTS HE HAD NOT FORMULATED A PLAN UPON THAT SCORE",
+      "hypothesis": "HE SAW THAT IN THE EXISTENCE OF REASON EVENTS HE HAD NOT FORMULATED A PLAN UPON THAT SCORE",
+      "edits": 2,
+      "reference_words": 18
+    },
+    {
+      "id": "2277-149897-0004",
+      "reference": "HE WAS GETTING SOME VAGUE COMFORT OUT OF A GOOD CIGAR BUT IT WAS NO PANACEA FOR THE ILL WHICH AFFECTED HIM",
+      "hypothesis": "HE WAS GETTING SOME BAG COME FORTH OUT OF A GOOD SUGAR BUT IT WAS NO PENATIA FOR THE ILL WHICH EFFECTED HIM",
+      "edits": 6,
+      "reference_words": 22
+    },
+    {
+      "id": "2277-149897-0006",
+      "reference": "THEN HE CALLED HARRY THE BOY OF ALL WORK AROUND THE PLACE",
+      "hypothesis": "THEN HE CALLED HARRY THE BOY OF ALL WORK AROUND THE PLACE",
+      "edits": 0,
+      "reference_words": 12
+    },
+    {
+      "id": "2277-149897-0007",
+      "reference": "YOU TAKE THIS TO THIS ADDRESS HE SAID HANDING HIM THE ENVELOPE AND GIVE IT TO MISSUS HURSTWOOD YES SIR SAID THE BOY",
+      "hypothesis": "YOU TAKE THIS TO THIS ADDRESS HE SAID HANDING HIM THE ENVELOPE AND GIVE IT TO MISSUS HERSTWOOD YES SIR SAID THE BOY",
+      "edits": 1,
+      "reference_words": 23
+    },
+    {
+      "id": "2277-149897-0008",
+      "reference": "ANY ANSWER I GUESS NOT",
+      "hypothesis": "ANY ANSWER I GUESS NOT",
+      "edits": 0,
+      "reference_words": 5
+    },
+    {
+      "id": "2277-149897-0009",
+      "reference": "THE BOY HASTENED AWAY AND THE MANAGER FELL TO HIS MUSINGS",
+      "hypothesis": "THE BOY HASTENED AWAY AND THE MANNER FELL TO HIS MUSINGS",
+      "edits": 1,
+      "reference_words": 11
+    },
+    {
+      "id": "2277-149897-0010",
+      "reference": "HE WAS BEATEN FOR TO NIGHT AND HE MIGHT JUST AS WELL MAKE THE BEST OF IT",
+      "hypothesis": "HE WAS BEATEN FOR TONIGHT AND HE MIGHT JUST AS WELL MAKE THE BEST OF IT",
+      "edits": 2,
+      "reference_words": 17
+    },
+    {
+      "id": "2277-149897-0011",
+      "reference": "SHE WOULD TAKE THE ENVELOPE AND KNOW THAT SHE HAD TRIUMPHED",
+      "hypothesis": "SHE WOULD TAKE THE ENVELOPE AND KNOW THAT SHE HAD TRIUMPHED",
+      "edits": 0,
+      "reference_words": 11
+    },
+    {
+      "id": "2277-149897-0012",
+      "reference": "IF HE ONLY HAD THAT LETTER BACK HE WOULDN'T SEND IT",
+      "hypothesis": "IF HE ONLY HAD THAT LETTER BACK HE WOULDN'T SEND IT",
+      "edits": 0,
+      "reference_words": 12
+    },
+    {
+      "id": "2277-149897-0013",
+      "reference": "FOR RELIEF HE AROSE AND JOINED IN CONVERSATION WITH A FEW FRIENDS WHO WERE DRINKING",
+      "hypothesis": "FOR RELIEF HE AROSE AND JOINED IN THE CONVERSATION WITH A FEW FRIENDS HE WERE DRINKING",
+      "edits": 2,
+      "reference_words": 15
+    },
+    {
+      "id": "2277-149897-0014",
+      "reference": "ALL THE TIME HIS THOUGHTS WOULD RUN OUT TO HIS HOME AND SEE THE SCENE BEING THEREIN ENACTED",
+      "hypothesis": "ALL THE TIME HIS THOUGHTS WOULD RUN OUT TO HIS HOME AND SEE THE SCENE BEING THEREIN INACTED",
+      "edits": 1,
+      "reference_words": 18
+    },
+    {
+      "id": "2277-149897-0015",
+      "reference": "IN ABOUT AN HOUR AND THREE QUARTERS THE BOY RETURNED",
+      "hypothesis": "IN ABOUT AN HOUR IN THREE QUARTERS THE BOY RETURNED",
+      "edits": 1,
+      "reference_words": 10
+    },
+    {
+      "id": "2277-149897-0016",
+      "reference": "HE FANCIED AS HE SAT AT HIS DESK THAT NOTHING WOULD BE DONE FOR A WEEK OR TWO MEANWHILE HE WOULD HAVE TIME TO THINK",
+      "hypothesis": "HE FANCIED AS HE SAT AT HIS DESK THAT NOTHING WOULD BE DONE FOR A WEEK OR TWO MEANWHILE HE WOULD HAVE TIME TO THINK",
+      "edits": 0,
+      "reference_words": 25
+    },
+    {
+      "id": "2277-149897-0017",
+      "reference": "HOW ABOUT THAT NOW HIS PAIN AT HER FAILURE TO MEET OR WRITE HIM RAPIDLY INCREASED AS HE DEVOTED HIMSELF TO THIS SUBJECT",
+      "hypothesis": "HOW ABOUT THAT NOW HIS PAIN AT HER FAILURE TO MEET OR RIGHT HIM RAPIDLY ENCOUNTERED AS HE DEVOTED HIMSELF TO THE SUBJECT",
+      "edits": 3,
+      "reference_words": 23
+    },
+    {
+      "id": "2277-149897-0018",
+      "reference": "HE DECIDED TO WRITE HER CARE OF THE WEST SIDE POST OFFICE AND ASK FOR AN EXPLANATION AS WELL AS TO HAVE HER MEET HIM",
+      "hypothesis": "HE DECIDED TO WRITE HER CARE OF THE WEST SIDE POST OFFICE AND ASK FOR AN EXPLANATION AS WELL AS TO HAVE HER MEET HIM",
+      "edits": 0,
+      "reference_words": 25
+    },
+    {
+      "id": "2277-149897-0019",
+      "reference": "THREE O'CLOCK CAME FOUR FIVE SIX AND NO LETTER",
+      "hypothesis": "THREE O'CLOCK CAME FOUR O'CLOCK CAME FIVE O'CLOCK CAME NO LETTER",
+      "edits": 6,
+      "reference_words": 10
+    },
+    {
+      "id": "2277-149897-0020",
+      "reference": "THE HELPLESS MANAGER PACED THE FLOOR AND GRIMLY ENDURED THE GLOOM OF DEFEAT",
+      "hypothesis": "THE HELPLESS MANNER PAYS THE FLOOR AND GRIMLY ENDURED THE GLOOM OF DEFEAT",
+      "edits": 2,
+      "reference_words": 13
+    },
+    {
+      "id": "2277-149897-0021",
+      "reference": "HE SAW A BUSY SATURDAY USHERED OUT THE SABBATH IN AND NOTHING DONE",
+      "hypothesis": "HE SAW A BUSY SATURDAY USHERED OUT THE SABATH IN AND NOTHING DONE",
+      "edits": 1,
+      "reference_words": 13
+    },
+    {
+      "id": "2277-149897-0023",
+      "reference": "IT WAS THE WORST SUNDAY HE HAD SPENT IN HIS LIFE",
+      "hypothesis": "IT WAS THE WORST SUNDAY HE HAD SPENT IN HIS LIFE",
+      "edits": 0,
+      "reference_words": 11
+    },
+    {
+      "id": "2277-149897-0024",
+      "reference": "IT SEEMED AS IF HIS FAMILY TROUBLES WERE JUST BEGINNING",
+      "hypothesis": "IT SEEMED AS IF HIS FAMILY TROUBLES WERE JUST BEGINNING",
+      "edits": 0,
+      "reference_words": 10
+    },
+    {
+      "id": "2277-149897-0025",
+      "reference": "HE WAS QUITE CERTAIN NOW THAT SHE KNEW HE WAS MARRIED AND WAS ANGERED AT HIS PERFIDY",
+      "hypothesis": "HE WAS QUITE CERTAIN NOW THAT SHE KNEW HE WAS MARRIED AND WAS ENGAGED AT HIS PERFIDY",
+      "edits": 1,
+      "reference_words": 17
+    },
+    {
+      "id": "2277-149897-0026",
+      "reference": "HE HAD LOVED HER EARNESTLY ENOUGH BUT NOW THAT THE POSSIBILITY OF LOSING HER STARED HIM IN THE FACE SHE SEEMED MUCH MORE ATTRACTIVE",
+      "hypothesis": "HE HAD LOVED HER ETERNALLY ENOUGH BUT NOW THAT THE POSSIBILITY OF LOSING HER STARED HIM IN THE FACE SHE SEEMED MUCH MORE ATTRACTIVE",
+      "edits": 1,
+      "reference_words": 24
+    },
+    {
+      "id": "2277-149897-0027",
+      "reference": "HE WOULD GO TO HER AND TELL HER ALL HIS FAMILY COMPLICATIONS",
+      "hypothesis": "HE WOULD GO TO HER AND TELL HER ALL HIS FAMILY COMPLICATIONS",
+      "edits": 0,
+      "reference_words": 12
+    },
+    {
+      "id": "2277-149897-0028",
+      "reference": "HE WOULD EXPLAIN TO HER JUST WHERE HE STOOD AND HOW MUCH HE NEEDED HER",
+      "hypothesis": "HE WOULD EXPLAIN TO HER JUST WHERE HE STOOD AND HOW MUCH HE NEEDED HER",
+      "edits": 0,
+      "reference_words": 15
+    },
+    {
+      "id": "2277-149897-0029",
+      "reference": "HE DID MANAGE TO BRING HIMSELF INTO THE MOOD TO GO OUT TO CARRIE BUT WHEN HE GOT IN OGDEN PLACE HE THOUGHT HE SAW A MAN WATCHING HIM AND WENT AWAY",
+      "hypothesis": "HE DID MANAGE TO BRING HIMSELF INTO THE MOOD TO GO OUT TO KERRY BUT WHEN HE GOT IN OGDEN PLACE HE THOUGHT HE SAW A MAN WATCHING HIM AND WENT TO AWAY",
+      "edits": 2,
+      "reference_words": 32
+    },
+    {
+      "id": "2277-149897-0030",
+      "reference": "HE DID NOT GO WITHIN A BLOCK OF THE HOUSE",
+      "hypothesis": "HE DID NOT GO WITHIN A BLOCK OF THE HOUSE",
+      "edits": 0,
+      "reference_words": 10
+    },
+    {
+      "id": "2277-149897-0031",
+      "reference": "HE TROUBLED OVER MANY LITTLE DETAILS AND TALKED PERFUNCTORILY TO EVERYBODY",
+      "hypothesis": "HE TREBBLED OVER MANY LITTLE DETAILS AND TALKED PROFUNDLY TO EVERYBODY",
+      "edits": 2,
+      "reference_words": 11
+    },
+    {
+      "id": "2277-149897-0032",
+      "reference": "HE STAYED AT HIS DESK LONG AFTER ALL OTHERS HAD GONE AND ONLY QUITTED IT WHEN THE NIGHT WATCHMAN ON HIS ROUND PULLED AT THE FRONT DOOR TO SEE IF IT WAS SAFELY LOCKED",
+      "hypothesis": "HE STAYED AT HIS DESK LONG AFTER ALL OTHERS HAD GONE AND ONLY QUITETED IT WHEN THE NIGHT WATCHMAN ON HIS ROUND PULLED THAT THE FRONT DOOR TO SEE IF IT WAS SAFELY LOCKED",
+      "edits": 2,
+      "reference_words": 34
+    },
+    {
+      "id": "2277-149897-0033",
+      "reference": "ON WEDNESDAY HE RECEIVED ANOTHER POLITE NOTE FROM MC GREGOR JAMES AND HAY IT READ",
+      "hypothesis": "ON WEDNESDAY HE RECEIVED ANOTHER POLITE NOTE FROM MCGREGOR JAMES AND HE IT READ",
+      "edits": 3,
+      "reference_words": 15
+    },
+    {
+      "id": "2277-149897-0035",
+      "reference": "VERY TRULY YOURS ET CETERA COMPROMISE",
+      "hypothesis": "VERY TRULY YOURS ETC COMPROMISE",
+      "edits": 2,
+      "reference_words": 6
+    },
+    {
+      "id": "2277-149897-0036",
+      "reference": "SO HERE IT WAS SPREAD OUT CLEAR BEFORE HIM AND NOW HE KNEW WHAT TO EXPECT",
+      "hypothesis": "SO HERE IT WAS SPREAD OUT CLEAR BEFORE HIM AND NOW HE KNEW WHAT TO EXPECT",
+      "edits": 0,
+      "reference_words": 16
+    },
+    {
+      "id": "2277-149897-0037",
+      "reference": "IF HE DIDN'T GO AND SEE THEM THEY WOULD SUE HIM PROMPTLY",
+      "hypothesis": "IF HE DIDN'T GO AND SEE THEM THEY WOULD SUE HIM PROMPTLY",
+      "edits": 0,
+      "reference_words": 13
+    },
+    {
+      "id": "2277-149874-0001",
+      "reference": "TO CARRIE THE SOUND OF THE LITTLE BELLS UPON THE HORSE CARS AS THEY TINKLED IN AND OUT OF HEARING WAS AS PLEASING AS IT WAS NOVEL",
+      "hypothesis": "TO CARRY THE SOUND OF THE LITTLE BELLS UPON THE HORSE CARTS AS THEY TINGLED IN AND OUT OF HEARING WAS AS PLEASE AS IT WAS NOBLE",
+      "edits": 5,
+      "reference_words": 27
+    },
+    {
+      "id": "2277-149874-0002",
+      "reference": "TO HIM THE PRESENCE OR ABSENCE OF HIS WIFE'S SISTER WAS A MATTER OF INDIFFERENCE",
+      "hypothesis": "TO HIM THE PRESENCE OR ABSENCE OF HIS WIFE'S SISTER WAS A MATTER OF INDIFERENCE",
+      "edits": 1,
+      "reference_words": 16
+    },
+    {
+      "id": "2277-149874-0003",
+      "reference": "HE WAS OF A CLEAN SAVING DISPOSITION AND HAD ALREADY PAID A NUMBER OF MONTHLY INSTALMENTS ON TWO LOTS FAR OUT ON THE WEST SIDE",
+      "hypothesis": "HE WAS OF A CLEAN SAVING DISPOSITION AND HAD ALREADY PAID A NUMBER OF MONTHLY INSTALLMENTS ON TWO LOTS FAR OUT ON THE WEST SIDE",
+      "edits": 1,
+      "reference_words": 25
+    },
+    {
+      "id": "2277-149874-0004",
+      "reference": "HIS AMBITION WAS SOME DAY TO BUILD A HOUSE ON THEM",
+      "hypothesis": "HIS EMBASSY WAS SOME DAY TO BUILD A HOUSE ON THEM",
+      "edits": 1,
+      "reference_words": 11
+    },
+    {
+      "id": "2277-149874-0005",
+      "reference": "SHE HAD SOME SLIGHT GIFT OF OBSERVATION AND THAT SENSE SO RICH IN EVERY WOMAN INTUITION",
+      "hypothesis": "SHE HAD SOME SLIGHT GIFT OF OBSERVATION AND THAT SENSE SO RICH IN EVERY WOMAN INTUITITION",
+      "edits": 1,
+      "reference_words": 16
+    },
+    {
+      "id": "2277-149874-0006",
+      "reference": "THE WALLS OF THE ROOMS WERE DISCORDANTLY PAPERED",
+      "hypothesis": "THE WALLS OF THE ROOMS WERE DISCORDANTLY PAPERED",
+      "edits": 0,
+      "reference_words": 8
+    },
+    {
+      "id": "2277-149874-0007",
+      "reference": "THE FLOORS WERE COVERED WITH MATTING AND THE HALL LAID WITH A THIN RAG CARPET",
+      "hypothesis": "THE FLOORS WERE COVERED WITH MATTING AND THE HALL LAYED WITH A THIN RAG COTTE",
+      "edits": 2,
+      "reference_words": 15
+    },
+    {
+      "id": "2277-149874-0008",
+      "reference": "THEN SHE WALKED AND SANG TO IT UNTIL HANSON DISTURBED IN HIS READING CAME AND TOOK IT",
+      "hypothesis": "THEN SHE WALKED AND SANG TO IT UNTIL HANSEN DISTURBED HIS READING CAME AND TOOK IT",
+      "edits": 2,
+      "reference_words": 17
+    },
+    {
+      "id": "2277-149874-0009",
+      "reference": "ONE COULD SEE THAT HE WAS VERY MUCH WRAPPED UP IN HIS OFFSPRING",
+      "hypothesis": "ONE COULD SEE THAT HE WAS VERY MUCH RAPPED UP IN HIS OFFSPRING",
+      "edits": 1,
+      "reference_words": 13
+    },
+    {
+      "id": "2277-149874-0010",
+      "reference": "NOW NOW HE SAID WALKING THERE THERE AND THERE WAS A CERTAIN SWEDISH ACCENT NOTICEABLE IN HIS VOICE",
+      "hypothesis": "NOW NOW HE SAID WALK THRU THERE AND THERE AND THERE WAS A CERTAIN SWEETISH ACCENT NOTICABLE IN HIS VOICE",
+      "edits": 5,
+      "reference_words": 18
+    },
+    {
+      "id": "2277-149874-0011",
+      "reference": "HE SEEMED TO BE THINKING OF SOMETHING ELSE",
+      "hypothesis": "HE SEEMED TO BE THINKING OF SOMETHING ELSE",
+      "edits": 0,
+      "reference_words": 8
+    },
+    {
+      "id": "2277-149874-0012",
+      "reference": "MINNIE BEGAN TO EXPLAIN BUT HER HUSBAND TOOK THIS PART OF THE CONVERSATION TO HIMSELF",
+      "hypothesis": "MANY BEGAN TO EXPLAIN BUT HER HUSBAND TOOK THIS PART OF THE CONVERSATION TO HIMSELF",
+      "edits": 1,
+      "reference_words": 15
+    },
+    {
+      "id": "2277-149874-0013",
+      "reference": "YOU COULD GET HOME EASY TOO IT ISN'T VERY FAR",
+      "hypothesis": "YOU COULD GET HOME EASY TOO IT ISN'T VERY FAR",
+      "edits": 0,
+      "reference_words": 11
+    },
+    {
+      "id": "2277-149874-0014",
+      "reference": "SHE ASKED MINNIE FOR INK AND PAPER WHICH WERE UPON THE MANTEL IN THE DINING ROOM AND WHEN THE LATTER HAD GONE TO BED AT TEN GOT OUT DROUET'S CARD AND WROTE HIM",
+      "hypothesis": "SHE ASKED MINNIE FOR INK AND PAPER WHICH WERE UPON THE MANTLE IN THE DINING ROOM AND WHEN THE LETTER HAD GONE TO BED AT TEN GOT OUT DREW HIS CARD AND WROTE HIM",
+      "edits": 4,
+      "reference_words": 34
+    },
+    {
+      "id": "2277-149874-0015",
+      "reference": "SHE WANTED TO MAKE SOME REFERENCE TO THEIR RELATIONS UPON THE TRAIN BUT WAS TOO TIMID",
+      "hypothesis": "SHE WANTED TO MAKE SOME REFERENCE TO THEIR RELATIONS UPON THE TRAIN BUT WAS TOO TIMID",
+      "edits": 0,
+      "reference_words": 16
+    },
+    {
+      "id": "2277-149874-0016",
+      "reference": "ANYTHING WAS GOOD ENOUGH SO LONG AS IT PAID SAY FIVE DOLLARS A WEEK TO BEGIN WITH",
+      "hypothesis": "ANYTHING WAS GOOD ENOUGH SO LONG AS IT PAID SAY FIVE DOLLARS A WEEK TO BEGIN WITH",
+      "edits": 0,
+      "reference_words": 17
+    },
+    {
+      "id": "2277-149874-0017",
+      "reference": "A SHOP GIRL WAS THE DESTINY PREFIGURED FOR THE NEWCOMER",
+      "hypothesis": "A SHOP GIRL WAS THE DESTINY PREFIGURED FOR THE NEWCOMER",
+      "edits": 0,
+      "reference_words": 10
+    },
+    {
+      "id": "2277-149874-0018",
+      "reference": "IT WAS UNDER SUCH AUSPICIOUS CIRCUMSTANCES THAT SHE STARTED OUT THIS MORNING TO LOOK FOR WORK",
+      "hypothesis": "IT WAS UNDER SUCH OBSCENE CIRCUMSTANCES THAT SHE STARTED OUT THIS MORNING TO LOOK FOR WORK",
+      "edits": 1,
+      "reference_words": 16
+    },
+    {
+      "id": "2277-149874-0019",
+      "reference": "NARROW BOARD WALKS EXTENDED OUT PASSING HERE A HOUSE AND THERE A STORE AT FAR INTERVALS EVENTUALLY ENDING ON THE OPEN PRAIRIE",
+      "hypothesis": "NERO BOARD WALKS EXTENDED OUT PASSING HERE A HOUSE AND THERE A STORE AT FAR INTERVALS EVENTUALLY ENDING ON THE OPEN PRAIRIE",
+      "edits": 1,
+      "reference_words": 22
+    },
+    {
+      "id": "2277-149874-0020",
+      "reference": "IT GAVE AN IMPOSING APPEARANCE TO MOST OF THE WHOLESALE HOUSES WHOSE OFFICES WERE UPON THE GROUND FLOOR AND IN PLAIN VIEW OF THE STREET",
+      "hypothesis": "IT GAVE AN IMPOSING APPEARANCE TO MOST OF THE HOUSEHOLD HOUSEHOLDERS WERE UPON THE GROUND FLOOR AND IN PLAIN VIEW OF THE STREET",
+      "edits": 4,
+      "reference_words": 25
+    },
+    {
+      "id": "2277-149874-0021",
+      "reference": "THESE VAST BUILDINGS WHAT WERE THEY",
+      "hypothesis": "THESE VAST BUILDINGS WHAT WERE THEY",
+      "edits": 0,
+      "reference_words": 6
+    },
+    {
+      "id": "2035-147960-0000",
+      "reference": "SHE WAS FOUR YEARS OLDER THAN I TO BE SURE AND HAD SEEN MORE OF THE WORLD BUT I WAS A BOY AND SHE WAS A GIRL AND I RESENTED HER PROTECTING MANNER",
+      "hypothesis": "SHE WAS FOUR YEARS OLDER THAN I TO BE SURE AND HAD SEEN MORE OF THE WORLD BUT I WAS A BOY AND SHE WAS A GIRL AND I RESENTED HER PROTECTING MANNER",
+      "edits": 0,
+      "reference_words": 33
+    },
+    {
+      "id": "2035-147960-0001",
+      "reference": "THIS CHANGE CAME ABOUT FROM AN ADVENTURE WE HAD TOGETHER",
+      "hypothesis": "THIS CHANGE CAME ABOUT FROM AN ADVENTURE WE HAD TOGETHER",
+      "edits": 0,
+      "reference_words": 10
+    },
+    {
+      "id": "2035-147960-0002",
+      "reference": "ONE DAY WHEN I RODE OVER TO THE SHIMERDAS I FOUND ANTONIA STARTING OFF ON FOOT FOR RUSSIAN PETER'S HOUSE TO BORROW A SPADE AMBROSCH NEEDED",
+      "hypothesis": "ONE DAY WHEN I RODE OVER TO THE SHERMETTAS I FOUND ANATONIA STARTING OFF ON FOOT FOR RUSSIAN PETER'S HOUSE TO BARROW A SPAID AMBROACH NEEDED",
+      "edits": 5,
+      "reference_words": 27
+    },
+    {
+      "id": "2035-147960-0003",
+      "reference": "THERE HAD BEEN ANOTHER BLACK FROST THE NIGHT BEFORE AND THE AIR WAS CLEAR AND HEADY AS WINE",
+      "hypothesis": "THERE HAD BEEN ANOTHER BLACK FROST THE NIGHT BEFORE AND THE AIR WAS CLEAR AND HEAVY AS WINE",
+      "edits": 1,
+      "reference_words": 18
+    },
+    {
+      "id": "2035-147960-0004",
+      "reference": "IT WAS ON ONE OF THESE GRAVEL BEDS THAT I MET MY ADVENTURE",
+      "hypothesis": "IT WAS ON ONE OF THESE GRAVEL BEDS THAT I MET MY ADVENTURE",
+      "edits": 0,
+      "reference_words": 13
+    },
+    {
+      "id": "2035-147960-0005",
+      "reference": "I WHIRLED ROUND AND THERE ON ONE OF THOSE DRY GRAVEL BEDS WAS THE BIGGEST SNAKE I HAD EVER SEEN",
+      "hypothesis": "I WHIRLED ROUND AND THERE ON ONE OF THOSE DRY GRAVEL BEDS WAS THE BIGGEST SNAKE I HAD EVER SEEN",
+      "edits": 0,
+      "reference_words": 20
+    },
+    {
+      "id": "2035-147960-0006",
+      "reference": "I KNOW I AM JUST AWFUL JIM I WAS SO SCARED",
+      "hypothesis": "I KNOW I'M JUST A FOOL JIM I WAS SO SCARED",
+      "edits": 3,
+      "reference_words": 11
+    },
+    {
+      "id": "2035-147960-0007",
+      "reference": "I NEVER KNOW YOU WAS SO BRAVE JIM SHE WENT ON COMFORTINGLY",
+      "hypothesis": "I NEVER KNEW YOU WAS SO BRAVE JIM SHE WENT ON CONFORTINGLY",
+      "edits": 2,
+      "reference_words": 12
+    },
+    {
+      "id": "2035-147960-0008",
+      "reference": "A FAINT FETID SMELL CAME FROM HIM AND A THREAD OF GREEN LIQUID OOZED FROM HIS CRUSHED HEAD",
+      "hypothesis": "A FAINTED SMELL CAME FROM HIM AND A THREAD OF GREEN LIQUID OOZED FROM HIS CRUSHED HEAD",
+      "edits": 2,
+      "reference_words": 18
+    },
+    {
+      "id": "2035-147960-0009",
+      "reference": "LOOK TONY THAT'S HIS POISON I SAID",
+      "hypothesis": "LOOK TO ANY THAT'S HIS POISON I SAID",
+      "edits": 2,
+      "reference_words": 8
+    },
+    {
+      "id": "2035-147960-0010",
+      "reference": "I EXPLAINED TO ANTONIA HOW THIS MEANT THAT HE WAS TWENTY FOUR YEARS OLD THAT HE MUST HAVE BEEN THERE WHEN WHITE MEN FIRST CAME LEFT ON FROM BUFFALO AND INDIAN TIMES",
+      "hypothesis": "I EXPLAINED TO ANTONIA HOW THIS MIGHT HAVE BEEN THERE WHEN WHITE MAN FIRST CAME LAUGH ON FROM BUFFALO AND INDIAN TIMES",
+      "edits": 13,
+      "reference_words": 32
+    },
+    {
+      "id": "2035-147960-0011",
+      "reference": "WE DECIDED THAT ANTONIA SHOULD RIDE DUDE HOME AND I WOULD WALK",
+      "hypothesis": "WE DECIDED THAT ANTOINEA SHOULD RIDE DUET HOME AND I WOULD WALK",
+      "edits": 2,
+      "reference_words": 12
+    },
+    {
+      "id": "2035-147960-0012",
+      "reference": "I FOLLOWED WITH THE SPADE OVER MY SHOULDER DRAGGING MY SNAKE",
+      "hypothesis": "I FOLLOWED WITH THE SPADE OVER MY SHOULDER DRAGGING MY SNAKE",
+      "edits": 0,
+      "reference_words": 11
+    },
+    {
+      "id": "2035-147960-0013",
+      "reference": "OTTO FUCHS WAS THE FIRST ONE WE MET",
+      "hypothesis": "OTTO FUCHS WAS THE FIRST ONE WE MET",
+      "edits": 0,
+      "reference_words": 8
+    },
+    {
+      "id": "2035-147960-0014",
+      "reference": "HE COULD STAND RIGHT UP AND TALK TO YOU HE COULD DID HE FIGHT HARD",
+      "hypothesis": "HE COULD STAND RIGHT UP AND TALK TO YOU HE COULD DID HE FIGHT HARD",
+      "edits": 0,
+      "reference_words": 15
+    },
+    {
+      "id": "2035-147960-0015",
+      "reference": "OTTO WINKED AT ME",
+      "hypothesis": "OTTAW WINKED AT ME",
+      "edits": 1,
+      "reference_words": 4
+    },
+    {
+      "id": "2035-147960-0016",
+      "reference": "A SNAKE OF HIS SIZE IN FIGHTING TRIM WOULD BE MORE THAN ANY BOY COULD HANDLE",
+      "hypothesis": "THE SNAKE OF HIS SIZES IN FIGHTING TRIM WOULD BE MORE THAN A BOY COULD HANDLE",
+      "edits": 3,
+      "reference_words": 16
+    },
+    {
+      "id": "2035-152373-0000",
+      "reference": "THROUGHOUT THIS CENTURY THE POWER OF THE CHURCH WAS CONSTANTLY ON THE INCREASE AND IS VISIBLE IN MANY IMPORTANT CHANGES",
+      "hypothesis": "THEREWITHOUT THE CENTURY THE POWER OF THE CHURCH WAS CONSTANTLY ON THE INCREASE AND AS VISIBLE AND MANY IMPORTANT CHANGES",
+      "edits": 4,
+      "reference_words": 20
+    },
+    {
+      "id": "2035-152373-0002",
+      "reference": "IT IS PRETTY CLEAR ALSO THAT THE LAST RALLY OF DRUIDISM AGAINST CHRISTIANITY TOOK PLACE BEHIND HIS BANNER ON THE PLAIN OF MOIRA",
+      "hypothesis": "IT IS PRETTY CLEAR ALSO THAT THE LAST REALLY OF DRUIDISM AGAINST CHRISTIANITY TOOK PLACE BEHIND HIS BANNER ON THE PLAIN OF MOIRA",
+      "edits": 1,
+      "reference_words": 23
+    },
+    {
+      "id": "2035-152373-0003",
+      "reference": "THE POETS OF SUCCEEDING AGES HAVE DWELT MUCH IN DETAIL ON THE OCCURRENCES OF THIS MEMORABLE DAY",
+      "hypothesis": "THE PEACEOFS SUCCEEDING AGES HAVE DWELT MUCH IN DETAIL ON THE OCCURRENCES OF THIS MEMORABLE DAY",
+      "edits": 2,
+      "reference_words": 17
+    },
+    {
+      "id": "2035-152373-0004",
+      "reference": "LIKE THE TWO KINGS OF SPARTA THEY REIGNED JOINTLY DIVIDING BETWEEN THEM THE LABOURS AND CARES OF STATE",
+      "hypothesis": "LIKE THE TWO KINGS OF SPARTA THEY REIGNED JOINTLY DEVIDING BETWEEN THEM THE LABOURS AND CARES OF STATE",
+      "edits": 1,
+      "reference_words": 18
+    },
+    {
+      "id": "2035-152373-0006",
+      "reference": "LASTLY THE ROYAL BROTHERS FELL THEMSELVES VICTIMS TO THE EPIDEMIC WHICH SO SADLY SIGNALIZES THEIR REIGN",
+      "hypothesis": "LASTLY THE ROYAL BROTHERS FELL THEMSELVES VICTIMS TO THE EPIDEMIC WHICH SO SADLY SIGNALIZES THEIR REIGN",
+      "edits": 0,
+      "reference_words": 16
+    },
+    {
+      "id": "2035-152373-0008",
+      "reference": "AS LEADING TO THE MENTION OF OTHER INTERESTING EVENTS WE MUST SET THIS INROAD CLEARLY BEFORE THE READER",
+      "hypothesis": "AS LEADING TO THE MENTION OF OTHER INTERESTING EVENTS WE MUST SET THIS INROLLED CLEARLY BEFORE THE READER",
+      "edits": 1,
+      "reference_words": 18
+    },
+    {
+      "id": "2035-152373-0010",
+      "reference": "THE KINGDOM OF NORTHUMBRIA AS THE NAME IMPLIES EMBRACED NEARLY ALL THE COUNTRY FROM THE HUMBER TO THE PICTISH BORDER",
+      "hypothesis": "THE KINGDOM OF NORTHUMBRIA AS THE NAME IMPLIES EMBRACE NEARLY ALL THE COUNTRY FROM THE HUMBER TO THE PICTISH BORDER",
+      "edits": 1,
+      "reference_words": 20
+    },
+    {
+      "id": "2035-152373-0014",
+      "reference": "SO SLOW AND PATIENT IS THE PROCESS BY WHICH CHRISTIANITY INFUSES ITSELF INTO THE SOCIAL LIFE OF A CONVERTED PEOPLE",
+      "hypothesis": "SO SLOE AND PATIENT IS THE PROCESS BY WHICH CHRISTIANITY EFFUSES ITS SELF INTO A CONVERTED PEOPLE",
+      "edits": 8,
+      "reference_words": 20
+    },
+    {
+      "id": "2035-152373-0015",
+      "reference": "HERE THE HOLY PRELATE OF FERNS MET HIM AND RELATED A VISION IN WHICH HE HAD BEEN INSTRUCTED TO DEMAND THE ABOLITION OF THE IMPOST",
+      "hypothesis": "HERE THE HOLY PRELAte OF FEARNS MET HIM AND RELATED A VISION IN WHICH HE HAD BEEN INSTRUCTED TO DEMAND THE ABOLITION OF THE IMPOST",
+      "edits": 1,
+      "reference_words": 25
+    },
+    {
+      "id": "2035-152373-0016",
+      "reference": "THE TRIBUTE WAS AT THIS PERIOD ENORMOUS FIFTEEN THOUSAND HEAD OF CATTLE ANNUALLY",
+      "hypothesis": "THE TRIBULE WAS AT THIS PERIOD ENORMOUS FIFTEEN THOUSAND HEAD OF CATAL ANALY",
+      "edits": 3,
+      "reference_words": 13
+    },
+    {
+      "id": "2035-152373-0017",
+      "reference": "SAINT MOLING SURVIVED HIM THREE YEARS AND SAINT ADAMNAN SO INTIMATELY CONNECTED WITH HIS REIGN TEN YEARS",
+      "hypothesis": "SAINT MOULING SERVIDE HIM THREE YEARS AND SAINT EDAMNAHN SO INTIMITELY CONNECTED WITH HIS REIGN TEN YEARS",
+      "edits": 4,
+      "reference_words": 17
+    },
+    {
+      "id": "2035-152373-0018",
+      "reference": "NOTHING COULD BE MORE NATURAL THAN SUCH AN ASSEMBLY IN SUCH A PLACE AT SUCH A PERIOD",
+      "hypothesis": "NOTHING COULD BE MORE NATURAL THAN SUCH AN ASSEMBLY IN SUCH A PLACE AT SUCH A PERIOD",
+      "edits": 0,
+      "reference_words": 17
+    },
+    {
+      "id": "2035-147961-0001",
+      "reference": "PETER COULD GIVE NO VERY CLEAR ACCOUNT OF HIS TRANSACTIONS WITH CUTTER",
+      "hypothesis": "PETER COULD GIVE NO VERY CLEAR ACCOUNT OF HIS TRANSACTIONS WITH CUTTER",
+      "edits": 0,
+      "reference_words": 12
+    },
+    {
+      "id": "2035-147961-0002",
+      "reference": "SHE ASKED PETER TO WAIT A MOMENT AND WHEN SHE CAME BACK FROM THE KITCHEN SHE BROUGHT A BAG OF SANDWICHES AND DOUGHNUTS FOR US",
+      "hypothesis": "SHE ASKED PETER TO WAIT A MOMENT AND WHEN SHE CAME BACK FROM THE KITCHEN SHE BROUGHT A BAG OF SOUVENIRS AND DONUTS FOR US",
+      "edits": 2,
+      "reference_words": 25
+    },
+    {
+      "id": "2035-147961-0003",
+      "reference": "WE LAY STILL AND DID NOT TALK",
+      "hypothesis": "WE LAY STILL AND DID NOT TALK",
+      "edits": 0,
+      "reference_words": 7
+    },
+    {
+      "id": "2035-147961-0004",
+      "reference": "THE LITTLE HOUSE ON THE HILLSIDE WAS SO MUCH THE COLOR OF THE NIGHT THAT WE COULD NOT SEE IT AS WE CAME UP THE DRAW",
+      "hypothesis": "THE LITTLE HOUSE ON THE HILLSIDE WAS SO MUCH THE COLOR OF THE NIGHT THAT WE COULD NOT SEE IT AS WE CAME UP THE DRAW",
+      "edits": 0,
+      "reference_words": 26
+    },
+    {
+      "id": "2035-147961-0005",
+      "reference": "THEY MADE ME THINK OF DEFEATED ARMIES RETREATING OR OF GHOSTS WHO WERE TRYING DESPERATELY TO GET IN FOR SHELTER AND THEN WENT MOANING ON",
+      "hypothesis": "THEY MADE ME THINK OF DEFEATED ARMIES RETREATING OR OF GHOST WHO WERE TRYING DESPERATELY TO GET IN FOR SHELTER AND THEN WENT MOANING ON",
+      "edits": 1,
+      "reference_words": 25
+    },
+    {
+      "id": "2035-147961-0006",
+      "reference": "I COULD NOT TAKE MY EYES OFF THE MAN IN THE BED",
+      "hypothesis": "I COULD NOT TAKE MY EYES OFF THE MAN IN THE BED",
+      "edits": 0,
+      "reference_words": 12
+    },
+    {
+      "id": "2035-147961-0007",
+      "reference": "THE SHARP SMELL OF SPIRITS WENT THROUGH THE ROOM",
+      "hypothesis": "THE SHARP SMELL OF SPIRITS WENT THROUGH THE ROOM",
+      "edits": 0,
+      "reference_words": 9
+    },
+    {
+      "id": "2035-147961-0008",
+      "reference": "IT SEEMED TO ME THAT HE DESPISED HIM FOR BEING SO SIMPLE AND DOCILE",
+      "hypothesis": "IT SEEMED TO ME THAT HE DESPISED HIM FOR BEING SO SIMPLE AND DAISIL",
+      "edits": 1,
+      "reference_words": 14
+    },
+    {
+      "id": "2035-147961-0009",
+      "reference": "THE SICK MAN RAGED AND SHOOK HIS FIST",
+      "hypothesis": "THE SICK MAN RAGED AND SHOOK HIS FIST",
+      "edits": 0,
+      "reference_words": 8
+    }
+  ]
+}

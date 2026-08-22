@@ -1,0 +1,184 @@
+{
+  "format": "jaeger-single-remapped-audio-input-v1",
+  "architecture": {
+    "graph": "PCM->MiniCPM_tuned_Whisper->one_remapped_projector->Gemma",
+    "projector": "ReLU(1024->4096 frozen)->AvgPool5->4096->2560 trained",
+    "transcript_or_decoded_text_handoff": false,
+    "adapter": "/Users/jonathanjenkins/models/gemma-audio-adapter/adapter_trained_1k.npz"
+  },
+  "score": {
+    "correct": 6,
+    "n": 12,
+    "semantic_accuracy": 0.5
+  },
+  "rows": [
+    {
+      "case": "q00",
+      "answers": [
+        "four"
+      ],
+      "ok": true,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the Request:** The user has provided a transcribed speech (or a segment of one) and asked for an answer to that speech. The instruction is crucial: \"Give only the short final answer.\"\n2.  **Analyze the Input Speech:** The input is: \"WHAT IS TWO PLUS TWO\" (or possibly \"WHAT IS TWO PLUS TWO\" depending on how the transcription handles the initial sound, but the core phrase is clear).\n3.  **Determine the Answer:** The mathematical question is \"What is two plus two?\" The answer is four.\n4.",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q00.wav",
+      "audio_tokens": 11,
+      "encode_project_ms": 208.2,
+      "generate_ms": 2488.3,
+      "input_samples_received": 18800,
+      "transcript_handoff": false
+    },
+    {
+      "case": "q01",
+      "answers": [
+        "blue"
+      ],
+      "ok": true,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the Request:** The user has provided a transcribed speech (or a segment of it) and asked for an answer to that speech. The instruction is crucial: \"Give only the short final answer.\"\n2.  **Analyze the Input Speech:** The input is: \"WHAT COLOR IS THE SKY\" (The transcription is slightly garbled/choppy, but this is the clear meaning of the sound).\n3.  **Determine the Answer:** The question is \"What color is the sky?\" The standard, short, final answer is \"Blue.\"\n4.  **",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q01.wav",
+      "audio_tokens": 13,
+      "encode_project_ms": 50.4,
+      "generate_ms": 2419.5,
+      "input_samples_received": 21587,
+      "transcript_handoff": false
+    },
+    {
+      "case": "q02",
+      "answers": [
+        "seven"
+      ],
+      "ok": false,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the Request:** The user has provided a transcribed speech (or a segment of it) and asked for an answer to that speech. The instruction is crucial: \"Give only the short final answer.\"\n2.  **Analyze the Input Speech:** The speech is: \"HOW MANY DAYS IN A WEEK\" (or possibly \"HOW MANY DAYS IN A WEEK\" depending on the exact transcription, but the visual representation suggests this phrase).\n3.  **Determine the Question:** The question being asked is: \"How many days are in a week?\"\n4.  **Determine",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q02.wav",
+      "audio_tokens": 14,
+      "encode_project_ms": 49.3,
+      "generate_ms": 2435.6,
+      "input_samples_received": 22611,
+      "transcript_handoff": false
+    },
+    {
+      "case": "q03",
+      "answers": [
+        "paris"
+      ],
+      "ok": false,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the Request:** The user has provided an image/audio transcription (implied, as the text is garbled/unintelligible without context, but the prompt structure suggests it's a speech snippet) and asked for an answer to that speech. The constraint is: \"Give only the short final answer.\"\n2.  **Analyze the Input Text:** The provided text is: \"it is the capital of france\" (or something very similar, depending on how the garbled transcription reads, but the structure is there).\n3.  **Identify the Missing Information",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q03.wav",
+      "audio_tokens": 16,
+      "encode_project_ms": 54.1,
+      "generate_ms": 2453.8,
+      "input_samples_received": 26231,
+      "transcript_handoff": false
+    },
+    {
+      "case": "q04",
+      "answers": [
+        "seven"
+      ],
+      "ok": true,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the Request:** The user has provided a transcription of speech (or rather, the prompt *is* the speech, but it's garbled/unintelligible in the provided text block: \"WHAT IS TEN MINUS THREE\"). The user wants me to \"Answer the speech above now. Give only the short final answer.\"\n2.  **Transcribe/Interpret the Speech:** The garbled text is: \"WHAT IS TEN MINUS THREE\".\n3.  **Perform the Calculation:** $10 - 3 = 7$.\n4.",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q04.wav",
+      "audio_tokens": 13,
+      "encode_project_ms": 51.9,
+      "generate_ms": 2410.7,
+      "input_samples_received": 21401,
+      "transcript_handoff": false
+    },
+    {
+      "case": "q05",
+      "answers": [
+        "eight"
+      ],
+      "ok": true,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the Request:** The user has provided a transcribed speech segment (or rather, a segment that needs to be transcribed/understood) and asked for the \"short final answer.\"\n2.  **Analyze the Input Audio/Text:** The input is: \"HOW MANY LEGS DOES A SPIDER HAVE\" (or a very close phonetic match, as the transcription is often difficult).\n3.  **Identify the Question:** The question is: \"How many legs does a spider have?\"\n4.  **Determine the Answer:** A spider has eight legs.\n5.",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q05.wav",
+      "audio_tokens": 18,
+      "encode_project_ms": 51.5,
+      "generate_ms": 2416.3,
+      "input_samples_received": 30042,
+      "transcript_handoff": false
+    },
+    {
+      "case": "q06",
+      "answers": [
+        "jupiter"
+      ],
+      "ok": false,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the Request:** The user has provided an audio transcription (or a request to transcribe/understand an audio) and asked for a \"short final answer\" to the speech.\n2.  **Analyze the Input Audio/Text:** The input is: \"WHAT IS THE LARGEST PLANET\" (or possibly \"WHAT IS THE LARGEST PLANET\" depending on the exact audio quality, but the text provided is \"WHAT IS THE LARGEST PLANET\").\n3.  **Identify the Question:** The question is: \"What is the largest planet?\"\n4.",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q06.wav",
+      "audio_tokens": 14,
+      "encode_project_ms": 47.0,
+      "generate_ms": 2446.6,
+      "input_samples_received": 22887,
+      "transcript_handoff": false
+    },
+    {
+      "case": "q07",
+      "answers": [
+        "twenty five"
+      ],
+      "ok": false,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the Request:** The user has provided a transcribed speech (or rather, a garbled transcription of a speech) and asked for the answer to that speech. The instruction is crucial: \"Give only the short final answer.\"\n2.  **Analyze the Input Speech:** The input is: \"\u0648\u064e\u0647\u064f\u0648\u064e \u0623\u064e\u0633\u0652\u0641\u064e\u0627\u0631\u064f \u062e\u064e\u0645\u0652\u0633\u064e\u0629\u064d \u0641\u0650\u064a\" (Wa huwa asf\u0101ru kham\u1e63atin f\u012b).\n    *   *Self-Correction/Refinement:* The transcription provided by the user is likely a phonetic rendering of Arabic,",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q07.wav",
+      "audio_tokens": 14,
+      "encode_project_ms": 42.6,
+      "generate_ms": 2416.9,
+      "input_samples_received": 22887,
+      "transcript_handoff": false
+    },
+    {
+      "case": "q08",
+      "answers": [
+        "autumn"
+      ],
+      "ok": false,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the Request:** The user has provided a transcribed speech segment (or rather, a segment that needs to be transcribed/understood) and asked for an answer to that speech. The instruction is crucial: \"Give only the short final answer.\"\n2.  **Analyze the Input Audio/Text:** The input is: \"WHAT SEASON COMES AFTER SUMMER\" (or a similar phrase, depending on the exact audio quality, but the text provided is \"WHAT SEASON COMES AFTER SUMMER\").\n3.  **Determine the Question:** The question is: \"What season comes after summer",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q08.wav",
+      "audio_tokens": 17,
+      "encode_project_ms": 50.4,
+      "generate_ms": 2432.6,
+      "input_samples_received": 27160,
+      "transcript_handoff": false
+    },
+    {
+      "case": "q09",
+      "answers": [
+        "twenty four"
+      ],
+      "ok": true,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the Request:** The user has provided an audio transcription (or a request to transcribe/understand an audio) and asked for a \"short final answer.\"\n2.  **Analyze the Input Audio/Text:** The input is: \"HOW MANY HOURS IN A DAY\" (or possibly a slightly garbled version, but this is the most likely interpretation of the sound).\n3.  **Determine the Question:** The question is: \"How many hours are in a day?\"\n4.  **Calculate the Answer:** There are 24 hours in a day.",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q09.wav",
+      "audio_tokens": 14,
+      "encode_project_ms": 40.6,
+      "generate_ms": 2448.7,
+      "input_samples_received": 22611,
+      "transcript_handoff": false
+    },
+    {
+      "case": "q10",
+      "answers": [
+        "zero degrees celsius"
+      ],
+      "ok": false,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the Request:** The user has provided a transcribed speech (or a segment of one) and asked for an answer to that speech. The instruction is crucial: \"Give only the short final answer.\"\n2.  **Analyze the Input Speech:** The speech is: \"WHAT IS THE FREEZING POINT OF WATER\" (or possibly \"WHAT IS THE FREEZING POINT OF WATER\").\n3.  **Determine the Question:** The question is: \"What is the freezing point of water?\"\n4.  **Determine the Answer:** The freezing point of pure water at",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q10.wav",
+      "audio_tokens": 16,
+      "encode_project_ms": 51.5,
+      "generate_ms": 2424.0,
+      "input_samples_received": 26788,
+      "transcript_handoff": false
+    },
+    {
+      "case": "q11",
+      "answers": [
+        "shakespeare"
+      ],
+      "ok": true,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the Request:** The user has provided a transcribed speech (or a segment of one) and asked for an \"Answer\" to that speech. The instruction is to \"Give only the short final answer.\"\n2.  **Analyze the Input Speech:** The speech is: \"WHOSE ROUGH ROAMEO AND JULIET\" (or possibly \"WHOSE ROUGH ROAMEO AND JULIET\").\n3.  **Determine the Context/Meaning:** This phrase is highly fragmented and sounds like a line of dialogue, possibly from Shakespeare (Romeo and Juliet).",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q11.wav",
+      "audio_tokens": 16,
+      "encode_project_ms": 49.5,
+      "generate_ms": 2409.1,
+      "input_samples_received": 25561,
+      "transcript_handoff": false
+    }
+  ]
+}

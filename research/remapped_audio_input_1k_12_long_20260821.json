@@ -1,0 +1,184 @@
+{
+  "format": "jaeger-single-remapped-audio-input-v1",
+  "architecture": {
+    "graph": "PCM->MiniCPM_tuned_Whisper->one_remapped_projector->Gemma",
+    "projector": "ReLU(1024->4096 frozen)->AvgPool5->4096->2560 trained",
+    "transcript_or_decoded_text_handoff": false,
+    "adapter": "/Users/jonathanjenkins/models/gemma-audio-adapter/adapter_trained_1k.npz"
+  },
+  "score": {
+    "correct": 7,
+    "n": 12,
+    "semantic_accuracy": 0.5833333333333334
+  },
+  "rows": [
+    {
+      "case": "q00",
+      "answers": [
+        "four"
+      ],
+      "ok": true,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the input:** The user has provided a very short, fragmented input: \"WHAT IS TWO PLUS TWO\". (The transcription is likely \"WHAT IS TWO PLUS TWO\").\n2.  **Determine the task:** The user is asking a simple arithmetic question.\n3.  **Calculate the answer:** Two plus two equals four.\n4.  **Format the output:** The instructions require answering the spoken question directly in one short sentence, providing only the final answer.\n\n*(Self-Correction/Refinement: The input is likely \"WHAT IS TWO PLUS TWO\". The answer is \"Four.\")*Four.",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q00.wav",
+      "audio_tokens": 11,
+      "encode_project_ms": 189.4,
+      "generate_ms": 2655.3,
+      "input_samples_received": 18800,
+      "transcript_handoff": false
+    },
+    {
+      "case": "q01",
+      "answers": [
+        "blue"
+      ],
+      "ok": true,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the input:** The user has provided a soundbite/speech input: \"WHAT COLOR IS THE SKY\".\n2.  **Determine the task:** The user is asking a question (\"What color is the sky?\").\n3.  **Identify the persona/role:** I am a voice assistant.\n4.  **Determine the required output format:** Answer the spoken question directly in one short sentence. Output *only* the final answer.\n5.  **Formulate the answer:** The sky is typically blue (during the day).\n6.  **Refine the answer (short sentence):** The sky is blue. (Or: It is blue.)\n\n*(Self-Correction/Refinement: Since the input is a question, the output must be the answer.)*\n\n7.  **Final Output Generation.**The sky is blue.",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q01.wav",
+      "audio_tokens": 13,
+      "encode_project_ms": 49.9,
+      "generate_ms": 3518.6,
+      "input_samples_received": 21587,
+      "transcript_handoff": false
+    },
+    {
+      "case": "q02",
+      "answers": [
+        "seven"
+      ],
+      "ok": true,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the input:** The user has provided a very short, fragmented audio input: \"HOW MANY DAYS IN A WEEK\".\n2.  **Determine the goal:** The user is asking a factual question.\n3.  **Formulate the answer:** A week has seven days.\n4.  **Apply constraints:** The response must be a direct answer in one short sentence, without any extra commentary or thought process.\n5.  **Final Answer Construction:** There are seven days in a week. (Or simply: Seven.)There are seven days in a week.",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q02.wav",
+      "audio_tokens": 14,
+      "encode_project_ms": 56.8,
+      "generate_ms": 2437.1,
+      "input_samples_received": 22611,
+      "transcript_handoff": false
+    },
+    {
+      "case": "q03",
+      "answers": [
+        "paris"
+      ],
+      "ok": false,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the input:** The user has provided a very short, incomplete phrase: \"it is the capital of france\". (The audio quality/completeness suggests this is the beginning of a question or a statement that needs completion, but since the prompt is just the audio, I must treat it as the input.)\n2.  **Determine the goal:** The instruction is to act as a voice assistant, answer the spoken question directly in one short sentence, and output *only* the final answer.\n3.  **Identify the missing information:** The input \"it is the capital of france\" is a statement, not a question, unless it's meant to be followed by a question mark or context. However, if I treat this as a prompt that requires a completion or a response, I need to know what the user wants.\n4.  **Re-evaluate the prompt structure:** The user has provided a fragment. If I assume this fragment is the *entire* input, and I am supposed to answer a question, the question is missing.\n5.  **Hypothesize the intended question:** The most likely scenario is that the user was trying to ask, \"What is the capital of",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q03.wav",
+      "audio_tokens": 16,
+      "encode_project_ms": 49.1,
+      "generate_ms": 4815.6,
+      "input_samples_received": 26231,
+      "transcript_handoff": false
+    },
+    {
+      "case": "q04",
+      "answers": [
+        "seven"
+      ],
+      "ok": false,
+      "reply": "WHAT IS TEN MINUS THREE",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q04.wav",
+      "audio_tokens": 13,
+      "encode_project_ms": 49.4,
+      "generate_ms": 234.6,
+      "input_samples_received": 21401,
+      "transcript_handoff": false
+    },
+    {
+      "case": "q05",
+      "answers": [
+        "eight"
+      ],
+      "ok": true,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the input:** The input is a garbled or unclear audio segment: \"HOW MANY LEGS DOES A SPIDER HAVE\".\n2.  **Identify the core question:** The question is about the number of legs a spider has.\n3.  **Determine the factual answer:** Spiders have eight legs.\n4.  **Format the output:** The instruction requires answering the spoken question directly in one short sentence, providing only the final answer.\n\n*(Self-Correction/Refinement: The input is a question, so the output must be the answer.)*\n\n5.  **Final Answer Construction:** A spider has eight legs.A spider has eight legs.",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q05.wav",
+      "audio_tokens": 18,
+      "encode_project_ms": 40.6,
+      "generate_ms": 2851.1,
+      "input_samples_received": 30042,
+      "transcript_handoff": false
+    },
+    {
+      "case": "q06",
+      "answers": [
+        "jupiter"
+      ],
+      "ok": true,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the input:** The user has provided a very short, incomplete phrase: \"it is the largest planet\". (The transcription is slightly choppy, but the meaning is clear enough for context).\n2.  **Determine the goal:** The user is asking a question (implied by the context of a voice assistant interaction) and expects a direct, short answer.\n3.  **Identify the missing information/context:** The input itself is a statement fragment, not a complete question. However, if I assume the user is trying to identify *what* is the largest planet, the answer must be \"Jupiter.\"\n4.  **Formulate the answer:** The largest planet is Jupiter.\n5.  **Apply constraints:** The response must be a single, short sentence, directly answering the implied question.\n\n*(Self-Correction/Refinement: Since the input is just a fragment, I must assume the user is trying to elicit the identity of the subject being described.)*\n\n6.  **Final Answer Generation:** Jupiter. (Or a slightly more formal sentence if needed, but \"Jupiter\" is the most direct.)It is Jupiter.",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q06.wav",
+      "audio_tokens": 14,
+      "encode_project_ms": 49.6,
+      "generate_ms": 4617.3,
+      "input_samples_received": 22887,
+      "transcript_handoff": false
+    },
+    {
+      "case": "q07",
+      "answers": [
+        "twenty five"
+      ],
+      "ok": false,
+      "reply": "IS FIVE TIMES FIVE",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q07.wav",
+      "audio_tokens": 14,
+      "encode_project_ms": 38.7,
+      "generate_ms": 198.1,
+      "input_samples_received": 22887,
+      "transcript_handoff": false
+    },
+    {
+      "case": "q08",
+      "answers": [
+        "autumn"
+      ],
+      "ok": true,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the input:** The user has provided a very short, fragmented phrase: \"WHAT SEASON COMES AFTER SUMMER\". (The transcription is slightly garbled, but the intent is clear: a question about seasons).\n2.  **Identify the core question:** What season follows summer?\n3.  **Determine the answer:** Autumn (Fall).\n4.  **Review the constraints:**\n    *   Role: Voice Assistant.\n    *   Task: Answer the spoken question directly.\n    *   Format: One short sentence.\n    *   Constraint: Output *only* the final answer (no analysis, no thinking process).\n5.  **Formulate the response:** The season that comes after summer is autumn. (Keep it concise).\n\n6.  **Final Answer Generation:** Autumn. (Or a slightly more formal sentence if needed, but \"Autumn\" is the most direct and short).Autumn.",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q08.wav",
+      "audio_tokens": 17,
+      "encode_project_ms": 46.4,
+      "generate_ms": 3801.5,
+      "input_samples_received": 27160,
+      "transcript_handoff": false
+    },
+    {
+      "case": "q09",
+      "answers": [
+        "twenty four"
+      ],
+      "ok": true,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the input:** The user has provided a very short, fragmented phrase: \"HOW MANY HOURS IN A DAY\". (The transcription is slightly choppy, but the meaning is clear).\n2.  **Determine the question:** The user is asking for the number of hours in a day.\n3.  **Calculate the answer:** There are 24 hours in a day.\n4.  **Format the response:** The instructions require a direct answer in one short sentence, without any extra commentary.\n5.  **Final Answer Construction:** \"There are twenty-four hours in a day.\" (Or a simpler version).There are twenty-four hours in a day.",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q09.wav",
+      "audio_tokens": 14,
+      "encode_project_ms": 38.1,
+      "generate_ms": 2836.6,
+      "input_samples_received": 22611,
+      "transcript_handoff": false
+    },
+    {
+      "case": "q10",
+      "answers": [
+        "zero degrees celsius"
+      ],
+      "ok": false,
+      "reply": "thought\nThinking Process:\n\n1.  **Analyze the input:** The user has provided a very short, fragmented phrase: \"it is the freezing point of water\".\n2.  **Determine the goal:** The instruction is to act as a voice assistant, answer the (implied) question directly in one short sentence, and output *only* the final answer.\n3.  **Identify the missing context/question:** The input itself is a statement, not a question. However, in the context of a voice assistant interaction, this phrase (\"it is the freezing point of water\") is likely the *answer* to a previous question (e.g., \"What is the freezing point of water?\").\n4.  **Re-evaluate the task based on the prompt structure:** The prompt usually presents a question, and the AI provides the answer. If the input *is* the question, I need to answer it. If the input is the answer, I need to confirm or move on. Since the input is a statement, and I am asked to provide a direct answer, I must assume the user is waiting for a confirmation or a completion of the thought.\n\n*Self-Correction/Refinement:* The prompt structure is unusual. If",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q10.wav",
+      "audio_tokens": 16,
+      "encode_project_ms": 50.1,
+      "generate_ms": 4813.9,
+      "input_samples_received": 26788,
+      "transcript_handoff": false
+    },
+    {
+      "case": "q11",
+      "answers": [
+        "shakespeare"
+      ],
+      "ok": false,
+      "reply": "Who wrote Romeo and Juliet?",
+      "input_pcm": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q11.wav",
+      "audio_tokens": 16,
+      "encode_project_ms": 55.5,
+      "generate_ms": 257.4,
+      "input_samples_received": 25561,
+      "transcript_handoff": false
+    }
+  ]
+}
