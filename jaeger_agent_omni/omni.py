@@ -48,7 +48,8 @@ SYSTEM = (
 MODEL = "/Users/jonathanjenkins/models/gemma-4-e4b-it-mlx-full"
 
 
-def build(model_path: str = MODEL, front_end: str = "tower", delta_path=None):
+def build(model_path: str = MODEL, front_end: str = "tower", delta_path=None,
+          system: str | None = SYSTEM):
     """Load the one graph. Returns (session, meta)."""
     import mlx.core as mx                                       # noqa: F401
     from mlx_vlm.models.cache import KVCache
@@ -73,7 +74,7 @@ def build(model_path: str = MODEL, front_end: str = "tower", delta_path=None):
                          "first trained E4B checkpoint (training in progress)")
 
     s = StreamingSession(m, proc, prefiller, cache_factory=KVCache,
-                         config=cfg, system=SYSTEM)
+                         config=cfg, system=system)
     eos = cfg.get("eos_token_id", proc.tokenizer.eos_token_id)
     eos = {int(x) for x in (eos if isinstance(eos, list) else [eos])}
     return s, {"model": model_path, "front_end": front_end, "eos": eos}

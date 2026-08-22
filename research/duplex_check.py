@@ -119,8 +119,9 @@ def main() -> int:
 
     secs = len(audio) / SAMPLE_RATE
     print()
-    print(f"consumed     {stats.audio_chunks * 0.1:.1f} s of {secs:.1f} s "
-          f"({100 * stats.audio_chunks * 0.1 / max(secs, 1e-9):.0f}%)")
+    consumed_s = stats.audio_samples / SAMPLE_RATE
+    print(f"consumed     {consumed_s:.1f} s of {secs:.1f} s "
+          f"({100 * consumed_s / max(secs, 1e-9):.0f}%)")
     print(f"audio        {secs:.1f} s, streamed in 100 ms chunks")
     print(f"wall         {wall:.1f} s   ({wall/max(secs,1e-9):.2f}x realtime)")
     print(f"endpoint     {' -> '.join(stats.endpoint_events) or '(none)'}")
@@ -141,7 +142,7 @@ def main() -> int:
         # reached the model and one was dropped -- "full duplex" with 94% of
         # the audio missing. Consumed seconds must approach the clip length.
         "consumed most of the audio":
-            stats.audio_chunks * 0.1 >= secs * 0.8,
+            consumed_s >= secs * 0.8,
         "dropped nothing": stats.audio_dropped == 0,
     }
     if a.barge_in:

@@ -60,6 +60,8 @@ MAX_LAG_S = 0.5             # beyond this, drop rather than queue
 @dataclass
 class DuplexStats:
     audio_chunks: int = 0
+    audio_samples: int = 0
+    audio_samples_dropped: int = 0
     endpoint_events: list = field(default_factory=list)
     frames: int = 0
     frames_dropped: int = 0
@@ -91,6 +93,7 @@ class DuplexLoop:
 
     def __init__(self, session, audio_source, frame_source=None,
                  turn_ended=None, on_reply=None, user_speaking=None,
+                 before_respond=None,
                  frame_interval_s: float = FRAME_INTERVAL_S,
                  max_lag_s: float = MAX_LAG_S, clock=time.monotonic):
         self.session = session
@@ -107,6 +110,10 @@ class DuplexLoop:
         self.turn_ended = turn_ended
         self.on_reply = on_reply or (lambda text: None)
         self.user_speaking = user_speaking or (lambda: False)
+        # Runs after the final partial audio chunk is flushed but before the
+        # user turn closes.  Live diarization uses this seam to append an
+        # inline [speaker A] tag without moving any audio out of sequence.
+        self.before_respond = before_respond
         self.frame_interval_s = frame_interval_s
         self.max_lag_s = max_lag_s
         self.clock = clock
@@ -176,14 +183,21 @@ class DuplexLoop:
         if lag > self.max_lag_s:
             # Audio is cheap (~118 ms/s); dropping it means we are badly behind.
             self.stats.audio_dropped += 1
+            self.stats.audio_samples_dropped += len(samples)
             self._last_drain = self.clock()
             return
         self.stats.audio_chunks += self.session.feed_audio(samples)
+        self.stats.audio_samples += len(samples)
         self._last_drain = self.clock()
 
     def _respond(self):
         """Answer, watching for barge-in on every token."""
-        self.session.end_of_turn()
+        if self.before_respond is None:
+            self.session.end_of_turn()
+        else:
+            self.session.end_of_turn(close=False)
+            self.before_respond()
+            self.session.close_turn()
 
         def on_token(_tid, _n):
             if self.user_speaking():
@@ -201,6 +215,12 @@ class DuplexLoop:
         if self.endpoint is not None:
             self.endpoint.reset()      # else `ended` latches and every tick answers
         self.session.resume_listening()
+        # Audio callbacks continue filling their lock-free queue while decode
+        # runs.  Drain that capture into the newly opened turn immediately.
+        # Charging it as wall-clock lag would discard precisely the speech
+        # heard during our reply, even though it is fresh and already local.
+        self._last_drain = self.clock()
+        self._pump_audio(self._last_drain)
 
     def run(self, eos_ids=(), max_seconds: float | None = None,
             tick_s: float = 0.05):
@@ -285,6 +305,7 @@ def demo():
     # 5 seconds, frame every 2s -> frames at 0, 2, 4
     assert loop.stats.frames == 3, loop.stats.frames
     assert loop.stats.audio_chunks == 5
+    assert loop.stats.audio_samples == 5 * 16000
     # Frames land at t=0,2,4 with audio every second between them — the
     # timeline is carried by sequence order, exactly as MiniCPM does it.
     assert "".join(x for x in sess.stream if x in "av") == "vaavaava", sess.stream
@@ -321,6 +342,26 @@ def demo():
     l4.eos_ids = ()
     l4._respond()
     assert l4.stats.interrupts == 0 and "resume" in s4.stream
+
+    # A diarization tag lands after the audio tail and before close_turn.  It
+    # must never be inserted ahead of an unflushed partial audio chunk.
+    class TaggedSession(FakeSession):
+        def end_of_turn(self, close=True):
+            self.stream.append("flush")
+            if close:
+                self.stream.append("close")
+        def feed_text(self, text):
+            self.stream.append(text)
+        def close_turn(self):
+            self.stream.append("close")
+
+    tagged = TaggedSession()
+    lt = DuplexLoop(tagged, audio_source=lambda: None,
+                    before_respond=lambda: tagged.feed_text("[speaker A]"),
+                    clock=clock)
+    lt.eos_ids = ()
+    lt._respond()
+    assert tagged.stream[:3] == ["flush", "[speaker A]", "close"], tagged.stream
 
     print(f"runtime.duplex: interleave a/v, drop-don't-queue, barge-in OK "
           f"({loop.stats})")

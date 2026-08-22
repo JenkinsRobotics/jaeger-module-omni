@@ -28,6 +28,7 @@ import queue
 import sys
 import threading
 import time
+from collections import deque
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -35,6 +36,34 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 MODEL = "/Users/jonathanjenkins/models/gemma-4-e4b-it-mlx-full"
 RATE = 16000
 BLOCK = 1600            # 100 ms, the cadence the duplex loop expects
+MEETING_SYSTEM = (
+    "You are a silent third-person meeting observer. Track the discussion by "
+    "speaker label. After each completed audio turn, return compact cumulative "
+    "meeting minutes with: topics, decisions, action items with owners when "
+    "known, and open questions. Preserve concrete facts; do not greet the room "
+    "or claim something was decided when it was only discussed."
+)
+
+
+def _ready_chunks(text: str, consumed: int) -> tuple[list[str], int]:
+    """Return newly speakable clauses and the updated character offset.
+
+    Sentence punctuation is always a boundary.  A comma, semicolon, colon, or
+    em dash becomes a boundary after five words, which bounds first-audio
+    latency for a long opening sentence without feeding Kokoro one-word scraps.
+    """
+    chunks = []
+    start = consumed
+    for i in range(consumed, len(text)):
+        terminal = text[i] in ".!?"
+        clause = text[i] in ",;:—"
+        words = len(text[start:i + 1].split())
+        if (terminal and words >= 2) or (clause and words >= 5):
+            chunk = text[start:i + 1].split("<")[0].strip()
+            if chunk:
+                chunks.append(chunk)
+            start = i + 1
+    return chunks, start
 
 
 def list_devices() -> int:
@@ -78,17 +107,32 @@ def main() -> int:
                          "pause, and each reply DEAFENS it (half-duplex).")
     ap.add_argument("--record", default=None, metavar="DIR",
                     help="record raw mic AND model-fed audio for audit")
+    ap.add_argument("--no-aec", action="store_true",
+                    help="disable SpeexDSP acoustic echo cancellation")
+    ap.add_argument("--speakers", type=int, default=0, metavar="K",
+                    help="diarize up to K room talkers and append inline "
+                         "[speaker A/B] context tags (0 disables)")
+    ap.add_argument("--meeting-minutes", metavar="PATH",
+                    help="silent third-person observer; write native "
+                         "audio-to-minutes output at the end (no transcript)")
     a = ap.parse_args()
+
+    if a.meeting_minutes:
+        a.no_speak = True
+        if not a.speakers:
+            a.speakers = 2
 
     if a.list_devices:
         return list_devices()
 
-    from jaeger_agent_omni.omni import build
+    from jaeger_agent_omni.omni import SYSTEM, build
     from jaeger_agent_omni.runtime.duplex import DuplexLoop
     from jaeger_agent_omni.voice import speak_kokoro
 
     print("loading Gemma…", flush=True)
-    session, meta = build(a.model, "tower")
+    session, meta = build(
+        a.model, "tower",
+        system=MEETING_SYSTEM if a.meeting_minutes else SYSTEM)
     session.warmup()
 
     if not a.no_speak:
@@ -100,17 +144,78 @@ def main() -> int:
     # loop, which is how an earlier test read 2 chunks of 35.
     q: queue.Queue = queue.Queue(maxsize=200)
     speaking_out = threading.Event()
+    generating = threading.Event()
+    stop = threading.Event()
+    barge_request = threading.Event()
+    barge_active = threading.Event()
+    level = {"rms": 0.0, "raw_rms": 0.0}
+    heard = {"n": 0}
+    barged = {"n": 0}
+    echo_floor = {"rms": 0.35}
+    rec = {"raw": [], "fed": []}
+    speaker_recent = deque(maxlen=max(1, round(3 * RATE / BLOCK)))
+    speaker_tags = []
+
+    speaker_tracker = None
+    if a.speakers:
+        from jaeger_agent_omni.runtime.speaker import OnlineSpeakerTracker
+        speaker_tracker = OnlineSpeakerTracker(a.speakers)
+        print(f"speakers online CampPlus, up to {a.speakers} room talkers",
+              flush=True)
+
+    aec = None
+    if not a.no_aec and not a.no_speak:
+        from jaeger_agent_omni.runtime.aec import SpeexEchoCanceller
+        aec = SpeexEchoCanceller(RATE)
+        print(f"AEC      SpeexDSP ({aec.library_path})", flush=True)
 
     def on_block(indata, frames, t, status):
         if status:
             pass
-        mono = indata[:, 0] if indata.ndim > 1 else indata
+        raw = indata[:, 0] if indata.ndim > 1 else indata
+        raw = raw.copy().astype("float32")
+        clean = aec.process(raw) if aec is not None else raw.copy()
+        raw_rms = float(np.sqrt(np.mean(np.square(raw))))
+        clean_rms = float(np.sqrt(np.mean(np.square(clean))))
+        level["raw_rms"], level["rms"] = raw_rms, clean_rms
+        if a.record:
+            rec["raw"].append(raw.copy())
+
+        if speaking_out.is_set():
+            if aec is None:
+                # Preserve the old safe fallback when SpeexDSP is explicitly
+                # disabled: do not feed the agent its own uncancelled voice.
+                is_barge = raw_rms > max(echo_floor["rms"] * 1.4,
+                                         a.threshold * 1.1)
+                if not is_barge:
+                    echo_floor["rms"] = 0.95 * echo_floor["rms"] + 0.05 * raw_rms
+                    clean = np.zeros_like(raw)
+                    clean_rms = 0.0
+            else:
+                attenuation = 20 * np.log10(
+                    (raw_rms + 1e-9) / (clean_rms + 1e-9))
+                # Before the adaptive filter has converged, pure echo can
+                # remain in the residual.  Double-talk either defeats that
+                # attenuation (<3 dB) or, after one second, stands above the
+                # ordinary endpoint floor on its own.
+                is_barge = (clean_rms > a.threshold * 1.1 and
+                            (aec.playback_age > 1.0 or attenuation < 3.0))
+            if is_barge and not barge_active.is_set():
+                barge_active.set()
+                barge_request.set()
+        elif generating.is_set() and clean_rms > a.threshold * 1.1:
+            # The listener continued before the first clause reached audio.
+            barge_active.set()
+
+        level["rms"] = clean_rms
+        if a.record:
+            rec["fed"].append(clean.copy())
+        if speaker_tracker is not None:
+            speaker_recent.append(clean.copy())
         try:
-            q.put_nowait(mono.copy().astype("float32"))
+            q.put_nowait(clean)
         except queue.Full:
             pass
-
-    rec = {"raw": [], "fed": []}
 
     def source():
         got = []
@@ -122,45 +227,47 @@ def main() -> int:
         if not got:
             return None
         block = np.concatenate(got)
-        if a.record:
-            rec["raw"].append(block.copy())
-        if speaking_out.is_set():
-            # FULL-DUPLEX-LITE. No AEC yet, so the mic hears our own voice.
-            # But the user talking OVER playback is louder at the mic than
-            # the speaker echo (measured echo floor set at start of playback).
-            # If the level clearly exceeds the echo, that is a barge-in:
-            # kill playback NOW and let the block through so the endpointer
-            # hears the new turn. Zeroing the mic here made interruption
-            # impossible for the whole length of every reply.
-            rms = float(np.sqrt(np.mean(np.square(block))))
-            if rms > max(echo_floor["rms"] * 1.4, a.threshold * 1.1):
-                sd.stop()                      # cut our voice mid-word
-                speaking_out.clear()
-                barged["n"] += 1
-                print("\n  (barge-in: you spoke over me — stopping)",
-                      flush=True)
-                return block
-            gated = np.zeros_like(block)        # just our own echo: drop it
-            if a.record:
-                rec["fed"].append(gated.copy())
-            return gated
-        if a.record:
-            rec["fed"].append(block.copy())
         return block
 
-    level = {"rms": 0.0}
-    heard = {"n": 0}
-    barged = {"n": 0}
-    echo_floor = {"rms": 0.35}   # start high; calibrated during first playback
-
     def user_speaking():
-        return level["rms"] > a.threshold and not speaking_out.is_set()
+        return barge_active.is_set()
+
+    def tag_speaker():
+        if speaker_tracker is None or not speaker_recent:
+            return
+        audio = np.concatenate(tuple(speaker_recent))
+        speaker_recent.clear()
+        label = speaker_tracker.identify(audio)
+        if label is None:
+            return
+        tag = f"[speaker {label}]"
+        session.feed_text(f" {tag}")
+        speaker_tags.append(label)
+        print(f"\n          [context: {tag}]", flush=True)
 
     stage_ms = {"synth": [], "reply_len": [], "to_first_audio": []}
     turn_t0 = {"t": None}          # when the turn closed (speech_end)
 
     import queue as _q
     say_q: _q.Queue = _q.Queue()
+
+    def _barge_watcher():
+        while not stop.is_set():
+            if not barge_request.wait(0.01):
+                continue
+            barge_request.clear()
+            if speaking_out.is_set():
+                sd.stop()
+                speaking_out.clear()
+                while not say_q.empty():
+                    try:
+                        say_q.get_nowait()
+                    except _q.Empty:
+                        break
+                barged["n"] += 1
+                print("\n  (barge-in: residual speech — stopping)", flush=True)
+
+    threading.Thread(target=_barge_watcher, daemon=True).start()
 
     def _player():
         """Sequential sentence player. Synthesises and plays each sentence as
@@ -172,10 +279,13 @@ def main() -> int:
             if sent is None:
                 break
             try:
-                speaking_out.set()
                 t0 = time.monotonic()
                 speak_kokoro(sent, "/tmp/_sent.wav", a.voice, a.speed)
                 stage_ms["synth"].append((time.monotonic() - t0) * 1000)
+                wav, sr = sf.read("/tmp/_sent.wav", dtype="float32")
+                if aec is not None:
+                    aec.start_playback(wav, sr)
+                speaking_out.set()
                 if turn_t0["t"] is not None:
                     stage_ms["to_first_audio"].append(
                         (time.monotonic() - turn_t0["t"]) * 1000)
@@ -183,65 +293,15 @@ def main() -> int:
                           f"{stage_ms['to_first_audio'][-1]:.0f} ms]",
                           flush=True)
                     turn_t0["t"] = None
-                wav, sr = sf.read("/tmp/_sent.wav", dtype="float32")
                 sd.play(wav, sr)
                 sd.wait()
             except Exception:
                 pass
             finally:
-                if say_q.empty():
-                    while not q.empty():
-                        try:
-                            q.get_nowait()
-                        except _q.Empty:
-                            break
-                    speaking_out.clear()
+                speaking_out.clear()
 
-    threading.Thread(target=_player, daemon=True).start()
-
-    def _calibrate_echo():
-        # 400 ms into playback, whatever the mic reads is OUR echo. The
-        # barge-in threshold rides 1.8x above that.
-        time.sleep(0.4)
-        got = []
-        while True:
-            try:
-                got.append(q.get_nowait())
-            except queue.Empty:
-                break
-        if got:
-            blk = np.concatenate(got)
-            r = float(np.sqrt(np.mean(np.square(blk))))
-            if r > 0:
-                echo_floor["rms"] = r
-
-    def _play_async(text):
-        """Synthesis + playback OFF the duplex thread. sd.wait() inside the
-        loop blocked ingest for the whole reply -- measured 7480 ms peak lag
-        and 4 dropped chunks. The loop must keep listening while we speak."""
-        try:
-            t0 = time.monotonic()
-            info = speak_kokoro(text, "/tmp/_reply.wav", a.voice, a.speed)
-            stage_ms["synth"].append((time.monotonic() - t0) * 1000)
-            import soundfile as sf
-            wav, sr = sf.read("/tmp/_reply.wav", dtype="float32")
-            sd.play(wav, sr)
-            threading.Thread(target=_calibrate_echo, daemon=True).start()
-            sd.wait()
-        finally:
-            # DRAIN BEFORE CLEARING. The old order (clear, then drain) threw
-            # away user speech that began as playback ended -- the audit
-            # showed "Listen and practice" reaching the model as "And
-            # practice", and "Conversation 32" misheard as "Station 32" from
-            # its clipped first syllable. Draining first removes only what
-            # was captured DURING playback (our echo); everything after the
-            # clear survives.
-            while not q.empty():
-                try:
-                    q.get_nowait()
-                except queue.Empty:
-                    break
-            speaking_out.clear()
+    player_thread = threading.Thread(target=_player, daemon=True)
+    player_thread.start()
 
     last_reply = {"t": 0.0}
 
@@ -267,26 +327,28 @@ def main() -> int:
 
     def _streaming_respond(**kw):
         turn_t0["t"] = time.monotonic()
+        barge_active.clear()
+        generating.set()
         ids, consumed = [], 0
         inner = kw.get("on_token")
 
         def on_token(tid, n):
             nonlocal consumed
             ids.append(tid)
-            # decode is cheap at this length; look for a finished sentence
+            # Decode is cheap at this length.  Clause boundaries keep a long
+            # first sentence from delaying all audio until its final period.
             text = tok.decode(ids)
-            for i in range(len(text) - 1, consumed - 1, -1):
-                if text[i] in ".!?" and i + 1 > consumed:
-                    sent = text[consumed:i + 1].split("<")[0].strip()
-                    if len(sent.split()) >= 2:
-                        say_q.put(sent)
-                        consumed = i + 1
-                    break
+            chunks, consumed = _ready_chunks(text, consumed)
+            for chunk in chunks:
+                say_q.put(chunk)
             if inner:
                 inner(tid, n)
 
         kw["on_token"] = on_token
-        out = _orig_respond(**kw)
+        try:
+            out = _orig_respond(**kw)
+        finally:
+            generating.clear()
         tail = out[consumed:].split("<")[0].strip()
         if len(tail.split()) >= 2:
             say_q.put(tail)
@@ -296,7 +358,8 @@ def main() -> int:
         session.respond = _streaming_respond
 
     loop = DuplexLoop(session, audio_source=source, user_speaking=user_speaking,
-                      on_reply=on_reply, turn_ended=None)
+                      on_reply=on_reply, turn_ended=None,
+                      before_respond=tag_speaker if speaker_tracker else None)
     _default_ended = loop.turn_ended
     loop.turn_ended = turn_gate
     # A live room is never silent. The endpoint floor has to sit above the
@@ -307,15 +370,14 @@ def main() -> int:
     loop.endpoint.silence_ms = a.silence_ms
     loop.endpoint.__post_init__()
 
-    # Meter thread: shows the room level so a dead mic is obvious immediately.
-    stop = threading.Event()
-
     def meter():
         while not stop.is_set():
             r = level["rms"]
             n = int(min(1.0, r / 0.08) * 22)
-            state = "SPEAKING" if speaking_out.is_set() else (
+            state = "AEC OUT " if speaking_out.is_set() and aec else (
+                "SPEAKING" if speaking_out.is_set() else (
                 "hearing " if r > a.threshold else "quiet   ")
+            )
             print(f"\r  {state} |{'#'*n}{'.'*(22-n)}| {r:.4f}",
                   end="", flush=True)
             time.sleep(0.1)
@@ -344,6 +406,7 @@ def main() -> int:
     # as text so conversational context survives the trim.
     soak = {"rows": [], "rolls": 0, "last": None}
     recent_replies: list = []
+    meeting_notes: list[str] = []
 
     _orig_on_reply = on_reply
 
@@ -352,25 +415,30 @@ def main() -> int:
         if t:
             recent_replies.append(t)
             del recent_replies[:-3]
+            if a.meeting_minutes:
+                meeting_notes.append(t)
         _orig_on_reply(text)
 
     def soak_watch():
         import time as _t
         while not stop.is_set():
             _t.sleep(15)
+            if stop.is_set():
+                break
             n = session.n_prefilled
-            pre_ms = session.timing.overlapped_ms
+            total_n = session.total_prefill_tokens
+            pre_ms = session.total_prefill_ms
             now = _t.monotonic()
             if soak["last"] is not None:
-                dn = n - soak["last"][0]
+                dn = total_n - soak["last"][0]
                 dms = pre_ms - soak["last"][1]
-                dt = now - soak["last"][2]
-                rate = (dms / max(dn, 1)) if dn > 0 else 0.0
-                soak["rows"].append((n, rate))
-                print(f"\n  [soak] cache {n} tok · prefill "
-                      f"{rate:.1f} ms/tok · lag {stats_lag():.0f} ms",
-                      flush=True)
-            soak["last"] = (n, pre_ms, now)
+                if dn > 0:
+                    rate = dms / dn
+                    soak["rows"].append((n, rate))
+                    print(f"\n  [soak] cache {n} tok · prefill "
+                          f"{rate:.1f} ms/tok · lag {stats_lag():.0f} ms",
+                          flush=True)
+            soak["last"] = (total_n, pre_ms, now)
             if n > a.max_context and not speaking_out.is_set():
                 # ROLL: reset, re-seed with the recent exchange as text.
                 summary = " ".join(recent_replies[-2:])[:400]
@@ -397,19 +465,48 @@ def main() -> int:
                         dtype="float32", device=a.device, callback=on_block):
         stats = loop.run(eos_ids=meta["eos"], max_seconds=a.seconds)
     stop.set()
+    sd.stop()
+    speaking_out.clear()
+    while not say_q.empty():
+        try:
+            say_q.get_nowait()
+        except _q.Empty:
+            break
+    say_q.put(None)
+    player_thread.join(timeout=5.0)
+
+    minutes = None
+    if a.meeting_minutes:
+        # Final partial audio is still an audio turn.  Flush it, append only the
+        # permitted inline diarization tag, and let Gemma produce the artifact
+        # directly from its audio cache.  There is no ASR/transcript handoff.
+        session.end_of_turn(close=False)
+        tag_speaker()
+        session.close_turn()
+        minutes = session.respond(max_tokens=256, eos_ids=meta["eos"])
+        artifact = "# Meeting minutes\n\n" + minutes.strip()
+        if meeting_notes:
+            artifact += "\n\n## Running notes\n\n" + "\n\n".join(
+                f"### Note {i}\n\n{note}" for i, note in
+                enumerate(meeting_notes, 1))
+        Path(a.meeting_minutes).write_text(artifact.strip() + "\n")
+        print(f"\n\n  MEETING MINUTES -> {a.meeting_minutes}\n{artifact.strip()}",
+              flush=True)
 
     wall = time.monotonic() - t0
     print(f"\n\n  ran {wall:.0f}s")
     print(f"  turns        {stats.turns}     interrupts {stats.interrupts}")
-    # feed_audio returns ONE-SECOND chunks (gemma_audio.CHUNK_S = 1.0), not
-    # the 100 ms mic blocks. Reporting them as 0.1 s each made 89 s of clean
-    # capture read as 8.9 s, i.e. a throughput failure that was not happening.
-    print(f"  audio        {stats.audio_chunks} chunks "
-          f"({stats.audio_chunks:.0f}s of {wall:.0f}s), "
-          f"{stats.audio_dropped} dropped")
+    fed_s = stats.audio_samples / RATE
+    dropped_s = stats.audio_samples_dropped / RATE
+    print(f"  audio        {stats.audio_chunks} model chunks · "
+          f"{fed_s:.1f}s fed of {wall:.0f}s · {dropped_s:.1f}s dropped")
     print(f"  endpoint     {' -> '.join(stats.endpoint_events[:8]) or '(none)'}")
     print(f"  peak lag     {stats.max_lag_s*1000:.0f} ms")
     print(f"  replies      {heard['n']}    barge-ins during playback {barged['n']}")
+    if speaker_tags:
+        counts = ", ".join(f"{label}:{speaker_tags.count(label)}"
+                           for label in sorted(set(speaker_tags)))
+        print(f"  speakers     {counts} turns tagged inline")
     if soak["rows"]:
         first, last = soak["rows"][0], soak["rows"][-1]
         print(f"  drift        prefill {first[1]:.1f} -> {last[1]:.1f} ms/tok "
@@ -422,6 +519,9 @@ def main() -> int:
         print(f"  END->AUDIO   median "
               f"{st.median(stage_ms['to_first_audio']):.0f} ms  "
               f"(the latency the user feels)")
+    if aec is not None and aec.samples_cancelled:
+        print(f"  AEC           {aec.attenuation_db:.1f} dB aggregate echo reduction "
+              f"across {aec.samples_cancelled/RATE:.1f}s of playback/tail")
     if a.record and rec["raw"]:
         import soundfile as sf
         d = Path(a.record)
@@ -430,6 +530,8 @@ def main() -> int:
         sf.write(str(d / "fed_model.wav"), np.concatenate(rec["fed"]), RATE)
         print(f"  recorded     {d}/raw_mic.wav + fed_model.wav — audit with"
               f" research/session_audit.py")
+    if aec is not None:
+        aec.close()
     return 0
 
 
@@ -438,8 +540,13 @@ def demo() -> None:
     assert importlib.util.find_spec("sounddevice"), "sounddevice missing"
     assert importlib.util.find_spec("kokoro"), "kokoro must be in THIS venv"
     src = Path(__file__).read_text()
-    assert "speaking_out" in src, "must gate the mic while our own voice plays"
-    print("live: sounddevice + in-process kokoro present, self-hearing guarded")
+    assert "SpeexEchoCanceller" in src, "live input must cancel known playback"
+    chunks, end = _ready_chunks(
+        "This opening clause is deliberately long, but speech continues.", 0)
+    assert chunks == ["This opening clause is deliberately long,",
+                      "but speech continues."] and end > 0
+    assert "meeting observer" in MEETING_SYSTEM.lower()
+    print("live: Kokoro, Speex AEC, clause streaming, native meeting minutes present")
 
 
 if __name__ == "__main__":

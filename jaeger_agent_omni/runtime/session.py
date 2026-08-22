@@ -77,6 +77,12 @@ class StreamingSession:
         self.audio_id = cfg.get("audio_token_id")
         self.image_id = cfg.get("image_token_id")
         self.n_image_tokens = cfg.get("vision_soft_tokens_per_image", 280)
+        # Lifetime prefill counters are monotonic across turn timing resets,
+        # interrupts, and explicit context rolls.  Live soak instrumentation
+        # must use these; ``timing`` is intentionally per-turn and
+        # ``n_prefilled`` is intentionally the current cache size.
+        self.total_prefill_ms = 0.0
+        self.total_prefill_tokens = 0
         self.reset()
 
     # -- chat scaffolding ---------------------------------------------------
@@ -236,8 +242,12 @@ class StreamingSession:
         logits = out.logits if hasattr(out, "logits") else out
         mx.eval(logits)
         self._last_logits = logits
-        self.n_prefilled += embeds.shape[1]
-        return (time.monotonic() - t0) * 1000
+        elapsed_ms = (time.monotonic() - t0) * 1000
+        tokens = int(embeds.shape[1])
+        self.n_prefilled += tokens
+        self.total_prefill_ms += elapsed_ms
+        self.total_prefill_tokens += tokens
+        return elapsed_ms
 
     def feed_audio(self, samples) -> int:
         """Mic samples in. Whole chunks are encoded AND prefilled immediately —
@@ -594,6 +604,8 @@ def demo():
     s2.warmup(0.1)
     assert s2.cache is None and s2.n_prefilled == 0
     assert s2.prefiller.state.n_chunks == 0
+    assert s2.total_prefill_tokens == 25, \
+        "lifetime soak counters must survive cache/timing resets"
 
     # Vision enters the SAME cache through the same placeholder mechanism —
     # that is the omni claim, so it gets asserted.
