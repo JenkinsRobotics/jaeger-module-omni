@@ -66,6 +66,11 @@ def main() -> int:
     ap.add_argument("--list-devices", action="store_true")
     ap.add_argument("--no-speak", action="store_true",
                     help="print replies instead of speaking them")
+    ap.add_argument("--max-context", type=int, default=6000,
+                    help="cache tokens before the session ROLLS: audio costs "
+                         "25 tok/s, so unbounded listening slows every "
+                         "subsequent prefill and eventually overflows. "
+                         "Rolling keeps the model in real time forever.")
     ap.add_argument("--cooldown", type=float, default=4.0,
                     help="seconds after a reply before another turn may "
                          "close. A continuous speaker never yields the "
@@ -330,6 +335,62 @@ def main() -> int:
     print(f"listening for {a.seconds:.0f}s — speak, pause, and it will answer.")
     print("talk over the reply to test barge-in.\n")
 
+    # ── REAL-TIME DRIFT WATCH + ROLLING CONTEXT ──────────────────────────
+    # The cache grows 25 tokens per second of audio heard. Attention cost
+    # grows with it, so prefill-per-chunk creeps up until the loop cannot
+    # keep pace -- the model "falls behind" not from load spikes but from
+    # its own accumulated history. The soak stats make the creep visible;
+    # the roll resets the cache BEFORE it matters, carrying recent replies
+    # as text so conversational context survives the trim.
+    soak = {"rows": [], "rolls": 0, "last": None}
+    recent_replies: list = []
+
+    _orig_on_reply = on_reply
+
+    def on_reply_keep(text):
+        t = text.split("<")[0].strip()
+        if t:
+            recent_replies.append(t)
+            del recent_replies[:-3]
+        _orig_on_reply(text)
+
+    def soak_watch():
+        import time as _t
+        while not stop.is_set():
+            _t.sleep(15)
+            n = session.n_prefilled
+            pre_ms = session.timing.overlapped_ms
+            now = _t.monotonic()
+            if soak["last"] is not None:
+                dn = n - soak["last"][0]
+                dms = pre_ms - soak["last"][1]
+                dt = now - soak["last"][2]
+                rate = (dms / max(dn, 1)) if dn > 0 else 0.0
+                soak["rows"].append((n, rate))
+                print(f"\n  [soak] cache {n} tok · prefill "
+                      f"{rate:.1f} ms/tok · lag {stats_lag():.0f} ms",
+                      flush=True)
+            soak["last"] = (n, pre_ms, now)
+            if n > a.max_context and not speaking_out.is_set():
+                # ROLL: reset, re-seed with the recent exchange as text.
+                summary = " ".join(recent_replies[-2:])[:400]
+                session.reset()
+                session.open_turn()
+                if summary:
+                    session.feed_text(
+                        f" (ongoing conversation; my recent replies: "
+                        f"{summary}) ")
+                soak["rolls"] += 1
+                print(f"\n  [soak] ROLLED context at {n} tok -> "
+                      f"{session.n_prefilled} (roll #{soak['rolls']})",
+                      flush=True)
+
+    def stats_lag():
+        return loop.stats.max_lag_s * 1000
+
+    threading.Thread(target=soak_watch, daemon=True).start()
+    loop.on_reply = on_reply_keep
+
     threading.Thread(target=meter, daemon=True).start()
     t0 = time.monotonic()
     with sd.InputStream(samplerate=RATE, blocksize=BLOCK, channels=1,
@@ -349,6 +410,10 @@ def main() -> int:
     print(f"  endpoint     {' -> '.join(stats.endpoint_events[:8]) or '(none)'}")
     print(f"  peak lag     {stats.max_lag_s*1000:.0f} ms")
     print(f"  replies      {heard['n']}    barge-ins during playback {barged['n']}")
+    if soak["rows"]:
+        first, last = soak["rows"][0], soak["rows"][-1]
+        print(f"  drift        prefill {first[1]:.1f} -> {last[1]:.1f} ms/tok "
+              f"across {last[0]} cache tokens · rolls {soak['rolls']}")
     if stage_ms["synth"]:
         import statistics as st
         print(f"  synth        median {st.median(stage_ms['synth']):.0f} ms")
