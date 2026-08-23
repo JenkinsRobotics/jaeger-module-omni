@@ -1,0 +1,80 @@
+{
+ "front_end": "stock",
+ "correct": 0,
+ "n": 12,
+ "median_ms": 451.85554143972695,
+ "rows": [
+  {
+   "case": "q00",
+   "ok": false,
+   "ms": 2846.467249793932,
+   "reply": "I'm too pleased to"
+  },
+  {
+   "case": "q01",
+   "ok": false,
+   "ms": 752.8104581870139,
+   "reply": "What color is the sky?"
+  },
+  {
+   "case": "q02",
+   "ok": false,
+   "ms": 428.77575010061264,
+   "reply": "How many days in a week?"
+  },
+  {
+   "case": "q03",
+   "ok": false,
+   "ms": 446.61237485706806,
+   "reply": "I think the company's friend"
+  },
+  {
+   "case": "q04",
+   "ok": false,
+   "ms": 457.09870802238584,
+   "reply": "What is the meaning of this tree?"
+  },
+  {
+   "case": "q05",
+   "ok": false,
+   "ms": 498.9382498897612,
+   "reply": "How many legs does a spider have?"
+  },
+  {
+   "case": "q06",
+   "ok": false,
+   "ms": 393.25533295050263,
+   "reply": "What is the largest planet?"
+  },
+  {
+   "case": "q07",
+   "ok": false,
+   "ms": 430.984792066738,
+   "reply": "What is five times five?"
+  },
+  {
+   "case": "q08",
+   "ok": false,
+   "ms": 367.64070810750127,
+   "reply": "What scene comes after summer?"
+  },
+  {
+   "case": "q09",
+   "ok": false,
+   "ms": 733.9020830113441,
+   "reply": "I'm sorry, I didn't catch that. Could you repeat your question?"
+  },
+  {
+   "case": "q10",
+   "ok": false,
+   "ms": 430.6512081529945,
+   "reply": "What is the freezing point of water?"
+  },
+  {
+   "case": "q11",
+   "ok": false,
+   "ms": 498.75591695308685,
+   "reply": "I heard Romeo and Juliet."
+  }
+ ]
+}

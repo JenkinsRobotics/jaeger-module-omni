@@ -18,6 +18,12 @@ training utterances. Step 5,500 was selected by two fixed free-running corpora:
 Longer training improved neither joint gate. See `STATUS.md` and the dated
 `research/stock_whisper_medium_*_wer_20260822.json` artifacts.
 
+For a future answer branch, use the ground-truth serialized target
+`TRANSCRIPT: <human text>\nANSWER: <ground-truth response>`. Never train on
+Gemma's generated transcript. The current local QA corpus has only 15 unique
+question templates and 12 overlap `research/cases12`, so training on it would
+invalidate the benchmark; broaden and split by question family first.
+
 ```text
 fetch_dataset.py  pull public corpora (LibriSpeech, AMI) into capture format
 data.py         tiered corpus mixing policy — which tier feeds which stage

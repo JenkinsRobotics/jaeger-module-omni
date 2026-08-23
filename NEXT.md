@@ -57,9 +57,13 @@ Stock OpenAI Whisper plus a fresh adapter is now viable through paired
 pre-Gemma representation distillation. The promoted local checkpoint is
 `artifacts/stock-whisper-gemma-medium-multidomain.step005500.npz`: 16.34% WER
 on 64 LibriSpeech clips/955 words and 25.52% on 64 FLEURS clips/1,403 words.
-It remains an observer/transcript objective: the assistant suite correctly
-showed it repeating questions and scored 0/12, so do not install it as the
-desktop answer path.
+The original direct-answer prompt made it repeat questions and scored 0/12,
+but that was not its answer ceiling. A single-pass diagnostic that asks Gemma
+to generate `TRANSCRIPT:` then `ANSWER:` scores **9/12** answers and 28.36%
+generated-transcript WER over the suite's 67 words. The three misses all have
+incorrect generated transcripts. Keep the native 10/12 tower as the desktop
+default, but use `omni.py --dual-output` when separating perception failures
+from response failures.
 
 The next stock experiment should add paired MINDS-14/VoxPopuli/far-field audio
 only when raw waveforms are locally recoverable. Continue from step 5,500 at a

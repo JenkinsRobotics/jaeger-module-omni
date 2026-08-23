@@ -123,6 +123,15 @@ nearest-token recall was retained only as a collapse diagnostic: its preferred
 step 1,500 scored 106.28% free-running WER, proving that soft audio prompts do
 not need to sit on vocabulary rows.
 
+The stock adapter's first assistant score of 0/12 was a prompt/probe error,
+not its answer ceiling. With one Gemma generation explicitly formatted as
+`TRANSCRIPT:` followed by `ANSWER:`, it scores **9/12 answers** at 660 ms
+median and 28.36% generated-transcript WER over 67 words. All three answer
+misses correspond to bad generated transcripts. That transcript is Gemma's
+post-transformer interpretation—not raw tokens entering Gemma; the actual
+input remains continuous 2560-wide adapter vectors. `--dual-output` exposes
+both fields without feeding the generated transcript back into the session.
+
 On the exact same existing 64-clip/977-word validation slice used by
 `research/wer_corpus.py`, the promoted sparse tuned adapter improves the prior
 adapter from **14.74% to 13.61% WER** (113 fewer basis points, 7.7%

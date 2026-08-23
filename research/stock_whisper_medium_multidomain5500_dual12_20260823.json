@@ -1,0 +1,107 @@
+{
+ "front_end": "stock",
+ "dual_output": true,
+ "correct": 9,
+ "n": 12,
+ "median_ms": 660.0615625502542,
+ "transcript_wer": 0.2835820895522388,
+ "transcript_words": 67,
+ "rows": [
+  {
+   "case": "q00",
+   "ok": false,
+   "ms": 14567.133083939552,
+   "reply": "TRANSCRIPT: ONE IS TWO PLEASE TO\nANSWER: I am sorry, I cannot hear you.",
+   "transcript": "ONE IS TWO PLEASE TO",
+   "answer": "I am sorry, I cannot hear you."
+  },
+  {
+   "case": "q01",
+   "ok": true,
+   "ms": 6722.495415946469,
+   "reply": "TRANSCRIPT: WHAT COLOR IS THE SKY?\nANSWER: BLUE.",
+   "transcript": "WHAT COLOR IS THE SKY?",
+   "answer": "BLUE."
+  },
+  {
+   "case": "q02",
+   "ok": true,
+   "ms": 677.9394168406725,
+   "reply": "TRANSCRIPT: HOW MANY DAYS IN A WEEK?\nANSWER: SEVEN",
+   "transcript": "HOW MANY DAYS IN A WEEK?",
+   "answer": "SEVEN"
+  },
+  {
+   "case": "q03",
+   "ok": true,
+   "ms": 802.0073750521988,
+   "reply": "TRANSCRIPT: who is the capital of france?\nANSWER: Paris.",
+   "transcript": "who is the capital of france?",
+   "answer": "Paris."
+  },
+  {
+   "case": "q04",
+   "ok": false,
+   "ms": 672.749208053574,
+   "reply": "TRANSCRIPT: WHAT IS THE MEANING OF THIS TREE\nANSWER: It is a symbol of life and rebirth.",
+   "transcript": "WHAT IS THE MEANING OF THIS TREE",
+   "answer": "It is a symbol of life and rebirth."
+  },
+  {
+   "case": "q05",
+   "ok": true,
+   "ms": 608.8613749016076,
+   "reply": "TRANSCRIPT: how many legs does a spider have?\nANSWER: eight",
+   "transcript": "how many legs does a spider have?",
+   "answer": "eight"
+  },
+  {
+   "case": "q06",
+   "ok": true,
+   "ms": 636.1502078361809,
+   "reply": "TRANSCRIPT: WHAT IS THE LARGEST PLANET IN OUR SOLAR SYSTEM?\nANSWER: JUPITER",
+   "transcript": "WHAT IS THE LARGEST PLANET IN OUR SOLAR SYSTEM?",
+   "answer": "JUPITER"
+  },
+  {
+   "case": "q07",
+   "ok": true,
+   "ms": 529.7794579528272,
+   "reply": "TRANSCRIPT: WHAT IS FIVE TIMES FIVE?\nANSWER: TWENTY FIVE",
+   "transcript": "WHAT IS FIVE TIMES FIVE?",
+   "answer": "TWENTY FIVE"
+  },
+  {
+   "case": "q08",
+   "ok": true,
+   "ms": 597.4699589423835,
+   "reply": "TRANSCRIPT: WHAT SEASONS COME AFTER SUMMER?\nANSWER: AUTUMN",
+   "transcript": "WHAT SEASONS COME AFTER SUMMER?",
+   "answer": "AUTUMN"
+  },
+  {
+   "case": "q09",
+   "ok": true,
+   "ms": 490.9877909813076,
+   "reply": "TRANSCRIPT: HOW MANY HOURS IN A DAY\nANSWER: TWENTY FOUR",
+   "transcript": "HOW MANY HOURS IN A DAY",
+   "answer": "TWENTY FOUR"
+  },
+  {
+   "case": "q10",
+   "ok": true,
+   "ms": 710.6684998143464,
+   "reply": "TRANSCRIPT: WHAT IS THE FREEZING POINT OF WATER?\nANSWER: Zero degrees Celsius or 32 degrees Fahrenheit.",
+   "transcript": "WHAT IS THE FREEZING POINT OF WATER?",
+   "answer": "Zero degrees Celsius or 32 degrees Fahrenheit."
+  },
+  {
+   "case": "q11",
+   "ok": false,
+   "ms": 647.3739170469344,
+   "reply": "TRANSCRIPT: who are you? I'm Judith.\nANSWER: I am Judith.",
+   "transcript": "who are you? I'm Judith.",
+   "answer": "I am Judith."
+  }
+ ]
+}
