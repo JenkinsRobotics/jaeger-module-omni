@@ -41,6 +41,12 @@ python training/stock_whisper_gemma.py distill \
 The target is still only `audio_tower -> embed_audio` vectors from the same
 waveform. No generated transcript or answer is used as supervision.
 
+`pretrain-ctc` can load the stack connector for controlled experiments, but
+CTC fine-tuning the selected checkpoint is measured and rejected. With human
+transcripts, frozen Gemma input-token rows, and no Gemma output supervision,
+1e-6 checkpoints at 250/500/750/1,000 steps score 28.59/29.21/31.52/33.61%
+WER versus the 27.75% starting point.
+
 `stock_whisper_gemma.py distill` uses the proven MiniCPM projector structure
 (1024→4096, ReLU, pool-by-5, 4096→2560) but deploys the stock OpenAI
 Whisper-medium encoder. Training joins stock and tuned caches by stable

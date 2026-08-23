@@ -409,6 +409,11 @@ def command_pretrain_ctc(args) -> None:
     rows = _rows(args.cache, args.train_split, "transcript", args.whisper)
     validation_rows = _rows(
         args.cache, args.validation_split, "transcript", args.whisper)
+    for split in args.extra_split:
+        rows.extend(_rows(args.cache, split, "transcript", args.whisper))
+    for split in args.extra_validation_split:
+        validation_rows.extend(_rows(
+            args.cache, split, "transcript", args.whisper))
     for extra in args.extra_cache:
         extra_rows = _rows(Path(extra), "train", "transcript", args.whisper)
         rows.extend(extra_rows * args.extra_repeat)
@@ -429,17 +434,36 @@ def command_pretrain_ctc(args) -> None:
     class Adapter(nn.Module):
         def __init__(self):
             super().__init__()
-            self.linear1 = nn.Linear(INPUT_DIM, HIDDEN_DIM)
-            self.linear2 = nn.Linear(HIDDEN_DIM, OUTPUT_DIM)
+            if args.architecture == "gemma_native_stack_swiglu_v1":
+                self.pre = nn.RMSNorm(INPUT_DIM * args.pool_step, eps=1e-6)
+                self.linear1 = nn.Linear(
+                    INPUT_DIM * args.pool_step, OUTPUT_DIM * 2, bias=False)
+                self.mid = nn.RMSNorm(OUTPUT_DIM, eps=1e-6)
+                self.linear2 = nn.Linear(
+                    OUTPUT_DIM, OUTPUT_DIM, bias=False)
+            else:
+                self.linear1 = nn.Linear(INPUT_DIM, HIDDEN_DIM)
+                self.linear2 = nn.Linear(HIDDEN_DIM, OUTPUT_DIM)
 
         def forward(self, states):
-            values = self.linear2(functional.relu(self.linear1(states)))
-            usable = (values.shape[0] // POOL_STEP) * POOL_STEP
-            if usable:
-                values = values[:usable].reshape(
-                    -1, POOL_STEP, OUTPUT_DIM).mean(dim=1)
+            if args.architecture == "gemma_native_stack_swiglu_v1":
+                usable = (states.shape[0] // args.pool_step) * args.pool_step
+                if not usable:
+                    states = torch.cat((states, states), dim=0)
+                    usable = args.pool_step
+                stacked = states[:usable].reshape(
+                    -1, INPUT_DIM * args.pool_step)
+                gate, value = self.linear1(self.pre(stacked)).chunk(2, dim=-1)
+                values = self.linear2(
+                    self.mid(functional.silu(gate) * value))
             else:
-                values = values.mean(dim=0, keepdim=True)
+                values = self.linear2(functional.relu(self.linear1(states)))
+                usable = (values.shape[0] // args.pool_step) * args.pool_step
+                if usable:
+                    values = values[:usable].reshape(
+                        -1, args.pool_step, OUTPUT_DIM).mean(dim=1)
+                else:
+                    values = values.mean(dim=0, keepdim=True)
             return functional.normalize(values, dim=-1)
 
     adapter = Adapter().to(device)
@@ -450,11 +474,30 @@ def command_pretrain_ctc(args) -> None:
             raise ValueError(
                 f"resume encoder {str(saved['encoder'])!r} != "
                 f"requested {args.whisper!r}")
+        saved_arch = str(saved.get("adapter_arch", "paired_mlp_v1"))
+        if saved_arch != args.architecture:
+            raise ValueError(
+                f"resume architecture {saved_arch!r} != requested "
+                f"{args.architecture!r}")
         with torch.no_grad():
-            adapter.linear1.weight.copy_(torch.from_numpy(saved["linear1_weight"]))
-            adapter.linear1.bias.copy_(torch.from_numpy(saved["linear1_bias"]))
-            adapter.linear2.weight.copy_(torch.from_numpy(saved["linear2_weight"]))
-            adapter.linear2.bias.copy_(torch.from_numpy(saved["linear2_bias"]))
+            if args.architecture == "gemma_native_stack_swiglu_v1":
+                adapter.pre.weight.copy_(torch.from_numpy(
+                    saved["rms_pre_gamma"]))
+                adapter.linear1.weight.copy_(torch.from_numpy(
+                    saved["stack_w1"]))
+                adapter.mid.weight.copy_(torch.from_numpy(
+                    saved["rms_mid_gamma"]))
+                adapter.linear2.weight.copy_(torch.from_numpy(
+                    saved["stack_w2"]))
+            else:
+                adapter.linear1.weight.copy_(torch.from_numpy(
+                    saved["linear1_weight"]))
+                adapter.linear1.bias.copy_(torch.from_numpy(
+                    saved["linear1_bias"]))
+                adapter.linear2.weight.copy_(torch.from_numpy(
+                    saved["linear2_weight"]))
+                adapter.linear2.bias.copy_(torch.from_numpy(
+                    saved["linear2_bias"]))
     optimizer = torch.optim.AdamW(
         adapter.parameters(), lr=args.learning_rate,
         weight_decay=args.weight_decay)
@@ -517,17 +560,15 @@ def command_pretrain_ctc(args) -> None:
                       f"avg={sum(rolling)/len(rolling):.4f} "
                       f"elapsed={time.time()-started:.1f}s", flush=True)
             if step % args.save_every == 0 or step == args.steps:
-                weights = {
-                    "linear1_weight": adapter.linear1.weight.detach().cpu().numpy(),
-                    "linear1_bias": adapter.linear1.bias.detach().cpu().numpy(),
-                    "linear2_weight": adapter.linear2.weight.detach().cpu().numpy(),
-                    "linear2_bias": adapter.linear2.bias.detach().cpu().numpy(),
-                }
+                weights = _distill_adapter_arrays(
+                    adapter, args.architecture)
                 _atomic_checkpoint_arrays(
                     args.output, weights, step=step, task="transcript",
                     stage="sampled_ctc", learning_rate=args.learning_rate,
                     negative_tokens=args.negative_tokens,
                     temperature=args.temperature, train_loss=value,
+                    adapter_arch=args.architecture,
+                    pool_step=args.pool_step, output_mode=OUTPUT_MODE_RAW,
                     encoder=args.whisper)
                 snapshot = args.output.with_name(
                     f"{args.output.stem}.step{step:06d}{args.output.suffix}")
@@ -536,6 +577,8 @@ def command_pretrain_ctc(args) -> None:
                     stage="sampled_ctc", learning_rate=args.learning_rate,
                     negative_tokens=args.negative_tokens,
                     temperature=args.temperature, train_loss=value,
+                    adapter_arch=args.architecture,
+                    pool_step=args.pool_step, output_mode=OUTPUT_MODE_RAW,
                     encoder=args.whisper)
                 print(f"checkpoint {args.output}", flush=True)
             if step >= args.steps:
@@ -1243,10 +1286,20 @@ def build_parser() -> argparse.ArgumentParser:
     ctc.add_argument("--whisper", default=DEFAULT_WHISPER)
     ctc.add_argument("--extra-cache", action="append", default=[],
                      help="additional native cache with train/validation splits")
+    ctc.add_argument("--extra-split", action="append", default=[],
+                     help="additional training split from --cache")
+    ctc.add_argument("--extra-validation-split", action="append", default=[],
+                     help="additional validation split from --cache")
     ctc.add_argument("--extra-repeat", type=int, default=4,
                      help="repeat each extra training row in the sampling pool")
     ctc.add_argument("--output", type=Path, default=DEFAULT_TRANSCRIPT)
     ctc.add_argument("--resume", type=Path)
+    ctc.add_argument("--pool-step", type=int, choices=(2, POOL_STEP),
+                     default=POOL_STEP)
+    ctc.add_argument(
+        "--architecture", choices=("paired_mlp_v1",
+                                    "gemma_native_stack_swiglu_v1"),
+        default="paired_mlp_v1")
     ctc.add_argument("--steps", type=int, default=400)
     ctc.add_argument("--max-examples", type=int, default=0)
     ctc.add_argument("--max-target-tokens", type=int, default=96)

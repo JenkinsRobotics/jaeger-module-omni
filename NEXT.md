@@ -75,6 +75,10 @@ continue the selected recipe at a lower learning rate: a complete 5e-6 sweep
 regressed from 29.82% to at least 31.99% on the ranking evaluator. The next
 controlled experiment must change the learning signal or temporal connector
 while keeping encoder, corpora, prompts, and free-running gates fixed.
+Sampled CTC against human transcripts and frozen Gemma input-token rows is
+also closed for this checkpoint: even 250 steps at 1e-6 regressed the exact
+dev-clean gate from 27.75% to 28.59%, reaching 33.61% by step 1,000. It used no
+Gemma output, but still pulled the vectors away from the native audio manifold.
 
 Stock OpenAI Whisper plus a fresh adapter is now viable through paired
 pre-Gemma representation distillation. The promoted local checkpoint is

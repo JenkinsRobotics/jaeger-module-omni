@@ -169,7 +169,11 @@ native-tower live default (10 of 12). Continued training is non-monotonic and
 has a measured stop point: the final 1e-5 refinement scored 29.82% on the
 external ranking evaluator, while every 5e-6 continuation checkpoint scored
 31.99% or worse. Further progress needs a changed objective or connector, not
-more steps on this exact recipe.
+more steps on this exact recipe. A separate human-transcript CTC A/B also
+failed the primary corpus gate: at a conservative 1e-6, checkpoints 250/500/
+750/1,000 regressed to 28.59/29.21/31.52/33.61% WER on the same 955 words.
+This confirms token-row alignment destroys useful native-tower geometry; no
+Gemma-generated output was used in that test.
 
 On the exact same existing 64-clip/977-word validation slice used by
 `research/wer_corpus.py`, the promoted sparse tuned adapter improves the prior
