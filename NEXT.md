@@ -79,6 +79,9 @@ Sampled CTC against human transcripts and frozen Gemma input-token rows is
 also closed for this checkpoint: even 250 steps at 1e-6 regressed the exact
 dev-clean gate from 27.75% to 28.59%, reaching 33.61% by step 1,000. It used no
 Gemma output, but still pulled the vectors away from the native audio manifold.
+Do not add a fixed lag or first-difference loss: 64/64 temporal-audit clips
+prefer zero lag, and a 0.25 delta-loss sweep regressed every checkpoint from
+29.82% to 33.95–40.87% on the external 969-word ranking corpus.
 
 Stock OpenAI Whisper plus a fresh adapter is now viable through paired
 pre-Gemma representation distillation. The promoted local checkpoint is

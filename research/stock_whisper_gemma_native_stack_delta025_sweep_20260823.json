@@ -1,0 +1,15 @@
+{
+  "baseline_external_wer": 29.82,
+  "words": 969,
+  "objective": "frame_loss + 0.25 * first_difference_loss",
+  "learning_rate": 1e-5,
+  "results": [
+    {"step": 1000, "wer": 37.25, "edits": 361},
+    {"step": 2000, "wer": 36.64, "edits": 355},
+    {"step": 3000, "wer": 40.87, "edits": 396},
+    {"step": 4000, "wer": 36.74, "edits": 356},
+    {"step": 5000, "wer": 33.95, "edits": 329}
+  ],
+  "selected": false,
+  "reason": "Every free-running corpus checkpoint regressed from the selected native-vector baseline."
+}

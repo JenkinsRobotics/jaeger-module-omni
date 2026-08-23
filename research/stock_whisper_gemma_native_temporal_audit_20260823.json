@@ -1,0 +1,29 @@
+{
+  "checkpoint": "adapter_distill_stack_swiglu_refine_lr10.npz",
+  "split": "devclean",
+  "clips": 64,
+  "lag_frames": {
+    "-8": 0.239587,
+    "-7": 0.242916,
+    "-6": 0.262638,
+    "-5": 0.299936,
+    "-4": 0.350085,
+    "-3": 0.414212,
+    "-2": 0.517377,
+    "-1": 0.648255,
+    "0": 0.715462,
+    "1": 0.616756,
+    "2": 0.499004,
+    "3": 0.41142,
+    "4": 0.347431,
+    "5": 0.30156,
+    "6": 0.272547,
+    "7": 0.254633,
+    "8": 0.247462
+  },
+  "best_lag_counts": {"0": 64},
+  "frame_cosine": 0.7154620233923197,
+  "first_difference_cosine": 0.322883493732661,
+  "student_teacher_difference_norm_ratio": 0.5623533390462399,
+  "note": "All clips prefer zero lag; temporal-difference fidelity is much lower than absolute-frame fidelity."
+}

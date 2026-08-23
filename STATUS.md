@@ -173,7 +173,11 @@ more steps on this exact recipe. A separate human-transcript CTC A/B also
 failed the primary corpus gate: at a conservative 1e-6, checkpoints 250/500/
 750/1,000 regressed to 28.59/29.21/31.52/33.61% WER on the same 955 words.
 This confirms token-row alignment destroys useful native-tower geometry; no
-Gemma-generated output was used in that test.
+Gemma-generated output was used in that test. A 64-clip temporal audit also
+rules out a frame-offset bug: all 64 clips prefer lag zero (cosine 0.7155,
+versus 0.6483/0.6168 at -1/+1). First-difference cosine is only 0.3229, but
+adding a 0.25 temporal-difference loss regresses every 1k-step checkpoint to
+33.95–40.87% on the 969-word ranking corpus. That objective is closed too.
 
 On the exact same existing 64-clip/977-word validation slice used by
 `research/wer_corpus.py`, the promoted sparse tuned adapter improves the prior
