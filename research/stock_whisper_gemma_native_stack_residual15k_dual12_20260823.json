@@ -1,0 +1,107 @@
+{
+ "front_end": "stock",
+ "dual_output": true,
+ "correct": 8,
+ "n": 12,
+ "median_ms": 525.9948750026524,
+ "rows": [
+  {
+   "case": "q00",
+   "ok": false,
+   "ms": 1120.7733328919858,
+   "reply": "TRANSCRIPT: What is to passed?\nANSWER: I'm sorry, I didn't catch that. Could you repeat the question?",
+   "transcript": "What is to passed?",
+   "answer": "I'm sorry, I didn't catch that. Could you repeat the question?"
+  },
+  {
+   "case": "q01",
+   "ok": true,
+   "ms": 430.11175002902746,
+   "reply": "TRANSCRIPT: what color is the sky\nANSWER: blue",
+   "transcript": "what color is the sky",
+   "answer": "blue"
+  },
+  {
+   "case": "q02",
+   "ok": true,
+   "ms": 461.36249997653067,
+   "reply": "TRANSCRIPT: How many days in a week?\nANSWER: Seven",
+   "transcript": "How many days in a week?",
+   "answer": "Seven"
+  },
+  {
+   "case": "q03",
+   "ok": true,
+   "ms": 577.0430420525372,
+   "reply": "TRANSCRIPT: What is the capital of France?\nANSWER: The capital of France is Paris.",
+   "transcript": "What is the capital of France?",
+   "answer": "The capital of France is Paris."
+  },
+  {
+   "case": "q04",
+   "ok": false,
+   "ms": 660.8407499734312,
+   "reply": "TRANSCRIPT: what is tan on three\nANSWER: The tangent of 3 is approximately 0.1425",
+   "transcript": "what is tan on three",
+   "answer": "The tangent of 3 is approximately 0.1425"
+  },
+  {
+   "case": "q05",
+   "ok": false,
+   "ms": 650.2294999081641,
+   "reply": "TRANSCRIPT: How many ways is this cipher hand?\nANSWER: It depends on the specific cipher and its rules.",
+   "transcript": "How many ways is this cipher hand?",
+   "answer": "It depends on the specific cipher and its rules."
+  },
+  {
+   "case": "q06",
+   "ok": true,
+   "ms": 445.6344579812139,
+   "reply": "TRANSCRIPT: What is the largest planet?\nANSWER: Jupiter",
+   "transcript": "What is the largest planet?",
+   "answer": "Jupiter"
+  },
+  {
+   "case": "q07",
+   "ok": true,
+   "ms": 474.9467079527676,
+   "reply": "TRANSCRIPT: what is five times five?\nANSWER: twenty-five",
+   "transcript": "what is five times five?",
+   "answer": "twenty-five"
+  },
+  {
+   "case": "q08",
+   "ok": true,
+   "ms": 447.98566587269306,
+   "reply": "TRANSCRIPT: what season comes after summer?\nANSWER: autumn",
+   "transcript": "what season comes after summer?",
+   "answer": "autumn"
+  },
+  {
+   "case": "q09",
+   "ok": true,
+   "ms": 620.1135001610965,
+   "reply": "TRANSCRIPT: How many hours in a day?\nANSWER: There are 24 hours in a day.",
+   "transcript": "How many hours in a day?",
+   "answer": "There are 24 hours in a day."
+  },
+  {
+   "case": "q10",
+   "ok": true,
+   "ms": 648.9641659427434,
+   "reply": "TRANSCRIPT: What is the freezing point of water?\nANSWER: Zero degrees Celsius or 32 degrees Fahrenheit.",
+   "transcript": "What is the freezing point of water?",
+   "answer": "Zero degrees Celsius or 32 degrees Fahrenheit."
+  },
+  {
+   "case": "q11",
+   "ok": false,
+   "ms": 432.04591679386795,
+   "reply": "TRANSCRIPT: I would remain in solitude.\nANSWER:",
+   "transcript": "I would remain in solitude.",
+   "answer": ""
+  }
+ ],
+ "transcript_wer": 0.22388059701492538,
+ "transcript_words": 67
+}

@@ -51,7 +51,7 @@ tower's: one read audio as an image, one never named Shakespeare.
 | speech codes -> audible cloned voice | **works** | `research/t2w_client.py --say` |
 | cognition -> talker conditioning | **built, untrained** | `neural/delta.py` |
 | tuned Whisper -> delta -> E4B | **works, 13.61% WER/64** | `omni.py --front-end delta` |
-| stock Whisper -> native-teacher adapter -> E4B | **active dev: 27.75% WER/64, 8/12** | `omni.py --front-end stock --dual-output` |
+| stock Whisper -> native-teacher adapter -> E4B | **active dev: 20.52% WER/64, 8/12** | `omni.py --front-end stock --dual-output` |
 
 31/31 module self-checks green: `python research/check_all.py`
 
@@ -143,6 +143,8 @@ proven Ultravox projector structure at Gemma's measured 25 Hz boundary:
 stock OpenAI Whisper-medium encoder (50 Hz, decoder unused)
   -> stack 2 frames (2048) -> RMSNorm -> Linear(5120) -> SwiGLU(2560)
   -> RMSNorm(2560) -> Linear(2560), no affine biases
+  -> zero-init residual: RMSNorm -> Linear(2048) -> SwiGLU(1024)
+     -> RMSNorm(1024) -> Linear(2560) + skip
   -> Gemma 4 E4B
 teacher: Gemma's own audio_tower -> embed_audio vectors at 25 Hz
 ```
@@ -156,20 +158,26 @@ mean pooling with frame stacking plus RMSNorm/SwiGLU, then sweeping a 15k
 fresh run, 10k continuation, and 5k low-rate refinement produced
 `artifacts/stock-whisper-gemma-native-stack-swiglu-refine5k.npz`.
 
-The main-repo evaluator measures **27.75% free-running WER on the exact same
-64 clips/955 words** as the 16.34% paired-adapter reference, down from 31.41%.
-It also measures **27.38% WER on 591 held-out MINDS/Vox clips/9,736 words**,
-down from 32.18%, and **8/12 answers at 532 ms median** with the dual
-transcript/answer prompt. The generated transcript WER on cases12 fell from
-43.28% to **20.90%**, even though answer accuracy did not rise.
+Freezing that entire connector and training only a zero-initialized 7.86M
+parameter residual block preserves its output exactly at step zero while
+adding error-correction capacity. A 15k residual-only run, an 8k selected
+half-rate continuation, and a 4k selected low-rate refinement produce
+`artifacts/stock-whisper-gemma-native-stack-residual1024-refine4k.npz`.
+
+The main-repo evaluator now measures **20.52% free-running WER on the exact
+same 64 clips/955 words** as the 16.34% paired-adapter reference, down from
+27.75%. It also measures **22.63% WER on 591 held-out MINDS/Vox clips/9,736
+words**, down from 27.38%, and **8/12 answers at 511 ms median** with the dual
+transcript/answer prompt. Generated transcript WER on cases12 is **20.90%**;
+answer accuracy still does not rise because the remaining four suite misses
+are perception errors.
 
 This is a large clean-room improvement, but it is not promoted over the
 paired stock adapter (16.34%/9 of 12), tuned-Whisper observer (13.61%), or
-native-tower live default (10 of 12). Continued training is non-monotonic and
-has a measured stop point: the final 1e-5 refinement scored 29.82% on the
-external ranking evaluator, while every 5e-6 continuation checkpoint scored
-31.99% or worse. Further progress needs a changed objective or connector, not
-more steps on this exact recipe. A separate human-transcript CTC A/B also
+native-tower live default (10 of 12). The residual path is strongly
+non-monotonic: half-rate step 8,000 beats its final checkpoint, and low-rate
+step 4,000 beats step 5,000. Further same-branch training is closed at that
+selected point. A separate human-transcript CTC A/B also
 failed the primary corpus gate: at a conservative 1e-6, checkpoints 250/500/
 750/1,000 regressed to 28.59/29.21/31.52/33.61% WER on the same 955 words.
 This confirms token-row alignment destroys useful native-tower geometry; no

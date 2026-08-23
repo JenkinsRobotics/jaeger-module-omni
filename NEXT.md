@@ -57,24 +57,24 @@ The **active development** checkpoint is now the fully owned Gemma-native
 teacher path:
 
 ```text
-artifacts/stock-whisper-gemma-native-stack-swiglu-refine5k.npz
-27.75% WER — exact historical dev-clean64 / 955 words
-27.38% WER — held-out MINDS/Vox591 / 9,736 words
-8/12 answers — canonical dual-output prompt, 532 ms median
-20.90% generated transcript WER — cases12 diagnostic (was 43.28%)
+artifacts/stock-whisper-gemma-native-stack-residual1024-refine4k.npz
+20.52% WER — exact historical dev-clean64 / 955 words
+22.63% WER — held-out MINDS/Vox591 / 9,736 words
+8/12 answers — canonical dual-output prompt, 511 ms median
+20.90% generated transcript WER — cases12 diagnostic
 ```
 
 It remains a challenger, not the live or observer default. The older paired
 stock adapter remains the accuracy gate at 16.34%/9 of 12; the native tower
 remains live at 10/12; the tuned-Whisper observer remains 13.61% WER.
 
-Frame stacking plus RMSNorm/SwiGLU is now measured, not merely proposed. It
-improves the prior native-teacher adapter by 3.66 WER points on dev-clean and
-4.80 points on MINDS/Vox, but does not improve the 8/12 answer gate. Do not
-continue the selected recipe at a lower learning rate: a complete 5e-6 sweep
-regressed from 29.82% to at least 31.99% on the ranking evaluator. The next
-controlled experiment must change the learning signal or temporal connector
-while keeping encoder, corpora, prompts, and free-running gates fixed.
+The zero-init residual block is the current winning capacity change. It
+improves the prior stack checkpoint by 7.23 WER points on dev-clean and 4.75
+points on MINDS/Vox without changing the frozen base. Do not continue the
+same first residual past its selected refinement step: the next 1k checkpoint
+regresses. A second zero-init residual stage is the next controlled capacity
+A/B; keep the full base plus first residual frozen and retain it only if the
+same three free-running gates improve.
 Sampled CTC against human transcripts and frozen Gemma input-token rows is
 also closed for this checkpoint: even 250 steps at 1e-6 regressed the exact
 dev-clean gate from 27.75% to 28.59%, reaching 33.61% by step 1,000. It used no

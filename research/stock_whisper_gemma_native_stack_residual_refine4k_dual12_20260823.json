@@ -1,0 +1,107 @@
+{
+ "front_end": "stock",
+ "dual_output": true,
+ "correct": 8,
+ "n": 12,
+ "median_ms": 511.027603992261,
+ "rows": [
+  {
+   "case": "q00",
+   "ok": false,
+   "ms": 1067.3367499839514,
+   "reply": "TRANSCRIPT: What is to passed?\nANSWER: I'm sorry, I didn't catch that. Could you repeat the question?",
+   "transcript": "What is to passed?",
+   "answer": "I'm sorry, I didn't catch that. Could you repeat the question?"
+  },
+  {
+   "case": "q01",
+   "ok": true,
+   "ms": 430.7182088959962,
+   "reply": "TRANSCRIPT: what color is the sky\nANSWER: blue",
+   "transcript": "what color is the sky",
+   "answer": "blue"
+  },
+  {
+   "case": "q02",
+   "ok": true,
+   "ms": 468.06262503378093,
+   "reply": "TRANSCRIPT: How many days in a week?\nANSWER: Seven",
+   "transcript": "How many days in a week?",
+   "answer": "Seven"
+  },
+  {
+   "case": "q03",
+   "ok": true,
+   "ms": 579.7729170881212,
+   "reply": "TRANSCRIPT: What is the capital of France?\nANSWER: The capital of France is Paris.",
+   "transcript": "What is the capital of France?",
+   "answer": "The capital of France is Paris."
+  },
+  {
+   "case": "q04",
+   "ok": false,
+   "ms": 450.21820813417435,
+   "reply": "TRANSCRIPT: what is seven minus three?\nANSWER: four",
+   "transcript": "what is seven minus three?",
+   "answer": "four"
+  },
+  {
+   "case": "q05",
+   "ok": false,
+   "ms": 652.7075420599431,
+   "reply": "TRANSCRIPT: How many ways is this cipher handled?\nANSWER: It depends on the specific cipher and its implementation.",
+   "transcript": "How many ways is this cipher handled?",
+   "answer": "It depends on the specific cipher and its implementation."
+  },
+  {
+   "case": "q06",
+   "ok": true,
+   "ms": 445.06641617044806,
+   "reply": "TRANSCRIPT: what is the largest planet?\nANSWER: Jupiter",
+   "transcript": "what is the largest planet?",
+   "answer": "Jupiter"
+  },
+  {
+   "case": "q07",
+   "ok": true,
+   "ms": 478.3103750087321,
+   "reply": "TRANSCRIPT: what is five times five?\nANSWER: twenty-five",
+   "transcript": "what is five times five?",
+   "answer": "twenty-five"
+  },
+  {
+   "case": "q08",
+   "ok": true,
+   "ms": 452.7445831336081,
+   "reply": "TRANSCRIPT: what season comes after summer?\nANSWER: autumn",
+   "transcript": "what season comes after summer?",
+   "answer": "autumn"
+  },
+  {
+   "case": "q09",
+   "ok": true,
+   "ms": 623.4733338933438,
+   "reply": "TRANSCRIPT: How many hours in a day?\nANSWER: There are 24 hours in a day.",
+   "transcript": "How many hours in a day?",
+   "answer": "There are 24 hours in a day."
+  },
+  {
+   "case": "q10",
+   "ok": true,
+   "ms": 543.7448329757899,
+   "reply": "TRANSCRIPT: What is the freezing point of water?\nANSWER: Zero degrees Celsius.",
+   "transcript": "What is the freezing point of water?",
+   "answer": "Zero degrees Celsius."
+  },
+  {
+   "case": "q11",
+   "ok": false,
+   "ms": 579.5220420695841,
+   "reply": "TRANSCRIPT: It worked ramen and chili dog.\nANSWER: No, it didn't.",
+   "transcript": "It worked ramen and chili dog.",
+   "answer": "No, it didn't."
+  }
+ ],
+ "transcript_wer": 0.208955223880597,
+ "transcript_words": 67
+}

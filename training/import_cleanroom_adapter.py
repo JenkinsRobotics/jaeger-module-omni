@@ -23,11 +23,29 @@ def main() -> int:
         source_arch = (str(archive["adapter_arch"])
                        if "adapter_arch" in archive.files
                        else "mean_pool_gelu_v1")
-        required = (("rms_pre_gamma", "stack_w1", "rms_mid_gamma",
-                     "stack_w2") if source_arch == "frame_stack_swiglu_v1"
-                    else ("ln_gamma", "ln_beta", "w1", "b1", "w2", "b2"))
+        if source_arch == "frame_stack_swiglu_residual_v1":
+            required = ("rms_pre_gamma", "stack_w1", "rms_mid_gamma",
+                        "stack_w2", "residual_hidden", "res_rms_pre_gamma",
+                        "res_w1", "res_rms_mid_gamma", "res_w2")
+        elif source_arch == "frame_stack_swiglu_v1":
+            required = ("rms_pre_gamma", "stack_w1", "rms_mid_gamma",
+                        "stack_w2")
+        else:
+            required = ("ln_gamma", "ln_beta", "w1", "b1", "w2", "b2")
         arrays = {key: archive[key] for key in required}
-    if source_arch == "frame_stack_swiglu_v1":
+    if source_arch == "frame_stack_swiglu_residual_v1":
+        hidden = 2560
+        residual_hidden = int(arrays["residual_hidden"])
+        runtime_arch = "gemma_native_stack_swiglu_residual_v1"
+        expected = {
+            "rms_pre_gamma": (2048,), "stack_w1": (5120, 2048),
+            "rms_mid_gamma": (2560,), "stack_w2": (2560, 2560),
+            "residual_hidden": (), "res_rms_pre_gamma": (2560,),
+            "res_w1": (residual_hidden * 2, 2560),
+            "res_rms_mid_gamma": (residual_hidden,),
+            "res_w2": (2560, residual_hidden),
+        }
+    elif source_arch == "frame_stack_swiglu_v1":
         hidden = 2560
         runtime_arch = "gemma_native_stack_swiglu_v1"
         expected = {
