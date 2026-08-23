@@ -40,6 +40,8 @@ from jaeger_agent_omni.runtime.stock_whisper import (
     INPUT_BOUNDARY,
     INPUT_DIM,
     OUTPUT_DIM,
+    OUTPUT_MODE_NORMALIZED,
+    OUTPUT_MODE_RAW,
     POOL_STEP,
     SAMPLE_RATE,
     TARGET_NORM,
@@ -63,7 +65,7 @@ ANSWER_SYSTEM = (
 GPU_JOB_PATTERNS = (
     r"training/train\.py",
     r"training/stock_whisper_gemma\.py\s+"
-    r"(?:precompute|pretrain-ctc|train|probe|wer|bench)",
+    r"(?:precompute|pretrain-ctc|distill|train|probe|geometry|wer|bench)",
     r"cleanroom_train\.py\s+(?:precompute|train|bench)",
     r"compare_tracks\.py",
     r"train_audio_adapter\.py",
@@ -115,7 +117,7 @@ def _split(item_id: str, val_percent: int) -> str:
 
 
 def _write_feature(root: Path, split: str, item_id: str, features,
-                   record: dict) -> None:
+                   record: dict, encoder: str = DEFAULT_WHISPER) -> None:
     split_root = root / split
     feature_dir = split_root / "features"
     feature_dir.mkdir(parents=True, exist_ok=True)
@@ -126,7 +128,7 @@ def _write_feature(root: Path, split: str, item_id: str, features,
         "id": item_id,
         "frames": int(features.shape[0]),
         "feature": f"features/{name}",
-        "encoder": DEFAULT_WHISPER,
+        "encoder": encoder,
         "boundary": INPUT_BOUNDARY,
     })
     with (split_root / "manifest.jsonl").open("a", buffering=1) as handle:
@@ -167,7 +169,7 @@ def command_precompute_corpus(args) -> None:
             "seconds": seconds,
             "source_pcm": str(wav_path),
             "source": str((row.get("meta") or {}).get("source", "local")),
-        })
+        }, encoder=args.whisper)
         written += 1
         if written == 1 or written % args.log_every == 0:
             print(f"cached {written}: {item_id} {seconds:.2f}s -> "
@@ -223,7 +225,7 @@ def command_precompute_open(args) -> None:
             "seconds": seconds,
             "source": f"openslr/librispeech_asr:{args.config}",
             "license": "CC-BY-4.0",
-        })
+        }, encoder=args.whisper)
         written += 1
         if written == 1 or written % args.log_every == 0:
             print(f"cached {written}/{index}: {seconds:.2f}s -> {features.shape} "
@@ -235,7 +237,53 @@ def command_precompute_open(args) -> None:
         os._exit(0)
 
 
-def _rows(cache: Path, split: str, task: str) -> list[dict]:
+def command_precompute_paired(args) -> None:
+    """Encode raw audio named by an existing teacher feature manifest.
+
+    This is intentionally a cache builder, not an ASR pass: only frozen stock
+    Whisper encoder states are written.  The teacher manifest supplies stable
+    ids and labels so the later distillation stage can join both modalities.
+    """
+    teacher = _feature_manifest(args.teacher_cache, args.teacher_split)
+    done = _completed(args.cache)
+    front = StockWhisperFrontEnd(args.whisper, args.device)
+    written = missing = 0
+    started = time.time()
+    for item_id, row in teacher.items():
+        if item_id in done:
+            continue
+        filename = item_id.rsplit(":", 1)[-1]
+        audio_path = args.raw_audio / filename
+        if not audio_path.exists():
+            missing += 1
+            continue
+        waveform = _read_wav(audio_path)
+        seconds = len(waveform) / SAMPLE_RATE
+        if seconds < args.min_seconds or seconds > args.max_seconds:
+            continue
+        features = front(waveform)
+        _write_feature(args.cache, args.output_split, item_id, features, {
+            "transcript": str(row.get("text") or "").strip(),
+            "response": "",
+            "seconds": seconds,
+            "source_pcm": str(audio_path),
+            "source": str(row.get("source") or "paired-teacher-manifest"),
+        }, encoder=args.whisper)
+        written += 1
+        if written == 1 or written % args.log_every == 0:
+            print(f"cached paired {written}: {seconds:.2f}s -> "
+                  f"{features.shape} ({time.time()-started:.1f}s)",
+                  flush=True)
+        if args.max_examples and written >= args.max_examples:
+            break
+    print(f"cached {written} paired examples at {args.cache}; "
+          f"missing raw audio={missing}", flush=True)
+    if getattr(front.device, "type", "") == "mps":
+        os._exit(0)
+
+
+def _rows(cache: Path, split: str, task: str,
+          expected_encoder: str = DEFAULT_WHISPER) -> list[dict]:
     root = cache / split
     manifest = root / "manifest.jsonl"
     if not manifest.exists():
@@ -244,17 +292,28 @@ def _rows(cache: Path, split: str, task: str) -> list[dict]:
     field = "transcript" if task == "transcript" else "response"
     for line in manifest.read_text().splitlines():
         row = json.loads(line)
-        target = str(row.get(field) or "").strip()
+        # VoiceLLM's clean-room stock cache predates this trainer and calls the
+        # supervised transcript `text`. Its feature files are absolute paths;
+        # our native manifests use relative paths plus explicit lineage.
+        target = str(row.get(field) or (
+            row.get("text") if task == "transcript" else "") or "").strip()
         if not target:
             continue
         row["target"] = target
         row["feature"] = root / row["feature"]
-        if row.get("encoder") != DEFAULT_WHISPER:
+        encoder = row.get("encoder")
+        boundary = row.get("boundary")
+        if encoder is None and "cleanroom_cache50" in str(row["feature"]):
+            encoder = "openai/whisper-medium"
+            boundary = INPUT_BOUNDARY
+        if encoder != expected_encoder:
             raise ValueError(f"mixed encoder cache in {manifest}")
-        if row.get("boundary") != INPUT_BOUNDARY:
+        if boundary != INPUT_BOUNDARY:
             raise ValueError(
-                f"stale cache boundary {row.get('boundary')!r} in {manifest}; "
+                f"stale cache boundary {boundary!r} in {manifest}; "
                 f"expected {INPUT_BOUNDARY!r}")
+        row["encoder"] = encoder
+        row["boundary"] = boundary
         result.append(row)
     return result
 
@@ -282,12 +341,14 @@ def _atomic_checkpoint(path: Path, adapter, **metadata) -> None:
 
 
 def _atomic_checkpoint_arrays(path: Path, weights: dict, **metadata) -> None:
+    encoder = metadata.pop("encoder", DEFAULT_WHISPER)
     payload = {
         **weights,
         "input_boundary": np.array(INPUT_BOUNDARY),
-        "encoder": np.array(DEFAULT_WHISPER),
+        "encoder": np.array(encoder),
         "lineage": np.array("qwen_free"),
         "target_norm": np.array(TARGET_NORM, dtype=np.float32),
+        "output_mode": np.array(OUTPUT_MODE_NORMALIZED),
         "format_version": np.array(1, dtype=np.int32),
     }
     payload.update({key: np.asarray(value) for key, value in metadata.items()})
@@ -314,6 +375,8 @@ def command_pretrain_ctc(args) -> None:
     and transcript tokens. A sampled Gemma vocabulary keeps the objective
     cheap while still training toward Gemma's own embedding rows.
     """
+    if args.extra_repeat < 1:
+        raise ValueError("--extra-repeat must be positive")
     os.environ.setdefault("PYTORCH_ENABLE_MPS_FALLBACK", "1")
     import torch
     import torch.nn as nn
@@ -322,8 +385,14 @@ def command_pretrain_ctc(args) -> None:
 
     from fit_alignment import embedding_table
 
-    rows = _rows(args.cache, "train", "transcript")
-    validation_rows = _rows(args.cache, "validation", "transcript")
+    rows = _rows(args.cache, args.train_split, "transcript", args.whisper)
+    validation_rows = _rows(
+        args.cache, args.validation_split, "transcript", args.whisper)
+    for extra in args.extra_cache:
+        extra_rows = _rows(Path(extra), "train", "transcript", args.whisper)
+        rows.extend(extra_rows * args.extra_repeat)
+        validation_rows.extend(_rows(
+            Path(extra), "validation", "transcript", args.whisper))
     if args.max_examples:
         rows = rows[:args.max_examples]
     device_name = args.device
@@ -356,6 +425,10 @@ def command_pretrain_ctc(args) -> None:
     if args.resume:
         from jaeger_agent_omni.runtime.stock_whisper import validate_checkpoint
         saved = validate_checkpoint(args.resume)
+        if str(saved["encoder"]) != args.whisper:
+            raise ValueError(
+                f"resume encoder {str(saved['encoder'])!r} != "
+                f"requested {args.whisper!r}")
         with torch.no_grad():
             adapter.linear1.weight.copy_(torch.from_numpy(saved["linear1_weight"]))
             adapter.linear1.bias.copy_(torch.from_numpy(saved["linear1_bias"]))
@@ -433,7 +506,16 @@ def command_pretrain_ctc(args) -> None:
                     args.output, weights, step=step, task="transcript",
                     stage="sampled_ctc", learning_rate=args.learning_rate,
                     negative_tokens=args.negative_tokens,
-                    temperature=args.temperature, train_loss=value)
+                    temperature=args.temperature, train_loss=value,
+                    encoder=args.whisper)
+                snapshot = args.output.with_name(
+                    f"{args.output.stem}.step{step:06d}{args.output.suffix}")
+                _atomic_checkpoint_arrays(
+                    snapshot, weights, step=step, task="transcript",
+                    stage="sampled_ctc", learning_rate=args.learning_rate,
+                    negative_tokens=args.negative_tokens,
+                    temperature=args.temperature, train_loss=value,
+                    encoder=args.whisper)
                 print(f"checkpoint {args.output}", flush=True)
             if step >= args.steps:
                 break
@@ -450,7 +532,223 @@ def command_pretrain_ctc(args) -> None:
               f"{sum(eval_losses)/len(eval_losses):.4f}")
 
 
+def _feature_manifest(cache: Path, split: str) -> dict[str, dict]:
+    """Read a feature manifest keyed by stable utterance id."""
+    root = cache / split
+    manifest = root / "manifest.jsonl"
+    if not manifest.exists():
+        raise FileNotFoundError(manifest)
+    result = {}
+    for line in manifest.read_text().splitlines():
+        if not line.strip():
+            continue
+        row = json.loads(line)
+        feature = Path(row["feature"])
+        row["feature"] = feature if feature.is_absolute() else root / feature
+        result[str(row["id"])] = row
+    return result
+
+
+def command_distill(args) -> None:
+    """Match the proven tuned-audio adapter before Gemma is run.
+
+    Both feature caches were computed from the same waveform ids.  The target
+    is the tuned Whisper + Jaeger adapter's 2560-wide audio vectors, not a
+    transcript, Gemma hidden state, logit, or generated token.  This transfers
+    an already readable acoustic geometry while keeping the deployed encoder
+    stock and the deployed graph Qwen-free.
+    """
+    import torch
+    import torch.nn as nn
+    import torch.nn.functional as functional
+
+    from jaeger_agent_omni.runtime.stock_whisper import validate_checkpoint
+
+    stock_train = {
+        row["id"]: row for row in _rows(
+            args.cache, args.train_split, "transcript", args.whisper)}
+    stock_validation = {
+        row["id"]: row for row in _rows(
+            args.cache, args.validation_split, "transcript", args.whisper)}
+    teacher_train = _feature_manifest(
+        args.teacher_cache, args.teacher_train_split)
+    teacher_validation = _feature_manifest(
+        args.teacher_cache, args.teacher_validation_split)
+    for (stock_cache, stock_train_split, stock_validation_split,
+         teacher_cache, teacher_train_split,
+         teacher_validation_split) in args.extra_pair:
+        extra_stock_cache = Path(stock_cache)
+        extra_teacher_cache = Path(teacher_cache)
+        stock_train.update({
+            row["id"]: row for row in _rows(
+                extra_stock_cache, stock_train_split, "transcript",
+                args.whisper)})
+        stock_validation.update({
+            row["id"]: row for row in _rows(
+                extra_stock_cache, stock_validation_split, "transcript",
+                args.whisper)})
+        teacher_train.update(_feature_manifest(
+            extra_teacher_cache, teacher_train_split))
+        teacher_validation.update(_feature_manifest(
+            extra_teacher_cache, teacher_validation_split))
+    train_ids = sorted(stock_train.keys() & teacher_train.keys())
+    validation_ids = sorted(stock_validation.keys() & teacher_validation.keys())
+    if args.max_examples:
+        train_ids = train_ids[:args.max_examples]
+    if not train_ids or not validation_ids:
+        raise RuntimeError(
+            "distillation needs paired train and validation utterance ids")
+
+    with np.load(args.teacher_adapter, allow_pickle=False) as archive:
+        teacher_weight = np.asarray(archive["weight"], dtype=np.float32)
+        teacher_bias = np.asarray(archive["bias"], dtype=np.float32)
+    if teacher_weight.shape != (OUTPUT_DIM, HIDDEN_DIM):
+        raise ValueError(
+            f"teacher weight must be {(OUTPUT_DIM, HIDDEN_DIM)}, got "
+            f"{teacher_weight.shape}")
+    if teacher_bias.shape != (OUTPUT_DIM,):
+        raise ValueError(f"teacher bias must be {(OUTPUT_DIM,)}")
+
+    device_name = args.device
+    if device_name == "auto":
+        device_name = "mps" if torch.backends.mps.is_available() else "cpu"
+    device = torch.device(device_name)
+    torch.manual_seed(args.seed)
+    rng = random.Random(args.seed)
+
+    class Adapter(nn.Module):
+        def __init__(self):
+            super().__init__()
+            self.linear1 = nn.Linear(INPUT_DIM, HIDDEN_DIM)
+            self.linear2 = nn.Linear(HIDDEN_DIM, OUTPUT_DIM)
+
+        def forward(self, states):
+            values = self.linear2(functional.relu(self.linear1(states)))
+            usable = (values.shape[0] // POOL_STEP) * POOL_STEP
+            return (values[:usable].reshape(
+                -1, POOL_STEP, OUTPUT_DIM).mean(dim=1)
+                if usable else values.mean(dim=0, keepdim=True))
+
+    adapter = Adapter().to(device)
+    start_step = 0
+    if args.resume:
+        saved = validate_checkpoint(args.resume)
+        if str(saved["encoder"]) != args.whisper:
+            raise ValueError(
+                f"resume encoder {str(saved['encoder'])!r} != "
+                f"requested {args.whisper!r}")
+        start_step = int(saved.get("step", 0))
+        with torch.no_grad():
+            adapter.linear1.weight.copy_(torch.from_numpy(
+                saved["linear1_weight"]))
+            adapter.linear1.bias.copy_(torch.from_numpy(
+                saved["linear1_bias"]))
+            adapter.linear2.weight.copy_(torch.from_numpy(
+                saved["linear2_weight"]))
+            adapter.linear2.bias.copy_(torch.from_numpy(
+                saved["linear2_bias"]))
+    teacher_weight_t = torch.from_numpy(teacher_weight).to(device)
+    teacher_bias_t = torch.from_numpy(teacher_bias).to(device)
+    optimizer = torch.optim.AdamW(
+        adapter.parameters(), lr=args.learning_rate,
+        weight_decay=args.weight_decay)
+
+    def pair_loss(item_id: str, validation: bool = False):
+        stocks = stock_validation if validation else stock_train
+        teachers = teacher_validation if validation else teacher_train
+        stock = torch.from_numpy(np.load(
+            stocks[item_id]["feature"]).astype(np.float32)).to(device)
+        tuned = torch.from_numpy(np.load(
+            teachers[item_id]["feature"]).astype(np.float32)).to(device)
+        prediction = adapter(stock)
+        with torch.no_grad():
+            target = functional.linear(tuned, teacher_weight_t, teacher_bias_t)
+        length = min(prediction.shape[0], target.shape[0])
+        if length < 1:
+            return None
+        prediction = prediction[:length]
+        target = target[:length]
+        regression = functional.smooth_l1_loss(prediction, target)
+        cosine = 1.0 - functional.cosine_similarity(
+            prediction, target, dim=-1).mean()
+        return regression + args.cosine_weight * cosine
+
+    print(f"paired distillation: {len(train_ids)} train / "
+          f"{len(validation_ids)} validation", flush=True)
+    print("supervision: tuned adapter vectors only (pre-Gemma)", flush=True)
+    step = start_step
+    rolling = []
+    started = time.time()
+    while step < args.steps:
+        epoch = list(train_ids)
+        rng.shuffle(epoch)
+        for item_id in epoch:
+            loss = pair_loss(item_id)
+            if loss is None:
+                continue
+            optimizer.zero_grad(set_to_none=True)
+            loss.backward()
+            torch.nn.utils.clip_grad_norm_(adapter.parameters(), 1.0)
+            optimizer.step()
+            step += 1
+            value = float(loss.detach())
+            rolling.append(value)
+            rolling = rolling[-args.log_every:]
+            if step == start_step + 1 or step % args.log_every == 0:
+                print(f"distill {step}/{args.steps} loss={value:.5f} "
+                      f"avg={sum(rolling)/len(rolling):.5f} "
+                      f"elapsed={time.time()-started:.1f}s", flush=True)
+            if step % args.save_every == 0 or step == args.steps:
+                weights = {
+                    "linear1_weight":
+                        adapter.linear1.weight.detach().cpu().numpy(),
+                    "linear1_bias": adapter.linear1.bias.detach().cpu().numpy(),
+                    "linear2_weight":
+                        adapter.linear2.weight.detach().cpu().numpy(),
+                    "linear2_bias": adapter.linear2.bias.detach().cpu().numpy(),
+                }
+                metadata = dict(
+                    step=step, task="transcript", stage="paired_distillation",
+                    learning_rate=args.learning_rate, train_loss=value,
+                    teacher_adapter=str(args.teacher_adapter),
+                    paired_train_examples=len(train_ids),
+                    output_mode=OUTPUT_MODE_RAW, encoder=args.whisper)
+                _atomic_checkpoint_arrays(args.output, weights, **metadata)
+                snapshot = args.output.with_name(
+                    f"{args.output.stem}.step{step:06d}{args.output.suffix}")
+                _atomic_checkpoint_arrays(snapshot, weights, **metadata)
+                print(f"checkpoint {args.output}", flush=True)
+            if step >= args.steps:
+                break
+
+    adapter.eval()
+    losses = []
+    with torch.inference_mode():
+        for item_id in validation_ids[:args.eval_examples]:
+            loss = pair_loss(item_id, validation=True)
+            if loss is not None:
+                losses.append(float(loss))
+    validation_loss = sum(losses) / len(losses)
+    print(f"validation pre-Gemma distillation ({len(losses)}): "
+          f"{validation_loss:.5f}")
+    weights = {
+        "linear1_weight": adapter.linear1.weight.detach().cpu().numpy(),
+        "linear1_bias": adapter.linear1.bias.detach().cpu().numpy(),
+        "linear2_weight": adapter.linear2.weight.detach().cpu().numpy(),
+        "linear2_bias": adapter.linear2.bias.detach().cpu().numpy(),
+    }
+    _atomic_checkpoint_arrays(
+        args.output, weights, step=step, task="transcript",
+        stage="paired_distillation", learning_rate=args.learning_rate,
+        train_loss=value, validation_distill=validation_loss,
+        teacher_adapter=str(args.teacher_adapter),
+        paired_train_examples=len(train_ids), output_mode=OUTPUT_MODE_RAW,
+        encoder=args.whisper)
+
+
 def command_train(args) -> None:
+    if args.extra_repeat < 1:
+        raise ValueError("--extra-repeat must be positive")
     import mlx.core as mx
     import mlx.nn as nn
     import mlx.optimizers as optim
@@ -458,8 +756,15 @@ def command_train(args) -> None:
 
     mx.random.seed(args.seed)
 
-    train_rows = _rows(args.cache, "train", args.task)
-    validation_rows = _rows(args.cache, "validation", args.task)
+    train_rows = _rows(
+        args.cache, args.train_split, args.task, args.whisper)
+    validation_rows = _rows(
+        args.cache, args.validation_split, args.task, args.whisper)
+    for extra in args.extra_cache:
+        extra_rows = _rows(Path(extra), "train", args.task, args.whisper)
+        train_rows.extend(extra_rows * args.extra_repeat)
+        validation_rows.extend(_rows(
+            Path(extra), "validation", args.task, args.whisper))
     if args.max_examples:
         train_rows = train_rows[:args.max_examples]
     if not train_rows or not validation_rows:
@@ -478,6 +783,10 @@ def command_train(args) -> None:
     if args.resume:
         from jaeger_agent_omni.runtime.stock_whisper import validate_checkpoint
         saved = validate_checkpoint(args.resume)
+        if str(saved["encoder"]) != args.whisper:
+            raise ValueError(
+                f"resume encoder {str(saved['encoder'])!r} != "
+                f"requested {args.whisper!r}")
         start_step = int(saved.get("step", 0))
 
     class Adapter(nn.Module):
@@ -575,7 +884,13 @@ def command_train(args) -> None:
                 _atomic_checkpoint(
                     args.output, alignment.adapter, step=step, task=args.task,
                     learning_rate=args.learning_rate, train_loss=value,
-                    model=str(args.model))
+                    model=str(args.model), encoder=args.whisper)
+                snapshot = args.output.with_name(
+                    f"{args.output.stem}.step{step:06d}{args.output.suffix}")
+                _atomic_checkpoint(
+                    snapshot, alignment.adapter, step=step, task=args.task,
+                    learning_rate=args.learning_rate, train_loss=value,
+                    model=str(args.model), encoder=args.whisper)
                 print(f"checkpoint {args.output}", flush=True)
             if step >= args.steps:
                 break
@@ -590,11 +905,12 @@ def command_train(args) -> None:
     _atomic_checkpoint(
         args.output, alignment.adapter, step=step, task=args.task,
         learning_rate=args.learning_rate, train_loss=value,
-        validation_ce=validation_ce, model=str(args.model))
+        validation_ce=validation_ce, model=str(args.model),
+        encoder=args.whisper)
 
 
 def command_probe(args) -> None:
-    rows = _rows(args.cache, args.split, args.task)
+    rows = _rows(args.cache, args.split, args.task, args.whisper)
     row = rows[args.index]
     session = StockWhisperGemmaSession(
         args.adapter, args.model, args.whisper,
@@ -608,11 +924,109 @@ def command_probe(args) -> None:
     print(f"generated: {answer}")
 
 
+def command_geometry(args) -> None:
+    """Pre-Gemma checkpoint gate: token recall and frame diversity.
+
+    Adapter audio vectors are compared directly with Gemma's frozen input
+    embedding table. No Gemma layer, output logit, teacher-forced token, or
+    generated text participates in this measurement.
+    """
+    import torch
+    import torch.nn as nn
+    import torch.nn.functional as functional
+    from transformers import AutoTokenizer
+
+    from fit_alignment import embedding_table
+    from jaeger_agent_omni.runtime.stock_whisper import validate_checkpoint
+
+    rows = _rows(
+        args.cache, args.split, "transcript", args.whisper)[:args.examples]
+    if not rows:
+        raise RuntimeError("geometry probe needs non-empty transcript rows")
+    device_name = args.device
+    if device_name == "auto":
+        device_name = "mps" if torch.backends.mps.is_available() else "cpu"
+    device = torch.device(device_name)
+    tokenizer = AutoTokenizer.from_pretrained("google/gemma-4-E4B-it")
+    table = functional.normalize(
+        embedding_table("google/gemma-4-E4B-it"), dim=-1).to(device)
+    results = []
+
+    class Adapter(nn.Module):
+        def __init__(self, saved):
+            super().__init__()
+            self.linear1 = nn.Linear(INPUT_DIM, HIDDEN_DIM)
+            self.linear2 = nn.Linear(HIDDEN_DIM, OUTPUT_DIM)
+            with torch.no_grad():
+                self.linear1.weight.copy_(torch.from_numpy(
+                    saved["linear1_weight"]))
+                self.linear1.bias.copy_(torch.from_numpy(
+                    saved["linear1_bias"]))
+                self.linear2.weight.copy_(torch.from_numpy(
+                    saved["linear2_weight"]))
+                self.linear2.bias.copy_(torch.from_numpy(
+                    saved["linear2_bias"]))
+
+        def forward(self, states):
+            values = self.linear2(functional.relu(self.linear1(states)))
+            usable = (values.shape[0] // POOL_STEP) * POOL_STEP
+            values = (values[:usable].reshape(
+                -1, POOL_STEP, OUTPUT_DIM).mean(dim=1)
+                if usable else values.mean(dim=0, keepdim=True))
+            return functional.normalize(values, dim=-1)
+
+    for path in args.adapter:
+        saved = validate_checkpoint(path)
+        if str(saved["encoder"]) != args.whisper:
+            raise ValueError(
+                f"{path}: encoder {str(saved['encoder'])!r} != "
+                f"{args.whisper!r}")
+        adapter = Adapter(saved).to(device).eval()
+        hits = total = frames = unique_top1 = 0
+        with torch.inference_mode():
+            for row in rows:
+                features = torch.from_numpy(np.load(
+                    row["feature"]).astype(np.float32)).to(device)
+                emitted = adapter(features)
+                scores = emitted @ table.T
+                top = torch.topk(scores, args.topk, dim=-1).indices.cpu()
+                wanted = set(tokenizer.encode(
+                    row["target"], add_special_tokens=False))
+                found = {int(token) for frame in top for token in frame}
+                hits += len(wanted & found)
+                total += len(wanted)
+                top1 = [int(frame[0]) for frame in top]
+                unique_top1 += len(set(top1))
+                frames += len(top1)
+        row_out = {
+            "adapter": str(path),
+            "step": int(saved.get("step", 0)),
+            "examples": len(rows),
+            "content_recall_at_k": hits / max(1, total),
+            "frame_diversity": unique_top1 / max(1, frames),
+            "target_tokens": total,
+            "frames": frames,
+        }
+        results.append(row_out)
+        print(f"{Path(path).name:<55} step {row_out['step']:4d}  "
+              f"recall@{args.topk} {100*row_out['content_recall_at_k']:6.2f}%  "
+              f"diversity {100*row_out['frame_diversity']:6.2f}%", flush=True)
+        del adapter
+    if args.output:
+        args.output.write_text(json.dumps({
+            "metric": "pre_gemma_embedding_geometry",
+            "split": args.split,
+            "encoder": args.whisper,
+            "results": results,
+        }, indent=2))
+
+
 def command_wer(args) -> None:
     """Free-run held-out clips and report corpus-level, pooled WER."""
     from evaluate import normalize, wer
 
-    rows = _rows(args.cache, args.split, "transcript")[:args.examples]
+    rows = _rows(
+        args.cache, args.split, "transcript", args.whisper)[:args.examples]
     session = StockWhisperGemmaSession(
         args.adapter, args.model, args.whisper, TRANSCRIPT_SYSTEM)
     total_edits = 0.0
@@ -711,8 +1125,24 @@ def build_parser() -> argparse.ArgumentParser:
     opened.add_argument("--seed", type=int, default=7)
     opened.set_defaults(func=command_precompute_open)
 
+    paired = commands.add_parser("precompute-paired")
+    common_pre(paired)
+    paired.add_argument("--teacher-cache", type=Path, required=True)
+    paired.add_argument("--teacher-split", required=True)
+    paired.add_argument("--raw-audio", type=Path, required=True)
+    paired.add_argument("--output-split", choices=("train", "validation"),
+                        required=True)
+    paired.set_defaults(func=command_precompute_paired)
+
     ctc = commands.add_parser("pretrain-ctc")
     ctc.add_argument("--cache", type=Path, default=DEFAULT_CACHE)
+    ctc.add_argument("--train-split", default="train")
+    ctc.add_argument("--validation-split", default="validation")
+    ctc.add_argument("--whisper", default=DEFAULT_WHISPER)
+    ctc.add_argument("--extra-cache", action="append", default=[],
+                     help="additional native cache with train/validation splits")
+    ctc.add_argument("--extra-repeat", type=int, default=4,
+                     help="repeat each extra training row in the sampling pool")
     ctc.add_argument("--output", type=Path, default=DEFAULT_TRANSCRIPT)
     ctc.add_argument("--resume", type=Path)
     ctc.add_argument("--steps", type=int, default=400)
@@ -729,8 +1159,45 @@ def build_parser() -> argparse.ArgumentParser:
     ctc.add_argument("--device", choices=("auto", "mps", "cpu"), default="auto")
     ctc.set_defaults(func=command_pretrain_ctc)
 
+    distill = commands.add_parser(
+        "distill", help="paired pre-Gemma tuned-to-stock feature distillation")
+    distill.add_argument("--cache", type=Path, required=True)
+    distill.add_argument("--train-split", default="train100")
+    distill.add_argument("--validation-split", default="devclean")
+    distill.add_argument("--whisper", default=DEFAULT_WHISPER)
+    distill.add_argument("--teacher-cache", type=Path, required=True)
+    distill.add_argument("--teacher-train-split", default="train_100")
+    distill.add_argument("--teacher-validation-split", default="validation")
+    distill.add_argument("--teacher-adapter", type=Path, required=True)
+    distill.add_argument(
+        "--extra-pair", action="append", nargs=6, default=[],
+        metavar=("STOCK_CACHE", "STOCK_TRAIN", "STOCK_VALIDATION",
+                 "TEACHER_CACHE", "TEACHER_TRAIN", "TEACHER_VALIDATION"),
+        help="additional paired stock/teacher cache and split names")
+    distill.add_argument("--output", type=Path, required=True)
+    distill.add_argument("--resume", type=Path)
+    distill.add_argument("--steps", type=int, default=6000)
+    distill.add_argument("--max-examples", type=int, default=0)
+    distill.add_argument("--learning-rate", type=float, default=1e-4)
+    distill.add_argument("--weight-decay", type=float, default=0.0)
+    distill.add_argument("--cosine-weight", type=float, default=0.1)
+    distill.add_argument("--log-every", type=int, default=25)
+    distill.add_argument("--save-every", type=int, default=500)
+    distill.add_argument("--eval-examples", type=int, default=64)
+    distill.add_argument("--seed", type=int, default=7)
+    distill.add_argument("--device", choices=("auto", "mps", "cpu"),
+                         default="auto")
+    distill.set_defaults(func=command_distill)
+
     train = commands.add_parser("train")
     train.add_argument("--cache", type=Path, default=DEFAULT_CACHE)
+    train.add_argument("--train-split", default="train")
+    train.add_argument("--validation-split", default="validation")
+    train.add_argument("--whisper", default=DEFAULT_WHISPER)
+    train.add_argument("--extra-cache", action="append", default=[],
+                       help="additional native cache with train/validation splits")
+    train.add_argument("--extra-repeat", type=int, default=4,
+                       help="repeat each extra training row in the sampling pool")
     train.add_argument("--task", choices=("transcript", "answer"), required=True)
     train.add_argument("--model", type=Path, default=DEFAULT_GEMMA)
     train.add_argument("--output", type=Path)
@@ -760,10 +1227,24 @@ def build_parser() -> argparse.ArgumentParser:
         probe.add_argument("--max-tokens", type=int, default=96)
         probe.set_defaults(func=func)
 
+    geometry = commands.add_parser(
+        "geometry", help="pre-Gemma token-recall checkpoint gate")
+    geometry.add_argument("--cache", type=Path, default=DEFAULT_CACHE)
+    geometry.add_argument("--split", default="validation")
+    geometry.add_argument("--whisper", default=DEFAULT_WHISPER)
+    geometry.add_argument("--adapter", type=Path, action="append", required=True)
+    geometry.add_argument("-n", "--examples", type=int, default=64)
+    geometry.add_argument("--topk", type=int, default=10)
+    geometry.add_argument("--device", choices=("auto", "mps", "cpu"),
+                          default="auto")
+    geometry.add_argument("--output", type=Path)
+    geometry.set_defaults(func=command_geometry)
+
     wer_parser = commands.add_parser("wer")
     wer_parser.add_argument("--cache", type=Path, default=DEFAULT_CACHE)
-    wer_parser.add_argument("--split", choices=("train", "validation"),
-                            default="validation")
+    wer_parser.add_argument(
+        "--split", default="validation",
+        help="cache split directory (for example validation or devclean)")
     wer_parser.add_argument("--adapter", type=Path, required=True)
     wer_parser.add_argument("--model", type=Path, default=DEFAULT_GEMMA)
     wer_parser.add_argument("--whisper", default=DEFAULT_WHISPER)

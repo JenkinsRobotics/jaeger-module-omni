@@ -1,0 +1,393 @@
+{
+  "adapter": "artifacts/stock-whisper-gemma-medium-multidomain.step005500.npz",
+  "split": "validation",
+  "n": 64,
+  "wer": 0.2551674982181041,
+  "reference_words": 1403,
+  "rows": [
+    {
+      "id": "fleurs:en_us:dev:1532:9393095557904752800.wav",
+      "reference": "108 plates of chhappan bhog in hinduism 56 different edible items like sweets fruits nuts dishes etc. which are offered to deity were served to baba shyam",
+      "hypothesis": "ONE HOUR PLATES OF CHAPMAN THE HOG IN HINDUSM FIFTY SIX DIFFERENT EATABLES LIKE SWEET FRUITS NUTS DESSERTS ETCETERA WHICH ARE OFFERED TO DEITY WERE SERVED TO BABU SHAH HAM",
+      "wer": 0.5925925925925926
+    },
+    {
+      "id": "fleurs:en_us:dev:1611:4822858198053130558.wav",
+      "reference": ". scientists say this animal's plumage was chestnut-brown on top with a pale or carotenoid-colored underside",
+      "hypothesis": "SAY THIS ANIMALS PLUMAGE WAS CHESTNUT BROWN ON TOP WITH A PEA OR CARROT YELLOW UNDER SIDE",
+      "wer": 0.4117647058823529
+    },
+    {
+      "id": "fleurs:en_us:dev:1516:6693574833075099847.wav",
+      "reference": "please treat the site with all of the dignity solemnity and respect it deserves do not make jokes about the holocaust or nazis",
+      "hypothesis": "please treat the site with all the dignity and respect deserved to make jokes about the holocaust or nazis",
+      "wer": 0.2608695652173913
+    },
+    {
+      "id": "fleurs:en_us:dev:1520:14159953987327027140.wav",
+      "reference": "out of 1,400 people polled prior to the 2010 federal election those who oppose australia becoming a republic grew by 8 per cent since 2008",
+      "hypothesis": "of one thousand four hundred people pulled prior to the thousand and ten federal election those who oppose australia becoming a republic grew by eight percent since two thousand eight",
+      "wer": 0.5769230769230769
+    },
+    {
+      "id": "fleurs:en_us:dev:1602:95606678053409405.wav",
+      "reference": "majorcan cuisine like that of similar zones in the mediterranean is based on bread vegetables and meat specially pork and uses olive oil throughout",
+      "hypothesis": "MAJOR COLONEL MAJOR COLONEL MAJOR COLONEL MAJOR COLONEL MAJOR COLONEL MAJOR COLONEL MAJOR COLONEL MAJOR COLONEL",
+      "wer": 1.0
+    },
+    {
+      "id": "fleurs:en_us:dev:1640:5201642650621308484.wav",
+      "reference": "on icy and snowy roadways friction is low and you cannot drive as if you were on bare asphalt",
+      "hypothesis": "ON ICY AND SNOWY ROADS FRICTION IS LOW AND YOU CANNOT DRIVE AS IF YOU WERE ON A BEAR ASFALT",
+      "wer": 0.21052631578947367
+    },
+    {
+      "id": "fleurs:en_us:dev:1653:15436994428923327335.wav",
+      "reference": "in a partnership of npws and the sporting shooters association of australia nsw inc qualified volunteers were recruited under the sporting shooters association's hunting program",
+      "hypothesis": "in a partnership of mps and the sporting shooters association of australia incorporated qualified volunteers were recruited under the sporting shooters association huting program",
+      "wer": 0.2
+    },
+    {
+      "id": "fleurs:en_us:dev:1510:1009709090964908274.wav",
+      "reference": "the u.n. also hopes to finalize a fund to help countries affected by global warming to cope with the impacts",
+      "hypothesis": "THE UNEVEN ALSO HOPES TO FINALLY FIND TO HELP COUNTRIES AFFECTED BY GLOBAL WARMING TO cope with the impacts",
+      "wer": 0.23809523809523808
+    },
+    {
+      "id": "fleurs:en_us:dev:1511:17566024285835266239.wav",
+      "reference": "soon officers equipped with riot gear entered the yard and cornered the inmates with tear gas",
+      "hypothesis": "soon officers equipped with rigueur entered the yard and confronted the inmates with tear gas",
+      "wer": 0.1875
+    },
+    {
+      "id": "fleurs:en_us:dev:1636:1994306573920339783.wav",
+      "reference": "the spaniards started the colonization period which lasted for three centuries",
+      "hypothesis": "THE SPANIARDS STARTED THE COLONIZATION PERIOD WHICH LASTED FOR THREE CENTURIES",
+      "wer": 0.0
+    },
+    {
+      "id": "fleurs:en_us:dev:1554:8409113998382171137.wav",
+      "reference": "he built a wifi door bell he said",
+      "hypothesis": "HE BUILT A WIFE DOORBELL HE SAID",
+      "wer": 0.375
+    },
+    {
+      "id": "fleurs:en_us:dev:1565:9466009236386247443.wav",
+      "reference": "science's main goal is to figure out the way the world works through the scientific method this method in fact guides most scientific research",
+      "hypothesis": "SCIENCE'S MAIN GOAL IS TO FIGURE OUT WHAT THE WORLD WORKS THROUGH THE SCIENTIFIC METHOD AND FACT GUIDES MOST SCIENTIFIC RESEARCH",
+      "wer": 0.20833333333333334
+    },
+    {
+      "id": "fleurs:en_us:dev:1568:12252827175552105583.wav",
+      "reference": "though it is widely used especially among non-romani the word gypsy is often considered offensive because of its associations with negative stereotypes and inaccurate perceptions of romani people",
+      "hypothesis": "THOUGH IT IS WIDELY USED ESPECIALLY AMONG NON ROMANESE THE WORD GIBSI IS OFTEN CONSIDERED AFFECTIVE BECAUSE OF ITS ASSOCIATION WITH NEGATIVE STEREOTYPES AND INHERENTLY PRESENTS A DIFFICULT SITUATION WITH NEGATIVE STERE",
+      "wer": 0.41379310344827586
+    },
+    {
+      "id": "fleurs:en_us:dev:1645:2104047217587124899.wav",
+      "reference": "its all-pervading power affected everyone from king to commoner",
+      "hypothesis": "ITS ALL PREVAINING POWER AFFECTED EVERYONE FROM KING TO COMNER",
+      "wer": 0.2
+    },
+    {
+      "id": "fleurs:en_us:dev:1562:17023935455389393902.wav",
+      "reference": "this became common practice but the iron caused more wear on the wooden wheels of the wagons",
+      "hypothesis": "THIS BECOME COMMON PRACTICE BUT THE IRON CAUSED MORE WEAR ON THE WOODEN WHEELS OF THE WAGGONS",
+      "wer": 0.11764705882352941
+    },
+    {
+      "id": "fleurs:en_us:dev:1601:4061126165286017165.wav",
+      "reference": "scientists think that ocelots follow and find animals to eat prey by smell sniffing for where they've been on the ground",
+      "hypothesis": "scientists think that acoustical fellows find animals to eat prey by smell sniffing for where they've been on the ground",
+      "wer": 0.14285714285714285
+    },
+    {
+      "id": "fleurs:en_us:dev:1642:4528845994420437101.wav",
+      "reference": "the war expenditures of u.s. imperialism in the conquest of the philippines were paid for by the filipino people themselves",
+      "hypothesis": "the war expeditions of uest imperilism in the conquest of the philipines were paid by the philipino people themselves",
+      "wer": 0.3333333333333333
+    },
+    {
+      "id": "fleurs:en_us:dev:1641:15930913932833348139.wav",
+      "reference": "the forests aren't just mangrove swamps though they include some of the last remaining stands of the mighty jungles which once covered the gangetic plain",
+      "hypothesis": "THE FORCE AREN'T JUST MANGROVE SWAMPS THOUGH THEY INFLUENCE SOME OF THE LAST REMAINING STANDS OF THE MIGHTY DUNGS WHICH ONCE COVERED THE GANGNE",
+      "wer": 0.2
+    },
+    {
+      "id": "fleurs:en_us:dev:1525:7197385702704991551.wav",
+      "reference": "the broad boulevards glass-fronted buildings and modern shopping centers are dotted with traditional red-tiled roofs the 18th century market and old mosques and churches although the city has an atmosphere more of mediterranean europe than traditional turkey",
+      "hypothesis": "the broad bulbous glass fronted buildings in modern shopping centers are dotted with traditional red tiled roofs the eastern market in old mosques and churches although the city has an atmosphere more of mediterranean europe than traditional turkey",
+      "wer": 0.1282051282051282
+    },
+    {
+      "id": "fleurs:en_us:dev:1574:5138563835183207037.wav",
+      "reference": "the winter can be deceptively chilly temperatures rarely go below freezing but the wind and humidity combine to make it feel colder than what the thermometer says",
+      "hypothesis": "the winter can be deceptively chilly temperatures rarely go below freezing but the wind in humility combined to make it feel colder than what the thermometer says",
+      "wer": 0.1111111111111111
+    },
+    {
+      "id": "fleurs:en_us:dev:1640:3907900566906015878.wav",
+      "reference": "on icy and snowy roadways friction is low and you cannot drive as if you were on bare asphalt",
+      "hypothesis": "ON ICE AND SNOWY ROADS FRICTION IS LOW AND YOU CANNOT DRIVE AS IF YOU ARE ON BEAR ASFALT",
+      "wer": 0.2631578947368421
+    },
+    {
+      "id": "fleurs:en_us:dev:1595:16522271426775743376.wav",
+      "reference": "the tibetan buddhism is based on the teachings of buddha but were extended by the mahayana path of love and by a lot of techniques from indian yoga",
+      "hypothesis": "the beaten bushism is based on the teachings of buzo but were extended by mohanita but were extended by mohanita but by the mohanita but by the",
+      "wer": 0.6071428571428571
+    },
+    {
+      "id": "fleurs:en_us:dev:1592:6439816423643859905.wav",
+      "reference": "when you went abroad at first people were probably patient and understanding knowing that travellers in a new country need to adapt",
+      "hypothesis": "WHEN YOU WANT A BROAD AT FIRST PEOPLE WERE PROBABLY PATIENT AND UNDERSTANDING KNOWING THAT TRAVELERS IN A NEW COUNTRY NEED TO ADAPT",
+      "wer": 0.18181818181818182
+    },
+    {
+      "id": "fleurs:en_us:dev:1546:11749025522585121757.wav",
+      "reference": "the feathers' structure suggests that they were not used in flight but rather for temperature regulation or display the researchers suggested that even though this is the tail of a young dinosaur the sample shows adult plumage and not a chick's down",
+      "hypothesis": "the feathers structures suggests that they were not used in flight but rather for temperature regulation or display the researchers suggested that even though this is the tail of a young dinosaur the sample shows an adult plumage and not a chick's down",
+      "wer": 0.07142857142857142
+    },
+    {
+      "id": "fleurs:en_us:dev:1555:6037648224035961543.wav",
+      "reference": "in the churchyard there are interesting marble sculptures of doves over some tombs",
+      "hypothesis": "in the churchyard there're interesting marvelous sculptures of some of those over some tunes",
+      "wer": 0.5384615384615384
+    },
+    {
+      "id": "fleurs:en_us:dev:1576:6290870196809659244.wav",
+      "reference": "a course will normally cover all the issues discussed here in far greater detail usually with practical experience",
+      "hypothesis": "A COURSE WILL NO MORE COVER ALL THE ISSUES DISCUSS HERE AND FAR GREATER DETAIL USUALLY WITH PRACTICAL EXPERIENCE",
+      "wer": 0.2222222222222222
+    },
+    {
+      "id": "fleurs:en_us:dev:1526:10796058897134434902.wav",
+      "reference": "if you visit the arctic or antarctic areas in the winter you will experience the polar night which means that the sun doesn't rise above the horizon",
+      "hypothesis": "if you visit the arctic or antarctic areas in the winter you will experience the polar night which means that the sun doesn't rise above the horizon",
+      "wer": 0.0
+    },
+    {
+      "id": "fleurs:en_us:dev:1574:3428105909614355760.wav",
+      "reference": "the winter can be deceptively chilly temperatures rarely go below freezing but the wind and humidity combine to make it feel colder than what the thermometer says",
+      "hypothesis": "the winter can be deceptively chilly temperatures really go below freezing but the wind and humidity combine to make it feel colder than what the thermometer says",
+      "wer": 0.037037037037037035
+    },
+    {
+      "id": "fleurs:en_us:dev:1626:16053666868203857398.wav",
+      "reference": "the olympic gold medalist was due to swim in the 100m and 200m freestyle and in three relays at the commonwealth games but due to his complaints his fitness has been in doubt",
+      "hypothesis": "oh olympic gold medalist was due to swim in the hundred meter and two hundred meter freestyle and in three relays at the commonwealth games but due to his complaints his fitness had been in doubt",
+      "wer": 0.21212121212121213
+    },
+    {
+      "id": "fleurs:en_us:dev:1536:7805913550318242839.wav",
+      "reference": "local authorities are warning residents in the vicinity of the plant to stay indoors turn off air-conditioners and not to drink tap water",
+      "hypothesis": "LOOKED AT THOSE OR WARNING RESONANCE OF THE PLANET TO SAY AND OURS TURN OFF AIR CONDITIONERS AND NOT TO DRINK TAP WATER",
+      "wer": 0.5
+    },
+    {
+      "id": "fleurs:en_us:dev:1575:11881383943786559804.wav",
+      "reference": "israel demands an ongoing military presence in the valley for ten years once an agreement is signed while the pa agrees to leave such presence only for five years",
+      "hypothesis": "ISRAEL DEMANDS AN ONGOING MILITARY PRESENCE IN THE VALLEY FOR TEN YEARS ONCE AN AGREEMENT IS SIGNED WHILE THE PEACEMAKERS TO LEAVE SUCH PRESENCE ONLY FOR TEN YEARS ONCE AN AGREEMENT IS SIGNED WHILE THE PEACEMAKERS TO LEAVE SUCH PRESENCE ONLY FOR TEN YEARS",
+      "wer": 0.6206896551724138
+    },
+    {
+      "id": "fleurs:en_us:dev:1590:15158676295442294624.wav",
+      "reference": "the main local beer is number one' it is not a complex beer but pleasant and refreshing the other local beer is called manta",
+      "hypothesis": "the main local beer is number one it's not a complex beer but pleasant and refreshing the other local beer is called montau",
+      "wer": 0.16666666666666666
+    },
+    {
+      "id": "fleurs:en_us:dev:1566:2998837408983824061.wav",
+      "reference": "yet eighty percent of our goods were taxed through tariffs in central american countries we treat you",
+      "hypothesis": "yet eighty percent of our goods were taxed through tariffs in central american countries we treat you",
+      "wer": 0.0
+    },
+    {
+      "id": "fleurs:en_us:dev:1545:5260885647261312884.wav",
+      "reference": "a curry can be either dry or wet depending on the amount of liquid",
+      "hypothesis": "A CURRY CAN BE EITHER DRY OR WET DEPENDING ON THE AMOUNT OF LIQUID",
+      "wer": 0.0
+    },
+    {
+      "id": "fleurs:en_us:dev:1587:1105184381995491301.wav",
+      "reference": "the first cases of the disease this season were reported in late july",
+      "hypothesis": "the first cases of the disease were reported in late july",
+      "wer": 0.15384615384615385
+    },
+    {
+      "id": "fleurs:en_us:dev:1556:89504047496701392.wav",
+      "reference": "his 1,000th stamp was the magnificent great deeds by swedish kings by david kl\u00f6cker ehrenstrahl in 2000 which is listed in the guinness book of world records",
+      "hypothesis": "HIS ONE THOUSAND STAMP WAS THE MAGNIFICENT GREAT DEEDS BY SWEDISH KINGS BY DAVID CONQUER ESHERAI AND TWO THOUSAND WHICH IS LISTED IN THE GENESIS BOOK OF WORLD RECORDS",
+      "wer": 0.27586206896551724
+    },
+    {
+      "id": "fleurs:en_us:dev:1573:10606824155904794190.wav",
+      "reference": "a satellite phone is not generally a replacement for a mobile phone as you have to be outdoors with clear line of sight to the satellite to make a phone call",
+      "hypothesis": "A SATALY PHONE IS NOT GENERALLY A RESPONSE FOR A MOBILE PHONE AS YOU HAVE TO BE OUTDOORS WITH CLEAR LINE OF SIGHT TO THE SATELLITE TO MAKE",
+      "wer": 0.16129032258064516
+    },
+    {
+      "id": "fleurs:en_us:dev:1519:786465049904960526.wav",
+      "reference": "in many cases enrolling on a gap-year course abroad can actually improve your chances of moving into higher education back in your home country",
+      "hypothesis": "AND MANY CASES EMBRACING ON A GAP YOUR COURSE ABOARD CAN ACTUALLY IMPROVE YOUR CHANCES AT MOVING INTO A HIGHER EDUCATION BACK IN YOUR HOME",
+      "wer": 0.28
+    },
+    {
+      "id": "fleurs:en_us:dev:1629:401178120420083523.wav",
+      "reference": "some reports put the official death toll at eight and official reports confirm that up to 30 were injured but final numbers are not yet known",
+      "hypothesis": "SOME REPORTS PUT THE OFFICIAL DEATH TO AYE AND OFFICIAL REPORTS CONFIRMED THAT UP TO THIRTY WERE INJURED BUT FINAL NUMBERS ARE NOT YET KNOWN",
+      "wer": 0.19230769230769232
+    },
+    {
+      "id": "fleurs:en_us:dev:1584:11800444469883449996.wav",
+      "reference": "widespread looting reportedly continued overnight as law enforcement officers were not present on bishkek's streets",
+      "hypothesis": "WIDESTREUTING REPUTEDLY CONTINUED OVERNIGHT AS LAW ENFORCEMENT OFFICERS WERE NOT PRESENT ON BISHOP'S STREETS",
+      "wer": 0.26666666666666666
+    },
+    {
+      "id": "fleurs:en_us:dev:1525:14353083584085318982.wav",
+      "reference": "the broad boulevards glass-fronted buildings and modern shopping centers are dotted with traditional red-tiled roofs the 18th century market and old mosques and churches although the city has an atmosphere more of mediterranean europe than traditional turkey",
+      "hypothesis": "LE BROARD BULLER'S GLASS PRINTED BUILDINGS AND MODERN SHOPPING CENTERS ARE DATED WITH TRADITIONAL RED TILE ROOFS AND A NEW CENTURY MARKET AND OLD MOSS IN CHURCHES ALTHOUGH THE CITY HAS AN ATMOSPHERE MORE OF A MEDITERRANEAN EUROPE THAN TRADITIONAL TURKEY",
+      "wer": 0.3076923076923077
+    },
+    {
+      "id": "fleurs:en_us:dev:1510:2031944424456517788.wav",
+      "reference": "the u.n. also hopes to finalize a fund to help countries affected by global warming to cope with the impacts",
+      "hypothesis": "the uan also hopes to finally the fun to help countries affected by global warming to cope with the impacts",
+      "wer": 0.23809523809523808
+    },
+    {
+      "id": "fleurs:en_us:dev:1562:16817758965840412496.wav",
+      "reference": "this became common practice but the iron caused more wear on the wooden wheels of the wagons",
+      "hypothesis": "this became common practice but the iron caused more wear on the wooden wheels of wagons",
+      "wer": 0.058823529411764705
+    },
+    {
+      "id": "fleurs:en_us:dev:1582:15171207303196664800.wav",
+      "reference": "most of the life of the hebrew family happened in the open air",
+      "hypothesis": "WHOSE THE LIFE OF THE FEW ROOK FAMILY OPENED IN THE AIR",
+      "wer": 0.46153846153846156
+    },
+    {
+      "id": "fleurs:en_us:dev:1628:247528969435377408.wav",
+      "reference": "handicraft products might be defined as antiques though they are younger than similar mass-produced goods",
+      "hypothesis": "AND CREATED PRODUCTS MIGHT BE DEFINED AS ANTIQUES THOSE ARE YOUNGSTER THAN SEMBLER MASS PRODUCED GOODS",
+      "wer": 0.375
+    },
+    {
+      "id": "fleurs:en_us:dev:1568:4139078021852628123.wav",
+      "reference": "though it is widely used especially among non-romani the word gypsy is often considered offensive because of its associations with negative stereotypes and inaccurate perceptions of romani people",
+      "hypothesis": "though wisely used especially among non romany the word gypsy is often unintended offense because of his associations with negative stereotypes of romany people",
+      "wer": 0.3793103448275862
+    },
+    {
+      "id": "fleurs:en_us:dev:1614:16807981165307472350.wav",
+      "reference": "they can see very well in the dark with night vision and move very stealthily too ocelots hunt their prey by blending in with their surroundings then pouncing on their prey",
+      "hypothesis": "they can see dearly well in the dark with knight vision and moved their prey by blending in with their surroundings and pulsing on their prey",
+      "wer": 0.3225806451612903
+    },
+    {
+      "id": "fleurs:en_us:dev:1540:14372470203050390865.wav",
+      "reference": "in principle the tibetan buddhism is very simple it consists of kundalini yoga meditation and the path of all-embracing love",
+      "hypothesis": "in principle the unbeaten business is very simple it consists of codelinea yoga meditation and the path of all embracing love",
+      "wer": 0.14285714285714285
+    },
+    {
+      "id": "fleurs:en_us:dev:1553:989115470647988459.wav",
+      "reference": "christmas is one of the most important holidays of christianity and is celebrated as the birthday of jesus",
+      "hypothesis": "CHRISTMAS IS ONE OF THE MOST IMPORTANT HOLIDAYS OF CHRISTMAS AND IS CELEBRATED AS THE BIRTH OF JESUS",
+      "wer": 0.1111111111111111
+    },
+    {
+      "id": "fleurs:en_us:dev:1581:3466849611940856212.wav",
+      "reference": "the amazon is also the widest river on earth at times six miles wide",
+      "hypothesis": "THE AMASON IS ALSO THE WIDEST RIVER ON EARTH AT TIMES SIX MILES WIDE",
+      "wer": 0.07142857142857142
+    },
+    {
+      "id": "fleurs:en_us:dev:1577:5546513999592253497.wav",
+      "reference": "that didn't seem to make sense to me it certainly wasn't fair",
+      "hypothesis": "THAT DIDN'T SEEM TO MAKE SENSE TO ME IT SERENELY WASN'T FAIR",
+      "wer": 0.08333333333333333
+    },
+    {
+      "id": "fleurs:en_us:dev:1514:1250175024747413359.wav",
+      "reference": "when the fighting ceased after the wounded were transported to the hospital about 40 of the other remaining inmates stayed in the yard and refused to return to their cells",
+      "hypothesis": "WHEN THE FIGHTING SEEMED AFTER THE WOUNDED WERE TRANSPORTED TO THE HOSPITAL ABOUT FOUR OF THE OTHER REMAINING INMATES STAYED IN THE HARD AND REFUSED TO RETURN TO THEIR CELLS",
+      "wer": 0.1
+    },
+    {
+      "id": "fleurs:en_us:dev:1596:10603285326592464876.wav",
+      "reference": "naturalists and philosophers focused on classical texts and in particular on the bible in latin",
+      "hypothesis": "NATURALIST AND PHILOSOPHERS FOCUSED ON CLARITY TEXT AND IN PARTICULAR ON THE BILE AND LATIN",
+      "wer": 0.3333333333333333
+    },
+    {
+      "id": "fleurs:en_us:dev:1642:11207448774577367011.wav",
+      "reference": "the war expenditures of u.s. imperialism in the conquest of the philippines were paid for by the filipino people themselves",
+      "hypothesis": "THE WAR EXPEDITIONS OF US IMPERIALISM AND THE CONQUEST OF THE PHILIPPINES WERE PAID FOR BY THE PHILIPPINE PEOPLE THEMSELF",
+      "wer": 0.2857142857142857
+    },
+    {
+      "id": "fleurs:en_us:dev:1517:10885549230041454053.wav",
+      "reference": "research in ai involves making machines to automate tasks that require intelligent behavior",
+      "hypothesis": "RESEARCH AND I INVOLVES MAKING MACHINE'S TO AUTOMATE TASKS THAT REQUIRE INTELLIGENT BEHAVIOR",
+      "wer": 0.23076923076923078
+    },
+    {
+      "id": "fleurs:en_us:dev:1553:5289667221250125947.wav",
+      "reference": "christmas is one of the most important holidays of christianity and is celebrated as the birthday of jesus",
+      "hypothesis": "CHRISTMAS IS ONE THE MOST IMPORTANT HOLIDAYS TO CHRISTMAS AND CELEBRATED AT THE BIRTHDAY OF JESUS",
+      "wer": 0.2777777777777778
+    },
+    {
+      "id": "fleurs:en_us:dev:1536:10408474834696432538.wav",
+      "reference": "local authorities are warning residents in the vicinity of the plant to stay indoors turn off air-conditioners and not to drink tap water",
+      "hypothesis": "LOCAL AUTHORITIES ARE WARNING RESIDENTS IN THE VICINITY OF THE PLANT TO STAY INDOORS TURN OFF AIR CONDITIONERS AND NOT TO DRINK TAP WATER",
+      "wer": 0.0
+    },
+    {
+      "id": "fleurs:en_us:dev:1536:9925774476761884993.wav",
+      "reference": "local authorities are warning residents in the vicinity of the plant to stay indoors turn off air-conditioners and not to drink tap water",
+      "hypothesis": "LOCAL FOURTEENS ARE WARNING RESIDENTS IN THE VICINITY OF THE PLANT TO STAY INDOORS TURN OFF ALL AIR CONDITIONERS AND NOT TO DRINK TAP WATER",
+      "wer": 0.08333333333333333
+    },
+    {
+      "id": "fleurs:en_us:dev:1529:4578728585885434459.wav",
+      "reference": "previously ring's ceo jamie siminoff remarked the company started when his doorbell wasn't audible from his shop in his garage",
+      "hypothesis": "PREVIOUSLY RING CEO JAYMEE SEEMED OF REMARK THE COMPANY SARDON WHEN HIS TORBULL WAS AN OTTAIL FROM A SHIP",
+      "wer": 0.75
+    },
+    {
+      "id": "fleurs:en_us:dev:1631:5529721028988116416.wav",
+      "reference": "new kingdom ancient egyptians marvelled at their predecessors monuments which were then well over a thousand year old",
+      "hypothesis": "NEW KINGDOM ANCIENT EGYPTIANS MARVELED AT THEIR PRECEDESORS MONUMENTS WHICH THEY WERE WELL OVER A THOUSAND YEARS OLD",
+      "wer": 0.2777777777777778
+    },
+    {
+      "id": "fleurs:en_us:dev:1574:4418066175314133039.wav",
+      "reference": "the winter can be deceptively chilly temperatures rarely go below freezing but the wind and humidity combine to make it feel colder than what the thermometer says",
+      "hypothesis": "the winter can be deceptively chilly temperatures rarely go below freezing but the wind and humidity combined to make it feel colder than what the thermometer says",
+      "wer": 0.037037037037037035
+    },
+    {
+      "id": "fleurs:en_us:dev:1615:10749355711908235873.wav",
+      "reference": "thousands of years ago a man called aristarchus said that the solar system moved around the sun",
+      "hypothesis": "THOUSANDS OF YEARS AGO A MAN CALLED ARISTOTLE SOUGHT TO FIND THE SOULER SYSTEM MOVED ON THE SUN",
+      "wer": 0.35294117647058826
+    },
+    {
+      "id": "fleurs:en_us:dev:1615:12448892225382361830.wav",
+      "reference": "thousands of years ago a man called aristarchus said that the solar system moved around the sun",
+      "hypothesis": "THOUSANDS OF YEARS AGO A MAN CALLED ASTRACUS SAID THAT THE SOLAR SYSTEM MOVED AROUND THE SUN",
+      "wer": 0.058823529411764705
+    },
+    {
+      "id": "fleurs:en_us:dev:1597:16256278689854059757.wav",
+      "reference": "money can be exchanged at the only bank in the islands which is located in stanley across from the fic west store",
+      "hypothesis": "MONEY CAN BE EXCHANGED AT THE ONLY BANK IN THE ISLANDS WHICH IS LOCATED AT STAMLEY ACROSS FROM THE FIERY WEST STORE",
+      "wer": 0.13636363636363635
+    }
+  ]
+}

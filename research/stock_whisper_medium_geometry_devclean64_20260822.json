@@ -1,0 +1,52 @@
+{
+  "metric": "pre_gemma_embedding_geometry",
+  "split": "devclean",
+  "encoder": "openai/whisper-medium",
+  "results": [
+    {
+      "adapter": "artifacts/stock-whisper-gemma-medium-full-ctc.step000250.npz",
+      "step": 250,
+      "examples": 64,
+      "content_recall_at_k": 0.18048422597212033,
+      "frame_diversity": 0.046153846153846156,
+      "target_tokens": 1363,
+      "frames": 3965
+    },
+    {
+      "adapter": "artifacts/stock-whisper-gemma-medium-full-ctc.step000500.npz",
+      "step": 500,
+      "examples": 64,
+      "content_recall_at_k": 0.1958914159941306,
+      "frame_diversity": 0.0648171500630517,
+      "target_tokens": 1363,
+      "frames": 3965
+    },
+    {
+      "adapter": "artifacts/stock-whisper-gemma-medium-full-ctc.step000750.npz",
+      "step": 750,
+      "examples": 64,
+      "content_recall_at_k": 0.1958914159941306,
+      "frame_diversity": 0.08095838587641867,
+      "target_tokens": 1363,
+      "frames": 3965
+    },
+    {
+      "adapter": "artifacts/stock-whisper-gemma-medium-full-ctc.step001000.npz",
+      "step": 1000,
+      "examples": 64,
+      "content_recall_at_k": 0.19515774027879676,
+      "frame_diversity": 0.07969735182849937,
+      "target_tokens": 1363,
+      "frames": 3965
+    },
+    {
+      "adapter": "artifacts/stock-whisper-gemma-medium-full-ce.step001250.npz",
+      "step": 1250,
+      "examples": 64,
+      "content_recall_at_k": 0.20396184886280264,
+      "frame_diversity": 0.07843631778058008,
+      "target_tokens": 1363,
+      "frames": 3965
+    }
+  ]
+}

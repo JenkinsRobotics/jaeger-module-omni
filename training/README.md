@@ -3,6 +3,21 @@
 Training runs for the staged build. Data policy, run configuration, and the
 train loop.
 
+## Stock Whisper → Gemma, without Qwen or Gemma-output supervision
+
+`stock_whisper_gemma.py distill` uses the proven MiniCPM projector structure
+(1024→4096, ReLU, pool-by-5, 4096→2560) but deploys the stock OpenAI
+Whisper-medium encoder. Training joins stock and tuned caches by stable
+utterance ID and matches the tuned path's 2560-wide vectors *before* Gemma.
+It does not use a transcript, Gemma hidden state/logit, generated answer, Qwen
+model, or Whisper decoder as its distillation target.
+
+The measured 2026-08-22 run used 4,786 LibriSpeech plus 2,466 FLEURS paired
+training utterances. Step 5,500 was selected by two fixed free-running corpora:
+16.34% WER on LibriSpeech (955 words) and 25.52% on FLEURS (1,403 words).
+Longer training improved neither joint gate. See `STATUS.md` and the dated
+`research/stock_whisper_medium_*_wer_20260822.json` artifacts.
+
 ```text
 fetch_dataset.py  pull public corpora (LibriSpeech, AMI) into capture format
 data.py         tiered corpus mixing policy — which tier feeds which stage

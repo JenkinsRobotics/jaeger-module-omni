@@ -53,10 +53,20 @@ claim of word-level diarization; the offline k=3 centroids separate at
 
 ## 3. Improve answer alignment at the proven boundary
 
-Stock OpenAI Whisper plus a fresh adapter is rejected at this data scale:
-99.27% WER after CTC warm-up and 96.88% after 100 Gemma CE updates. Do not spend
-another long run on stock features without a new hypothesis and a same-corpus
-ablation.
+Stock OpenAI Whisper plus a fresh adapter is now viable through paired
+pre-Gemma representation distillation. The promoted local checkpoint is
+`artifacts/stock-whisper-gemma-medium-multidomain.step005500.npz`: 16.34% WER
+on 64 LibriSpeech clips/955 words and 25.52% on 64 FLEURS clips/1,403 words.
+It remains an observer/transcript objective: the assistant suite correctly
+showed it repeating questions and scored 0/12, so do not install it as the
+desktop answer path.
+
+The next stock experiment should add paired MINDS-14/VoxPopuli/far-field audio
+only when raw waveforms are locally recoverable. Continue from step 5,500 at a
+low learning rate and require both fixed gates: no regression above 16.34% on
+LibriSpeech and an improvement below 25.52% on FLEURS. Step 7,000 is already
+rejected (18.32%/25.59%). Do not select by nearest vocabulary-row recall; the
+step it preferred produced 106.28% free-running WER.
 
 Continue training only the proven 4096→2560 boundary over cached
 `AvgPool5(ReLU(linear1(tuned Whisper(audio))))` features. Build response targets

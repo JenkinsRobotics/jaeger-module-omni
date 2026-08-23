@@ -31,8 +31,14 @@ INPUT_DIM = 1024
 HIDDEN_DIM = 4096
 OUTPUT_DIM = 2560
 TARGET_NORM = 61.0
+OUTPUT_MODE_NORMALIZED = "unit_norm_scaled"
+OUTPUT_MODE_RAW = "raw"
 AUDIO_MARKER = "__JAEGER_STOCK_WHISPER_AUDIO__"
-DEFAULT_WHISPER = "openai/whisper-medium.en"
+DEFAULT_WHISPER = "openai/whisper-medium"
+SUPPORTED_WHISPER = frozenset((
+    "openai/whisper-medium",
+    "openai/whisper-medium.en",
+))
 DEFAULT_GEMMA = Path.home() / "models/gemma-4-E4B-it-4bit-mlx"
 INPUT_BOUNDARY = "stock_whisper_encoder_50hz"
 WHISPER_WINDOW_S = 28
@@ -147,8 +153,8 @@ def validate_checkpoint(path: str | Path) -> dict[str, np.ndarray]:
     lineage = str(values.get("lineage", ""))
     if boundary != INPUT_BOUNDARY:
         raise ValueError(f"{path}: wrong input boundary {boundary!r}")
-    if encoder != DEFAULT_WHISPER:
-        raise ValueError(f"{path}: wrong encoder {encoder!r}")
+    if encoder not in SUPPORTED_WHISPER:
+        raise ValueError(f"{path}: unsupported encoder {encoder!r}")
     if lineage != "qwen_free":
         raise ValueError(f"{path}: checkpoint is not marked qwen_free")
     if not all(np.isfinite(values[key]).all() for key in expected):
@@ -169,6 +175,15 @@ class StockWhisperGemmaSession:
         from mlx_lm import load
 
         values = validate_checkpoint(adapter_path)
+        checkpoint_encoder = str(values["encoder"])
+        output_mode = str(values.get("output_mode", OUTPUT_MODE_NORMALIZED))
+        if output_mode not in (OUTPUT_MODE_NORMALIZED, OUTPUT_MODE_RAW):
+            raise ValueError(
+                f"{adapter_path}: unsupported output mode {output_mode!r}")
+        if checkpoint_encoder != whisper_id:
+            raise ValueError(
+                f"{adapter_path}: encoder is {checkpoint_encoder!r}, but "
+                f"runtime requested {whisper_id!r}")
         self.mx = mx
         self.nn = nn
         self.front_end = StockWhisperFrontEnd(whisper_id, device)
@@ -198,6 +213,8 @@ class StockWhisperGemmaSession:
             def __call__(inner, x):
                 y = inner.linear2(nn.relu(inner.linear1(x)))
                 y = _pool_mlx(mx, y)
+                if output_mode == OUTPUT_MODE_RAW:
+                    return y
                 norms = mx.sqrt(mx.sum(y * y, axis=-1, keepdims=True) + 1e-8)
                 return y / norms * TARGET_NORM
 

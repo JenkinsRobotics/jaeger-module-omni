@@ -104,11 +104,24 @@ uses Jaeger's trained 4096→2560 adapter to enter Gemma 4 E4B. It never loads
 the Qwen language model, the original Qwen-facing `linear2`, or Whisper's
 decoder. The audio GGUF is a weight container, not a Qwen runtime dependency.
 
-The reciprocal stock-Whisper hypothesis was implemented and measured before
-being rejected. On its own fixed 64-clip/1,637-word held-out set, a fresh
-14.7M adapter scored 99.27% free-running WER after sampled CTC warm-up and
-96.88% after 100 Gemma-aware CE updates. Stock Whisper is therefore retained
-as an experimental control, not promoted.
+The reciprocal stock-Whisper hypothesis is now a viable Qwen-free alternative,
+but not the default. Sampled CTC plus 250 Gemma-CE updates still collapsed at
+**117.17% free-running WER** on a fixed 64-clip/955-word `dev-clean` slice.
+The successful recipe instead distils paired *pre-Gemma audio vectors* from
+the proven tuned path into the same MiniCPM-shaped 1024→4096→2560 projector.
+No Gemma layer, logit, generated token, Whisper decoder, or Qwen model supplies
+the distillation target. There are 4,786/136 paired LibriSpeech train/held-out
+utterances plus 2,466/388 paired FLEURS utterances.
+
+The selected multidomain checkpoint at step 5,500 scores **16.34% WER** on
+64 held-out LibriSpeech clips/955 words and **25.52% WER** on 64 held-out
+FLEURS clips/1,403 words. The clean-only step 4,500 baseline was 16.34% and
+27.37% respectively, so the varied continuation gained 1.85 FLEURS points
+with no measured clean regression. A longer step-7,000 continuation reached
+25.59% FLEURS but regressed clean speech to 18.32%, and was rejected. Direct
+nearest-token recall was retained only as a collapse diagnostic: its preferred
+step 1,500 scored 106.28% free-running WER, proving that soft audio prompts do
+not need to sit on vocabulary rows.
 
 On the exact same existing 64-clip/977-word validation slice used by
 `research/wer_corpus.py`, the promoted sparse tuned adapter improves the prior
@@ -122,6 +135,8 @@ and answer adapters are not interchangeable objectives.
 python -m jaeger_agent_omni.omni --front-end delta --wav question.wav
 python -m jaeger_agent_omni.meeting --seconds 300 --device 1 --k 3 \
     --record /tmp/meeting.wav --out meeting.md
+python -m jaeger_agent_omni.meeting --wav room.wav --front-end stock \
+    --adapter artifacts/stock-whisper-gemma-medium-multidomain.step005500.npz
 ```
 
 The meeting observer uses 9.0-second neural windows with 0.5-second overlap;
@@ -141,6 +156,14 @@ phrase and turn-level online labels are not word-level diarization. With
 `--k 3`, online labels A/B/C all fire; the independent offline audit finds
 three centroids at cosine 0.369/0.401/0.592. Those are useful clusters, not a
 claim that the two humans are perfectly separated at every word.
+
+The new stock observer also completed an exact 300.0-second Elgato capture,
+but this was an input-routing failure rather than an accuracy sample. Only
+2/36 windows crossed the 25% speech gate; the Elgato signal was loud
+(0.100 RMS, peak 1.0) but predominantly non-speech. Twelve-second probes found
+0% Silero speech on the C920 and digital silence on both Wave Link routes.
+The WAV and minutes are retained under `/tmp/jaeger-stock-meeting-5m.*`; none
+of its two decoded windows is counted as a corpus measurement.
 
 ---
 

@@ -168,7 +168,9 @@ def observe(audio: np.ndarray, adapter: str | Path = DELTA,
             overlap_s: float = OVERLAP_S,
             make_minutes: bool = True,
             min_speech_fraction: float = 0.25,
-            silero_model: str | Path = DEFAULT_SILERO) \
+            silero_model: str | Path = DEFAULT_SILERO,
+            front_end: str = "tuned",
+            whisper: str = "openai/whisper-medium") \
             -> tuple[list[dict], str | None]:
     """Decode every window free-running, then optionally write final minutes."""
     from jaeger_agent_omni.runtime.speaker import OnlineSpeakerTracker
@@ -194,8 +196,18 @@ def observe(audio: np.ndarray, adapter: str | Path = DELTA,
                   flush=True)
             continue
         if session is None:
-            session = TunedWhisperGemmaSession(
-                adapter, model_path=model, audio_gguf=audio_gguf, system=None)
+            if front_end == "stock":
+                from jaeger_agent_omni.runtime.stock_whisper import (
+                    StockWhisperGemmaSession)
+                session = StockWhisperGemmaSession(
+                    adapter, model_path=model, whisper_id=whisper,
+                    system=None)
+            elif front_end == "tuned":
+                session = TunedWhisperGemmaSession(
+                    adapter, model_path=model, audio_gguf=audio_gguf,
+                    system=None)
+            else:
+                raise ValueError(f"unknown meeting front end {front_end!r}")
         session.reset()
         session.open_turn()
         for offset in range(0, len(segment), 1600):
@@ -282,6 +294,10 @@ def main() -> int:
     ap.add_argument("--window-seconds", type=float, default=WINDOW_S)
     ap.add_argument("--overlap-seconds", type=float, default=OVERLAP_S)
     ap.add_argument("--adapter", default=str(DELTA))
+    ap.add_argument("--front-end", choices=("tuned", "stock"),
+                    default="tuned")
+    ap.add_argument("--whisper", default="openai/whisper-medium",
+                    help="stock Whisper checkpoint id")
     ap.add_argument("--model", default=str(DEFAULT_MODEL))
     ap.add_argument("--audio-gguf", default=str(AUDIO_GGUF))
     ap.add_argument("--silero", default=str(DEFAULT_SILERO))
@@ -303,9 +319,13 @@ def main() -> int:
         import soundfile as sf
         sf.write(args.record, audio, RATE)
     rows, minutes = observe(
-        audio, args.adapter, args.model, args.audio_gguf, args.k,
-        args.window_seconds, args.overlap_seconds, not args.no_minutes,
-        args.min_speech_fraction, args.silero)
+        audio, adapter=args.adapter, model=args.model,
+        audio_gguf=args.audio_gguf, k=args.k,
+        window_s=args.window_seconds, overlap_s=args.overlap_seconds,
+        make_minutes=not args.no_minutes,
+        min_speech_fraction=args.min_speech_fraction,
+        silero_model=args.silero, front_end=args.front_end,
+        whisper=args.whisper)
     artifact = render(rows, minutes, len(audio) / RATE,
                       args.window_seconds, args.overlap_seconds)
     Path(args.out).write_text(artifact)
