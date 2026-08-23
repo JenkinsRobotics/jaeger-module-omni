@@ -19,15 +19,32 @@ def main() -> int:
     parser.add_argument("destination", type=Path)
     args = parser.parse_args()
 
-    required = ("ln_gamma", "ln_beta", "w1", "b1", "w2", "b2")
     with np.load(args.source, allow_pickle=False) as archive:
+        source_arch = (str(archive["adapter_arch"])
+                       if "adapter_arch" in archive.files
+                       else "mean_pool_gelu_v1")
+        required = (("rms_pre_gamma", "stack_w1", "rms_mid_gamma",
+                     "stack_w2") if source_arch == "frame_stack_swiglu_v1"
+                    else ("ln_gamma", "ln_beta", "w1", "b1", "w2", "b2"))
         arrays = {key: archive[key] for key in required}
-    hidden = int(arrays["w1"].shape[0])
-    expected = {
-        "ln_gamma": (1024,), "ln_beta": (1024,),
-        "w1": (hidden, 1024), "b1": (hidden,),
-        "w2": (2560, hidden), "b2": (2560,),
-    }
+    if source_arch == "frame_stack_swiglu_v1":
+        hidden = 2560
+        runtime_arch = "gemma_native_stack_swiglu_v1"
+        expected = {
+            "rms_pre_gamma": (2048,), "stack_w1": (5120, 2048),
+            "rms_mid_gamma": (2560,), "stack_w2": (2560, 2560),
+        }
+    elif source_arch == "mean_pool_gelu_v1":
+        hidden = int(arrays["w1"].shape[0])
+        runtime_arch = "gemma_native_distill_v1"
+        expected = {
+            "ln_gamma": (1024,), "ln_beta": (1024,),
+            "w1": (hidden, 1024), "b1": (hidden,),
+            "w2": (2560, hidden), "b2": (2560,),
+        }
+    else:
+        raise ValueError(f"{args.source}: unsupported adapter_arch "
+                         f"{source_arch!r}")
     for key, shape in expected.items():
         if arrays[key].shape != shape:
             raise ValueError(f"{args.source}: {key} is {arrays[key].shape}, "
@@ -38,7 +55,7 @@ def main() -> int:
     args.destination.parent.mkdir(parents=True, exist_ok=True)
     np.savez(
         args.destination, **arrays,
-        adapter_arch=np.array("gemma_native_distill_v1"),
+        adapter_arch=np.array(runtime_arch),
         hidden_dim=np.array(hidden, dtype=np.int32),
         input_boundary=np.array("stock_whisper_encoder_50hz"),
         encoder=np.array("openai/whisper-medium"),
@@ -48,7 +65,7 @@ def main() -> int:
         output_mode=np.array("raw"),
     )
     print(f"imported {args.source} -> {args.destination} "
-          f"({hidden=}, pool_step=2, output_mode=raw)")
+          f"({runtime_arch=}, {hidden=}, pool_step=2, output_mode=raw)")
     return 0
 
 

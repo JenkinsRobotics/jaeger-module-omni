@@ -44,6 +44,7 @@ DEFAULT_GEMMA = Path.home() / "models/gemma-4-E4B-it-4bit-mlx"
 INPUT_BOUNDARY = "stock_whisper_encoder_50hz"
 ARCH_PAIRED = "paired_mlp_v1"
 ARCH_GEMMA_NATIVE = "gemma_native_distill_v1"
+ARCH_GEMMA_NATIVE_STACK = "gemma_native_stack_swiglu_v1"
 WHISPER_WINDOW_S = 28
 WHISPER_OVERLAP_S = 1
 
@@ -143,7 +144,17 @@ def validate_checkpoint(path: str | Path) -> dict[str, np.ndarray]:
     with np.load(path, allow_pickle=False) as saved:
         values = {key: saved[key] for key in saved.files}
     architecture = str(values.get("adapter_arch", ARCH_PAIRED))
-    if architecture == ARCH_GEMMA_NATIVE:
+    if architecture == ARCH_GEMMA_NATIVE_STACK:
+        stacked = INPUT_DIM * int(values.get("pool_step", 0))
+        expected = {
+            "rms_pre_gamma": (stacked,),
+            "stack_w1": (OUTPUT_DIM * 2, stacked),
+            "rms_mid_gamma": (OUTPUT_DIM,),
+            "stack_w2": (OUTPUT_DIM, OUTPUT_DIM),
+        }
+        if stacked != INPUT_DIM * 2:
+            raise ValueError(f"{path}: stack adapter requires pool_step 2")
+    elif architecture == ARCH_GEMMA_NATIVE:
         hidden = int(values.get("hidden_dim", 0))
         expected = {
             "ln_gamma": (INPUT_DIM,), "ln_beta": (INPUT_DIM,),
@@ -226,7 +237,20 @@ class StockWhisperGemmaSession:
         class Adapter(nn.Module):
             def __init__(inner):
                 super().__init__()
-                if architecture == ARCH_GEMMA_NATIVE:
+                if architecture == ARCH_GEMMA_NATIVE_STACK:
+                    inner.pre = nn.RMSNorm(INPUT_DIM * self.pool_step,
+                                           eps=1e-6)
+                    inner.linear1 = nn.Linear(
+                        INPUT_DIM * self.pool_step, OUTPUT_DIM * 2,
+                        bias=False)
+                    inner.mid = nn.RMSNorm(OUTPUT_DIM, eps=1e-6)
+                    inner.linear2 = nn.Linear(OUTPUT_DIM, OUTPUT_DIM,
+                                              bias=False)
+                    inner.pre.weight = mx.array(values["rms_pre_gamma"])
+                    inner.linear1.weight = mx.array(values["stack_w1"])
+                    inner.mid.weight = mx.array(values["rms_mid_gamma"])
+                    inner.linear2.weight = mx.array(values["stack_w2"])
+                elif architecture == ARCH_GEMMA_NATIVE:
                     hidden = int(values["hidden_dim"])
                     inner.layer_norm = nn.LayerNorm(INPUT_DIM)
                     inner.linear1 = nn.Linear(INPUT_DIM, hidden, bias=True)
@@ -246,7 +270,17 @@ class StockWhisperGemmaSession:
                     inner.linear2.bias = mx.array(values["linear2_bias"])
 
             def __call__(inner, x):
-                if architecture == ARCH_GEMMA_NATIVE:
+                if architecture == ARCH_GEMMA_NATIVE_STACK:
+                    usable = (x.shape[0] // self.pool_step) * self.pool_step
+                    if usable == 0:
+                        x = mx.concatenate([x, x], axis=0)
+                        usable = self.pool_step
+                    stacked = x[:usable].reshape(
+                        -1, INPUT_DIM * self.pool_step)
+                    gate, value = mx.split(
+                        inner.linear1(inner.pre(stacked)), 2, axis=-1)
+                    y = inner.linear2(inner.mid(nn.silu(gate) * value))
+                elif architecture == ARCH_GEMMA_NATIVE:
                     y = nn.gelu(inner.linear1(inner.layer_norm(x)))
                     y = _pool_mlx(mx, y, self.pool_step)
                     y = inner.linear2(y)
@@ -383,7 +417,7 @@ def selfcheck() -> None:
     fake._encode_short = fake_encode
     joined = fake(np.zeros(5 * 60 * SAMPLE_RATE, dtype=np.float32))
     assert len(calls) == 12 and joined.shape == (15_000, 1)
-    print("runtime.stock_whisper: stock encoder -> fresh Jaeger MLP -> Gemma; "
+    print("runtime.stock_whisper: stock encoder -> owned Jaeger connector -> Gemma; "
           "ASR decoder unused; five-minute window chunking contract OK")
 
 

@@ -40,7 +40,6 @@ from jaeger_agent_omni.runtime.stock_whisper import (
     INPUT_BOUNDARY,
     INPUT_DIM,
     OUTPUT_DIM,
-    OUTPUT_MODE_DIRECT,
     OUTPUT_MODE_NORMALIZED,
     OUTPUT_MODE_RAW,
     POOL_STEP,
@@ -571,14 +570,31 @@ def _feature_manifest(cache: Path, split: str) -> dict[str, dict]:
     return result
 
 
+def _distill_adapter_arrays(adapter, architecture: str) -> dict[str, np.ndarray]:
+    """Serialize either connector without leaking optimizer/model state."""
+    if architecture == "gemma_native_stack_swiglu_v1":
+        return {
+            "rms_pre_gamma": adapter.pre.weight.detach().cpu().numpy(),
+            "stack_w1": adapter.linear1.weight.detach().cpu().numpy(),
+            "rms_mid_gamma": adapter.mid.weight.detach().cpu().numpy(),
+            "stack_w2": adapter.linear2.weight.detach().cpu().numpy(),
+        }
+    return {
+        "linear1_weight": adapter.linear1.weight.detach().cpu().numpy(),
+        "linear1_bias": adapter.linear1.bias.detach().cpu().numpy(),
+        "linear2_weight": adapter.linear2.weight.detach().cpu().numpy(),
+        "linear2_bias": adapter.linear2.bias.detach().cpu().numpy(),
+    }
+
+
 def command_distill(args) -> None:
-    """Match the proven tuned-audio adapter before Gemma is run.
+    """Match paired pre-Gemma audio vectors before Gemma is run.
 
     Both feature caches were computed from the same waveform ids.  The target
-    is the tuned Whisper + Jaeger adapter's 2560-wide audio vectors, not a
-    transcript, Gemma hidden state, logit, or generated token.  This transfers
-    an already readable acoustic geometry while keeping the deployed encoder
-    stock and the deployed graph Qwen-free.
+    is either Gemma's native `embed_audio` output or the tuned Whisper + Jaeger
+    adapter's 2560-wide audio vectors—not a transcript, Gemma hidden state,
+    logit, or generated token. This transfers readable acoustic geometry while
+    keeping the deployed encoder stock and the deployed graph Qwen-free.
     """
     import torch
     import torch.nn as nn
@@ -642,13 +658,35 @@ def command_distill(args) -> None:
     torch.manual_seed(args.seed)
     rng = random.Random(args.seed)
 
+    if (args.architecture == "gemma_native_stack_swiglu_v1" and
+            (args.teacher_mode != "direct" or args.pool_step != 2)):
+        raise ValueError("stack/SwiGLU requires --teacher-mode direct and "
+                         "--pool-step 2")
+
     class Adapter(nn.Module):
         def __init__(self):
             super().__init__()
-            self.linear1 = nn.Linear(INPUT_DIM, HIDDEN_DIM)
-            self.linear2 = nn.Linear(HIDDEN_DIM, OUTPUT_DIM)
+            if args.architecture == "gemma_native_stack_swiglu_v1":
+                self.pre = nn.RMSNorm(INPUT_DIM * args.pool_step, eps=1e-6)
+                self.linear1 = nn.Linear(
+                    INPUT_DIM * args.pool_step, OUTPUT_DIM * 2, bias=False)
+                self.mid = nn.RMSNorm(OUTPUT_DIM, eps=1e-6)
+                self.linear2 = nn.Linear(
+                    OUTPUT_DIM, OUTPUT_DIM, bias=False)
+            else:
+                self.linear1 = nn.Linear(INPUT_DIM, HIDDEN_DIM)
+                self.linear2 = nn.Linear(HIDDEN_DIM, OUTPUT_DIM)
 
         def forward(self, states):
+            if args.architecture == "gemma_native_stack_swiglu_v1":
+                usable = (states.shape[0] // args.pool_step) * args.pool_step
+                if not usable:
+                    states = torch.cat((states, states), dim=0)
+                    usable = args.pool_step
+                stacked = states[:usable].reshape(
+                    -1, INPUT_DIM * args.pool_step)
+                gate, value = self.linear1(self.pre(stacked)).chunk(2, dim=-1)
+                return self.linear2(self.mid(functional.silu(gate) * value))
             values = self.linear2(functional.relu(self.linear1(states)))
             usable = (values.shape[0] // args.pool_step) * args.pool_step
             return (values[:usable].reshape(
@@ -663,16 +701,31 @@ def command_distill(args) -> None:
             raise ValueError(
                 f"resume encoder {str(saved['encoder'])!r} != "
                 f"requested {args.whisper!r}")
+        saved_arch = str(saved.get("adapter_arch", "paired_mlp_v1"))
+        if saved_arch != args.architecture:
+            raise ValueError(
+                f"resume architecture {saved_arch!r} != requested "
+                f"{args.architecture!r}")
         start_step = int(saved.get("step", 0))
         with torch.no_grad():
-            adapter.linear1.weight.copy_(torch.from_numpy(
-                saved["linear1_weight"]))
-            adapter.linear1.bias.copy_(torch.from_numpy(
-                saved["linear1_bias"]))
-            adapter.linear2.weight.copy_(torch.from_numpy(
-                saved["linear2_weight"]))
-            adapter.linear2.bias.copy_(torch.from_numpy(
-                saved["linear2_bias"]))
+            if args.architecture == "gemma_native_stack_swiglu_v1":
+                adapter.pre.weight.copy_(torch.from_numpy(
+                    saved["rms_pre_gamma"]))
+                adapter.linear1.weight.copy_(torch.from_numpy(
+                    saved["stack_w1"]))
+                adapter.mid.weight.copy_(torch.from_numpy(
+                    saved["rms_mid_gamma"]))
+                adapter.linear2.weight.copy_(torch.from_numpy(
+                    saved["stack_w2"]))
+            else:
+                adapter.linear1.weight.copy_(torch.from_numpy(
+                    saved["linear1_weight"]))
+                adapter.linear1.bias.copy_(torch.from_numpy(
+                    saved["linear1_bias"]))
+                adapter.linear2.weight.copy_(torch.from_numpy(
+                    saved["linear2_weight"]))
+                adapter.linear2.bias.copy_(torch.from_numpy(
+                    saved["linear2_bias"]))
     teacher_weight_t = (torch.from_numpy(teacher_weight).to(device)
                         if teacher_weight is not None else None)
     teacher_bias_t = (torch.from_numpy(teacher_bias).to(device)
@@ -711,8 +764,9 @@ def command_distill(args) -> None:
     supervision = ("tuned adapter vectors" if args.teacher_mode == "adapter"
                    else "Gemma native embed_audio vectors")
     print(f"supervision: {supervision} only (pre-Gemma)", flush=True)
-    output_mode = (OUTPUT_MODE_RAW if args.teacher_mode == "adapter" else
-                   OUTPUT_MODE_DIRECT)
+    # Both teachers expose their unscaled pre-Gemma vectors. The runtime's
+    # `raw` convention performs the required /sqrt(2560) splice scaling.
+    output_mode = OUTPUT_MODE_RAW
     stage = ("paired_distillation" if args.teacher_mode == "adapter" else
              "native_vector_distillation")
     step = start_step
@@ -738,19 +792,14 @@ def command_distill(args) -> None:
                       f"avg={sum(rolling)/len(rolling):.5f} "
                       f"elapsed={time.time()-started:.1f}s", flush=True)
             if step % args.save_every == 0 or step == args.steps:
-                weights = {
-                    "linear1_weight":
-                        adapter.linear1.weight.detach().cpu().numpy(),
-                    "linear1_bias": adapter.linear1.bias.detach().cpu().numpy(),
-                    "linear2_weight":
-                        adapter.linear2.weight.detach().cpu().numpy(),
-                    "linear2_bias": adapter.linear2.bias.detach().cpu().numpy(),
-                }
+                weights = _distill_adapter_arrays(
+                    adapter, args.architecture)
                 metadata = dict(
                     step=step, task="transcript", stage=stage,
                     learning_rate=args.learning_rate, train_loss=value,
                     teacher_adapter=str(args.teacher_adapter or ""),
                     teacher_mode=args.teacher_mode, pool_step=args.pool_step,
+                    adapter_arch=args.architecture,
                     paired_train_examples=len(train_ids),
                     output_mode=output_mode, encoder=args.whisper)
                 _atomic_checkpoint_arrays(args.output, weights, **metadata)
@@ -771,18 +820,14 @@ def command_distill(args) -> None:
     validation_loss = sum(losses) / len(losses)
     print(f"validation pre-Gemma distillation ({len(losses)}): "
           f"{validation_loss:.5f}")
-    weights = {
-        "linear1_weight": adapter.linear1.weight.detach().cpu().numpy(),
-        "linear1_bias": adapter.linear1.bias.detach().cpu().numpy(),
-        "linear2_weight": adapter.linear2.weight.detach().cpu().numpy(),
-        "linear2_bias": adapter.linear2.bias.detach().cpu().numpy(),
-    }
+    weights = _distill_adapter_arrays(adapter, args.architecture)
     _atomic_checkpoint_arrays(
         args.output, weights, step=step, task="transcript",
         stage=stage, learning_rate=args.learning_rate,
         train_loss=value, validation_distill=validation_loss,
         teacher_adapter=str(args.teacher_adapter or ""),
         teacher_mode=args.teacher_mode, pool_step=args.pool_step,
+        adapter_arch=args.architecture,
         paired_train_examples=len(train_ids), output_mode=output_mode,
         encoder=args.whisper)
 
@@ -1233,6 +1278,11 @@ def build_parser() -> argparse.ArgumentParser:
     distill.add_argument(
         "--pool-step", type=int, choices=(2, POOL_STEP), default=POOL_STEP,
         help="stock 50 Hz pooling; 2 matches Gemma native audio at 25 Hz")
+    distill.add_argument(
+        "--architecture", choices=("paired_mlp_v1",
+                                    "gemma_native_stack_swiglu_v1"),
+        default="paired_mlp_v1",
+        help="connector shape; stack/SwiGLU is for direct native vectors")
     distill.add_argument(
         "--extra-pair", action="append", nargs=6, default=[],
         metavar=("STOCK_CACHE", "STOCK_TRAIN", "STOCK_VALIDATION",

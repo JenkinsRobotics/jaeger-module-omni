@@ -16,15 +16,30 @@ Import the selected clean-room source checkpoint with strict runtime metadata:
 
 ```bash
 python training/import_cleanroom_adapter.py \
-  ~/models/jaeger-cleanroom/adapter_distill_h4096_replay_lr10.step001000.npz \
-  artifacts/stock-whisper-gemma-native-h4096-replay-step1000.npz
+  ~/models/jaeger-cleanroom/adapter_distill_stack_swiglu_refine_lr10.npz \
+  artifacts/stock-whisper-gemma-native-stack-swiglu-refine5k.npz
 ```
 
 `jaeger_agent_omni.runtime.stock_whisper` identifies the architecture from the
 checkpoint metadata and supports both formats without changing the default
-live tower. The imported checkpoint measures 31.41% WER on the historical
-dev-clean64/955-word gate, 32.18% on MINDS/Vox591/9,736 words, and 8/12 on the
-canonical dual-output benchmark. It is active development, not promoted.
+live tower. The importer supports both the mean-pool/GELU checkpoint and the
+frame-stack/RMSNorm/SwiGLU checkpoint with strict shape metadata. The selected
+stack checkpoint measures 27.75% WER on the historical dev-clean64/955-word
+gate, 27.38% on MINDS/Vox591/9,736 words, and 8/12 on the canonical
+dual-output benchmark. It is active development, not promoted.
+
+For paired stock-Whisper and cached Gemma-native vectors, the owned trainer is:
+
+```bash
+python training/stock_whisper_gemma.py distill \
+  --cache <stock-cache> --teacher-cache <native-vector-cache> \
+  --teacher-mode direct --pool-step 2 \
+  --architecture gemma_native_stack_swiglu_v1 \
+  --output artifacts/stock-whisper-gemma-native-stack.npz
+```
+
+The target is still only `audio_tower -> embed_audio` vectors from the same
+waveform. No generated transcript or answer is used as supervision.
 
 `stock_whisper_gemma.py distill` uses the proven MiniCPM projector structure
 (1024→4096, ReLU, pool-by-5, 4096→2560) but deploys the stock OpenAI

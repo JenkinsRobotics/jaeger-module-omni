@@ -57,23 +57,24 @@ The **active development** checkpoint is now the fully owned Gemma-native
 teacher path:
 
 ```text
-artifacts/stock-whisper-gemma-native-h4096-replay-step1000.npz
-31.41% WER — exact historical dev-clean64 / 955 words
-32.18% WER — held-out MINDS/Vox591 / 9,736 words
-8/12 answers — canonical dual-output prompt, 521 ms median
+artifacts/stock-whisper-gemma-native-stack-swiglu-refine5k.npz
+27.75% WER — exact historical dev-clean64 / 955 words
+27.38% WER — held-out MINDS/Vox591 / 9,736 words
+8/12 answers — canonical dual-output prompt, 532 ms median
+20.90% generated transcript WER — cases12 diagnostic (was 43.28%)
 ```
 
 It remains a challenger, not the live or observer default. The older paired
 stock adapter remains the accuracy gate at 16.34%/9 of 12; the native tower
 remains live at 10/12; the tuned-Whisper observer remains 13.61% WER.
 
-Do not continue the same mean-pool MLP blindly. Balanced replay peaked after
-7,500 steps and a 1e-5 refinement peaked after only 1,000; every later saved
-checkpoint regressed. The next controlled A/B should replace pairwise mean
-pooling with channel-wise frame stacking and a gated projector (RMSNorm,
-SwiGLU, mid-normalization), following the proven Ultravox connector shape.
-Keep the encoder, Gemma-native vector teacher, datasets, prompts, and all three
-evaluation gates fixed so architecture is the only changed variable.
+Frame stacking plus RMSNorm/SwiGLU is now measured, not merely proposed. It
+improves the prior native-teacher adapter by 3.66 WER points on dev-clean and
+4.80 points on MINDS/Vox, but does not improve the 8/12 answer gate. Do not
+continue the selected recipe at a lower learning rate: a complete 5e-6 sweep
+regressed from 29.82% to at least 31.99% on the ranking evaluator. The next
+controlled experiment must change the learning signal or temporal connector
+while keeping encoder, corpora, prompts, and free-running gates fixed.
 
 Stock OpenAI Whisper plus a fresh adapter is now viable through paired
 pre-Gemma representation distillation. The promoted local checkpoint is

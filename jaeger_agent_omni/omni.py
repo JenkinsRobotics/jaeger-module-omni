@@ -60,7 +60,7 @@ MODEL = "/Users/jonathanjenkins/models/gemma-4-e4b-it-mlx-full"
 DELTA = (Path.home() / "models/gemma-audio-adapter"
          / "adapter_sparse_vox1375_k022_b000.npz")
 STOCK = (Path(__file__).resolve().parent.parent / "artifacts"
-         / "stock-whisper-gemma-native-h4096-replay-step1000.npz")
+         / "stock-whisper-gemma-native-stack-swiglu-refine5k.npz")
 AUDIO_GGUF = (Path.home() / "models/MiniCPM-o-4_5-gguf/audio"
               / "MiniCPM-o-4_5-audio-F16.gguf")
 

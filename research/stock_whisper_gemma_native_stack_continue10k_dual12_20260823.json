@@ -1,0 +1,107 @@
+{
+ "front_end": "stock",
+ "dual_output": true,
+ "correct": 8,
+ "n": 12,
+ "median_ms": 508.95791640505195,
+ "rows": [
+  {
+   "case": "q00",
+   "ok": false,
+   "ms": 1471.0131250321865,
+   "reply": "TRANSCRIPT: What is to passed?\nANSWER: I'm sorry, I didn't catch that. Could you repeat the question?",
+   "transcript": "What is to passed?",
+   "answer": "I'm sorry, I didn't catch that. Could you repeat the question?"
+  },
+  {
+   "case": "q01",
+   "ok": true,
+   "ms": 525.9511668700725,
+   "reply": "TRANSCRIPT: what color is this sky\nANSWER: It's blue.",
+   "transcript": "what color is this sky",
+   "answer": "It's blue."
+  },
+  {
+   "case": "q02",
+   "ok": true,
+   "ms": 480.738207930699,
+   "reply": "TRANSCRIPT: How many days in a week?\nANSWER: Seven.",
+   "transcript": "How many days in a week?",
+   "answer": "Seven."
+  },
+  {
+   "case": "q03",
+   "ok": true,
+   "ms": 581.4475829247385,
+   "reply": "TRANSCRIPT: What is the capital of France?\nANSWER: The capital of France is Paris.",
+   "transcript": "What is the capital of France?",
+   "answer": "The capital of France is Paris."
+  },
+  {
+   "case": "q04",
+   "ok": false,
+   "ms": 432.0781659334898,
+   "reply": "TRANSCRIPT: what is said on earth\nANSWER: nothing",
+   "transcript": "what is said on earth",
+   "answer": "nothing"
+  },
+  {
+   "case": "q05",
+   "ok": false,
+   "ms": 653.2334999646991,
+   "reply": "TRANSCRIPT: How many ointments is this far ahead?\nANSWER: I'm not sure what you mean.",
+   "transcript": "How many ointments is this far ahead?",
+   "answer": "I'm not sure what you mean."
+  },
+  {
+   "case": "q06",
+   "ok": true,
+   "ms": 447.77470803819597,
+   "reply": "TRANSCRIPT: What is the largest planet?\nANSWER: Jupiter",
+   "transcript": "What is the largest planet?",
+   "answer": "Jupiter"
+  },
+  {
+   "case": "q07",
+   "ok": true,
+   "ms": 491.9646659400314,
+   "reply": "TRANSCRIPT: What is five times five?\nANSWER: Twenty-five.",
+   "transcript": "What is five times five?",
+   "answer": "Twenty-five."
+  },
+  {
+   "case": "q08",
+   "ok": true,
+   "ms": 471.6401658952236,
+   "reply": "TRANSCRIPT: What season comes after summer?\nANSWER: Autumn.",
+   "transcript": "What season comes after summer?",
+   "answer": "Autumn."
+  },
+  {
+   "case": "q09",
+   "ok": true,
+   "ms": 619.3724169861525,
+   "reply": "TRANSCRIPT: How many hours in a day?\nANSWER: There are 24 hours in a day.",
+   "transcript": "How many hours in a day?",
+   "answer": "There are 24 hours in a day."
+  },
+  {
+   "case": "q10",
+   "ok": true,
+   "ms": 651.4602079987526,
+   "reply": "TRANSCRIPT: What is the freezing point of water?\nANSWER: Zero degrees Celsius or 32 degrees Fahrenheit.",
+   "transcript": "What is the freezing point of water?",
+   "answer": "Zero degrees Celsius or 32 degrees Fahrenheit."
+  },
+  {
+   "case": "q11",
+   "ok": false,
+   "ms": 453.9281658362597,
+   "reply": "TRANSCRIPT: I would remain in Sicily.\nANSWER: Sicily",
+   "transcript": "I would remain in Sicily.",
+   "answer": "Sicily"
+  }
+ ],
+ "transcript_wer": 0.2537313432835821,
+ "transcript_words": 67
+}

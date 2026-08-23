@@ -1,0 +1,107 @@
+{
+ "front_end": "stock",
+ "dual_output": true,
+ "correct": 8,
+ "n": 12,
+ "median_ms": 531.9018120644614,
+ "rows": [
+  {
+   "case": "q00",
+   "ok": false,
+   "ms": 1016.4107498712838,
+   "reply": "TRANSCRIPT: What is to postpone?\nANSWER: To postpone means to delay or put off until a later time.",
+   "transcript": "What is to postpone?",
+   "answer": "To postpone means to delay or put off until a later time."
+  },
+  {
+   "case": "q01",
+   "ok": true,
+   "ms": 482.82666713930666,
+   "reply": "TRANSCRIPT: what color is this sky\nANSWER: it's blue",
+   "transcript": "what color is this sky",
+   "answer": "it's blue"
+  },
+  {
+   "case": "q02",
+   "ok": true,
+   "ms": 481.7287498153746,
+   "reply": "TRANSCRIPT: How many days in a week?\nANSWER: Seven.",
+   "transcript": "How many days in a week?",
+   "answer": "Seven."
+  },
+  {
+   "case": "q03",
+   "ok": true,
+   "ms": 576.4123750850558,
+   "reply": "TRANSCRIPT: What is the capital of France?\nANSWER: The capital of France is Paris.",
+   "transcript": "What is the capital of France?",
+   "answer": "The capital of France is Paris."
+  },
+  {
+   "case": "q04",
+   "ok": false,
+   "ms": 478.8789169397205,
+   "reply": "TRANSCRIPT: what is 7 minus 3?\nANSWER: four",
+   "transcript": "what is 7 minus 3?",
+   "answer": "four"
+  },
+  {
+   "case": "q05",
+   "ok": false,
+   "ms": 703.5712499637157,
+   "reply": "TRANSCRIPT: How many units does this spare have?\nANSWER: I'm sorry, I don't have that information.",
+   "transcript": "How many units does this spare have?",
+   "answer": "I'm sorry, I don't have that information."
+  },
+  {
+   "case": "q06",
+   "ok": true,
+   "ms": 446.28216698765755,
+   "reply": "TRANSCRIPT: What is the largest planet?\nANSWER: Jupiter",
+   "transcript": "What is the largest planet?",
+   "answer": "Jupiter"
+  },
+  {
+   "case": "q07",
+   "ok": true,
+   "ms": 526.9042081199586,
+   "reply": "TRANSCRIPT: What is five times five?\nANSWER: It is twenty-five.",
+   "transcript": "What is five times five?",
+   "answer": "It is twenty-five."
+  },
+  {
+   "case": "q08",
+   "ok": true,
+   "ms": 468.00454217009246,
+   "reply": "TRANSCRIPT: What season comes after summer?\nANSWER: Autumn.",
+   "transcript": "What season comes after summer?",
+   "answer": "Autumn."
+  },
+  {
+   "case": "q09",
+   "ok": true,
+   "ms": 616.8736659456044,
+   "reply": "TRANSCRIPT: How many hours in a day?\nANSWER: There are 24 hours in a day.",
+   "transcript": "How many hours in a day?",
+   "answer": "There are 24 hours in a day."
+  },
+  {
+   "case": "q10",
+   "ok": true,
+   "ms": 649.0094580221921,
+   "reply": "TRANSCRIPT: What is the freezing point of water?\nANSWER: Zero degrees Celsius or 32 degrees Fahrenheit.",
+   "transcript": "What is the freezing point of water?",
+   "answer": "Zero degrees Celsius or 32 degrees Fahrenheit."
+  },
+  {
+   "case": "q11",
+   "ok": false,
+   "ms": 536.8994160089642,
+   "reply": "TRANSCRIPT: I would remain in Toledo.\nANSWER: I would remain in Toledo.",
+   "transcript": "I would remain in Toledo.",
+   "answer": "I would remain in Toledo."
+  }
+ ],
+ "transcript_wer": 0.208955223880597,
+ "transcript_words": 67
+}
