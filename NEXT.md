@@ -17,16 +17,26 @@ artifacts/stock-whisper-gemma-medium50m-expanded-blend25.npz
 Do not continue the raw expanded-data branch blindly: its step 1,000 improves
 the new hard-speech gate to 18.72% but regresses dev-clean to 14.45%. The 25%
 interpolation is the only checkpoint that improves/ties all measured lexical
-gates. The next lexical experiment must add a stronger training-only sequence
-objective or additional genuinely new licensed data; another pass over the
-same 22,944-row mix is not justified.
+gates. A source-balanced AMI/train-other continuation is also closed: its raw
+checkpoint improves held-out AMI from 53.79% to 49.93%, but every 5--50%
+interpolation adds at least one error to the exact 9,736-word MINDS/Vox gate.
+Do not run another single-domain or identical balanced continuation. The next
+lexical experiment must use a stronger training-only sequence objective and
+genuinely new licensed speakers/acoustics; another pass over the same rows is
+not justified.
 
 The common external cache is
 `~/models/jaeger-training-data/stock-whisper-medium-expanded-v1`. It contains
 11,316 new train-other clips plus 684 speaker-disjoint validation clips. Keep
-the validation split untouched and preserve source/speaker IDs when adding
-MUSAN/RIR augmentation or meeting audio. Adapter updates should use new data
-plus bounded replay, not repeated single-corpus continuation.
+the validation split untouched. It also contains 3,249 AMI training and 750
+speaker-disjoint AMI validation features from four new hours; those turns have
+zero overlap with the separate first-hour capture. Preserve source/speaker IDs
+when adding MUSAN/RIR augmentation or further meeting audio. Adapter updates
+should use new data plus bounded source-balanced replay, not repeated
+single-corpus continuation. `training/context_distill.py --balance-sources`
+now assigns equal sampling mass per manifest source, and
+`training/precompute_stock_encoder.py --id-file` rebuilds an exact historical
+evaluation cohort in its original order.
 
 ## 1. Keep the two production objectives separate
 

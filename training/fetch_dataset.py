@@ -151,7 +151,8 @@ def to_mono_16k(data: np.ndarray, sr: int) -> np.ndarray:
     return data.astype(np.float32)
 
 
-def fetch(corpus: Corpus, out, *, hours=None, limit=None, verbose=True) -> tuple:
+def fetch(corpus: Corpus, out, *, hours=None, limit=None, skip_hours=0.0,
+          verbose=True) -> tuple:
     import soundfile as sf
     from datasets import Audio, load_dataset
 
@@ -171,7 +172,9 @@ def fetch(corpus: Corpus, out, *, hours=None, limit=None, verbose=True) -> tuple
     signal.signal(signal.SIGTERM, stop)
 
     written, seconds, skipped = 0, 0.0, 0
+    offset_seconds = 0.0
     budget = hours * 3600 if hours else None
+    offset_budget = skip_hours * 3600
 
     for sample in ds:
         if stopping["flag"]:
@@ -192,6 +195,9 @@ def fetch(corpus: Corpus, out, *, hours=None, limit=None, verbose=True) -> tuple
         dur = len(audio) / SAMPLE_RATE
         if not MIN_CLIP_S <= dur <= MAX_CLIP_S:
             skipped += 1
+            continue
+        if offset_seconds < offset_budget:
+            offset_seconds += dur
             continue
 
         writer.write(audio, transcript=text, response="",
@@ -218,6 +224,8 @@ def main() -> int:
                     help="comma-separated keys; the hours budget is split evenly")
     ap.add_argument("--out", default=None)
     ap.add_argument("--hours", type=float, default=None)
+    ap.add_argument("--skip-hours", type=float, default=0.0,
+                    help="skip this much usable source audio before writing")
     ap.add_argument("--limit", type=int, default=None)
     args = ap.parse_args()
 
@@ -249,7 +257,9 @@ def main() -> int:
         if c.needs_auth:
             print("  needs a HF token and accepted terms; will fail otherwise")
         try:
-            n, secs, skipped = fetch(c, args.out, hours=per, limit=args.limit)
+            n, secs, skipped = fetch(
+                c, args.out, hours=per, limit=args.limit,
+                skip_hours=args.skip_hours)
         except Exception as exc:                       # noqa: BLE001
             # One bad corpus must not lose the others already written.
             print(f"  FAILED: {type(exc).__name__}: {str(exc)[:120]}")

@@ -85,6 +85,30 @@ selected checkpoint by one clean edit and one hard-speech edit while tying
 the 9,736-word conversational result and retaining 10/12 answers. The 50%
 and 75% blends both regressed dev-clean to 14.55% and were rejected.
 
+Five hours of AMI meeting speech were then added without replaying source
+turns. The first hour contains 1,006 turns; the next four contain 4,042 turns
+from 12 speakers, seven not present in hour one, with zero turn-ID overlap.
+Their stock-Whisper cache has 3,249 training and 750 speaker-disjoint
+validation examples. A source-balanced half-pass sampled the new AMI and
+train-other domains with exactly 0.50 probability each, about 750 updates per
+domain, rather than repeatedly cycling either corpus.
+
+The raw balanced checkpoint is a useful AMI specialist, not a general winner:
+
+```text
+artifacts/stock-whisper-gemma-medium50m-ami5-balanced1p5k.npz
+49.93% AMI64 — 336 / 673 errors, versus 53.79% (362 / 673)
+14.35% rebuilt dev-clean64 — 137 / 955, one worse than paired baseline
+10/12 cases12 — 321 ms median
+```
+
+A 50% interpolation preserved rebuilt dev-clean exactly at 136/955 and gained
+nine AMI errors, but regressed MINDS/Vox591 from 1,860 to 1,875 errors. Smaller
+10% and 5% interpolations still lost one and two MINDS/Vox errors respectively.
+All are therefore rejected as the general default. This establishes a real
+domain tradeoff rather than a route below 10% WER; the direct adapter's best
+verified general result remains 14.03%.
+
 This checkpoint is the development baseline, not the live desktop default.
 The native Gemma tower remains live until five-minute duplex, speaker, AEC,
 and context-roll gates are repeated.

@@ -737,6 +737,25 @@ def lexical_probe(adapter, rows: list[dict], step: int) -> None:
         print(f"      ref={target!r} hyp={hypothesis!r}", flush=True)
 
 
+def sampling_probabilities(rows: list[dict], short_weight: float,
+                           short_seconds: float,
+                           balance_sources: bool) -> np.ndarray:
+    """Return clip probabilities, optionally giving every source equal mass."""
+    weights = np.array([
+        short_weight if float(row.get("seconds", 0.0)) <= short_seconds else 1.0
+        for row in rows
+    ], dtype=np.float64)
+    if balance_sources:
+        source_totals: dict[str, float] = {}
+        for row, weight in zip(rows, weights):
+            source = str(row.get("source", "unknown"))
+            source_totals[source] = source_totals.get(source, 0.0) + float(weight)
+        for index, row in enumerate(rows):
+            source = str(row.get("source", "unknown"))
+            weights[index] /= source_totals[source]
+    return weights / weights.sum()
+
+
 def command_train(args) -> None:
     import mlx.core as mx
     import mlx.nn as nn
@@ -809,10 +828,15 @@ def command_train(args) -> None:
         print(f"  loading read-only Gemma teacher: {args.model}", flush=True)
         model, processor = load_teacher(args.model)
 
-    weights = np.array([
-        args.short_weight if float(row.get("seconds", 0.0)) <= args.short_seconds
-        else 1.0 for row in rows], dtype=np.float64)
-    probabilities = weights / weights.sum()
+    probabilities = sampling_probabilities(
+        rows, args.short_weight, args.short_seconds, args.balance_sources)
+    source_mass: dict[str, float] = {}
+    for row, probability in zip(rows, probabilities):
+        source = str(row.get("source", "unknown"))
+        source_mass[source] = source_mass.get(source, 0.0) + float(probability)
+    print("  sampling source mass: " + str({
+        source: round(mass, 4) for source, mass in source_mass.items()
+    }), flush=True)
     rng = np.random.default_rng(args.seed)
     schedule = optim.join_schedules(
         [optim.linear_schedule(0.0, args.learning_rate, max(1, args.warmup)),
@@ -964,6 +988,9 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--max-seconds", type=float, default=12.0)
     parser.add_argument("--short-seconds", type=float, default=3.0)
     parser.add_argument("--short-weight", type=float, default=2.0)
+    parser.add_argument(
+        "--balance-sources", action="store_true",
+        help="give each manifest source equal sampling mass")
     parser.add_argument("--context-hidden", type=int, default=1536)
     parser.add_argument("--context-heads", type=int, default=12)
     parser.add_argument("--context-kernel", type=int, default=31)

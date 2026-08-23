@@ -40,7 +40,8 @@ def resolve(root: Path, value: str) -> Path:
     return path if path.is_absolute() else root / path
 
 
-def load_source(cache: Path, split: str, max_seconds: float) -> list[dict]:
+def load_source(cache: Path, split: str, max_seconds: float,
+                selected_ids: list[str] | None = None) -> list[dict]:
     root = cache.expanduser().resolve() / split
     manifest = root / "manifest.jsonl"
     if not manifest.exists():
@@ -56,7 +57,75 @@ def load_source(cache: Path, split: str, max_seconds: float) -> list[dict]:
             continue
         row["audio"] = str(resolve(root, row["audio"]).resolve())
         rows.append(row)
+    if selected_ids is None:
+        return rows
+    by_id = {str(row["id"]): row for row in rows}
+    missing = [item_id for item_id in selected_ids if item_id not in by_id]
+    if missing:
+        preview = ", ".join(missing[:5])
+        raise ValueError(
+            f"{len(missing)} selected IDs absent from {manifest}: {preview}")
+    return [by_id[item_id] for item_id in selected_ids]
+
+
+def read_id_file(path: Path | None) -> list[str] | None:
+    if path is None:
+        return None
+    ids = [line.strip() for line in path.expanduser().read_text().splitlines()
+           if line.strip()]
+    if len(ids) != len(set(ids)):
+        raise ValueError(f"duplicate IDs in selection file: {path}")
+    if not ids:
+        raise ValueError(f"empty selection file: {path}")
+    return ids
+
+
+def load_corpus(corpus: Path, max_seconds: float) -> list[dict]:
+    """Map this repo's capture format onto the context-cache schema."""
+    corpus = corpus.expanduser().resolve()
+    manifest = corpus / "turns.jsonl"
+    if not manifest.exists():
+        raise FileNotFoundError(manifest)
+    rows = []
+    for line in manifest.read_text().splitlines():
+        if not line.strip():
+            continue
+        item = json.loads(line)
+        seconds = float(item.get("duration_s", 0.0))
+        text = str(item.get("transcript") or "").strip()
+        if not text or (max_seconds and seconds > max_seconds):
+            continue
+        meta = item.get("meta") or {}
+        audio = resolve(corpus, item["audio_path"]).resolve()
+        if not audio.is_file():
+            raise FileNotFoundError(audio)
+        rows.append({
+            "id": str(item["turn_id"]),
+            "audio": str(audio),
+            "seconds": seconds,
+            "text": text,
+            "speaker": str(meta.get("speaker") or ""),
+            "source": str(meta.get("source") or item.get("session_id")
+                          or "capture"),
+            "license": str(meta.get("license") or "CC-BY-4.0"),
+            "human_label": float(item.get("confidence", 0.0)) >= 1.0,
+        })
     return rows
+
+
+def corpus_partitions(rows: list[dict], name: str,
+                      validation_percent: int) -> list[tuple[str, list[dict]]]:
+    """Make speaker-disjoint train/validation partitions."""
+    if not 0 < validation_percent < 100:
+        raise ValueError("validation percent must be between 1 and 99")
+    result = {name: [], f"{name}_validation": []}
+    for row in rows:
+        speaker = row.get("speaker") or row["id"]
+        value = int(hashlib.sha256(str(speaker).encode()).hexdigest()[:8], 16)
+        split = (f"{name}_validation" if value % 100 < validation_percent
+                 else name)
+        result[split].append(row)
+    return list(result.items())
 
 
 def completed(manifest: Path) -> set[str]:
@@ -96,9 +165,18 @@ def save_feature(path: Path, values: np.ndarray) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("--source-cache", type=Path, required=True)
+    source = parser.add_mutually_exclusive_group(required=True)
+    source.add_argument("--source-cache", type=Path)
+    source.add_argument("--source-corpus", type=Path,
+                        help="capture-format directory with turns.jsonl")
     parser.add_argument("--output-cache", type=Path, required=True)
-    parser.add_argument("--split", action="append", required=True)
+    parser.add_argument("--split", action="append")
+    parser.add_argument(
+        "--id-file", type=Path,
+        help="newline-delimited source IDs to encode, preserving file order")
+    parser.add_argument("--corpus-split", default="capture_train")
+    parser.add_argument("--validation-percent", type=int, default=10,
+                        help="speaker-level holdout for --source-corpus")
     parser.add_argument("--whisper", choices=tuple(ENCODER_DIMS), required=True)
     parser.add_argument("--device", choices=("auto", "mps", "cpu"),
                         default="auto")
@@ -107,13 +185,30 @@ def main() -> int:
     parser.add_argument("--log-every", type=int, default=25)
     args = parser.parse_args()
 
+    if args.id_file and not args.source_cache:
+        parser.error("--id-file is only valid with --source-cache")
+    selected_ids = read_id_file(args.id_file)
+
     refuse_gpu_contention()
     print(f"loading frozen encoder {args.whisper}", flush=True)
     front_end = StockWhisperFrontEnd(args.whisper, args.device)
     total_written = 0
     started = time.time()
-    for split in args.split:
-        rows = load_source(args.source_cache, split, args.max_seconds)
+    if args.source_cache:
+        if not args.split:
+            parser.error("--source-cache requires at least one --split")
+        partitions = [
+            (split, load_source(args.source_cache, split, args.max_seconds,
+                                selected_ids))
+            for split in args.split
+        ]
+    else:
+        if args.split:
+            parser.error("use --corpus-split, not --split, with source corpus")
+        partitions = corpus_partitions(
+            load_corpus(args.source_corpus, args.max_seconds),
+            args.corpus_split, args.validation_percent)
+    for split, rows in partitions:
         output_root = args.output_cache.expanduser().resolve() / split
         manifest = output_root / "manifest.jsonl"
         done = completed(manifest)
