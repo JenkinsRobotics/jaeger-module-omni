@@ -51,7 +51,7 @@ tower's: one read audio as an image, one never named Shakespeare.
 | speech codes -> audible cloned voice | **works** | `research/t2w_client.py --say` |
 | cognition -> talker conditioning | **built, untrained** | `neural/delta.py` |
 | tuned Whisper -> delta -> E4B | **works, 13.61% WER/64** | `omni.py --front-end delta` |
-| stock Whisper -> native-teacher adapter -> E4B | **active dev: 20.52% WER/64, 8/12** | `omni.py --front-end stock --dual-output` |
+| stock Whisper -> native-teacher adapter -> E4B | **active dev: 18.01% WER/64, 8/12** | `omni.py --front-end stock --dual-output` |
 
 31/31 module self-checks green: `python research/check_all.py`
 
@@ -145,6 +145,8 @@ stock OpenAI Whisper-medium encoder (50 Hz, decoder unused)
   -> RMSNorm(2560) -> Linear(2560), no affine biases
   -> zero-init residual: RMSNorm -> Linear(2048) -> SwiGLU(1024)
      -> RMSNorm(1024) -> Linear(2560) + skip
+  -> zero-init temporal residual: RMSNorm -> SwiGLU(256)
+     -> depthwise Conv1d(k=3) -> RMSNorm -> Linear(2560) + skip
   -> Gemma 4 E4B
 teacher: Gemma's own audio_tower -> embed_audio vectors at 25 Hz
 ```
@@ -164,13 +166,13 @@ adding error-correction capacity. A 15k residual-only run, an 8k selected
 half-rate continuation, and a 4k selected low-rate refinement produce
 `artifacts/stock-whisper-gemma-native-stack-residual1024-refine4k.npz`.
 
-The main-repo evaluator now measures **20.52% free-running WER on the exact
-same 64 clips/955 words** as the 16.34% paired-adapter reference, down from
-27.75%. It also measures **22.63% WER on 591 held-out MINDS/Vox clips/9,736
-words**, down from 27.38%, and **8/12 answers at 511 ms median** with the dual
-transcript/answer prompt. Generated transcript WER on cases12 is **20.90%**;
-answer accuracy still does not rise because the remaining four suite misses
-are perception errors.
+Before adding temporal context, the main-repo evaluator measured this residual
+checkpoint at **20.52% free-running WER on the exact same 64 clips/955 words**
+as the 16.34% paired-adapter reference, down from 27.75%. It also measured
+**22.63% WER on 591 held-out MINDS/Vox clips/9,736 words**, down from 27.38%,
+and **8/12 answers at 511 ms median** with the dual transcript/answer prompt.
+Generated transcript WER on cases12 was **20.90%**; answer accuracy did not
+rise because the remaining four suite misses were perception errors.
 
 This is a large clean-room improvement, but it is not promoted over the
 paired stock adapter (16.34%/9 of 12), tuned-Whisper observer (13.61%), or
@@ -187,16 +189,18 @@ versus 0.6483/0.6168 at -1/+1). First-difference cosine is only 0.3229, but
 adding a 0.25 temporal-difference loss regresses every 1k-step checkpoint to
 33.95–40.87% on the 969-word ranking corpus. That objective is closed too.
 
-Follow-up sweeps confirm the current connector is locally saturated. A second
+Follow-up sweeps confirmed that per-token residual connector was locally
+saturated. A second
 zero-init residual regresses every ranking checkpoint. Training only <=3 s
 clips reaches 9/12 but regresses dev-clean to 21.88%; 0.875 weight
 interpolation still scores 21.47%. Full replay with 4x short weighting improves
 dev-clean to 20.00% but regresses MINDS/Vox to 22.78%; 2x weighting scores
 20.31%/22.83%. A zero-init 5,120-value output affine never beats 20.52%.
-Raising cosine loss from 0.1 to 1.0 ties dev-clean and improves the cases12
+Raising cosine loss from 0.1 to 1.0 tied dev-clean and improved the cases12
 transcript diagnostic to 19.40%, but loses the 9,736-word mixed gate by exactly
 one edit (2,204 versus 2,203); 0.5 loses by eight. The retained checkpoint
-therefore remains unchanged. The complete free-running matrix is in
+therefore remained unchanged through those per-token sweeps; the temporal
+result below supersedes it. The complete free-running matrix is in
 `research/stock_whisper_native_followup_sweeps_20260823.json`.
 
 The available new-data lever was tested as well. A training-only FLEURS
@@ -204,6 +208,27 @@ manifest added 1,937 CC-BY-4.0 English-US clips (1--12 s) without touching
 either validation partition. Step 1,000 improves dev-clean from 20.52% to
 20.00%, but regresses MINDS/Vox from 22.63% to 22.82% (2,222 versus 2,203
 edits) and remains 8/12. This is another domain trade, not a promotion.
+
+Changing the temporal connector succeeds where the per-token sweeps do not.
+A 1.97M-parameter Conformer-style branch adds local context across three 25 Hz
+tokens while preserving the selected residual connector exactly at step zero.
+Training only that branch for 8,000 steps produces a non-monotonic exact-corpus
+winner at step 7,000:
+
+```text
+artifacts/stock-whisper-gemma-native-temporal256-7k.npz
+18.01% WER — dev-clean64, 172 edits / 955 words
+20.95% WER — MINDS/Vox591, 2,040 edits / 9,736 words
+8/12 answers — dual-output cases12, 525 ms median
+20.90% generated transcript WER — 67-word cases12 diagnostic
+```
+
+This improves the prior native-teacher checkpoint by 2.51 WER points on
+dev-clean and 1.68 points on MINDS/Vox without using a transcript, answer, or
+Gemma output as supervision. Step 8,000 wins the 969-word ranking proxy but is
+worse on both authoritative corpora (18.12%/21.29%), so step 7,000 is selected.
+The native-teacher path is still not promoted over the 16.34%/9-of-12 paired
+adapter or the 10-of-12 native live tower because answer accuracy remains 8/12.
 
 On the exact same existing 64-clip/977-word validation slice used by
 `research/wer_corpus.py`, the promoted sparse tuned adapter improves the prior

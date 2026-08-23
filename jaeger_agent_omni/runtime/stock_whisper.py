@@ -46,6 +46,8 @@ ARCH_PAIRED = "paired_mlp_v1"
 ARCH_GEMMA_NATIVE = "gemma_native_distill_v1"
 ARCH_GEMMA_NATIVE_STACK = "gemma_native_stack_swiglu_v1"
 ARCH_GEMMA_NATIVE_RESIDUAL = "gemma_native_stack_swiglu_residual_v1"
+ARCH_GEMMA_NATIVE_TEMPORAL = (
+    "gemma_native_stack_swiglu_residual_temporal_v1")
 WHISPER_WINDOW_S = 28
 WHISPER_OVERLAP_S = 1
 
@@ -146,7 +148,8 @@ def validate_checkpoint(path: str | Path) -> dict[str, np.ndarray]:
         values = {key: saved[key] for key in saved.files}
     architecture = str(values.get("adapter_arch", ARCH_PAIRED))
     if architecture in (ARCH_GEMMA_NATIVE_STACK,
-                         ARCH_GEMMA_NATIVE_RESIDUAL):
+                         ARCH_GEMMA_NATIVE_RESIDUAL,
+                         ARCH_GEMMA_NATIVE_TEMPORAL):
         stacked = INPUT_DIM * int(values.get("pool_step", 0))
         expected = {
             "rms_pre_gamma": (stacked,),
@@ -154,7 +157,8 @@ def validate_checkpoint(path: str | Path) -> dict[str, np.ndarray]:
             "rms_mid_gamma": (OUTPUT_DIM,),
             "stack_w2": (OUTPUT_DIM, OUTPUT_DIM),
         }
-        if architecture == ARCH_GEMMA_NATIVE_RESIDUAL:
+        if architecture in (ARCH_GEMMA_NATIVE_RESIDUAL,
+                            ARCH_GEMMA_NATIVE_TEMPORAL):
             residual_hidden = int(values.get("residual_hidden", 0))
             if residual_hidden <= 0:
                 raise ValueError(f"{path}: invalid residual_hidden")
@@ -163,6 +167,17 @@ def validate_checkpoint(path: str | Path) -> dict[str, np.ndarray]:
                 "res_w1": (residual_hidden * 2, OUTPUT_DIM),
                 "res_rms_mid_gamma": (residual_hidden,),
                 "res_w2": (OUTPUT_DIM, residual_hidden),
+            })
+        if architecture == ARCH_GEMMA_NATIVE_TEMPORAL:
+            temporal_hidden = int(values.get("temporal_hidden", 0))
+            if temporal_hidden <= 0:
+                raise ValueError(f"{path}: invalid temporal_hidden")
+            expected.update({
+                "temp_rms_pre_gamma": (OUTPUT_DIM,),
+                "temp_w1": (temporal_hidden * 2, OUTPUT_DIM),
+                "temp_dw": (temporal_hidden, 3, 1),
+                "temp_rms_mid_gamma": (temporal_hidden,),
+                "temp_w2": (OUTPUT_DIM, temporal_hidden),
             })
         if stacked != INPUT_DIM * 2:
             raise ValueError(f"{path}: stack adapter requires pool_step 2")
@@ -250,7 +265,8 @@ class StockWhisperGemmaSession:
             def __init__(inner):
                 super().__init__()
                 if architecture in (ARCH_GEMMA_NATIVE_STACK,
-                                     ARCH_GEMMA_NATIVE_RESIDUAL):
+                                     ARCH_GEMMA_NATIVE_RESIDUAL,
+                                     ARCH_GEMMA_NATIVE_TEMPORAL):
                     inner.pre = nn.RMSNorm(INPUT_DIM * self.pool_step,
                                            eps=1e-6)
                     inner.linear1 = nn.Linear(
@@ -263,7 +279,8 @@ class StockWhisperGemmaSession:
                     inner.linear1.weight = mx.array(values["stack_w1"])
                     inner.mid.weight = mx.array(values["rms_mid_gamma"])
                     inner.linear2.weight = mx.array(values["stack_w2"])
-                    if architecture == ARCH_GEMMA_NATIVE_RESIDUAL:
+                    if architecture in (ARCH_GEMMA_NATIVE_RESIDUAL,
+                                        ARCH_GEMMA_NATIVE_TEMPORAL):
                         residual_hidden = int(values["residual_hidden"])
                         inner.res_pre = nn.RMSNorm(OUTPUT_DIM, eps=1e-6)
                         inner.res_up = nn.Linear(
@@ -278,6 +295,25 @@ class StockWhisperGemmaSession:
                         inner.res_mid.weight = mx.array(
                             values["res_rms_mid_gamma"])
                         inner.res_out.weight = mx.array(values["res_w2"])
+                    if architecture == ARCH_GEMMA_NATIVE_TEMPORAL:
+                        temporal_hidden = int(values["temporal_hidden"])
+                        inner.temp_pre = nn.RMSNorm(OUTPUT_DIM, eps=1e-6)
+                        inner.temp_up = nn.Linear(
+                            OUTPUT_DIM, temporal_hidden * 2, bias=False)
+                        inner.temp_conv = nn.Conv1d(
+                            temporal_hidden, temporal_hidden, 3, padding=1,
+                            groups=temporal_hidden, bias=False)
+                        inner.temp_mid = nn.RMSNorm(
+                            temporal_hidden, eps=1e-6)
+                        inner.temp_out = nn.Linear(
+                            temporal_hidden, OUTPUT_DIM, bias=False)
+                        inner.temp_pre.weight = mx.array(
+                            values["temp_rms_pre_gamma"])
+                        inner.temp_up.weight = mx.array(values["temp_w1"])
+                        inner.temp_conv.weight = mx.array(values["temp_dw"])
+                        inner.temp_mid.weight = mx.array(
+                            values["temp_rms_mid_gamma"])
+                        inner.temp_out.weight = mx.array(values["temp_w2"])
                 elif architecture == ARCH_GEMMA_NATIVE:
                     hidden = int(values["hidden_dim"])
                     inner.layer_norm = nn.LayerNorm(INPUT_DIM)
@@ -299,7 +335,8 @@ class StockWhisperGemmaSession:
 
             def __call__(inner, x):
                 if architecture in (ARCH_GEMMA_NATIVE_STACK,
-                                     ARCH_GEMMA_NATIVE_RESIDUAL):
+                                     ARCH_GEMMA_NATIVE_RESIDUAL,
+                                     ARCH_GEMMA_NATIVE_TEMPORAL):
                     usable = (x.shape[0] // self.pool_step) * self.pool_step
                     if usable == 0:
                         x = mx.concatenate([x, x], axis=0)
@@ -309,11 +346,18 @@ class StockWhisperGemmaSession:
                     gate, value = mx.split(
                         inner.linear1(inner.pre(stacked)), 2, axis=-1)
                     y = inner.linear2(inner.mid(nn.silu(gate) * value))
-                    if architecture == ARCH_GEMMA_NATIVE_RESIDUAL:
+                    if architecture in (ARCH_GEMMA_NATIVE_RESIDUAL,
+                                        ARCH_GEMMA_NATIVE_TEMPORAL):
                         res_gate, res_value = mx.split(
                             inner.res_up(inner.res_pre(y)), 2, axis=-1)
                         y = y + inner.res_out(inner.res_mid(
                             nn.silu(res_gate) * res_value))
+                    if architecture == ARCH_GEMMA_NATIVE_TEMPORAL:
+                        temp_gate, temp_value = mx.split(
+                            inner.temp_up(inner.temp_pre(y)), 2, axis=-1)
+                        temporal = nn.silu(temp_gate) * temp_value
+                        temporal = inner.temp_conv(temporal[None, :, :])[0]
+                        y = y + inner.temp_out(inner.temp_mid(temporal))
                 elif architecture == ARCH_GEMMA_NATIVE:
                     y = nn.gelu(inner.linear1(inner.layer_norm(x)))
                     y = _pool_mlx(mx, y, self.pool_step)

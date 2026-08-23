@@ -16,18 +16,19 @@ Import the selected clean-room source checkpoint with strict runtime metadata:
 
 ```bash
 python training/import_cleanroom_adapter.py \
-  ~/models/jaeger-cleanroom/adapter_distill_stack_residual1024_refine_lr10.step004000.npz \
-  artifacts/stock-whisper-gemma-native-stack-residual1024-refine4k.npz
+  ~/models/jaeger-cleanroom/adapter_distill_stack_residual1024_temporal256_lr100.step007000.npz \
+  artifacts/stock-whisper-gemma-native-temporal256-7k.npz
 ```
 
 `jaeger_agent_omni.runtime.stock_whisper` identifies the architecture from the
 checkpoint metadata and supports both formats without changing the default
 live tower. The importer supports both the mean-pool/GELU checkpoint and the
-frame-stack/RMSNorm/SwiGLU checkpoints, including the zero-init residual
-variant, with strict shape metadata. The selected residual checkpoint measures
-20.52% WER on the historical dev-clean64/955-word gate, 22.63% on
-MINDS/Vox591/9,736 words, and 8/12 on the canonical dual-output benchmark. It
-is active development, not promoted.
+frame-stack/RMSNorm/SwiGLU checkpoints, including the zero-init residual and
+local temporal-residual variants, with strict shape metadata. The selected
+temporal checkpoint measures 18.01% WER on the historical
+dev-clean64/955-word gate, 20.95% on MINDS/Vox591/9,736 words, and 8/12 on the
+canonical dual-output benchmark. It is active development, not promoted over
+the 9/12 paired adapter or 10/12 native tower.
 
 For paired stock-Whisper and cached Gemma-native vectors, the owned trainer is:
 

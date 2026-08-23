@@ -57,10 +57,10 @@ The **active development** checkpoint is now the fully owned Gemma-native
 teacher path:
 
 ```text
-artifacts/stock-whisper-gemma-native-stack-residual1024-refine4k.npz
-20.52% WER — exact historical dev-clean64 / 955 words
-22.63% WER — held-out MINDS/Vox591 / 9,736 words
-8/12 answers — canonical dual-output prompt, 511 ms median
+artifacts/stock-whisper-gemma-native-temporal256-7k.npz
+18.01% WER — exact historical dev-clean64 / 955 words
+20.95% WER — held-out MINDS/Vox591 / 9,736 words
+8/12 answers — canonical dual-output prompt, 525 ms median
 20.90% generated transcript WER — cases12 diagnostic
 ```
 
@@ -68,23 +68,25 @@ It remains a challenger, not the live or observer default. The older paired
 stock adapter remains the accuracy gate at 16.34%/9 of 12; the native tower
 remains live at 10/12; the tuned-Whisper observer remains 13.61% WER.
 
-The zero-init residual block is the current winning capacity change. It
-improves the prior stack checkpoint by 7.23 WER points on dev-clean and 4.75
-points on MINDS/Vox without changing the frozen base. Do not continue the
-same first residual past its selected refinement step: the next 1k checkpoint
-regresses. A second zero-init residual, short-only training, 2x/4x short replay,
-a 5,120-value output affine, and 0.5x/1.0x cosine-loss sweeps are now closed.
+The first zero-init residual block established the base used by the winning
+temporal branch. It improved the prior stack checkpoint by 7.23 WER points on
+dev-clean and 4.75 points on MINDS/Vox without changing the frozen base. Do not
+continue that residual-only run past its selected refinement step: the next 1k
+checkpoint regresses. A second zero-init residual, short-only training, 2x/4x
+short replay, a 5,120-value output affine, and 0.5x/1.0x cosine-loss sweeps are
+now closed.
 None improves all three free-running gates. The closest challenger ties
 dev-clean and loses MINDS/Vox by exactly one word edit. See
 `research/stock_whisper_native_followup_sweeps_20260823.json` before starting
 another adapter-only run.
 
-Further work should change the encoder boundary or temporal connector, not
-repeat local residual tuning. Adding 1,937 untouched FLEURS training clips was
-also tested: its best checkpoint improves dev-clean to 20.00% but regresses
-MINDS/Vox to 22.82%, with answers still 8/12. Require improvement below 20.52%
-dev-clean and 22.63% MINDS/Vox, with at least 9/12 answers, before replacing
-the active development checkpoint.
+The first temporal-connector experiment is successful. A zero-init
+Conformer-style 256-wide branch over three adjacent 25 Hz tokens improves both
+authoritative corpora to 18.01%/20.95%; step 7,000 beats step 8,000 on both
+exact gates despite losing the smaller ranking proxy. The next controlled run
+may refine from temporal step 7,000 at a lower learning rate, but it must also
+improve answer perception: require below 18.01% dev-clean and 20.95%
+MINDS/Vox, with at least 9/12 answers, before replacing this checkpoint.
 Sampled CTC against human transcripts and frozen Gemma input-token rows is
 also closed for this checkpoint: even 250 steps at 1e-6 regressed the exact
 dev-clean gate from 27.75% to 28.59%, reaching 33.61% by step 1,000. It used no

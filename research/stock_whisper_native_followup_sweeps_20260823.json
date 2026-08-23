@@ -80,8 +80,22 @@
       "cases12": {"correct": 8, "n": 12, "median_ms": 510.46331238467246, "transcript_wer": 0.19402985074626866},
       "result": "rejected",
       "reason": "improved dev-clean by 5 edits but regressed mixed corpus by 19 edits"
+    },
+    {
+      "name": "temporal_residual_256_step7000",
+      "trainable_parameters": 1969664,
+      "context": "depthwise kernel 3 at 25 Hz",
+      "devclean64": {"edits": 172, "words": 955, "wer": 0.18010471204188483},
+      "mindsvox591": {"edits": 2040, "words": 9736, "wer": 0.209531635168447},
+      "cases12": {"correct": 8, "n": 12, "median_ms": 524.7389581054449, "transcript_wer": 0.208955223880597},
+      "result": "selected_native_teacher_development",
+      "reason": "improved both authoritative corpus gates by 24 and 164 word edits while preserving answer accuracy"
     }
   ],
-  "selected": "artifacts/stock-whisper-gemma-native-stack-residual1024-refine4k.npz",
-  "promotion": false
+  "selected": "artifacts/stock-whisper-gemma-native-temporal256-7k.npz",
+  "promotion": {
+    "native_teacher_development": true,
+    "paired_adapter": false,
+    "live_tower": false
+  }
 }
