@@ -3,7 +3,7 @@
 The runtime boundary is deliberately small and explicit::
 
     PCM -> stock OpenAI Whisper encoder
-        -> fresh Jaeger MLP -> AvgPool5 -> Gemma 4 E4B -> answer tokens
+        -> fresh Jaeger MLP -> temporal pool -> Gemma 4 E4B -> answer tokens
 
 Whisper's decoder is never run. Hugging Face currently constructs the complete
 ``WhisperModel`` while loading the published checkpoint, after which this
@@ -33,6 +33,7 @@ OUTPUT_DIM = 2560
 TARGET_NORM = 61.0
 OUTPUT_MODE_NORMALIZED = "unit_norm_scaled"
 OUTPUT_MODE_RAW = "raw"
+OUTPUT_MODE_DIRECT = "direct"
 AUDIO_MARKER = "__JAEGER_STOCK_WHISPER_AUDIO__"
 DEFAULT_WHISPER = "openai/whisper-medium"
 SUPPORTED_WHISPER = frozenset((
@@ -126,12 +127,12 @@ class StockWhisperFrontEnd:
         return np.concatenate(chunks, axis=0)
 
 
-def _pool_mlx(mx, values):
+def _pool_mlx(mx, values, pool_step: int = POOL_STEP):
     """Average time after the nonlinear adapter, matching MiniCPM's order."""
-    usable = (values.shape[0] // POOL_STEP) * POOL_STEP
+    usable = (values.shape[0] // pool_step) * pool_step
     if usable:
         return mx.mean(
-            values[:usable].reshape(-1, POOL_STEP, values.shape[-1]), axis=1)
+            values[:usable].reshape(-1, pool_step, values.shape[-1]), axis=1)
     return mx.mean(values, axis=0, keepdims=True)
 
 
@@ -157,6 +158,9 @@ def validate_checkpoint(path: str | Path) -> dict[str, np.ndarray]:
         raise ValueError(f"{path}: unsupported encoder {encoder!r}")
     if lineage != "qwen_free":
         raise ValueError(f"{path}: checkpoint is not marked qwen_free")
+    pool_step = int(values.get("pool_step", POOL_STEP))
+    if pool_step not in (2, POOL_STEP):
+        raise ValueError(f"{path}: unsupported pool step {pool_step}")
     if not all(np.isfinite(values[key]).all() for key in expected):
         raise ValueError(f"{path}: non-finite adapter value")
     return values
@@ -177,7 +181,8 @@ class StockWhisperGemmaSession:
         values = validate_checkpoint(adapter_path)
         checkpoint_encoder = str(values["encoder"])
         output_mode = str(values.get("output_mode", OUTPUT_MODE_NORMALIZED))
-        if output_mode not in (OUTPUT_MODE_NORMALIZED, OUTPUT_MODE_RAW):
+        if output_mode not in (
+                OUTPUT_MODE_NORMALIZED, OUTPUT_MODE_RAW, OUTPUT_MODE_DIRECT):
             raise ValueError(
                 f"{adapter_path}: unsupported output mode {output_mode!r}")
         if checkpoint_encoder != whisper_id:
@@ -192,6 +197,7 @@ class StockWhisperGemmaSession:
         self.model.eval()
         self.processor = type("Processor", (), {"tokenizer": self.tokenizer})()
         self.system = system
+        self.pool_step = int(values.get("pool_step", POOL_STEP))
         self._audio: list[np.ndarray] = []
         self._features: np.ndarray | None = None
         self._metadata: list[str] = []
@@ -212,8 +218,8 @@ class StockWhisperGemmaSession:
 
             def __call__(inner, x):
                 y = inner.linear2(nn.relu(inner.linear1(x)))
-                y = _pool_mlx(mx, y)
-                if output_mode == OUTPUT_MODE_RAW:
+                y = _pool_mlx(mx, y, self.pool_step)
+                if output_mode in (OUTPUT_MODE_RAW, OUTPUT_MODE_DIRECT):
                     return y
                 norms = mx.sqrt(mx.sum(y * y, axis=-1, keepdims=True) + 1e-8)
                 return y / norms * TARGET_NORM
@@ -251,7 +257,7 @@ class StockWhisperGemmaSession:
         if not self._audio:
             raise ValueError("no audio in turn")
         self._features = self.front_end(np.concatenate(self._audio))
-        self.n_prefilled = max(1, len(self._features) // POOL_STEP)
+        self.n_prefilled = max(1, len(self._features) // self.pool_step)
 
     def _prompt_parts(self) -> tuple[list[int], list[int]]:
         content = "".join(self._metadata) + AUDIO_MARKER
@@ -279,12 +285,13 @@ class StockWhisperGemmaSession:
                 "stock-Whisper MLX generation does not expose Talker hidden states")
         mx = self.mx
         prefix, suffix = self._prompt_parts()
-        n_audio = max(1, len(self._features) // POOL_STEP)
+        n_audio = max(1, len(self._features) // self.pool_step)
         ids_list = prefix + [0] * n_audio + suffix
         ids = mx.array(ids_list, dtype=mx.int32)
         tokens = self.model.language_model.model.embed_tokens(ids[None, :])[0]
         raw_audio = self.adapter(mx.array(self._features))
-        audio = raw_audio / math.sqrt(OUTPUT_DIM)
+        audio = (raw_audio if output_mode == OUTPUT_MODE_DIRECT else
+                 raw_audio / math.sqrt(OUTPUT_DIM))
         start = len(prefix)
         embeds = mx.concatenate(
             [tokens[:start], audio, tokens[start + n_audio:]], axis=0)

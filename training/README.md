@@ -24,6 +24,29 @@ Gemma's generated transcript. The current local QA corpus has only 15 unique
 question templates and 12 overlap `research/cases12`, so training on it would
 invalidate the benchmark; broaden and split by question family first.
 
+To extend paired pre-Gemma distillation with a corpus whose tuned-Whisper
+features already exist, retain the exact matching waveforms in one removable
+root. `prepare_paired_audio.py` joins stable dataset IDs to the teacher cache,
+normalizes audio to 16 kHz mono, preserves human labels and provenance, and
+writes one append-safe manifest. Pass that manifest to `precompute-paired`;
+repeat `--teacher-split` to process multiple domains with one encoder load.
+
+```bash
+python training/prepare_paired_audio.py \
+  --teacher-cache ~/models/gemma-audio-adapter/cache \
+  --teacher-split train_minds14=train \
+  --teacher-split validation_minds14=validation \
+  --source minds14 \
+  --out ~/models/jaeger-training-audio/stock-round-YYYYMMDD
+
+python training/stock_whisper_gemma.py precompute-paired \
+  --teacher-cache ~/models/gemma-audio-adapter/cache \
+  --teacher-split train_minds14 \
+  --raw-manifest \
+    ~/models/jaeger-training-audio/stock-round-YYYYMMDD/manifest.jsonl \
+  --output-split train --cache ~/models/stock-whisper-gemma/paired-round
+```
+
 ```text
 fetch_dataset.py  pull public corpora (LibriSpeech, AMI) into capture format
 data.py         tiered corpus mixing policy — which tier feeds which stage

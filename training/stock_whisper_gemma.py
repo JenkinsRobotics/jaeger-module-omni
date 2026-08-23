@@ -40,6 +40,7 @@ from jaeger_agent_omni.runtime.stock_whisper import (
     INPUT_BOUNDARY,
     INPUT_DIM,
     OUTPUT_DIM,
+    OUTPUT_MODE_DIRECT,
     OUTPUT_MODE_NORMALIZED,
     OUTPUT_MODE_RAW,
     POOL_STEP,
@@ -67,6 +68,7 @@ GPU_JOB_PATTERNS = (
     r"training/stock_whisper_gemma\.py\s+"
     r"(?:precompute|pretrain-ctc|distill|train|probe|geometry|wer|bench)",
     r"cleanroom_train\.py\s+(?:precompute|train|bench)",
+    r"cleanroom_distill\.py",
     r"compare_tracks\.py",
     r"train_audio_adapter\.py",
 )
@@ -244,16 +246,36 @@ def command_precompute_paired(args) -> None:
     Whisper encoder states are written.  The teacher manifest supplies stable
     ids and labels so the later distillation stage can join both modalities.
     """
-    teacher = _feature_manifest(args.teacher_cache, args.teacher_split)
+    teacher = {}
+    for split in args.teacher_split:
+        teacher.update(_feature_manifest(args.teacher_cache, split))
     done = _completed(args.cache)
+    raw_by_id = {}
+    if args.raw_manifest:
+        manifest = args.raw_manifest.expanduser().resolve()
+        for line in manifest.read_text().splitlines():
+            if not line.strip():
+                continue
+            row = json.loads(line)
+            path = Path(row["audio_path"])
+            raw_by_id[str(row["id"])] = (
+                path if path.is_absolute() else manifest.parent / path)
+    elif args.raw_audio is None:
+        raise ValueError("precompute-paired needs --raw-manifest or --raw-audio")
     front = StockWhisperFrontEnd(args.whisper, args.device)
     written = missing = 0
     started = time.time()
     for item_id, row in teacher.items():
         if item_id in done:
             continue
-        filename = item_id.rsplit(":", 1)[-1]
-        audio_path = args.raw_audio / filename
+        if raw_by_id:
+            audio_path = raw_by_id.get(item_id)
+            if audio_path is None:
+                missing += 1
+                continue
+        else:
+            filename = item_id.rsplit(":", 1)[-1]
+            audio_path = args.raw_audio / filename
         if not audio_path.exists():
             missing += 1
             continue
@@ -599,15 +621,19 @@ def command_distill(args) -> None:
         raise RuntimeError(
             "distillation needs paired train and validation utterance ids")
 
-    with np.load(args.teacher_adapter, allow_pickle=False) as archive:
-        teacher_weight = np.asarray(archive["weight"], dtype=np.float32)
-        teacher_bias = np.asarray(archive["bias"], dtype=np.float32)
-    if teacher_weight.shape != (OUTPUT_DIM, HIDDEN_DIM):
-        raise ValueError(
-            f"teacher weight must be {(OUTPUT_DIM, HIDDEN_DIM)}, got "
-            f"{teacher_weight.shape}")
-    if teacher_bias.shape != (OUTPUT_DIM,):
-        raise ValueError(f"teacher bias must be {(OUTPUT_DIM,)}")
+    teacher_weight = teacher_bias = None
+    if args.teacher_mode == "adapter":
+        if args.teacher_adapter is None:
+            raise ValueError("adapter teacher mode needs --teacher-adapter")
+        with np.load(args.teacher_adapter, allow_pickle=False) as archive:
+            teacher_weight = np.asarray(archive["weight"], dtype=np.float32)
+            teacher_bias = np.asarray(archive["bias"], dtype=np.float32)
+        if teacher_weight.shape != (OUTPUT_DIM, HIDDEN_DIM):
+            raise ValueError(
+                f"teacher weight must be {(OUTPUT_DIM, HIDDEN_DIM)}, got "
+                f"{teacher_weight.shape}")
+        if teacher_bias.shape != (OUTPUT_DIM,):
+            raise ValueError(f"teacher bias must be {(OUTPUT_DIM,)}")
 
     device_name = args.device
     if device_name == "auto":
@@ -624,9 +650,9 @@ def command_distill(args) -> None:
 
         def forward(self, states):
             values = self.linear2(functional.relu(self.linear1(states)))
-            usable = (values.shape[0] // POOL_STEP) * POOL_STEP
+            usable = (values.shape[0] // args.pool_step) * args.pool_step
             return (values[:usable].reshape(
-                -1, POOL_STEP, OUTPUT_DIM).mean(dim=1)
+                -1, args.pool_step, OUTPUT_DIM).mean(dim=1)
                 if usable else values.mean(dim=0, keepdim=True))
 
     adapter = Adapter().to(device)
@@ -647,8 +673,10 @@ def command_distill(args) -> None:
                 saved["linear2_weight"]))
             adapter.linear2.bias.copy_(torch.from_numpy(
                 saved["linear2_bias"]))
-    teacher_weight_t = torch.from_numpy(teacher_weight).to(device)
-    teacher_bias_t = torch.from_numpy(teacher_bias).to(device)
+    teacher_weight_t = (torch.from_numpy(teacher_weight).to(device)
+                        if teacher_weight is not None else None)
+    teacher_bias_t = (torch.from_numpy(teacher_bias).to(device)
+                      if teacher_bias is not None else None)
     optimizer = torch.optim.AdamW(
         adapter.parameters(), lr=args.learning_rate,
         weight_decay=args.weight_decay)
@@ -662,7 +690,12 @@ def command_distill(args) -> None:
             teachers[item_id]["feature"]).astype(np.float32)).to(device)
         prediction = adapter(stock)
         with torch.no_grad():
-            target = functional.linear(tuned, teacher_weight_t, teacher_bias_t)
+            target = (functional.linear(tuned, teacher_weight_t, teacher_bias_t)
+                      if args.teacher_mode == "adapter" else tuned)
+        if target.shape[-1] != OUTPUT_DIM:
+            raise ValueError(
+                f"{item_id}: direct teacher width {target.shape[-1]} != "
+                f"Gemma width {OUTPUT_DIM}")
         length = min(prediction.shape[0], target.shape[0])
         if length < 1:
             return None
@@ -675,7 +708,13 @@ def command_distill(args) -> None:
 
     print(f"paired distillation: {len(train_ids)} train / "
           f"{len(validation_ids)} validation", flush=True)
-    print("supervision: tuned adapter vectors only (pre-Gemma)", flush=True)
+    supervision = ("tuned adapter vectors" if args.teacher_mode == "adapter"
+                   else "Gemma native embed_audio vectors")
+    print(f"supervision: {supervision} only (pre-Gemma)", flush=True)
+    output_mode = (OUTPUT_MODE_RAW if args.teacher_mode == "adapter" else
+                   OUTPUT_MODE_DIRECT)
+    stage = ("paired_distillation" if args.teacher_mode == "adapter" else
+             "native_vector_distillation")
     step = start_step
     rolling = []
     started = time.time()
@@ -708,11 +747,12 @@ def command_distill(args) -> None:
                     "linear2_bias": adapter.linear2.bias.detach().cpu().numpy(),
                 }
                 metadata = dict(
-                    step=step, task="transcript", stage="paired_distillation",
+                    step=step, task="transcript", stage=stage,
                     learning_rate=args.learning_rate, train_loss=value,
-                    teacher_adapter=str(args.teacher_adapter),
+                    teacher_adapter=str(args.teacher_adapter or ""),
+                    teacher_mode=args.teacher_mode, pool_step=args.pool_step,
                     paired_train_examples=len(train_ids),
-                    output_mode=OUTPUT_MODE_RAW, encoder=args.whisper)
+                    output_mode=output_mode, encoder=args.whisper)
                 _atomic_checkpoint_arrays(args.output, weights, **metadata)
                 snapshot = args.output.with_name(
                     f"{args.output.stem}.step{step:06d}{args.output.suffix}")
@@ -739,10 +779,11 @@ def command_distill(args) -> None:
     }
     _atomic_checkpoint_arrays(
         args.output, weights, step=step, task="transcript",
-        stage="paired_distillation", learning_rate=args.learning_rate,
+        stage=stage, learning_rate=args.learning_rate,
         train_loss=value, validation_distill=validation_loss,
-        teacher_adapter=str(args.teacher_adapter),
-        paired_train_examples=len(train_ids), output_mode=OUTPUT_MODE_RAW,
+        teacher_adapter=str(args.teacher_adapter or ""),
+        teacher_mode=args.teacher_mode, pool_step=args.pool_step,
+        paired_train_examples=len(train_ids), output_mode=output_mode,
         encoder=args.whisper)
 
 
@@ -939,8 +980,11 @@ def command_geometry(args) -> None:
     from fit_alignment import embedding_table
     from jaeger_agent_omni.runtime.stock_whisper import validate_checkpoint
 
-    rows = _rows(
-        args.cache, args.split, "transcript", args.whisper)[:args.examples]
+    rows = _rows(args.cache, args.split, "transcript", args.whisper)
+    if args.source_prefix:
+        rows = [row for row in rows
+                if str(row.get("source", "")).startswith(args.source_prefix)]
+    rows = rows[:args.examples]
     if not rows:
         raise RuntimeError("geometry probe needs non-empty transcript rows")
     device_name = args.device
@@ -955,6 +999,7 @@ def command_geometry(args) -> None:
     class Adapter(nn.Module):
         def __init__(self, saved):
             super().__init__()
+            self.pool_step = int(saved.get("pool_step", POOL_STEP))
             self.linear1 = nn.Linear(INPUT_DIM, HIDDEN_DIM)
             self.linear2 = nn.Linear(HIDDEN_DIM, OUTPUT_DIM)
             with torch.no_grad():
@@ -969,9 +1014,9 @@ def command_geometry(args) -> None:
 
         def forward(self, states):
             values = self.linear2(functional.relu(self.linear1(states)))
-            usable = (values.shape[0] // POOL_STEP) * POOL_STEP
+            usable = (values.shape[0] // self.pool_step) * self.pool_step
             values = (values[:usable].reshape(
-                -1, POOL_STEP, OUTPUT_DIM).mean(dim=1)
+                -1, self.pool_step, OUTPUT_DIM).mean(dim=1)
                 if usable else values.mean(dim=0, keepdim=True))
             return functional.normalize(values, dim=-1)
 
@@ -1016,6 +1061,7 @@ def command_geometry(args) -> None:
         args.output.write_text(json.dumps({
             "metric": "pre_gemma_embedding_geometry",
             "split": args.split,
+            "source_prefix": args.source_prefix,
             "encoder": args.whisper,
             "results": results,
         }, indent=2))
@@ -1025,8 +1071,13 @@ def command_wer(args) -> None:
     """Free-run held-out clips and report corpus-level, pooled WER."""
     from evaluate import normalize, wer
 
-    rows = _rows(
-        args.cache, args.split, "transcript", args.whisper)[:args.examples]
+    rows = _rows(args.cache, args.split, "transcript", args.whisper)
+    if args.source_prefix:
+        rows = [row for row in rows
+                if str(row.get("source", "")).startswith(args.source_prefix)]
+    rows = rows[:args.examples]
+    if not rows:
+        raise RuntimeError("WER gate selected no held-out rows")
     session = StockWhisperGemmaSession(
         args.adapter, args.model, args.whisper, TRANSCRIPT_SYSTEM)
     total_edits = 0.0
@@ -1035,7 +1086,7 @@ def command_wer(args) -> None:
     for index, row in enumerate(rows, 1):
         features = np.load(row["feature"]).astype(np.float32)
         session._features = features
-        session.n_prefilled = max(1, len(features) // POOL_STEP)
+        session.n_prefilled = max(1, len(features) // session.pool_step)
         budget = max(8, int(float(row["seconds"]) * args.words_per_second * 1.6))
         hypothesis = session.respond(max_tokens=budget, eos_ids={1, 106})
         reference_words = normalize(row["target"])
@@ -1060,6 +1111,7 @@ def command_wer(args) -> None:
     if args.output:
         args.output.write_text(json.dumps({
             "adapter": str(args.adapter), "split": args.split,
+            "source_prefix": args.source_prefix,
             "n": len(rows), "wer": score, "reference_words": total_words,
             "rows": outputs,
         }, indent=2))
@@ -1128,8 +1180,13 @@ def build_parser() -> argparse.ArgumentParser:
     paired = commands.add_parser("precompute-paired")
     common_pre(paired)
     paired.add_argument("--teacher-cache", type=Path, required=True)
-    paired.add_argument("--teacher-split", required=True)
-    paired.add_argument("--raw-audio", type=Path, required=True)
+    paired.add_argument(
+        "--teacher-split", action="append", required=True,
+        help="teacher cache split; repeat to encode several domains in one load")
+    paired.add_argument("--raw-audio", type=Path,
+                        help="legacy directory lookup by teacher ID suffix")
+    paired.add_argument("--raw-manifest", type=Path,
+                        help="exact ID-to-audio mapping from prepare_paired_audio")
     paired.add_argument("--output-split", choices=("train", "validation"),
                         required=True)
     paired.set_defaults(func=command_precompute_paired)
@@ -1168,7 +1225,14 @@ def build_parser() -> argparse.ArgumentParser:
     distill.add_argument("--teacher-cache", type=Path, required=True)
     distill.add_argument("--teacher-train-split", default="train_100")
     distill.add_argument("--teacher-validation-split", default="validation")
-    distill.add_argument("--teacher-adapter", type=Path, required=True)
+    distill.add_argument("--teacher-adapter", type=Path,
+                         help="4096-to-2560 tuned adapter for adapter mode")
+    distill.add_argument(
+        "--teacher-mode", choices=("adapter", "direct"), default="adapter",
+        help="apply a tuned adapter, or regress direct 2560-wide Gemma vectors")
+    distill.add_argument(
+        "--pool-step", type=int, choices=(2, POOL_STEP), default=POOL_STEP,
+        help="stock 50 Hz pooling; 2 matches Gemma native audio at 25 Hz")
     distill.add_argument(
         "--extra-pair", action="append", nargs=6, default=[],
         metavar=("STOCK_CACHE", "STOCK_TRAIN", "STOCK_VALIDATION",
@@ -1232,6 +1296,9 @@ def build_parser() -> argparse.ArgumentParser:
     geometry.add_argument("--cache", type=Path, default=DEFAULT_CACHE)
     geometry.add_argument("--split", default="validation")
     geometry.add_argument("--whisper", default=DEFAULT_WHISPER)
+    geometry.add_argument(
+        "--source-prefix", default=None,
+        help="optional manifest source prefix for a per-domain probe")
     geometry.add_argument("--adapter", type=Path, action="append", required=True)
     geometry.add_argument("-n", "--examples", type=int, default=64)
     geometry.add_argument("--topk", type=int, default=10)
@@ -1248,6 +1315,9 @@ def build_parser() -> argparse.ArgumentParser:
     wer_parser.add_argument("--adapter", type=Path, required=True)
     wer_parser.add_argument("--model", type=Path, default=DEFAULT_GEMMA)
     wer_parser.add_argument("--whisper", default=DEFAULT_WHISPER)
+    wer_parser.add_argument(
+        "--source-prefix", default=None,
+        help="optional manifest source prefix for a per-domain corpus gate")
     wer_parser.add_argument("-n", "--examples", type=int, default=64)
     wer_parser.add_argument("--words-per-second", type=float, default=2.8)
     wer_parser.add_argument("--output", type=Path,
