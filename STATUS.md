@@ -187,6 +187,18 @@ versus 0.6483/0.6168 at -1/+1). First-difference cosine is only 0.3229, but
 adding a 0.25 temporal-difference loss regresses every 1k-step checkpoint to
 33.95–40.87% on the 969-word ranking corpus. That objective is closed too.
 
+Follow-up sweeps confirm the current connector is locally saturated. A second
+zero-init residual regresses every ranking checkpoint. Training only <=3 s
+clips reaches 9/12 but regresses dev-clean to 21.88%; 0.875 weight
+interpolation still scores 21.47%. Full replay with 4x short weighting improves
+dev-clean to 20.00% but regresses MINDS/Vox to 22.78%; 2x weighting scores
+20.31%/22.83%. A zero-init 5,120-value output affine never beats 20.52%.
+Raising cosine loss from 0.1 to 1.0 ties dev-clean and improves the cases12
+transcript diagnostic to 19.40%, but loses the 9,736-word mixed gate by exactly
+one edit (2,204 versus 2,203); 0.5 loses by eight. The retained checkpoint
+therefore remains unchanged. The complete free-running matrix is in
+`research/stock_whisper_native_followup_sweeps_20260823.json`.
+
 On the exact same existing 64-clip/977-word validation slice used by
 `research/wer_corpus.py`, the promoted sparse tuned adapter improves the prior
 adapter from **14.74% to 13.61% WER** (113 fewer basis points, 7.7%

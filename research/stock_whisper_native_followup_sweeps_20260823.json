@@ -1,0 +1,77 @@
+{
+  "format": "jaeger-stock-whisper-native-followup-v1",
+  "date": "2026-08-23",
+  "evaluation": "free-running corpus WER and canonical dual-output cases12",
+  "baseline": {
+    "adapter": "artifacts/stock-whisper-gemma-native-stack-residual1024-refine4k.npz",
+    "devclean64": {"edits": 196, "words": 955, "wer": 0.20523560209424083},
+    "mindsvox591": {"edits": 2203, "words": 9736, "wer": 0.22627362366474937},
+    "cases12": {"correct": 8, "n": 12, "median_ms": 511, "transcript_wer": 0.208955223880597}
+  },
+  "experiments": [
+    {
+      "name": "second_zero_init_residual_1024",
+      "trainable_parameters": 7866880,
+      "result": "rejected",
+      "reason": "every checkpoint regressed the 969-word external ranking corpus; best 21.98% versus baseline 21.47%"
+    },
+    {
+      "name": "short_only_le_3s_5000",
+      "short_clips": 1123,
+      "devclean64": {"edits": 209, "words": 955, "wer": 0.218848167539267},
+      "cases12": {"correct": 9, "n": 12, "median_ms": 594.8761664330959, "transcript_wer": 0.16417910447761194},
+      "result": "rejected",
+      "reason": "answer gain required a 13-edit dev-clean regression"
+    },
+    {
+      "name": "short_only_weight_interpolation_alpha_0.875",
+      "devclean64": {"edits": 205, "words": 955, "wer": 0.21465968586387435},
+      "cases12": {"correct": 9, "n": 12, "median_ms": 545.4465210204944, "transcript_wer": 0.16417910447761194},
+      "result": "rejected",
+      "reason": "answer gain still regressed dev-clean by 9 edits"
+    },
+    {
+      "name": "full_replay_short_weight_4_step1000",
+      "expected_short_draw_share": 0.343,
+      "devclean64": {"edits": 191, "words": 955, "wer": 0.2},
+      "mindsvox591": {"edits": 2218, "words": 9736, "wer": 0.22781429745275267},
+      "cases12": {"correct": 8, "n": 12, "median_ms": 507.05552101135254, "transcript_wer": 0.19402985074626866},
+      "result": "rejected",
+      "reason": "improved dev-clean by 5 edits but regressed mixed corpus by 15 edits"
+    },
+    {
+      "name": "full_replay_short_weight_2_step1000",
+      "expected_short_draw_share": 0.207,
+      "devclean64": {"edits": 194, "words": 955, "wer": 0.2031413612565445},
+      "mindsvox591": {"edits": 2223, "words": 9736, "wer": 0.2283278553820871},
+      "cases12": {"correct": 8, "n": 12, "median_ms": 514.8324585752562, "transcript_wer": 0.19402985074626866},
+      "result": "rejected",
+      "reason": "improved dev-clean by 2 edits but regressed mixed corpus by 20 edits"
+    },
+    {
+      "name": "output_affine_calibration_5120_parameters",
+      "devclean64_best": {"edits": 197, "words": 955, "wer": 0.20628272251308902},
+      "cases12_best": {"correct": 8, "n": 12, "median_ms": 495.7138755125925, "transcript_wer": 0.19402985074626866},
+      "result": "rejected",
+      "reason": "exact-identity initialization was verified, but every measured checkpoint regressed dev-clean"
+    },
+    {
+      "name": "cosine_weight_1.0_step2000",
+      "devclean64": {"edits": 196, "words": 955, "wer": 0.20523560209424083},
+      "mindsvox591": {"edits": 2204, "words": 9736, "wer": 0.22637633525061626},
+      "cases12": {"correct": 8, "n": 12, "median_ms": 499.6818123618141, "transcript_wer": 0.19402985074626866},
+      "result": "rejected",
+      "reason": "tied dev-clean and improved secondary diagnostics but lost mixed gate by exactly one word edit"
+    },
+    {
+      "name": "cosine_weight_0.5_step2000",
+      "devclean64": {"edits": 196, "words": 955, "wer": 0.20523560209424083},
+      "mindsvox591": {"edits": 2211, "words": 9736, "wer": 0.22709531635168448},
+      "cases12": {"correct": 8, "n": 12, "median_ms": 501.2930210214108, "transcript_wer": 0.19402985074626866},
+      "result": "rejected",
+      "reason": "tied dev-clean but regressed mixed gate by 8 word edits"
+    }
+  ],
+  "selected": "artifacts/stock-whisper-gemma-native-stack-residual1024-refine4k.npz",
+  "promotion": false
+}

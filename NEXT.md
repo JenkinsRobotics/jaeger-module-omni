@@ -72,9 +72,18 @@ The zero-init residual block is the current winning capacity change. It
 improves the prior stack checkpoint by 7.23 WER points on dev-clean and 4.75
 points on MINDS/Vox without changing the frozen base. Do not continue the
 same first residual past its selected refinement step: the next 1k checkpoint
-regresses. A second zero-init residual stage is the next controlled capacity
-A/B; keep the full base plus first residual frozen and retain it only if the
-same three free-running gates improve.
+regresses. A second zero-init residual, short-only training, 2x/4x short replay,
+a 5,120-value output affine, and 0.5x/1.0x cosine-loss sweeps are now closed.
+None improves all three free-running gates. The closest challenger ties
+dev-clean and loses MINDS/Vox by exactly one word edit. See
+`research/stock_whisper_native_followup_sweeps_20260823.json` before starting
+another adapter-only run.
+
+Further work should change the information source, not repeat local residual
+tuning: add genuinely new speakers/acoustic conditions with a fixed untouched
+validation partition, or test a different stock encoder boundary/temporal
+connector. Require improvement below 20.52% dev-clean and 22.63% MINDS/Vox,
+with at least 9/12 answers, before replacing the active development checkpoint.
 Sampled CTC against human transcripts and frozen Gemma input-token rows is
 also closed for this checkpoint: even 250 steps at 1e-6 regressed the exact
 dev-clean gate from 27.75% to 28.59%, reaching 33.61% by step 1,000. It used no
