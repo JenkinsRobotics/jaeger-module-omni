@@ -1,0 +1,107 @@
+{
+ "front_end": "stock",
+ "dual_output": true,
+ "correct": 8,
+ "n": 12,
+ "median_ms": 519.0394164528698,
+ "rows": [
+  {
+   "case": "q00",
+   "ok": false,
+   "ms": 1016.8091671075672,
+   "reply": "TRANSCRIPT: What is to post to\nANSWER: I'm sorry, I didn't catch that. Could you repeat the question?",
+   "transcript": "What is to post to",
+   "answer": "I'm sorry, I didn't catch that. Could you repeat the question?"
+  },
+  {
+   "case": "q01",
+   "ok": true,
+   "ms": 506.0656659770757,
+   "reply": "TRANSCRIPT: what color is the sky?\nANSWER: It is blue.",
+   "transcript": "what color is the sky?",
+   "answer": "It is blue."
+  },
+  {
+   "case": "q02",
+   "ok": true,
+   "ms": 484.3432498164475,
+   "reply": "TRANSCRIPT: How many days in a week?\nANSWER: Seven.",
+   "transcript": "How many days in a week?",
+   "answer": "Seven."
+  },
+  {
+   "case": "q03",
+   "ok": true,
+   "ms": 468.67391699925065,
+   "reply": "TRANSCRIPT: what is the capital of france?\nANSWER: paris",
+   "transcript": "what is the capital of france?",
+   "answer": "paris"
+  },
+  {
+   "case": "q04",
+   "ok": false,
+   "ms": 591.7763339821249,
+   "reply": "TRANSCRIPT: how is thing on its end\nANSWER: I'm doing well, thank you.",
+   "transcript": "how is thing on its end",
+   "answer": "I'm doing well, thank you."
+  },
+  {
+   "case": "q05",
+   "ok": false,
+   "ms": 576.7232908401638,
+   "reply": "TRANSCRIPT: How many moons is this far ahead?\nANSWER: I'm not sure.",
+   "transcript": "How many moons is this far ahead?",
+   "answer": "I'm not sure."
+  },
+  {
+   "case": "q06",
+   "ok": true,
+   "ms": 429.2106667999178,
+   "reply": "TRANSCRIPT: what is the hardest planet\nANSWER: Jupiter",
+   "transcript": "what is the hardest planet",
+   "answer": "Jupiter"
+  },
+  {
+   "case": "q07",
+   "ok": true,
+   "ms": 528.0809169635177,
+   "reply": "TRANSCRIPT: what is five times five?\nANSWER: it is twenty-five.",
+   "transcript": "what is five times five?",
+   "answer": "it is twenty-five."
+  },
+  {
+   "case": "q08",
+   "ok": true,
+   "ms": 469.3367090076208,
+   "reply": "TRANSCRIPT: What season comes after summer?\nANSWER: Autumn.",
+   "transcript": "What season comes after summer?",
+   "answer": "Autumn."
+  },
+  {
+   "case": "q09",
+   "ok": true,
+   "ms": 509.9979159422219,
+   "reply": "TRANSCRIPT: How many hours in a day?\nANSWER: Twenty-four.",
+   "transcript": "How many hours in a day?",
+   "answer": "Twenty-four."
+  },
+  {
+   "case": "q10",
+   "ok": true,
+   "ms": 632.4130001012236,
+   "reply": "TRANSCRIPT: what is the freezing point of water\nANSWER: 0 degrees Celsius or 32 degrees Fahrenheit",
+   "transcript": "what is the freezing point of water",
+   "answer": "0 degrees Celsius or 32 degrees Fahrenheit"
+  },
+  {
+   "case": "q11",
+   "ok": false,
+   "ms": 610.5382922105491,
+   "reply": "TRANSCRIPT: I waited all month and July.\nANSWER: I don't know what you mean.",
+   "transcript": "I waited all month and July.",
+   "answer": "I don't know what you mean."
+  }
+ ],
+ "transcript_wer": 0.2835820895522388,
+ "transcript_words": 67
+}

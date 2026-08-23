@@ -42,6 +42,8 @@ SUPPORTED_WHISPER = frozenset((
 ))
 DEFAULT_GEMMA = Path.home() / "models/gemma-4-E4B-it-4bit-mlx"
 INPUT_BOUNDARY = "stock_whisper_encoder_50hz"
+ARCH_PAIRED = "paired_mlp_v1"
+ARCH_GEMMA_NATIVE = "gemma_native_distill_v1"
 WHISPER_WINDOW_S = 28
 WHISPER_OVERLAP_S = 1
 
@@ -140,12 +142,25 @@ def validate_checkpoint(path: str | Path) -> dict[str, np.ndarray]:
     """Load and strictly identify a Qwen-free stock-Whisper checkpoint."""
     with np.load(path, allow_pickle=False) as saved:
         values = {key: saved[key] for key in saved.files}
-    expected = {
-        "linear1_weight": (HIDDEN_DIM, INPUT_DIM),
-        "linear1_bias": (HIDDEN_DIM,),
-        "linear2_weight": (OUTPUT_DIM, HIDDEN_DIM),
-        "linear2_bias": (OUTPUT_DIM,),
-    }
+    architecture = str(values.get("adapter_arch", ARCH_PAIRED))
+    if architecture == ARCH_GEMMA_NATIVE:
+        hidden = int(values.get("hidden_dim", 0))
+        expected = {
+            "ln_gamma": (INPUT_DIM,), "ln_beta": (INPUT_DIM,),
+            "w1": (hidden, INPUT_DIM), "b1": (hidden,),
+            "w2": (OUTPUT_DIM, hidden), "b2": (OUTPUT_DIM,),
+        }
+        if hidden <= 0:
+            raise ValueError(f"{path}: invalid hidden_dim {hidden}")
+    elif architecture == ARCH_PAIRED:
+        expected = {
+            "linear1_weight": (HIDDEN_DIM, INPUT_DIM),
+            "linear1_bias": (HIDDEN_DIM,),
+            "linear2_weight": (OUTPUT_DIM, HIDDEN_DIM),
+            "linear2_bias": (OUTPUT_DIM,),
+        }
+    else:
+        raise ValueError(f"{path}: unsupported adapter_arch {architecture!r}")
     for key, shape in expected.items():
         if key not in values or values[key].shape != shape:
             raise ValueError(f"{path}: {key} must be {shape}")
@@ -179,6 +194,7 @@ class StockWhisperGemmaSession:
         from mlx_lm import load
 
         values = validate_checkpoint(adapter_path)
+        architecture = str(values.get("adapter_arch", ARCH_PAIRED))
         checkpoint_encoder = str(values["encoder"])
         output_mode = str(values.get("output_mode", OUTPUT_MODE_NORMALIZED))
         if output_mode not in (
@@ -198,6 +214,7 @@ class StockWhisperGemmaSession:
         self.processor = type("Processor", (), {"tokenizer": self.tokenizer})()
         self.system = system
         self.pool_step = int(values.get("pool_step", POOL_STEP))
+        self.output_mode = output_mode
         self._audio: list[np.ndarray] = []
         self._features: np.ndarray | None = None
         self._metadata: list[str] = []
@@ -209,16 +226,33 @@ class StockWhisperGemmaSession:
         class Adapter(nn.Module):
             def __init__(inner):
                 super().__init__()
-                inner.linear1 = nn.Linear(INPUT_DIM, HIDDEN_DIM, bias=True)
-                inner.linear2 = nn.Linear(HIDDEN_DIM, OUTPUT_DIM, bias=True)
-                inner.linear1.weight = mx.array(values["linear1_weight"])
-                inner.linear1.bias = mx.array(values["linear1_bias"])
-                inner.linear2.weight = mx.array(values["linear2_weight"])
-                inner.linear2.bias = mx.array(values["linear2_bias"])
+                if architecture == ARCH_GEMMA_NATIVE:
+                    hidden = int(values["hidden_dim"])
+                    inner.layer_norm = nn.LayerNorm(INPUT_DIM)
+                    inner.linear1 = nn.Linear(INPUT_DIM, hidden, bias=True)
+                    inner.linear2 = nn.Linear(hidden, OUTPUT_DIM, bias=True)
+                    inner.layer_norm.weight = mx.array(values["ln_gamma"])
+                    inner.layer_norm.bias = mx.array(values["ln_beta"])
+                    inner.linear1.weight = mx.array(values["w1"])
+                    inner.linear1.bias = mx.array(values["b1"])
+                    inner.linear2.weight = mx.array(values["w2"])
+                    inner.linear2.bias = mx.array(values["b2"])
+                else:
+                    inner.linear1 = nn.Linear(INPUT_DIM, HIDDEN_DIM, bias=True)
+                    inner.linear2 = nn.Linear(HIDDEN_DIM, OUTPUT_DIM, bias=True)
+                    inner.linear1.weight = mx.array(values["linear1_weight"])
+                    inner.linear1.bias = mx.array(values["linear1_bias"])
+                    inner.linear2.weight = mx.array(values["linear2_weight"])
+                    inner.linear2.bias = mx.array(values["linear2_bias"])
 
             def __call__(inner, x):
-                y = inner.linear2(nn.relu(inner.linear1(x)))
-                y = _pool_mlx(mx, y, self.pool_step)
+                if architecture == ARCH_GEMMA_NATIVE:
+                    y = nn.gelu(inner.linear1(inner.layer_norm(x)))
+                    y = _pool_mlx(mx, y, self.pool_step)
+                    y = inner.linear2(y)
+                else:
+                    y = inner.linear2(nn.relu(inner.linear1(x)))
+                    y = _pool_mlx(mx, y, self.pool_step)
                 if output_mode in (OUTPUT_MODE_RAW, OUTPUT_MODE_DIRECT):
                     return y
                 norms = mx.sqrt(mx.sum(y * y, axis=-1, keepdims=True) + 1e-8)
@@ -290,7 +324,7 @@ class StockWhisperGemmaSession:
         ids = mx.array(ids_list, dtype=mx.int32)
         tokens = self.model.language_model.model.embed_tokens(ids[None, :])[0]
         raw_audio = self.adapter(mx.array(self._features))
-        audio = (raw_audio if output_mode == OUTPUT_MODE_DIRECT else
+        audio = (raw_audio if self.output_mode == OUTPUT_MODE_DIRECT else
                  raw_audio / math.sqrt(OUTPUT_DIM))
         start = len(prefix)
         embeds = mx.concatenate(

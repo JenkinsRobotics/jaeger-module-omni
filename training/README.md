@@ -5,6 +5,27 @@ train loop.
 
 ## Stock Whisper → Gemma, without Qwen or Gemma-output supervision
 
+Two stock-Whisper adapters are intentionally retained:
+
+- the paired adapter below is the current accuracy leader and learns from the
+  proven tuned-Whisper pre-Gemma representation;
+- the active clean-room challenger learns only from Gemma's native audio-tower
+  vectors and has no MiniCPM/Qwen training lineage.
+
+Import the selected clean-room source checkpoint with strict runtime metadata:
+
+```bash
+python training/import_cleanroom_adapter.py \
+  ~/models/jaeger-cleanroom/adapter_distill_h4096_replay_lr10.step001000.npz \
+  artifacts/stock-whisper-gemma-native-h4096-replay-step1000.npz
+```
+
+`jaeger_agent_omni.runtime.stock_whisper` identifies the architecture from the
+checkpoint metadata and supports both formats without changing the default
+live tower. The imported checkpoint measures 31.41% WER on the historical
+dev-clean64/955-word gate, 32.18% on MINDS/Vox591/9,736 words, and 8/12 on the
+canonical dual-output benchmark. It is active development, not promoted.
+
 `stock_whisper_gemma.py distill` uses the proven MiniCPM projector structure
 (1024→4096, ReLU, pool-by-5, 4096→2560) but deploys the stock OpenAI
 Whisper-medium encoder. Training joins stock and tuned caches by stable

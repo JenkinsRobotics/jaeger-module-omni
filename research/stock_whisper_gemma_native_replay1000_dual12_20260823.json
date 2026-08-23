@@ -1,0 +1,107 @@
+{
+ "front_end": "stock",
+ "dual_output": true,
+ "correct": 8,
+ "n": 12,
+ "median_ms": 521.4397915406153,
+ "rows": [
+  {
+   "case": "q00",
+   "ok": false,
+   "ms": 1016.963167116046,
+   "reply": "TRANSCRIPT: What is to postpone?\nANSWER: To delay or put off until a later time.",
+   "transcript": "What is to postpone?",
+   "answer": "To delay or put off until a later time."
+  },
+  {
+   "case": "q01",
+   "ok": true,
+   "ms": 509.597958996892,
+   "reply": "TRANSCRIPT: what color is the sky?\nANSWER: It is blue.",
+   "transcript": "what color is the sky?",
+   "answer": "It is blue."
+  },
+  {
+   "case": "q02",
+   "ok": true,
+   "ms": 483.8423749897629,
+   "reply": "TRANSCRIPT: How many days in a week?\nANSWER: Seven.",
+   "transcript": "How many days in a week?",
+   "answer": "Seven."
+  },
+  {
+   "case": "q03",
+   "ok": true,
+   "ms": 470.4572500195354,
+   "reply": "TRANSCRIPT: what is the capital of france?\nANSWER: paris",
+   "transcript": "what is the capital of france?",
+   "answer": "paris"
+  },
+  {
+   "case": "q04",
+   "ok": false,
+   "ms": 586.9602500461042,
+   "reply": "TRANSCRIPT: how is thing on its end\nANSWER: I'm doing well, thank you.",
+   "transcript": "how is thing on its end",
+   "answer": "I'm doing well, thank you."
+  },
+  {
+   "case": "q05",
+   "ok": false,
+   "ms": 561.7068749852479,
+   "reply": "TRANSCRIPT: How many units is this freighter has?\nANSWER: It has one unit.",
+   "transcript": "How many units is this freighter has?",
+   "answer": "It has one unit."
+  },
+  {
+   "case": "q06",
+   "ok": true,
+   "ms": 430.43533293530345,
+   "reply": "TRANSCRIPT: what is the hardest planet\nANSWER: Jupiter",
+   "transcript": "what is the hardest planet",
+   "answer": "Jupiter"
+  },
+  {
+   "case": "q07",
+   "ok": true,
+   "ms": 532.6595830265433,
+   "reply": "TRANSCRIPT: what is five times five?\nANSWER: it is twenty-five.",
+   "transcript": "what is five times five?",
+   "answer": "it is twenty-five."
+  },
+  {
+   "case": "q08",
+   "ok": true,
+   "ms": 468.7587080989033,
+   "reply": "TRANSCRIPT: What season comes after summer?\nANSWER: Autumn.",
+   "transcript": "What season comes after summer?",
+   "answer": "Autumn."
+  },
+  {
+   "case": "q09",
+   "ok": true,
+   "ms": 510.22000005468726,
+   "reply": "TRANSCRIPT: How many hours in a day?\nANSWER: Twenty-four.",
+   "transcript": "How many hours in a day?",
+   "answer": "Twenty-four."
+  },
+  {
+   "case": "q10",
+   "ok": true,
+   "ms": 627.1738330833614,
+   "reply": "TRANSCRIPT: what is the freezing point of water\nANSWER: 0 degrees Celsius or 32 degrees Fahrenheit",
+   "transcript": "what is the freezing point of water",
+   "answer": "0 degrees Celsius or 32 degrees Fahrenheit"
+  },
+  {
+   "case": "q11",
+   "ok": false,
+   "ms": 831.0799167957157,
+   "reply": "TRANSCRIPT: I thought my aunt and uncle said it was going to be a big family gathering.\nANSWER: It sounds like you're looking forward to it.",
+   "transcript": "I thought my aunt and uncle said it was going to be a big family gathering.",
+   "answer": "It sounds like you're looking forward to it."
+  }
+ ],
+ "transcript_wer": 0.43283582089552236,
+ "transcript_words": 67
+}

@@ -51,6 +51,7 @@ tower's: one read audio as an image, one never named Shakespeare.
 | speech codes -> audible cloned voice | **works** | `research/t2w_client.py --say` |
 | cognition -> talker conditioning | **built, untrained** | `neural/delta.py` |
 | tuned Whisper -> delta -> E4B | **works, 13.61% WER/64** | `omni.py --front-end delta` |
+| stock Whisper -> native-teacher adapter -> E4B | **active dev: 31.41% WER/64, 8/12** | `omni.py --front-end stock --dual-output` |
 
 31/31 module self-checks green: `python research/check_all.py`
 
@@ -131,6 +132,36 @@ misses correspond to bad generated transcripts. That transcript is Gemma's
 post-transformer interpretation—not raw tokens entering Gemma; the actual
 input remains continuous 2560-wide adapter vectors. `--dual-output` exposes
 both fields without feeding the generated transcript back into the session.
+
+### Active owned adapter — Gemma-native teacher, 2026-08-23
+
+The active development track is fully owned and competitor-free in runtime
+and training lineage:
+
+```text
+stock OpenAI Whisper-medium encoder (50 Hz, decoder unused)
+  -> LayerNorm(1024) -> Linear(4096) -> GELU -> pool 2 -> Linear(2560)
+  -> Gemma 4 E4B
+teacher: Gemma's own audio_tower -> embed_audio vectors at 25 Hz
+```
+
+The initial 2048-wide clean-room run scored 52.32% WER on its 64-clip
+development slice. Widening to 4096, then using a short-utterance curriculum
+and balanced LibriSpeech/MINDS-14/VoxPopuli replay produced the selected local
+checkpoint `artifacts/stock-whisper-gemma-native-h4096-replay-step1000.npz`.
+The main-repo evaluator measures **31.41% free-running WER on the exact same
+64 clips/955 words** as the 16.34% paired-adapter reference. It also measures
+**32.18% WER on 591 held-out MINDS/Vox clips/9,736 words** and **8/12 answers
+at 521 ms median** with the dual transcript/answer prompt. The generated
+transcript WER on cases12 is 43.28%; a nearby replay checkpoint has better
+suite transcript WER (28.36%) but worse corpus WER, so it is diagnostic only.
+
+This is a large clean-room improvement, but it is not promoted over the
+paired stock adapter (16.34%/9 of 12), tuned-Whisper observer (13.61%), or
+native-tower live default (10 of 12). Continued mean-pool MLP training is
+non-monotonic and exhausted: the selected low-rate checkpoint is step 1,000,
+while steps 2,000–6,000 regress. The next architecture A/B is frame stacking
+plus a gated projector, preserving within-pair timing that mean pool 2 loses.
 
 On the exact same existing 64-clip/977-word validation slice used by
 `research/wer_corpus.py`, the promoted sparse tuned adapter improves the prior

@@ -29,9 +29,11 @@ The audio front end is swappable at this seam and NOTHING else changes:
             4096x2560 adapter -> Gemma. The Qwen LLM, original Qwen-facing
             linear2, and Whisper decoder are never loaded.
     stock   stock OpenAI Whisper encoder -> fresh Jaeger adapter -> Gemma.
-            No MiniCPM/Qwen model or ASR decoder is run on this path.
+            The active development checkpoint distils Gemma's native audio
+            tower and contains no MiniCPM/Qwen model or ASR decoder.
 
-Both are text-free. `delta` is the one we can keep improving.
+All three are text-free. `tower` remains the live default; `stock` is the
+owned, extensible development path; `delta` remains the accuracy bridge.
 """
 
 from __future__ import annotations
@@ -57,6 +59,8 @@ DUAL_SYSTEM = (
 MODEL = "/Users/jonathanjenkins/models/gemma-4-e4b-it-mlx-full"
 DELTA = (Path.home() / "models/gemma-audio-adapter"
          / "adapter_sparse_vox1375_k022_b000.npz")
+STOCK = (Path(__file__).resolve().parent.parent / "artifacts"
+         / "stock-whisper-gemma-native-h4096-replay-step1000.npz")
 AUDIO_GGUF = (Path.home() / "models/MiniCPM-o-4_5-gguf/audio"
               / "MiniCPM-o-4_5-audio-F16.gguf")
 
@@ -76,6 +80,7 @@ def build(model_path: str = MODEL, front_end: str = "tower", delta_path=None,
         configured_eos = getattr(session.tokenizer, "eos_token_id", 1)
         eos = {1, 106, int(configured_eos)}
         return session, {"model": str(stock_model), "front_end": front_end,
+                         "adapter": str(Path(delta_path).resolve()),
                          "eos": eos}
 
     if front_end == "delta":
@@ -350,7 +355,7 @@ def main() -> int:
     ap.add_argument("--seconds", type=float, default=20.0)
     ap.add_argument("--front-end", default="tower",
                     choices=("tower", "delta", "stock"))
-    ap.add_argument("--delta", default=str(DELTA),
+    ap.add_argument("--delta", default=None,
                     help="adapter checkpoint for delta/stock front ends")
     ap.add_argument("--audio-gguf", default=str(AUDIO_GGUF),
                     help="MiniCPM audio GGUF container used by delta only")
@@ -366,16 +371,17 @@ def main() -> int:
                     default="training/runs/gemma_talker_conditioner.pt")
     ap.add_argument("--selfcheck", action="store_true")
     a = ap.parse_args()
+    adapter_path = a.delta or str(STOCK if a.front_end == "stock" else DELTA)
 
     if a.selfcheck:
         return selfcheck()
     if a.bench:
-        return bench(a.bench, a.model, a.front_end, a.delta, a.out,
+        return bench(a.bench, a.model, a.front_end, adapter_path, a.out,
                      a.audio_gguf, a.dual_output)
     if a.wav:
         from jaeger_agent_omni.app import read_wav
         s, meta = build(
-            a.model, a.front_end, a.delta,
+            a.model, a.front_end, adapter_path,
             system=DUAL_SYSTEM if a.dual_output else SYSTEM,
             audio_gguf=a.audio_gguf)
         s.warmup()

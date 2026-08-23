@@ -53,6 +53,28 @@ claim of word-level diarization; the offline k=3 centroids separate at
 
 ## 3. Improve answer alignment at the proven boundary
 
+The **active development** checkpoint is now the fully owned Gemma-native
+teacher path:
+
+```text
+artifacts/stock-whisper-gemma-native-h4096-replay-step1000.npz
+31.41% WER — exact historical dev-clean64 / 955 words
+32.18% WER — held-out MINDS/Vox591 / 9,736 words
+8/12 answers — canonical dual-output prompt, 521 ms median
+```
+
+It remains a challenger, not the live or observer default. The older paired
+stock adapter remains the accuracy gate at 16.34%/9 of 12; the native tower
+remains live at 10/12; the tuned-Whisper observer remains 13.61% WER.
+
+Do not continue the same mean-pool MLP blindly. Balanced replay peaked after
+7,500 steps and a 1e-5 refinement peaked after only 1,000; every later saved
+checkpoint regressed. The next controlled A/B should replace pairwise mean
+pooling with channel-wise frame stacking and a gated projector (RMSNorm,
+SwiGLU, mid-normalization), following the proven Ultravox connector shape.
+Keep the encoder, Gemma-native vector teacher, datasets, prompts, and all three
+evaluation gates fixed so architecture is the only changed variable.
+
 Stock OpenAI Whisper plus a fresh adapter is now viable through paired
 pre-Gemma representation distillation. The promoted local checkpoint is
 `artifacts/stock-whisper-gemma-medium-multidomain.step005500.npz`: 16.34% WER
