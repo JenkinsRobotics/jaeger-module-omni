@@ -1,0 +1,80 @@
+{
+ "front_end": "delta",
+ "correct": 6,
+ "n": 12,
+ "median_ms": 282.87220862694085,
+ "rows": [
+  {
+   "case": "q00",
+   "ok": true,
+   "ms": 560.5765420477837,
+   "reply": "Four."
+  },
+  {
+   "case": "q01",
+   "ok": true,
+   "ms": 269.2810418084264,
+   "reply": "The sky is blue."
+  },
+  {
+   "case": "q02",
+   "ok": false,
+   "ms": 291.0205840598792,
+   "reply": "The question is not audible."
+  },
+  {
+   "case": "q03",
+   "ok": true,
+   "ms": 308.00545890815556,
+   "reply": "The capital of France is Paris."
+  },
+  {
+   "case": "q04",
+   "ok": true,
+   "ms": 197.52574991434813,
+   "reply": "Seven."
+  },
+  {
+   "case": "q05",
+   "ok": true,
+   "ms": 200.872499961406,
+   "reply": "Eight."
+  },
+  {
+   "case": "q06",
+   "ok": false,
+   "ms": 308.358957991004,
+   "reply": "The capital of France is Paris."
+  },
+  {
+   "case": "q07",
+   "ok": false,
+   "ms": 185.29858300462365,
+   "reply": "Five."
+  },
+  {
+   "case": "q08",
+   "ok": false,
+   "ms": 326.40504091978073,
+   "reply": "The sound of my voice is clear."
+  },
+  {
+   "case": "q09",
+   "ok": false,
+   "ms": 392.2139999922365,
+   "reply": "The current time is 10:30 AM."
+  },
+  {
+   "case": "q10",
+   "ok": true,
+   "ms": 260.9252920374274,
+   "reply": "Zero degrees Celsius."
+  },
+  {
+   "case": "q11",
+   "ok": false,
+   "ms": 274.7238331940025,
+   "reply": "The answer is zero."
+  }
+ ]
+}

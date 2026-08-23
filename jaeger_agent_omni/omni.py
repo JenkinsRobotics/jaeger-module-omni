@@ -25,9 +25,11 @@ The audio front end is swappable at this seam and NOTHING else changes:
     tower   Gemma's own audio tower. Works today, scores 10/12 (83% of
             legacy's 12/12). Frozen Google weights -- cannot be extended, and
             measured transcription-shaped (delivery ratio 0.192).
-    delta   whisper encoder -> our adapter. We own it, it carries ~0.323 of
-            delivery where a transcript carries 0.000, and it skips whisper's
-            autoregressive decoder entirely.
+    delta   MiniCPM audio-tuned Whisper encoder -> its semantic linear1 -> our
+            4096x2560 adapter -> Gemma. The Qwen LLM, original Qwen-facing
+            linear2, and Whisper decoder are never loaded.
+    stock   stock OpenAI Whisper encoder -> fresh Jaeger adapter -> Gemma.
+            No MiniCPM/Qwen model or ASR decoder is run on this path.
 
 Both are text-free. `delta` is the one we can keep improving.
 """
@@ -46,11 +48,47 @@ SYSTEM = (
     "about an image."
 )
 MODEL = "/Users/jonathanjenkins/models/gemma-4-e4b-it-mlx-full"
+DELTA = (Path.home() / "models/gemma-audio-adapter"
+         / "adapter_sparse_vox1375_k022_b000.npz")
+AUDIO_GGUF = (Path.home() / "models/MiniCPM-o-4_5-gguf/audio"
+              / "MiniCPM-o-4_5-audio-F16.gguf")
 
 
 def build(model_path: str = MODEL, front_end: str = "tower", delta_path=None,
-          system: str | None = SYSTEM):
+          system: str | None = SYSTEM, audio_gguf: str | Path = AUDIO_GGUF):
     """Load the one graph. Returns (session, meta)."""
+    if front_end == "stock":
+        from jaeger_agent_omni.runtime.stock_whisper import (
+            DEFAULT_GEMMA, StockWhisperGemmaSession)
+        if not delta_path or not Path(delta_path).exists():
+            raise SystemExit(
+                "--front-end stock needs a trained adapter (--delta PATH).")
+        stock_model = DEFAULT_GEMMA if model_path == MODEL else model_path
+        session = StockWhisperGemmaSession(
+            delta_path, model_path=stock_model, system=system)
+        configured_eos = getattr(session.tokenizer, "eos_token_id", 1)
+        eos = {1, 106, int(configured_eos)}
+        return session, {"model": str(stock_model), "front_end": front_end,
+                         "eos": eos}
+
+    if front_end == "delta":
+        from jaeger_agent_omni.runtime.tuned_whisper import (
+            DEFAULT_MODEL, TunedWhisperGemmaSession)
+        if not delta_path or not Path(delta_path).exists():
+            raise SystemExit(
+                "--front-end delta needs a trained 4096x2560 adapter "
+                "(--delta PATH).")
+        delta_model = DEFAULT_MODEL if model_path == MODEL else model_path
+        session = TunedWhisperGemmaSession(
+            delta_path, model_path=delta_model, audio_gguf=audio_gguf,
+            system=system)
+        configured_eos = getattr(session.tokenizer, "eos_token_id", 1)
+        eos = {1, 106, int(configured_eos)}
+        return session, {"model": str(delta_model), "front_end": front_end,
+                         "adapter": str(Path(delta_path).resolve()),
+                         "audio_gguf": str(Path(audio_gguf).resolve()),
+                         "eos": eos}
+
     import mlx.core as mx                                       # noqa: F401
     from mlx_vlm.models.cache import KVCache
     from mlx_vlm.utils import load
@@ -60,18 +98,6 @@ def build(model_path: str = MODEL, front_end: str = "tower", delta_path=None,
     m, proc = load(model_path)
     cfg = json.load(open(Path(model_path) / "config.json"))
     prefiller = GemmaAudioPrefiller(m, proc)
-
-    if front_end == "delta":
-        # The seam. Same session, same duplex loop, same speech out -- only
-        # the thing that turns waveform into LLM-space embeddings changes.
-        if not delta_path or not Path(delta_path).exists():
-            raise SystemExit(
-                f"--front-end delta needs a trained adapter (--delta PATH).\n"
-                f"  train it:  python training/train.py --backbone "
-                f"google/gemma-4-E4B-it --corpus training/corpus_mixed \\\n"
-                f"             --arch minicpm_delta --out runs/delta_e4b")
-        raise SystemExit("delta front end: adapter loading lands with the "
-                         "first trained E4B checkpoint (training in progress)")
 
     s = StreamingSession(m, proc, prefiller, cache_factory=KVCache,
                          config=cfg, system=system)
@@ -204,7 +230,8 @@ def speak(session, out_path: str, ref_audio=None,
 
 
 def bench(cases_dir: str, model_path: str, front_end: str, delta_path=None,
-          out_path: str = "research/omni_bench.json") -> int:
+          out_path: str = "research/omni_bench.json",
+          audio_gguf: str | Path = AUDIO_GGUF) -> int:
     """Score the no-transcript input path; this is not audio-output proof."""
     import statistics as st
 
@@ -214,7 +241,8 @@ def bench(cases_dir: str, model_path: str, front_end: str, delta_path=None,
     from jaeger_agent_omni.app import read_wav
 
     cases = json.load(open(Path(cases_dir) / "cases.json"))
-    s, meta = build(model_path, front_end, delta_path)
+    s, meta = build(model_path, front_end, delta_path,
+                    audio_gguf=audio_gguf)
     s.warmup()
 
     rows = []
@@ -269,8 +297,12 @@ def main() -> int:
     ap.add_argument("--bench")
     ap.add_argument("--duplex", action="store_true")
     ap.add_argument("--seconds", type=float, default=20.0)
-    ap.add_argument("--front-end", default="tower", choices=("tower", "delta"))
-    ap.add_argument("--delta", default="training/runs/delta_e4b.pt")
+    ap.add_argument("--front-end", default="tower",
+                    choices=("tower", "delta", "stock"))
+    ap.add_argument("--delta", default=str(DELTA),
+                    help="adapter checkpoint for delta/stock front ends")
+    ap.add_argument("--audio-gguf", default=str(AUDIO_GGUF),
+                    help="MiniCPM audio GGUF container used by delta only")
     ap.add_argument("--model", default=MODEL)
     ap.add_argument("--out", default="research/omni_bench.json")
     ap.add_argument("--speak", action="store_true",
@@ -285,10 +317,12 @@ def main() -> int:
     if a.selfcheck:
         return selfcheck()
     if a.bench:
-        return bench(a.bench, a.model, a.front_end, a.delta, a.out)
+        return bench(a.bench, a.model, a.front_end, a.delta, a.out,
+                     a.audio_gguf)
     if a.wav:
         from jaeger_agent_omni.app import read_wav
-        s, meta = build(a.model, a.front_end, a.delta)
+        s, meta = build(a.model, a.front_end, a.delta, system=SYSTEM,
+                        audio_gguf=a.audio_gguf)
         s.warmup()
         reply, ms = one_turn(s, meta, read_wav(Path(a.wav)),
                              collect_hidden=a.speak)

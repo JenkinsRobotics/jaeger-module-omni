@@ -71,6 +71,7 @@ htmlcov/
 
 # Training checkpoints — big, reproducible from configs/ + the corpus.
 training/runs/
+artifacts/stock-whisper-gemma-*.npz
 
 # Third-party sources kept locally for reading, never vendored.
 reference/*

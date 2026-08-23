@@ -1,0 +1,393 @@
+{
+  "adapter": "artifacts/stock-whisper-gemma-transcript-refined.npz",
+  "split": "validation",
+  "n": 64,
+  "wer": 0.9688454489920586,
+  "reference_words": 1637,
+  "rows": [
+    {
+      "id": "c3e058c5fb92",
+      "reference": "How many days in a week?",
+      "hypothesis": "How's it going?",
+      "wer": 1.0
+    },
+    {
+      "id": "5e346292b56e",
+      "reference": "What gas do plants absorb?",
+      "hypothesis": "What color do you smell?",
+      "wer": 0.6
+    },
+    {
+      "id": "928edb6a5ab1",
+      "reference": "What color is the sky?",
+      "hypothesis": "What color is the",
+      "wer": 0.2
+    },
+    {
+      "id": "a6d96ed3c6c4",
+      "reference": "What is ten minus three?",
+      "hypothesis": "What is one plus two?",
+      "wer": 0.6
+    },
+    {
+      "id": "45e5e74c0236",
+      "reference": "What is the largest planet?",
+      "hypothesis": "What is the largest planet?",
+      "wer": 0.0
+    },
+    {
+      "id": "37ba3f178b52",
+      "reference": "How many continents are there?",
+      "hypothesis": "How are you?",
+      "wer": 0.6
+    },
+    {
+      "id": "b3f85f83b120",
+      "reference": "What season comes after summer?",
+      "hypothesis": "What comes after summer?",
+      "wer": 0.2
+    },
+    {
+      "id": "41577ea33ca9",
+      "reference": "What is the smallest prime number?",
+      "hypothesis": "the",
+      "wer": 0.8333333333333334
+    },
+    {
+      "id": "d84e25bbba56",
+      "reference": "What gas do plants absorb?",
+      "hypothesis": "What color does do say?",
+      "wer": 0.8
+    },
+    {
+      "id": "13f13e5af150",
+      "reference": "What is two plus two?",
+      "hypothesis": "What is one plus two?",
+      "wer": 0.2
+    },
+    {
+      "id": "c5dbe1215777",
+      "reference": "How many legs does a spider have?",
+      "hypothesis": "who's on your side?",
+      "wer": 1.0
+    },
+    {
+      "id": "20bfdf625a2b",
+      "reference": "What is the capital of France?",
+      "hypothesis": "The capital of France is Paris.",
+      "wer": 0.6666666666666666
+    },
+    {
+      "id": "b1e22259ffe4",
+      "reference": "How many continents are there?",
+      "hypothesis": "How's are you?",
+      "wer": 0.8
+    },
+    {
+      "id": "aef6829dede8",
+      "reference": "What season comes after summer?",
+      "hypothesis": "What comes after summer?",
+      "wer": 0.2
+    },
+    {
+      "id": "f18d7cd4a773",
+      "reference": "What is ten minus three?",
+      "hypothesis": "What is is is are two plus two",
+      "wer": 1.2
+    },
+    {
+      "id": "e16b13fc0944",
+      "reference": "What is five times five?",
+      "hypothesis": "What is five times five?",
+      "wer": 0.0
+    },
+    {
+      "id": "844e7c68578b",
+      "reference": "How many days in a week?",
+      "hypothesis": "How's it going?",
+      "wer": 1.0
+    },
+    {
+      "id": "3e67581726fe",
+      "reference": "What is the freezing point of water?",
+      "hypothesis": "the freezing point of water",
+      "wer": 0.2857142857142857
+    },
+    {
+      "id": "d7cb978ae1ea",
+      "reference": "How many legs does a spider have?",
+      "hypothesis": "who's on your side?",
+      "wer": 1.0
+    },
+    {
+      "id": "2dfde99c2b40",
+      "reference": "What is five times five?",
+      "hypothesis": "What is one is two is three is",
+      "wer": 1.2
+    },
+    {
+      "id": "68f5f75e3776",
+      "reference": "What is ten minus three?",
+      "hypothesis": "What is is is are two plus two",
+      "wer": 1.2
+    },
+    {
+      "id": "5500b788172b",
+      "reference": "Who wrote Romeo and Juliet?",
+      "hypothesis": "Who are you?",
+      "wer": 0.8
+    },
+    {
+      "id": "75d1dfaee792",
+      "reference": "What season comes after summer?",
+      "hypothesis": "What color is summer?",
+      "wer": 0.6
+    },
+    {
+      "id": "69bd25285ecc",
+      "reference": "What is the smallest prime number?",
+      "hypothesis": "What is the smallest prime number?",
+      "wer": 0.0
+    },
+    {
+      "id": "b6c5b374ecbc",
+      "reference": "How many continents are there?",
+      "hypothesis": "How's are you?",
+      "wer": 0.8
+    },
+    {
+      "id": "1d50cd3f0b81",
+      "reference": "How many continents are there?",
+      "hypothesis": "How are you?",
+      "wer": 0.6
+    },
+    {
+      "id": "505ff26a0504",
+      "reference": "What is ten minus three?",
+      "hypothesis": "What is one plus two?",
+      "wer": 0.6
+    },
+    {
+      "id": "f00f9180a30e",
+      "reference": "Who wrote Romeo and Juliet?",
+      "hypothesis": "Who are you?",
+      "wer": 0.8
+    },
+    {
+      "id": "bb6dc8070c4c",
+      "reference": "i came to paris studied law was called to the bar and like many other young men put my diploma in my pocket and let myself drift as one so easily does in paris",
+      "hypothesis": "sue",
+      "wer": 1.0
+    },
+    {
+      "id": "b725da15a561",
+      "reference": "i flung myself into this rapid noisy and volcanic life which had formerly terrified me when i thought of it and which had become for me the necessary complement of my love for marguerite what else could i have done",
+      "hypothesis": "othereigh",
+      "wer": 1.0
+    },
+    {
+      "id": "8501ace3766f",
+      "reference": "yes an excellent idea i stammered not knowing what i was saying well i will arrange that said marguerite freeing my hand and interpreting my words according to her own desire",
+      "hypothesis": "thirteen",
+      "wer": 1.0
+    },
+    {
+      "id": "a19bd3d49bc7",
+      "reference": "he has asked me how i loving paris as i do could make up my mind to bury myself in the country i told him that i was ill and that i wanted rest he seemed to have some difficulty in believing me",
+      "hypothesis": "oh",
+      "wer": 1.0
+    },
+    {
+      "id": "9c8d0b444c62",
+      "reference": "and that happen what might she would not sacrifice the pleasure of having me constantly with her adding that those who were not satisfied with this arrangement were free to stay away so much i had heard one day when prudence had said to marguerite",
+      "hypothesis": "thirteen",
+      "wer": 1.0
+    },
+    {
+      "id": "8dc365e675ee",
+      "reference": "i will do without it but what will you do i don't in the least know prudence was no doubt going to make some reply but i entered suddenly and flung myself at marguerite's feet",
+      "hypothesis": "thirteen",
+      "wer": 1.0
+    },
+    {
+      "id": "4efa0aec6f5a",
+      "reference": "we breathed together that true life which neither marguerite nor i had ever known before her delight in the smallest things was like that of a child there were days when she ran in the garden like a child of ten",
+      "hypothesis": "thirteen",
+      "wer": 1.0
+    },
+    {
+      "id": "44c360e3309f",
+      "reference": "he held up something he had in his hand so that every one could see it was a stone there could be no doubt about that with some of the snow still adhering to its sides bluff rubbed the side of his head at seeing this",
+      "hypothesis": "thirteen",
+      "wer": 1.0
+    },
+    {
+      "id": "2ef8e66f6220",
+      "reference": "they talked it over as they sauntered in the direction of their homes it happened that will milton's house was the first they came to i saw the postman come out of our gate will commented i wonder if he brought uncle felix the letter he's been expecting for some days",
+      "hypothesis": "thirteen",
+      "wer": 1.0
+    },
+    {
+      "id": "75c137da8de7",
+      "reference": "if we're going to get in many affairs like the one we just had with andy lasher and his crowd the latter remarked it stands to reason we want to tune up some in our heaving my baseball arm is out of practice and i'm ashamed to say that three out of four balls i fired missed their mark",
+      "hypothesis": "thirteen",
+      "wer": 1.0
+    },
+    {
+      "id": "71a657ad5e1c",
+      "reference": "i got caught there and it keeps on burning like a hot iron i wouldn't be surprised if there was a piece of coal or a stone in that ball they must have fixed up a lot of ammunition that way before they tackled us seems to me will's a long time coming out again complained jerry",
+      "hypothesis": "thirteen",
+      "wer": 1.0
+    },
+    {
+      "id": "e3e1bb4573bf",
+      "reference": "which was pretty good evidence frank thought that the wounded boy must take considerable interest in the discussion why who else would try to turn on mister darrel that way and burn his shanties down just when winter is setting in asked bluff",
+      "hypothesis": "whore",
+      "wer": 1.0
+    },
+    {
+      "id": "9460bef579b7",
+      "reference": "oh no it isn't so bad as that he was assured",
+      "hypothesis": "thou are thou are thou are",
+      "wer": 1.0
+    },
+    {
+      "id": "24fa975adf00",
+      "reference": "bluff admitted as teddy didn't know where we hung out and couldn't find his way to lumber run camp you can see that he would have had to choose between going back to nackerson or losing himself in the big woods",
+      "hypothesis": "thought\nThinking Process:\n\n1.  **Analyze the Request:** The user wants me to repeat the spoken words exactly, outputting *only* what was said.\n2.  **Analyze the Input:** The input is a long sequence of \"the",
+      "wer": 0.9512195121951219
+    },
+    {
+      "id": "b1a34e6999a4",
+      "reference": "about half an hour ago he told me he was going off to the place where we discovered that comical colony of squirrels that amused us yesterday frank explained he hoped by keeping as still as a mouse to get a snap at them when they were carrying on that way",
+      "hypothesis": "I said the",
+      "wer": 0.9803921568627451
+    },
+    {
+      "id": "97d7afc9e228",
+      "reference": "but go on will what happened next oh i looked up to see what had made that queer sound and there he was just standing and looking straight at me i was nearly scared to death at first for he looked nearly as big as a barn",
+      "hypothesis": "I don't know what you want me to do.",
+      "wer": 0.9148936170212766
+    },
+    {
+      "id": "c5c18d07848f",
+      "reference": "and don't i hope that first picture turns out good it was a remarkable pose if only the focus was right he started toward the cabin door as though anxious to develop his roll of film and discover what success his labor had resulted in",
+      "hypothesis": "thou",
+      "wer": 1.0
+    },
+    {
+      "id": "e091af22d20d",
+      "reference": "bluff caught him by the arm wait just a minute or two will he pleaded tell us some more where did all this happen frank knows where that squirrel colony have their nest in the tree that's got a hole in the trunk about thirty feet up the other replied",
+      "hypothesis": "thirteen",
+      "wer": 1.0
+    },
+    {
+      "id": "4711b502d5ea",
+      "reference": "i wasn't thinking so much of that as the chance of a blizzard coming down on you frank continued be sure to take along an extra supply of matches i'll see to it that each of you has something to help make out a meal or so",
+      "hypothesis": "thirteen",
+      "wer": 1.0
+    },
+    {
+      "id": "7a92cc1f541c",
+      "reference": "the long daylight the postponed lamps the habit of the hour made dinners late and guests still later so that punctual as he was he had found missus lowder alone with kate herself not yet in the field",
+      "hypothesis": "thirteen",
+      "wer": 1.0
+    },
+    {
+      "id": "32f7a372e9bf",
+      "reference": "to treat him as harmless and blameless she was so engaged with the further aid of a complete absence of allusions when the highest effect was given her method by the beautiful entrance of kate the method therefore received support all round",
+      "hypothesis": "thirteen",
+      "wer": 1.0
+    },
+    {
+      "id": "c790b35381a6",
+      "reference": "while scarcely less prodigious for that matter was his own reading on the spot of the relation between his companions a relation lighted for him by the straight look not exactly loving nor lingering yet searching and soft",
+      "hypothesis": "thou is the",
+      "wer": 0.9736842105263158
+    },
+    {
+      "id": "1ae422679af0",
+      "reference": "and her entrance accordingly greeted with the proper round of applause such impressions as we thus note for densher come and go it must be granted in very much less time than notation demands but we may none the less make the point that there was still further",
+      "hypothesis": "th",
+      "wer": 1.0
+    },
+    {
+      "id": "0189caad1235",
+      "reference": "it was as if the drama it thus came to him for the fact of a drama there was no blinking was between them them quite preponderantly with merton densher relegated to mere spectatorship a paying place in front and one of the most expensive",
+      "hypothesis": "thirteen",
+      "wer": 1.0
+    },
+    {
+      "id": "a0166ecb5c22",
+      "reference": "her little dry new england brightness he had sampled all the shades of the american complexity if complexity it were had its actual reasons for finding relief most in silence",
+      "hypothesis": "thought\nThinking Process:\n\n1.  **Analyze the Request:** The user has provided a long string of text, consisting mostly of \"the\" and some instances of \"er\" or similar sounds (though the transcription is slightly garbled/repetitive, the core instruction",
+      "wer": 1.2
+    },
+    {
+      "id": "da8858b05e2a",
+      "reference": "but it might very well be that new york in having her to show hadn't been aware of its luck there were plenty of people who were nothing over there and yet were awfully taken up in england just as to make the balance right thank goodness",
+      "hypothesis": "thirteen",
+      "wer": 1.0
+    },
+    {
+      "id": "5d3dabd4ce78",
+      "reference": "it made the little woman he could see really lose her head she had more things in that head than any of them in any other unless perhaps it were kate whom he felt as indirectly watching him during this foolish passage",
+      "hypothesis": "thirteen",
+      "wer": 1.0
+    },
+    {
+      "id": "b78096a9bf4e",
+      "reference": "was very much pushed to the wall but he was also to know that missus stringham had secretly resented them missus stringham holding the opinion of which he was ultimately to have a glimpse that all the kate croys in christendom were but dust for the feet of her milly",
+      "hypothesis": "I",
+      "wer": 1.0
+    },
+    {
+      "id": "38c21022c483",
+      "reference": "she was perfectly kind to susie it was as if she positively knew her as handicapped for any disagreement by feeling that she kate had type and by being committed to admiration of type",
+      "hypothesis": "thought\nThinking Process:\n\n1.  **Analyze the Request:** The user wants me to repeat the spoken words exactly. The input provided is a sequence of \"is\" followed by many instances of \"the\".\n2.  **Analyze the Input Text:** The input is: \"is",
+      "wer": 1.1470588235294117
+    },
+    {
+      "id": "88c18523e494",
+      "reference": "were there some especially froggy place near europe as there is an especially sandy place the scientific explanation would of course be that all small frogs falling from the sky in europe come from that center of frogeity to start with",
+      "hypothesis": "silence",
+      "wer": 1.0
+    },
+    {
+      "id": "699b70e42623",
+      "reference": "and something that strikes my attention here is that these frogs are described as almost white i'm afraid there is no escape for us we shall have to give to civilization upon this earth some new worlds places with white frogs in them",
+      "hypothesis": "throne",
+      "wer": 1.0
+    },
+    {
+      "id": "86d94d2ce02e",
+      "reference": "february eleventh eighteen fifty nine the editor of the zoologist",
+      "hypothesis": "ough",
+      "wer": 1.0
+    },
+    {
+      "id": "b05e2ef43e86",
+      "reference": "he publishes a letter from another correspondent who apologizes for opposing so high an authority as doctor gray but says that he had obtained some of these fishes from persons who lived at a considerable distance apart",
+      "hypothesis": "thirteen",
+      "wer": 1.0
+    },
+    {
+      "id": "62beed8b095d",
+      "reference": "some were placed in fresh water these seemed to thrive well as to narrow distribution we are told that the fishes fell in and about the premises of mister nixon it was not observed at the time that any fish fell in any other part of the neighborhood",
+      "hypothesis": "thirteen",
+      "wer": 1.0
+    },
+    {
+      "id": "9f43afff9d24",
+      "reference": "the most strange thing which ever struck me was that the fish did not fall helter skelter or here and there but they fell in a straight line not more than a cubit in breadth",
+      "hypothesis": "who's",
+      "wer": 1.0
+    },
+    {
+      "id": "f52dc39acbce",
+      "reference": "and that in his opinion they had been upon the ground in the first place but that there had been some unusual condition aloft comes out in his observation upon the curious azure blue appearance of the sun at the time",
+      "hypothesis": "throne",
+      "wer": 1.0
+    }
+  ]
+}

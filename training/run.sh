@@ -10,9 +10,10 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-if pgrep -f "training/train.py" >/dev/null; then
+GPU_PATTERN='training/(train|stock_whisper_gemma)\.py (train|pretrain-ctc|wer|bench)|cleanroom_train\.py (train|precompute|bench)|compare_tracks\.py|train_audio_adapter\.py'
+if pgrep -f "$GPU_PATTERN" >/dev/null; then
     echo "REFUSING: a training run is already active —" >&2
-    ps -o pid=,etime=,command= $(pgrep -f "training/train.py") | cut -c1-100 >&2
+    ps -o pid=,etime=,command= $(pgrep -f "$GPU_PATTERN") | cut -c1-100 >&2
     echo "kill it first, or wait. Two E4B runs do not fit in 32 GB." >&2
     exit 1
 fi

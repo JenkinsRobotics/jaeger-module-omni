@@ -50,7 +50,7 @@ tower's: one read audio as an image, one never named Shakespeare.
 | omni input (a/v/text, one cache) | **works** | `research/check_all.py` |
 | speech codes -> audible cloned voice | **works** | `research/t2w_client.py --say` |
 | cognition -> talker conditioning | **built, untrained** | `neural/delta.py` |
-| whisper -> delta -> E4B | **training** | `training/train.py` |
+| tuned Whisper -> delta -> E4B | **works, 13.61% WER/64** | `omni.py --front-end delta` |
 
 31/31 module self-checks green: `python research/check_all.py`
 
@@ -95,6 +95,52 @@ END->AUDIO        1091 ms median across completed starts
 
 The short exact-worker proof with diarization enabled produced one correct
 reply, speaker `A`, 20.0/20.0 seconds fed, zero loss, and 458 ms END->AUDIO.
+
+## Qwen-free tuned-Whisper input and meeting observer
+
+The previously stubbed `--front-end delta` seam now loads the audio-tuned
+Whisper encoder and `audio_projector.linear1` from MiniCPM's audio GGUF, then
+uses Jaeger's trained 4096→2560 adapter to enter Gemma 4 E4B. It never loads
+the Qwen language model, the original Qwen-facing `linear2`, or Whisper's
+decoder. The audio GGUF is a weight container, not a Qwen runtime dependency.
+
+The reciprocal stock-Whisper hypothesis was implemented and measured before
+being rejected. On its own fixed 64-clip/1,637-word held-out set, a fresh
+14.7M adapter scored 99.27% free-running WER after sampled CTC warm-up and
+96.88% after 100 Gemma-aware CE updates. Stock Whisper is therefore retained
+as an experimental control, not promoted.
+
+On the exact same existing 64-clip/977-word validation slice used by
+`research/wer_corpus.py`, the promoted sparse tuned adapter improves the prior
+adapter from **14.74% to 13.61% WER** (113 fewer basis points, 7.7%
+relative). The answer-distilled checkpoint reaches only **6/12** on the spoken
+question suite at **283 ms median**, versus the native tower's 10/12, so the
+canonical assistant and desktop demo correctly remain on `tower`. Transcript
+and answer adapters are not interchangeable objectives.
+
+```bash
+python -m jaeger_agent_omni.omni --front-end delta --wav question.wav
+python -m jaeger_agent_omni.meeting --seconds 300 --device 1 --k 3 \
+    --record /tmp/meeting.wav --out meeting.md
+```
+
+The meeting observer uses 9.0-second neural windows with 0.5-second overlap;
+the 44.9-second one-shot decode was measured to collapse to one clause, so a
+five-minute tensor-shape check is not presented as long-window accuracy.
+Silero must admit at least 25% of a window's 30 ms frames before Gemma runs.
+This fixed a concrete failure: the new five-minute Elgato capture retained all
+300.0 seconds but contained broadband room/cable noise (3–19% Silero-positive
+frames). Before admission it hallucinated refusal/loop text; replay after the
+fix completed 36/36 time ranges in 2.9 seconds, exit 0, and marked every range
+`[no speech admitted]`, contributing nothing to minutes.
+
+The retained positive 90.0-second room conversation admitted all 11 windows,
+covered the cloud-storage and meal-kit discussion, and produced coherent
+minutes. It also exposed the remaining defect: one overlap contains a spurious
+phrase and turn-level online labels are not word-level diarization. With
+`--k 3`, online labels A/B/C all fire; the independent offline audit finds
+three centroids at cosine 0.369/0.401/0.592. Those are useful clusters, not a
+claim that the two humans are perfectly separated at every word.
 
 ---
 
