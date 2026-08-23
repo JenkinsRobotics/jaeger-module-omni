@@ -1,0 +1,394 @@
+{
+  "adapter": "artifacts/stock-whisper-gemma-medium50m-expanded1p5k.step001000.npz",
+  "split": "train_other_validation",
+  "source_prefix": null,
+  "n": 64,
+  "wer": 0.18722659667541558,
+  "reference_words": 1143,
+  "rows": [
+    {
+      "id": "3557-159359-0015",
+      "reference": "INTENDING TO LIE UPON IT THEY HAD BUT ONE BED AND THEY MEANT TO GIVE IT UP TO THEIR GRAND GUEST BUT THE PRINCE WOULD NOT HEAR OF SUCH A THING",
+      "hypothesis": "intended to lie upon it he had but one bed and they meant to give it up to this grand guest the prince would hear of such a thing",
+      "wer": 0.16129032258064516
+    },
+    {
+      "id": "3557-159359-0007",
+      "reference": "BUT HE WAS GLAD ENOUGH FOR HERE AT LEAST HE SHOULD FIND SOMEBODY",
+      "hypothesis": "but she was glad enough for here at least she could find somebody",
+      "wer": 0.23076923076923078
+    },
+    {
+      "id": "4701-15273-0002",
+      "reference": "SUDDENLY DECIDED UPON PUTTING INTO THE HANDS OF THE DUKE OF ORLEANS",
+      "hypothesis": "certainly decided upon putting into the hands of the duke of volnes",
+      "wer": 0.16666666666666666
+    },
+    {
+      "id": "2021-246946-0029",
+      "reference": "IF HE WILL NOT DO IT THEN HE IS NOT THE SAVIOUR OF MEN AND WAS WRONGLY NAMED JESUS THE CURATE ROSE LEOPOLD",
+      "hypothesis": "if ye would not do it then he is not the saviour of mine and was wrongly named jesus the jurat roze leopold",
+      "wer": 0.21739130434782608
+    },
+    {
+      "id": "2246-131710-0091",
+      "reference": "OF THE NEW YORK TIMES TOOK THEIR MIDNIGHT LUNCH THERE WHEN I WENT WITH BORST AND",
+      "hypothesis": "and the york times took their midnight lunch there when i left with brosts",
+      "wer": 0.3125
+    },
+    {
+      "id": "3135-166688-0044",
+      "reference": "I REMEMBER THESE LADIES PARTICULARLY BECAUSE BOTH WERE REMARKABLY GOOD TALKERS",
+      "hypothesis": "I remember these ladies particularly because both were remarkably good talkers",
+      "wer": 0.0
+    },
+    {
+      "id": "5285-53181-0002",
+      "reference": "FRIGHTENING PEOPLE OUT OF THEIR WITS HAVE YOU EVER HEARD OF THAT I",
+      "hypothesis": "Frightening people all of their wits. Have you ever heard that?",
+      "wer": 0.23076923076923078
+    },
+    {
+      "id": "5198-204974-0002",
+      "reference": "HALTED HE PEERED DOWN THE DARK WINDING STAIRS AND CALLED OUT COARSELY COME UP KINCH COME UP YOU FEARFUL JESUIT",
+      "hypothesis": "halted he peered down the dark winding stairs and called out coarsely go up geech come up you fearful jesuit",
+      "wer": 0.1
+    },
+    {
+      "id": "5735-48575-0020",
+      "reference": "THAT THEY MIGHT GAZE ON THE YOUTH'S GOODLINESS AND THE BEAUTY OF THE SHOP",
+      "hypothesis": "that they might gaze on the youth doleness and the burying of the",
+      "wer": 0.2857142857142857
+    },
+    {
+      "id": "2021-235245-0027",
+      "reference": "TO PUT THE OLD WOMEN IN RUT AND HEAT OF LUST TO BE SHORT THEY OCCUPIED ALL LIKE GOOD SOULS ONLY TO THOSE THAT WERE HORRIBLY UGLY AND ILL FAVOURED",
+      "hypothesis": "to put the old woman in rat and heat of last to be short they occupied all by good souls only to those who were heartily ugly and ill favored",
+      "wer": 0.23333333333333334
+    },
+    {
+      "id": "3557-8342-0058",
+      "reference": "WHO NEVER KNELT TO MORTAL BEING KNEEL TO THEE I WHO HAVE COMMANDED FATE",
+      "hypothesis": "and never knelt to mortal being kneeled to thee i who has commanded say",
+      "wer": 0.2857142857142857
+    },
+    {
+      "id": "2246-131710-0005",
+      "reference": "NEWS IS VITAL TO WALL STREET AND THERE IS NO LIVING MAN",
+      "hypothesis": "News is badle to Wall Street and there is no living man",
+      "wer": 0.08333333333333333
+    },
+    {
+      "id": "3796-16817-0031",
+      "reference": "WHERE THE OBJECTS ARE PLACED AT VARYING DISTANCES ORDER COMMONLY IMPLIES THE DESIGN OF AN INTELLIGENT AGENT OR THE APPEARANCE OR SUGGESTION OF SUCH DESIGN",
+      "hypothesis": "but the objects are played far beyond distances or commendable played the design of an intelligent agent or the appearance of such design",
+      "wer": 0.36
+    },
+    {
+      "id": "2246-131710-0153",
+      "reference": "THE PARTS SHOULD NOT BE TINKERED NOR BENT AS THEY ARE ACCURATELY MADE AND INTERCHANGEABLE THE DIFFICULTIES ENCOUNTERED IN FITTING THEM PROPERLY",
+      "hypothesis": "The parts should not be tinkered or bent as they are accurately made and interchangeable. The difficulties encountered in fitting them properly",
+      "wer": 0.045454545454545456
+    },
+    {
+      "id": "3796-16817-0009",
+      "reference": "IN TO AND NUO NOD SUPERNATURAL SYNONYMS MIRACULOUS PRETERNATURAL SUPERHUMAN THE SUPERNATURAL SUPER ABOVE",
+      "hypothesis": "in tu and nou not supernatural sentiments miraculous surnatural superhuman the surnatural superb abou",
+      "wer": 0.5714285714285714
+    },
+    {
+      "id": "4216-10164-0001",
+      "reference": "MIGHT BE REFERRED TO IF ANY CORROBORATION",
+      "hypothesis": "may be a fortuitous any incorporation",
+      "wer": 0.7142857142857143
+    },
+    {
+      "id": "1708-142417-0011",
+      "reference": "THE LOVELIEST AND THE BEST THAT TIME AND FATE OF ALL THEIR VINTAGE PREST",
+      "hypothesis": "the howling is the best that time and fate of all their mendic press",
+      "wer": 0.2857142857142857
+    },
+    {
+      "id": "8005-113331-0003",
+      "reference": "MESSENGERS WERE SENT WHO CAME BACK WITH THE REPORT THAT STEPHEN HAD RECEIVED HER LETTER AND HAD LEFT AT ONCE SAYING HE WAS GOING TO COKETOWN",
+      "hypothesis": "messengers were sent who came back with the report that siren had received her letter and had left at once saying he was gone to cockton",
+      "wer": 0.11538461538461539
+    },
+    {
+      "id": "5285-48598-0016",
+      "reference": "ENROBES WITH HONOUR SANDS OF CAMP HER FOOT STEP WANDERING LONE PINES THE POOR MOURNER AS SHE WINS THE STEAD WHERE WONT TO WANE",
+      "hypothesis": "in rows with honour sanss of cap her footstep wandering lone paints the forlorner as she winds the stead where wont to wane",
+      "wer": 0.4166666666666667
+    },
+    {
+      "id": "4701-15046-0040",
+      "reference": "THE BELTS ON OCCASIONS OF IMPORTANCE WERE WROUGHT INTO SIGNIFICANT DEVICES SUGGESTIVE OF THE SUBSTANCE OF THE COMPACT OR SPEECH AND DESIGNED AS AIDS TO MEMORY",
+      "hypothesis": "The bells on occasions of importance were wrought into significant devices, suggestive of the sustenance of the compact or speech and disdain as aids to memory.",
+      "wer": 0.11538461538461539
+    },
+    {
+      "id": "5252-4868-0045",
+      "reference": "THEN THE KNIGHT SAID IT IS VERY STRANGE THAT THE TREE SHOULD BELONG TO YOU",
+      "hypothesis": "and the knight said it is very strange said the truth should belong to you",
+      "wer": 0.2
+    },
+    {
+      "id": "2246-131710-0021",
+      "reference": "SO HE WENT IN AND ASKED THE TASTER IF HE MIGHT HAVE SOME OF THE TEA THIS THE MAN GAVE HIM AND THUS HE OBTAINED HIS FIRST BREAKFAST IN NEW YORK",
+      "hypothesis": "so he went in and asked the taster if he might have some of the tea this the man gave him and thus he attained his first breakfast in nier",
+      "wer": 0.0967741935483871
+    },
+    {
+      "id": "6798-77740-0020",
+      "reference": "AT LAST WE ARRIVED AT THE PRISON",
+      "hypothesis": "At last we arrived at the prison",
+      "wer": 0.0
+    },
+    {
+      "id": "1593-94847-0034",
+      "reference": "AND IT DEPENDS A GOOD BIT ON HOW MUCH IT VEERS AROUND CONCLUDED THE OLD SAILOR",
+      "hypothesis": "and it depends a good bit on how much it weighs around concluded the old sailor",
+      "wer": 0.0625
+    },
+    {
+      "id": "4965-27767-0057",
+      "reference": "WHO ARE YOU WHAT DO YOU WANT HE ASKED EXCITEDLY FROM HIS TONE IT WAS EVIDENT THAT THE SOLDIERS FEARED EVERYBODY IN THAT DISTRICT",
+      "hypothesis": "Who are you? What do you want?\" he asked excitedly. From his tone it was evident that the soldiers feared everybody in that district.",
+      "wer": 0.0
+    },
+    {
+      "id": "7843-110055-0067",
+      "reference": "THAT WE BESTOW UPON HIM SUITABLE AND DELICATE PRAISES IF ANY OF HIS WORKS ARE UNKNOWN TO US WE SHOULD ASK OF HIM THE LOAN OF IT WITH EARNESTNESS WE SHOULD READ IT WITH PROMPTITUDE",
+      "hypothesis": "that we bestow upon him suitable and delicate praises if any of his works are unknown to us we should ask of him the loan of it with earnestness we should read it with prontitude",
+      "wer": 0.02857142857142857
+    },
+    {
+      "id": "2792-152929-0061",
+      "reference": "AND WE DID NOT LOSE MORE THAN ONE THERMOMETER IN ABOUT NINE HUNDRED SOUNDINGS",
+      "hypothesis": "and he did not lose more than one temperament in about 1000 soundings",
+      "wer": 0.2857142857142857
+    },
+    {
+      "id": "5285-48598-0040",
+      "reference": "WOULD MY LEG HAD BEEN BROKEN ERE I ENTERED YOUR HOUSE AND SHE WENT UP TO ZUMURRUD AND SAID TO HER O MY DAUGHTER HEAVEN KEEP THEE SAFE SOON SHALL ALLAH BRING THEE RELIEF",
+      "hypothesis": "what my lady haden broken ere i entered her house and she went up to samar and said to her oh my lord haden keep thee safe soon shall i bring thee relief",
+      "wer": 0.29411764705882354
+    },
+    {
+      "id": "5285-53181-0016",
+      "reference": "YOU SEE OF COURSE IF YOU'RE NOT A DUNCE",
+      "hypothesis": "You see of course if you're not a dance",
+      "wer": 0.1111111111111111
+    },
+    {
+      "id": "4216-10164-0036",
+      "reference": "ABOUT BUSINESS PAPA SHE SAID MISTER VANSTONE TOOK HIS GARDEN HAT FROM THE HALL TABLE OPENED HIS EYES IN MUTE PERPLEXITY",
+      "hypothesis": "about business papa she said mr banston took his garden hat from the hall table opened his eyes in mute perplexity",
+      "wer": 0.09523809523809523
+    },
+    {
+      "id": "1714-142291-0009",
+      "reference": "SEE IF THEY DON'T COME AND BEG US TO COME BACK AT OUR OWN PRICE THAT'S ALL",
+      "hypothesis": "See if they don't come and begs to come back at our own price. That's all.",
+      "wer": 0.11764705882352941
+    },
+    {
+      "id": "6804-79288-0075",
+      "reference": "AS I HAVE BEEN SINCE MY RETURN",
+      "hypothesis": "as i have been since my retirement",
+      "wer": 0.14285714285714285
+    },
+    {
+      "id": "4216-10164-0053",
+      "reference": "HE TRIED TO LOOK AT HER",
+      "hypothesis": "He tried to look at her.",
+      "wer": 0.0
+    },
+    {
+      "id": "4799-25949-0021",
+      "reference": "ACROSS THE ROAD WERE DUG ROUGH RIFLE PITS WHICH HAD THE LOOK OF HAVING BEEN BUT THAT MOMENT ABANDONED",
+      "hypothesis": "Across the road were dug rough revel pits which at the look of having been but that moment abandoned.",
+      "wer": 0.10526315789473684
+    },
+    {
+      "id": "8197-278214-0032",
+      "reference": "JUST LIKE ONE OF THEM RESPECTABLE BEGGARS WOT PINS A PIECE OF PAPER ON THEIR WESKITS WITH",
+      "hypothesis": "just say one of them respectable bears what paints a piece of paper on their wrist says",
+      "wer": 0.35294117647058826
+    },
+    {
+      "id": "4520-38484-0026",
+      "reference": "WHAT THEY MAINLY AIMED AT WAS REUNITING MISTER SALTRAM TO HIS WIFE I WAS EXPECTING TO HEAR HE HAS BASELY ABANDONED HER GRAVENER WENT ON AT THIS",
+      "hypothesis": "what he mainly aimed at was reuniting mr solton to his wife i was expecting to hear he is basically a bander berger went on at this",
+      "wer": 0.2962962962962963
+    },
+    {
+      "id": "1708-142417-0010",
+      "reference": "AH LEAN UPON IT LIGHTLY",
+      "hypothesis": "Ah lean upon it lately",
+      "wer": 0.2
+    },
+    {
+      "id": "1643-138089-0005",
+      "reference": "WHETHER AS BOY HUSBAND OR WIDOWER HE HAD ALWAYS THE SNEAKING BELIEF THAT BODILY PASSION IS BAD",
+      "hypothesis": "whether as boy, husband or widower, he had always the sticking belief that bodily passion is bad.",
+      "wer": 0.058823529411764705
+    },
+    {
+      "id": "4216-10192-0033",
+      "reference": "MISSUS WRAGGE HAD ON HER OWN CONFESSION SEEN MISSUS LECOUNT HAD TALKED WITH",
+      "hypothesis": "Mrs Reich had on her own confession seen Mrs Lecount and talked with",
+      "wer": 0.3076923076923077
+    },
+    {
+      "id": "4520-38484-0014",
+      "reference": "HAD HAD ITS ORIGIN IN AN EARLY A CHILDISH INTIMACY WITH THE YOUNG ADELAIDE THE FRUIT OF MULTIPLIED TIES IN THE PREVIOUS GENERATION",
+      "hypothesis": "at had its origin in an early a chastish intimacy with the young atalide the fruit of multiplied ties in the previous generation",
+      "wer": 0.13043478260869565
+    },
+    {
+      "id": "1187-136220-0091",
+      "reference": "AND TAKE SHELTER BEHIND CARMEN ISLAND OR IF THEY COULD IN THE MOUTH OF THE",
+      "hypothesis": "and take shelter behind karamun island or if they could in the mouth of",
+      "wer": 0.13333333333333333
+    },
+    {
+      "id": "1187-136241-0008",
+      "reference": "FOR FIVE YEARS THE SEOR AND I LIVED HERE TOGETHER BUT I THINK THAT DURING ALL THIS TIME HE WAS DYING",
+      "hypothesis": "For five years the se\u00f1or and I lived here together but I think that during all this time he was dying",
+      "wer": 0.09523809523809523
+    },
+    {
+      "id": "8005-113328-0045",
+      "reference": "AND URGED IT ON HER WITH NO REGARD WHATEVER FOR HER OWN LIKING AT LENGTH",
+      "hypothesis": "and urged it on her with no regard whatsoever for her own liking at least",
+      "wer": 0.13333333333333333
+    },
+    {
+      "id": "4965-27767-0065",
+      "reference": "THE FIGURE OF A SOLDIER ON THE HILL OUTLINED ITSELF STRANGELY UNEXPECTEDLY NOT WHERE THEY HAD BEEN LOOKING FOR IT IT WAS FAINTLY ILLUMINED",
+      "hypothesis": "The picture of a soldier on the hill aligned itself strangely, unexpectedly, none where they had been looking for it. It was faintly illumined.",
+      "wer": 0.125
+    },
+    {
+      "id": "3109-144137-0085",
+      "reference": "I CANNOT UNDERSTAND IT SAID CHICHIKOV TO HIMSELF",
+      "hypothesis": "I cannot understand it, said Jisiquot to himself.",
+      "wer": 0.125
+    },
+    {
+      "id": "766-127195-0025",
+      "reference": "THEN A HEAVY BODY I KNEW TOO WELL WHAT WAS DRAGGED ACROSS THE FLOOR OF THE KITCHEN TOWARDS THE OPENING IRRESISTIBLY ATTRACTED",
+      "hypothesis": "and a heavy body i knew too well what was dragged across the floor of the kitchen toward the opening irresistibly attracted",
+      "wer": 0.09090909090909091
+    },
+    {
+      "id": "1374-133833-0065",
+      "reference": "AND FOR SHAME UPON YOU OH FOR SHAME TO ACCUSE ME OF BEING A BAD MOTHER TO MY SON",
+      "hypothesis": "and for shame upon me all for shame to accuse her of being a bad mother to my son",
+      "wer": 0.15789473684210525
+    },
+    {
+      "id": "4216-10164-0050",
+      "reference": "ANYTHING TO PLEASE YOU MY DEAR YES I PROMISE",
+      "hypothesis": "Anything to please you my dear yes I promise",
+      "wer": 0.0
+    },
+    {
+      "id": "3796-16815-0007",
+      "reference": "ANTONYMS SEE SYNONYMS FOR NIMBLE SNEER SYNONYMS FLING GIBE JEER MOCK",
+      "hypothesis": "antonyms see synonyms for nimble sneer synonyms fling jibe jeer mock",
+      "wer": 0.09090909090909091
+    },
+    {
+      "id": "7012-82949-0001",
+      "reference": "THUMB CAME AT LAST AND STOOPED OVER HIM GET UP NOW UMMANODDA LITTLE BROTHER AND DO NOT MOPE AND SULK ANY MORE I WAS ANGRY BECAUSE I WAS AFRAID",
+      "hypothesis": "Tom came at last and strode over him. \"Get up now, Umanatha, old brother, and do not moan in sack anymore.\" I was angry because I was afraid.",
+      "wer": 0.3103448275862069
+    },
+    {
+      "id": "4216-10192-0052",
+      "reference": "ALL FURTHER DOUBT WAS NOW AT AN END",
+      "hypothesis": "All further dread is at an end.",
+      "wer": 0.375
+    },
+    {
+      "id": "2792-152929-0043",
+      "reference": "TWO AND THREE QUARTERS FIVE AND A HALF THIRTEEN AND A HALF",
+      "hypothesis": "two and three quarters five and half thirteen and half",
+      "wer": 0.16666666666666666
+    },
+    {
+      "id": "6798-77736-0021",
+      "reference": "WHEN IN NINETEEN TEN ON THE ADVICE OF MY ELDER BROTHER",
+      "hypothesis": "when in nineteen on the advice of my elder brother",
+      "wer": 0.09090909090909091
+    },
+    {
+      "id": "4799-25950-0026",
+      "reference": "NOT THE SLIGHTEST PHYSICAL RESEMBLANCE TO THAT FORD",
+      "hypothesis": "not the slightest physical resemblance to that ford",
+      "wer": 0.0
+    },
+    {
+      "id": "1746-143015-0097",
+      "reference": "THE LAND ON EITHER SIDE OF THE MOUNTAIN WALL THAT SURROUNDED THE CAMP THEY DULY PREEMPTED THIS",
+      "hypothesis": "the danger on every side of the mountain wall that surrounded the camp that Judy prevented this",
+      "wer": 0.29411764705882354
+    },
+    {
+      "id": "2013-147610-0026",
+      "reference": "AT LAST THE HYDRA WAS VISIBLE ON A HILL BY THE SPRINGS OF AMYMONE WHERE ITS LAIR WAS FOUND HERE",
+      "hypothesis": "At last the hide was episcoped on a hold by the springs of Eamymon where his lair was found here",
+      "wer": 0.25
+    },
+    {
+      "id": "2021-235245-0036",
+      "reference": "I MADE TO THE PAGES OF THE PALACE AND TO WHAT END SAID I MY FRIEND SAID HE",
+      "hypothesis": "I went to the pages of the palace and to what end? Say ay my friend,\" said he.",
+      "wer": 0.16666666666666666
+    },
+    {
+      "id": "3334-171008-0089",
+      "reference": "USUALLY HAVE VERY LITTLE LOVE FOR THEIR PARENTS OR INDEED FOR ANY ONE BUT THEMSELVES BUT I MUST PUT YOU IN YOUR BED OR YOU WILL BE IN DANGER OF TAKING COLD",
+      "hypothesis": "usually have very little left for their parents or indeed for any one but themselves but i must put to in your bed and you will be in danger of taking cold",
+      "wer": 0.09375
+    },
+    {
+      "id": "2246-131710-0093",
+      "reference": "THIS WAS ABOUT FIFTY PER CENT OF HIS CONVERSATION FOR TWO DAYS",
+      "hypothesis": "This was about 150 of his conversation for two days.",
+      "wer": 0.25
+    },
+    {
+      "id": "6804-79288-0027",
+      "reference": "NO NOT AT ALL BUT SHE DID NOT APPREHEND MY LAST LETTER REQUIRED ANY ANSWER",
+      "hypothesis": "no not at all but he did not appertain my last letter required any answer",
+      "wer": 0.13333333333333333
+    },
+    {
+      "id": "5424-291181-0015",
+      "reference": "THE MUS LEACOPUS OR THE MUS SYLVATICUS WITH THE NESTS OF WHICH NEARLY EVERY SCHOOL BOY IS FAMILIAR THOSE WEE BIT HEAPS O STRAW AND STUBBLE",
+      "hypothesis": "the moss yeacopus and the moss selvaticus with the nests of which rarely every schoor is familiar thus ribbed heaps of straw and stubble",
+      "wer": 0.46153846153846156
+    },
+    {
+      "id": "3334-171008-0061",
+      "reference": "WHY PAPA HOW STRONG YOU ARE SHE SAID AS HE SET HER DOWN I BELIEVE YOU CAN CARRY ME AS EASILY AS I CAN MY DOLL",
+      "hypothesis": "Why papa how strong you are he said as he said again I believe you can carry me as easily as I came my doll",
+      "wer": 0.19230769230769232
+    },
+    {
+      "id": "4701-15273-0003",
+      "reference": "THE DUKE OF BURGUNDY WROTE AT ONCE ABOUT IT TO THE PARLIAMENT OF PARIS SAYING TAKE COUNSEL AND PAINS THAT THE INTERESTS OF THE KING AND HIS DOMINION BE NOT GOVERNED AS THEY NOW ARE",
+      "hypothesis": "the duke of bourgundry roared at once abroad to the parliament of paris saying take counsel and pains that the interests of the king and his dominion be not forlorn as they now are",
+      "wer": 0.14285714285714285
+    },
+    {
+      "id": "1704-142310-0034",
+      "reference": "WE CAN'T CLAP FOLK INTO PRISON",
+      "hypothesis": "We caught flatfoot into prison.",
+      "wer": 0.5
+    }
+  ]
+}

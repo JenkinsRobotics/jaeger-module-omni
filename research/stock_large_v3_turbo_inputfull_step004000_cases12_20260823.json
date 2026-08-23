@@ -1,0 +1,80 @@
+{
+  "front_end": "stock_whisper_qwen_free",
+  "correct": 1,
+  "n": 12,
+  "median_ms": 534.4726248877123,
+  "rows": [
+    {
+      "case": "q00",
+      "ok": false,
+      "ms": 769.9672090820968,
+      "reply": "I'm sorry, I didn't catch that. Could you repeat your question?"
+    },
+    {
+      "case": "q01",
+      "ok": false,
+      "ms": 530.2087909076363,
+      "reply": "I'm sorry, I didn't catch that. Could you repeat your question?"
+    },
+    {
+      "case": "q02",
+      "ok": false,
+      "ms": 405.7866670191288,
+      "reply": "We are in the year 2023."
+    },
+    {
+      "case": "q03",
+      "ok": true,
+      "ms": 339.76945793256164,
+      "reply": "The capital of France is Paris."
+    },
+    {
+      "case": "q04",
+      "ok": false,
+      "ms": 501.19762495160103,
+      "reply": "I'm sorry, I didn't catch that. Could you repeat your question?"
+    },
+    {
+      "case": "q05",
+      "ok": false,
+      "ms": 560.8026669360697,
+      "reply": "I'm sorry, I didn't quite catch that. Could you repeat your question?"
+    },
+    {
+      "case": "q06",
+      "ok": false,
+      "ms": 527.8268749825656,
+      "reply": "I'm sorry, I didn't catch that. Could you repeat your question?"
+    },
+    {
+      "case": "q07",
+      "ok": false,
+      "ms": 520.7080829422921,
+      "reply": "I'm sorry, I didn't catch that. Could you repeat your question?"
+    },
+    {
+      "case": "q08",
+      "ok": false,
+      "ms": 555.0030420999974,
+      "reply": "I'm sorry, I didn't quite catch that. Could you repeat your question?"
+    },
+    {
+      "case": "q09",
+      "ok": false,
+      "ms": 538.7364588677883,
+      "reply": "I'm sorry, I didn't quite catch that. Could you repeat your question?"
+    },
+    {
+      "case": "q10",
+      "ok": false,
+      "ms": 556.453957920894,
+      "reply": "I'm sorry, I didn't quite catch that. Could you repeat your question?"
+    },
+    {
+      "case": "q11",
+      "ok": false,
+      "ms": 553.8300829939544,
+      "reply": "I'm sorry, I didn't quite catch that. Could you repeat your question?"
+    }
+  ]
+}

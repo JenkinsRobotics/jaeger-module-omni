@@ -4,6 +4,30 @@ Run one GPU command at a time. `training/run.sh` now detects this repo's
 PyTorch/MLX trainers and the VoiceLLM clean-room/adapter jobs; evaluation and
 generation still require the same manual discipline.
 
+## 0. Continue from the measured medium-50M winner
+
+The active development baseline is now:
+
+```text
+artifacts/stock-whisper-gemma-medium50m-expanded-blend25.npz
+14.03% dev-clean64 / 19.10% MINDS-Vox591 / 19.60% train-other64
+10/12 cases12, 322 ms median
+```
+
+Do not continue the raw expanded-data branch blindly: its step 1,000 improves
+the new hard-speech gate to 18.72% but regresses dev-clean to 14.45%. The 25%
+interpolation is the only checkpoint that improves/ties all measured lexical
+gates. The next lexical experiment must add a stronger training-only sequence
+objective or additional genuinely new licensed data; another pass over the
+same 22,944-row mix is not justified.
+
+The common external cache is
+`~/models/jaeger-training-data/stock-whisper-medium-expanded-v1`. It contains
+11,316 new train-other clips plus 684 speaker-disjoint validation clips. Keep
+the validation split untouched and preserve source/speaker IDs when adding
+MUSAN/RIR augmentation or meeting audio. Adapter updates should use new data
+plus bounded replay, not repeated single-corpus continuation.
+
 ## 1. Keep the two production objectives separate
 
 Assistant/demo mode remains the native Gemma tower because it scores 10/12;

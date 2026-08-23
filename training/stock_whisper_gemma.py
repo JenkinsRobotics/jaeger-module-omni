@@ -26,6 +26,7 @@ import os
 import random
 import re
 import subprocess
+import sys
 import tempfile
 import time
 from pathlib import Path
@@ -50,6 +51,8 @@ from jaeger_agent_omni.runtime.stock_whisper import (
 )
 
 REPO = Path(__file__).resolve().parent.parent
+if str(REPO) not in sys.path:
+    sys.path.insert(0, str(REPO))
 DEFAULT_CACHE = Path.home() / "models/stock-whisper-gemma/cache-raw-v1"
 DEFAULT_TRANSCRIPT = REPO / "artifacts/stock-whisper-gemma-transcript.npz"
 DEFAULT_ANSWER = REPO / "artifacts/stock-whisper-gemma-answer.npz"
@@ -64,6 +67,8 @@ ANSWER_SYSTEM = (
 
 GPU_JOB_PATTERNS = (
     r"training/train\.py",
+    r"training/context_distill\.py",
+    r"training/precompute_stock_encoder\.py",
     r"training/stock_whisper_gemma\.py\s+"
     r"(?:precompute|pretrain-ctc|distill|train|probe|geometry|wer|bench)",
     r"cleanroom_train\.py\s+(?:precompute|train|bench)",

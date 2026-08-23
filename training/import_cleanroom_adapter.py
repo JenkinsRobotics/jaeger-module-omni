@@ -23,7 +23,21 @@ def main() -> int:
         source_arch = (str(archive["adapter_arch"])
                        if "adapter_arch" in archive.files
                        else "mean_pool_gelu_v1")
-        if source_arch == "frame_stack_swiglu_residual_temporal2_v1":
+        if source_arch == "frame_stack_swiglu_residual_temporal2_context_v1":
+            required = ("rms_pre_gamma", "stack_w1", "rms_mid_gamma",
+                        "stack_w2", "residual_hidden", "res_rms_pre_gamma",
+                        "res_w1", "res_rms_mid_gamma", "res_w2",
+                        "temporal_hidden", "temp_rms_pre_gamma", "temp_w1",
+                        "temp_dw", "temp_rms_mid_gamma", "temp_w2",
+                        "temporal2_hidden", "temporal2_kernel",
+                        "temp2_rms_pre_gamma", "temp2_w1", "temp2_dw",
+                        "temp2_rms_mid_gamma", "temp2_w2",
+                        "context_hidden", "context_heads", "context_kernel",
+                        "ctx_rms_pre_gamma", "ctx_w1",
+                        "ctx_rms_attn_gamma", "ctx_qkv_w", "ctx_attn_w",
+                        "ctx_rms_conv_gamma", "ctx_dw",
+                        "ctx_rms_mid_gamma", "ctx_w2")
+        elif source_arch == "frame_stack_swiglu_residual_temporal2_v1":
             required = ("rms_pre_gamma", "stack_w1", "rms_mid_gamma",
                         "stack_w2", "residual_hidden", "res_rms_pre_gamma",
                         "res_w1", "res_rms_mid_gamma", "res_w2",
@@ -50,7 +64,8 @@ def main() -> int:
         arrays = {key: archive[key] for key in required}
     if source_arch in ("frame_stack_swiglu_residual_v1",
                        "frame_stack_swiglu_residual_temporal_v1",
-                       "frame_stack_swiglu_residual_temporal2_v1"):
+                       "frame_stack_swiglu_residual_temporal2_v1",
+                       "frame_stack_swiglu_residual_temporal2_context_v1"):
         hidden = 2560
         residual_hidden = int(arrays["residual_hidden"])
         runtime_arch = {
@@ -60,6 +75,8 @@ def main() -> int:
                 "gemma_native_stack_swiglu_residual_temporal_v1",
             "frame_stack_swiglu_residual_temporal2_v1":
                 "gemma_native_stack_swiglu_residual_temporal2_v1",
+            "frame_stack_swiglu_residual_temporal2_context_v1":
+                "gemma_native_stack_swiglu_residual_temporal2_context_v1",
         }[source_arch]
         expected = {
             "rms_pre_gamma": (2048,), "stack_w1": (5120, 2048),
@@ -70,7 +87,8 @@ def main() -> int:
             "res_w2": (2560, residual_hidden),
         }
         if source_arch in ("frame_stack_swiglu_residual_temporal_v1",
-                           "frame_stack_swiglu_residual_temporal2_v1"):
+                           "frame_stack_swiglu_residual_temporal2_v1",
+                           "frame_stack_swiglu_residual_temporal2_context_v1"):
             temporal_hidden = int(arrays["temporal_hidden"])
             expected.update({
                 "temporal_hidden": (),
@@ -80,7 +98,8 @@ def main() -> int:
                 "temp_rms_mid_gamma": (temporal_hidden,),
                 "temp_w2": (2560, temporal_hidden),
             })
-        if source_arch == "frame_stack_swiglu_residual_temporal2_v1":
+        if source_arch in ("frame_stack_swiglu_residual_temporal2_v1",
+                           "frame_stack_swiglu_residual_temporal2_context_v1"):
             temporal2_hidden = int(arrays["temporal2_hidden"])
             temporal2_kernel = int(arrays["temporal2_kernel"])
             if temporal2_kernel <= 0 or temporal2_kernel % 2 == 0:
@@ -93,6 +112,31 @@ def main() -> int:
                 "temp2_dw": (temporal2_hidden, temporal2_kernel, 1),
                 "temp2_rms_mid_gamma": (temporal2_hidden,),
                 "temp2_w2": (2560, temporal2_hidden),
+            })
+        if source_arch == "frame_stack_swiglu_residual_temporal2_context_v1":
+            context_hidden = int(arrays["context_hidden"])
+            context_heads = int(arrays["context_heads"])
+            context_kernel = int(arrays["context_kernel"])
+            if context_hidden <= 0 or context_heads <= 0:
+                raise ValueError(f"{args.source}: invalid context shape")
+            if context_hidden % context_heads:
+                raise ValueError(f"{args.source}: context hidden must divide "
+                                 "evenly across heads")
+            if context_kernel <= 0 or context_kernel % 2 == 0:
+                raise ValueError(f"{args.source}: context kernel must be a "
+                                 "positive odd value")
+            expected.update({
+                "context_hidden": (), "context_heads": (),
+                "context_kernel": (),
+                "ctx_rms_pre_gamma": (2560,),
+                "ctx_w1": (context_hidden * 2, 2560),
+                "ctx_rms_attn_gamma": (context_hidden,),
+                "ctx_qkv_w": (context_hidden * 3, context_hidden),
+                "ctx_attn_w": (context_hidden, context_hidden),
+                "ctx_rms_conv_gamma": (context_hidden,),
+                "ctx_dw": (context_hidden, context_kernel, 1),
+                "ctx_rms_mid_gamma": (context_hidden,),
+                "ctx_w2": (2560, context_hidden),
             })
     elif source_arch == "frame_stack_swiglu_v1":
         hidden = 2560

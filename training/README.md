@@ -44,6 +44,50 @@ python training/stock_whisper_gemma.py distill \
 The target is still only `audio_tower -> embed_audio` vectors from the same
 waveform. No generated transcript or answer is used as supervision.
 
+The owned 50.15M context continuation is trained directly from this repo:
+
+```bash
+python training/context_distill.py \
+  --cache <read-only-stock-feature-and-audio-cache> \
+  --split train100 --extra-split mindsvox_train \
+  --extra-split fleurs_train \
+  --model ~/models/gemma-4-e4b-it-mlx-full \
+  --resume artifacts/stock-whisper-gemma-native-temporal256x2-k31-6k.npz \
+  --output artifacts/stock-whisper-gemma-native-context1536-8k.npz
+```
+
+Only model and data artifacts may be outside the repository. The trainer,
+architecture, native-teacher extraction, speaker loss, contention guard,
+checkpoint writer, and evaluation commands are repo-local. The checkpoint is
+already in runtime format; the clean-room importer remains only for historical
+artifacts created before this ownership boundary was enforced.
+
+For the separate large-v3-turbo A/B, first cache the same waveform IDs with
+the 1280-wide stock encoder, then retarget only the encoder-facing projection
+of the selected medium context checkpoint:
+
+```bash
+python training/precompute_stock_encoder.py \
+  --source-cache <read-only-medium-cache> \
+  --output-cache ~/models/jaeger-training-data/stock-whisper-large-v3-turbo \
+  --split train100 --split mindsvox_train --split fleurs_train \
+  --whisper openai/whisper-large-v3-turbo
+
+python training/context_distill.py \
+  --cache ~/models/jaeger-training-data/stock-whisper-large-v3-turbo \
+  --split train100 --extra-split mindsvox_train \
+  --extra-split fleurs_train \
+  --model ~/models/gemma-4-e4b-it-mlx-full \
+  --resume artifacts/stock-whisper-gemma-native-context1536-7k.npz \
+  --encoder openai/whisper-large-v3-turbo --train-branch input \
+  --speaker-weight 0 --output artifacts/stock-whisper-large-v3-turbo-input.npz
+```
+
+The first large stage freezes every proven Gemma-width branch and trains only
+the new 2560-wide input RMSNorm plus 2560→5120 projection. Later stages may
+unfreeze the complete input stack or apply speaker/lexical auxiliary heads,
+but only after free-running corpus evaluation of this controlled baseline.
+
 `pretrain-ctc` can load the stack connector for controlled experiments, but
 CTC fine-tuning the selected checkpoint is measured and rejected. With human
 transcripts, frozen Gemma input-token rows, and no Gemma output supervision,

@@ -1,0 +1,80 @@
+{
+  "front_end": "stock_whisper_qwen_free",
+  "correct": 10,
+  "n": 12,
+  "median_ms": 362.87254153285176,
+  "rows": [
+    {
+      "case": "q00",
+      "ok": false,
+      "ms": 1042.3894580453634,
+      "reply": "Two plus to equals three."
+    },
+    {
+      "case": "q01",
+      "ok": true,
+      "ms": 356.27175006084144,
+      "reply": "The sky is blue."
+    },
+    {
+      "case": "q02",
+      "ok": true,
+      "ms": 351.16708278656006,
+      "reply": "There are seven days in a week."
+    },
+    {
+      "case": "q03",
+      "ok": true,
+      "ms": 351.8641251139343,
+      "reply": "The capital of France is Paris."
+    },
+    {
+      "case": "q04",
+      "ok": true,
+      "ms": 410.60066712088883,
+      "reply": "The sum of seven and minus three is four."
+    },
+    {
+      "case": "q05",
+      "ok": true,
+      "ms": 354.1086248587817,
+      "reply": "A spider has eight legs."
+    },
+    {
+      "case": "q06",
+      "ok": true,
+      "ms": 348.08483300730586,
+      "reply": "The largest planet is Jupiter."
+    },
+    {
+      "case": "q07",
+      "ok": true,
+      "ms": 369.47333300486207,
+      "reply": "Five times five is twenty-five."
+    },
+    {
+      "case": "q08",
+      "ok": true,
+      "ms": 338.4257920552045,
+      "reply": "Autumn comes after summer."
+    },
+    {
+      "case": "q09",
+      "ok": true,
+      "ms": 418.7476250808686,
+      "reply": "There are 24 hours in a day."
+    },
+    {
+      "case": "q10",
+      "ok": true,
+      "ms": 473.2575421221554,
+      "reply": "The freezing point of water is 32 degrees Fahrenheit."
+    },
+    {
+      "case": "q11",
+      "ok": false,
+      "ms": 469.7807910852134,
+      "reply": "The word \"ramial\" is not in the dictionary."
+    }
+  ]
+}

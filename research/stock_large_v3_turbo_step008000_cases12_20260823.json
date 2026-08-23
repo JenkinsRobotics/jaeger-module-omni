@@ -1,0 +1,80 @@
+{
+  "front_end": "stock_whisper_qwen_free",
+  "correct": 0,
+  "n": 12,
+  "median_ms": 518.1012289831415,
+  "rows": [
+    {
+      "case": "q00",
+      "ok": false,
+      "ms": 813.7350420001894,
+      "reply": "I'm sorry, I didn't quite catch that. Could you repeat your question?"
+    },
+    {
+      "case": "q01",
+      "ok": false,
+      "ms": 530.6548750959337,
+      "reply": "I'm sorry, I didn't catch that. Could you repeat your question?"
+    },
+    {
+      "case": "q02",
+      "ok": false,
+      "ms": 471.88412491232157,
+      "reply": "I'm not sure I caught that. Could you repeat your question?"
+    },
+    {
+      "case": "q03",
+      "ok": false,
+      "ms": 338.56412512250245,
+      "reply": "The cupboard is in the kitchen."
+    },
+    {
+      "case": "q04",
+      "ok": false,
+      "ms": 506.6982910502702,
+      "reply": "I'm sorry, I didn't catch that. Could you repeat your question?"
+    },
+    {
+      "case": "q05",
+      "ok": false,
+      "ms": 393.54841713793576,
+      "reply": "The United Nations General Assembly session is in recess."
+    },
+    {
+      "case": "q06",
+      "ok": false,
+      "ms": 289.6964580286294,
+      "reply": "Yes, it is."
+    },
+    {
+      "case": "q07",
+      "ok": false,
+      "ms": 518.0678749457002,
+      "reply": "I'm sorry, I didn't catch that. Could you repeat your question?"
+    },
+    {
+      "case": "q08",
+      "ok": false,
+      "ms": 551.5313751529902,
+      "reply": "I'm sorry, I didn't quite catch that. Could you repeat your question?"
+    },
+    {
+      "case": "q09",
+      "ok": false,
+      "ms": 518.1345830205828,
+      "reply": "I'm sorry, I didn't catch that. Could you repeat your question?"
+    },
+    {
+      "case": "q10",
+      "ok": false,
+      "ms": 549.9210001435131,
+      "reply": "I'm sorry, I didn't quite catch that. Could you repeat your question?"
+    },
+    {
+      "case": "q11",
+      "ok": false,
+      "ms": 549.8748749960214,
+      "reply": "I'm sorry, I didn't quite catch that. Could you repeat your question?"
+    }
+  ]
+}

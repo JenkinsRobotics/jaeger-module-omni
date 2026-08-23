@@ -55,6 +55,40 @@ tower's: one read audio as an image, one never named Shakespeare.
 
 31/31 module self-checks green: `python research/check_all.py`
 
+## Stock-Whisper medium 50M development winner — 2026-08-23
+
+The current Qwen-free development winner is the 25% interpolation between
+the selected native/contextual connector and its new-data continuation:
+
+```text
+artifacts/stock-whisper-gemma-medium50m-expanded-blend25.npz
+50,146,816 deployed adapter parameters
+14.03% WER — dev-clean64, 134 edits / 955 words
+19.10% WER — MINDS/Vox591, 1,860 edits / 9,736 words
+19.60% WER — speaker-disjoint train-other64, 224 edits / 1,143 words
+10/12 answers — canonical cases12, 322 ms median
+```
+
+The training-only lexical probe is a bidirectional GRU/character-CTC head on
+the 1,536-wide contextual bottleneck. Human transcripts supervise this head;
+they are never fed into Gemma or used as a runtime handoff. Gemma-native audio
+vectors remain the deployed-output anchor, and the lexical head is ignored by
+the runtime. Direct CTC against Gemma vocabulary rows remains rejected.
+
+The expanded pool adds 12,000 previously unused LibriSpeech
+`train-other-500` clips: 11,316 training clips from 1,095 speakers and 684
+validation clips from 60 disjoint speakers. It has zero ID overlap with the
+earlier train-clean/dev-clean/MINDS/Vox/FLEURS cache. The raw new-data
+continuation improved hard speech to 18.72% but regressed clean speech to
+14.45%, so it was not promoted. A 25% weight interpolation improved the prior
+selected checkpoint by one clean edit and one hard-speech edit while tying
+the 9,736-word conversational result and retaining 10/12 answers. The 50%
+and 75% blends both regressed dev-clean to 14.55% and were rejected.
+
+This checkpoint is the development baseline, not the live desktop default.
+The native Gemma tower remains live until five-minute duplex, speaker, AEC,
+and context-roll gates are repeated.
+
 ## Canonical live demo
 
 ```bash
