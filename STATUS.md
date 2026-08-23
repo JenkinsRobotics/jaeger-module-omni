@@ -199,6 +199,12 @@ one edit (2,204 versus 2,203); 0.5 loses by eight. The retained checkpoint
 therefore remains unchanged. The complete free-running matrix is in
 `research/stock_whisper_native_followup_sweeps_20260823.json`.
 
+The available new-data lever was tested as well. A training-only FLEURS
+manifest added 1,937 CC-BY-4.0 English-US clips (1--12 s) without touching
+either validation partition. Step 1,000 improves dev-clean from 20.52% to
+20.00%, but regresses MINDS/Vox from 22.63% to 22.82% (2,222 versus 2,203
+edits) and remains 8/12. This is another domain trade, not a promotion.
+
 On the exact same existing 64-clip/977-word validation slice used by
 `research/wer_corpus.py`, the promoted sparse tuned adapter improves the prior
 adapter from **14.74% to 13.61% WER** (113 fewer basis points, 7.7%

@@ -70,6 +70,16 @@
       "cases12": {"correct": 8, "n": 12, "median_ms": 501.2930210214108, "transcript_wer": 0.19402985074626866},
       "result": "rejected",
       "reason": "tied dev-clean but regressed mixed gate by 8 word edits"
+    },
+    {
+      "name": "fleurs_training_expansion_step1000",
+      "new_training_clips": 1937,
+      "source_manifest": "~/models/jaeger-training-audio/fleurs-en-us-20260823/manifest.jsonl",
+      "devclean64": {"edits": 191, "words": 955, "wer": 0.2},
+      "mindsvox591": {"edits": 2222, "words": 9736, "wer": 0.22822514379622022},
+      "cases12": {"correct": 8, "n": 12, "median_ms": 510.46331238467246, "transcript_wer": 0.19402985074626866},
+      "result": "rejected",
+      "reason": "improved dev-clean by 5 edits but regressed mixed corpus by 19 edits"
     }
   ],
   "selected": "artifacts/stock-whisper-gemma-native-stack-residual1024-refine4k.npz",

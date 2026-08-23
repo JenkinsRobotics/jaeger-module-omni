@@ -79,11 +79,12 @@ dev-clean and loses MINDS/Vox by exactly one word edit. See
 `research/stock_whisper_native_followup_sweeps_20260823.json` before starting
 another adapter-only run.
 
-Further work should change the information source, not repeat local residual
-tuning: add genuinely new speakers/acoustic conditions with a fixed untouched
-validation partition, or test a different stock encoder boundary/temporal
-connector. Require improvement below 20.52% dev-clean and 22.63% MINDS/Vox,
-with at least 9/12 answers, before replacing the active development checkpoint.
+Further work should change the encoder boundary or temporal connector, not
+repeat local residual tuning. Adding 1,937 untouched FLEURS training clips was
+also tested: its best checkpoint improves dev-clean to 20.00% but regresses
+MINDS/Vox to 22.82%, with answers still 8/12. Require improvement below 20.52%
+dev-clean and 22.63% MINDS/Vox, with at least 9/12 answers, before replacing
+the active development checkpoint.
 Sampled CTC against human transcripts and frozen Gemma input-token rows is
 also closed for this checkpoint: even 250 steps at 1e-6 regressed the exact
 dev-clean gate from 27.75% to 28.59%, reaching 33.61% by step 1,000. It used no
