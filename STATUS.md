@@ -51,7 +51,7 @@ tower's: one read audio as an image, one never named Shakespeare.
 | speech codes -> audible cloned voice | **works** | `research/t2w_client.py --say` |
 | cognition -> talker conditioning | **built, untrained** | `neural/delta.py` |
 | tuned Whisper -> delta -> E4B | **works, 13.61% WER/64** | `omni.py --front-end delta` |
-| stock Whisper -> native-teacher adapter -> E4B | **active dev: 18.01% WER/64, 8/12** | `omni.py --front-end stock --dual-output` |
+| stock Whisper -> native-teacher adapter -> E4B | **promoted owned: 15.60% WER/64, 10/12** | `omni.py --front-end stock --dual-output` |
 
 31/31 module self-checks green: `python research/check_all.py`
 
@@ -147,6 +147,8 @@ stock OpenAI Whisper-medium encoder (50 Hz, decoder unused)
      -> RMSNorm(1024) -> Linear(2560) + skip
   -> zero-init temporal residual: RMSNorm -> SwiGLU(256)
      -> depthwise Conv1d(k=3) -> RMSNorm -> Linear(2560) + skip
+  -> zero-init long temporal residual: RMSNorm -> SwiGLU(256)
+     -> depthwise Conv1d(k=31) -> RMSNorm -> Linear(2560) + skip
   -> Gemma 4 E4B
 teacher: Gemma's own audio_tower -> embed_audio vectors at 25 Hz
 ```
@@ -174,7 +176,7 @@ and **8/12 answers at 511 ms median** with the dual transcript/answer prompt.
 Generated transcript WER on cases12 was **20.90%**; answer accuracy did not
 rise because the remaining four suite misses were perception errors.
 
-This is a large clean-room improvement, but it is not promoted over the
+This was a large clean-room improvement, but at that point it was not promoted over the
 paired stock adapter (16.34%/9 of 12), tuned-Whisper observer (13.61%), or
 native-tower live default (10 of 12). The residual path is strongly
 non-monotonic: half-rate step 8,000 beats its final checkpoint, and low-rate
@@ -227,8 +229,39 @@ This improves the prior native-teacher checkpoint by 2.51 WER points on
 dev-clean and 1.68 points on MINDS/Vox without using a transcript, answer, or
 Gemma output as supervision. Step 8,000 wins the 969-word ranking proxy but is
 worse on both authoritative corpora (18.12%/21.29%), so step 7,000 is selected.
-The native-teacher path is still not promoted over the 16.34%/9-of-12 paired
-adapter or the 10-of-12 native live tower because answer accuracy remains 8/12.
+At that stage the native-teacher path was not promoted over the
+16.34%/9-of-12 paired adapter or the 10-of-12 native live tower because answer
+accuracy remained 8/12.
+
+A lower-rate continuation improved both corpora again to 17.07%/20.72%, but
+remained 8/12. Upweighting <=3 s open-corpus clips 4x also left every 500-step
+answer checkpoint at 8/12, so data frequency was not the missing lever. The
+successful change was a second exact-zero Conformer-style residual with a
+31-token depthwise kernel. At 25 Hz its 1.24-second receptive field covers most
+of the short question suite while preserving the complete selected connector
+bit-for-bit at step zero. Training only its 1.98M parameters for 8,000 steps
+produced another non-monotonic winner at step 6,000:
+
+```text
+artifacts/stock-whisper-gemma-native-temporal256x2-k31-6k.npz
+15.60% WER — dev-clean64, 149 edits / 955 words
+19.86% WER — MINDS/Vox591, 1,934 edits / 9,736 words
+10/12 answers — dual-output cases12, 530 ms median
+8.96% generated transcript WER — 67-word cases12 diagnostic
+```
+
+This checkpoint clears all three predeclared promotion gates and is the active
+owned stock-Whisper adapter. It beats the paired adapter on the same dev-clean
+gate (15.60% versus 16.34%) and reaches native-tower answer parity (10/12),
+without transcript, answer, Gemma-generated output, MiniCPM, or Qwen
+supervision. Step 8,000 improves dev-clean further to 15.18% but falls to 9/12,
+so it is not the assistant selection. The native tower remains the live desktop
+default until the bidirectional stock encoder passes live-room latency and soak
+gates.
+
+The reported 10/12 is after fixing a grader false positive: expected digit
+`7` had incorrectly matched inside `0.137`. Numeric answers now match complete
+normalized tokens, and the selected step 6,000 still scores 10/12.
 
 On the exact same existing 64-clip/977-word validation slice used by
 `research/wer_corpus.py`, the promoted sparse tuned adapter improves the prior

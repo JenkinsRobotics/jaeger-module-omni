@@ -53,20 +53,21 @@ claim of word-level diarization; the offline k=3 centroids separate at
 
 ## 3. Improve answer alignment at the proven boundary
 
-The **active development** checkpoint is now the fully owned Gemma-native
+The **promoted owned** checkpoint is now the fully owned Gemma-native
 teacher path:
 
 ```text
-artifacts/stock-whisper-gemma-native-temporal256-7k.npz
-18.01% WER — exact historical dev-clean64 / 955 words
-20.95% WER — held-out MINDS/Vox591 / 9,736 words
-8/12 answers — canonical dual-output prompt, 525 ms median
-20.90% generated transcript WER — cases12 diagnostic
+artifacts/stock-whisper-gemma-native-temporal256x2-k31-6k.npz
+15.60% WER — exact historical dev-clean64 / 955 words
+19.86% WER — held-out MINDS/Vox591 / 9,736 words
+10/12 answers — canonical dual-output prompt, 530 ms median
+8.96% generated transcript WER — cases12 diagnostic
 ```
 
-It remains a challenger, not the live or observer default. The older paired
-stock adapter remains the accuracy gate at 16.34%/9 of 12; the native tower
-remains live at 10/12; the tuned-Whisper observer remains 13.61% WER.
+It is promoted over the older paired stock adapter's 16.34%/9-of-12 result and
+reaches native-tower answer parity. The native tower remains live because the
+stock encoder is still bidirectional and turn-bounded; the tuned-Whisper
+observer remains the transcript default at 13.61% on its fixed 977-word gate.
 
 The first zero-init residual block established the base used by the winning
 temporal branch. It improved the prior stack checkpoint by 7.23 WER points on
@@ -80,13 +81,16 @@ dev-clean and loses MINDS/Vox by exactly one word edit. See
 `research/stock_whisper_native_followup_sweeps_20260823.json` before starting
 another adapter-only run.
 
-The first temporal-connector experiment is successful. A zero-init
-Conformer-style 256-wide branch over three adjacent 25 Hz tokens improves both
-authoritative corpora to 18.01%/20.95%; step 7,000 beats step 8,000 on both
-exact gates despite losing the smaller ranking proxy. The next controlled run
-may refine from temporal step 7,000 at a lower learning rate, but it must also
-improve answer perception: require below 18.01% dev-clean and 20.95%
-MINDS/Vox, with at least 9/12 answers, before replacing this checkpoint.
+The first three-token temporal connector improved both authoritative corpora
+to 18.01%/20.95%. A lower-rate continuation reached 17.07%/20.72% but stayed
+8/12, and a 4x short-replay continuation stayed 8/12 at every checkpoint. A
+second exact-zero 256-wide branch with a Conformer-standard 31-token depthwise
+kernel is the successful next capacity change: step 6,000 reaches
+15.60%/19.86% and 10/12. Step 8,000 reaches 15.18% dev-clean but drops to 9/12,
+so do not select it for the assistant. The next gate is live behavior, not more
+blind continuation: require stable five-minute turn handling, measured
+latency, and no regression in barge-in/capture before changing the desktop
+default.
 Sampled CTC against human transcripts and frozen Gemma input-token rows is
 also closed for this checkpoint: even 250 steps at 1e-6 regressed the exact
 dev-clean gate from 27.75% to 28.59%, reaching 33.61% by step 1,000. It used no

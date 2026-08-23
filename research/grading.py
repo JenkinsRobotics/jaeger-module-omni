@@ -70,7 +70,10 @@ def hit(expected: str, reply: str) -> bool:
             return True
         if a_dropped and a_dropped in r_dropped:
             return True
-        if a_num and a_num in r_num:                # 24 == twenty four
+        # Numeric forms must align to complete normalized tokens. A plain
+        # substring check falsely graded expected "seven" as present in
+        # "-0.137" because both normalize to strings containing "7".
+        if a_num and f" {a_num} " in f" {r_num} ":  # 24 == twenty four
             return True
     return False
 
@@ -88,6 +91,7 @@ def demo() -> None:
     assert hit("tac", "It is spelled T-A-C.")                      # the old bug
     assert hit("twenty four", "There are 24 hours in a day.")      # digit form
     assert hit("seven", "There are 7 days in a week.")
+    assert not hit("seven", "The result is -0.137.")
     assert not hit("twenty four", "There are 23 hours in a day.")
     assert hit("paris", "The capital of France is Paris.")
     assert not hit("paris", "The capital of France is Lyon.")

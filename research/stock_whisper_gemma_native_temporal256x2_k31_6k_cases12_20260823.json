@@ -1,0 +1,107 @@
+{
+ "front_end": "stock",
+ "dual_output": true,
+ "correct": 10,
+ "n": 12,
+ "median_ms": 529.6787080587819,
+ "rows": [
+  {
+   "case": "q00",
+   "ok": true,
+   "ms": 1364.5141248125583,
+   "reply": "TRANSCRIPT: What is two plus two?\nANSWER: Four.",
+   "transcript": "What is two plus two?",
+   "answer": "Four."
+  },
+  {
+   "case": "q01",
+   "ok": true,
+   "ms": 502.4073750246316,
+   "reply": "TRANSCRIPT: What color is the sky?\nANSWER: It is blue.",
+   "transcript": "What color is the sky?",
+   "answer": "It is blue."
+  },
+  {
+   "case": "q02",
+   "ok": true,
+   "ms": 483.6667920462787,
+   "reply": "TRANSCRIPT: How many days in a week?\nANSWER: Seven.",
+   "transcript": "How many days in a week?",
+   "answer": "Seven."
+  },
+  {
+   "case": "q03",
+   "ok": true,
+   "ms": 578.4221668727696,
+   "reply": "TRANSCRIPT: What is the capital of France?\nANSWER: The capital of France is Paris.",
+   "transcript": "What is the capital of France?",
+   "answer": "The capital of France is Paris."
+  },
+  {
+   "case": "q04",
+   "ok": false,
+   "ms": 447.5911660119891,
+   "reply": "TRANSCRIPT: what is seven minus three?\nANSWER: four",
+   "transcript": "what is seven minus three?",
+   "answer": "four"
+  },
+  {
+   "case": "q05",
+   "ok": true,
+   "ms": 524.1251250263304,
+   "reply": "TRANSCRIPT: How many units does a spider have?\nANSWER: Eight legs.",
+   "transcript": "How many units does a spider have?",
+   "answer": "Eight legs."
+  },
+  {
+   "case": "q06",
+   "ok": true,
+   "ms": 535.2322910912335,
+   "reply": "TRANSCRIPT: what is the largest planet?\nANSWER: Jupiter is the largest planet.",
+   "transcript": "what is the largest planet?",
+   "answer": "Jupiter is the largest planet."
+  },
+  {
+   "case": "q07",
+   "ok": true,
+   "ms": 477.32233395799994,
+   "reply": "TRANSCRIPT: what is five times five?\nANSWER: twenty-five",
+   "transcript": "what is five times five?",
+   "answer": "twenty-five"
+  },
+  {
+   "case": "q08",
+   "ok": true,
+   "ms": 450.54820785298944,
+   "reply": "TRANSCRIPT: what season comes after summer?\nANSWER: autumn",
+   "transcript": "what season comes after summer?",
+   "answer": "autumn"
+  },
+  {
+   "case": "q09",
+   "ok": true,
+   "ms": 621.827624971047,
+   "reply": "TRANSCRIPT: How many hours in a day?\nANSWER: There are 24 hours in a day.",
+   "transcript": "How many hours in a day?",
+   "answer": "There are 24 hours in a day."
+  },
+  {
+   "case": "q10",
+   "ok": true,
+   "ms": 649.2463329341263,
+   "reply": "TRANSCRIPT: What is the freezing point of water?\nANSWER: Zero degrees Celsius or 32 degrees Fahrenheit.",
+   "transcript": "What is the freezing point of water?",
+   "answer": "Zero degrees Celsius or 32 degrees Fahrenheit."
+  },
+  {
+   "case": "q11",
+   "ok": false,
+   "ms": 669.7509591467679,
+   "reply": "TRANSCRIPT: It workedramethyl and chuliga.\nANSWER: I don't know what you are referring to.",
+   "transcript": "It workedramethyl and chuliga.",
+   "answer": "I don't know what you are referring to."
+  }
+ ],
+ "transcript_wer": 0.08955223880597014,
+ "transcript_words": 67
+}

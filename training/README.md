@@ -7,28 +7,29 @@ train loop.
 
 Two stock-Whisper adapters are intentionally retained:
 
-- the paired adapter below is the current accuracy leader and learns from the
-  proven tuned-Whisper pre-Gemma representation;
-- the active clean-room challenger learns only from Gemma's native audio-tower
-  vectors and has no MiniCPM/Qwen training lineage.
+- the paired adapter below learns from the proven tuned-Whisper pre-Gemma
+  representation and remains a historical control;
+- the promoted clean-room adapter learns only from Gemma's native audio-tower
+  vectors, has no MiniCPM/Qwen training lineage, and now leads the owned stock
+  path on both dev-clean WER and answer accuracy.
 
 Import the selected clean-room source checkpoint with strict runtime metadata:
 
 ```bash
 python training/import_cleanroom_adapter.py \
-  ~/models/jaeger-cleanroom/adapter_distill_stack_residual1024_temporal256_lr100.step007000.npz \
-  artifacts/stock-whisper-gemma-native-temporal256-7k.npz
+  ~/models/jaeger-cleanroom/adapter_distill_stack_residual1024_temporal256x2_k31_lr50.step006000.npz \
+  artifacts/stock-whisper-gemma-native-temporal256x2-k31-6k.npz
 ```
 
 `jaeger_agent_omni.runtime.stock_whisper` identifies the architecture from the
 checkpoint metadata and supports both formats without changing the default
 live tower. The importer supports both the mean-pool/GELU checkpoint and the
-frame-stack/RMSNorm/SwiGLU checkpoints, including the zero-init residual and
-local temporal-residual variants, with strict shape metadata. The selected
-temporal checkpoint measures 18.01% WER on the historical
-dev-clean64/955-word gate, 20.95% on MINDS/Vox591/9,736 words, and 8/12 on the
-canonical dual-output benchmark. It is active development, not promoted over
-the 9/12 paired adapter or 10/12 native tower.
+frame-stack/RMSNorm/SwiGLU checkpoints, including the zero-init residual plus
+local and long-context temporal-residual variants, with strict shape metadata.
+The selected long-context checkpoint measures 15.60% WER on the historical
+dev-clean64/955-word gate, 19.86% on MINDS/Vox591/9,736 words, and 10/12 on the
+canonical dual-output benchmark. It is promoted over the 16.34%/9-of-12 paired
+adapter; the native tower remains live pending a stock-front-end soak.
 
 For paired stock-Whisper and cached Gemma-native vectors, the owned trainer is:
 

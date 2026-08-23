@@ -23,7 +23,16 @@ def main() -> int:
         source_arch = (str(archive["adapter_arch"])
                        if "adapter_arch" in archive.files
                        else "mean_pool_gelu_v1")
-        if source_arch == "frame_stack_swiglu_residual_temporal_v1":
+        if source_arch == "frame_stack_swiglu_residual_temporal2_v1":
+            required = ("rms_pre_gamma", "stack_w1", "rms_mid_gamma",
+                        "stack_w2", "residual_hidden", "res_rms_pre_gamma",
+                        "res_w1", "res_rms_mid_gamma", "res_w2",
+                        "temporal_hidden", "temp_rms_pre_gamma", "temp_w1",
+                        "temp_dw", "temp_rms_mid_gamma", "temp_w2",
+                        "temporal2_hidden", "temporal2_kernel",
+                        "temp2_rms_pre_gamma", "temp2_w1", "temp2_dw",
+                        "temp2_rms_mid_gamma", "temp2_w2")
+        elif source_arch == "frame_stack_swiglu_residual_temporal_v1":
             required = ("rms_pre_gamma", "stack_w1", "rms_mid_gamma",
                         "stack_w2", "residual_hidden", "res_rms_pre_gamma",
                         "res_w1", "res_rms_mid_gamma", "res_w2",
@@ -40,13 +49,18 @@ def main() -> int:
             required = ("ln_gamma", "ln_beta", "w1", "b1", "w2", "b2")
         arrays = {key: archive[key] for key in required}
     if source_arch in ("frame_stack_swiglu_residual_v1",
-                       "frame_stack_swiglu_residual_temporal_v1"):
+                       "frame_stack_swiglu_residual_temporal_v1",
+                       "frame_stack_swiglu_residual_temporal2_v1"):
         hidden = 2560
         residual_hidden = int(arrays["residual_hidden"])
-        runtime_arch = (
-            "gemma_native_stack_swiglu_residual_temporal_v1"
-            if source_arch == "frame_stack_swiglu_residual_temporal_v1"
-            else "gemma_native_stack_swiglu_residual_v1")
+        runtime_arch = {
+            "frame_stack_swiglu_residual_v1":
+                "gemma_native_stack_swiglu_residual_v1",
+            "frame_stack_swiglu_residual_temporal_v1":
+                "gemma_native_stack_swiglu_residual_temporal_v1",
+            "frame_stack_swiglu_residual_temporal2_v1":
+                "gemma_native_stack_swiglu_residual_temporal2_v1",
+        }[source_arch]
         expected = {
             "rms_pre_gamma": (2048,), "stack_w1": (5120, 2048),
             "rms_mid_gamma": (2560,), "stack_w2": (2560, 2560),
@@ -55,7 +69,8 @@ def main() -> int:
             "res_rms_mid_gamma": (residual_hidden,),
             "res_w2": (2560, residual_hidden),
         }
-        if source_arch == "frame_stack_swiglu_residual_temporal_v1":
+        if source_arch in ("frame_stack_swiglu_residual_temporal_v1",
+                           "frame_stack_swiglu_residual_temporal2_v1"):
             temporal_hidden = int(arrays["temporal_hidden"])
             expected.update({
                 "temporal_hidden": (),
@@ -64,6 +79,20 @@ def main() -> int:
                 "temp_dw": (temporal_hidden, 3, 1),
                 "temp_rms_mid_gamma": (temporal_hidden,),
                 "temp_w2": (2560, temporal_hidden),
+            })
+        if source_arch == "frame_stack_swiglu_residual_temporal2_v1":
+            temporal2_hidden = int(arrays["temporal2_hidden"])
+            temporal2_kernel = int(arrays["temporal2_kernel"])
+            if temporal2_kernel <= 0 or temporal2_kernel % 2 == 0:
+                raise ValueError(f"{args.source}: temporal2_kernel must be "
+                                 "a positive odd value")
+            expected.update({
+                "temporal2_hidden": (), "temporal2_kernel": (),
+                "temp2_rms_pre_gamma": (2560,),
+                "temp2_w1": (temporal2_hidden * 2, 2560),
+                "temp2_dw": (temporal2_hidden, temporal2_kernel, 1),
+                "temp2_rms_mid_gamma": (temporal2_hidden,),
+                "temp2_w2": (2560, temporal2_hidden),
             })
     elif source_arch == "frame_stack_swiglu_v1":
         hidden = 2560

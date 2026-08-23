@@ -29,8 +29,8 @@ The audio front end is swappable at this seam and NOTHING else changes:
             4096x2560 adapter -> Gemma. The Qwen LLM, original Qwen-facing
             linear2, and Whisper decoder are never loaded.
     stock   stock OpenAI Whisper encoder -> fresh Jaeger adapter -> Gemma.
-            The active development checkpoint distils Gemma's native audio
-            tower and contains no MiniCPM/Qwen model or ASR decoder.
+            The promoted owned checkpoint distils Gemma's native audio tower
+            and contains no MiniCPM/Qwen model or ASR decoder.
 
 All three are text-free. `tower` remains the live default; `stock` is the
 owned, extensible development path; `delta` remains the accuracy bridge.
@@ -60,7 +60,7 @@ MODEL = "/Users/jonathanjenkins/models/gemma-4-e4b-it-mlx-full"
 DELTA = (Path.home() / "models/gemma-audio-adapter"
          / "adapter_sparse_vox1375_k022_b000.npz")
 STOCK = (Path(__file__).resolve().parent.parent / "artifacts"
-         / "stock-whisper-gemma-native-temporal256-7k.npz")
+         / "stock-whisper-gemma-native-temporal256x2-k31-6k.npz")
 AUDIO_GGUF = (Path.home() / "models/MiniCPM-o-4_5-gguf/audio"
               / "MiniCPM-o-4_5-audio-F16.gguf")
 

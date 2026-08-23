@@ -90,12 +90,38 @@
       "cases12": {"correct": 8, "n": 12, "median_ms": 524.7389581054449, "transcript_wer": 0.208955223880597},
       "result": "selected_native_teacher_development",
       "reason": "improved both authoritative corpus gates by 24 and 164 word edits while preserving answer accuracy"
+    },
+    {
+      "name": "temporal_residual_256_refine_lr25_step2000",
+      "devclean64": {"edits": 163, "words": 955, "wer": 0.1706806282722513},
+      "mindsvox591": {"edits": 2017, "words": 9736, "wer": 0.20716926869350863},
+      "cases12": {"correct": 8, "n": 12, "median_ms": 518.796521006152, "transcript_wer": 0.208955223880597},
+      "result": "rejected_for_answer_gate",
+      "reason": "improved both corpus gates but left all four answer-perception failures unchanged"
+    },
+    {
+      "name": "temporal_residual_256_short4_lr10",
+      "short_replay": {"max_seconds": 3, "weight": 4, "expected_draw_share": 0.343},
+      "cases12_checkpoints": {"every_steps": 500, "through_step": 4000, "correct_each": 8},
+      "result": "rejected_before_full_corpus",
+      "reason": "all eight free-running answer checkpoints left the same four failures unchanged"
+    },
+    {
+      "name": "temporal2_residual_256_kernel31_step6000",
+      "trainable_parameters": 1976832,
+      "context": "second exact-zero depthwise kernel 31 at 25 Hz (1.24 seconds)",
+      "devclean64": {"edits": 149, "words": 955, "wer": 0.15602094240837697},
+      "mindsvox591": {"edits": 1934, "words": 9736, "wer": 0.1986442070665571},
+      "cases12": {"correct": 10, "n": 12, "median_ms": 529.6787080587819, "transcript_wer": 0.08955223880597014},
+      "result": "selected_promoted_owned",
+      "reason": "cleared both corpus gates, beat the paired adapter on dev-clean, and reached native-tower answer parity"
     }
   ],
-  "selected": "artifacts/stock-whisper-gemma-native-temporal256-7k.npz",
+  "selected": "artifacts/stock-whisper-gemma-native-temporal256x2-k31-6k.npz",
   "promotion": {
     "native_teacher_development": true,
-    "paired_adapter": false,
+    "paired_adapter": true,
     "live_tower": false
-  }
+  },
+  "grading_fix": "numeric answers require complete normalized-token matches; expected 7 no longer matches inside 0.137"
 }
