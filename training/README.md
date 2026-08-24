@@ -3,33 +3,21 @@
 Training runs for the staged build. Data policy, run configuration, and the
 train loop.
 
-## Stock Whisper → Gemma, without Qwen or Gemma-output supervision
+## Stock Whisper → Gemma, Qwen-free
 
-Two stock-Whisper adapters are intentionally retained:
+Only two stock checkpoints are retained locally:
 
-- the paired adapter below learns from the proven tuned-Whisper pre-Gemma
-  representation and remains a historical control;
-- the promoted clean-room adapter learns only from Gemma's native audio-tower
-  vectors, has no MiniCPM/Qwen training lineage, and now leads the owned stock
-  path on both dev-clean WER and answer accuracy.
-
-Import the selected clean-room source checkpoint with strict runtime metadata:
-
-```bash
-python training/import_cleanroom_adapter.py \
-  ~/models/jaeger-cleanroom/adapter_distill_stack_residual1024_temporal256x2_k31_lr50.step006000.npz \
-  artifacts/stock-whisper-gemma-native-temporal256x2-k31-6k.npz
+```text
+general: artifacts/stock-whisper-gemma-medium50m-expanded-blend25.npz
+meeting: artifacts/stock-whisper-gemma-medium50m-ami5-balanced1p5k.npz
 ```
 
-`jaeger_agent_omni.runtime.stock_whisper` identifies the architecture from the
-checkpoint metadata and supports both formats without changing the default
-live tower. The importer supports both the mean-pool/GELU checkpoint and the
-frame-stack/RMSNorm/SwiGLU checkpoints, including the zero-init residual plus
-local and long-context temporal-residual variants, with strict shape metadata.
-The selected long-context checkpoint measures 15.60% WER on the historical
-dev-clean64/955-word gate, 19.86% on MINDS/Vox591/9,736 words, and 10/12 on the
-canonical dual-output benchmark. It is promoted over the 16.34%/9-of-12 paired
-adapter; the native tower remains live pending a stock-front-end soak.
+The general checkpoint is the explicit `omni.py --front-end stock` default:
+14.03% dev-clean64, 19.10% MINDS/Vox591, 19.60% speaker-disjoint
+train-other64, and 10/12 cases12 at 322 ms median. The meeting checkpoint is
+specialist-only: it improves AMI64 from 53.79% to 49.93% but loses one clean
+error. The Gemma native tower remains the desktop/live default pending a
+positive five-minute stock soak.
 
 For paired stock-Whisper and cached Gemma-native vectors, the owned trainer is:
 
@@ -44,16 +32,16 @@ python training/stock_whisper_gemma.py distill \
 The target is still only `audio_tower -> embed_audio` vectors from the same
 waveform. No generated transcript or answer is used as supervision.
 
-The owned 50.15M context continuation is trained directly from this repo:
+The owned 50.15M context connector is trained directly from this repo:
 
 ```bash
 python training/context_distill.py \
-  --cache <read-only-stock-feature-and-audio-cache> \
-  --split train100 --extra-split mindsvox_train \
-  --extra-split fleurs_train \
+  --cache ~/models/jaeger-training-data/stock-whisper-medium-expanded-v1 \
+  --split ami5_train --extra-split train_other --balance-sources \
   --model ~/models/gemma-4-e4b-it-mlx-full \
-  --resume artifacts/stock-whisper-gemma-native-temporal256x2-k31-6k.npz \
-  --output artifacts/stock-whisper-gemma-native-context1536-8k.npz
+  --resume artifacts/stock-whisper-gemma-medium50m-expanded-blend25.npz \
+  --train-branch context_lexical --lexical-head-arch bigru \
+  --output artifacts/stock-whisper-gemma-medium50m-next.npz
 ```
 
 Only model and data artifacts may be outside the repository. The trainer,
@@ -62,31 +50,9 @@ checkpoint writer, and evaluation commands are repo-local. The checkpoint is
 already in runtime format; the clean-room importer remains only for historical
 artifacts created before this ownership boundary was enforced.
 
-For the separate large-v3-turbo A/B, first cache the same waveform IDs with
-the 1280-wide stock encoder, then retarget only the encoder-facing projection
-of the selected medium context checkpoint:
-
-```bash
-python training/precompute_stock_encoder.py \
-  --source-cache <read-only-medium-cache> \
-  --output-cache ~/models/jaeger-training-data/stock-whisper-large-v3-turbo \
-  --split train100 --split mindsvox_train --split fleurs_train \
-  --whisper openai/whisper-large-v3-turbo
-
-python training/context_distill.py \
-  --cache ~/models/jaeger-training-data/stock-whisper-large-v3-turbo \
-  --split train100 --extra-split mindsvox_train \
-  --extra-split fleurs_train \
-  --model ~/models/gemma-4-e4b-it-mlx-full \
-  --resume artifacts/stock-whisper-gemma-native-context1536-7k.npz \
-  --encoder openai/whisper-large-v3-turbo --train-branch input \
-  --speaker-weight 0 --output artifacts/stock-whisper-large-v3-turbo-input.npz
-```
-
-The first large stage freezes every proven Gemma-width branch and trains only
-the new 2560-wide input RMSNorm plus 2560→5120 projection. Later stages may
-unfreeze the complete input stack or apply speaker/lexical auxiliary heads,
-but only after free-running corpus evaluation of this controlled baseline.
+The large-v3-turbo A/B is closed and its checkpoints were removed: it scored
+0--1/12 despite healthy cosine and added latency. Do not recreate it without a
+new architectural hypothesis.
 
 `pretrain-ctc` can load the stack connector for controlled experiments, but
 CTC fine-tuning the selected checkpoint is measured and rejected. With human

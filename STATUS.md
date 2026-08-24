@@ -1,6 +1,10 @@
 # Jaeger Agent Omni — what works, 2026-08-22
 
-One page. Every claim here has a command that reproduces it.
+Measured ledger. Every claim here has a command that reproduces it.
+
+> Current selection and comparison: [`PIPELINES.md`](PIPELINES.md). Sections
+> below the current 50M results are retained experiment history, not additional
+> production choices.
 
 ---
 
@@ -50,8 +54,8 @@ tower's: one read audio as an image, one never named Shakespeare.
 | omni input (a/v/text, one cache) | **works** | `research/check_all.py` |
 | speech codes -> audible cloned voice | **works** | `research/t2w_client.py --say` |
 | cognition -> talker conditioning | **built, untrained** | `neural/delta.py` |
-| tuned Whisper -> delta -> E4B | **works, 13.61% WER/64** | `omni.py --front-end delta` |
-| stock Whisper -> native-teacher adapter -> E4B | **promoted owned: 15.60% WER/64, 10/12** | `omni.py --front-end stock --dual-output` |
+| tuned Whisper -> sparse adapter -> E4B | **observer: 13.61% WER/64** | `meeting.py` |
+| stock Whisper -> owned 50M adapter -> E4B | **development: 14.03% WER/64, 10/12** | `omni.py --front-end stock --dual-output` |
 
 31/31 module self-checks green: `python research/check_all.py`
 
@@ -155,9 +159,9 @@ END->AUDIO        1091 ms median across completed starts
 The short exact-worker proof with diarization enabled produced one correct
 reply, speaker `A`, 20.0/20.0 seconds fed, zero loss, and 458 ms END->AUDIO.
 
-## Qwen-free tuned-Whisper input and meeting observer
+## Tuned-Whisper meeting observer
 
-The previously stubbed `--front-end delta` seam now loads the audio-tuned
+The meeting observer loads the audio-tuned
 Whisper encoder and `audio_projector.linear1` from MiniCPM's audio GGUF, then
 uses Jaeger's trained 4096→2560 adapter to enter Gemma 4 E4B. It never loads
 the Qwen language model, the original Qwen-facing `linear2`, or Whisper's
@@ -191,10 +195,10 @@ post-transformer interpretation—not raw tokens entering Gemma; the actual
 input remains continuous 2560-wide adapter vectors. `--dual-output` exposes
 both fields without feeding the generated transcript back into the session.
 
-### Active owned adapter — Gemma-native teacher, 2026-08-23
+### Archived native-teacher lineage — superseded, 2026-08-23
 
-The active development track is fully owned and competitor-free in runtime
-and training lineage. Its selected connector now uses the independently
+This historical development track was fully owned and competitor-free in
+runtime and training lineage. Its selected connector used the independently
 proven Ultravox projector structure at Gemma's measured 25 Hz boundary:
 
 ```text
@@ -308,14 +312,14 @@ artifacts/stock-whisper-gemma-native-temporal256x2-k31-6k.npz
 8.96% generated transcript WER — 67-word cases12 diagnostic
 ```
 
-This checkpoint clears all three predeclared promotion gates and is the active
-owned stock-Whisper adapter. It beats the paired adapter on the same dev-clean
+This checkpoint cleared all three predeclared promotion gates at that stage.
+It beats the paired adapter on the same dev-clean
 gate (15.60% versus 16.34%) and reaches native-tower answer parity (10/12),
 without transcript, answer, Gemma-generated output, MiniCPM, or Qwen
-supervision. Step 8,000 improves dev-clean further to 15.18% but falls to 9/12,
-so it is not the assistant selection. The native tower remains the live desktop
-default until the bidirectional stock encoder passes live-room latency and soak
-gates.
+supervision. It has since been superseded by the retained 50M general
+checkpoint at 14.03%/19.10% and 10/12. Step 8,000 improved dev-clean further
+to 15.18% but fell to 9/12. The native tower remains the live desktop default
+until the bidirectional stock encoder passes live-room latency and soak gates.
 
 The reported 10/12 is after fixing a grader false positive: expected digit
 `7` had incorrectly matched inside `0.137`. Numeric answers now match complete
@@ -330,11 +334,9 @@ canonical assistant and desktop demo correctly remain on `tower`. Transcript
 and answer adapters are not interchangeable objectives.
 
 ```bash
-python -m jaeger_agent_omni.omni --front-end delta --wav question.wav
 python -m jaeger_agent_omni.meeting --seconds 300 --device 1 --k 3 \
     --record /tmp/meeting.wav --out meeting.md
-python -m jaeger_agent_omni.meeting --wav room.wav --front-end stock \
-    --adapter artifacts/stock-whisper-gemma-medium-multidomain.step005500.npz
+python -m jaeger_agent_omni.meeting --wav room.wav --front-end stock
 ```
 
 The meeting observer uses 9.0-second neural windows with 0.5-second overlap;
@@ -381,7 +383,7 @@ against legacy's 9.8 GB doing audio+LLM alone), and it speaks.
 
 ---
 
-# Why the native tower is a dead end, and the delta is not
+# Archived rationale for the original tuned-encoder bridge
 
 Measured on embeddings, before the LLM sees them, so it separates "the encoder
 discarded it" from "the model ignored it":
@@ -454,7 +456,7 @@ Fixed. E4B trains at **0.58 s/step in 16.6 GB** — 2000 steps in 19 minutes.
 
 ---
 
-# Next
+# Historical next steps (superseded by `NEXT.md`)
 
 ```text
 1. delta front end swaps in at ONE seam in omni.py; nothing else moves.

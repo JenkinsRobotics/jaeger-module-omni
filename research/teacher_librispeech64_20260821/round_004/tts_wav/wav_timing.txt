@@ -1,3 +1,0 @@
-# WAV file generation timing log
-# Format: chunk_index, elapsed_time_ms (since stream_decode start), file_size_bytes, request_duration_ms
-# Time 0 is when stream_decode() function starts

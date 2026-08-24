@@ -20,20 +20,19 @@ Run it:
     python -m jaeger_agent_omni.omni --duplex --seconds 20    # always-on
     python -m jaeger_agent_omni.omni --selfcheck              # no models
 
-The audio front end is swappable at this seam and NOTHING else changes:
+The assistant audio front end is swappable at this seam and NOTHING else
+changes:
 
     tower   Gemma's own audio tower. Works today, scores 10/12 (83% of
             legacy's 12/12). Frozen Google weights -- cannot be extended, and
             measured transcription-shaped (delivery ratio 0.192).
-    delta   MiniCPM audio-tuned Whisper encoder -> its semantic linear1 -> our
-            4096x2560 adapter -> Gemma. The Qwen LLM, original Qwen-facing
-            linear2, and Whisper decoder are never loaded.
     stock   stock OpenAI Whisper encoder -> fresh Jaeger adapter -> Gemma.
             The promoted owned checkpoint distils Gemma's native audio tower
             and contains no MiniCPM/Qwen model or ASR decoder.
 
-All three are text-free. `tower` remains the live default; `stock` is the
-owned, extensible development path; `delta` remains the accuracy bridge.
+Both are text-free. `tower` remains the live default; `stock` is the owned,
+extensible development path. The MiniCPM-tuned encoder remains isolated in
+meeting observer mode while it still owns that mode's best measured WER.
 """
 
 from __future__ import annotations
@@ -57,48 +56,27 @@ DUAL_SYSTEM = (
     "question as the answer."
 )
 MODEL = "/Users/jonathanjenkins/models/gemma-4-e4b-it-mlx-full"
-DELTA = (Path.home() / "models/gemma-audio-adapter"
-         / "adapter_sparse_vox1375_k022_b000.npz")
 STOCK = (Path(__file__).resolve().parent.parent / "artifacts"
-         / "stock-whisper-gemma-native-temporal256x2-k31-6k.npz")
-AUDIO_GGUF = (Path.home() / "models/MiniCPM-o-4_5-gguf/audio"
-              / "MiniCPM-o-4_5-audio-F16.gguf")
+         / "stock-whisper-gemma-medium50m-expanded-blend25.npz")
 
 
-def build(model_path: str = MODEL, front_end: str = "tower", delta_path=None,
-          system: str | None = SYSTEM, audio_gguf: str | Path = AUDIO_GGUF):
+def build(model_path: str = MODEL, front_end: str = "tower", adapter_path=None,
+          system: str | None = SYSTEM):
     """Load the one graph. Returns (session, meta)."""
     if front_end == "stock":
         from jaeger_agent_omni.runtime.stock_whisper import (
             DEFAULT_GEMMA, StockWhisperGemmaSession)
-        if not delta_path or not Path(delta_path).exists():
+        selected_adapter = Path(adapter_path or STOCK)
+        if not selected_adapter.exists():
             raise SystemExit(
-                "--front-end stock needs a trained adapter (--delta PATH).")
+                "--front-end stock needs a trained adapter (--adapter PATH).")
         stock_model = DEFAULT_GEMMA if model_path == MODEL else model_path
         session = StockWhisperGemmaSession(
-            delta_path, model_path=stock_model, system=system)
+            selected_adapter, model_path=stock_model, system=system)
         configured_eos = getattr(session.tokenizer, "eos_token_id", 1)
         eos = {1, 106, int(configured_eos)}
         return session, {"model": str(stock_model), "front_end": front_end,
-                         "adapter": str(Path(delta_path).resolve()),
-                         "eos": eos}
-
-    if front_end == "delta":
-        from jaeger_agent_omni.runtime.tuned_whisper import (
-            DEFAULT_MODEL, TunedWhisperGemmaSession)
-        if not delta_path or not Path(delta_path).exists():
-            raise SystemExit(
-                "--front-end delta needs a trained 4096x2560 adapter "
-                "(--delta PATH).")
-        delta_model = DEFAULT_MODEL if model_path == MODEL else model_path
-        session = TunedWhisperGemmaSession(
-            delta_path, model_path=delta_model, audio_gguf=audio_gguf,
-            system=system)
-        configured_eos = getattr(session.tokenizer, "eos_token_id", 1)
-        eos = {1, 106, int(configured_eos)}
-        return session, {"model": str(delta_model), "front_end": front_end,
-                         "adapter": str(Path(delta_path).resolve()),
-                         "audio_gguf": str(Path(audio_gguf).resolve()),
+                         "adapter": str(selected_adapter.resolve()),
                          "eos": eos}
 
     import mlx.core as mx                                       # noqa: F401
@@ -257,9 +235,8 @@ def speak(session, out_path: str, ref_audio=None,
     return str(out_path)
 
 
-def bench(cases_dir: str, model_path: str, front_end: str, delta_path=None,
+def bench(cases_dir: str, model_path: str, front_end: str, adapter_path=None,
           out_path: str = "research/omni_bench.json",
-          audio_gguf: str | Path = AUDIO_GGUF,
           dual_output: bool = False) -> int:
     """Score the no-transcript input path; this is not audio-output proof."""
     import statistics as st
@@ -270,9 +247,8 @@ def bench(cases_dir: str, model_path: str, front_end: str, delta_path=None,
     from jaeger_agent_omni.app import read_wav
 
     cases = json.load(open(Path(cases_dir) / "cases.json"))
-    s, meta = build(model_path, front_end, delta_path,
-                    system=DUAL_SYSTEM if dual_output else SYSTEM,
-                    audio_gguf=audio_gguf)
+    s, meta = build(model_path, front_end, adapter_path,
+                    system=DUAL_SYSTEM if dual_output else SYSTEM)
     s.warmup()
 
     rows = []
@@ -354,11 +330,9 @@ def main() -> int:
     ap.add_argument("--duplex", action="store_true")
     ap.add_argument("--seconds", type=float, default=20.0)
     ap.add_argument("--front-end", default="tower",
-                    choices=("tower", "delta", "stock"))
-    ap.add_argument("--delta", default=None,
-                    help="adapter checkpoint for delta/stock front ends")
-    ap.add_argument("--audio-gguf", default=str(AUDIO_GGUF),
-                    help="MiniCPM audio GGUF container used by delta only")
+                    choices=("tower", "stock"))
+    ap.add_argument("--adapter", default=None,
+                    help="adapter checkpoint for the stock front end")
     ap.add_argument("--model", default=MODEL)
     ap.add_argument("--out", default="research/omni_bench.json")
     ap.add_argument("--dual-output", action="store_true",
@@ -371,19 +345,18 @@ def main() -> int:
                     default="training/runs/gemma_talker_conditioner.pt")
     ap.add_argument("--selfcheck", action="store_true")
     a = ap.parse_args()
-    adapter_path = a.delta or str(STOCK if a.front_end == "stock" else DELTA)
+    adapter_path = a.adapter or str(STOCK)
 
     if a.selfcheck:
         return selfcheck()
     if a.bench:
         return bench(a.bench, a.model, a.front_end, adapter_path, a.out,
-                     a.audio_gguf, a.dual_output)
+                     a.dual_output)
     if a.wav:
         from jaeger_agent_omni.app import read_wav
         s, meta = build(
             a.model, a.front_end, adapter_path,
-            system=DUAL_SYSTEM if a.dual_output else SYSTEM,
-            audio_gguf=a.audio_gguf)
+            system=DUAL_SYSTEM if a.dual_output else SYSTEM)
         s.warmup()
         reply, ms = one_turn(s, meta, read_wav(Path(a.wav)),
                              collect_hidden=a.speak)

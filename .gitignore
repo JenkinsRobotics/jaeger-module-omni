@@ -13,6 +13,7 @@ __pycache__/
 
 # Virtual environments
 .venv/
+.venv-t2w/
 venv/
 env/
 ENV/
@@ -73,6 +74,15 @@ htmlcov/
 training/runs/
 artifacts/stock-whisper-gemma-*.npz
 artifacts/stock-whisper-large*.npz
+
+# Local corpora and generated teacher tensors. Canonical training data lives
+# under ~/models/jaeger-training-data; these are caches, not source code.
+training/corpus_e4b/
+training/corpus_real/
+training/corpus_mixed/
+research/talker_emb_text.npy
+research/teacher12_20260821/
+research/teacher_librispeech64_20260821/
 
 # Third-party sources kept locally for reading, never vendored.
 reference/*

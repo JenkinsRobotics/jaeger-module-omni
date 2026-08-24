@@ -28,8 +28,10 @@ from pathlib import Path
 
 import numpy as np
 
-from jaeger_agent_omni.omni import AUDIO_GGUF, DELTA
+from jaeger_agent_omni.omni import STOCK
 from jaeger_agent_omni.runtime.tuned_whisper import (
+    DEFAULT_ADAPTER as TUNED_ADAPTER,
+    DEFAULT_AUDIO_GGUF as TUNED_AUDIO_GGUF,
     DEFAULT_MODEL, TunedWhisperGemmaSession)
 
 RATE = 16_000
@@ -161,9 +163,9 @@ def minutes_from_transcript(session, transcript: str,
         generated, skip_special_tokens=True).strip()
 
 
-def observe(audio: np.ndarray, adapter: str | Path = DELTA,
+def observe(audio: np.ndarray, adapter: str | Path = TUNED_ADAPTER,
             model: str | Path = DEFAULT_MODEL,
-            audio_gguf: str | Path = AUDIO_GGUF, k: int = 2,
+            audio_gguf: str | Path = TUNED_AUDIO_GGUF, k: int = 2,
             window_s: float = WINDOW_S,
             overlap_s: float = OVERLAP_S,
             make_minutes: bool = True,
@@ -293,13 +295,13 @@ def main() -> int:
                     help="maximum room voices; use 3 when agent playback leaks")
     ap.add_argument("--window-seconds", type=float, default=WINDOW_S)
     ap.add_argument("--overlap-seconds", type=float, default=OVERLAP_S)
-    ap.add_argument("--adapter", default=str(DELTA))
+    ap.add_argument("--adapter", default=None)
     ap.add_argument("--front-end", choices=("tuned", "stock"),
                     default="tuned")
     ap.add_argument("--whisper", default="openai/whisper-medium",
                     help="stock Whisper checkpoint id")
     ap.add_argument("--model", default=str(DEFAULT_MODEL))
-    ap.add_argument("--audio-gguf", default=str(AUDIO_GGUF))
+    ap.add_argument("--audio-gguf", default=str(TUNED_AUDIO_GGUF))
     ap.add_argument("--silero", default=str(DEFAULT_SILERO))
     ap.add_argument("--min-speech-fraction", type=float, default=0.25,
                     help="fraction of 30ms frames Silero must admit")
@@ -318,8 +320,10 @@ def main() -> int:
     if args.record:
         import soundfile as sf
         sf.write(args.record, audio, RATE)
+    adapter = args.adapter or str(
+        STOCK if args.front_end == "stock" else TUNED_ADAPTER)
     rows, minutes = observe(
-        audio, adapter=args.adapter, model=args.model,
+        audio, adapter=adapter, model=args.model,
         audio_gguf=args.audio_gguf, k=args.k,
         window_s=args.window_seconds, overlap_s=args.overlap_seconds,
         make_minutes=not args.no_minutes,

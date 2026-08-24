@@ -17,6 +17,9 @@
 > See [`dev/docs/reality/STATUS.md`](dev/docs/reality/STATUS.md) for what
 > actually runs today.
 
+The concise, current runtime/model inventory is [`PIPELINES.md`](PIPELINES.md).
+Use it instead of inferring active pipelines from historical experiment files.
+
 ## What it is
 
 The current Jaeger voice stack is sequential, and text is the transfer format
