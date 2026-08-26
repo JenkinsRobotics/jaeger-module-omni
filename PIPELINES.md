@@ -6,7 +6,7 @@ This is the canonical list. Historical measurements remain in `STATUS.md` and
 | Pipeline | Role | Measured quality | Speech out | Status |
 | --- | --- | --- | --- | --- |
 | Gemma native audio tower | live assistant/demo | 10/12 cases12; 363 ms text median | Kokoro clause streaming; 693--1,275 ms measured END-to-audio medians | **Live default** |
-| Stock Whisper-medium -> owned 50M connector -> Gemma | Qwen-free assistant development | 10/12; 322 ms; 14.03% dev-clean64; 19.10% MINDS/Vox591 | compatible with the same output layer, but not live-soak promoted | **Active development** |
+| Stock Whisper-medium -> owned 50M connector -> Gemma | Qwen-free production candidate | 11/12; 319 ms; 11.20% dev-clean64; 17.86% MINDS/Vox591; 13.51% clean-360val128; 12.56% novel-Vox128 | same Kokoro clause-streamed output; selectable in live/GUI | **Candidate; positive-room gate pending** |
 | Stock Whisper-medium -> AMI-balanced 50M connector -> Gemma | meeting-domain research | 49.93% AMI64 versus 53.79% general baseline; 10/12; one clean error worse | not production gated | **Specialist only** |
 | MiniCPM-tuned Whisper -> sparse connector -> Gemma | transcript/meeting observer | 13.61% on its fixed 977-word observer gate | minutes/output path, not assistant speech | **Retained observer** |
 | MiniCPM-o 4.5 native | external reference | 12/12; 525 ms to text; 1,380 ms to speech | native | **Reference, not Jaeger runtime** |
@@ -14,9 +14,15 @@ This is the canonical list. Historical measurements remain in `STATUS.md` and
 
 ## What is actually selected
 
-- `demo.py` and `jaeger_agent_omni.live` use the Gemma native tower.
-- `omni.py --front-end stock` uses
-  `artifacts/stock-whisper-gemma-medium50m-expanded-blend25.npz`.
+- `demo.py` and `jaeger_agent_omni.live` retain the Gemma native tower as the
+  rollback default and accept `--front-end stock`.
+- `omni.py --front-end stock`, `jaeger_agent_omni.demo --front-end stock`, and
+  the full-duplex GUI's Whisper selector use the paired, pinned node at
+  `nodes/stock-whisper-medium-cekl-blend50`.
+- The stock live session now owns a persistent Gemma KV cache across turns,
+  exact abandoned-reply rewind, monotonic soak counters, full-path warmup, and
+  encoder-only Whisper loading. Continuous speech is prefilled in bounded
+  12-second/1-second-overlap windows. The ASR decoder is neither loaded nor run.
 - `meeting.py` uses the tuned observer by default; `--front-end stock` selects
   the retained general stock connector unless `--adapter` is supplied.
 - The AMI checkpoint is explicit opt-in only:
@@ -25,7 +31,7 @@ This is the canonical list. Historical measurements remain in `STATUS.md` and
 ## Is Jaeger equivalent to MiniCPM-o 4.5?
 
 Not yet in model quality. MiniCPM is 12/12 on the shared question suite while
-both Jaeger assistant paths are 10/12. Jaeger has demonstrated a faster best
+the selected stock candidate is 11/12 and the native tower is 10/12. Jaeger has demonstrated a faster best
 END-to-first-audio session than MiniCPM's measured 1,380 ms speech start, but
 Jaeger's 693--1,275 ms session variance means latency superiority is not yet a
 stable claim. Jaeger does own its 50M stock-Whisper connector, source-balanced
@@ -42,3 +48,10 @@ The honest target is therefore two separate gates:
 
 Until both pass, MiniCPM remains the quality reference and the native Gemma
 tower remains Jaeger's live default.
+
+Canonical candidate gate:
+
+```bash
+python demo.py --selftest-jaeger ROOM.wav --front-end stock --seconds 300 \
+  --threshold 0.20 --silence-ms 700 --cooldown 20 --max-context 6000
+```

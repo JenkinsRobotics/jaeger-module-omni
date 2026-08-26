@@ -56,8 +56,8 @@ DUAL_SYSTEM = (
     "question as the answer."
 )
 MODEL = "/Users/jonathanjenkins/models/gemma-4-e4b-it-mlx-full"
-STOCK = (Path(__file__).resolve().parent.parent / "artifacts"
-         / "stock-whisper-gemma-medium50m-expanded-blend25.npz")
+STOCK = (Path(__file__).resolve().parent.parent / "nodes"
+         / "stock-whisper-medium-cekl-blend50")
 
 
 def build(model_path: str = MODEL, front_end: str = "tower", adapter_path=None,

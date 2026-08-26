@@ -55,9 +55,41 @@ tower's: one read audio as an image, one never named Shakespeare.
 | speech codes -> audible cloned voice | **works** | `research/t2w_client.py --say` |
 | cognition -> talker conditioning | **built, untrained** | `neural/delta.py` |
 | tuned Whisper -> sparse adapter -> E4B | **observer: 13.61% WER/64** | `meeting.py` |
-| stock Whisper -> owned 50M adapter -> E4B | **development: 14.03% WER/64, 10/12** | `omni.py --front-end stock --dual-output` |
+| stock Whisper -> owned 50M adapter -> E4B | **candidate: 11.20% WER/64, 11/12** | `omni.py --front-end stock --dual-output` |
 
 31/31 module self-checks green: `python research/check_all.py`
+
+## Stock-Whisper live integration — 2026-08-25
+
+The strongest pinned medium node is now selectable, without copying a loose
+checkpoint path, from `omni.py`, `jaeger_agent_omni.demo`,
+`jaeger_agent_omni.live`, and the full-duplex desktop app:
+
+```text
+nodes/stock-whisper-medium-cekl-blend50
+50,146,816 deployed adapter parameters
+11.20% WER — dev-clean64
+17.86% WER — MINDS/Vox591
+13.51% WER — clean-360 validation128
+12.56% WER — novel Vox128
+11/12 answers — canonical cases12, 319 ms median
+```
+
+This integration removes three prior live blockers: the stock session now
+keeps one Gemma KV cache across microphone turns, interrupted generations
+rewind exactly without discarding the preceding conversation, and explicit
+context rolls retain monotonic lifetime prefill counters. Startup warms the
+real Whisper/adapter/Gemma path. Uninterrupted speech is encoded and prefilled
+in bounded 12-second windows with one-second overlap (28 windows / 15,000
+non-duplicated encoder frames for the five-minute contract), matching the
+adapter's training-length curriculum rather than deferring one unbounded
+operation until the room falls silent. For packaged nodes, only Whisper's encoder
+weights are materialized; the ASR decoder is neither loaded nor run.
+
+The native tower remains the selected rollback default until the stock node
+passes the positive-room, five-minute full-duplex gate. Static/runtime gates
+are green; a fresh physical measurement is intentionally not claimed while
+the one allowed accelerator job belongs to the active trainer.
 
 ## Stock-Whisper medium 50M development winner — 2026-08-23
 

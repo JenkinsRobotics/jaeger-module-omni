@@ -5,17 +5,16 @@ The runtime boundary is deliberately small and explicit::
     PCM -> stock OpenAI Whisper encoder
         -> fresh Jaeger MLP -> temporal pool -> Gemma 4 E4B -> answer tokens
 
-Whisper's decoder is never run. Hugging Face currently constructs the complete
-``WhisperModel`` while loading the published checkpoint, after which this
-runtime retains only ``model.encoder``; this experimental control is therefore
-Qwen-free and transcript-free, but not an encoder-only model-load optimization.
-The adapter checkpoint contains only our two affine layers; it cannot silently
-carry MiniCPM or Qwen weights.
+Whisper's decoder is neither loaded nor run for a packaged node.  The loader
+constructs ``WhisperEncoder`` directly and selects only ``model.encoder.*``
+weights from the pinned safetensors snapshot. Legacy Hugging Face-ID callers
+retain the full-checkpoint compatibility loader. The adapter checkpoint cannot
+silently carry MiniCPM or Qwen weights.
 
-This first implementation is turn-bounded: Whisper is bidirectional, so a
-completed turn is encoded once.  The microphone queue can continue collecting
-while that worker runs, but causal incremental Whisper is a separate measured
-milestone.
+Whisper is bidirectional, so each completed microphone turn is encoded once.
+The resulting audio embeddings and every later turn share one persistent
+Gemma KV cache.  The microphone queue can continue collecting while that
+worker runs; causal incremental Whisper remains a separate measured milestone.
 """
 
 from __future__ import annotations
@@ -57,6 +56,8 @@ ARCH_GEMMA_NATIVE_CONTEXT = (
     "gemma_native_stack_swiglu_residual_temporal2_context_v1")
 WHISPER_WINDOW_S = 28
 WHISPER_OVERLAP_S = 1
+LIVE_WINDOW_S = 12
+LIVE_OVERLAP_S = 1
 
 
 class StockWhisperFrontEnd:
@@ -71,15 +72,48 @@ class StockWhisperFrontEnd:
     def __init__(self, model_id: str = DEFAULT_WHISPER,
                  device: str = "auto") -> None:
         import torch
-        from transformers import WhisperFeatureExtractor, WhisperModel
+        from transformers import WhisperConfig, WhisperFeatureExtractor
+        from transformers.models.whisper.modeling_whisper import WhisperEncoder
 
         if device == "auto":
             device = "mps" if torch.backends.mps.is_available() else "cpu"
         self.torch = torch
         self.device = torch.device(device)
         self.dtype = torch.float16 if self.device.type == "mps" else torch.float32
-        model = WhisperModel.from_pretrained(model_id, torch_dtype=self.dtype)
-        self.encoder = model.encoder.to(self.device).eval().requires_grad_(False)
+        source = Path(model_id)
+        weights_path = source / "model.safetensors"
+        if weights_path.is_file():
+            # The registered node pins a normal Whisper full checkpoint for
+            # provenance, but production only materialises its encoder half.
+            # This avoids constructing/allocating 24 decoder layers merely to
+            # discard them before the first microphone block.
+            from safetensors import safe_open
+
+            config = WhisperConfig.from_pretrained(str(source))
+            encoder = WhisperEncoder(config)
+            with safe_open(weights_path, framework="pt", device="cpu") as saved:
+                prefix = "model.encoder."
+                state = {
+                    key[len(prefix):]: saved.get_tensor(key)
+                    for key in saved.keys() if key.startswith(prefix)
+                }
+            missing, unexpected = encoder.load_state_dict(state, strict=False)
+            if missing or unexpected:
+                raise ValueError(
+                    f"encoder-only load mismatch: missing={missing[:4]} "
+                    f"unexpected={unexpected[:4]}")
+            del state
+            self.encoder_only_load = True
+            self.encoder = encoder.to(
+                self.device, dtype=self.dtype).eval().requires_grad_(False)
+        else:
+            from transformers import WhisperModel
+
+            model = WhisperModel.from_pretrained(
+                model_id, torch_dtype=self.dtype)
+            self.encoder = model.encoder.to(
+                self.device).eval().requires_grad_(False)
+            self.encoder_only_load = False
         self.extractor = WhisperFeatureExtractor.from_pretrained(model_id)
         self.model_id = model_id
 
@@ -286,6 +320,7 @@ class StockWhisperGemmaSession:
         import mlx.core as mx
         import mlx.nn as nn
         from mlx_lm import load
+        from mlx_lm.models.cache import make_prompt_cache
 
         from jaeger_agent_omni.model_nodes import (
             resolve_audio_node,
@@ -314,6 +349,7 @@ class StockWhisperGemmaSession:
                 f"runtime requested {whisper_id!r}")
         self.mx = mx
         self.nn = nn
+        self._make_prompt_cache = make_prompt_cache
         # A packaged node owns a complete pinned encoder snapshot. Legacy raw
         # checkpoint callers retain the Hugging Face ID behavior.
         encoder_source = str(node.encoder_path) if node is not None else whisper_id
@@ -329,7 +365,23 @@ class StockWhisperGemmaSession:
         self._features: np.ndarray | None = None
         self._metadata: list[str] = []
         self._cancelled = False
+        self._cancel_at = 0.0
+        self.cancel_latency_ms: float | None = None
         self.n_prefilled = 0
+        # Lifetime counters deliberately survive reset().  live.py samples
+        # their deltas across an explicit context roll; resetting them was the
+        # source of the historical negative ms/token soak rows.
+        self.total_prefill_tokens = 0
+        self.total_prefill_ms = 0.0
+        self.cache = None
+        self._has_history = False
+        self._assistant_closed = False
+        self._generation_start = 0
+        self._turn_has_audio = False
+        self._had_stream_chunk = False
+        self._turn_prefix_open = False
+        self._turn_closed = False
+        self._response_seed: int | None = None
         self.hidden: list = []
         self.output_ids: list[int] = []
 
@@ -549,25 +601,55 @@ class StockWhisperGemmaSession:
         mx.eval(self.adapter.parameters())
 
     def warmup(self) -> float:
-        return 0.0
+        """Compile the actual encoder, adapter, prefill, and decode path."""
+        import time
+
+        started = time.monotonic()
+        self.reset()
+        self.open_turn()
+        self.feed_audio(np.zeros(SAMPLE_RATE, dtype=np.float32))
+        self.end_of_turn()
+        self.respond(max_tokens=1, eos_ids=())
+        self.reset()
+        return (time.monotonic() - started) * 1000
 
     def reset(self) -> None:
         self._audio.clear()
         self._features = None
         self._metadata.clear()
         self._cancelled = False
+        self._cancel_at = 0.0
+        self.cancel_latency_ms = None
         self.n_prefilled = 0
+        self.cache = None
+        self._has_history = False
+        self._assistant_closed = False
+        self._generation_start = 0
+        self._turn_has_audio = False
+        self._had_stream_chunk = False
+        self._turn_prefix_open = False
+        self._turn_closed = False
+        self._response_seed = None
         self.hidden.clear()
         self.output_ids.clear()
 
     def open_turn(self) -> None:
         self._cancelled = False
+        self._audio.clear()
+        self._features = None
+        self._metadata.clear()
+        self._turn_has_audio = False
+        self._had_stream_chunk = False
+        self._turn_prefix_open = False
+        self._turn_closed = False
+        self._response_seed = None
 
     def feed_audio(self, samples) -> int:
         block = np.asarray(samples, dtype=np.float32).reshape(-1).copy()
         if block.size:
             self._audio.append(block)
-        return 0
+            self._turn_has_audio = True
+        return self._encode_available(final=False)
 
     def feed_text(self, text: str) -> int:
         """Metadata only: speaker tags are permitted between audio turns."""
@@ -575,15 +657,19 @@ class StockWhisperGemmaSession:
         return 0
 
     def end_of_turn(self, close: bool = True) -> None:
-        if not self._audio:
+        if not self._turn_has_audio:
             raise ValueError("no audio in turn")
-        self._features = self.front_end(np.concatenate(self._audio))
-        self.n_prefilled = max(1, len(self._features) // self.pool_step)
+        self._encode_available(final=True)
+        if close:
+            self.close_turn()
 
     def _prompt_parts(self) -> tuple[list[int], list[int]]:
-        content = "".join(self._metadata) + AUDIO_MARKER
+        # Metadata is appended after the audio, matching StreamingSession's
+        # live inline annotation order.  This also lets diarization arrive in
+        # before_respond after the last audio window is already encoded.
+        content = AUDIO_MARKER + "".join(self._metadata)
         messages = []
-        if self.system:
+        if self.system and not self._has_history:
             messages.append({"role": "system", "content": self.system})
         messages.append({"role": "user", "content": content})
         rendered = self.tokenizer.apply_chat_template(
@@ -591,33 +677,135 @@ class StockWhisperGemmaSession:
         if AUDIO_MARKER not in rendered:
             raise RuntimeError("audio marker disappeared from chat template")
         prefix, suffix = rendered.split(AUDIO_MARKER, 1)
-        return (self.tokenizer.encode(prefix, add_special_tokens=False),
-                self.tokenizer.encode(suffix, add_special_tokens=False))
+        prefix_ids = self.tokenizer.encode(prefix, add_special_tokens=False)
+        suffix_ids = self.tokenizer.encode(suffix, add_special_tokens=False)
+        if self._has_history:
+            # A standalone chat template starts with BOS.  The persistent
+            # cache already owns BOS and the preceding assistant turn.  Gemma
+            # emits <turn|> (106) but not the following newline (107), while a
+            # max-token or interrupted reply needs both closure and newline.
+            bos = getattr(self.tokenizer, "bos_token_id", None)
+            if prefix_ids and bos is not None and prefix_ids[0] == bos:
+                prefix_ids = prefix_ids[1:]
+            newline = self.tokenizer.encode("\n", add_special_tokens=False)
+            if self._assistant_closed:
+                prefix_ids = newline + prefix_ids
+            else:
+                close = self.tokenizer.encode(
+                    "<turn|>\n", add_special_tokens=False)
+                prefix_ids = close + prefix_ids
+        return prefix_ids, suffix_ids
+
+    def _cache_size(self) -> int:
+        if not self.cache:
+            return 0
+        size = getattr(self.cache[0], "size", None)
+        return int(size()) if callable(size) else self.n_prefilled
+
+    def _prefill(self, ids: list[int], embeddings=None) -> float:
+        """Append one text/audio segment to the persistent Gemma cache."""
+        import time
+
+        if not ids:
+            return 0.0
+        mx = self.mx
+        if self.cache is None:
+            self.cache = self._make_prompt_cache(self.model)
+        token_ids = mx.array(ids, dtype=mx.int32)
+        if embeddings is None:
+            embeddings = self.model.language_model.model.embed_tokens(
+                token_ids[None, :])[0]
+        started = time.monotonic()
+        out = self.model(
+            token_ids[None, :], cache=self.cache,
+            input_embeddings=embeddings[None, :])
+        logits = out.logits if hasattr(out, "logits") else out
+        mx.eval(logits)
+        elapsed = (time.monotonic() - started) * 1000
+        self.n_prefilled = self._cache_size()
+        self.total_prefill_tokens += len(ids)
+        self.total_prefill_ms += elapsed
+        return elapsed
+
+    def _ensure_turn_prefix(self) -> None:
+        if self._turn_prefix_open:
+            return
+        prefix, _ = self._prompt_parts()
+        self._prefill(prefix)
+        self._turn_prefix_open = True
+
+    def _prefill_audio(self, features: np.ndarray) -> int:
+        mx = self.mx
+        self._ensure_turn_prefix()
+        raw = self.adapter(mx.array(features))
+        audio = (raw if self.output_mode == OUTPUT_MODE_DIRECT else
+                 raw / math.sqrt(OUTPUT_DIM))
+        count = int(audio.shape[0])
+        self._prefill([0] * count, audio)
+        self._features = features
+        return count
+
+    def _encode_available(self, final: bool) -> int:
+        """Encode bounded windows, retaining one second across boundaries.
+
+        Short turns remain a single bidirectional Whisper pass. Continuous
+        speech is committed every 11 new seconds, so a five-minute meeting
+        cannot become one unbounded encoder/adapter operation at turn end.
+        """
+        if not self._audio:
+            return 0
+        waveform = np.concatenate(self._audio)
+        window = LIVE_WINDOW_S * SAMPLE_RATE
+        overlap = LIVE_OVERLAP_S * SAMPLE_RATE
+        encoded = 0
+        while len(waveform) >= window and (not final or len(waveform) > window):
+            features = self.front_end(waveform[:window])
+            if self._had_stream_chunk:
+                features = features[LIVE_OVERLAP_S * 50:]
+            self._prefill_audio(features)
+            encoded += 1
+            self._had_stream_chunk = True
+            waveform = waveform[window - overlap:]
+        if final:
+            # When a prior full window ended exactly at the turn boundary,
+            # only its retained overlap remains and must not be duplicated.
+            if len(waveform) > (overlap if self._had_stream_chunk else 0):
+                features = self.front_end(waveform)
+                if self._had_stream_chunk:
+                    features = features[LIVE_OVERLAP_S * 50:]
+                if len(features):
+                    self._prefill_audio(features)
+                    encoded += 1
+            waveform = np.empty(0, dtype=np.float32)
+        self._audio = [waveform] if len(waveform) else []
+        return encoded
 
     def respond(self, max_tokens: int = 96, eos_ids=(), on_token=None,
                 collect_hidden: bool = False) -> str:
+        import time
+
         from mlx_lm.generate import generate_step
         from mlx_lm.sample_utils import make_logits_processors
 
-        if self._features is None:
-            raise ValueError("end the audio turn before responding")
+        if not self._turn_closed or self._response_seed is None:
+            raise ValueError("close the audio turn before responding")
         if collect_hidden:
             raise NotImplementedError(
                 "stock-Whisper MLX generation does not expose Talker hidden states")
         mx = self.mx
-        prefix, suffix = self._prompt_parts()
-        n_audio = max(1, len(self._features) // self.pool_step)
-        ids_list = prefix + [0] * n_audio + suffix
-        ids = mx.array(ids_list, dtype=mx.int32)
+        ids = mx.array([self._response_seed], dtype=mx.int32)
         tokens = self.model.language_model.model.embed_tokens(ids[None, :])[0]
-        raw_audio = self.adapter(mx.array(self._features))
-        audio = (raw_audio if self.output_mode == OUTPUT_MODE_DIRECT else
-                 raw_audio / math.sqrt(OUTPUT_DIM))
-        start = len(prefix)
-        embeds = mx.concatenate(
-            [tokens[:start], audio, tokens[start + n_audio:]], axis=0)
+        embeds = tokens
         generated = []
         self._cancelled = False
+        self.cancel_latency_ms = None
+        if self.cache is None:
+            self.cache = self._make_prompt_cache(self.model)
+        prompt_tokens = 1
+        self._generation_start = self.n_prefilled + prompt_tokens
+        prefill_started = time.monotonic()
+        first_token_at = None
+        assistant_closed = False
         blocked = {
             int(self.tokenizer.convert_tokens_to_ids("<|think|>")),
             int(self.tokenizer.convert_tokens_to_ids("<|channel>")),
@@ -629,27 +817,76 @@ class StockWhisperGemmaSession:
         )
         for token, _ in generate_step(
                 ids, self.model, input_embeddings=embeds,
-                max_tokens=max_tokens, logits_processors=processors):
+                max_tokens=max_tokens, logits_processors=processors,
+                prompt_cache=self.cache):
+            if first_token_at is None:
+                first_token_at = time.monotonic()
+                self.total_prefill_tokens += prompt_tokens
+                self.total_prefill_ms += (
+                    first_token_at - prefill_started) * 1000
             token = int(token)
-            if self._cancelled or token in set(eos_ids) | {1, 106}:
+            if self._cancelled:
+                self.cancel_latency_ms = (
+                    time.monotonic() - self._cancel_at) * 1000
+                break
+            if token in set(eos_ids) | {1, 106}:
+                assistant_closed = token == 106
                 break
             generated.append(token)
             if on_token:
                 on_token(token, len(generated))
+        # generate_step updates the supplied cache in place.  Its one-token
+        # lookahead has cached exactly every token yielded so far, including a
+        # closing token.  Keep the authoritative size for rolling-context and
+        # precise interrupt rewind accounting.
+        self.n_prefilled = self._cache_size()
+        if first_token_at is None:
+            # Defensive for max_tokens=0; ordinarily generation always yields.
+            self.total_prefill_tokens += prompt_tokens
+            self.total_prefill_ms += (time.monotonic() - prefill_started) * 1000
+        self._assistant_closed = assistant_closed
+        self._has_history = True
         self.output_ids = generated
         return self.tokenizer.decode(generated, skip_special_tokens=True).strip()
 
     def cancel(self) -> None:
+        import time
+
+        self._cancel_at = time.monotonic()
         self._cancelled = True
 
-    def interrupt(self) -> None:
+    def interrupt(self) -> int:
+        """Remove the abandoned assistant suffix while preserving its prompt."""
+        from mlx_lm.models.cache import trim_prompt_cache
+
+        drop = self.n_prefilled - self._generation_start
+        if drop <= 0 or not self.cache:
+            self._cancelled = False
+            return 0
+        trimmed = trim_prompt_cache(self.cache, drop)
+        if trimmed != drop:
+            raise RuntimeError(
+                f"cache rewind trimmed {trimmed} tokens, expected {drop}")
+        self.n_prefilled -= drop
         self._cancelled = False
+        self._assistant_closed = False
+        return drop
 
     def resume_listening(self) -> None:
-        pass
+        self.open_turn()
 
     def close_turn(self) -> None:
-        pass
+        if self._turn_closed:
+            return
+        if not self._turn_has_audio:
+            raise ValueError("no audio in turn")
+        self._ensure_turn_prefix()
+        _, suffix = self._prompt_parts()
+        if not suffix:
+            raise RuntimeError("chat template produced no assistant seed")
+        self._prefill(suffix[:-1])
+        self._response_seed = int(suffix[-1])
+        self._turn_closed = True
 
 
 def selfcheck() -> None:
@@ -670,8 +907,82 @@ def selfcheck() -> None:
     fake._encode_short = fake_encode
     joined = fake(np.zeros(5 * 60 * SAMPLE_RATE, dtype=np.float32))
     assert len(calls) == 12 and joined.shape == (15_000, 1)
+
+    class FakeTokenizer:
+        bos_token_id = 2
+
+        @staticmethod
+        def apply_chat_template(messages, tokenize=False,
+                                add_generation_prompt=True):
+            body = "".join(
+                f"<|turn>{m['role']}\n{m['content']}<turn|>\n"
+                for m in messages)
+            return "<bos>" + body + "<|turn>model\n"
+
+        @staticmethod
+        def encode(value, add_special_tokens=False):
+            if value == "\n":
+                return [107]
+            if value == "<turn|>\n":
+                return [106, 107]
+            result = []
+            if value.startswith("<bos>"):
+                result.append(2)
+            result.append(105)
+            return result
+
+    # A second turn must not inject another BOS. A naturally closed assistant
+    # needs only a newline; an interrupted/max-token reply needs an explicit
+    # model-turn close before the new user turn.
+    probe = object.__new__(StockWhisperGemmaSession)
+    probe._metadata = []
+    probe.system = "system"
+    probe.tokenizer = FakeTokenizer()
+    probe._has_history = True
+    probe._assistant_closed = True
+    closed_prefix, _ = probe._prompt_parts()
+    assert closed_prefix[:2] == [107, 105]
+    probe._assistant_closed = False
+    open_prefix, _ = probe._prompt_parts()
+    assert open_prefix[:3] == [106, 107, 105]
+
+    class FakeCache:
+        def __init__(self, size):
+            self.offset = size
+
+        def is_trimmable(self):
+            return True
+
+        def trim(self, amount):
+            amount = min(amount, self.offset)
+            self.offset -= amount
+            return amount
+
+    probe.cache = [FakeCache(13)]
+    probe.n_prefilled = 13
+    probe._generation_start = 9
+    probe._cancelled = True
+    assert probe.interrupt() == 4
+    assert probe.n_prefilled == 9 and probe.cache[0].offset == 9
+
+    # The live session uses the adapter's training-length window instead of
+    # handing a five-minute uninterrupted meeting to one quadratic context
+    # block. Overlap is present at the encoder boundary but never duplicated
+    # in what reaches Gemma.
+    live = object.__new__(StockWhisperGemmaSession)
+    live._audio = [np.zeros(5 * 60 * SAMPLE_RATE, dtype=np.float32)]
+    live._had_stream_chunk = False
+    live.front_end = lambda wav: np.zeros(
+        (math.ceil(len(wav) / (SAMPLE_RATE / 50)), 1), dtype=np.float32)
+    live_frames = []
+    live._prefill_audio = lambda features: live_frames.append(len(features))
+    windows = live._encode_available(final=False)
+    windows += live._encode_available(final=True)
+    assert windows == 28 and sum(live_frames) == 15_000, (
+        windows, sum(live_frames))
     print("runtime.stock_whisper: stock encoder -> owned Jaeger connector -> Gemma; "
-          "ASR decoder unused; five-minute window chunking contract OK")
+          "ASR decoder unused; persistent turns + rewind + bounded five-minute "
+          "streaming contracts OK")
 
 
 if __name__ == "__main__":

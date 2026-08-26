@@ -70,6 +70,9 @@ ENGINE_LOG = WORK_DIR / "engine.log"
 JAEGER_MODEL = Path(os.environ.get(
     "JAEGER_OMNI_MODEL",
     Path.home() / "models/gemma-4-e4b-it-mlx-full"))
+JAEGER_STOCK_NODE = Path(os.environ.get(
+    "JAEGER_STOCK_NODE",
+    HERE.parent / "nodes/stock-whisper-medium-cekl-blend50"))
 
 
 def _find_reference_resource(relative: str, env_var: str) -> Path | None:
@@ -502,7 +505,8 @@ class JaegerEngineWorker(QThread):
     def __init__(self, system_prompt: str = "", voice: str = "af_heart",
                  speed: float = 1.0, threshold: float = 0.012,
                  silence_ms: float = 700.0, cooldown: float = 4.0,
-                 max_context: int = 6000, speakers: int = 2) -> None:
+                 max_context: int = 6000, speakers: int = 2,
+                 front_end: str = "tower") -> None:
         super().__init__()
         self.system_prompt = system_prompt.strip()
         self.voice = voice
@@ -512,6 +516,7 @@ class JaegerEngineWorker(QThread):
         self.cooldown = cooldown
         self.max_context = max_context
         self.speakers = speakers
+        self.front_end = front_end
         self.audio_q: queue.Queue[np.ndarray] = queue.Queue(maxsize=200)
         self.say_q: queue.Queue[str | None] = queue.Queue()
         self._stop_evt = threading.Event()
@@ -712,7 +717,9 @@ class JaegerEngineWorker(QThread):
             system = SYSTEM
             if self.system_prompt:
                 system = f"{SYSTEM} {self.system_prompt}"
-            session, meta = build(str(JAEGER_MODEL), "tower", system=system)
+            adapter = str(JAEGER_STOCK_NODE) if self.front_end == "stock" else None
+            session, meta = build(
+                str(JAEGER_MODEL), self.front_end, adapter, system=system)
             self.session = session
             warm_ms = session.warmup()
 
@@ -789,7 +796,8 @@ class JaegerEngineWorker(QThread):
 
             self.ready.emit()
             self.status.emit(
-                f"LIVE · audio-native input · AEC on · warmup {warm_ms:.0f}ms")
+                f"LIVE · {meta['front_end']} audio embeddings · AEC on · "
+                f"warmup {warm_ms:.0f}ms")
             loop.run(eos_ids=meta["eos"])
         except Exception as exc:
             self.failed.emit(f"{type(exc).__name__}: {exc}")
@@ -970,7 +978,8 @@ class OmniDuplexWindow(QMainWindow):
                              "Gemma; a pause ends the turn.")
         for widget in (self.voice_combo, self.speed_spin, self.speaker_spin,
                        self.threshold_spin, self.silence_spin,
-                       self.cooldown_spin, self.context_spin):
+                       self.cooldown_spin, self.context_spin,
+                       self.front_end_combo):
             widget.setEnabled(not minicpm)
         self._refresh_counts()
 
@@ -1042,6 +1051,13 @@ class OmniDuplexWindow(QMainWindow):
         lay.addWidget(self.prompt_edit)
 
         row = QHBoxLayout()
+        self.front_end_combo = QComboBox()
+        self.front_end_combo.addItem(
+            "Gemma native ear · live rollback", "tower")
+        self.front_end_combo.addItem(
+            "Whisper medium + Jaeger 50M · production candidate", "stock")
+        row.addWidget(QLabel("audio input:"))
+        row.addWidget(self.front_end_combo)
         self.lang_combo = QComboBox()
         self.lang_combo.addItems(["en", "zh"])
         row.addWidget(QLabel("language:"))
@@ -1210,7 +1226,8 @@ class OmniDuplexWindow(QMainWindow):
                 silence_ms=self.silence_spin.value(),
                 cooldown=self.cooldown_spin.value(),
                 max_context=self.context_spin.value(),
-                speakers=self.speaker_spin.value())
+                speakers=self.speaker_spin.value(),
+                front_end=self.front_end_combo.currentData())
             self.worker.reply.connect(self._on_j_reply)
             self.worker.speaker.connect(self._on_j_speaker)
             self.worker.metrics.connect(self.metrics_label.setText)
@@ -1485,6 +1502,9 @@ def check() -> int:
         problems.append(f"Jaeger runtime import: {exc}")
     if not JAEGER_MODEL.exists():
         problems.append(f"Jaeger model missing: {JAEGER_MODEL}")
+    if not JAEGER_STOCK_NODE.exists():
+        problems.append(
+            f"Whisper production-candidate node missing: {JAEGER_STOCK_NODE}")
     if sd.query_devices(kind="input") is None:
         problems.append("no input audio device")
     if SHIM is None or not SHIM.exists() or not LLM_GGUF.exists():
@@ -1609,7 +1629,7 @@ def minicpm_selftest(seconds: int) -> int:
 
 def jaeger_selftest(wav_path: Path, seconds: int, threshold: float,
                     silence_ms: float, cooldown: float,
-                    max_context: int) -> int:
+                    max_context: int, front_end: str = "tower") -> int:
     """Paced-file test of the exact Jaeger worker used by the window."""
     from PySide6.QtCore import QCoreApplication
 
@@ -1624,7 +1644,7 @@ def jaeger_selftest(wav_path: Path, seconds: int, threshold: float,
 
     worker = JaegerEngineWorker(
         threshold=threshold, silence_ms=silence_ms, cooldown=cooldown,
-        max_context=max_context, speakers=2)
+        max_context=max_context, speakers=2, front_end=front_end)
     tally = {"replies": 0, "failed": False, "speakers": []}
     state = {"i": 0, "started": 0.0}
     def say(msg: str) -> None:
@@ -1708,13 +1728,16 @@ def main() -> int:
                     help="Jaeger self-test reply cooldown")
     ap.add_argument("--max-context", type=int, default=6000,
                     help="Jaeger self-test context-roll threshold")
+    ap.add_argument("--front-end", choices=("tower", "stock"),
+                    default="tower",
+                    help="Jaeger self-test audio node")
     args = ap.parse_args()
     if args.check:
         return check()
     if args.selftest_jaeger:
         return jaeger_selftest(
             args.selftest_jaeger, args.seconds, args.threshold,
-            args.silence_ms, args.cooldown, args.max_context)
+            args.silence_ms, args.cooldown, args.max_context, args.front_end)
     if args.selftest_minicpm is not None:
         return minicpm_selftest(args.selftest_minicpm)
     app = QApplication([sys.argv[0]])

@@ -5,8 +5,8 @@
     python -m jaeger_agent_omni.live --voice am_michael --speed 1.15
     python -m jaeger_agent_omni.live --list-devices
 
-    audio ──► Gemma's audio tower ──► Gemma E4B ──► text ──► Kokoro ──► speaker
-              no transcription anywhere on the way in
+    audio ──► selected neural ear ──► Gemma E4B ──► text ──► Kokoro ──► speaker
+              no transcription or ASR decoder anywhere on the way in
 
 Everything here has been measured in isolation; this is the first thing that
 runs it against a real microphone, in a room, end to end:
@@ -87,6 +87,13 @@ def main() -> int:
     ap.add_argument("--speed", type=float, default=1.0)
     ap.add_argument("--device", type=int, default=None, help="input device id")
     ap.add_argument("--model", default=MODEL)
+    ap.add_argument("--front-end", default="tower",
+                    choices=("tower", "stock"),
+                    help="audio node: native Gemma tower (production rollback) "
+                         "or paired stock Whisper medium candidate")
+    ap.add_argument("--adapter", default=None,
+                    help="stock node/checkpoint override; defaults to the "
+                         "registered medium 50M node")
     ap.add_argument("--threshold", type=float, default=0.012,
                     help="speech RMS floor; raise it in a noisy room")
     ap.add_argument("--silence-ms", type=float, default=510.0,
@@ -131,7 +138,7 @@ def main() -> int:
 
     print("loading Gemma…", flush=True)
     session, meta = build(
-        a.model, "tower",
+        a.model, a.front_end, a.adapter,
         system=MEETING_SYSTEM if a.meeting_minutes else SYSTEM)
     session.warmup()
 
@@ -393,6 +400,8 @@ def main() -> int:
     loop.audio_source = metered_source
 
     print(f"\ndevice   {sd.query_devices(a.device, 'input')['name'] if a.device is not None else sd.query_devices(kind='input')['name']}")
+    node_label = f" · {meta['node']}" if meta.get("node") else ""
+    print(f"input    {meta['front_end']}{node_label}")
     print(f"voice    {a.voice} @ {a.speed}x")
     print(f"listening for {a.seconds:.0f}s — speak, pause, and it will answer.")
     print("talk over the reply to test barge-in.\n")

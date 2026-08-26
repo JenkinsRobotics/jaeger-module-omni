@@ -69,6 +69,11 @@ def main() -> int:
                     choices=("kokoro", "token2wav"))
     ap.add_argument("--ref", help="reference clip to clone (token2wav)")
     ap.add_argument("--model", default=MODEL)
+    ap.add_argument("--front-end", default="tower",
+                    choices=("tower", "stock"),
+                    help="native Gemma ear or paired stock Whisper medium ear")
+    ap.add_argument("--adapter", default=None,
+                    help="stock node/checkpoint override")
     ap.add_argument("--out", default="reply.wav")
     a = ap.parse_args()
 
@@ -78,7 +83,7 @@ def main() -> int:
     if a.engine == "token2wav" and not a.ref:
         raise SystemExit("--engine token2wav needs --ref REF.wav")
 
-    session, meta = build(a.model, "tower")
+    session, meta = build(a.model, a.front_end, a.adapter)
     session.warmup()
 
     if a.bench:
@@ -105,6 +110,9 @@ def main() -> int:
         return 0
 
     if a.ask:
+        if a.front_end == "stock":
+            raise SystemExit(
+                "--ask is a text control; use --front-end tower or provide audio")
         session.reset()
         session.open_turn()
         session.feed_text(a.ask)
