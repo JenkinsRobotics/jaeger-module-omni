@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "kind": "jaeger_neural_node",
+  "id": "gemma-minicpm-hidden-talker",
+  "slot": "tts",
+  "status": "experimental_measured_not_live_default",
+  "enabled_by_default": false,
+  "implementation": "runtime.py:build",
+  "consumes": [
+    "gemma_language_token_ids",
+    "cognition_hidden_states_2560",
+    "reference_voice_pcm"
+  ],
+  "produces": ["speech_codes_25hz", "pcm_f32_24khz_mono"],
+  "model": {
+    "id": "openbmb/MiniCPM-o-4_5-talker",
+    "path": "weights/talker/MiniCPM-o-4_5-tts-F16.gguf",
+    "weights_sha256": "c7be3748a863dd6966ae7eed42600b7f41ca67affb03729ff245247f0e5ea088"
+  },
+  "adapter": {
+    "architecture": "GemmaQwenHiddenBridge-rank128",
+    "path": "weights/gemma_qwen_hidden_rank128.pt",
+    "sha256": "ab930601294f54ce4a087d02b61e89510bc3f41330b2047e80925e37792421ea"
+  },
+  "assets": [
+    {
+      "role": "offline_compiled_token_id_bridge",
+      "path": "weights/gemma_to_qwen_token_ids.npz",
+      "sha256": "228a14b4f8867e44347ef87aeb930349cd8a07878d258dac631a61e882cc5326"
+    },
+    {
+      "role": "speaker_encoder",
+      "path": "weights/token2wav/campplus.onnx",
+      "sha256": "a6ac6a63997761ae2997373e2ee1c47040854b4b759ea41ec48e4e42df0f4d73"
+    },
+    {
+      "role": "flow_decoder",
+      "path": "weights/token2wav/flow.pt",
+      "sha256": "15ccff24256ff61537c7f8b51e025116b83405f3fb017b54b008fc97da115446"
+    },
+    {
+      "role": "flow_config",
+      "path": "weights/token2wav/flow.yaml",
+      "sha256": "723295d37bf11f5f1b896ca4f2f4c81ebc2fbb3e51b753c2507ef8461c751486"
+    },
+    {
+      "role": "hifigan_vocoder",
+      "path": "weights/token2wav/hift.pt",
+      "sha256": "3386cc880324d4e98e05987b99107f49e40ed925b8ecc87c1f4939432d429879"
+    },
+    {
+      "role": "speech_tokenizer",
+      "path": "weights/token2wav/speech_tokenizer_v2_25hz.onnx",
+      "sha256": "d43342aa12163a80bf07bffb94c9de2e120a8df2f9917cd2f642e7f4219c6f71"
+    }
+  ],
+  "matrix_role": "hidden_state_voice_cloning_experimental",
+  "lineage": "Gemma hidden state plus inherited MiniCPM talker; no Qwen language backbone at runtime",
+  "evaluation": {
+    "cases": 12,
+    "semantic_correct": 10,
+    "mean_spoken_word_accuracy": 0.9352,
+    "median_first_audio_ms": 2040.9,
+    "decoded_text_handoff": false,
+    "wall_clock_paced": false,
+    "barge_in_tested": false,
+    "source": "research/omni_stream_seed4_12_20260821/results.json"
+  },
+  "notes": "Preserves Gemma hidden state and clones a reference voice. It still uses an offline integer vocabulary lookup because the inherited talker is Qwen-token-paired; the final native Gemma talker must remove that lookup."
+}

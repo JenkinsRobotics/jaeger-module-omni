@@ -62,14 +62,16 @@ class SpeexEchoCanceller:
     """
 
     def __init__(self, sample_rate: int = 16000, frame_ms: int = 20,
-                 filter_ms: int = 500):
+                 filter_ms: int = 500, library_path: str | Path | None = None):
         import numpy as np
 
         self.np = np
         self.sample_rate = int(sample_rate)
         self.frame_size = self.sample_rate * int(frame_ms) // 1000
         self.filter_length = self.sample_rate * int(filter_ms) // 1000
-        self.library_path = _library_path()
+        self.library_path = str(library_path) if library_path else _library_path()
+        if "/" in self.library_path and not Path(self.library_path).is_file():
+            raise RuntimeError(f"SpeexDSP library does not exist: {self.library_path}")
         self._lib = ctypes.CDLL(self.library_path)
         ptr = ctypes.POINTER(ctypes.c_int16)
         self._sample_ptr = ptr

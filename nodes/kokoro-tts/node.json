@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "kind": "jaeger_neural_node",
+  "id": "kokoro-tts",
+  "slot": "tts",
+  "status": "production_default_text_tts",
+  "enabled_by_default": true,
+  "implementation": "runtime.py:build",
+  "consumes": ["text", "voice_id", "speed"],
+  "produces": ["pcm_f32_24khz_mono"],
+  "model": {
+    "id": "hexgrad/Kokoro-82M",
+    "revision": "f3ff3571791e39611d31c381e3a41a3af07b4987",
+    "path": "weights/model",
+    "weights_file": "kokoro-v1_0.pth",
+    "weights_sha256": "496dba118d1a58f5f3db2efc88dbdc216e0483fc89fe6e47ee1f2c53f18ad1e4"
+  },
+  "sample_rate": 24000,
+  "matrix_role": "text_bottleneck_fallback",
+  "notes": "Correct-word streaming TTS; still a text output node, not hidden-state speech generation."
+}

@@ -34,28 +34,26 @@ import wave
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-KOKORO = Path.home() / "GITHUB/JaegerKokoroTTS"
-KOKORO_PY = KOKORO / ".venv/bin/python"
 KOKORO_RATE = 24000
+KOKORO_NODE = REPO / "nodes" / "kokoro-tts"
 
 # af_* female, am_* male. Kokoro ships fixed voices — these are selections,
 # not clones. Cloning is token2wav's job.
 VOICES = ["af_heart", "af_bella", "af_nicole", "af_sarah", "af_sky",
           "am_adam", "am_michael", "bf_emma", "bf_isabella", "bm_george"]
 
-# The pipeline is held RESIDENT. Shelling out to another venv reloaded the
-# model on every call -- 6-9 s per reply -- and put a process boundary plus a
-# text hand-off in the middle of a pipeline whose entire purpose is not having
-# one. There was never a dependency conflict to justify it: both venvs run
-# torch 2.13.0 and numpy 2.4.6, and transformers differs by a patch.
-_PIPES: dict = {}
+# The node is held RESIDENT. Shelling out reloaded the model on every clause
+# and made the registered node differ from the live implementation.
+_KOKORO_ENGINES: dict = {}
 
 
 def _pipeline(lang: str):
-    from kokoro import KPipeline
-    if lang not in _PIPES:
-        _PIPES[lang] = KPipeline(lang_code=lang)
-    return _PIPES[lang]
+    from jaeger_agent_omni.node_registry import load_factory, load_package
+
+    if lang not in _KOKORO_ENGINES:
+        package = load_package(KOKORO_NODE)
+        _KOKORO_ENGINES[lang] = load_factory(package)(lang=lang)
+    return _KOKORO_ENGINES[lang]
 
 
 def speak_kokoro(text: str, out: str | Path, voice: str = "af_heart",
@@ -66,12 +64,14 @@ def speak_kokoro(text: str, out: str | Path, voice: str = "af_heart",
 
     out = Path(out).resolve()
     out.parent.mkdir(parents=True, exist_ok=True)
-    pipe = _pipeline(voice[0])
-    chunks = [np.asarray(r.audio, dtype="float32").reshape(-1)
-              for r in pipe(text, voice=voice, speed=speed)]
-    audio = np.concatenate(chunks) if chunks else np.zeros(1, dtype="float32")
+    engine = _pipeline(voice[0])
+    audio = np.asarray(
+        engine.synthesize(text, voice=voice, speed=speed),
+        dtype="float32",
+    ).reshape(-1)
     sf.write(str(out), audio, KOKORO_RATE)
-    return {"engine": "kokoro", "voice": voice, "speed": speed,
+    return {"engine": "kokoro", "node": "kokoro-tts",
+            "voice": voice, "speed": speed,
             "seconds": len(audio) / KOKORO_RATE, "path": str(out)}
 
 

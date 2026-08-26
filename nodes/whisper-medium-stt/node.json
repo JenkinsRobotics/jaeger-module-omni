@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "kind": "jaeger_neural_node",
+  "id": "whisper-medium-stt",
+  "slot": "stt",
+  "status": "available_cascade_and_diagnostic",
+  "enabled_by_default": false,
+  "implementation": "runtime.py:build",
+  "consumes": ["pcm_f32_16khz_mono"],
+  "produces": ["transcript_text"],
+  "model": {
+    "id": "openai/whisper-medium",
+    "revision": "abdf7c39ab9d0397620ccaea8974cc764cd0953e",
+    "path": "weights/model",
+    "weights_file": "model.safetensors",
+    "weights_sha256": "62f73550fa6db24b0c6f6c5962bd0dae80fa644e93cde9cd9c3792971b47fd28"
+  },
+  "matrix_role": "cascade_and_decoder_control_only",
+  "notes": "Complete stock encoder+decoder; never part of the transcript-free perception path."
+}

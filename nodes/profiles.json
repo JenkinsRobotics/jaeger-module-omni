@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "default": "live-native",
+  "profiles": {
+    "live-native": {
+      "enabled": [
+        "gemma-4-e4b-cognition",
+        "kokoro-tts",
+        "campplus-speaker"
+      ],
+      "disabled": [
+        "stock-whisper-medium-cekl-blend50",
+        "stock-whisper-large-v3-turbo50m",
+        "whisper-medium-stt",
+        "whisper-large-v3-turbo-stt",
+        "gemma-minicpm-hidden-talker"
+      ]
+    },
+    "stock-medium-development": {
+      "enabled": [
+        "stock-whisper-medium-cekl-blend50",
+        "gemma-4-e4b-cognition",
+        "kokoro-tts",
+        "campplus-speaker"
+      ],
+      "disabled": [
+        "stock-whisper-large-v3-turbo50m",
+        "whisper-medium-stt",
+        "whisper-large-v3-turbo-stt",
+        "gemma-minicpm-hidden-talker"
+      ]
+    },
+    "cascade-large-stt": {
+      "enabled": [
+        "whisper-large-v3-turbo-stt",
+        "gemma-4-e4b-cognition",
+        "kokoro-tts",
+        "campplus-speaker"
+      ],
+      "disabled": [
+        "stock-whisper-medium-cekl-blend50",
+        "stock-whisper-large-v3-turbo50m",
+        "whisper-medium-stt",
+        "gemma-minicpm-hidden-talker"
+      ]
+    },
+    "large-adapter-diagnostic-only": {
+      "allow_rejected": true,
+      "enabled": [
+        "stock-whisper-large-v3-turbo50m",
+        "gemma-4-e4b-cognition"
+      ],
+      "disabled": [
+        "stock-whisper-medium-cekl-blend50",
+        "whisper-medium-stt",
+        "whisper-large-v3-turbo-stt",
+        "kokoro-tts",
+        "campplus-speaker",
+        "gemma-minicpm-hidden-talker"
+      ]
+    },
+    "hidden-state-voice-cloning-experimental": {
+      "enabled": [
+        "gemma-4-e4b-cognition",
+        "gemma-minicpm-hidden-talker",
+        "campplus-speaker"
+      ],
+      "disabled": [
+        "stock-whisper-medium-cekl-blend50",
+        "stock-whisper-large-v3-turbo50m",
+        "whisper-medium-stt",
+        "whisper-large-v3-turbo-stt",
+        "kokoro-tts"
+      ]
+    }
+  }
+}

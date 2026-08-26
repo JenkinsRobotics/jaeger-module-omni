@@ -1,0 +1,6 @@
+torch
+transformers
+numpy
+
+# Token2Wav runs in the repository's isolated .venv-t2w environment:
+# stepaudio2-minicpmo==0.1.1

@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "kind": "jaeger_neural_node",
+  "id": "campplus-speaker",
+  "slot": "speaker",
+  "status": "live_turn_level_labels",
+  "enabled_by_default": true,
+  "implementation": "runtime.py:build",
+  "consumes": ["pcm_f32_16khz_mono"],
+  "produces": ["speaker_embedding", "speaker_label"],
+  "model": {
+    "path": "weights/campplus.onnx",
+    "weights_sha256": "a6ac6a63997761ae2997373e2ee1c47040854b4b759ea41ec48e4e42df0f4d73"
+  },
+  "window_seconds": 1.5,
+  "notes": "Turn/window labels are not word-level diarization."
+}

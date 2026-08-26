@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "kind": "jaeger_neural_node",
+  "id": "whisper-large-v3-turbo-stt",
+  "slot": "stt",
+  "status": "available_cascade_and_decoder_control",
+  "enabled_by_default": false,
+  "implementation": "runtime.py:build",
+  "consumes": ["pcm_f32_16khz_mono"],
+  "produces": ["transcript_text"],
+  "model": {
+    "id": "openai/whisper-large-v3-turbo",
+    "revision": "41f01f3fe87f28c78e2fbf8b568835947dd65ed9",
+    "path": "weights/model",
+    "weights_file": "model.safetensors",
+    "weights_sha256": "542566a422ae4f3fd23f1ba11add198fca01bbf82e66e6a2857b3f608b1eb9d1"
+  },
+  "evaluation": {"cases12_reference_words": 67, "cases12_word_errors": 0},
+  "matrix_role": "cascade_and_decoder_control_only",
+  "notes": "Decoder control is healthy; the rejected large perception adapter is a different node."
+}

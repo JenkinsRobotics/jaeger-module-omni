@@ -1,9 +1,7 @@
 """Client for OpenBMB's token2wav service — speech codes in, waveform out.
 
-We do not port flow-matching. OpenBMB ships an official Python service
-(`llama.cpp-omni/tools/omni/pyt2w/token2wav_service.py`) that their own C++
-drives over line-delimited JSON on stdin/stdout. We drive the same service the
-same way, from an isolated venv (`.venv-t2w`) because its dependency pins
+The repository-owned service drives OpenBMB's StepAudio2 implementation over
+line-delimited JSON, from an isolated venv (`.venv-t2w`) because its pins
 (torch 2.3.1, transformers 4.51) predate ours by a year.
 
     protocol   {"cmd": "init", "model_dir": ..., "device": ..., ...}

@@ -46,6 +46,7 @@ def _to(self, *a, **k):
     return _orig_to(self, *a, **_remap(k))
 torch.Tensor.to = _to
 
-SERVICE = Path.home() / "GITHUB/llama.cpp-omni/tools/omni/pyt2w/token2wav_service.py"
+SERVICE = (Path(__file__).resolve().parent.parent / "jaeger_agent_omni" /
+           "runtime" / "token2wav_service.py")
 sys.argv = [str(SERVICE)]
 runpy.run_path(str(SERVICE), run_name="__main__")

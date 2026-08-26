@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "kind": "jaeger_neural_gate",
+  "id": "silero-vad",
+  "slot": "vad",
+  "status": "live",
+  "enabled_by_default": true,
+  "implementation": "runtime.py:build",
+  "consumes": ["pcm_f32_16khz_mono"],
+  "produces": ["speech_probability", "speech_admission"],
+  "model": {
+    "path": "weights/silero_vad_16k_op15.onnx",
+    "weights_sha256": "b6875a49bacf6d57826a7e0a549d5a05d769ee34405cadcc9ff8b4442544b1f9"
+  },
+  "frame_samples": 480,
+  "sample_rate": 16000
+}

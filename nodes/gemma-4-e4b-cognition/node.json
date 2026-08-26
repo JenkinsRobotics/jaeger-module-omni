@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "kind": "jaeger_neural_node",
+  "id": "gemma-4-e4b-cognition",
+  "slot": "cognition",
+  "status": "live",
+  "enabled_by_default": true,
+  "implementation": "runtime.py:build",
+  "consumes": [
+    "pcm_f32_16khz_mono",
+    "gemma_audio_embeddings_2560",
+    "token_embeddings_2560"
+  ],
+  "produces": [
+    "gemma_audio_embeddings_2560",
+    "language_tokens",
+    "cognition_hidden_states_2560"
+  ],
+  "model": {
+    "id": "google/gemma-4-E4B-it",
+    "variant": "4bit-mlx",
+    "path": "weights/model",
+    "weights_file": "model.safetensors",
+    "weights_sha256": "e105100225815b521c6405c57ea23974530b868ddfea1e3ea9ec7ce1cf9fae38"
+  },
+  "notes": "Includes the native audio tower used by the live-native profile; Whisper perception adapters target its 2560-wide cognition boundary."
+}

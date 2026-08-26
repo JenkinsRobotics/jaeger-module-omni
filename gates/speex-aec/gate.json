@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "kind": "jaeger_signal_gate",
+  "id": "speex-aec",
+  "slot": "aec",
+  "status": "live",
+  "enabled_by_default": true,
+  "implementation": "runtime.py:build",
+  "consumes": ["microphone_pcm_f32", "playback_reference_pcm_f32"],
+  "produces": ["echo_cancelled_pcm_f32", "double_talk_residual"],
+  "library": {
+    "path": "weights/libspeexdsp.dylib",
+    "sha256": "788c28de42cfa50eb1ca41d0c094c7428def8e85604c1302423de78d37619e10",
+    "version": "1.2.1"
+  },
+  "sample_rate": 16000,
+  "frame_ms": 20
+}
