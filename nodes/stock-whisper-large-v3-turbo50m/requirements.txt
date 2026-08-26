@@ -1,0 +1,4 @@
+mlx-lm
+numpy
+torch
+transformers

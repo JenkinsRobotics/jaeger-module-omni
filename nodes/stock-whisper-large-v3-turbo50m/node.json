@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "kind": "jaeger_audio_node",
+  "id": "stock-whisper-large-v3-turbo50m",
+  "runtime": "stock_whisper_gemma",
+  "slot": "audio_perception",
+  "enabled_by_default": false,
+  "consumes": ["pcm_s16le_16khz_mono"],
+  "produces": ["gemma_audio_embeddings_2560"],
+  "status": "rejected_transfer_failure",
+  "implementation": "runtime.py:build",
+  "encoder": {
+    "id": "openai/whisper-large-v3-turbo",
+    "revision": "41f01f3fe87f28c78e2fbf8b568835947dd65ed9",
+    "path": "weights/encoder",
+    "weights_sha256": "542566a422ae4f3fd23f1ba11add198fca01bbf82e66e6a2857b3f608b1eb9d1",
+    "boundary": "stock_whisper_encoder_50hz",
+    "output_dim": 1280,
+    "decoder_runtime": false
+  },
+  "adapter": {
+    "path": "weights/adapter.npz",
+    "sha256": "3633baa083d4cc0d10b93e64226c69e2c1320f780c50afc9eecf5b5a2c463cd8",
+    "architecture": "gemma_native_stack_swiglu_residual_temporal2_context_v1",
+    "parameters": 52768768,
+    "pool_step": 2,
+    "lineage": "qwen_free"
+  },
+  "backbone": {
+    "family": "gemma-4-e4b",
+    "runtime_variant": "gemma-4-E4B-it-4bit-mlx",
+    "frozen": true
+  },
+  "evaluation": {
+    "devclean64_wer": 0.17801047120418848,
+    "mindsvox591_wer": 0.21035332785538208,
+    "clean360val128_wer": 0.20843672456575682,
+    "novelvox128_wer": 0.18577494692144372,
+    "cases12_correct": 1,
+    "cases12_n": 12,
+    "cases12_median_ms": 413.4720419533551,
+    "three_layer_cases12_whisper_decoder_wer": 0.0,
+    "three_layer_cases12_gemma_transcript_wer": 0.9402985074626866,
+    "three_layer_cases12_gemma_answers_correct": 1
+  }
+}

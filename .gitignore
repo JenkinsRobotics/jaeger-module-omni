@@ -54,6 +54,7 @@ htmlcov/
 *.pth
 *.onnx
 *.safetensors
+nodes/*/weights/
 
 # Local secrets
 .env

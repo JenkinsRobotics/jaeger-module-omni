@@ -71,13 +71,25 @@ def build(model_path: str = MODEL, front_end: str = "tower", adapter_path=None,
             raise SystemExit(
                 "--front-end stock needs a trained adapter (--adapter PATH).")
         stock_model = DEFAULT_GEMMA if model_path == MODEL else model_path
-        session = StockWhisperGemmaSession(
-            selected_adapter, model_path=stock_model, system=system)
+        if selected_adapter.is_dir():
+            from jaeger_agent_omni.model_nodes import (
+                load_audio_node,
+                load_node_factory,
+            )
+            node = load_audio_node(selected_adapter)
+            session = load_node_factory(node)(
+                model_path=stock_model, system=system)
+        else:
+            session = StockWhisperGemmaSession(
+                selected_adapter, model_path=stock_model, system=system)
         configured_eos = getattr(session.tokenizer, "eos_token_id", 1)
         eos = {1, 106, int(configured_eos)}
-        return session, {"model": str(stock_model), "front_end": front_end,
-                         "adapter": str(selected_adapter.resolve()),
-                         "eos": eos}
+        return session, {
+            "model": str(stock_model), "front_end": front_end,
+            "adapter": str(session.adapter_path),
+            "node": session.node.node_id if session.node else None,
+            "eos": eos,
+        }
 
     import mlx.core as mx                                       # noqa: F401
     from mlx_vlm.models.cache import KVCache

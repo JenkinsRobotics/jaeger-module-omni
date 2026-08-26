@@ -287,7 +287,17 @@ class StockWhisperGemmaSession:
         import mlx.nn as nn
         from mlx_lm import load
 
+        from jaeger_agent_omni.model_nodes import (
+            resolve_audio_node,
+            validate_node_checkpoint,
+        )
+
+        adapter_path, node = resolve_audio_node(adapter_path)
         values = validate_checkpoint(adapter_path)
+        if node is not None:
+            validate_node_checkpoint(node, values)
+        self.adapter_path = Path(adapter_path).resolve()
+        self.node = node
         architecture = str(values.get("adapter_arch", ARCH_PAIRED))
         checkpoint_encoder = str(values["encoder"])
         self.input_dim = int(values.get(
@@ -304,7 +314,10 @@ class StockWhisperGemmaSession:
                 f"runtime requested {whisper_id!r}")
         self.mx = mx
         self.nn = nn
-        self.front_end = StockWhisperFrontEnd(whisper_id, device)
+        # A packaged node owns a complete pinned encoder snapshot. Legacy raw
+        # checkpoint callers retain the Hugging Face ID behavior.
+        encoder_source = str(node.encoder_path) if node is not None else whisper_id
+        self.front_end = StockWhisperFrontEnd(encoder_source, device)
         self.model, self.tokenizer = load(str(model_path), lazy=False)
         self.model.freeze()
         self.model.eval()
