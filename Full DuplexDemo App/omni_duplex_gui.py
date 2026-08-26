@@ -529,6 +529,7 @@ class JaegerEngineWorker(QThread):
         self.loop = None
         self.session = None
         self.aec = None
+        self.barge_detector = None
         self.raw_level = 0.0
         self.clean_level = 0.0
         self.fed_samples = 0
@@ -551,11 +552,10 @@ class JaegerEngineWorker(QThread):
                             if clean.size else 0.0)
 
         if self.player.playing.is_set():
-            attenuation = 20 * np.log10(
-                (self.raw_level + 1e-9) / (self.clean_level + 1e-9))
-            is_barge = (self.clean_level > self.threshold * 1.1 and
-                        self.aec is not None and
-                        (self.aec.playback_age > 1.0 or attenuation < 3.0))
+            is_barge = (
+                self.aec is not None and self.barge_detector is not None and
+                self.barge_detector.update(
+                    self.aec, self.clean_level, len(raw)))
             if is_barge and not self.barge_active.is_set():
                 self.hush()
         elif (self.generating.is_set() and
@@ -712,7 +712,9 @@ class JaegerEngineWorker(QThread):
             sys.path.insert(0, str(HERE.parent))
             from jaeger_agent_omni.live import _ready_chunks
             from jaeger_agent_omni.omni import SYSTEM, build
-            from jaeger_agent_omni.runtime.aec import SpeexEchoCanceller
+            from jaeger_agent_omni.runtime.aec import (
+                EchoAwareBargeIn, SpeexEchoCanceller,
+            )
             from jaeger_agent_omni.runtime.duplex import DuplexLoop
             from jaeger_agent_omni.runtime.speaker import OnlineSpeakerTracker
 
@@ -738,6 +740,8 @@ class JaegerEngineWorker(QThread):
             speak_kokoro("ready", WORK_DIR / "jaeger_warm.wav",
                          self.voice, self.speed)
             self.aec = SpeexEchoCanceller(SAMPLE_RATE)
+            self.barge_detector = EchoAwareBargeIn(
+                SAMPLE_RATE, self.threshold)
             if self.speakers:
                 self._speaker_tracker = OnlineSpeakerTracker(self.speakers)
 

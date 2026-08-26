@@ -171,9 +171,13 @@ def main() -> int:
               flush=True)
 
     aec = None
+    barge_detector = None
     if not a.no_aec and not a.no_speak:
-        from jaeger_agent_omni.runtime.aec import SpeexEchoCanceller
+        from jaeger_agent_omni.runtime.aec import (
+            EchoAwareBargeIn, SpeexEchoCanceller,
+        )
         aec = SpeexEchoCanceller(RATE)
+        barge_detector = EchoAwareBargeIn(RATE, a.threshold)
         print(f"AEC      SpeexDSP ({aec.library_path})", flush=True)
 
     def on_block(indata, frames, t, status):
@@ -199,14 +203,11 @@ def main() -> int:
                     clean = np.zeros_like(raw)
                     clean_rms = 0.0
             else:
-                attenuation = 20 * np.log10(
-                    (raw_rms + 1e-9) / (clean_rms + 1e-9))
-                # Before the adaptive filter has converged, pure echo can
-                # remain in the residual.  Double-talk either defeats that
-                # attenuation (<3 dB) or, after one second, stands above the
-                # ordinary endpoint floor on its own.
-                is_barge = (clean_rms > a.threshold * 1.1 and
-                            (aec.playback_age > 1.0 or attenuation < 3.0))
+                # Energy alone cannot distinguish a listener from uncancelled
+                # reverberation. Residual still correlated with the exact
+                # Kokoro waveform is Jaeger's own voice; decorrelated residual
+                # above the learned echo floor is genuine double-talk.
+                is_barge = barge_detector.update(aec, clean_rms, len(raw))
             if is_barge and not barge_active.is_set():
                 barge_active.set()
                 barge_request.set()

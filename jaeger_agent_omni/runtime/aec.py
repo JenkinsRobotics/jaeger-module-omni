@@ -97,9 +97,16 @@ class SpeexEchoCanceller:
         self._reference = None
         self._started_at = 0.0
         self._tail_until = 0.0
+        self.playback_generation = 0
         self.raw_energy = 0.0
         self.clean_energy = 0.0
         self.samples_cancelled = 0
+        self.reference_active = False
+        self.block_playback_age = 0.0
+        self.reference_rms = 0.0
+        self.block_attenuation_db = 0.0
+        self.raw_reference_correlation = 0.0
+        self.residual_reference_correlation = 0.0
 
     def close(self):
         state = getattr(self, "_state", None)
@@ -137,6 +144,7 @@ class SpeexEchoCanceller:
             self._started_at = start
             self._tail_until = start + len(wav) / self.sample_rate + \
                 self.filter_length / self.sample_rate
+            self.playback_generation += 1
 
     @property
     def playback_age(self) -> float:
@@ -150,7 +158,7 @@ class SpeexEchoCanceller:
             started = self._started_at
             tail_until = self._tail_until
         if reference is None or captured_at > tail_until:
-            return None
+            return None, None
         # The callback runs after this input block was captured.  Align its
         # beginning with the corresponding far-end time.  Filter history then
         # learns the remaining device/acoustic delay.
@@ -160,15 +168,61 @@ class SpeexEchoCanceller:
         src0, src1 = max(0, begin), min(len(reference), end)
         if src1 > src0:
             out[src0 - begin:src1 - begin] = reference[src0:src1]
-        return out
+        # Correlation searches the entire adaptive-filter delay range. The
+        # microphone receives a delayed/coloured copy, not the same-time
+        # digital block, so direct sample equality is the wrong test.
+        history_begin = max(0, begin - self.filter_length)
+        history_end = min(len(reference), max(0, end))
+        history = reference[history_begin:history_end]
+        return out, history
+
+    @staticmethod
+    def _max_reference_correlation(signal, history, decimation: int = 4):
+        """Maximum normalized correlation over plausible acoustic delays.
+
+        Four-sample boxcar decimation keeps this cheap enough for a callback
+        while retaining the speech band needed to distinguish playback from
+        independent near-end speech.
+        """
+        import numpy as np
+
+        signal = np.asarray(signal, dtype=np.float32).reshape(-1)
+        history = np.asarray(history, dtype=np.float32).reshape(-1)
+        signal_n = (len(signal) // decimation) * decimation
+        history_n = (len(history) // decimation) * decimation
+        if signal_n < decimation * 8 or history_n < signal_n:
+            return 0.0
+        probe = signal[:signal_n].reshape(-1, decimation).mean(axis=1)
+        far = history[:history_n].reshape(-1, decimation).mean(axis=1)
+        probe = probe - np.mean(probe)
+        far = far - np.mean(far)
+        probe_energy = float(np.dot(probe, probe))
+        if probe_energy < 1e-10:
+            return 0.0
+        numerator = np.correlate(far, probe, mode="valid")
+        cumulative = np.concatenate((
+            np.zeros(1, dtype=np.float64),
+            np.cumsum(np.square(far), dtype=np.float64),
+        ))
+        window = len(probe)
+        far_energy = cumulative[window:] - cumulative[:-window]
+        denominator = np.sqrt(
+            np.maximum(far_energy * probe_energy, 1e-20))
+        return float(np.max(np.abs(numerator) / denominator))
 
     def process(self, microphone, captured_at: float | None = None):
         """Return echo-cancelled float32 audio with identical length."""
         np = self.np
         mic = self._mono(microphone)
         now = time.monotonic() if captured_at is None else float(captured_at)
-        ref = self._reference_for(len(mic), now)
+        ref, history = self._reference_for(len(mic), now)
         if ref is None or not len(mic):
+            self.reference_active = False
+            self.block_playback_age = max(0.0, now - self._started_at)
+            self.reference_rms = 0.0
+            self.block_attenuation_db = 0.0
+            self.raw_reference_correlation = 0.0
+            self.residual_reference_correlation = 0.0
             return mic
 
         pieces = []
@@ -193,6 +247,17 @@ class SpeexEchoCanceller:
         self.raw_energy += float(np.dot(mic, mic))
         self.clean_energy += float(np.dot(out, out))
         self.samples_cancelled += len(mic)
+        raw_rms = float(np.sqrt(np.mean(np.square(mic))))
+        clean_rms = float(np.sqrt(np.mean(np.square(out))))
+        self.reference_active = True
+        self.block_playback_age = max(0.0, now - self._started_at)
+        self.reference_rms = float(np.sqrt(np.mean(np.square(ref))))
+        self.block_attenuation_db = 20.0 * float(np.log10(
+            (raw_rms + 1e-9) / (clean_rms + 1e-9)))
+        self.raw_reference_correlation = self._max_reference_correlation(
+            mic, history)
+        self.residual_reference_correlation = \
+            self._max_reference_correlation(out, history)
         return out
 
     @property
@@ -205,13 +270,87 @@ class SpeexEchoCanceller:
             (self.raw_energy + 1e-12) / (self.clean_energy + 1e-12))
 
 
+class EchoAwareBargeIn:
+    """Classify residual speech using Jaeger's known playback waveform.
+
+    Energy alone cannot distinguish a listener from uncancelled reverberation.
+    This detector requires an energetic residual to be decorrelated from the
+    far-end reference for a short confirmation interval. Correlated residuals
+    are Jaeger's own voice and remain model input only after cancellation.
+    """
+
+    def __init__(self, sample_rate: int, speech_rms: float,
+                 warmup_ms: float = 250.0, confirm_ms: float = 80.0,
+                 echo_correlation: float = 0.45,
+                 residual_echo_correlation: float = 0.75,
+                 residual_margin: float = 1.1):
+        self.sample_rate = int(sample_rate)
+        self.speech_rms = float(speech_rms)
+        self.warmup_s = float(warmup_ms) / 1000.0
+        self.confirm_samples = max(
+            1, round(self.sample_rate * float(confirm_ms) / 1000.0))
+        self.echo_correlation = float(echo_correlation)
+        self.residual_echo_correlation = float(residual_echo_correlation)
+        self.residual_margin = float(residual_margin)
+        self._generation = -1
+        self._candidate_samples = 0
+        self._echo_floor = self.speech_rms * 0.5
+
+    @property
+    def echo_floor(self) -> float:
+        return self._echo_floor
+
+    def reset(self, generation: int = -1) -> None:
+        self._generation = int(generation)
+        self._candidate_samples = 0
+        self._echo_floor = self.speech_rms * 0.5
+
+    def update(self, aec: SpeexEchoCanceller, clean_rms: float,
+               samples: int) -> bool:
+        generation = int(aec.playback_generation)
+        if generation != self._generation:
+            self.reset(generation)
+
+        clean_rms = float(clean_rms)
+        # Classify the mixture, not the post-AEC residual.  An independent
+        # near-end voice dilutes raw/reference coherence.  Searching the
+        # residual itself can spuriously match some unrelated speech elsewhere
+        # in the half-second reference history.
+        correlated = (
+            aec.raw_reference_correlation >= self.echo_correlation or
+            aec.residual_reference_correlation >=
+            self.residual_echo_correlation)
+        # During filter convergence, learn the room's residual echo envelope
+        # but never mistake that startup transient for an interruption.
+        if aec.block_playback_age < self.warmup_s:
+            self._echo_floor = max(
+                self.speech_rms * 0.5,
+                0.85 * self._echo_floor + 0.15 * clean_rms)
+            self._candidate_samples = 0
+            return False
+
+        if correlated or clean_rms <= self.speech_rms:
+            self._echo_floor = max(
+                self.speech_rms * 0.25,
+                0.92 * self._echo_floor + 0.08 * clean_rms)
+
+        minimum = max(
+            self.speech_rms * 1.1,
+            self._echo_floor * self.residual_margin)
+        external = clean_rms > minimum and not correlated
+        self._candidate_samples = (
+            self._candidate_samples + int(samples) if external else 0)
+        return self._candidate_samples >= self.confirm_samples
+
+
 def demo() -> None:
     """Corpus-style synthetic echo + double-talk check, not one clip."""
     import numpy as np
 
-    rate, frame = 16000, 320
+    rate, frame = 16000, 1600
     rng = np.random.default_rng(0)
-    cancellations, near_ratios = [], []
+    cancellations, near_ratios, barge_latencies = [], [], []
+    false_barges = 0
     for seed in range(8):
         far = rng.normal(0, 0.12, rate * 8).astype(np.float32)
         far = np.convolve(far, np.ones(5) / 5, mode="same").astype(np.float32)
@@ -226,13 +365,20 @@ def demo() -> None:
         mic += near
 
         aec = SpeexEchoCanceller(rate)
+        detector = EchoAwareBargeIn(rate, speech_rms=0.012)
         # Offline timestamps reproduce the same waveform/time mapping used by
         # the live callbacks without sleeping for eight seconds per case.
         aec.start_playback(far, rate, started_at=0.0)
         cleaned = []
+        first_barge = None
         for i in range(0, len(far), frame):
-            cleaned.append(aec.process(
-                mic[i:i + frame], captured_at=(i + frame) / rate))
+            block = aec.process(
+                mic[i:i + frame], captured_at=(i + frame) / rate)
+            cleaned.append(block)
+            clean_rms = float(np.sqrt(np.mean(np.square(block))))
+            if first_barge is None and detector.update(
+                    aec, clean_rms, len(block)):
+                first_barge = (i + len(block)) / rate
         cleaned = np.concatenate(cleaned)
         echo_sl = slice(rate * 4, rate * 6)
         near_sl = slice(rate * 6, rate * 7)
@@ -241,13 +387,24 @@ def demo() -> None:
             (rms(mic, echo_sl) + 1e-9) /
             (rms(cleaned, echo_sl) + 1e-9)))
         near_ratios.append(rms(cleaned, near_sl) / (rms(near, near_sl) + 1e-9))
+        if first_barge is None or first_barge >= 7.0:
+            barge_latencies.append(float("inf"))
+        elif first_barge < 6.0:
+            false_barges += 1
+        else:
+            barge_latencies.append(first_barge - 6.0)
         aec.close()
 
     assert np.median(cancellations) > 12.0, cancellations
     assert np.median(near_ratios) > 0.70, near_ratios
+    assert false_barges == 0, false_barges
+    assert len(barge_latencies) == 8 and np.median(barge_latencies) <= 0.1, \
+        barge_latencies
     print(f"runtime.aec: 8-case median echo attenuation "
           f"{np.median(cancellations):.1f} dB; double-talk survival "
-          f"{100*np.median(near_ratios):.0f}%")
+          f"{100*np.median(near_ratios):.0f}%; reference-aware barge "
+          f"{1000*np.median(barge_latencies):.0f}ms, "
+          f"{false_barges} self-echo false triggers")
 
 
 if __name__ == "__main__":
