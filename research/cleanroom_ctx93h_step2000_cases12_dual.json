@@ -1,0 +1,107 @@
+{
+ "front_end": "stock",
+ "dual_output": true,
+ "correct": 12,
+ "n": 12,
+ "median_ms": 909.6570204710588,
+ "rows": [
+  {
+   "case": "q00",
+   "ok": true,
+   "ms": 906.5327909775078,
+   "reply": "TRANSCRIPT: What is two plus two?\nANSWER: Four.",
+   "transcript": "What is two plus two?",
+   "answer": "Four."
+  },
+  {
+   "case": "q01",
+   "ok": true,
+   "ms": 841.8901669792831,
+   "reply": "TRANSCRIPT: What color is the sky?\nANSWER: It is blue.",
+   "transcript": "What color is the sky?",
+   "answer": "It is blue."
+  },
+  {
+   "case": "q02",
+   "ok": true,
+   "ms": 882.7687499579042,
+   "reply": "TRANSCRIPT: How many days in a week?\nANSWER: Seven.",
+   "transcript": "How many days in a week?",
+   "answer": "Seven."
+  },
+  {
+   "case": "q03",
+   "ok": true,
+   "ms": 754.1374999564141,
+   "reply": "TRANSCRIPT: What is the capital of France?\nANSWER: Paris",
+   "transcript": "What is the capital of France?",
+   "answer": "Paris"
+  },
+  {
+   "case": "q04",
+   "ok": true,
+   "ms": 769.2415409255773,
+   "reply": "TRANSCRIPT: What is ten minus three?\nANSWER: Seven.",
+   "transcript": "What is ten minus three?",
+   "answer": "Seven."
+  },
+  {
+   "case": "q05",
+   "ok": true,
+   "ms": 878.8779999595135,
+   "reply": "TRANSCRIPT: How many legs does a spider have?\nANSWER: Eight.",
+   "transcript": "How many legs does a spider have?",
+   "answer": "Eight."
+  },
+  {
+   "case": "q06",
+   "ok": true,
+   "ms": 912.7812499646097,
+   "reply": "TRANSCRIPT: What is the largest planet?\nANSWER: Jupiter",
+   "transcript": "What is the largest planet?",
+   "answer": "Jupiter"
+  },
+  {
+   "case": "q07",
+   "ok": true,
+   "ms": 1042.6895001437515,
+   "reply": "TRANSCRIPT: What is five times five?\nANSWER: Twenty-five.",
+   "transcript": "What is five times five?",
+   "answer": "Twenty-five."
+  },
+  {
+   "case": "q08",
+   "ok": true,
+   "ms": 1531.5338750369847,
+   "reply": "TRANSCRIPT: What season comes after summer?\nANSWER: Autumn.",
+   "transcript": "What season comes after summer?",
+   "answer": "Autumn."
+  },
+  {
+   "case": "q09",
+   "ok": true,
+   "ms": 1748.2530421111733,
+   "reply": "TRANSCRIPT: How many hours in a day?\nANSWER: There are 24 hours in a day.",
+   "transcript": "How many hours in a day?",
+   "answer": "There are 24 hours in a day."
+  },
+  {
+   "case": "q10",
+   "ok": true,
+   "ms": 1648.7935420591384,
+   "reply": "TRANSCRIPT: What is the freezing point of water?\nANSWER: It is zero degrees Celsius.",
+   "transcript": "What is the freezing point of water?",
+   "answer": "It is zero degrees Celsius."
+  },
+  {
+   "case": "q11",
+   "ok": true,
+   "ms": 1161.2776659894735,
+   "reply": "TRANSCRIPT: Who wrote Romeo and Juliet?\nANSWER: William Shakespeare",
+   "transcript": "Who wrote Romeo and Juliet?",
+   "answer": "William Shakespeare"
+  }
+ ],
+ "transcript_wer": 0.0,
+ "transcript_words": 67
+}

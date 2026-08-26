@@ -54,6 +54,7 @@ ARCH_GEMMA_NATIVE_TEMPORAL2 = (
     "gemma_native_stack_swiglu_residual_temporal2_v1")
 ARCH_GEMMA_NATIVE_CONTEXT = (
     "gemma_native_stack_swiglu_residual_temporal2_context_v1")
+ARCH_CLEANROOM_CONTEXT = "cleanroom_context_v2"
 WHISPER_WINDOW_S = 28
 WHISPER_OVERLAP_S = 1
 LIVE_WINDOW_S = 12
@@ -187,6 +188,21 @@ def validate_checkpoint(path: str | Path) -> dict[str, np.ndarray]:
     """Load and strictly identify a Qwen-free stock-Whisper checkpoint."""
     with np.load(path, allow_pickle=False) as saved:
         values = {key: saved[key] for key in saved.files}
+    cleanroom_arch = values.get("arch")
+    if ("adapter_arch" not in values and cleanroom_arch is not None and
+            bytes(np.asarray(cleanroom_arch, dtype=np.uint8)) == b"context_v2"):
+        # The clean-room trainer intentionally emits only its owned weights
+        # plus a byte architecture tag. Supply deployment metadata in memory;
+        # the packaged node manifest independently pins the same boundary.
+        values.update({
+            "adapter_arch": np.array(ARCH_CLEANROOM_CONTEXT),
+            "encoder": np.array(DEFAULT_WHISPER),
+            "input_dim": np.array(INPUT_DIM, dtype=np.int32),
+            "input_boundary": np.array(INPUT_BOUNDARY),
+            "lineage": np.array("qwen_free"),
+            "pool_step": np.array(2, dtype=np.int32),
+            "output_mode": np.array(OUTPUT_MODE_RAW),
+        })
     architecture = str(values.get("adapter_arch", ARCH_PAIRED))
     encoder = str(values.get("encoder", ""))
     if encoder not in SUPPORTED_WHISPER:
@@ -196,7 +212,26 @@ def validate_checkpoint(path: str | Path) -> dict[str, np.ndarray]:
         raise ValueError(
             f"{path}: encoder {encoder!r} requires input_dim "
             f"{ENCODER_DIMS[encoder]}, got {input_dim}")
-    if architecture in (ARCH_GEMMA_NATIVE_STACK,
+    if architecture == ARCH_CLEANROOM_CONTEXT:
+        hidden_values = np.asarray(values.get("hidden", []), dtype=np.int64)
+        if hidden_values.size != 1 or int(hidden_values[0]) <= 0:
+            raise ValueError(f"{path}: invalid clean-room hidden width")
+        hidden = int(hidden_values[0])
+        expected = {
+            "ln.weight": (input_dim,), "ln.bias": (input_dim,),
+            "up.weight": (hidden, input_dim), "up.bias": (hidden,),
+            "attn.query_proj.weight": (hidden, hidden),
+            "attn.key_proj.weight": (hidden, hidden),
+            "attn.value_proj.weight": (hidden, hidden),
+            "attn.out_proj.weight": (hidden, hidden),
+            "ln_a.weight": (hidden,), "ln_a.bias": (hidden,),
+            "ff1.weight": (hidden * 2, hidden),
+            "ff1.bias": (hidden * 2,),
+            "ff2.weight": (hidden, hidden * 2), "ff2.bias": (hidden,),
+            "ln_f.weight": (hidden,), "ln_f.bias": (hidden,),
+            "out.weight": (OUTPUT_DIM, hidden), "out.bias": (OUTPUT_DIM,),
+        }
+    elif architecture in (ARCH_GEMMA_NATIVE_STACK,
                          ARCH_GEMMA_NATIVE_RESIDUAL,
                          ARCH_GEMMA_NATIVE_TEMPORAL,
                          ARCH_GEMMA_NATIVE_TEMPORAL2,
@@ -388,7 +423,39 @@ class StockWhisperGemmaSession:
         class Adapter(nn.Module):
             def __init__(inner):
                 super().__init__()
-                if architecture in (ARCH_GEMMA_NATIVE_STACK,
+                if architecture == ARCH_CLEANROOM_CONTEXT:
+                    hidden = int(values["hidden"][0])
+                    inner.ln = nn.LayerNorm(self.input_dim)
+                    inner.up = nn.Linear(self.input_dim, hidden)
+                    inner.attn = nn.MultiHeadAttention(hidden, 8)
+                    inner.ln_a = nn.LayerNorm(hidden)
+                    inner.ff1 = nn.Linear(hidden, hidden * 2)
+                    inner.ff2 = nn.Linear(hidden * 2, hidden)
+                    inner.ln_f = nn.LayerNorm(hidden)
+                    inner.out = nn.Linear(hidden, OUTPUT_DIM)
+                    inner.ln.weight = mx.array(values["ln.weight"])
+                    inner.ln.bias = mx.array(values["ln.bias"])
+                    inner.up.weight = mx.array(values["up.weight"])
+                    inner.up.bias = mx.array(values["up.bias"])
+                    inner.attn.query_proj.weight = mx.array(
+                        values["attn.query_proj.weight"])
+                    inner.attn.key_proj.weight = mx.array(
+                        values["attn.key_proj.weight"])
+                    inner.attn.value_proj.weight = mx.array(
+                        values["attn.value_proj.weight"])
+                    inner.attn.out_proj.weight = mx.array(
+                        values["attn.out_proj.weight"])
+                    inner.ln_a.weight = mx.array(values["ln_a.weight"])
+                    inner.ln_a.bias = mx.array(values["ln_a.bias"])
+                    inner.ff1.weight = mx.array(values["ff1.weight"])
+                    inner.ff1.bias = mx.array(values["ff1.bias"])
+                    inner.ff2.weight = mx.array(values["ff2.weight"])
+                    inner.ff2.bias = mx.array(values["ff2.bias"])
+                    inner.ln_f.weight = mx.array(values["ln_f.weight"])
+                    inner.ln_f.bias = mx.array(values["ln_f.bias"])
+                    inner.out.weight = mx.array(values["out.weight"])
+                    inner.out.bias = mx.array(values["out.bias"])
+                elif architecture in (ARCH_GEMMA_NATIVE_STACK,
                                      ARCH_GEMMA_NATIVE_RESIDUAL,
                                      ARCH_GEMMA_NATIVE_TEMPORAL,
                                      ARCH_GEMMA_NATIVE_TEMPORAL2,
@@ -524,7 +591,23 @@ class StockWhisperGemmaSession:
                     inner.linear2.bias = mx.array(values["linear2_bias"])
 
             def __call__(inner, x):
-                if architecture in (ARCH_GEMMA_NATIVE_STACK,
+                if architecture == ARCH_CLEANROOM_CONTEXT:
+                    hidden = int(values["hidden"][0])
+                    h = nn.gelu(inner.up(inner.ln(x)))
+                    usable = (h.shape[0] // self.pool_step) * self.pool_step
+                    if usable == 0:
+                        h = mx.mean(h, axis=0, keepdims=True)
+                    else:
+                        h = mx.mean(
+                            h[:usable].reshape(-1, self.pool_step, hidden),
+                            axis=1)
+                    context = h[None, :]
+                    context = inner.ln_a(
+                        context + inner.attn(context, context, context))
+                    context = inner.ln_f(
+                        context + inner.ff2(nn.gelu(inner.ff1(context))))
+                    y = inner.out(context[0])
+                elif architecture in (ARCH_GEMMA_NATIVE_STACK,
                                      ARCH_GEMMA_NATIVE_RESIDUAL,
                                      ARCH_GEMMA_NATIVE_TEMPORAL,
                                      ARCH_GEMMA_NATIVE_TEMPORAL2,

@@ -59,6 +59,28 @@ tower's: one read audio as an image, one never named Shakespeare.
 
 31/31 module self-checks green: `python research/check_all.py`
 
+## Clean-room 41M crossover node — 2026-08-25
+
+The independent 93-hour clean-room checkpoint is now packaged as its own
+immutable, selectable node rather than overwriting the retained 50M adapter:
+
+```text
+nodes/stock-whisper-medium-cleanroom-ctx93h-step2000
+40,915,456 adapter parameters
+12/12 canonical spoken answers, 572 ms median
+0.00% Gemma-generated transcript WER, 67/67 words, 12/12 answers
+3.234% instructed WER on the bridge's matched 128 clips / 2,041 words
+5.047% empty-prompt WER on that same material
+```
+
+The q11 failure is closed: stock Whisper already decoded “Who wrote Romeo and
+Juliet?” perfectly; the retained 50M adapter distorted it into “it worked
+ramillo.” The clean-room node sends Gemma enough information to generate the
+exact question and answer “William Shakespeare.” It therefore reaches native
+MiniCPM's 12/12 answer accuracy, but not yet full production parity: its
+572 ms median trails MiniCPM's 525 ms-to-text measurement, and independent
+lockbox, live-room/meeting, and five-minute duplex gates remain open.
+
 ## Stock-Whisper live integration — 2026-08-25
 
 The strongest pinned medium node is now selectable, without copying a loose

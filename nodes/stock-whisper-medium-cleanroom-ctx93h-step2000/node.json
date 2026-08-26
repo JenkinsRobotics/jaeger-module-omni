@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "kind": "jaeger_audio_node",
+  "id": "stock-whisper-medium-cleanroom-ctx93h-step2000",
+  "runtime": "stock_whisper_gemma",
+  "slot": "audio_perception",
+  "enabled_by_default": false,
+  "consumes": ["pcm_s16le_16khz_mono"],
+  "produces": ["gemma_audio_embeddings_2560"],
+  "status": "clean_speech_winner_controlled_validation_pending",
+  "implementation": "runtime.py:build",
+  "encoder": {
+    "id": "openai/whisper-medium",
+    "revision": "abdf7c39ab9d0397620ccaea8974cc764cd0953e",
+    "path": "weights/encoder",
+    "weights_sha256": "62f73550fa6db24b0c6f6c5962bd0dae80fa644e93cde9cd9c3792971b47fd28",
+    "boundary": "stock_whisper_encoder_50hz",
+    "output_dim": 1024,
+    "decoder_runtime": false
+  },
+  "adapter": {
+    "path": "weights/adapter.npz",
+    "sha256": "0fec52869087ac244c68d44d39a5dc704a6205b3785f9032546301d9b060cdc1",
+    "architecture": "cleanroom_context_v2",
+    "parameters": 40915456,
+    "pool_step": 2,
+    "lineage": "qwen_free"
+  },
+  "backbone": {
+    "family": "gemma-4-e4b",
+    "runtime_variant": "gemma-4-E4B-it-4bit-mlx",
+    "frozen": true
+  },
+  "training": {
+    "hours": 93,
+    "clips": 42498,
+    "speakers": 744,
+    "room_degraded_fraction": 0.37,
+    "checkpoint_selection": "scheduled_step_2000_not_eval_selected"
+  },
+  "evaluation": {
+    "matched_clips": 128,
+    "matched_reference_words": 2041,
+    "matched_speakers": 2,
+    "instructed_wer": 0.03234,
+    "empty_prompt_wer": 0.05047,
+    "exact_utterance_fraction": 0.656,
+    "bridge_empty_prompt_wer": 0.07594,
+    "stock_whisper_decoder_wer": 0.0297,
+    "cases12_correct": 12,
+    "cases12_n": 12,
+    "cases12_median_ms": 572.408166481182,
+    "cases12_dual_correct": 12,
+    "cases12_dual_median_ms": 909.6570204710588,
+    "cases12_gemma_generated_transcript_wer": 0.0,
+    "cases12_gemma_generated_transcript_words": 67,
+    "room_meeting": null,
+    "five_minute_duplex": null
+  }
+}

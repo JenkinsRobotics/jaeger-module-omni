@@ -73,6 +73,9 @@ JAEGER_MODEL = Path(os.environ.get(
 JAEGER_STOCK_NODE = Path(os.environ.get(
     "JAEGER_STOCK_NODE",
     HERE.parent / "nodes/stock-whisper-medium-cekl-blend50"))
+JAEGER_CLEANROOM_NODE = Path(os.environ.get(
+    "JAEGER_CLEANROOM_NODE",
+    HERE.parent / "nodes/stock-whisper-medium-cleanroom-ctx93h-step2000"))
 
 
 def _find_reference_resource(relative: str, env_var: str) -> Path | None:
@@ -717,9 +720,15 @@ class JaegerEngineWorker(QThread):
             system = SYSTEM
             if self.system_prompt:
                 system = f"{SYSTEM} {self.system_prompt}"
-            adapter = str(JAEGER_STOCK_NODE) if self.front_end == "stock" else None
+            selected_front_end = (
+                "stock" if self.front_end in ("stock", "cleanroom")
+                else "tower")
+            adapter = (
+                str(JAEGER_CLEANROOM_NODE) if self.front_end == "cleanroom"
+                else str(JAEGER_STOCK_NODE) if self.front_end == "stock"
+                else None)
             session, meta = build(
-                str(JAEGER_MODEL), self.front_end, adapter, system=system)
+                str(JAEGER_MODEL), selected_front_end, adapter, system=system)
             self.session = session
             warm_ms = session.warmup()
 
@@ -1056,6 +1065,8 @@ class OmniDuplexWindow(QMainWindow):
             "Gemma native ear · live rollback", "tower")
         self.front_end_combo.addItem(
             "Whisper medium + Jaeger 50M · production candidate", "stock")
+        self.front_end_combo.addItem(
+            "Whisper medium + clean-room 41M · 3.23% candidate", "cleanroom")
         row.addWidget(QLabel("audio input:"))
         row.addWidget(self.front_end_combo)
         self.lang_combo = QComboBox()
@@ -1505,6 +1516,9 @@ def check() -> int:
     if not JAEGER_STOCK_NODE.exists():
         problems.append(
             f"Whisper production-candidate node missing: {JAEGER_STOCK_NODE}")
+    if not JAEGER_CLEANROOM_NODE.exists():
+        problems.append(
+            f"Clean-room candidate node missing: {JAEGER_CLEANROOM_NODE}")
     if sd.query_devices(kind="input") is None:
         problems.append("no input audio device")
     if SHIM is None or not SHIM.exists() or not LLM_GGUF.exists():
@@ -1728,7 +1742,7 @@ def main() -> int:
                     help="Jaeger self-test reply cooldown")
     ap.add_argument("--max-context", type=int, default=6000,
                     help="Jaeger self-test context-roll threshold")
-    ap.add_argument("--front-end", choices=("tower", "stock"),
+    ap.add_argument("--front-end", choices=("tower", "stock", "cleanroom"),
                     default="tower",
                     help="Jaeger self-test audio node")
     args = ap.parse_args()

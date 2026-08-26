@@ -6,6 +6,7 @@ This is the canonical list. Historical measurements remain in `STATUS.md` and
 | Pipeline | Role | Measured quality | Speech out | Status |
 | --- | --- | --- | --- | --- |
 | Gemma native audio tower | live assistant/demo | 10/12 cases12; 363 ms text median | Kokoro clause streaming; 693--1,275 ms measured END-to-audio medians | **Live default** |
+| Stock Whisper-medium -> clean-room 41M context adapter -> Gemma | Qwen-free clean-speech leader | **12/12**, 572 ms; **0.00%** Gemma-generated transcript WER/67 words; 3.234% instructed WER on matched 2,041 words | same Kokoro output; selectable in live/GUI | **Accuracy candidate; room gate pending** |
 | Stock Whisper-medium -> owned 50M connector -> Gemma | Qwen-free production candidate | 11/12; 319 ms; 11.20% dev-clean64; 17.86% MINDS/Vox591; 13.51% clean-360val128; 12.56% novel-Vox128 | same Kokoro clause-streamed output; selectable in live/GUI | **Candidate; positive-room gate pending** |
 | Stock Whisper-medium -> AMI-balanced 50M connector -> Gemma | meeting-domain research | 49.93% AMI64 versus 53.79% general baseline; 10/12; one clean error worse | not production gated | **Specialist only** |
 | MiniCPM-tuned Whisper -> sparse connector -> Gemma | transcript/meeting observer | 13.61% on its fixed 977-word observer gate | minutes/output path, not assistant speech | **Retained observer** |
@@ -19,6 +20,9 @@ This is the canonical list. Historical measurements remain in `STATUS.md` and
 - `omni.py --front-end stock`, `jaeger_agent_omni.demo --front-end stock`, and
   the full-duplex GUI's Whisper selector use the paired, pinned node at
   `nodes/stock-whisper-medium-cekl-blend50`.
+- The full-duplex GUI also exposes the independent clean-room node at
+  `nodes/stock-whisper-medium-cleanroom-ctx93h-step2000`; CLI callers select it
+  with `--front-end stock --adapter NODE_DIR`.
 - The stock live session now owns a persistent Gemma KV cache across turns,
   exact abandoned-reply rewind, monotonic soak counters, full-path warmup, and
   encoder-only Whisper loading. Continuous speech is prefilled in bounded
@@ -30,8 +34,11 @@ This is the canonical list. Historical measurements remain in `STATUS.md` and
 
 ## Is Jaeger equivalent to MiniCPM-o 4.5?
 
-Not yet in model quality. MiniCPM is 12/12 on the shared question suite while
-the selected stock candidate is 11/12 and the native tower is 10/12. Jaeger has demonstrated a faster best
+The clean-room stock node now matches MiniCPM's 12/12 on the shared question
+suite, while the retained 50M node is 11/12 and the native tower is 10/12.
+This is answer-quality parity, not full production parity: the clean-room node
+has not passed the independent lockboxes or live-room gate and its 572 ms
+median is slower than MiniCPM's measured 525 ms to text. Jaeger has demonstrated a faster best
 END-to-first-audio session than MiniCPM's measured 1,380 ms speech start, but
 Jaeger's 693--1,275 ms session variance means latency superiority is not yet a
 stable claim. Jaeger does own its 50M stock-Whisper connector, source-balanced
