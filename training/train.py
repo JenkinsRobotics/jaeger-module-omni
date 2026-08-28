@@ -22,6 +22,7 @@ import json
 import signal
 import sys
 import time
+import warnings
 from dataclasses import asdict
 from pathlib import Path
 
@@ -37,6 +38,28 @@ from jaeger_agent_omni.prompt import (ChatWrapper, DEFAULT_SYSTEM,  # noqa: E402
 from config import TrainConfig, distill as distill_cfg, warmup  # noqa: E402
 from dataset import IGNORE_INDEX  # noqa: E402
 from distill import DistillWeights, agreement_rate, total_loss  # noqa: E402
+
+
+def _seek_onecycle(scheduler, completed_steps: int) -> None:
+    """Place a fresh OneCycleLR at an exact resume boundary.
+
+    ``LRScheduler.step()`` is deliberately an *after-optimizer-step* API.
+    Calling it repeatedly while loading a checkpoint emits PyTorch's
+    scheduler-before-optimizer warning and makes the reconstructed state easy
+    to shift by one update.  OneCycleLR is a closed deterministic function of
+    ``last_epoch`` and its phase table, so update that state directly instead.
+
+    ``_update_lr`` is the scheduler's own implementation used by ``step``.  It
+    updates both the learning rate and AdamW beta1 (OneCycle's momentum axis).
+    ``_step_count`` is restored to the value an uninterrupted schedule has
+    after the same number of completed optimizer updates.
+    """
+    if completed_steps < 0 or completed_steps > scheduler.total_steps:
+        raise ValueError(
+            f"cannot seek schedule to {completed_steps}; horizon is "
+            f"{scheduler.total_steps}")
+    scheduler._update_lr(epoch=completed_steps)
+    scheduler._step_count = completed_steps + 1
 
 
 def pick_device(requested: str | None = None) -> tuple:
@@ -385,11 +408,12 @@ class Trainer:
                 # The run was extended (or shortened): restoring the old
                 # schedule verbatim would crash one step past the old horizon.
                 # Keep the fresh schedule built for the NEW horizon and
-                # fast-forward it to the resumed step — cheap, it is only math.
-                for _ in range(ck["step"]):
-                    self.sched.step()
+                # seek it to the exact completed-update boundary.  Do not call
+                # scheduler.step() without optimizer.step(): PyTorch correctly
+                # warns that doing so can skip the first schedule value.
+                _seek_onecycle(self.sched, ck["step"])
                 print(f"train: schedule horizon {prev_total} -> "
-                      f"{self.cfg.max_steps}; rebuilt and fast-forwarded")
+                      f"{self.cfg.max_steps}; rebuilt at step {ck['step']}")
         self.step = ck["step"]
         self.history = ck.get("history", [])
         return self.step
@@ -784,7 +808,30 @@ def demo():
         cfg_long = TrainConfig(**{**cfg.to_dict(), "max_steps": cfg.max_steps * 3})
         enc3, lm3, proj3, _ = stub_setup(cfg_long, "cpu")
         t_ext = Trainer(cfg_long, enc3, lm3, proj3, device="cpu")
-        assert t_ext.load(path) == cfg.max_steps
+        with warnings.catch_warnings(record=True) as caught:
+            warnings.simplefilter("always")
+            assert t_ext.load(path) == cfg.max_steps
+        scheduler_warnings = [
+            str(item.message) for item in caught
+            if "scheduler.step()" in str(item.message)
+        ]
+        assert not scheduler_warnings, scheduler_warnings
+
+        # The rebuilt schedule must equal an uninterrupted NEW-horizon
+        # schedule after the same number of optimizer updates, including
+        # OneCycle's momentum/beta1 axis.  This catches both warning-hiding and
+        # the more damaging off-by-one resume error.
+        enc_ref, lm_ref, proj_ref, _ = stub_setup(cfg_long, "cpu")
+        t_ref = Trainer(cfg_long, enc_ref, lm_ref, proj_ref, device="cpu")
+        for _ in range(cfg.max_steps):
+            t_ref.opt.zero_grad(set_to_none=True)
+            t_ref.opt.step()
+            t_ref.sched.step()
+        assert t_ext.sched.last_epoch == t_ref.sched.last_epoch == cfg.max_steps
+        assert t_ext.sched._step_count == t_ref.sched._step_count
+        assert t_ext.sched.get_last_lr() == t_ref.sched.get_last_lr()
+        assert (t_ext.opt.param_groups[0]["betas"] ==
+                t_ref.opt.param_groups[0]["betas"])
         for _ in range(cfg.max_steps + 5):       # step PAST the old horizon
             t_ext.train_step(batch)
         assert t_ext.step == cfg.max_steps * 2 + 5

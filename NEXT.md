@@ -35,6 +35,20 @@ causal replacement is not a safe runtime toggle; it needs a stability/quality
 gate or streaming-specific training before previously emitted audio vectors
 can be committed to Gemma. Do not claim this feature until that gate exists.
 
+`research/streaming_stability.py` now provides the missing first gate. It
+compares every growing one-second prefix with a full-utterance pass at both
+the stock-Whisper and final adapter boundaries, sweeping 0--4 seconds of held
+right context. Its cosine/magnitude results are explicitly diagnostic, not a
+WER or promotion score. The final guarded GPU queue is
+`research/run_final_gpu_validation.sh`: identical latency A/B first, streaming
+stability second, no training and no automatic checkpoint promotion.
+
+The legacy PyTorch trainer's extended-run resume path is also repaired. It now
+seeks a rebuilt OneCycleLR directly to the exact completed-update boundary,
+including Adam momentum, rather than calling `scheduler.step()` before an
+optimizer update. Its CPU self-check proves equality with an uninterrupted
+new-horizon schedule and rejects an off-by-one reconstruction.
+
 ## 1. Run physical production testing
 
 Start with the frozen candidate, never an intermediate:
