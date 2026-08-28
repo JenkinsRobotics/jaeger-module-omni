@@ -5,6 +5,33 @@ Measured ledger. Every claim here has a command that reproduces it.
 > Current selection and comparison: [`PIPELINES.md`](PIPELINES.md). Sections
 > below the current 50M results are retained experiment history, not additional
 > production choices.
+>
+> Current MiniCPM comparison: [`PARITY_SCORECARD.md`](PARITY_SCORECARD.md).
+> It is generated from exact checkpoint SHAs and supersedes stale latency or
+> promotion language in the historical sections below.
+>
+> 2026-08-27 current result: JaegerOmni 41M Medium SHA `a7f96bfb8898`
+> passes five locked corpus gates without regression and scores **3.97%**
+> free-running WER on the untouched 2,603-clip/51,311-word test-clean lockbox.
+> Its direct AMI five-minute duplex run fed 300.0 seconds with zero drops,
+> produced 14 replies, recorded 13 listen-while-speaking events, and rolled
+> context once at 6,010 logical tokens. A 12-word streaming cadence reduced
+> END-to-first-audio from 3,899/8,953 ms median/p95 to **1,044/3,725 ms** on
+> the same input. The physical-room gate remains open. The 43-room synthetic
+> AEC stress gate improved from 27 false/37% recall to **0 false/100% recall**,
+> but remains red because its 843 ms p95 exceeds the 300 ms tail gate.
+> Historical 41M numbers below describe superseded checkpoints.
+>
+> 2026-08-28 final pre-production window: the packaged JaegerOmni 41M Medium
+> remains frozen at SHA `a7f96bfb8898`. It scores **3.30% normalized WER**
+> (22/667) on a locked 69-clip English MINDS14 one-to-one conversation gate
+> where matched Whisper-medium is exact, and **12/12** spoken answers at
+> 560 ms median. The no-transcript selfcheck, 31/31 module checks, and duplex
+> barge-in gate pass (21.0 ms, zero dropped audio). Qualified Clean-360 remains
+> narrowly above target at 5.09% normalized WER. Final-window full-adapter,
+> output-only, three-seed, and soup candidates were retained as experiments but
+> rejected because none improved every production gate. Physical-room five-
+> minute testing is the remaining promotion gate.
 
 ---
 

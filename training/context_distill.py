@@ -49,6 +49,7 @@ LEXICAL_ALPHABET = " abcdefghijklmnopqrstuvwxyz'0123456789"
 LEXICAL_SIZE = len(LEXICAL_ALPHABET) + 1  # CTC blank is zero.
 GPU_JOB_PATTERNS = (
     r"training/context_distill\.py",
+    r"training/context_ce\.py",
     r"training/precompute_stock_encoder\.py",
     r"training/stock_whisper_gemma\.py\s+"
     r"(?:precompute|pretrain-ctc|distill|train|probe|geometry|wer|bench)",

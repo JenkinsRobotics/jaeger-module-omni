@@ -49,8 +49,10 @@ def _ready_chunks(text: str, consumed: int) -> tuple[list[str], int]:
     """Return newly speakable clauses and the updated character offset.
 
     Sentence punctuation is always a boundary.  A comma, semicolon, colon, or
-    em dash becomes a boundary after five words, which bounds first-audio
-    latency for a long opening sentence without feeding Kokoro one-word scraps.
+    em dash becomes a boundary after five words. Some adapter replies contain
+    no punctuation, so a whitespace boundary after twelve words provides a
+    final latency bound without cutting through a word or feeding Kokoro
+    one-word scraps.
     """
     chunks = []
     start = consumed
@@ -58,7 +60,9 @@ def _ready_chunks(text: str, consumed: int) -> tuple[list[str], int]:
         terminal = text[i] in ".!?"
         clause = text[i] in ",;:—"
         words = len(text[start:i + 1].split())
-        if (terminal and words >= 2) or (clause and words >= 5):
+        cadence = text[i].isspace() and words >= 12
+        if ((terminal and words >= 2) or (clause and words >= 5) or
+                cadence):
             chunk = text[start:i + 1].split("<")[0].strip()
             if chunk:
                 chunks.append(chunk)
@@ -80,6 +84,7 @@ def list_devices() -> int:
 def main() -> int:
     import numpy as np
     import sounddevice as sd
+    from jaeger_agent_omni.model_catalog import front_end_choices
 
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--seconds", type=float, default=90.0)
@@ -87,13 +92,12 @@ def main() -> int:
     ap.add_argument("--speed", type=float, default=1.0)
     ap.add_argument("--device", type=int, default=None, help="input device id")
     ap.add_argument("--model", default=MODEL)
-    ap.add_argument("--front-end", default="tower",
-                    choices=("tower", "stock"),
-                    help="audio node: native Gemma tower (production rollback) "
-                         "or paired stock Whisper medium candidate")
+    ap.add_argument("--front-end", default="gemma-native",
+                    choices=front_end_choices(),
+                    help="canonical Jaeger audio-ear identity")
     ap.add_argument("--adapter", default=None,
-                    help="stock node/checkpoint override; defaults to the "
-                         "registered medium 50M node")
+                    help="explicit research override for the selected stock "
+                         "node (reported as custom)")
     ap.add_argument("--threshold", type=float, default=0.012,
                     help="speech RMS floor; raise it in a noisy room")
     ap.add_argument("--silence-ms", type=float, default=510.0,
@@ -116,12 +120,17 @@ def main() -> int:
                     help="record raw mic AND model-fed audio for audit")
     ap.add_argument("--no-aec", action="store_true",
                     help="disable SpeexDSP acoustic echo cancellation")
+    ap.add_argument("--barge-policy", choices=("stop", "continue"),
+                    default="stop",
+                    help="action after speech-during-output notification")
     ap.add_argument("--speakers", type=int, default=0, metavar="K",
                     help="diarize up to K room talkers and append inline "
                          "[speaker A/B] context tags (0 disables)")
     ap.add_argument("--meeting-minutes", metavar="PATH",
                     help="silent third-person observer; write native "
                          "audio-to-minutes output at the end (no transcript)")
+    ap.add_argument("--report", metavar="PATH",
+                    help="JSON run report (default: GUI runtime/reports)")
     a = ap.parse_args()
 
     if a.meeting_minutes:
@@ -142,6 +151,27 @@ def main() -> int:
         system=MEETING_SYSTEM if a.meeting_minutes else SYSTEM)
     session.warmup()
 
+    from jaeger_agent_omni.runtime.reporting import (
+        default_report_path, finish_run_report, latency_summary,
+        new_run_report, write_report)
+    input_name = (str(sd.query_devices(a.device, "input")["name"])
+                  if a.device is not None else
+                  str(sd.query_devices(kind="input")["name"]))
+    report_path = Path(a.report) if a.report else default_report_path(
+        Path("Full DuplexDemo App/runtime"), meta["model_id"],
+        "physical-room")
+    run_report = new_run_report(
+        phase="physical-room", model_id=meta["model_id"],
+        model_name=meta["model_name"], checkpoint=meta["checkpoint"],
+        source=input_name,
+        configuration={
+            "seconds": a.seconds, "threshold": a.threshold,
+            "silence_ms": a.silence_ms, "cooldown_s": a.cooldown,
+            "max_context": a.max_context, "speakers": a.speakers,
+            "voice": a.voice, "speed": a.speed,
+            "barge_policy": a.barge_policy, "aec": not a.no_aec,
+        })
+
     if not a.no_speak:
         print("warming the voice…", flush=True)
         speak_kokoro("ready", "/tmp/_warm.wav", a.voice, a.speed)
@@ -155,13 +185,18 @@ def main() -> int:
     stop = threading.Event()
     barge_request = threading.Event()
     barge_active = threading.Event()
+    barge_latched = threading.Event()
     level = {"rms": 0.0, "raw_rms": 0.0}
     heard = {"n": 0}
-    barged = {"n": 0}
+    barged = {"events": 0, "stops": 0}
     echo_floor = {"rms": 0.35}
     rec = {"raw": [], "fed": []}
     speaker_recent = deque(maxlen=max(1, round(3 * RATE / BLOCK)))
     speaker_tags = []
+    run_errors: list[str] = []
+
+    from jaeger_agent_omni.runtime.interaction import InteractionPolicy
+    interaction_policy = InteractionPolicy(a.barge_policy)
 
     speaker_tracker = None
     if a.speakers:
@@ -180,9 +215,26 @@ def main() -> int:
         barge_detector = EchoAwareBargeIn(RATE, a.threshold)
         print(f"AEC      SpeexDSP ({aec.library_path})", flush=True)
 
+    def notify_barge(stage: str) -> None:
+        """Record speech during output, then apply policy independently."""
+        if barge_latched.is_set():
+            return
+        barge_latched.set()
+        action = interaction_policy.speech_during_output(
+            stage, raw_rms=level["raw_rms"], clean_rms=level["rms"],
+            raw_reference_correlation=getattr(
+                aec, "raw_reference_correlation", 0.0),
+            residual_reference_correlation=getattr(
+                aec, "residual_reference_correlation", 0.0))
+        barged["events"] += 1
+        print(f"\n  (speech during agent output: policy={action})", flush=True)
+        if action == "stop":
+            barge_active.set()
+            barge_request.set()
+
     def on_block(indata, frames, t, status):
         if status:
-            pass
+            run_errors.append(f"audio callback: {status}")
         raw = indata[:, 0] if indata.ndim > 1 else indata
         raw = raw.copy().astype("float32")
         clean = aec.process(raw) if aec is not None else raw.copy()
@@ -208,12 +260,11 @@ def main() -> int:
                 # Kokoro waveform is Jaeger's own voice; decorrelated residual
                 # above the learned echo floor is genuine double-talk.
                 is_barge = barge_detector.update(aec, clean_rms, len(raw))
-            if is_barge and not barge_active.is_set():
-                barge_active.set()
-                barge_request.set()
+            if is_barge:
+                notify_barge("playback")
         elif generating.is_set() and clean_rms > a.threshold * 1.1:
             # The listener continued before the first clause reached audio.
-            barge_active.set()
+            notify_barge("generation")
 
         level["rms"] = clean_rms
         if a.record:
@@ -272,7 +323,7 @@ def main() -> int:
                         say_q.get_nowait()
                     except _q.Empty:
                         break
-                barged["n"] += 1
+                barged["stops"] += 1
                 print("\n  (barge-in: residual speech — stopping)", flush=True)
 
     threading.Thread(target=_barge_watcher, daemon=True).start()
@@ -303,8 +354,9 @@ def main() -> int:
                     turn_t0["t"] = None
                 sd.play(wav, sr)
                 sd.wait()
-            except Exception:
-                pass
+            except Exception as exc:
+                run_errors.append(
+                    f"speech output: {type(exc).__name__}: {exc}")
             finally:
                 speaking_out.clear()
 
@@ -336,6 +388,7 @@ def main() -> int:
     def _streaming_respond(**kw):
         turn_t0["t"] = time.monotonic()
         barge_active.clear()
+        barge_latched.clear()
         generating.set()
         ids, consumed = [], 0
         inner = kw.get("on_token")
@@ -400,9 +453,9 @@ def main() -> int:
 
     loop.audio_source = metered_source
 
-    print(f"\ndevice   {sd.query_devices(a.device, 'input')['name'] if a.device is not None else sd.query_devices(kind='input')['name']}")
+    print(f"\ndevice   {input_name}")
     node_label = f" · {meta['node']}" if meta.get("node") else ""
-    print(f"input    {meta['front_end']}{node_label}")
+    print(f"input    {meta['model_name']} @{meta['checkpoint']}{node_label}")
     print(f"voice    {a.voice} @ {a.speed}x")
     print(f"listening for {a.seconds:.0f}s — speak, pause, and it will answer.")
     print("talk over the reply to test barge-in.\n")
@@ -416,6 +469,7 @@ def main() -> int:
     # as text so conversational context survives the trim.
     soak = {"rows": [], "rolls": 0, "last": None}
     recent_replies: list = []
+    all_replies: list[str] = []
     meeting_notes: list[str] = []
 
     _orig_on_reply = on_reply
@@ -425,6 +479,7 @@ def main() -> int:
         if t:
             recent_replies.append(t)
             del recent_replies[:-3]
+            all_replies.append(t)
             if a.meeting_minutes:
                 meeting_notes.append(t)
         _orig_on_reply(text)
@@ -512,7 +567,8 @@ def main() -> int:
           f"{fed_s:.1f}s fed of {wall:.0f}s · {dropped_s:.1f}s dropped")
     print(f"  endpoint     {' -> '.join(stats.endpoint_events[:8]) or '(none)'}")
     print(f"  peak lag     {stats.max_lag_s*1000:.0f} ms")
-    print(f"  replies      {heard['n']}    barge-ins during playback {barged['n']}")
+    print(f"  replies      {heard['n']}    speech-during-output events "
+          f"{barged['events']} · policy stops {barged['stops']}")
     if speaker_tags:
         counts = ", ".join(f"{label}:{speaker_tags.count(label)}"
                            for label in sorted(set(speaker_tags)))
@@ -540,6 +596,38 @@ def main() -> int:
         sf.write(str(d / "fed_model.wav"), np.concatenate(rec["fed"]), RATE)
         print(f"  recorded     {d}/raw_mic.wav + fed_model.wav — audit with"
               f" research/session_audit.py")
+    run_report = finish_run_report(
+        run_report,
+        metrics={
+            "wall_seconds": wall, "fed_seconds": fed_s,
+            "dropped_seconds": dropped_s, "audio_chunks": stats.audio_chunks,
+            "turns": stats.turns, "completed_replies": heard["n"],
+            "interrupts": stats.interrupts,
+            "barge_events": barged["events"],
+            "barge_stops": barged["stops"],
+            "context_rolls": soak["rolls"],
+            "final_cache_tokens": session.n_prefilled,
+            "peak_loop_lag_ms": stats.max_lag_s * 1000,
+            "endpoint_events": list(stats.endpoint_events),
+            "end_to_audio": latency_summary(stage_ms["to_first_audio"]),
+            "synthesis": latency_summary(stage_ms["synth"]),
+            "aec": {
+                "available": aec is not None,
+                "attenuation_db": (
+                    aec.attenuation_db if aec is not None else None),
+                "seconds_cancelled": (
+                    aec.samples_cancelled / RATE if aec is not None else 0.0),
+                "raw_reference_correlation_last": getattr(
+                    aec, "raw_reference_correlation", None),
+                "residual_reference_correlation_last": getattr(
+                    aec, "residual_reference_correlation", None),
+            },
+        }, replies=all_replies, speaker_labels=speaker_tags,
+        interactions=interaction_policy.as_dicts(), errors=run_errors,
+        artifacts={"recording_dir": a.record,
+                   "meeting_minutes": a.meeting_minutes})
+    saved_report = write_report(report_path, run_report)
+    print(f"  report       {saved_report}")
     if aec is not None:
         aec.close()
     return 0
@@ -555,6 +643,11 @@ def demo() -> None:
         "This opening clause is deliberately long, but speech continues.", 0)
     assert chunks == ["This opening clause is deliberately long,",
                       "but speech continues."] and end > 0
+    chunks, _ = _ready_chunks(
+        "one two three four five six seven eight nine ten eleven twelve "
+        "thirteen fourteen", 0)
+    assert chunks == [
+        "one two three four five six seven eight nine ten eleven twelve"]
     assert "meeting observer" in MEETING_SYSTEM.lower()
     print("live: Kokoro, Speex AEC, clause streaming, native meeting minutes present")
 

@@ -1,0 +1,1821 @@
+{
+  "model": "openai/whisper-medium",
+  "evaluation_mode": "whisper_decoder_free_running",
+  "teacher_forced": false,
+  "language": "en",
+  "beam_size": 5,
+  "datasets": {
+    "clean360val128": {
+      "manifest": "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-clean360-v1/clean360_validation/manifest.jsonl",
+      "n": 128,
+      "wer": 0.04324707550514002,
+      "edits": 122,
+      "reference_words": 2821,
+      "median_decoder_ms": 2366.07287498191,
+      "rows": [
+        {
+          "id": "5039-1189-0055",
+          "reference": "THE SHAGGY MAN SAT DOWN AGAIN AND SEEMED WELL PLEASED",
+          "hypothesis": " The shaggy man sat down again and seemed well pleased.",
+          "wer": 0.0,
+          "decoder_ms": 1963.8478332199156
+        },
+        {
+          "id": "5876-8675-0063",
+          "reference": "OF WHOSE SKILL IN NEEDLEWORK HE HAD HEARD SO MUCH",
+          "hypothesis": " of whose skill and needlework he had heard so much.",
+          "wer": 0.1,
+          "decoder_ms": 1333.6664580274373
+        },
+        {
+          "id": "4425-14497-0024",
+          "reference": "I REALLY COULD NOT SAY I BEG YOUR PARDON BUT IT HAS COME WITHOUT ANY WARNING IF YOU WILL LET ME I'LL SIT HERE FOR A MINUTE AND THEN I'LL GO",
+          "hypothesis": " I really could not say. I beg your pardon, but it has come without any warning. If you will let me, I'll sit here for a minute, and then I'll go.",
+          "wer": 0.0,
+          "decoder_ms": 2978.813499910757
+        },
+        {
+          "id": "335-125943-0002",
+          "reference": "SCARECROW BECAME GREATLY ANIMATED AT THIS SIGHT AND EXCLAIMED HOW DELIGHTED I SHALL BE TO SEE MY OLD FRIEND THE TIN WOODMAN AGAIN",
+          "hypothesis": " The scarecrow became greatly animated at this sight and exclaimed, How delighted I shall be to see my old friend the Tin Woodman again!",
+          "wer": 0.043478260869565216,
+          "decoder_ms": 2442.6730000413954
+        },
+        {
+          "id": "1271-136861-0003",
+          "reference": "THE FATHER OF HIS MUCH VALUED FRIEND BUT HE DID NOT ACCEPT OF IT",
+          "hypothesis": " the father of his much-valued friend. But he did not accept of it.",
+          "wer": 0.0,
+          "decoder_ms": 1643.350375117734
+        },
+        {
+          "id": "6865-95959-0019",
+          "reference": "ON HIS FIRST ENTRY INTO THE GRAND TEMPLE HE INQUIRED ABOUT EVERY MATTER CONNECTED WITH ITS USAGES SOME ONE THEREUPON REMARKED",
+          "hypothesis": " On his first entry into the grand temple, he inquired about every matter connected with its usages. Someone thereupon remarked,",
+          "wer": 0.09523809523809523,
+          "decoder_ms": 2335.2120828349143
+        },
+        {
+          "id": "4719-25766-0065",
+          "reference": "AND I ACCOMPLISHED MY PURPOSE AND YOU GOT THOSE LETTERS FROM ME TO GIVE TO HIM YES",
+          "hypothesis": " And I accomplished my purpose. And you got those letters for me to give to him. Yes?",
+          "wer": 0.058823529411764705,
+          "decoder_ms": 1770.3950409777462
+        },
+        {
+          "id": "487-129440-0065",
+          "reference": "TO WARME EARTHS INMOST WOMB MORE WARMTH THEN ADAM NEED",
+          "hypothesis": " to warm Earth's inmost womb. More warmth than Adam need.",
+          "wer": 0.3,
+          "decoder_ms": 1409.286375157535
+        },
+        {
+          "id": "4719-25766-0001",
+          "reference": "AS HE APPROACHED ROGERSVILLE",
+          "hypothesis": " As he approached Rogersville",
+          "wer": 0.0,
+          "decoder_ms": 910.204041050747
+        },
+        {
+          "id": "487-129440-0042",
+          "reference": "DUSKIE OR GREY TILL THE SUN PAINT YOUR FLEECIE SKIRTS WITH GOLD IN HONOUR TO THE WORLDS GREAT AUTHOR RISE",
+          "hypothesis": " Dusky or gray, till the sun paints your fleecy skirts with gold in honor to the world's great author. Rise.",
+          "wer": 0.3,
+          "decoder_ms": 2128.3424170687795
+        },
+        {
+          "id": "4846-18524-0000",
+          "reference": "THEY HAD BEEN DAYS AT DEAR INTERLAKEN",
+          "hypothesis": " They had been days at dear Interlaken.",
+          "wer": 0.0,
+          "decoder_ms": 1150.269583100453
+        },
+        {
+          "id": "6352-83633-0017",
+          "reference": "GUIPUSCOA NAPLES AND SICILY THAN BY SENDING THE DUKE OF ANJOU OR THE DUKE OF BERRY TO REIGN AT THE ESCURIAL",
+          "hypothesis": " Diaposcoa, Naples and Sicily, then by sending the Duke of Anjou or the Duke of Bari to reign at the Escurial.",
+          "wer": 0.14285714285714285,
+          "decoder_ms": 2722.5519591011107
+        },
+        {
+          "id": "6352-88007-0028",
+          "reference": "EXCITED BY THE MOST MATERIAL DIFFERENCES IN RELIGION OR RATHER BY THE MOST FRIVOLOUS SINCE IT IS A JUST REMARK THAT THE MORE AFFINITY THERE IS BETWEEN THEOLOGICAL PARTIES",
+          "hypothesis": " excited by the most material differences in religion, or rather by the most frivolous, since it is a just remark that the more affinity there is between theological parties",
+          "wer": 0.0,
+          "decoder_ms": 2585.7112498488277
+        },
+        {
+          "id": "335-125941-0023",
+          "reference": "I EXPECTED THIS BLOW SAID THE SOLDIER SULKILY BUT I CAN BEAR IT I SHALL DISGUISE MYSELF BY CUTTING OFF MY LOVELY GREEN WHISKERS AND AFTER ALL",
+          "hypothesis": " \"'I expected this blow,' said the soldier, sulkily. \"'But I can bear it. I shall disguise myself by cutting off my lovely green whiskers, and, after all,",
+          "wer": 0.1111111111111111,
+          "decoder_ms": 2866.1085420753807
+        },
+        {
+          "id": "4899-32637-0030",
+          "reference": "AND TO DAY SHE SAID TO ME I WOULD NOT ARGUE WITH HIM IF I WERE YOU HE NEVER WILL YIELD",
+          "hypothesis": " And today she said to me, I would not argue with him if I were you. He never will yield.",
+          "wer": 0.09523809523809523,
+          "decoder_ms": 2046.0555420722812
+        },
+        {
+          "id": "7120-118112-0007",
+          "reference": "HAS BEEN MADE CHIEFLY ON ACCOUNT OF A FEMALE CHILD OF TEN OR ELEVEN YEARS OLD FOR WHOSE PURCHASE I HAVE BEEN AUTHORIZED TO OFFER",
+          "hypothesis": " has been made chiefly on account of a female child of ten or eleven years old, for whose purchase I have been authorized to offer",
+          "wer": 0.0,
+          "decoder_ms": 2246.4773340616375
+        },
+        {
+          "id": "4731-58193-0001",
+          "reference": "A GIRL THAT HE HAD MARRIED IN THE HUMBLE WALKS OF LIFE",
+          "hypothesis": " a girl that he had married in the humble walks of life.",
+          "wer": 0.0,
+          "decoder_ms": 1313.1820829585195
+        },
+        {
+          "id": "5637-41166-0005",
+          "reference": "AND IT WAS IMPOSSIBLE TO GET THE SIMPLEST THING DONE THAT DEPENDED UPON THE COURT OF WARDSHIP",
+          "hypothesis": " and it was impossible to get the simplest thing done that depended upon the court of wardship.",
+          "wer": 0.0,
+          "decoder_ms": 1799.8574578668922
+        },
+        {
+          "id": "4846-18524-0017",
+          "reference": "YES BIGGER A THOUSAND FEET OR MORE ANSWERED POLLY GLAD THAT SHE HAD LOOKED IT UP IS IT SAID PHRONSIE EVERY MOUNTAIN IS BIGGER ISN'T IT POLLY",
+          "hypothesis": " Yes, bigger, a thousand feet or more, answered Polly. Glad that she had looked it up. Is it? said Franzi. Every mountain is bigger, isn't it, Polly?",
+          "wer": 0.037037037037037035,
+          "decoder_ms": 3001.64245814085
+        },
+        {
+          "id": "2929-85685-0000",
+          "reference": "THE LARGER SYNTHESIS WE HAVE SEEN THAT THE ESSENTIAL PROCESS ARISING OUT OF THE GROWTH OF SCIENCE AND MECHANISM AND MORE PARTICULARLY OUT OF THE STILL DEVELOPING NEW FACILITIES OF LOCOMOTION",
+          "hypothesis": " The larger synthesis. We have seen that the essential process arising out of the growth of science and mechanism, and more particularly, out of the still developing new facilities of locomotion,",
+          "wer": 0.0,
+          "decoder_ms": 2711.120125139132
+        },
+        {
+          "id": "1241-137614-0027",
+          "reference": "BUT SHE MEANT THAT EITHER OF THEM HAD LOVED OTHER WITH ENTIRE HEART BUT SIR TRISTRAM ANSWERED HER THUS FAIR LADY IT IS NOT MY PART TO HAVE ADO IN SUCH MATTERS WHILE HER LORD AND HUSBAND IS PRESENT HERE",
+          "hypothesis": " But she meant that either of them had loved other with entire heart. But Sir Tristram answered her thus\u2014 Fair lady, it is not my part to have ado in such matters while her lord and husband is present here.",
+          "wer": 0.0,
+          "decoder_ms": 3365.6777921132743
+        },
+        {
+          "id": "4719-25766-0070",
+          "reference": "AS MY GUEST I CAN DO NO LESS REPLIED MISTER OSBORNE IF LIEUTENANT PENNINGTON HAD NOT TAKEN HIS I SHOULD HAVE LET HIM HAVE ONE TO CONTINUE ON HIS WAY TO KENTUCKY SO YOU SEE AFTER ALL I AM OUT NOTHING",
+          "hypothesis": " As my guest, I can do no less, replied Mr. Osborne. If Lieutenant Pennington had not taken his, I should have let him have one to continue on his way to Kentucky. So you see, after all, I am out nothing.",
+          "wer": 0.024390243902439025,
+          "decoder_ms": 3790.2772079687566
+        },
+        {
+          "id": "249-121331-0071",
+          "reference": "OH AMORY LOOK AT THAT FOREHEAD ON EMERSON LOOK AT TOLSTOI'S EYES HIS TONE WAS REPROACHFUL AMORY SHOOK HIS HEAD NO CALL THEM REMARKABLE LOOKING",
+          "hypothesis": " Oh, Amory, look at the forehead on Emerson. Look at Tolstoy's eyes. His tone is reproachful. Amory shook his head. No, call them remarkable-looking.",
+          "wer": 0.12,
+          "decoder_ms": 3104.8354578670114
+        },
+        {
+          "id": "2929-85685-0049",
+          "reference": "THE INTELLECTUAL DEVELOPMENT OF THE GERMANS IS DEFINED TO A VERY LARGE EXTENT BY A COURT DIRECTED OFFICIALDOM IN MANY THINGS",
+          "hypothesis": " The intellectual development of the Germans is defined to a very large extent by a court-directed officialdom. In many things,",
+          "wer": 0.0,
+          "decoder_ms": 2168.8497089780867
+        },
+        {
+          "id": "7832-114468-0038",
+          "reference": "HAD THAT FORD IN MIND AND HE WAS GLAD TO BE WITH HIM ON THE MARCH TO IT",
+          "hypothesis": " had that Ford in mind, and he was glad to be with him on the march to it.",
+          "wer": 0.0,
+          "decoder_ms": 1830.6623750831932
+        },
+        {
+          "id": "4839-15305-0016",
+          "reference": "IN GIVING THE SENATE AN ACCOUNT OF HIS MISSION ONE OF THE AMBASSADORS DOMINIC OF TREVISO",
+          "hypothesis": " In giving the Senate an account of his mission, one of the ambassadors, Dominic of Treviso,",
+          "wer": 0.0,
+          "decoder_ms": 1911.8454998824745
+        },
+        {
+          "id": "4731-58193-0003",
+          "reference": "FROM THE VERY FIRST I DID THE WORK OF THREE SERVANTS AND YET I WAS SCOLDED AND REGARDED WITH DISTRUST THE YEARS PASSED SLOWLY AND I CONTINUED TO SERVE THEM",
+          "hypothesis": " From the very first I did the work of three servants, and yet I was scolded and regarded with distrust. The years passed slowly, and I continued to serve them.",
+          "wer": 0.0,
+          "decoder_ms": 2757.732667028904
+        },
+        {
+          "id": "718-129596-0015",
+          "reference": "AND THERE I SAT CHIN ON KNEES THE SUN BEATING DOWN UPON MY HEAD AND UNSPEAKABLE DREAD IN MY MIND PLOTTING HOW I COULD LIVE ON AGAINST THE HOUR OF MY RESCUE IF EVER RESCUE CAME",
+          "hypothesis": " And there I sat, chin on knees, the sun beating down upon my head, and an unspeakable dread in my mind, plotting how I could live on against the hour of my rescue, if ever rescue came.",
+          "wer": 0.027777777777777776,
+          "decoder_ms": 3332.959916908294
+        },
+        {
+          "id": "2532-163402-0013",
+          "reference": "AIN'T NECESSITY ENOUGH FOR IT FOR WHAT I SAYS",
+          "hypothesis": " There ain't necessity enough for it. For what? I says.",
+          "wer": 0.1111111111111111,
+          "decoder_ms": 1371.8189171049744
+        },
+        {
+          "id": "6865-95959-0011",
+          "reference": "AH EXCLAIMED THE MASTER YOU ARE THE MAN TO CATCH THE DRIFT OF MY THOUGHT SUCH AS YOU MAY WELL INTRODUCE A DISCUSSION ON THE ODES SAID THE MASTER",
+          "hypothesis": " \"'Ah,' exclaimed the Master, \"'you are the man to catch the drift of my thought, such as you may well introduce a discussion on the olds.'\" Said the Master.",
+          "wer": 0.1724137931034483,
+          "decoder_ms": 2864.6499579772353
+        },
+        {
+          "id": "3521-12715-0040",
+          "reference": "MOULD THEM UP INTO SMALL BISCUIT AND BAKE THEM IMMEDIATELY",
+          "hypothesis": " Mold them up into small biscuit and bake them immediately.",
+          "wer": 0.1,
+          "decoder_ms": 1277.9879171866924
+        },
+        {
+          "id": "4899-32658-0035",
+          "reference": "HOW STRANGE THAT WE EVER FORGET THAT WE ARE ALL SUCH",
+          "hypothesis": " How strange that we ever forget that we are all such.",
+          "wer": 0.0,
+          "decoder_ms": 1288.8350000139326
+        },
+        {
+          "id": "594-127731-0032",
+          "reference": "ONE MORNING AS SLID SANG OF OLD OUTRAGEOUS WARS",
+          "hypothesis": " One morning, as slits sang of old outrageous wars,",
+          "wer": 0.1111111111111111,
+          "decoder_ms": 1255.0037091132253
+        },
+        {
+          "id": "783-126739-0042",
+          "reference": "WITH OLD STOTT WARTENHEIM HIMSELF AND HAD COME TO REGARD HIS SERVICES AS INDISPENSABLE IT WAS AN EXTREMELY RUDE AWAKENING",
+          "hypothesis": " with old Stott Wardenheim himself, and had come to regard his services as indispensable. It was an extremely rude awakening.",
+          "wer": 0.05,
+          "decoder_ms": 2152.0622079260647
+        },
+        {
+          "id": "1241-137614-0034",
+          "reference": "HAVE YE NO DOUBT BUT I WILL HAVE ADO WITH THEM TO INCREASE MY WORSHIP",
+          "hypothesis": " Have ye no doubt, but I will have a do with them, to increase my worship.",
+          "wer": 0.13333333333333333,
+          "decoder_ms": 1714.9540830869228
+        },
+        {
+          "id": "154-293987-0005",
+          "reference": "NOTHING OF THE KIND THEY ONLY INVENT THEM FOR THE MOST PART TO FURNISH A SUBJECT FOR THEIR VERSES AND THAT THEY MAY PASS FOR LOVERS OR FOR MEN VALIANT ENOUGH TO BE SO",
+          "hypothesis": " Nothing of the kind. They only invent them for the most part to furnish a subject for their verses, and that they may pass for lovers, or for men valiant enough to be so.",
+          "wer": 0.0,
+          "decoder_ms": 3124.141500098631
+        },
+        {
+          "id": "957-132568-0030",
+          "reference": "AFTER SOME DELIBERATION SHE DETERMINED THAT MONTONI SHOULD NOT BE INFORMED OF THIS EVENT TILL THE MORNING FOR SHE CONSIDERED THAT HE MIGHT PERHAPS UTTER SOME INHUMAN EXPRESSIONS",
+          "hypothesis": " After some deliberation, she determined that Montoni should not be informed of this event till the morning, for she considered that he might perhaps utter some inhuman expressions.",
+          "wer": 0.0,
+          "decoder_ms": 2767.8044592030346
+        },
+        {
+          "id": "9022-282357-0030",
+          "reference": "SOMETHING HAPPENED A FEW YANKEE PROSPECTORS HAD GONE DOWN ON THE HUDSON'S BAY STEAMER OTTER TO SAN FRANCISCO IN FEBRUARY WITH GOLD DUST AND NUGGETS",
+          "hypothesis": " Something happened. A few Yankee prospectors had gone down on the Hudson's Bay steamer Otter to San Francisco in February with gold dust and nuggets",
+          "wer": 0.0,
+          "decoder_ms": 2644.5532080251724
+        },
+        {
+          "id": "5039-1189-0039",
+          "reference": "PROTESTED THE SHAGGY MAN MAY BE ANSWERED THE WOOZY",
+          "hypothesis": " protested the shaggy man. \"'Me be!' answered the woozy.",
+          "wer": 0.2222222222222222,
+          "decoder_ms": 1659.7005838993937
+        },
+        {
+          "id": "5290-39475-0014",
+          "reference": "BUT NOW I DO NOT SEE THAT IT HAS MUCH BEARING ON THE MIRACLE ITSELF EVEN THOUGH WE KNOW THAT AFTER THAT SHE ALWAYS SPOKE OF THE POOR FOXES",
+          "hypothesis": " But now I do not see that it has much bearing on the miracle itself, even though we know that after that she always spoke of the poor foxes",
+          "wer": 0.0,
+          "decoder_ms": 2559.1339580714703
+        },
+        {
+          "id": "4899-32658-0018",
+          "reference": "BUT NO SEE HIM SHE MUST HE WAS HER",
+          "hypothesis": " But, no, see him she must. He was her.",
+          "wer": 0.0,
+          "decoder_ms": 1338.8467500917614
+        },
+        {
+          "id": "8066-114256-0019",
+          "reference": "OF NERVES STRETCHED IN SOME PURPOSE LONG SUSTAINED AND WHY NOT WHEN A MAN WOULD DO MURDER",
+          "hypothesis": " of nerves stretched in some purpose long sustained. And why not, when a man would do murder,",
+          "wer": 0.0,
+          "decoder_ms": 1793.3997081127018
+        },
+        {
+          "id": "957-132568-0005",
+          "reference": "WHILE EMILY REPEATEDLY DECLARED TO HIM HER WILLINGNESS TO RESIGN ALL CLAIM TO THOSE ESTATES RATHER THAN THAT THE LAST HOURS OF HER AUNT SHOULD BE DISTURBED BY CONTENTION",
+          "hypothesis": " while Emily repeatedly declared to him her willingness to resign all claim to those estates, rather than that the last hours of her rant should be disturbed by contention.",
+          "wer": 0.034482758620689655,
+          "decoder_ms": 2564.5627498161048
+        },
+        {
+          "id": "1271-136861-0028",
+          "reference": "I ONCE PRINTED THEM AT LENGTH IN THE CHRONICLE AND SOME OF MY FRIENDS I BELIEVE MISTER MURPHY",
+          "hypothesis": " I once printed them at length in the chronicle, and some of my friends, I believe Mr. Murphy,",
+          "wer": 0.05555555555555555,
+          "decoder_ms": 1941.468209028244
+        },
+        {
+          "id": "783-126739-0091",
+          "reference": "HE REMAINED SILENT FOR A LITTLE WHILE WE'VE GOT HOLD OF A MAN CALLED VERLOC HE ANNOUNCED CASUALLY",
+          "hypothesis": " He remained silent for a little while. We've got hold of a man called Verloc, he announced casually.",
+          "wer": 0.0,
+          "decoder_ms": 2023.0468749068677
+        },
+        {
+          "id": "2319-138631-0048",
+          "reference": "I'LL OVERTAKE YOU IN A MINUTE SHE SAID TO THE YOUNGER PAIR AND WENT BACK",
+          "hypothesis": " \"'I'll overtake you in a minute,' she said to the younger pair, and went back.",
+          "wer": 0.13333333333333333,
+          "decoder_ms": 1842.9044170770794
+        },
+        {
+          "id": "2060-150843-0039",
+          "reference": "POOH VOLCANIC SAYS THE LEADING TOURIST",
+          "hypothesis": " Pool volcanic, says the leading tourist.",
+          "wer": 0.16666666666666666,
+          "decoder_ms": 1048.2804998755455
+        },
+        {
+          "id": "2929-85685-0073",
+          "reference": "SHE WILL FIGHT WITH THE GRAVITY OF REMEMBERED HUMILIATIONS WITH THE WHOLE AWAKENED SLAV RACE AT THE BACK OF HER ANTAGONIST AND VERY PROBABLY WITH THE SUPPORT OF THE ENGLISH SPEAKING PEOPLES",
+          "hypothesis": " She will fight with the gravity of remembered humiliations, with the whole awakened Slav race at the back of her antagonist, and very probably with the support of the English-speaking peoples.",
+          "wer": 0.0,
+          "decoder_ms": 3026.0604578070343
+        },
+        {
+          "id": "7241-90850-0038",
+          "reference": "EVEN AS A SHIP THAT HAS COME INTO HARBOR FAR AHEAD OF THE VAST SWARM FLEW ONE LONELY BIRD AND SUDDENLY THIS BIRD UTTERED A SHRILL AND PIERCING CRY",
+          "hypothesis": " even as a ship that has come into harbor. Far ahead of the vast swarm flew one lonely bird, and suddenly this bird uttered a shrill and piercing cry.",
+          "wer": 0.0,
+          "decoder_ms": 2674.6267911512405
+        },
+        {
+          "id": "718-129594-0016",
+          "reference": "IMMEDIATELY AFTER APPEARED A MONSTER IN HEADLONG PURSUIT BLOOD BEDABBLED",
+          "hypothesis": " Immediately after appeared a monster in headlong pursuit, blood bedabbled,",
+          "wer": 0.0,
+          "decoder_ms": 1596.0439580958337
+        },
+        {
+          "id": "4719-25765-0023",
+          "reference": "I WAS DRESSED IN CITIZEN'S CLOTHES",
+          "hypothesis": " I was dressed in citizens clothes.",
+          "wer": 0.16666666666666666,
+          "decoder_ms": 1047.0940419472754
+        },
+        {
+          "id": "5876-10347-0017",
+          "reference": "AND NOT MERELY VIRTUALLY FOR THE FIRMAMENT",
+          "hypothesis": " and not merely virtually, for the firmament",
+          "wer": 0.0,
+          "decoder_ms": 1174.0669580176473
+        },
+        {
+          "id": "783-126739-0032",
+          "reference": "THE MAN FIGURATIVELY SPEAKING FLUNG HIMSELF ON MY BREAST IT WAS ENOUGH ON MY PART TO WHISPER TO HIM WHO I WAS AND TO ADD I KNOW THAT YOU ARE AT THE BOTTOM OF THIS AFFAIR",
+          "hypothesis": " The man, figuratively speaking, flung himself on my breast. It was enough on my part to whisper to him who I was and to add, I know that you are at the bottom of this affair.",
+          "wer": 0.0,
+          "decoder_ms": 3250.3045410849154
+        },
+        {
+          "id": "4839-15305-0033",
+          "reference": "THE FRENCH ARMY WAS DISPERSING ABOUT IN SEARCH OF SHELTER AND PROVISIONS",
+          "hypothesis": " The French Army was dispersing about in search of shelter and provisions.",
+          "wer": 0.0,
+          "decoder_ms": 1481.4025410450995
+        },
+        {
+          "id": "114-129317-0048",
+          "reference": "IF YOU BURIED HIM FIFTY FEET DEEP AND TOOK ME ACROSS HIS GRAVE I FANCY I SHOULD KNOW IF THERE WASN'T A MARK ABOVE IT",
+          "hypothesis": " If you buried him fifty feet deep and took me across his grave, I fancy I should know if there wasn't a mark above it.",
+          "wer": 0.0,
+          "decoder_ms": 2392.710374901071
+        },
+        {
+          "id": "335-125941-0016",
+          "reference": "IF YOU'LL KEEP QUIET LONG ENOUGH FOR ME TO THINK I'LL TRY TO FIND SOME WAY FOR US ALL TO ESCAPE",
+          "hypothesis": " If you'll keep quiet long enough for me to think, I'll try to find some way for us all to escape.",
+          "wer": 0.0,
+          "decoder_ms": 2094.7742080315948
+        },
+        {
+          "id": "2272-152262-0002",
+          "reference": "THE BRITONS WERE DRIVEN INTO WALES AND CORNWALL THE WESTERN SECTIONS OF THE ISLAND THE ROMANS KEPT POSSESSION OF THE ISLAND FOR NEARLY FOUR HUNDRED YEARS",
+          "hypothesis": " The Britons were driven into Wales and Cornwall, the western sections of the island. The Romans kept possession of the island for nearly 400 years,",
+          "wer": 0.07692307692307693,
+          "decoder_ms": 2464.53904081136
+        },
+        {
+          "id": "249-121331-0037",
+          "reference": "THE GAUDY RITUALISTIC PARADOXICAL CATHOLICISM WHOSE PROPHET WAS CHESTERTON",
+          "hypothesis": " the gaudy ritualistic paradoxical Catholicism, whose prophet was Chesterton,",
+          "wer": 0.0,
+          "decoder_ms": 1696.2916248012334
+        },
+        {
+          "id": "2272-152265-0000",
+          "reference": "HENRY THE FOWLER KING FROM",
+          "hypothesis": " Henry the Fowler King from",
+          "wer": 0.0,
+          "decoder_ms": 1102.1382499020547
+        },
+        {
+          "id": "4064-19132-0022",
+          "reference": "THEY'RE STUNNING GIRLS I TELL YOU I'D LIKE YOU TO MEET THEM MISTER MONTAGUE I SHOULD BE PLEASED SAID MONTAGUE WRITHING INWARDLY",
+          "hypothesis": " \"'They're stunning girls, I tell you. I'd like you to meet them, Mr. Montague.' \"'I should be pleased,' said Montague, writhing inwardly.",
+          "wer": 0.22727272727272727,
+          "decoder_ms": 2945.708499988541
+        },
+        {
+          "id": "114-129324-0052",
+          "reference": "CONCERNED WITH THE GANG IN ANY OF THEIR ROBBERIES IF HE WERE NOT DISCHARGED IT IS VERY UNLIKELY THAT HE COULD RECEIVE ANY FURTHER PUNISHMENT THAN BEING COMMITTED TO PRISON AS A ROGUE AND VAGABOND",
+          "hypothesis": " concerned with the gang and any of their robberies. If he were not discharged, it is very unlikely that he could receive any further punishment than being committed to prison as a rogue and vagabond,",
+          "wer": 0.02857142857142857,
+          "decoder_ms": 3133.6304580327123
+        },
+        {
+          "id": "4731-95875-0027",
+          "reference": "THE DARKNESS THAT SURROUNDED THE WHOLE FIELD OF SEX WAS MADE AS COMPLETE AS POSSIBLE SINCE THEN THE FEELING OF THE AWAKENED WOMEN OF AMERICA HAS INTENSIFIED",
+          "hypothesis": " The darkness that surrounded the whole field of sex was made as complete as possible. Since then the feeling of the awakened woman of America has been intensified.",
+          "wer": 0.07407407407407407,
+          "decoder_ms": 2514.1590000130236
+        },
+        {
+          "id": "249-121331-0040",
+          "reference": "QUITE SUBMERGED IN HIS BROTHER'S PERSONALITY",
+          "hypothesis": " quite submerged in his brother's personality.",
+          "wer": 0.0,
+          "decoder_ms": 1026.5893330797553
+        },
+        {
+          "id": "1769-143485-0061",
+          "reference": "THE DEFINITION OF A TRIANGLE CAN ALONE GIVE YOU A JUST IDEA OF THAT FIGURE THE MOMENT YOU FORM A TRIANGLE IN YOUR MIND IT IS THIS OR THAT PARTICULAR TRIANGLE AND NO OTHER",
+          "hypothesis": " The definition of a triangle can alone give you a just idea of that figure. The moment you form a triangle in your mind, it is this or that particular triangle and no other.",
+          "wer": 0.0,
+          "decoder_ms": 2881.308249896392
+        },
+        {
+          "id": "7802-104398-0003",
+          "reference": "JUST TO HER KNEES WITH A BIG RENT IN THE SKIRT HER HAIR WAS SHORT AND BUSHY AND DARK AND HER FACE WAS SOBERER THAN MOST FOREST PEOPLE'S FACES",
+          "hypothesis": " just to her knees, with a big rent in the skirt. Her hair was short and bushy and dark, and her face was soberer than most forest people's faces.",
+          "wer": 0.0,
+          "decoder_ms": 2910.3046669624746
+        },
+        {
+          "id": "2272-152262-0005",
+          "reference": "JUST AS THEIR FOREFATHERS HAD DONE WHEN THE ROMANS INVADED BRITAIN THUS NEARLY ALL ENGLAND CAME INTO THE POSSESSION OF THE THREE INVADING TRIBES TWO",
+          "hypothesis": " just as their forefathers had done when the Romans invaded Britain. Thus nearly all England came into the possession of the three invading tribes. 2.",
+          "wer": 0.04,
+          "decoder_ms": 2516.981082968414
+        },
+        {
+          "id": "3187-168500-0034",
+          "reference": "THE INEXPLICABLE AND IRREMEDIABLE MAY INTEREST HIM BUT THEY DO NOT ENRAGE HIM OR I MAY ADD FOOL HIM",
+          "hypothesis": " The inexplicable and irremediable may interest him, but they do not enrage him, or, I may add, fool him.",
+          "wer": 0.0,
+          "decoder_ms": 2330.565874930471
+        },
+        {
+          "id": "2531-156724-0031",
+          "reference": "THE PHOENIX LOWERED ITS VOICE IMPRESSIVELY MY BOY WE ARE GOING TO INSTALL THIS BELL IN YOUR ROOM AND THE PUSHBUTTON ON THE BASE OF THAT TELEPHONE POLE",
+          "hypothesis": " The phoenix lowered its voice impressively. My boy, we are going to install this bell in your room in the push button on the base of that telephone pole.",
+          "wer": 0.10714285714285714,
+          "decoder_ms": 2768.039375077933
+        },
+        {
+          "id": "114-129317-0014",
+          "reference": "AND THAT YOUR ARRIVAL HERE A DAY SOONER OR A DAY LATER",
+          "hypothesis": " and that your arrival here a day sooner or a day later",
+          "wer": 0.0,
+          "decoder_ms": 1399.1765410173684
+        },
+        {
+          "id": "1271-136861-0041",
+          "reference": "AND POLLUTE HIS CANVAS WITH DEFORMITY BEING ADDED BY JOHNSON AS SIR JOSHUA INFORMED ME",
+          "hypothesis": " and pollute his canvas with deformity, being added by Johnson, as Sir Joshua informed me.",
+          "wer": 0.0,
+          "decoder_ms": 1764.2612920608371
+        },
+        {
+          "id": "4719-25765-0036",
+          "reference": "I TRUST I SHALL NEVER PROVE MYSELF UNWORTHY OF YOUR GOOD OPINION MAY GOD BLESS YOU AND CROWN YOUR EFFORTS WITH VICTORY",
+          "hypothesis": " I trust I shall never prove myself unworthy of your good opinion. May God bless you and crown your efforts with victory.",
+          "wer": 0.0,
+          "decoder_ms": 2137.1330828405917
+        },
+        {
+          "id": "335-125945-0024",
+          "reference": "EXCLAIMED THE WOGGLE BUG ADMIRINGLY YES MY BRAINS ARE WORKING WELL TODAY ADMITTED THE SCARECROW AN ACCENT OF PRIDE IN HIS VOICE THEN",
+          "hypothesis": " Yes, my brains are working well today,\" admitted the scarecrow, an accent of pride in his voice.",
+          "wer": 0.2608695652173913,
+          "decoder_ms": 2689.068374922499
+        },
+        {
+          "id": "3187-168500-0065",
+          "reference": "IT AT ONCE TAKES ON ALL THE SINISTER FASCINATION IT HAD IN LUTHER'S DAY",
+          "hypothesis": " It at once takes on all the sinister fascination it had in Luther's day.",
+          "wer": 0.0,
+          "decoder_ms": 1717.4452089238912
+        },
+        {
+          "id": "154-124003-0002",
+          "reference": "A VOWEL IS A LETTER HAVING AN AUDIBLE SOUND WITHOUT THE ADDITION OF ANOTHER LETTER",
+          "hypothesis": " A vowel is a letter having an audible sound without the addition of another letter.",
+          "wer": 0.0,
+          "decoder_ms": 1601.554999826476
+        },
+        {
+          "id": "7802-104394-0049",
+          "reference": "DID THEY LAUGH AT ME",
+          "hypothesis": " Did they laugh at me?",
+          "wer": 0.0,
+          "decoder_ms": 909.850416937843
+        },
+        {
+          "id": "487-129440-0030",
+          "reference": "THEN WHEN FAIR MORNING FIRST SMILES ON THE WORLD AND LET US TO OUR FRESH IMPLOYMENTS RISE AMONG THE GROVES THE FOUNTAINS AND THE FLOURS",
+          "hypothesis": " Then when fair morning first smiles on the world, And lettuce to our fresh employments rise, Among the groves, the fountains, and the flowers,",
+          "wer": 0.16,
+          "decoder_ms": 2562.619249802083
+        },
+        {
+          "id": "1769-143484-0011",
+          "reference": "PLACE THEM NAKED AND UNARMED ONE OPPOSITE TO THE OTHER AND YOU WILL SOON DISCOVER THE ADVANTAGE THERE IS IN PERPETUALLY HAVING ALL OUR FORCES AT OUR DISPOSAL IN BEING CONSTANTLY PREPARED AGAINST ALL EVENTS",
+          "hypothesis": " Place them naked and unarmed one opposite to the other, and you will soon discover the advantage there is in perpetually having all our forces at our disposal and being constantly prepared against all events.",
+          "wer": 0.02857142857142857,
+          "decoder_ms": 3074.396208161488
+        },
+        {
+          "id": "1241-121106-0029",
+          "reference": "BECAUSE HE APPEARED DISPOSED TO INTERFERE BETWEEN US IN ONE RESPECT YOU ARE RIGHT FOR I AM READY TO QUARREL WITH EVERY ONE TO DAY",
+          "hypothesis": " because he appeared disposed to interfere between us. In one respect you were right, for I am ready to quarrel with every one to-day.",
+          "wer": 0.04,
+          "decoder_ms": 2496.6454580426216
+        },
+        {
+          "id": "1241-121106-0016",
+          "reference": "HOW AND WHY BECAUSE A FORTNIGHT SINCE I WAS QUESTIONED ON THE SAME SUBJECT",
+          "hypothesis": " How and why? Because a fortnight since I was questioned on the same subject.",
+          "wer": 0.0,
+          "decoder_ms": 1642.3717921134084
+        },
+        {
+          "id": "718-129597-0026",
+          "reference": "I REALLY BELIEVE THAT WAS AT THE ROOT OF THE BRUTE'S ATTACHMENT TO ME IT WAS SOON EVIDENT TO ME THAT THE FORMER MONSTER HAD TASTED BLOOD AND GONE THE WAY OF THE LEOPARD MAN",
+          "hypothesis": " I really believe that was at the root of the brute's attachment to me. It was soon evident to me that the former monster had tasted blood and had gone the way of the Leopard Man.",
+          "wer": 0.02857142857142857,
+          "decoder_ms": 3086.567166959867
+        },
+        {
+          "id": "3521-12715-0024",
+          "reference": "IF IT DOES NOT FOAM WELL WHEN PUT IN IT IS TOO STALE TO USE",
+          "hypothesis": " If it does not foam well when put in, it is too stale to use.",
+          "wer": 0.0,
+          "decoder_ms": 1701.5480000991374
+        },
+        {
+          "id": "4839-15305-0015",
+          "reference": "TWO MONTHS AFTERWARDS AND NOT BEFORE HE WAS CONDUCTED TO THE KING HIMSELF WHO WAS THEN AT BLOIS LOUIS WELCOMED HIM WITH HIS NATURAL KINDNESS AND SECURED TO HIM FIFTY THOUSAND LIVRES A YEAR ON THE DUCHY OF ANJOU",
+          "hypothesis": " Two months afterwards, and not before, he was conducted to the king himself, who was then at Blois. Louis welcomed him with his natural kindness, and secured to him 50,000 livres a year on the Duchy of Anjou,",
+          "wer": 0.05128205128205128,
+          "decoder_ms": 3638.9877090696245
+        },
+        {
+          "id": "4899-32658-0036",
+          "reference": "THE DESOLATE PILGRIMAGE WAS NOT LONG",
+          "hypothesis": " The desolate pilgrimage was not long.",
+          "wer": 0.0,
+          "decoder_ms": 1037.656833883375
+        },
+        {
+          "id": "718-129594-0006",
+          "reference": "I RECOGNISED THE APE MAN I HAD INDEED ALREADY IDENTIFIED HIS VOICE AND TWO OF THE WHITE SWATHED BROWN FEATURED CREATURES I HAD SEEN IN MONTGOMERY'S BOAT",
+          "hypothesis": " I recognized the ape-man. I had indeed already identified his voice in two of the white-swathed brown-featured creatures I had seen in Montgomery's boat.",
+          "wer": 0.07407407407407407,
+          "decoder_ms": 2865.9878328908235
+        },
+        {
+          "id": "1012-133424-0054",
+          "reference": "HIS FACE HAD GONE BLACK WITH RAGE BUT HE SAW THAT THEY BELIEVED THEIR WORDS AND HE WAS STARTLED LADS HE SAID SHAKING A LITTLE",
+          "hypothesis": " His face had gone black with rage, but he saw that they believed their words, and he was startled. Lads, he said, shaking a little.",
+          "wer": 0.0,
+          "decoder_ms": 2513.4691251441836
+        },
+        {
+          "id": "7994-258960-0019",
+          "reference": "THE QUALITIES WHOSE USE GIVES VALUE ARE NOT USUALLY INDESTRUCTIBLE",
+          "hypothesis": " The qualities whose use gives value are not usually indestructible.",
+          "wer": 0.0,
+          "decoder_ms": 1451.4776670839638
+        },
+        {
+          "id": "4425-14497-0063",
+          "reference": "AND RETIRED INTO THE DARKNESS THAT THE SPOTS IN HIS EYES AND THE PAINS ACROSS HIS HEAD WERE VERY TROUBLESOME",
+          "hypothesis": " and retired into the darkness, that the spots in his eyes and the pains across his head were very troublesome.",
+          "wer": 0.0,
+          "decoder_ms": 1946.5575420763344
+        },
+        {
+          "id": "718-129596-0009",
+          "reference": "AT THE FIRST EXCUSE IT MAY SEEM TREACHEROUS BUT SO I WAS RESOLVED I WAS FAR MORE AFRAID OF HIM THAN OF ANY OTHER TWO OF THE BEAST FOLK HIS CONTINUED LIFE WAS I KNEW A THREAT AGAINST MINE",
+          "hypothesis": " at the first excuse. It may seem treacherous, but so I was resolved. I was far more afraid of him than of any other two of the beast-folk. His continued life was, I knew, a threat against mine.",
+          "wer": 0.0,
+          "decoder_ms": 3574.482584139332
+        },
+        {
+          "id": "2532-163402-0021",
+          "reference": "WE'RE GOING TO GET INTO TROUBLE WITH AUNT SALLY JUST AS SURE AS YOU'RE BORN NOW THE WAY I LOOK AT IT A HICKRY BARK LADDER DON'T COST NOTHING AND DON'T WASTE NOTHING",
+          "hypothesis": " We're going to get into trouble with Aunt Sally just as sure as you're born. Now, the way I look at it, a hickory bark ladder don't cost nothing and don't waste nothing.",
+          "wer": 0.030303030303030304,
+          "decoder_ms": 3243.6844578478485
+        },
+        {
+          "id": "4899-32637-0037",
+          "reference": "HE HAS NOT ONE HONEST DESIRE TO PLEASE BECAUSE IT IS RIGHT TO BE PLEASING OH MY PRECIOUS CHILD WHAT A FATAL MISTAKE YOU ARE MAKING IN RELYING ON YOUR OWN JUDGMENT IN THIS",
+          "hypothesis": " He has not one honest desire to please, because it is right to be pleasing. Oh, my precious child, what a fatal mistake you are making in relying on your own judgment in this.",
+          "wer": 0.0,
+          "decoder_ms": 2936.5322089288384
+        },
+        {
+          "id": "7832-258250-0008",
+          "reference": "AFTER WHICH HE NUMBERED THEM AND FOUND THEM THIRTY THOUSAND HORSE",
+          "hypothesis": " after which he numbered them, and found them thirty thousand horse.",
+          "wer": 0.0,
+          "decoder_ms": 1337.201208109036
+        },
+        {
+          "id": "7994-258960-0040",
+          "reference": "SO THAT THERE WAS NO OCCASION TO ESTIMATE ITS TOTAL SELLING VALUE IT WAS THOUGHT OF AS A PLACE ON WHICH TO LIVE",
+          "hypothesis": " so that there was no occasion to estimate its total selling value. It was thought of as a place on which to live",
+          "wer": 0.0,
+          "decoder_ms": 2070.327082881704
+        },
+        {
+          "id": "2532-163402-0044",
+          "reference": "SO HE COMES OUT AND JIM DON'T EITHER I RECKON BUT THERE'S ONE THING ANYWAY JIM'S TOO OLD TO BE DUG OUT WITH A CASE KNIFE",
+          "hypothesis": " So he comes out. And Jim don't either, I reckon. But there is one thing, anyway. Jim's too old to be dug out with a case knife.",
+          "wer": 0.07692307692307693,
+          "decoder_ms": 2818.811541888863
+        },
+        {
+          "id": "2581-157857-0016",
+          "reference": "WHAT ABOUT YOUR OWN SHE ASKED HIM BUT YOU ARE A MANUFACTURER ARE YOU NOT SOMEHOW OR OTHER THAT SURPRISES ME AND ME HE ACKNOWLEDGED FRANKLY",
+          "hypothesis": " What about your own? she asked him. But you're a manufacturer, are you not? Somehow or other that surprises me. And me, he acknowledged frankly.",
+          "wer": 0.07692307692307693,
+          "decoder_ms": 2623.7018750980496
+        },
+        {
+          "id": "2004-147173-0000",
+          "reference": "THIRTY ONE HOW MARY PASSED THE NIGHT TO THINK THAT ALL THIS LONG INTERMINABLE NIGHT WHICH I HAVE PASSED IN THINKING ON TWO WORDS GUILTY'",
+          "hypothesis": " 31. How Mary passed the night. To think that all this long and terminable night, which I have passed in thinking on two words, guilty.",
+          "wer": 0.2,
+          "decoder_ms": 2509.6241671126336
+        },
+        {
+          "id": "2004-147967-0022",
+          "reference": "SHE GLANCED DISTRUSTFULLY AT AMBROSCH WHO WAS NOW EATING HIS BREAKFAST AT THE KITCHEN TABLE",
+          "hypothesis": " She glanced distrustfully at Ambroche, who was now eating his breakfast at the kitchen table.",
+          "wer": 0.06666666666666667,
+          "decoder_ms": 1886.3424581941217
+        },
+        {
+          "id": "594-127732-0020",
+          "reference": "AND THE CHILD CRIED AND THREW IT UPON THE STAIRWAY AND CHIPPED AND BROKE ITS EDGES AND ASKED FOR THE GOLDEN BALL AND LIMPANG TUNG",
+          "hypothesis": " And the child cried and threw it upon the stairway and chipped and broke its edges and asked for the golden ball. And Lim Paine Tung,",
+          "wer": 0.08,
+          "decoder_ms": 2568.3698339853436
+        },
+        {
+          "id": "783-126739-0010",
+          "reference": "WHO LOOKED TO HIM UNCOMMONLY LIKE A MAN WHO HAS MADE A MESS OF HIS JOB BUT HIS CURIOSITY WAS TOO STRONG TO BE RESTRAINED BY MERE COMPASSION HE COULD NOT HELP",
+          "hypothesis": " who looked to him uncommonly like a man who has made a mess of his job. But his curiosity was too strong to be restrained by mere compassion. He could not help",
+          "wer": 0.0,
+          "decoder_ms": 2830.4345831274986
+        },
+        {
+          "id": "2272-152262-0008",
+          "reference": "THE SAXONS ANGLES AND JUTES BELIEVED IN THE OLD NORSE GODS AND TIEW AND WODEN THOR AND FRIGA OR FRIJA",
+          "hypothesis": " The Saxons, Angles and Jutes believed in the Old Norse gods, and Tiu and Woden, Thor and Frigga, or Frisja,",
+          "wer": 0.15,
+          "decoder_ms": 2751.9583750981838
+        },
+        {
+          "id": "6426-64290-0010",
+          "reference": "IT MAY APPEAR A PRESUMPTUOUS THING TO SAY BUT MY RECOLLECTION SEEMS OF A FINER COLOR WHILE SHE SPOKE SHE HAD AGAIN TAKEN THE RING AND WAS LOOKING AT IT MISTER REDMAIN SNATCHED IT FROM HER HAND",
+          "hypothesis": " It may appear a presumptuous thing to say, but my recollection seems of a finer color. While she spoke, she had again taken the ring and was looking at it. Mr. Redmayne snatched it from her hand.",
+          "wer": 0.05405405405405406,
+          "decoder_ms": 3554.058500099927
+        },
+        {
+          "id": "6426-64292-0039",
+          "reference": "FOR TEN PERSONS WILL REPENT OF A SIN FOR ONE WHO WILL CONFESS IT I DO NOT MEAN TO THE PRIEST THAT MAY BE AN EASY MATTER BUT TO THE ONLY ONE WHO HAS A CLAIM TO THE CONFESSION",
+          "hypothesis": " For ten persons will repent of a sin for one who will confess it. I do not mean to the priest. That may be an easy matter, but to the only one who has succlaimed to the confession.",
+          "wer": 0.05128205128205128,
+          "decoder_ms": 3182.952499948442
+        },
+        {
+          "id": "2929-85685-0074",
+          "reference": "IT MUST BE POINTED OUT HOW STRONG SEEMS THE TENDENCY OF THE GERMAN EMPIRE TO REPEAT THE HISTORY OF HOLLAND UPON A LARGER SCALE",
+          "hypothesis": " It must be pointed out how strong seems the tendency of the German Empire to repeat the history of Holland upon a larger scale.",
+          "wer": 0.0,
+          "decoder_ms": 2079.1707090102136
+        },
+        {
+          "id": "5876-8675-0013",
+          "reference": "BUT BEWARE HOW YOU STRETCH OUT A HAND TOWARDS THE JEWELS IN THE MIDST OF THE CAVERN STANDS A COPPER CHEST IN THAT YOU WILL FIND GOLD AND SILVER",
+          "hypothesis": " But beware how you stretch out a hand towards the jewels. In the midst of the cavern stands a copper chest. In that you will find gold and silver.",
+          "wer": 0.0,
+          "decoder_ms": 2690.0317079853266
+        },
+        {
+          "id": "2929-85685-0011",
+          "reference": "AND YET AT TIMES ALMOST IMPERCEPTIBLY AS SOME HUGE SECULAR MOVEMENT IN NATURE THE RAISING OF A CONTINENT THE CRUMBLING OF A MOUNTAIN CHAIN GOES ON TO ITS APPOINTED CULMINATION",
+          "hypothesis": " And yet at times almost imperceptibly, as some huge secular movement in nature, the raising of a continent, the crumbling of a mountain chain, goes on to its appointed culmination.",
+          "wer": 0.0,
+          "decoder_ms": 3005.1682088524103
+        },
+        {
+          "id": "718-129597-0011",
+          "reference": "FOR A MOMENT THE OPENING OF THE HUT WAS BLACKENED BY THE EXIT OF THE DOG MAN THEN I FOLLOWED AND STOOD UP ALMOST IN THE EXACT SPOT WHERE I HAD BEEN WHEN I HAD HEARD MOREAU AND HIS STAGHOUND PURSUING ME",
+          "hypothesis": " For a moment the opening of the hut was blackened by the exit of the dogman. Then I followed and stood up almost in the exact spot where I had been when I had heard Moreau and his staghound pursuing me.",
+          "wer": 0.047619047619047616,
+          "decoder_ms": 3634.5188331324607
+        },
+        {
+          "id": "7241-90852-0053",
+          "reference": "WHILE THE CAT REMAINED OUTSIDE WHEN TWILIGHT CAME THE DOG RAN OUT AND MET THE CAT IN THE CASTLE GARDEN",
+          "hypothesis": " while the cat remained outside. When twilight came the dog ran out and met the cat in the castle garden.",
+          "wer": 0.0,
+          "decoder_ms": 2007.5259590521455
+        },
+        {
+          "id": "7802-104398-0032",
+          "reference": "AND LAID HER BUSHY HEAD AGAINST HER BREAST FOR WILD THYME ONLY OF ALL THE FOREST PEOPLE LOVED HER WITHOUT AWE",
+          "hypothesis": " and laid her bushy head against her breast. For a while time only of all the forest people loved her without awe.",
+          "wer": 0.14285714285714285,
+          "decoder_ms": 2319.2228749394417
+        },
+        {
+          "id": "9022-282357-0010",
+          "reference": "THERE WAS A SHORT LIVED FLURRY OVER THE DISCOVERY IN QUEEN CHARLOTTE ISLANDS OF A NUGGET VALUED AT SIX HUNDRED DOLLARS AND A VEIN OF GOLD BEARING QUARTZ",
+          "hypothesis": " There was a short-lived flurry over the discovery in Queen Charlotte Islands of a nugget valued at six hundred dollars and a vein of gold-bearing quartz.",
+          "wer": 0.0,
+          "decoder_ms": 2644.620707957074
+        },
+        {
+          "id": "1241-137614-0037",
+          "reference": "AND GREAT WORDS HE SPAKE AND ANON WITH LITTLE MIGHT HE WAS LAID TO THE EARTH",
+          "hypothesis": " and great words he spake, and anon with little might he was laid to the earth.",
+          "wer": 0.0,
+          "decoder_ms": 1838.4670841041952
+        },
+        {
+          "id": "3922-715-0023",
+          "reference": "THE GYPSY CAME TO TRY THE GIRLS WOULD THEY LOVE HIM WOULD THEY NOT BUT THEY COULDN'T LOVE THE GYPSY EITHER HE WOULD BE A THIEF I FEAR AND WOULD CAUSE ME MANY A TEAR",
+          "hypothesis": " The gypsy came to try the girls. Would they love him? Would they not? But they couldn't love the gypsy either. He would be a thief, I fear, and would cause me many a tear.",
+          "wer": 0.0,
+          "decoder_ms": 3322.4080419167876
+        },
+        {
+          "id": "335-125943-0008",
+          "reference": "I'M SURE THE EMPEROR WILL RECEIVE US EVEN IN HIS PRESENT STATE THE EMPEROR'S STATE IS ALWAYS MAGNIFICENT SAID THE MAN",
+          "hypothesis": " I am sure the Emperor will receive us, even in his present state. The Emperor's state is always magnificent,\" said the man.",
+          "wer": 0.09523809523809523,
+          "decoder_ms": 2196.546582970768
+        },
+        {
+          "id": "2929-86777-0003",
+          "reference": "THE COUNT LOOKED AT MERCEDES AS IF TO INTERROGATE HER BUT SHE CONTINUED TO WALK ON IN SILENCE AND HE REFRAINED FROM SPEAKING THEY REACHED THE BUILDING",
+          "hypothesis": " The Count looked at Mercedes as if to interrogate her, but she continued to walk on in silence, and he refrained from speaking. They reached the building,",
+          "wer": 0.0,
+          "decoder_ms": 2638.8258340302855
+        },
+        {
+          "id": "2929-85685-0083",
+          "reference": "EUROPE WILL HAVE HER IRELANDS AS WELL AS HER SCOTLANDS HER IRELANDS OF UNFORGETTABLE WRONGS KICKING SQUALLING BAWLING MOST DESOLATINGLY FOR NOTHING THAT ANY ONE CAN UNDERSTAND",
+          "hypothesis": " Europe will have her Ireland's as well as her Scotland's, her Ireland's of unforgettable wrongs, kicking, squalling, bawling most desolatingly, for nothing that anyone can understand.",
+          "wer": 0.18518518518518517,
+          "decoder_ms": 3212.6081669703126
+        },
+        {
+          "id": "3852-175448-0030",
+          "reference": "AND HUMBOLDT WAS THE FIRST SCIENTIFIC MAN OF INTELLECTUAL INDEPENDENCE WHO HAD PERMISSION TO VISIT THEM TO THIS DAY MANY OF HIS SCIENTIFIC OBSERVATIONS ARE OF REAL VALUE",
+          "hypothesis": " And Humboldt was the first scientific man of intellectual independence who had permission to visit them. To this day many of his scientific observations are of real value.",
+          "wer": 0.0,
+          "decoder_ms": 2568.644375074655
+        },
+        {
+          "id": "3187-168500-0000",
+          "reference": "WITHOUT IT THE CRUELTIES OF GOD WOULD STRAIN FAITH TO THE BREAKING POINT BUT OUTSIDE THE FOLD IT IS GRADUALLY FALLING INTO DECAY",
+          "hypothesis": " Without it, the cruelties of God would strain faith to the breaking point. But outside the fold it is gradually falling into decay.",
+          "wer": 0.0,
+          "decoder_ms": 2339.435375062749
+        },
+        {
+          "id": "249-121331-0038",
+          "reference": "WITH HIS ADULATION OF THIRTEENTH CENTURY CATHEDRALS A CATHOLICISM WHICH AMORY FOUND CONVENIENT AND READY MADE WITHOUT PRIEST OR SACRAMENTS OR SACRIFICE",
+          "hypothesis": " with his adulation of 13th century cathedrals, a Catholicism which Amory found convenient and ready-made, without priest, or sacraments, or sacrifice.",
+          "wer": 0.045454545454545456,
+          "decoder_ms": 2831.894041970372
+        },
+        {
+          "id": "4719-25765-0005",
+          "reference": "NO CHARGE COULD PIERCE THAT LINE OF HEROES WITH FACES TO THE FOE THEY SLOWLY FELL BACK CONTESTING EVERY INCH OF GROUND",
+          "hypothesis": " No charge could pierce that line of heroes. With faces to the foe, they slowly fell back, contesting every inch of ground.",
+          "wer": 0.0,
+          "decoder_ms": 2329.8432079609483
+        },
+        {
+          "id": "5876-8675-0008",
+          "reference": "DEEP UNDER THE EARTH AT TWILIGHT AND AT HIGH NOON IT IS HIDDEN BUT AT MIDNIGHT IT MAY BE DUG UP FOR SEVEN HUNDRED YEARS HAVE I WATCHED OVER IT BUT NOW",
+          "hypothesis": " deep under the earth. At twilight and at high noon it is hidden, but at midnight it may be dug up. For seven hundred years have I watched over it, but now",
+          "wer": 0.0,
+          "decoder_ms": 2962.8274580463767
+        },
+        {
+          "id": "5876-10347-0003",
+          "reference": "FURTHER THE LUMINARIES ARE AS IT WERE VESSELS OF LIGHT BUT LIGHT WAS MADE ON THE FIRST DAY THE LUMINARIES THEREFORE SHOULD HAVE BEEN MADE ON THE FIRST DAY",
+          "hypothesis": " Further, the luminaries are, as it were, vessels of light, but light was made on the first day. The luminaries, therefore, should have been made on the first day.",
+          "wer": 0.0,
+          "decoder_ms": 2956.49666688405
+        },
+        {
+          "id": "7832-258250-0004",
+          "reference": "AND THEY ALL BECAME TRUE BELIEVERS AFTER WHICH JAMAK RETURNED TO THE CITY AND DESPATCHED THENCE",
+          "hypothesis": " and they all became true believers, after which Jamak returned to the city and dispatched thence",
+          "wer": 0.0625,
+          "decoder_ms": 1831.0434161685407
+        },
+        {
+          "id": "1271-136861-0020",
+          "reference": "THAT I SHOULD BE AT FORTY NINE WHAT I NOW AM",
+          "hypothesis": " that I should be, at 49, what I now am.",
+          "wer": 0.18181818181818182,
+          "decoder_ms": 1476.630834164098
+        },
+        {
+          "id": "487-129440-0012",
+          "reference": "AND AS I WONDRING LOOKT BESIDE IT STOOD ONE SHAP'D AND WING'D LIKE ONE OF THOSE FROM HEAV'N BY US OFT SEEN HIS DEWIE LOCKS DISTILL'D AMBROSIA",
+          "hypothesis": " And as I wondering looked, beside it stood one shaped and winged like one of those from heaven by us oft seen. His dewy locks distilled ambrosia.",
+          "wer": 0.25925925925925924,
+          "decoder_ms": 2754.7096251510084
+        },
+        {
+          "id": "7802-104398-0012",
+          "reference": "BUT NOW IN A FLASH",
+          "hypothesis": " But now, in a flash,",
+          "wer": 0.0,
+          "decoder_ms": 977.4870001710951
+        },
+        {
+          "id": "3852-175448-0060",
+          "reference": "USE COMPLEXUS IN MUCH THE SAME SPIRIT AS THAT DISPLAYED BY THE FAMOUS OLD LADY WHO DERIVED RELIGIOUS INSTEAD OF SCIENTIFIC CONSOLATION FROM THE USE OF",
+          "hypothesis": " use complexus in much the same spirit as that displayed by the famous old lady who derived religious, instead of scientific, consolation from the use of",
+          "wer": 0.0,
+          "decoder_ms": 2517.7923748269677
+        },
+        {
+          "id": "2004-147967-0011",
+          "reference": "WHEN WE FOUND HIM EVERYTHING WAS DECENT EXCEPT FUCHS WRINKLED HIS BROW AND HESITATED",
+          "hypothesis": " When we found him, everything was decent except... Fuchs wrinkled his brow and hesitated.",
+          "wer": 0.0,
+          "decoder_ms": 1905.6309580337256
+        },
+        {
+          "id": "2004-147173-0017",
+          "reference": "WOULD HE HAVE SHOWN ANY OF THE LOVE THAT WAS HIDDEN BENEATH HIS ROUGH OUTSIDE WHAT'S THE OLD FELLOW AFTER SAID SHE BENDING OVER MARY SO AS TO ACCOMMODATE THE DROOPING HEAD",
+          "hypothesis": " Would he have shown any of the love that was hidden beneath his rough outside? What's the old fellow after? said she, bending over Mary, so as to accommodate the grouping head.",
+          "wer": 0.03125,
+          "decoder_ms": 2933.1714999862015
+        },
+        {
+          "id": "249-121331-0033",
+          "reference": "THEY TALKED UNTIL THREE FROM BIOLOGY TO ORGANIZED RELIGION AND WHEN AMORY CREPT SHIVERING INTO BED",
+          "hypothesis": " They talked until three from biology to organized religion, and when Amory crept shivering into bed,",
+          "wer": 0.0,
+          "decoder_ms": 1899.173165904358
+        },
+        {
+          "id": "2060-147963-0028",
+          "reference": "MAREK SLID CAUTIOUSLY TOWARD US AND BEGAN TO EXHIBIT HIS WEBBED FINGERS I KNEW HE WANTED TO MAKE HIS QUEER NOISES FOR ME TO BARK LIKE A DOG OR WHINNY LIKE A HORSE BUT HE DID NOT DARE IN THE PRESENCE OF HIS ELDERS",
+          "hypothesis": " Marek slid cautiously toward us and began to exhibit his webbed fingers. I knew he wanted to make his queer noises for me, to bark like a dog or whinny like a horse, but he did not dare in the presence of his elders.",
+          "wer": 0.0,
+          "decoder_ms": 3974.5346661657095
+        }
+      ]
+    },
+    "novelvox128": {
+      "manifest": "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-voxpopuli33-v1/voxpopuli33_validation/manifest.jsonl",
+      "n": 128,
+      "wer": 0.07147912243453644,
+      "edits": 202,
+      "reference_words": 2826,
+      "median_decoder_ms": 2265.257645980455,
+      "rows": [
+        {
+          "id": "f4658f8824ff",
+          "reference": "the eu must create a system that would coordinate the fast movement of defence forces personnel and equipment when the solidarity clause is invoked.",
+          "hypothesis": " The EU must create a system that would coordinate the fast movement of defence forces, personnel and equipment when the Solidarity Clause is invoked.",
+          "wer": 0.0,
+          "decoder_ms": 2391.992792021483
+        },
+        {
+          "id": "6154061ed03e",
+          "reference": "and i think what we are doing here today is helping to bring that dream into reality for many people across the european union but specifically the roma community.",
+          "hypothesis": " I think what we are doing here today is helping to bring that dream into reality for many people across the European Union, but specifically the Roma community.",
+          "wer": 0.034482758620689655,
+          "decoder_ms": 2449.4304170366377
+        },
+        {
+          "id": "3bce83b8102e",
+          "reference": "equal participation of romani people must be achieved at all levels of government through binding targets and legislation at national regional and local level.",
+          "hypothesis": " Equal participation of Romani people must be achieved at all levels of government through binding targets and legislation at national, regional and local level.",
+          "wer": 0.0,
+          "decoder_ms": 2457.4047909118235
+        },
+        {
+          "id": "712ec62be9a0",
+          "reference": "but above all it is the fact that you ignored that irish referendum that you said the irish cannot stop this treaty for that reason alone i simply cannot support",
+          "hypothesis": " But above all, it's when you ignored that Irish referendum. It's when you said the Irish cannot stop this treaty. For that reason alone, I simply cannot support you.",
+          "wer": 0.26666666666666666,
+          "decoder_ms": 2772.593791829422
+        },
+        {
+          "id": "69b088e320dd",
+          "reference": "that is enormously encouraging and for that my grateful thanks to commissioner georgieva who brings real common sense and discipline to the whole budget procedure.",
+          "hypothesis": " That is enormously encouraging. And for that, my grateful thanks to Commissioner George Aver, who brings real common sense and discipline to the whole budget procedure.",
+          "wer": 0.08,
+          "decoder_ms": 2447.1111248712987
+        },
+        {
+          "id": "ad9332bd1a7c",
+          "reference": "this comes with new challenges and fifa clearly has proved unable to address them. fifa needs action from the outside world to clean up the organisation.",
+          "hypothesis": " And this comes with new challenges and FIFA clearly has proof unable to address them. FIFA needs action from the outside world to clean up the organization.",
+          "wer": 0.11538461538461539,
+          "decoder_ms": 2392.995165893808
+        },
+        {
+          "id": "79719f296df0",
+          "reference": "and lastly we are proposing the introduction of a european galizia prize here in this house for investigative journalists modelled on the sakharov prize.",
+          "hypothesis": " Lastly, we are proposing to introduce a European Galicia Prize here in this house for investigative journalist modeled on the Sakharov Prize.",
+          "wer": 0.2916666666666667,
+          "decoder_ms": 2379.115999909118
+        },
+        {
+          "id": "0e1c5c551f1b",
+          "reference": "before this vote the econ coordinators tried to get additional parliamentary control rights for our house in the nomination of ecb board members.",
+          "hypothesis": " Before that vote, the ECON coordinators tried to get additional parliamentary control rights for our House in the nomination of ECB board members.",
+          "wer": 0.043478260869565216,
+          "decoder_ms": 2268.027000129223
+        },
+        {
+          "id": "8a4583659248",
+          "reference": "these nice open borders attract people for the most part young men from sub saharan countries who want to have a better life.",
+          "hypothesis": " These nice open borders attract people, for the most part young men from sub-Saharan countries who want to have a better life.",
+          "wer": 0.0,
+          "decoder_ms": 2325.5802078638226
+        },
+        {
+          "id": "9455d837c696",
+          "reference": "the person will always be able to fully exercise his defence rights in the issuing member state where the trial on the merits of the case takes place.",
+          "hypothesis": " The person will always be able to fully exercise his defence rights in the issuing member state where the trial on the merits of the case takes place.",
+          "wer": 0.0,
+          "decoder_ms": 2385.974792065099
+        },
+        {
+          "id": "8fff6b27dcd6",
+          "reference": "the international community can and must help the haitians in their fight against poverty and help them make education accessible to each child's biological family all over the country.",
+          "hypothesis": " The international community can and must help the Haitians in their fight against poverty and help them make education accessible to each child's biological family all over the country.",
+          "wer": 0.0,
+          "decoder_ms": 2573.8848340697587
+        },
+        {
+          "id": "7d94930211cd",
+          "reference": "if we do that we will make a good effort at solving this ridiculous situation that is denying citizens so much in terms of jobs and wealth.",
+          "hypothesis": " If we do that, we would make a good effort at solving this ridiculous situation that is denying citizens so much in terms of jobs and wealth.",
+          "wer": 0.037037037037037035,
+          "decoder_ms": 2329.7132081352174
+        },
+        {
+          "id": "fa7e43e824e2",
+          "reference": "we think that it is still the case that if we have a big bank fail there will only really be states behind that bank and that our construction will not be sufficient.",
+          "hypothesis": " We think that it is still the case that if we have a big bank fail, there will be really states only behind that bank and that our construction will not be sufficient.",
+          "wer": 0.09090909090909091,
+          "decoder_ms": 2764.2271670047194
+        },
+        {
+          "id": "8a3b49f6e632",
+          "reference": "in the last few weeks i had in depth discussions with the team of negotiators led by mr lehne whom you appointed for the revision of the framework agreement.",
+          "hypothesis": " In the last few weeks, I had in-depth discussions with a team of negotiators led by Mr. Lehner. You were appointed for the revision of the framework agreement.",
+          "wer": 0.13793103448275862,
+          "decoder_ms": 2808.618332957849
+        },
+        {
+          "id": "46e29abce07b",
+          "reference": "this is hardly surprising given that hate speech and intolerance are quite common phenomena in many of the most popular mosques and other muslim institutions in europe.",
+          "hypothesis": " This is hardly surprising given that hate speech and intolerance are quite common phenomena in many of the most popular mosques and other Muslim institutions in Europe.",
+          "wer": 0.0,
+          "decoder_ms": 2441.878374898806
+        },
+        {
+          "id": "777aa0269f8f",
+          "reference": "that is very important because this gives a legal certainty to investors which is vital if we want to develop particularly advanced biofuels into the future.",
+          "hypothesis": " And that's very important because this gives a legal certainty to investors, which is vital if we want to develop particularly advanced biofuels into the future.",
+          "wer": 0.07692307692307693,
+          "decoder_ms": 2464.149583131075
+        },
+        {
+          "id": "73e52c8ea53a",
+          "reference": "and by all means help them to promote and market their products and overall encourage all players in the marketplace to form mature contractual arrangements.",
+          "hypothesis": " and by all means help them to promote and market their products. And overall, encourage all players in the marketplace to form mature contractual arrangements.",
+          "wer": 0.0,
+          "decoder_ms": 2375.9635840542614
+        },
+        {
+          "id": "6bb83035d678",
+          "reference": "member state employers should have the obligation to keep a positive work oriented approach to people with disabilities especially because they are very often excluded.",
+          "hypothesis": " Member States employers should have the obligation to keep a positive work-oriented approach to people with disabilities, especially because they are very often excluded.",
+          "wer": 0.04,
+          "decoder_ms": 2318.7335829716176
+        },
+        {
+          "id": "f1c2a869be05",
+          "reference": "he gave us the names of concrete countries in europe that escaped terrorist attacks recently because of the cooperation in this matter between us and them.",
+          "hypothesis": " gave us the names of concrete countries in Europe that escaped terrorist attacks recently because of the cooperation in this matter between us and them.",
+          "wer": 0.038461538461538464,
+          "decoder_ms": 2200.2275839913636
+        },
+        {
+          "id": "16977a6c52dd",
+          "reference": "and dare i say one instant solution we could make is perhaps having this conversation this much needed dialogue in the hemicycle at a time when there's a little bit more than forty or fifty meps discussing it.",
+          "hypothesis": " And dare I say one instant solution we could make is perhaps having this conversation, this much needed dialogue in the hemicycle at a time when there's a little bit more than 40 or 50 MEPs discussing it. Thank you.",
+          "wer": 0.10526315789473684,
+          "decoder_ms": 3503.8256670814008
+        },
+        {
+          "id": "aae0f4b0c470",
+          "reference": "it is still a major handicap for our credibility and efficiency in the world that often we have not been able to form a unified position in these areas.",
+          "hypothesis": " It is still a major handicap for our credibility and efficiency in the world that often we have not been able to form a unified position in these areas.",
+          "wer": 0.0,
+          "decoder_ms": 2451.34566584602
+        },
+        {
+          "id": "00b96dd735c6",
+          "reference": "information on the implementation of eu law in the area of freedom security and justice and other policy areas should be more structured transparent and accessible.",
+          "hypothesis": " the information on the implementation of EU law in the area of freedom, security and justice and also in other policy areas should be more structured, transparent and accessible.",
+          "wer": 0.11538461538461539,
+          "decoder_ms": 2758.172292029485
+        },
+        {
+          "id": "04bb23cb7fc2",
+          "reference": "nowhere could that be more apparent than in your recent proposal for a direct tax to be levied by the european institutions on the peoples of this continent.",
+          "hypothesis": " And nowhere could that be more apparent than in your recent proposal for a direct tax to be levied by the European institutions on the peoples of this continent.",
+          "wer": 0.03571428571428571,
+          "decoder_ms": 2520.0079581700265
+        },
+        {
+          "id": "9126e02b3802",
+          "reference": "mr president this point is often made namely that a country like britain is only sixty two million people and are we not better off being part of a big european club so that we can have more of a voice on the world stage?",
+          "hypothesis": " Well this point is often made that a country like Britain is only 62 million people and aren't we better off being part of a big European club so that we can have more of a voice on the world stage.",
+          "wer": 0.15555555555555556,
+          "decoder_ms": 3378.3325830008835
+        },
+        {
+          "id": "82dc7bb49519",
+          "reference": "in particular i strongly agree with him that the key test for eu expenditure must be the creation of european added value.",
+          "hypothesis": " In particular, I strongly agree with him that the key test for EU expenditure must be the creation of European added value.",
+          "wer": 0.0,
+          "decoder_ms": 2096.5775419026613
+        },
+        {
+          "id": "4f8d3631a76b",
+          "reference": "instead of which we now have a template which every independence movement on our continent can use to provoke unrest.",
+          "hypothesis": " instead of which we now have a template which every independence movement on our continent can use to provoke unrest.",
+          "wer": 0.0,
+          "decoder_ms": 1900.1935000997037
+        },
+        {
+          "id": "785a42994d04",
+          "reference": "such developments may of course coincide with the interests of certain external actors but they are caused by the failure and incompetence of the set mainstream.",
+          "hypothesis": " Such developments may of course coincide with the interests of certain external actors, but they are caused by the failure and incompetence of the said mainstream.",
+          "wer": 0.038461538461538464,
+          "decoder_ms": 2510.719500016421
+        },
+        {
+          "id": "5d52a39d4154",
+          "reference": "two years have now passed since the proposal was published by the commission. a final agreement was reached in trialogue last",
+          "hypothesis": " Two years have now passed since the proposal was published by the Commission. A final agreement was reached. It was reached in Trialogue last July.",
+          "wer": 0.19047619047619047,
+          "decoder_ms": 2398.500957991928
+        },
+        {
+          "id": "b8fa091a4bb1",
+          "reference": "i would like to compliment the countries who have introduced the ftt on their enhanced cooperation. hopefully it will prove successful so that all countries will join in eventually.",
+          "hypothesis": " I would like to compliment the countries who have introduced the FTT under enhanced co-operation and hopefully it will prove successful so that all countries will join in eventually.",
+          "wer": 0.1724137931034483,
+          "decoder_ms": 2570.1789590530097
+        },
+        {
+          "id": "ed1b0365aae2",
+          "reference": "first an international investigator has to be appointed who will be fully involved in the ongoing investigations on money laundering and corruption in malta.",
+          "hypothesis": " First, an international investigator has to be appointed who will be fully involved in the ongoing investigations on money laundering and corruption in Malta.",
+          "wer": 0.0,
+          "decoder_ms": 2378.805542131886
+        },
+        {
+          "id": "14c14bbe003f",
+          "reference": "we free them.",
+          "hypothesis": " Free them.",
+          "wer": 0.3333333333333333,
+          "decoder_ms": 727.5697088334709
+        },
+        {
+          "id": "fa5ec42b22d2",
+          "reference": "you famously said back in two thousand and six that it was only beer and football that held the country together. now i suppose with the trappings of power that has all been forgotten!",
+          "hypothesis": " You famously said back in 2006 that it was only beer and football that held the country together. But now I suppose with the trappings of power that's all been forgotten.",
+          "wer": 0.20588235294117646,
+          "decoder_ms": 3007.4069590773433
+        },
+        {
+          "id": "0e12aaa3a916",
+          "reference": "do you think that is the primary purpose of legislation and ideas coming out of strasbourg and brussels to interfere with the democratic process and to combat parties that you personally don't agree with?",
+          "hypothesis": " Do you think that that's the primary purpose of legislation and ideas coming out of Strasbourg and Brussels to interfere with the democratic process and to combat parties that you personally don't agree with?",
+          "wer": 0.029411764705882353,
+          "decoder_ms": 3076.4259160496294
+        },
+        {
+          "id": "f691604064ce",
+          "reference": "the whole concept of harmonising taxes across the eu is entirely against business against competition totally undemocratic and totally against the nation state and all its values.",
+          "hypothesis": " The whole concept of harmonising taxes against the EU is entirely against business, against competition, totally undemocratic and totally against the nation state and all its values.",
+          "wer": 0.037037037037037035,
+          "decoder_ms": 2680.086374981329
+        },
+        {
+          "id": "f3e6d1496ae5",
+          "reference": "it is an ambitious agreement which seeks to secure a permanent ceasefire and to put an end to impunity but also to manage better the country's oil revenues.",
+          "hypothesis": " It's an ambitious agreement which seeks to secure a permanent ceasefire to put an end to impunity, but also to manage better the country's oil revenues.",
+          "wer": 0.10714285714285714,
+          "decoder_ms": 2601.744041778147
+        },
+        {
+          "id": "25aef88815b3",
+          "reference": "this has always been the case. the fact is that when faced with a massive arrival of migrants no member state will ultimately be in a better position if it tries to deal with them",
+          "hypothesis": " This has always been the case. The fact is that when faced with massive arrival of migrants, no member state will be ultimately in a better position if they try to deal with them alone.",
+          "wer": 0.17142857142857143,
+          "decoder_ms": 2980.4573331493884
+        },
+        {
+          "id": "aded8caf6b64",
+          "reference": "sustainable policies addressing deforestation can stimulate economic growth and development. they can encourage agricultural productivity and reduce social conflict.",
+          "hypothesis": " Sustainable policies addressing deforestation can stimulate economic growth and development. They can encourage agriculture productivity and reduce social conflict.",
+          "wer": 0.05263157894736842,
+          "decoder_ms": 2093.609874835238
+        },
+        {
+          "id": "17ec4c4ad756",
+          "reference": "and crucially the key point as mr barnier said this morning there is the backstop which means of course the united kingdom can be held effectively as a hostage for many years to come.",
+          "hypothesis": " Crucially, the key point, as Mr Barney has said this morning, there is the backstop, which means, of course, the United Kingdom can be held effectively as a hostage for many years to come.",
+          "wer": 0.08823529411764706,
+          "decoder_ms": 3369.284291053191
+        },
+        {
+          "id": "7bd784d7ade1",
+          "reference": "it is the member states who on the one hand have the responsibility for spending eighty of the budget and who on the other hand restrict the size of the budget.",
+          "hypothesis": " It is the Member States who on the one hand have the responsibility for spending 80% of the budget and who on the other hand restrict the size of the budget.",
+          "wer": 0.03225806451612903,
+          "decoder_ms": 3212.0346250012517
+        },
+        {
+          "id": "1384bd9692a5",
+          "reference": "but let me stress that the good functioning of schengen requires member states to fully implement the rules and thus enhance mutual trust among themselves.",
+          "hypothesis": " But let me stress that the good functioning of Schengen requires member states to fully implement the rules and thus enhance mutual trust among them.",
+          "wer": 0.04,
+          "decoder_ms": 2450.464041903615
+        },
+        {
+          "id": "e0cf37376615",
+          "reference": "the lisbon treaty will enable us to deliver better on citizens' expectations but whether we use the opportunities it offers will be first and foremost a matter of political will.",
+          "hypothesis": " Lisbon Treaty will enable us to deliver better on citizens' expectations. But whether we use the opportunities it offers will be first and foremost a matter of political will.",
+          "wer": 0.03333333333333333,
+          "decoder_ms": 3089.9077500216663
+        },
+        {
+          "id": "59bbd9053b9b",
+          "reference": "these are just a few of the stark conclusions that the intergovernmental panel on climate change of the united nations presented in its latest report this september.",
+          "hypothesis": " These are just a few of the stark conclusions that the Intergovernmental Panel on Climate Change of the United Nations presented in its latest report this September.",
+          "wer": 0.0,
+          "decoder_ms": 2556.726625189185
+        },
+        {
+          "id": "6e79d88b817f",
+          "reference": "mr president eu urban policies are an attempt to bypass the nation state to put eu policies directly into city regions.",
+          "hypothesis": " Thank you. EU urban policies are an attempt to bypass the nation state to put EU policies directly into city regions.",
+          "wer": 0.09523809523809523,
+          "decoder_ms": 2034.122999990359
+        },
+        {
+          "id": "c75d7d2baa73",
+          "reference": "the first pillar which is supervision is in place. the second pillar which is resolution is kind of in place but not really in office in office but not in power' i guess is a better way to put it.",
+          "hypothesis": " The first pillar, which is supervision, is in place. The second pillar, which is resolution, is kind of in place, but not really in office. In office, but not in power, I guess is the better way to put it.",
+          "wer": 0.05,
+          "decoder_ms": 3649.8605001252145
+        },
+        {
+          "id": "f1a43255fac0",
+          "reference": "the expansion of the schengen information system increases the window for corruption and creates a much larger collection of information for criminals wishing to hack into the network.",
+          "hypothesis": " The expansion of the Schengen Information System increases the window for corruption and creates a much larger collection of information for criminals wishing to hack into the network.",
+          "wer": 0.0,
+          "decoder_ms": 2505.1830830052495
+        },
+        {
+          "id": "5777a3fd54f0",
+          "reference": "let me therefore also underline the agreement reached yesterday by the council on the commission's proposal on hedge",
+          "hypothesis": " Let me therefore also underline the agreement reached yesterday by the Council on the Commission's proposal on hedge funds.",
+          "wer": 0.05555555555555555,
+          "decoder_ms": 2020.1755419839174
+        },
+        {
+          "id": "de84d147ff0c",
+          "reference": "the argument is somewhat circular.",
+          "hypothesis": " The argument is somewhat circular.",
+          "wer": 0.0,
+          "decoder_ms": 905.5879160296172
+        },
+        {
+          "id": "b0ca76298b85",
+          "reference": "as the leaders of europe have been bickering and squabbling and falling deeper into the mire the newly elected president should surely have jumped to attention and started to flex his muscles.",
+          "hypothesis": " As the leaders of Europe have been bickering and squabbling and falling deeper into the mire, the newly elected president should surely have jumped to the tension and started to flex his muscles.",
+          "wer": 0.0625,
+          "decoder_ms": 3128.0960410367697
+        },
+        {
+          "id": "58bf76ccdc65",
+          "reference": "how are we preparing for the first meeting of the high level political forum which takes place in less than two months' time?",
+          "hypothesis": " And how are we preparing for the first meeting of the high-level political forum, which takes place in less than two months' time?",
+          "wer": 0.043478260869565216,
+          "decoder_ms": 2265.729666920379
+        },
+        {
+          "id": "97e37ef66535",
+          "reference": "there is not enough opportunity for them to do that on a professional basis as distinct from a voluntary basis and that will make a huge difference.",
+          "hypothesis": " There isn't enough opportunity for them to do that on a professional basis as distinct from a voluntary basis. That would make a huge difference.",
+          "wer": 0.14814814814814814,
+          "decoder_ms": 2306.9186247885227
+        },
+        {
+          "id": "f92678dda083",
+          "reference": "that is what real genuine parliamentary democracy is about and you seem to actually despise that and everything that those of us that stand for national democracy believe in.",
+          "hypothesis": " And that is what real, genuine parliamentary democracy is about, and you seem to actually despise that and everything that those of us that stand for national democracy believe in.",
+          "wer": 0.034482758620689655,
+          "decoder_ms": 2714.9194590747356
+        },
+        {
+          "id": "d918ad68fa75",
+          "reference": "youth unemployment is a pan european disease that destroys the social fabric and threatens the future development of our societies.",
+          "hypothesis": " Youth unemployment is a pan-European disease that destroys the social fabric and threatens the future development of our societies.",
+          "wer": 0.0,
+          "decoder_ms": 2074.3760839104652
+        },
+        {
+          "id": "f2f88df374c5",
+          "reference": "ultimately that is the way to guarantee the situation and ensure the freedom that we long to achieve.",
+          "hypothesis": " But ultimately that is the way to guarantee this situation and ensure the freedom that we long to achieve.",
+          "wer": 0.1111111111111111,
+          "decoder_ms": 1824.3836669716984
+        },
+        {
+          "id": "b027ba2c1d87",
+          "reference": "we met young women girls who were being married at ever younger ages in northern kenya. why?",
+          "hypothesis": " We met young women, girls, who were being married at ever younger ages in northern Kenya. Why?",
+          "wer": 0.0,
+          "decoder_ms": 1824.074124917388
+        },
+        {
+          "id": "d5851cf0a139",
+          "reference": "at first glance one does not notice any cost any payment that might result from filling in this form.",
+          "hypothesis": " At first glance, one does not notice any cost, any payment that might result from filling this form.",
+          "wer": 0.05263157894736842,
+          "decoder_ms": 1911.3478339277208
+        },
+        {
+          "id": "68ba9c735721",
+          "reference": "and on a personal note i would like to thank you commissioner in your final debate here for all your work over the past years to keep our trade free and fair.",
+          "hypothesis": " And on a personal note, I would like to thank you, Commissioner, in your final debate here, for all your work over the past years to keep our trade free and fair.",
+          "wer": 0.0,
+          "decoder_ms": 2811.412625014782
+        },
+        {
+          "id": "88743a2a84f3",
+          "reference": "we should now be getting the benefits from the investment we have made as the pioneers in this agenda.",
+          "hypothesis": " We should now be getting the benefits from the investment we have made as the pioneers in this agenda.",
+          "wer": 0.0,
+          "decoder_ms": 1774.9499161727726
+        },
+        {
+          "id": "abf3338f6adf",
+          "reference": "to use it in this manner exposes the budget to risk.",
+          "hypothesis": " And to use it in this manner exposes the budget to risk.",
+          "wer": 0.09090909090909091,
+          "decoder_ms": 1534.1587502043694
+        },
+        {
+          "id": "46ddde63eb63",
+          "reference": "these are exceptional times and exceptional circumstances and farming is caught up in a perfect storm. so i make two points.",
+          "hypothesis": " These are exceptional times and exceptional circumstances and farming is caught up in a perfect storm. So I make two points.",
+          "wer": 0.0,
+          "decoder_ms": 2021.0597079712898
+        },
+        {
+          "id": "b91dbe348a34",
+          "reference": "if successful it will be able to provide incisive and forward looking documents which will help prepare eu decisions in an open manner having access to the best information available.",
+          "hypothesis": " If successful, it will be able to provide incisive and forward-looking documents which will help prepare EU decisions in an open manner, having access to the best information available.",
+          "wer": 0.0,
+          "decoder_ms": 2814.418249996379
+        },
+        {
+          "id": "10ee9b94f4cf",
+          "reference": "eu procurement spending linked to research and development is less than one of that total procurement budget.",
+          "hypothesis": " EU procurement spending linked to research and development is less than 1% of that total procurement budget.",
+          "wer": 0.058823529411764705,
+          "decoder_ms": 1836.0848750453442
+        },
+        {
+          "id": "2de3ef8d5c50",
+          "reference": "i am happy to say that i called it correctly.",
+          "hypothesis": " I'm happy to say that I called it correctly.",
+          "wer": 0.2,
+          "decoder_ms": 1230.6112090591341
+        },
+        {
+          "id": "0ec6aba6fefd",
+          "reference": "but there are three points which i have to make.",
+          "hypothesis": " but there are three points which I have to make.",
+          "wer": 0.0,
+          "decoder_ms": 1230.5820418987423
+        },
+        {
+          "id": "a18e228cf29a",
+          "reference": "you seek to rush in this new fiendishly complex scheme so it may even affect the uk during the dreaded transitional period.",
+          "hypothesis": " You seek to rush in this new fiendishly complex scheme so it may even affect the UK during the dreaded transitional period.",
+          "wer": 0.0,
+          "decoder_ms": 2310.4475832078606
+        },
+        {
+          "id": "f780194ab695",
+          "reference": "of the most outrageous emission of all that which flows from the unnecessary travel to this place twelve times a year.",
+          "hypothesis": " of the most outrageous emission of all, that which flows from the unnecessary travel to this place 12 times a year.",
+          "wer": 0.047619047619047616,
+          "decoder_ms": 2017.7225000225008
+        },
+        {
+          "id": "3c68f82f7dca",
+          "reference": "we want to see that list.",
+          "hypothesis": " We want to see that list.",
+          "wer": 0.0,
+          "decoder_ms": 971.7769171111286
+        },
+        {
+          "id": "39c1addfb8a1",
+          "reference": "this is how many of them become easy prey for those trying to push them into illegal activities. i believe that this report is very important for our workers.",
+          "hypothesis": " This is how many of them become an easy prey to the ones trying to push them into illegal activities. I believe that this report is indeed important for our workers.",
+          "wer": 0.1724137931034483,
+          "decoder_ms": 2686.5957078989595
+        },
+        {
+          "id": "ef3d7f619b23",
+          "reference": "i would also like to see an eu wide target to end street homelessness by two thousand and fifteen by member states and to develop integrated homelessness strategies.",
+          "hypothesis": " I would also like to see an EU-wide target to end street homelessness by 2015 by Member States and to develop integrated homelessness strategies.",
+          "wer": 0.14285714285714285,
+          "decoder_ms": 2266.294584143907
+        },
+        {
+          "id": "bca820c75ac9",
+          "reference": "the international community is now looking at what should replace the mdgs and it is clear that safe schools need to be part of what we are talking about.",
+          "hypothesis": " The international community is now looking at what should replace the MDGs and it's clear that safe schools need to be part of what we are talking about.",
+          "wer": 0.06896551724137931,
+          "decoder_ms": 2516.652749851346
+        },
+        {
+          "id": "29fe7f97046c",
+          "reference": "at least the digital single market topic has made a breakthrough into eu priorities.",
+          "hypothesis": " At least the digital single market topic has made a breakthrough into EU priorities.",
+          "wer": 0.0,
+          "decoder_ms": 1516.6342500597239
+        },
+        {
+          "id": "d95a506236a2",
+          "reference": "since last friday we have reinforced our presence on the ground with a civil protection team composed of logistics and nuclear experts.",
+          "hypothesis": " And since last Friday, we have reinforced our presence on the ground with a civil protection team composed of logistics and nuclear experts.",
+          "wer": 0.045454545454545456,
+          "decoder_ms": 2103.3133338205516
+        },
+        {
+          "id": "930c7a1f52b2",
+          "reference": "so to meet that expectation we shall have to oppose the cuts which are currently proposed by council when it comes to the coming negotiations.",
+          "hypothesis": " So to meet that expectation we shall have to oppose the cuts which are currently proposed by Council when it comes to the coming negotiations.",
+          "wer": 0.0,
+          "decoder_ms": 2208.2000840455294
+        },
+        {
+          "id": "129a81e9ddaa",
+          "reference": "and we do not discriminate when it comes to protecting the fundamental rights of any of our european citizens.",
+          "hypothesis": " And we do not discriminate when it comes to protecting the fundamental rights of any of our European citizens.",
+          "wer": 0.0,
+          "decoder_ms": 1779.7337498050183
+        },
+        {
+          "id": "53ffe90572e9",
+          "reference": "it then takes them back out and sells them.",
+          "hypothesis": " It then takes them back out and sells them.",
+          "wer": 0.0,
+          "decoder_ms": 1161.141541088
+        },
+        {
+          "id": "1d988236ec32",
+          "reference": "this now will be put under severe pressure because of the provisions of this proposal and also particularly increased insurance costs which may drive them out of business.",
+          "hypothesis": " This now would be put under severe pressure because of the provisions of this proposal and also particularly increased insurance costs which may drive them out of business.",
+          "wer": 0.03571428571428571,
+          "decoder_ms": 2399.4647501967847
+        },
+        {
+          "id": "8660168b74c9",
+          "reference": "i am already thinking ahead with my colleagues to.",
+          "hypothesis": " I'm already thinking ahead with my colleagues to...",
+          "wer": 0.2222222222222222,
+          "decoder_ms": 1161.8319579865783
+        },
+        {
+          "id": "7f0484a7008d",
+          "reference": "the money is running out.",
+          "hypothesis": " The money's running out.",
+          "wer": 0.4,
+          "decoder_ms": 975.9184999857098
+        },
+        {
+          "id": "fed42eaabf69",
+          "reference": "the simple and major reason for that is a lack of political will to do something to help roma and solve the problems they are facing.",
+          "hypothesis": " And the simple and major reason for that is a lack of political will to do something helping Roma and solving the problems they are facing.",
+          "wer": 0.15384615384615385,
+          "decoder_ms": 2264.785625040531
+        },
+        {
+          "id": "1e5997332bd3",
+          "reference": "in the puppet's efforts to get the mps to vote for the bail out package he warned them that if they did not do so there would be a dramatic decline in living standards.",
+          "hypothesis": " in the puppet's efforts to get the MPs to vote for the bailout package, he warned them that if they didn't do so, there would be a dramatic decline in living standards.",
+          "wer": 0.11764705882352941,
+          "decoder_ms": 3013.3566670119762
+        },
+        {
+          "id": "45acb29eccdb",
+          "reference": "also when it comes to security innovation agriculture fighting terrorism or even fighting climate change israel has so much to give europe.",
+          "hypothesis": " Also, when it comes to security, innovation, agriculture, fighting terrorism or even fighting climate change, Israel has so much to give Europe.",
+          "wer": 0.0,
+          "decoder_ms": 2335.616375086829
+        },
+        {
+          "id": "3a46c8fb60ac",
+          "reference": "first copenhagen must show that the drive to cut emissions is on its way;",
+          "hypothesis": " First, Copenhagen must show that the drive to cut emissions is on its way.",
+          "wer": 0.0,
+          "decoder_ms": 1653.2503329217434
+        },
+        {
+          "id": "7fd3c2b0a0fc",
+          "reference": "when i was in washington and new delhi last week i was reminded just how far these two partners have come in the past year or so.",
+          "hypothesis": " When I was in Washington and then New Delhi last week, I was reminded just how far these two partners have come in the past year or so.",
+          "wer": 0.037037037037037035,
+          "decoder_ms": 2440.902082948014
+        },
+        {
+          "id": "b76c683cbba0",
+          "reference": "i think we have a compromise that adds real value for consumers and for businesses particularly in the areas of internet and cross border trade.",
+          "hypothesis": " I think we have a compromise that adds real value for consumers and for businesses, particularly in the areas of internet and cross-border trade.",
+          "wer": 0.0,
+          "decoder_ms": 2355.4710841272026
+        },
+        {
+          "id": "9c69ca7101a6",
+          "reference": "country strategy papers which represent specific planning documents made for each beneficiary for a seven year period.",
+          "hypothesis": " country strategy papers which represent specific planning documents made for each beneficiary for a seven-year period.",
+          "wer": 0.0,
+          "decoder_ms": 1840.4354581143707
+        },
+        {
+          "id": "9affdd6ec4c2",
+          "reference": "if we can get that sense of priority there and timing and speed to come up with the best solutions quickly i think that is the way that i commend you to think about moving forward.",
+          "hypothesis": " And I think if we can get that sense of priority there and timing and speed to come up with the best solutions quickly, I think that that is the way that I commend you to think about moving forward.",
+          "wer": 0.1111111111111111,
+          "decoder_ms": 3249.124542111531
+        },
+        {
+          "id": "2da33c634eb4",
+          "reference": "there is a risk of a decade of low growth and high unemployment and that would put severe strain on our social models and our living standards.",
+          "hypothesis": " there is a risk of a decade of low growth and high unemployment, and that would put severe strain on our social models and on our living standards.",
+          "wer": 0.037037037037037035,
+          "decoder_ms": 2386.268583126366
+        },
+        {
+          "id": "d5489bbb2240",
+          "reference": "the purpose of the treaty change is very specific. it is a straightforward pragmatic amendment to meet a specific",
+          "hypothesis": " The purpose of the treaty change is very specific. It is a straightforward, pragmatic amendment to meet a specific need.",
+          "wer": 0.05263157894736842,
+          "decoder_ms": 2085.8460830058903
+        },
+        {
+          "id": "95b98b5e4c50",
+          "reference": "it should be the norm that every item of electrical waste is collected and most of it recycled not the exception.",
+          "hypothesis": " It should be the norm that every item of electrical waste is collected and most of it recycled, not the exception.",
+          "wer": 0.0,
+          "decoder_ms": 2036.964625120163
+        },
+        {
+          "id": "f63096f676c9",
+          "reference": "for our part here in this chamber we must ensure that the information the support and a zero tolerance approach in dealing with this are in place.",
+          "hypothesis": " And for our part, here in this chamber, we must ensure that the information, the support and the zero tolerance approach to dealing with this is in place.",
+          "wer": 0.14814814814814814,
+          "decoder_ms": 2570.9002919029444
+        },
+        {
+          "id": "99bf2bcab895",
+          "reference": "i support the protection of rights holders from copyright infringement.",
+          "hypothesis": " I support the protection of rights holders from copyright infringement.",
+          "wer": 0.0,
+          "decoder_ms": 1361.8393340148032
+        },
+        {
+          "id": "0b75b7fd76aa",
+          "reference": "this was a major effort accomplished in a very short time and unmatched anywhere in the world.",
+          "hypothesis": " This was a major effort accomplished in a very short time and unmatched anywhere in the world.",
+          "wer": 0.0,
+          "decoder_ms": 1848.6633328720927
+        },
+        {
+          "id": "4cb30f782115",
+          "reference": "i want to refer to some points on that in a moment but i just want to support what mrs bers said about the wide ranging nature of the debate this afternoon.",
+          "hypothesis": " And I want to refer to some points on that in the moment, but I just want to support what Mrs. Barrett said about the wide-ranging nature of the debate this afternoon.",
+          "wer": 0.09375,
+          "decoder_ms": 2936.1887080594897
+        },
+        {
+          "id": "0b1a682fc3a5",
+          "reference": "we must use access to our markets to incentivise israel.",
+          "hypothesis": " use access to our markets to incentivise Israel.",
+          "wer": 0.2,
+          "decoder_ms": 1156.2262908555567
+        },
+        {
+          "id": "d866fe6571a3",
+          "reference": "is the banking sector we still have in europe today.",
+          "hypothesis": " the banking sector we still have in Europe today.",
+          "wer": 0.1,
+          "decoder_ms": 1164.689791854471
+        },
+        {
+          "id": "4e81a81fddc6",
+          "reference": "we have a whole series of fragmented initiatives including your work on consumer contracts and other revisions.",
+          "hypothesis": " We have a whole series of fragmented initiatives, including your work on consumer contracts and other ambitions.",
+          "wer": 0.058823529411764705,
+          "decoder_ms": 1787.809917004779
+        },
+        {
+          "id": "76420e4f1045",
+          "reference": "they are intended to promote fiscal consolidation correct macroeconomic imbalances and ensure financial stability all prerequisites for sound growth.",
+          "hypothesis": " They are intended to promote fiscal consolidation, correct macroeconomic imbalances and ensure financial stability, all prerequisites for sound growth.",
+          "wer": 0.0,
+          "decoder_ms": 2314.9223329965025
+        },
+        {
+          "id": "f5cb82ce78fa",
+          "reference": "the environment dg has already launched several studies and is working on assessing the impacts of the key elements of the convention.",
+          "hypothesis": " DJ environment has already launched several studies and is working on assessing the impacts of the key elements of this convention.",
+          "wer": 0.13636363636363635,
+          "decoder_ms": 2007.9710830468684
+        },
+        {
+          "id": "d15a2d303310",
+          "reference": "all human beings need the right to freedom of expression and the expression of their opinions but most importantly the right to wield justice just like that which this place sought to deny jennifer.",
+          "hypothesis": " All human beings need the right to freedom of expression and the expression of their opinions but most importantly the right to real justice just like that that this place sought to deny Jennifer.",
+          "wer": 0.058823529411764705,
+          "decoder_ms": 2866.278375033289
+        },
+        {
+          "id": "a1e049f15264",
+          "reference": "with all due respect where are the others?",
+          "hypothesis": " With all due respect, where are the others?",
+          "wer": 0.0,
+          "decoder_ms": 1168.2194590102881
+        },
+        {
+          "id": "b37f54bbbf1b",
+          "reference": "while policies may be made at national level their application at local level is what really impacts on peoples' lives.",
+          "hypothesis": " and while policies may be made at national level, their application at local level is what really impacts on people's lives.",
+          "wer": 0.1,
+          "decoder_ms": 2078.3586660400033
+        },
+        {
+          "id": "b330af66c96a",
+          "reference": "they should see themselves as teachers.",
+          "hypothesis": " They should see themselves as teachers.",
+          "wer": 0.0,
+          "decoder_ms": 964.3742081243545
+        },
+        {
+          "id": "be79d1f8a457",
+          "reference": "but we need to act together.",
+          "hypothesis": " But we need to act together.",
+          "wer": 0.0,
+          "decoder_ms": 1026.7427079379559
+        },
+        {
+          "id": "3c304e948538",
+          "reference": "we were also very impressed by the candid presentation made by the prime minister of greece in the last european council.",
+          "hypothesis": " We were also very impressed by the candid presentation made by Prime Minister of Greece in the last European Council.",
+          "wer": 0.047619047619047616,
+          "decoder_ms": 1888.0107090808451
+        },
+        {
+          "id": "0f7e43857a8e",
+          "reference": "let's forget the political differences and focus on the reality of jobs and employment in our economies.",
+          "hypothesis": " Let's forget the political differences and focus on the reality of jobs and employment in our economies.",
+          "wer": 0.0,
+          "decoder_ms": 1762.6669169403613
+        },
+        {
+          "id": "eca8e65d332d",
+          "reference": "certainly having a country like canada in a position to have a free trade agreement with us offers huge opportunities for us.",
+          "hypothesis": " and certainly having a country like Canada being in a position to have a free trade agreement with us offers huge opportunities for us.",
+          "wer": 0.09090909090909091,
+          "decoder_ms": 2145.8204169757664
+        },
+        {
+          "id": "75c1ff87e14a",
+          "reference": "you will find a friendship in the united kingdom.",
+          "hypothesis": " We will find a friendship in the United Kingdom.",
+          "wer": 0.1111111111111111,
+          "decoder_ms": 1174.4439161848277
+        },
+        {
+          "id": "712d98e48c88",
+          "reference": "mr president protecting people in the workplace is of the utmost importance and while much has improved fifty three of work related deaths are still caused by occupational cancer.",
+          "hypothesis": " Thank you, Mr. President. Protecting people in the workplace is of the utmost importance, and while much has improved, 53% of work-related deaths are still",
+          "wer": 0.27586206896551724,
+          "decoder_ms": 2616.3255418650806
+        },
+        {
+          "id": "5835cc63c3af",
+          "reference": "for the sake of transparency the programme moreover includes one hundred and fifty other proposals which the commission is working on.",
+          "hypothesis": " For the sake of transparency, the programme, moreover, includes 150 other proposals which the Commission is working on.",
+          "wer": 0.19047619047619047,
+          "decoder_ms": 1975.605458021164
+        },
+        {
+          "id": "9ae7e43935d4",
+          "reference": "it should not be viewed as something that has to be done on a fifty fifty basis.",
+          "hypothesis": " and it shouldn't be viewed as something that has to be done on a 50-50 basis.",
+          "wer": 0.29411764705882354,
+          "decoder_ms": 1831.070707878098
+        },
+        {
+          "id": "0295245e4084",
+          "reference": "it also contributes to reducing the administrative and bureaucratic burden on both member states and third countries.",
+          "hypothesis": " It also contributes to reducing the administrative and bureaucratic burden on both Member States and third countries.",
+          "wer": 0.0,
+          "decoder_ms": 1791.8856667820364
+        },
+        {
+          "id": "8a0c48578e10",
+          "reference": "statute. follow up measures will be considered when the full assessment is completed",
+          "hypothesis": " follow-up measures will be considered when the full assessment will be completed in",
+          "wer": 0.3076923076923077,
+          "decoder_ms": 1515.2858749497682
+        },
+        {
+          "id": "008b026e55ee",
+          "reference": "baroness ashton ran cnd and still refuses to tell us whether she took money from the communist party of great britain.",
+          "hypothesis": " Baroness Ashton ran CND and still refuses to tell us whether she took money from the Communist Party of Great Britain.",
+          "wer": 0.0,
+          "decoder_ms": 2157.2645839769393
+        },
+        {
+          "id": "381f5abb4901",
+          "reference": "so it means countries like kazakhstan indeed the ukraine joining the european union.",
+          "hypothesis": " So it means countries like Kazakhstan, indeed Ukraine joining the European Union.",
+          "wer": 0.07692307692307693,
+          "decoder_ms": 1515.0832920335233
+        },
+        {
+          "id": "15be95b769b7",
+          "reference": "how many more children will be tortured?",
+          "hypothesis": " How many more children will be tortured?",
+          "wer": 0.0,
+          "decoder_ms": 1031.201499979943
+        },
+        {
+          "id": "1859b4e2dfca",
+          "reference": "as well as the really important issues about the protection of our citizens' rights that we have talked about today.",
+          "hypothesis": " as well as the really important issues about protection of citizens' rights that we've talked about today.",
+          "wer": 0.2,
+          "decoder_ms": 1787.4079588800669
+        },
+        {
+          "id": "86e3ceb2c2d8",
+          "reference": "so do better next time please. send us a proper work programme initiatives continuity quality implementation.",
+          "hypothesis": " So, do better next time, please. Send us a proper work programme, initiatives, continuity, quality, implementation.",
+          "wer": 0.0,
+          "decoder_ms": 2069.5286251138896
+        },
+        {
+          "id": "a62a2c41b8fd",
+          "reference": "also private companies have a great role in preventing detecting containing and responding to cybersecurity incidents as well as in stimulating innovation.",
+          "hypothesis": " Also, the private companies have a great role in preventing, detecting, containing and responding to cyber security incidents as well as in stimulating innovation.",
+          "wer": 0.13636363636363635,
+          "decoder_ms": 2329.338666051626
+        },
+        {
+          "id": "476985308b82",
+          "reference": "and too much for those of us who wish nothing more than to be good friends neighbours allies and partners of those we leave behind.",
+          "hypothesis": " and too much for those of us who wish nothing more than to be good friends, neighbours, allies and partners of those we leave behind.",
+          "wer": 0.0,
+          "decoder_ms": 2332.4682919774204
+        },
+        {
+          "id": "57bbeab7fce6",
+          "reference": "what is the point of a foreign secretary if we have got an eu foreign secretary with his own diplomatic service?",
+          "hypothesis": " What's the point of a foreign secretary if we've got an EU foreign secretary with his own diplomatic service?",
+          "wer": 0.19047619047619047,
+          "decoder_ms": 1956.9238750264049
+        },
+        {
+          "id": "f727c1d22d23",
+          "reference": "my colleague brian hayes spoke about this very clearly a few moments ago and i think it must be seen in the context of what has been done over the last four or five years in parliament here with the previous commissioner barnier.",
+          "hypothesis": " My colleague Brian Hayes spoke about this very clearly a few moments ago and I think it must be seen in context of what has been done over the last four or five years in Parliament here with the previous Commissioner Barnier.",
+          "wer": 0.023255813953488372,
+          "decoder_ms": 3365.181125001982
+        },
+        {
+          "id": "2a06de3551d9",
+          "reference": "how will the commission be represented?",
+          "hypothesis": " How will the Commission be represented?",
+          "wer": 0.0,
+          "decoder_ms": 1090.6649171374738
+        },
+        {
+          "id": "27073e572e6b",
+          "reference": "this is their opportunity to be creative and innovative and to help rebuild an entire system that actually works.",
+          "hypothesis": " This is their opportunity to be creative, to be innovative and help rebuild an entire system that actually works.",
+          "wer": 0.15789473684210525,
+          "decoder_ms": 1937.9653329961002
+        },
+        {
+          "id": "b8cdaa6ce53e",
+          "reference": "sadly this is an example of the bad lawmaking which so often characterises this place.",
+          "hypothesis": " Sadly, this is an example of the bad lawmaking which so often characterises this place.",
+          "wer": 0.0,
+          "decoder_ms": 1774.712875019759
+        },
+        {
+          "id": "32e3ac3f9ed1",
+          "reference": "but the general prosecutor is at the same time the minister of justice and supervises their proceedings.",
+          "hypothesis": " But the General Prosecutor is at the same time the Minister of Justice and supervises the proceedings.",
+          "wer": 0.058823529411764705,
+          "decoder_ms": 1847.0866249408573
+        },
+        {
+          "id": "8fa59f5443a7",
+          "reference": "as you all know the population of the roma is ever expanding and consistently becoming a huge and influential force throughout europe.",
+          "hypothesis": " As you all know, the population of the Roma is ever expanding and consistently becoming a huge and influential force throughout Europe.",
+          "wer": 0.0,
+          "decoder_ms": 2203.904916997999
+        },
+        {
+          "id": "976887d48e1c",
+          "reference": "i want to thank michel barnier for his tireless efforts to try and reach an agreement.",
+          "hypothesis": " And I want to thank Michel Barnier for his tireless efforts to try and reach an agreement.",
+          "wer": 0.0625,
+          "decoder_ms": 1780.500624794513
+        },
+        {
+          "id": "348333de14e1",
+          "reference": "i am particularly concerned about increased extremists attacks against christian communities.",
+          "hypothesis": " I am particularly concerned about increased extremist attacks against Christian communities.",
+          "wer": 0.09090909090909091,
+          "decoder_ms": 1389.2663749866188
+        },
+        {
+          "id": "7af3a8d3618a",
+          "reference": "i would say hungary is lucky to have you.",
+          "hypothesis": " say Hungary is lucky to have you.",
+          "wer": 0.2222222222222222,
+          "decoder_ms": 1149.9812919646502
+        }
+      ]
+    }
+  }
+}

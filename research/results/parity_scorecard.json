@@ -1,0 +1,228 @@
+{
+  "schema_version": 1,
+  "reference": {
+    "id": "minicpm-o-4.5",
+    "name": "MiniCPM-o 4.5",
+    "metrics": {
+      "cases12_correct": 12,
+      "cases12_n": 12,
+      "answer_latency_ms": 525.0,
+      "first_audio_ms": 1380.0,
+      "memory_gb": 4.9,
+      "vision_ms_per_frame": 379.0
+    },
+    "sources": {
+      "cases12_and_speech": "research/minicpm_stages.json",
+      "answer_latency": "STATUS.md:426",
+      "memory": "STATUS.md:435",
+      "vision": "STATUS.md:518"
+    },
+    "capabilities": {
+      "native_speech_output": true,
+      "vision_connected": true
+    }
+  },
+  "models": [
+    {
+      "id": "gemma-native",
+      "name": "Gemma Native",
+      "checkpoint": "built-in",
+      "cases12": {
+        "correct": 10,
+        "n": 12,
+        "accuracy": 0.8333333333333334,
+        "status": "behind",
+        "source": "research/omni_bench.json"
+      },
+      "answer_latency_ms": {
+        "value": 362.77999996673316,
+        "status": "surpassed",
+        "source": "research/omni_bench.json"
+      },
+      "devclean_wer": null,
+      "ami_wer": null,
+      "testclean_wer": null,
+      "first_audio_ms": {
+        "value": null,
+        "status": "unmeasured",
+        "source": null
+      },
+      "five_minute_physical": {
+        "status": "unmeasured",
+        "source": null
+      },
+      "core_ear_status": "behind"
+    },
+    {
+      "id": "gemmaomni-41m-medium",
+      "name": "GemmaOmni 41M Medium",
+      "checkpoint": "0fec52869087ac244c68d44d39a5dc704a6205b3785f9032546301d9b060cdc1",
+      "cases12": {
+        "correct": 12,
+        "n": 12,
+        "accuracy": 1.0,
+        "status": "parity",
+        "source": "research/candidate_evals/cleanroom41m-step2000-recheck-20260826-cases12.json"
+      },
+      "answer_latency_ms": {
+        "value": 501.49970839265734,
+        "status": "surpassed",
+        "source": "research/candidate_evals/cleanroom41m-step2000-recheck-20260826-cases12.json"
+      },
+      "devclean_wer": {
+        "value": 0.049214659685863874,
+        "n": 64,
+        "source": "research/candidate_evals/cleanroom41m-step2000-recheck-20260826-devclean64.json"
+      },
+      "ami_wer": {
+        "value": 0.3447251114413076,
+        "n": 64,
+        "source": "research/candidate_evals/cleanroom41m-step2000-recheck-20260826-ami64.json"
+      },
+      "testclean_wer": null,
+      "first_audio_ms": {
+        "value": null,
+        "status": "unmeasured",
+        "source": null
+      },
+      "five_minute_physical": {
+        "status": "unmeasured",
+        "source": null
+      },
+      "core_ear_status": "parity accuracy + faster"
+    },
+    {
+      "id": "jaegeromni-41m-medium",
+      "name": "JaegerOmni 41M Medium",
+      "checkpoint": "a7f96bfb889866f75df7b838f84aae368a56ab10f6469e766511d700e32fe13a",
+      "cases12": {
+        "correct": 12,
+        "n": 12,
+        "accuracy": 1.0,
+        "status": "parity",
+        "source": "research/results/jaegeromni-41m-production-cases12-20260828.json"
+      },
+      "answer_latency_ms": {
+        "value": 559.6929579041898,
+        "status": "behind",
+        "source": "research/results/jaegeromni-41m-production-cases12-20260828.json"
+      },
+      "devclean_wer": {
+        "value": 0.049214659685863874,
+        "n": 64,
+        "source": "research/candidate_evals/cleanroom41m-room-alpha10-20260827-devclean64.json"
+      },
+      "ami_wer": {
+        "value": 0.34175334323922735,
+        "n": 64,
+        "source": "research/candidate_evals/cleanroom41m-room-alpha10-20260827-ami64.json"
+      },
+      "testclean_wer": {
+        "value": 0.03971857886223227,
+        "n": 2603,
+        "words": 51311,
+        "source": "research/candidate_evals/cleanroom41m-room-alpha10-20260827-testclean2603.json"
+      },
+      "first_audio_ms": {
+        "value": 1043.537645949982,
+        "status": "not-comparable",
+        "source": "Full DuplexDemo App/runtime/reports/20260827-jaegeromni41m-alpha10-ami5m-cadence12.json"
+      },
+      "five_minute_physical": {
+        "status": "unmeasured",
+        "source": "Full DuplexDemo App/runtime/reports/20260827-jaegeromni41m-alpha10-ami5m-cadence12.json"
+      },
+      "core_ear_status": "behind"
+    },
+    {
+      "id": "jaegeromni-50m-medium",
+      "name": "JaegerOmni 50M Medium",
+      "checkpoint": "b889e5b485654dabc50321fffdcc3305132d5188faa7ec2a7b1a96554b0af0a5",
+      "cases12": {
+        "correct": 11,
+        "n": 12,
+        "accuracy": 0.9166666666666666,
+        "status": "behind",
+        "source": "research/candidate_evals/medium50m-cekl-blend50-cases12.json"
+      },
+      "answer_latency_ms": {
+        "value": 319.1652708919719,
+        "status": "surpassed",
+        "source": "research/candidate_evals/medium50m-cekl-blend50-cases12.json"
+      },
+      "devclean_wer": {
+        "value": 0.11204188481675392,
+        "n": 64,
+        "source": "research/candidate_evals/medium50m-cekl-blend50-devclean64.json"
+      },
+      "ami_wer": {
+        "value": 0.4784546805349183,
+        "n": 64,
+        "source": "research/candidate_evals/medium50m-cekl-blend50-ami64.json"
+      },
+      "testclean_wer": {
+        "value": 0.10683868955974353,
+        "n": 2603,
+        "words": 51311,
+        "source": "research/candidate_evals/medium50m-cekl-blend50-testclean2603.json"
+      },
+      "first_audio_ms": {
+        "value": null,
+        "status": "unmeasured",
+        "source": null
+      },
+      "five_minute_physical": {
+        "status": "unmeasured",
+        "source": null
+      },
+      "core_ear_status": "behind"
+    },
+    {
+      "id": "jaegeromni-50m-large",
+      "name": "JaegerOmni 50M Large",
+      "checkpoint": "3633baa083d4cc0d10b93e64226c69e2c1320f780c50afc9eecf5b5a2c463cd8",
+      "cases12": {
+        "correct": 1,
+        "n": 12,
+        "accuracy": 0.08333333333333333,
+        "status": "behind",
+        "source": "research/candidate_evals/large-v3-turbo50m-ce-context-1500-cases12.json"
+      },
+      "answer_latency_ms": {
+        "value": 413.4720419533551,
+        "status": "surpassed",
+        "source": "research/candidate_evals/large-v3-turbo50m-ce-context-1500-cases12.json"
+      },
+      "devclean_wer": {
+        "value": 0.17801047120418848,
+        "n": 64,
+        "source": "research/candidate_evals/large-v3-turbo50m-ce-context-1500-devclean64.json"
+      },
+      "ami_wer": null,
+      "testclean_wer": null,
+      "first_audio_ms": {
+        "value": null,
+        "status": "unmeasured",
+        "source": null
+      },
+      "five_minute_physical": {
+        "status": "unmeasured",
+        "source": null
+      },
+      "core_ear_status": "behind"
+    }
+  ],
+  "system": {
+    "aec": {
+      "status": "behind",
+      "summary": "8.1 dB room-stress attenuation, 0/43 false, 100% recall, 843 ms p95",
+      "source": "research/results/aec_stress.json"
+    },
+    "speaker": {
+      "status": "behind",
+      "summary": "86% continuity; separation fail; word attribution unavailable",
+      "source": "research/results/overlap_lab.json"
+    }
+  },
+  "verdict": "GemmaOmni 41M Medium is the current core-ear leader: 12/12 matches MiniCPM and 501 ms is faster than the 525 ms reference. JaegerOmni 41M now independently matches cases12 at 12/12, but its 560 ms answer latency is behind the reference. It is the broad lockbox leader at 3.97% free-running WER and has a zero-drop direct five-minute context-roll run. Jaeger has not surpassed MiniCPM as a complete system: physical five-minute reports are absent, speaker separation is failed, the broad AEC stress gate fails, speech still crosses decoded text into Kokoro, and Jaeger vision is not connected."
+}

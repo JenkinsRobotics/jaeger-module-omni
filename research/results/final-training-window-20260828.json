@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "kind": "jaeger_final_training_window",
+  "selection_rule": "Promote only when every source-qualified production gate is no worse than the frozen baseline; all measurements are free-running and corpus-level.",
+  "normalizer": "transformers.WhisperTokenizer.normalize",
+  "baseline": {
+    "model_id": "jaegeromni-41m-medium",
+    "adapter_sha256": "a7f96bfb889866f75df7b838f84aae368a56ab10f6469e766511d700e32fe13a",
+    "devclean64": {"edits": 48, "reference_words": 969, "wer": 0.04953560371517028},
+    "clean360val128": {"edits": 145, "reference_words": 2846, "wer": 0.05094869992972593},
+    "qualified_conversation69": {"edits": 22, "reference_words": 667, "wer": 0.03298350824587706}
+  },
+  "experiments": [
+    {
+      "name": "all_parameters_clean360_200_steps",
+      "best_step": 50,
+      "adapter_sha256": "59560d5ba2d96fef4eb5027abc9ef1d88e02b8f6321647b7d5e78da12ed27ebc",
+      "devclean64": {"edits": 48, "reference_words": 969, "wer": 0.04953560371517028},
+      "clean360val128": {"edits": 144, "reference_words": 2846, "wer": 0.050597329585382995},
+      "qualified_conversation69": {"edits": 22, "reference_words": 667, "wer": 0.03298350824587706},
+      "decision": "reject: clean gain was one word and conversation did not improve; later steps regressed"
+    },
+    {
+      "name": "output_projection_only_50_steps",
+      "trainable_parameters": 5245440,
+      "best_evaluated_step": 10,
+      "adapter_sha256": "95b9fda33b2ea2a6b4f2d74952fe9f755072e0310ca68c3dad46c8e36d17fdee",
+      "devclean64": {"edits": 48, "reference_words": 969, "wer": 0.04953560371517028},
+      "clean360val128": {"edits": 144, "reference_words": 2846, "wer": 0.050597329585382995},
+      "qualified_conversation69": {"edits": 22, "reference_words": 667, "wer": 0.03298350824587706},
+      "decision": "reject: no universal improvement"
+    },
+    {
+      "name": "three_independent_all_parameter_seed_repeats",
+      "steps_each": 50,
+      "clean360val128_edits": [146, 145, 146],
+      "qualified_conversation69_edits": [22, 22, 22],
+      "decision": "reject: no seed improved both gates"
+    },
+    {
+      "name": "checkpoint_weight_interpolation",
+      "clean360val128_edits": {"baseline": 145, "alpha_0_25": 144, "alpha_0_50": 146},
+      "decision": "reject: interpolation did not realize the 142-edit per-clip oracle"
+    }
+  ],
+  "selected_adapter_sha256": "a7f96bfb889866f75df7b838f84aae368a56ab10f6469e766511d700e32fe13a",
+  "outcome": "freeze_baseline_for_physical_production_test"
+}

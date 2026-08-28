@@ -116,8 +116,10 @@ def load_corpus(corpus: Path, max_seconds: float) -> list[dict]:
 def corpus_partitions(rows: list[dict], name: str,
                       validation_percent: int) -> list[tuple[str, list[dict]]]:
     """Make speaker-disjoint train/validation partitions."""
-    if not 0 < validation_percent < 100:
-        raise ValueError("validation percent must be between 1 and 99")
+    if not 0 <= validation_percent < 100:
+        raise ValueError("validation percent must be between 0 and 99")
+    if validation_percent == 0:
+        return [(name, rows)]
     result = {name: [], f"{name}_validation": []}
     for row in rows:
         speaker = row.get("speaker") or row["id"]
@@ -176,7 +178,7 @@ def main() -> int:
         help="newline-delimited source IDs to encode, preserving file order")
     parser.add_argument("--corpus-split", default="capture_train")
     parser.add_argument("--validation-percent", type=int, default=10,
-                        help="speaker-level holdout for --source-corpus")
+                        help="speaker-level holdout; zero writes training only")
     parser.add_argument("--whisper", choices=tuple(ENCODER_DIMS), required=True)
     parser.add_argument("--device", choices=("auto", "mps", "cpu"),
                         default="auto")

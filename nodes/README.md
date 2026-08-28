@@ -20,6 +20,8 @@ The registry stays flat; capability is typed in each manifest:
 ```text
 nodes/
   stock-whisper-medium-cekl-blend50/
+  stock-whisper-medium-cleanroom-ctx93h-step2000/
+  jaegeromni-41m-medium/
   stock-whisper-large-v3-turbo50m/
   whisper-medium-stt/
   whisper-large-v3-turbo-stt/
@@ -36,7 +38,7 @@ decoders are also different nodes, but they are not components of the
 transcript-free perception path. Typed `consumes`/`produces` ports prevent an
 STT transcript node from being silently substituted for an embedding node.
 
-All eight currently registered nodes have a local `runtime.py`, dependencies,
+All ten currently registered nodes have a local `runtime.py`, dependencies,
 and installed immutable assets under their own ignored `weights/` directory.
 `profiles.json` explicitly enables or disables every node. Rejected nodes may
 only appear in a profile carrying `allow_rejected: true`.

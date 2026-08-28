@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "comparison_tolerance_fraction": 0.02,
+  "reference": {
+    "id": "minicpm-o-4.5",
+    "name": "MiniCPM-o 4.5",
+    "metrics": {
+      "cases12_correct": 12,
+      "cases12_n": 12,
+      "answer_latency_ms": 525.0,
+      "first_audio_ms": 1380.0,
+      "memory_gb": 4.9,
+      "vision_ms_per_frame": 379.0
+    },
+    "sources": {
+      "cases12_and_speech": "research/minicpm_stages.json",
+      "answer_latency": "STATUS.md:426",
+      "memory": "STATUS.md:435",
+      "vision": "STATUS.md:518"
+    },
+    "capabilities": {
+      "native_speech_output": true,
+      "vision_connected": true
+    }
+  },
+  "models": [
+    {
+      "id": "gemma-native",
+      "name": "Gemma Native",
+      "checkpoint": "built-in",
+      "cases12": "research/omni_bench.json",
+      "devclean": null,
+      "ami": null,
+      "testclean": null,
+      "node_manifest": null
+    },
+    {
+      "id": "gemmaomni-41m-medium",
+      "name": "GemmaOmni 41M Medium",
+      "checkpoint": "0fec52869087ac244c68d44d39a5dc704a6205b3785f9032546301d9b060cdc1",
+      "cases12": "research/candidate_evals/cleanroom41m-step2000-recheck-20260826-cases12.json",
+      "devclean": "research/candidate_evals/cleanroom41m-step2000-recheck-20260826-devclean64.json",
+      "ami": "research/candidate_evals/cleanroom41m-step2000-recheck-20260826-ami64.json",
+      "testclean": null,
+      "node_manifest": "nodes/stock-whisper-medium-cleanroom-ctx93h-step2000/node.json"
+    },
+    {
+      "id": "jaegeromni-41m-medium",
+      "name": "JaegerOmni 41M Medium",
+      "checkpoint": "a7f96bfb889866f75df7b838f84aae368a56ab10f6469e766511d700e32fe13a",
+      "cases12": "research/results/jaegeromni-41m-production-cases12-20260828.json",
+      "devclean": "research/candidate_evals/cleanroom41m-room-alpha10-20260827-devclean64.json",
+      "ami": "research/candidate_evals/cleanroom41m-room-alpha10-20260827-ami64.json",
+      "testclean": "research/candidate_evals/cleanroom41m-room-alpha10-20260827-testclean2603.json",
+      "node_manifest": "nodes/jaegeromni-41m-medium/node.json"
+    },
+    {
+      "id": "jaegeromni-50m-medium",
+      "name": "JaegerOmni 50M Medium",
+      "checkpoint": "b889e5b485654dabc50321fffdcc3305132d5188faa7ec2a7b1a96554b0af0a5",
+      "cases12": "research/candidate_evals/medium50m-cekl-blend50-cases12.json",
+      "devclean": "research/candidate_evals/medium50m-cekl-blend50-devclean64.json",
+      "ami": "research/candidate_evals/medium50m-cekl-blend50-ami64.json",
+      "testclean": "research/candidate_evals/medium50m-cekl-blend50-testclean2603.json",
+      "node_manifest": "nodes/stock-whisper-medium-cekl-blend50/node.json"
+    },
+    {
+      "id": "jaegeromni-50m-large",
+      "name": "JaegerOmni 50M Large",
+      "checkpoint": "3633baa083d4cc0d10b93e64226c69e2c1320f780c50afc9eecf5b5a2c463cd8",
+      "cases12": "research/candidate_evals/large-v3-turbo50m-ce-context-1500-cases12.json",
+      "devclean": "research/candidate_evals/large-v3-turbo50m-ce-context-1500-devclean64.json",
+      "ami": null,
+      "testclean": null,
+      "node_manifest": "nodes/stock-whisper-large-v3-turbo50m/node.json"
+    }
+  ],
+  "system_evidence": {
+    "aec_stress": "research/results/aec_stress.json",
+    "speaker_overlap": "research/results/overlap_lab.json",
+    "duplex_reports": "Full DuplexDemo App/runtime/reports"
+  }
+}

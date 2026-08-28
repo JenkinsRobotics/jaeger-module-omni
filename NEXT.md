@@ -1,26 +1,38 @@
 # Next steps — current plan
 
-One GPU job at a time. The other agent's clean-room CE/KL run owns the current
-training window; do not launch evaluation or another trainer until it exits.
+One GPU job at a time. JaegerOmni 41M Medium SHA `a7f96bfb8898` is the current
+broad-corpus winner: 3.97% free-running WER on the untouched 51,311-word
+test-clean lockbox, with no regression across the five selection corpora.
+The final pre-production training window is closed: the same checkpoint also
+scores 3.30% normalized WER (22/667) on the source-qualified one-to-one
+conversation gate and 12/12 spoken answers at 560 ms median. Do not run more
+adapter training before physical production testing; every final-window
+continuation, output-only refinement, seed repeat, and soup either tied the
+conversation gate or regressed another gate.
+The direct-file five-minute duplex gate now passes its stream-integrity checks:
+300.0 seconds fed, zero drops, one real 6,010-token context roll, and
+1,044/3,725 ms END-to-audio median/p95 after cadence streaming. Do not launch
+more Medium training until the physical-room five-minute gate runs. The broad
+43-room AEC gate has 0 false barges and 100% recall, but its 843 ms p95 still
+fails the 300 ms tail gate. The old 12-case AEC lab is not a promotion signal.
 
-## 1. Gate the checkpoint now training
+## 1. Run physical production testing
 
-Compare it against the two retained stock checkpoints, never an intermediate:
+Start with the frozen candidate, never an intermediate:
 
 ```text
-general: artifacts/stock-whisper-gemma-medium50m-expanded-blend25.npz
-meeting: artifacts/stock-whisper-gemma-medium50m-ami5-balanced1p5k.npz
+front end: jaegeromni-41m-medium
+adapter SHA: a7f96bfb889866f75df7b838f84aae368a56ab10f6469e766511d700e32fe13a
 ```
 
-Promotion requires all of the following free-running measurements:
+The physical five-minute run must retain all of the following:
 
-- cases12: at least 10/12;
-- dev-clean64: no worse than 134/955 errors (14.03% archived gate);
-- MINDS/Vox591: no worse than 1,860/9,736 errors (19.10%);
-- speaker-disjoint train-other64: no worse than 224/1,143 (19.60%);
-- AMI64: report the exact 673-word result, but do not trade a general gate for
-  a meeting-only gain;
-- median latency and parameter count reported alongside quality.
+- source-qualified conversation: no worse than 22/667 normalized word edits;
+- cases12: 12/12;
+- no lost microphone audio, no abandoned reply, and at least one deliberate
+  barge-in under each policy;
+- five-minute context roll plus END-to-audio median/p95;
+- physical AEC attenuation and false-barge count.
 
 Teacher forcing is permitted as a training loss. It is never an evaluation
 number. Do not promote from a single clip, a teacher-forced score, cosine, or
@@ -43,8 +55,12 @@ stock Whisper encoder (frozen)
 
 Only the connector and small auxiliary heads train. Gemma, Whisper, and their
 decoders stay frozen. Human transcripts supervise training but are never a
-runtime handoff. The other agent's CE/KL result is the first test of this
-direction; evaluate it before implementing a duplicate.
+runtime handoff. The other agent's 7.55% result validates this direction on a
+narrow one-speaker gate, but its 54.30% room WER exposes the missing domain
+robustness. The owned implementation is now `training/context_ce.py`: human
+CE, same-Gemma text-equivalence KL, frozen-start output anchor, exact
+source-mass sampling, holdout overlap audits, and a frame-diversity collapse
+abort. It trains only the explicitly selected connector branch.
 
 If it fails, the next structural experiment is a pretrained or distilled
 monotonic sequence head at the connector bottleneck, not another randomly
@@ -58,7 +74,20 @@ Canonical caches live outside the repository under
 
 - 12,000 previously unused LibriSpeech train-other clips;
 - 4,042 new AMI turns from four hours with zero first-hour turn overlap;
-- 3,249 AMI training and 750 speaker-disjoint AMI validation features.
+- 3,249 AMI training and 750 speaker-disjoint AMI validation features;
+- 14,565 deterministic RIR/MUSAN variants (26.255 h, 1,104 speakers) from
+  hard LibriSpeech and AMI, retaining clean IDs and augmentation provenance;
+- 29,671 previously unused train-clean-360 clips at the current <=12-second
+  training limit (63.260 h): 27,911/868-speaker training and
+  1,760/53-speaker validation with zero speaker overlap;
+- an official-MD5-verified LibriSpeech test-clean lockbox: 2,603 usable clips
+  from 40 speakers, manifest SHA
+  `d8934ec73c9e1b3280f31a15946d5e7d5aa1df3319e3b912d763d251a5a1e738`;
+- a measured 1,006.828-hour independent licensed source pool: LibriSpeech
+  961.052 h, genuinely novel VoxPopuli 33.283 h, FLEURS 7.491 h, and AMI
+  5.003 h, plus MUSAN/OpenSLR RIR augmentation assets. Raw archive hours are
+  not training examples until matching stock-Whisper features are cached, and
+  the current <=12-second curriculum intentionally uses a smaller subset.
 
 Use `--balance-sources` for mixed-domain training. Keep every validation split
 untouched. Before another run, add genuinely new speakers/acoustics such as
@@ -73,7 +102,33 @@ Secondary labels remain important but must not be conflated with actions:
 - turn start/end and overlap;
 - environmental/acoustic events.
 
-## 4. Live production gates
+Overlap attribution is a separate future node, not a capability of the current
+turn-level A/B/C clustering.  The production order is: cancel Jaeger's known
+playback reference, detect human-human overlap, separate the mixture into two
+waveforms, assign each separated stream to a persistent CampPlus identity, and
+feed both streams through the audio-native front end with time-aligned speaker
+metadata.  Validate with overlap-aware cpWER/DER and leakage/SI-SDR on held-out
+AMI/ICSI meetings.  Until those gates pass, report mixed speech as overlap and
+do not claim word-level speaker attribution.
+
+## 4. Prepared medium/large campaign
+
+No stage starts automatically. The CPU-created large port is
+`artifacts/stock-whisper-gemma-large-v3-turbo50m-port.npz` (SHA
+`5e3d766034c66811c8e30d3a73e1e3e0329b88f5eeba492c9ab0a9bc22537c3a`).
+It has a fresh 1280x2 input stack and byte-identical inherited downstream
+blocks (52,768,768 deployed parameters versus medium's 50,146,816).
+`training/test_next_window.py` passes forward, freeze-set, lineage,
+and real CPU-gradient checks for both front ends.
+
+When the GPU is assigned, run the named stages in
+`training/next_5pct_window.sh`: room-feature precompute, medium CE/KL, large
+native input bootstrap, large input CE/KL, then large context CE/KL. Each
+stage is separately checkpointed and guarded against concurrent GPU work.
+Use `training/evaluate_candidate.sh` for identical-ID free-running gates; do
+not promote from loss, cosine, teacher forcing, or the large decoder control.
+
+## 5. Live production gates
 
 The native Gemma tower remains the desktop default until the stock connector
 passes a positive-room five-minute test. Require:

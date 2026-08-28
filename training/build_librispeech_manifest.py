@@ -55,7 +55,8 @@ def existing_ids(manifests: list[Path]) -> set[str]:
     return result
 
 
-def source_rows(root: Path, max_seconds: float) -> list[dict]:
+def source_rows(root: Path, max_seconds: float,
+                source_name: str) -> list[dict]:
     rows = []
     for transcript in sorted(root.rglob("*.trans.txt")):
         for line in transcript.read_text(encoding="utf-8").splitlines():
@@ -76,7 +77,7 @@ def source_rows(root: Path, max_seconds: float) -> list[dict]:
                 "seconds": seconds,
                 "text": text.strip(),
                 "speaker": speaker,
-                "source": "local:train-other-500",
+                "source": source_name,
                 "license": "CC-BY-4.0",
                 "human_label": True,
             })
@@ -86,50 +87,60 @@ def source_rows(root: Path, max_seconds: float) -> list[dict]:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--root", type=Path, required=True,
-                        help="LibriSpeech train-other-500 directory")
+                        help="one extracted LibriSpeech split directory")
     parser.add_argument("--output-cache", type=Path, required=True)
     parser.add_argument("--max-examples", type=int, default=12000)
     parser.add_argument("--max-seconds", type=float, default=12.0)
     parser.add_argument("--validation-percent", type=int, default=5)
+    parser.add_argument("--source-name", default="local:train-other-500")
+    parser.add_argument("--train-split", default="train_other")
+    parser.add_argument("--validation-split",
+                        default="train_other_validation")
     parser.add_argument("--seed", type=int, default=20260823)
     parser.add_argument("--exclude-manifest", type=Path, action="append",
                         default=[])
     args = parser.parse_args()
-    if not 0 < args.validation_percent < 100:
-        raise ValueError("validation percent must be between 1 and 99")
-    if args.max_examples <= 0:
-        raise ValueError("max examples must be positive")
+    if not 0 <= args.validation_percent < 100:
+        raise ValueError("validation percent must be between 0 and 99")
+    if args.max_examples < 0:
+        raise ValueError("max examples cannot be negative (zero means all)")
 
     root = args.root.expanduser().resolve()
     if not root.is_dir():
         raise FileNotFoundError(root)
     excluded = existing_ids(args.exclude_manifest)
-    rows = [row for row in source_rows(root, args.max_seconds)
+    rows = [row for row in source_rows(root, args.max_seconds,
+                                       args.source_name)
             if row["id"] not in excluded]
     rows.sort(key=lambda row: hashlib.sha256(
         f"{args.seed}:{row['id']}".encode()).digest())
-    selected = rows[:args.max_examples]
-    partitions = {"train_other": [], "train_other_validation": []}
+    selected = rows[:args.max_examples] if args.max_examples else rows
+    partitions = {args.train_split: []}
+    if args.validation_percent:
+        partitions[args.validation_split] = []
     for row in selected:
-        split = ("train_other_validation"
-                 if bucket(row["speaker"], args.seed)
-                 < args.validation_percent else "train_other")
+        split = (args.validation_split
+                 if args.validation_percent and
+                 bucket(row["speaker"], args.seed) < args.validation_percent
+                 else args.train_split)
         partitions[split].append(row)
 
     output = args.output_cache.expanduser().resolve()
     for split, split_rows in partitions.items():
         atomic_jsonl(output / split / "manifest.jsonl", split_rows)
-    train_speakers = {row["speaker"] for row in partitions["train_other"]}
-    validation_speakers = {
-        row["speaker"] for row in partitions["train_other_validation"]}
+    train_speakers = {row["speaker"] for row in partitions[args.train_split]}
+    validation_speakers = {row["speaker"] for row in
+                           partitions.get(args.validation_split, [])}
     if train_speakers & validation_speakers:
         raise AssertionError("speaker leakage across partitions")
     counts = Counter(row["speaker"] for row in selected)
     print(f"source usable: {len(rows):,}; selected: {len(selected):,}")
-    print(f"train: {len(partitions['train_other']):,} clips / "
+    print(f"{args.train_split}: {len(partitions[args.train_split]):,} clips / "
           f"{len(train_speakers)} speakers")
-    print(f"validation: {len(partitions['train_other_validation']):,} "
-          f"clips / {len(validation_speakers)} speakers")
+    if args.validation_percent:
+        print(f"{args.validation_split}: "
+              f"{len(partitions[args.validation_split]):,} clips / "
+              f"{len(validation_speakers)} speakers")
     print(f"largest speaker contribution: {max(counts.values(), default=0)}")
     print(f"wrote manifests under {output}")
     return 0

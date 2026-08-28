@@ -36,6 +36,7 @@ from __future__ import annotations
 
 import argparse
 import ctypes
+import math
 import os
 import queue
 import shutil
@@ -70,12 +71,11 @@ ENGINE_LOG = WORK_DIR / "engine.log"
 JAEGER_MODEL = Path(os.environ.get(
     "JAEGER_OMNI_MODEL",
     Path.home() / "models/gemma-4-e4b-it-mlx-full"))
-JAEGER_STOCK_NODE = Path(os.environ.get(
-    "JAEGER_STOCK_NODE",
-    HERE.parent / "nodes/stock-whisper-medium-cekl-blend50"))
-JAEGER_CLEANROOM_NODE = Path(os.environ.get(
-    "JAEGER_CLEANROOM_NODE",
-    HERE.parent / "nodes/stock-whisper-medium-cleanroom-ctx93h-step2000"))
+from jaeger_agent_omni.model_catalog import (  # noqa: E402
+    FRONT_ENDS as JAEGER_FRONT_ENDS,
+    FRONT_END_ALIASES as JAEGER_FRONT_END_ALIASES,
+    resolve_front_end,
+)
 
 
 def _find_reference_resource(relative: str, env_var: str) -> Path | None:
@@ -502,14 +502,17 @@ class JaegerEngineWorker(QThread):
     reply = Signal(str)
     speaker = Signal(str)
     metrics = Signal(str)
-    barged = Signal()
+    barged = Signal(str)
     failed = Signal(str)
 
     def __init__(self, system_prompt: str = "", voice: str = "af_heart",
                  speed: float = 1.0, threshold: float = 0.012,
                  silence_ms: float = 700.0, cooldown: float = 4.0,
                  max_context: int = 6000, speakers: int = 2,
-                 front_end: str = "tower") -> None:
+                 front_end: str = "gemma-native",
+                 barge_policy: str = "stop", report_path: Path | None = None,
+                 report_phase: str = "physical-room",
+                 report_source: str | None = None) -> None:
         super().__init__()
         self.system_prompt = system_prompt.strip()
         self.voice = voice
@@ -519,12 +522,20 @@ class JaegerEngineWorker(QThread):
         self.cooldown = cooldown
         self.max_context = max_context
         self.speakers = speakers
-        self.front_end = front_end
+        self.barge_policy = barge_policy
+        self.report_path = report_path
+        self.report_phase = report_phase
+        self.report_source = report_source
+        selection = resolve_front_end(front_end)
+        self.front_end = selection.model_id
+        self.model_name = selection.label
+        self.checkpoint_label = selection.checkpoint
         self.audio_q: queue.Queue[np.ndarray] = queue.Queue(maxsize=200)
         self.say_q: queue.Queue[str | None] = queue.Queue()
         self._stop_evt = threading.Event()
         self.generating = threading.Event()
         self.barge_active = threading.Event()
+        self.barge_latched = threading.Event()
         self.player = PlaybackMonitor()
         self.loop = None
         self.session = None
@@ -540,8 +551,55 @@ class JaegerEngineWorker(QThread):
         self._turn_t0: float | None = None
         self.end_audio_ms: list[float] = []
         self._recent_replies: list[str] = []
+        self._all_replies: list[str] = []
+        self._speaker_labels: list[str] = []
+        self._errors: list[str] = []
         self._speaker_audio: deque[np.ndarray] = deque(maxlen=30)
         self._speaker_tracker = None
+        from jaeger_agent_omni.runtime.interaction import InteractionPolicy
+        from jaeger_agent_omni.runtime.reporting import new_run_report
+        self.interaction_policy = InteractionPolicy(barge_policy)
+        self._report = new_run_report(
+            phase=report_phase, model_id=self.front_end,
+            model_name=self.model_name, checkpoint=self.checkpoint_label,
+            source=report_source,
+            configuration={
+                "threshold": threshold, "silence_ms": silence_ms,
+                "cooldown_s": cooldown, "max_context": max_context,
+                "speakers": speakers, "voice": voice, "speed": speed,
+                "barge_policy": barge_policy,
+            })
+
+    def _detect_barge(self, stage: str) -> None:
+        """Publish one double-talk fact, then apply the configured policy."""
+        if self.barge_latched.is_set():
+            return
+        self.barge_latched.set()
+        action = self.interaction_policy.speech_during_output(
+            stage,
+            raw_rms=self.raw_level,
+            clean_rms=self.clean_level,
+            raw_reference_correlation=getattr(
+                self.aec, "raw_reference_correlation", 0.0),
+            residual_reference_correlation=getattr(
+                self.aec, "residual_reference_correlation", 0.0),
+        )
+        self.barge_count += 1
+        self.barged.emit(action)
+        if action == "stop":
+            self._cancel_output()
+
+    def _cancel_output(self) -> None:
+        """Apply the stop action without creating a second detection event."""
+        self.barge_active.set()
+        if self.generating.is_set() and self.session is not None:
+            self.session.cancel()
+        self.player.flush()
+        while True:
+            try:
+                self.say_q.get_nowait()
+            except queue.Empty:
+                break
 
     def push_audio(self, samples: np.ndarray) -> None:
         """Capture-thread entry: cancel echo and detect speech during output."""
@@ -556,16 +614,12 @@ class JaegerEngineWorker(QThread):
                 self.aec is not None and self.barge_detector is not None and
                 self.barge_detector.update(
                     self.aec, self.clean_level, len(raw)))
-            if is_barge and not self.barge_active.is_set():
-                self.hush()
+            if is_barge:
+                self._detect_barge("playback")
         elif (self.generating.is_set() and
               self.clean_level > self.threshold * 1.1 and
-              not self.barge_active.is_set()):
-            self.barge_active.set()
-            self.barge_count += 1
-            self.barged.emit()
-            if self.session is not None:
-                self.session.cancel()
+              not self.barge_latched.is_set()):
+            self._detect_barge("generation")
 
         self._speaker_audio.append(clean.copy())
         try:
@@ -574,21 +628,8 @@ class JaegerEngineWorker(QThread):
             self.dropped_samples += clean.size
 
     def hush(self) -> None:
-        """Cut both generation and queued/playing speech without losing input."""
-        was_active = self.generating.is_set() or self.player.playing.is_set()
-        first = not self.barge_active.is_set()
-        self.barge_active.set()
-        if self.generating.is_set() and self.session is not None:
-            self.session.cancel()
-        self.player.flush()
-        while True:
-            try:
-                self.say_q.get_nowait()
-            except queue.Empty:
-                break
-        if first and was_active:
-            self.barge_count += 1
-            self.barged.emit()
+        """Manual Force Listen action; not counted as detected human speech."""
+        self._cancel_output()
 
     def stop(self) -> None:
         self._stop_evt.set()
@@ -628,11 +669,17 @@ class JaegerEngineWorker(QThread):
         turns = getattr(stats, "turns", 0) if stats else 0
         interrupts = getattr(stats, "interrupts", 0) if stats else 0
         aec_db = getattr(self.aec, "attenuation_db", 0.0)
+        raw_corr = getattr(self.aec, "raw_reference_correlation", 0.0)
+        residual_corr = getattr(
+            self.aec, "residual_reference_correlation", 0.0)
         self.metrics.emit(
-            f"cache {cache} tok · fed {self.fed_samples/SAMPLE_RATE:.1f}s · "
+            f"{self.model_name} @{self.checkpoint_label} · cache {cache} tok · "
+            f"fed {self.fed_samples/SAMPLE_RATE:.1f}s · "
             f"dropped {self.dropped_samples/SAMPLE_RATE:.1f}s · peak lag "
             f"{lag:.0f}ms · turns {turns} · interrupts {interrupts} · "
-            f"barge-ins {self.barge_count} · rolls {self.rolls} · AEC {aec_db:.1f}dB")
+            f"barge events {self.barge_count}/{self.barge_policy} · "
+            f"stops {self.interaction_policy.stop_count} · rolls {self.rolls} · "
+            f"AEC {aec_db:.1f}dB corr {raw_corr:.2f}→{residual_corr:.2f}")
 
     def _tag_speaker(self) -> None:
         if self._speaker_tracker is None or not self._speaker_audio:
@@ -643,7 +690,47 @@ class JaegerEngineWorker(QThread):
         if label is None:
             return
         self.session.feed_text(f" [speaker {label}]")
+        self._speaker_labels.append(label)
         self.speaker.emit(label)
+
+    def _final_report(self) -> dict:
+        """Build one checkpoint-specific report from final worker state."""
+        from jaeger_agent_omni.runtime.reporting import (
+            finish_run_report, latency_summary)
+        stats = getattr(self.loop, "stats", None)
+        aec = self.aec
+        metrics = {
+            "fed_seconds": self.fed_samples / SAMPLE_RATE,
+            "dropped_seconds": self.dropped_samples / SAMPLE_RATE,
+            "turns": getattr(stats, "turns", 0) if stats else 0,
+            "completed_replies": len(self._all_replies),
+            "interrupts": getattr(stats, "interrupts", 0) if stats else 0,
+            "barge_events": self.barge_count,
+            "barge_stops": self.interaction_policy.stop_count,
+            "context_rolls": self.rolls,
+            "final_cache_tokens": getattr(self.session, "n_prefilled", 0),
+            "peak_loop_lag_ms": (
+                getattr(stats, "max_lag_s", 0.0) * 1000 if stats else 0.0),
+            "endpoint_events": list(
+                getattr(stats, "endpoint_events", ())) if stats else [],
+            "end_to_audio": latency_summary(self.end_audio_ms),
+            "aec": {
+                "available": aec is not None,
+                "attenuation_db": getattr(aec, "attenuation_db", None),
+                "seconds_cancelled": (
+                    getattr(aec, "samples_cancelled", 0) / SAMPLE_RATE
+                    if aec is not None else 0.0),
+                "raw_reference_correlation_last": getattr(
+                    aec, "raw_reference_correlation", None),
+                "residual_reference_correlation_last": getattr(
+                    aec, "residual_reference_correlation", None),
+            },
+        }
+        return finish_run_report(
+            self._report, metrics=metrics, replies=self._all_replies,
+            speaker_labels=self._speaker_labels,
+            interactions=self.interaction_policy.as_dicts(),
+            errors=self._errors)
 
     def _maybe_roll(self) -> None:
         if (self.session.n_prefilled <= self.max_context or
@@ -702,7 +789,9 @@ class JaegerEngineWorker(QThread):
                     time.sleep(0.03)
                 sd.wait()
             except Exception as exc:
-                self.status.emit(f"speech output: {exc}")
+                message = f"speech output: {type(exc).__name__}: {exc}"
+                self._errors.append(message)
+                self.status.emit(message)
             finally:
                 self.player.playing.clear()
                 self.player.level = 0.0
@@ -722,15 +811,8 @@ class JaegerEngineWorker(QThread):
             system = SYSTEM
             if self.system_prompt:
                 system = f"{SYSTEM} {self.system_prompt}"
-            selected_front_end = (
-                "stock" if self.front_end in ("stock", "cleanroom")
-                else "tower")
-            adapter = (
-                str(JAEGER_CLEANROOM_NODE) if self.front_end == "cleanroom"
-                else str(JAEGER_STOCK_NODE) if self.front_end == "stock"
-                else None)
             session, meta = build(
-                str(JAEGER_MODEL), selected_front_end, adapter, system=system)
+                str(JAEGER_MODEL), self.front_end, system=system)
             self.session = session
             warm_ms = session.warmup()
 
@@ -754,6 +836,7 @@ class JaegerEngineWorker(QThread):
             def streaming_respond(**kw):
                 self._turn_t0 = time.monotonic()
                 self.barge_active.clear()
+                self.barge_latched.clear()
                 self.generating.set()
                 ids, consumed = [], 0
                 inner = kw.get("on_token")
@@ -787,6 +870,7 @@ class JaegerEngineWorker(QThread):
                 last_reply["at"] = time.monotonic()
                 self._recent_replies.append(answer)
                 del self._recent_replies[:-3]
+                self._all_replies.append(answer)
                 self.reply.emit(answer)
 
             loop = DuplexLoop(
@@ -809,11 +893,15 @@ class JaegerEngineWorker(QThread):
 
             self.ready.emit()
             self.status.emit(
-                f"LIVE · {meta['front_end']} audio embeddings · AEC on · "
+                f"LIVE · {self.model_name} @{self.checkpoint_label} · "
+                f"{meta['front_end']} embeddings · "
+                f"AEC on · "
                 f"warmup {warm_ms:.0f}ms")
             loop.run(eos_ids=meta["eos"])
         except Exception as exc:
-            self.failed.emit(f"{type(exc).__name__}: {exc}")
+            message = f"{type(exc).__name__}: {exc}"
+            self._errors.append(message)
+            self.failed.emit(message)
         finally:
             self._stop_evt.set()
             self.player.flush()
@@ -823,6 +911,13 @@ class JaegerEngineWorker(QThread):
             except (NameError, RuntimeError):
                 pass
             self._emit_metrics(force=True)
+            if self.report_path is not None:
+                try:
+                    from jaeger_agent_omni.runtime.reporting import write_report
+                    saved = write_report(self.report_path, self._final_report())
+                    self.status.emit(f"report saved: {saved}")
+                except Exception as exc:
+                    self.status.emit(f"report save failed: {exc}")
             if self.aec is not None:
                 self.aec.close()
             self.status.emit("session ended")
@@ -1066,11 +1161,19 @@ class OmniDuplexWindow(QMainWindow):
         row = QHBoxLayout()
         self.front_end_combo = QComboBox()
         self.front_end_combo.addItem(
-            "Gemma native ear · live rollback", "tower")
+            "Gemma Native · duplex-validated fallback", "gemma-native")
         self.front_end_combo.addItem(
-            "Whisper medium + Jaeger 50M · production candidate", "stock")
+            "GemmaOmni 41M Medium · imported · 12/12",
+            "gemmaomni-41m-medium")
         self.front_end_combo.addItem(
-            "Whisper medium + clean-room 41M · 3.23% candidate", "cleanroom")
+            "JaegerOmni 41M Medium · meeting candidate · 12/12",
+            "jaegeromni-41m-medium")
+        self.front_end_combo.addItem(
+            "JaegerOmni 50M Medium · 11/12 · 319 ms",
+            "jaegeromni-50m-medium")
+        self.front_end_combo.addItem(
+            "JaegerOmni 50M Large · experimental · 1/12",
+            "jaegeromni-50m-large")
         row.addWidget(QLabel("audio input:"))
         row.addWidget(self.front_end_combo)
         self.lang_combo = QComboBox()
@@ -1096,12 +1199,17 @@ class OmniDuplexWindow(QMainWindow):
         self.speaker_spin = QSpinBox()
         self.speaker_spin.setRange(0, 4)
         self.speaker_spin.setValue(2)
+        self.barge_policy_combo = QComboBox()
+        self.barge_policy_combo.addItem("stop and listen", "stop")
+        self.barge_policy_combo.addItem("notify; keep speaking", "continue")
         tuning.addWidget(QLabel("voice:"))
         tuning.addWidget(self.voice_combo)
         tuning.addWidget(QLabel("speed:"))
         tuning.addWidget(self.speed_spin)
         tuning.addWidget(QLabel("room speakers:"))
         tuning.addWidget(self.speaker_spin)
+        tuning.addWidget(QLabel("speech during output:"))
+        tuning.addWidget(self.barge_policy_combo)
         tuning.addStretch(1)
         lay.addLayout(tuning)
 
@@ -1233,6 +1341,11 @@ class OmniDuplexWindow(QMainWindow):
         if self.engine_jaeger.isChecked():
             if self.lang_combo.currentText() != "en":
                 self._set_status("note: Jaeger path is English-tuned; zh untested")
+            from jaeger_agent_omni.runtime.reporting import default_report_path
+            selection = resolve_front_end(self.front_end_combo.currentData())
+            phase = "direct-wav" if self.source_wav else "physical-room"
+            report_path = default_report_path(
+                WORK_DIR, selection.model_id, phase)
             self.worker = JaegerEngineWorker(
                 system_prompt=self.prompt_edit.text(),
                 voice=self.voice_combo.currentText(),
@@ -1242,7 +1355,11 @@ class OmniDuplexWindow(QMainWindow):
                 cooldown=self.cooldown_spin.value(),
                 max_context=self.context_spin.value(),
                 speakers=self.speaker_spin.value(),
-                front_end=self.front_end_combo.currentData())
+                front_end=self.front_end_combo.currentData(),
+                barge_policy=self.barge_policy_combo.currentData(),
+                report_path=report_path, report_phase=phase,
+                report_source=(str(self.source_wav)
+                               if self.source_wav else "Elgato/live microphone"))
             self.worker.reply.connect(self._on_j_reply)
             self.worker.speaker.connect(self._on_j_speaker)
             self.worker.metrics.connect(self.metrics_label.setText)
@@ -1322,6 +1439,8 @@ class OmniDuplexWindow(QMainWindow):
         if status:
             self._capture_errors += 1
             self._capture_error_text = str(status)
+            if isinstance(self.worker, JaegerEngineWorker):
+                self.worker._errors.append(f"audio callback: {status}")
         mono = indata[:, 0].copy()
         if self.pause_btn.isChecked():
             self._mic_level = 0.0
@@ -1412,9 +1531,10 @@ class OmniDuplexWindow(QMainWindow):
         self.ticker.push(True)
         self._refresh_counts()
 
-    def _on_j_barge(self) -> None:
+    def _on_j_barge(self, action: str) -> None:
         self.convo.append(
-            '<span style="color:#c90">interrupted · listening continued</span>')
+            f'<span style="color:#c90">speech during agent output · '
+            f'policy={action}</span>')
         self.ticker.interrupt()
 
     def _refresh_counts(self) -> None:
@@ -1507,22 +1627,32 @@ def check() -> int:
     try:
         from jaeger_agent_omni.runtime.aec import available
         from jaeger_agent_omni.live import _ready_chunks
+        from jaeger_agent_omni.node_registry import discover, validate_profiles
         chunks, _ = _ready_chunks(
             "A deliberately long opening clause, followed by the answer.", 0)
         if not chunks:
             problems.append("clause streaming check failed")
         if not available():
             problems.append("SpeexDSP missing (macOS: brew install speexdsp)")
+        packages = discover(HERE.parent / "nodes")
+        validate_profiles(HERE.parent / "nodes", packages)
     except Exception as exc:
         problems.append(f"Jaeger runtime import: {exc}")
+    selected_ids = {
+        win.front_end_combo.itemData(index)
+        for index in range(win.front_end_combo.count())
+    }
+    if selected_ids != set(JAEGER_FRONT_ENDS):
+        problems.append(
+            "audio selector does not expose exactly the five canonical models")
     if not JAEGER_MODEL.exists():
         problems.append(f"Jaeger model missing: {JAEGER_MODEL}")
-    if not JAEGER_STOCK_NODE.exists():
-        problems.append(
-            f"Whisper production-candidate node missing: {JAEGER_STOCK_NODE}")
-    if not JAEGER_CLEANROOM_NODE.exists():
-        problems.append(
-            f"Clean-room candidate node missing: {JAEGER_CLEANROOM_NODE}")
+    for model_id, spec in JAEGER_FRONT_ENDS.items():
+        node = spec.node
+        if node is not None and not node.exists():
+            problems.append(f"{model_id} node missing: {node}")
+        if resolve_front_end(model_id).checkpoint == "manifest-error":
+            problems.append(f"{model_id} checkpoint manifest is invalid")
     if sd.query_devices(kind="input") is None:
         problems.append("no input audio device")
     if SHIM is None or not SHIM.exists() or not LLM_GGUF.exists():
@@ -1647,7 +1777,9 @@ def minicpm_selftest(seconds: int) -> int:
 
 def jaeger_selftest(wav_path: Path, seconds: int, threshold: float,
                     silence_ms: float, cooldown: float,
-                    max_context: int, front_end: str = "tower") -> int:
+                    max_context: int, front_end: str = "gemma-native",
+                    barge_policy: str = "stop",
+                    report_path: Path | None = None) -> int:
     """Paced-file test of the exact Jaeger worker used by the window."""
     from PySide6.QtCore import QCoreApplication
 
@@ -1660,9 +1792,15 @@ def jaeger_selftest(wav_path: Path, seconds: int, threshold: float,
         pcm = np.interp(np.linspace(0, len(pcm) - 1, n),
                         np.arange(len(pcm)), pcm).astype(np.float32)
 
+    from jaeger_agent_omni.runtime.reporting import default_report_path
+    selection = resolve_front_end(front_end)
+    report_path = report_path or default_report_path(
+        WORK_DIR, selection.model_id, "direct-wav")
     worker = JaegerEngineWorker(
         threshold=threshold, silence_ms=silence_ms, cooldown=cooldown,
-        max_context=max_context, speakers=2, front_end=front_end)
+        max_context=max_context, speakers=2, front_end=front_end,
+        barge_policy=barge_policy, report_path=report_path,
+        report_phase="direct-wav", report_source=str(wav_path.resolve()))
     tally = {"replies": 0, "failed": False, "speakers": []}
     state = {"i": 0, "started": 0.0}
     def say(msg: str) -> None:
@@ -1699,15 +1837,23 @@ def jaeger_selftest(wav_path: Path, seconds: int, threshold: float,
 
     def done() -> None:
         import statistics
-        latency = (f" · median END→AUDIO "
-                   f"{statistics.median(worker.end_audio_ms):.0f}ms across "
-                   f"{len(worker.end_audio_ms)} starts"
-                   if worker.end_audio_ms else "")
-        say(f"selftest: {tally['replies']} replies · "
+        if worker.end_audio_ms:
+            ordered = sorted(worker.end_audio_ms)
+            rank = max(0, min(len(ordered) - 1,
+                              math.ceil(0.95 * len(ordered)) - 1))
+            latency = (
+                f" · END→AUDIO median {statistics.median(ordered):.0f}ms "
+                f"p95 {ordered[rank]:.0f}ms max {max(ordered):.0f}ms "
+                f"across {len(ordered)} starts")
+        else:
+            latency = ""
+        say(f"selftest: {worker.model_name} @{worker.checkpoint_label} · "
+            f"{tally['replies']} replies · "
             f"{worker.fed_samples/SAMPLE_RATE:.1f}s fed · "
             f"{worker.dropped_samples/SAMPLE_RATE:.1f}s dropped · "
             f"{worker.barge_count} barge-ins · {worker.rolls} rolls · "
             f"speakers {','.join(tally['speakers']) or 'none'}{latency}")
+        say(f"report: {report_path}")
         app.exit(0 if tally["replies"] and not tally["failed"] else 2)
 
     worker.status.connect(lambda msg: say(f"status: {msg}"))
@@ -1746,16 +1892,25 @@ def main() -> int:
                     help="Jaeger self-test reply cooldown")
     ap.add_argument("--max-context", type=int, default=6000,
                     help="Jaeger self-test context-roll threshold")
-    ap.add_argument("--front-end", choices=("tower", "stock", "cleanroom"),
-                    default="tower",
-                    help="Jaeger self-test audio node")
+    ap.add_argument("--barge-policy", choices=("stop", "continue"),
+                    default="stop",
+                    help="action after speech-during-output notification")
+    ap.add_argument("--report", type=Path,
+                    help="JSON report path (default: GUI runtime/reports)")
+    ap.add_argument(
+        "--front-end",
+        choices=tuple(JAEGER_FRONT_ENDS) + tuple(JAEGER_FRONT_END_ALIASES),
+        default="gemma-native",
+        help="Jaeger self-test model identity (old tower/stock/cleanroom "
+             "aliases remain accepted)")
     args = ap.parse_args()
     if args.check:
         return check()
     if args.selftest_jaeger:
         return jaeger_selftest(
             args.selftest_jaeger, args.seconds, args.threshold,
-            args.silence_ms, args.cooldown, args.max_context, args.front_end)
+            args.silence_ms, args.cooldown, args.max_context, args.front_end,
+            args.barge_policy, args.report)
     if args.selftest_minicpm is not None:
         return minicpm_selftest(args.selftest_minicpm)
     app = QApplication([sys.argv[0]])

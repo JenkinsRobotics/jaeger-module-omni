@@ -68,6 +68,7 @@ ANSWER_SYSTEM = (
 GPU_JOB_PATTERNS = (
     r"training/train\.py",
     r"training/context_distill\.py",
+    r"training/context_ce\.py",
     r"training/precompute_stock_encoder\.py",
     r"training/stock_whisper_gemma\.py\s+"
     r"(?:precompute|pretrain-ctc|distill|train|probe|geometry|wer|bench)",
@@ -76,6 +77,14 @@ GPU_JOB_PATTERNS = (
     r"compare_tracks\.py",
     r"train_audio_adapter\.py",
 )
+
+
+def _sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for block in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(block)
+    return digest.hexdigest()
 
 
 def _refuse_gpu_contention() -> None:
@@ -342,6 +351,28 @@ def _rows(cache: Path, split: str, task: str,
         row["boundary"] = boundary
         result.append(row)
     return result
+
+
+def _locked_rows(rows: list[dict], id_file: Path | None) -> list[dict]:
+    """Select an identical corpus/order from an ID list or JSONL manifest."""
+    if id_file is None:
+        return rows
+    selected_ids = []
+    for line in id_file.expanduser().read_text().splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        selected_ids.append(str(json.loads(line)["id"])
+                            if line.startswith("{") else line)
+    if len(selected_ids) != len(set(selected_ids)):
+        raise ValueError(f"duplicate IDs in {id_file}")
+    by_id = {str(row["id"]): row for row in rows}
+    missing = [item_id for item_id in selected_ids if item_id not in by_id]
+    if missing:
+        raise ValueError(
+            f"{len(missing)} locked IDs absent from candidate cache: "
+            f"{missing[:3]}")
+    return [by_id[item_id] for item_id in selected_ids]
 
 
 def _prompt_parts(tokenizer, system: str) -> tuple[list[int], list[int], list[int]]:
@@ -1050,8 +1081,11 @@ def command_probe(args) -> None:
         args.adapter, args.model, args.whisper,
         TRANSCRIPT_SYSTEM if args.task == "transcript" else ANSWER_SYSTEM)
     features = np.load(row["feature"]).astype(np.float32)
-    session._features = features
-    session.n_prefilled = len(features)
+    session.reset()
+    session.open_turn()
+    session._turn_has_audio = True
+    session._prefill_audio(features)
+    session.close_turn()
     answer = session.respond(max_tokens=args.max_tokens, eos_ids={1, 106})
     print(f"id: {row['id']}")
     print(f"expected: {row['target']}")
@@ -1168,23 +1202,31 @@ def command_wer(args) -> None:
     if args.source_prefix:
         rows = [row for row in rows
                 if str(row.get("source", "")).startswith(args.source_prefix)]
+    rows = _locked_rows(rows, args.id_file)
     rows = rows[:args.examples]
     if not rows:
         raise RuntimeError("WER gate selected no held-out rows")
     session = StockWhisperGemmaSession(
         args.adapter, args.model, args.whisper, TRANSCRIPT_SYSTEM)
-    total_edits = 0.0
+    total_edits = 0
     total_words = 0
     outputs = []
     for index, row in enumerate(rows, 1):
         features = np.load(row["feature"]).astype(np.float32)
-        session._features = features
-        session.n_prefilled = max(1, len(features) // session.pool_step)
+        # Cached features still traverse the adapter and frozen Gemma.  The
+        # persistent live session requires the same explicit turn boundary as
+        # microphone audio; assigning counters alone bypasses that path.
+        session.reset()
+        session.open_turn()
+        session._turn_has_audio = True
+        session._prefill_audio(features)
+        session.close_turn()
         budget = max(8, int(float(row["seconds"]) * args.words_per_second * 1.6))
         hypothesis = session.respond(max_tokens=budget, eos_ids={1, 106})
         reference_words = normalize(row["target"])
         hypothesis_words = normalize(hypothesis)
-        edits = wer(reference_words, hypothesis_words) * len(reference_words)
+        edits = int(round(
+            wer(reference_words, hypothesis_words) * len(reference_words)))
         total_edits += edits
         total_words += len(reference_words)
         outputs.append({
@@ -1204,8 +1246,15 @@ def command_wer(args) -> None:
     if args.output:
         args.output.write_text(json.dumps({
             "adapter": str(args.adapter), "split": args.split,
+            "adapter_sha256": _sha256(args.adapter),
+            "encoder": args.whisper,
+            "evaluation_mode": "free_running_generation",
+            "teacher_forced": False,
+            "input_handoff": "audio_embeddings_no_transcript",
+            "id_file": str(args.id_file) if args.id_file else None,
             "source_prefix": args.source_prefix,
-            "n": len(rows), "wer": score, "reference_words": total_words,
+            "n": len(rows), "wer": score, "edits": total_edits,
+            "reference_words": total_words,
             "rows": outputs,
         }, indent=2))
 
@@ -1239,7 +1288,13 @@ def command_bench(args) -> None:
           f"({100*correct/len(rows):.0f}%), median {median:.0f}ms")
     if args.output:
         args.output.write_text(json.dumps({
-            "front_end": "stock_whisper_qwen_free", "correct": correct,
+            "front_end": "stock_whisper_qwen_free",
+            "encoder": args.whisper,
+            "adapter": str(args.adapter),
+            "evaluation_mode": "free_running_generation",
+            "teacher_forced": False,
+            "input_handoff": "audio_embeddings_no_transcript",
+            "adapter_sha256": _sha256(args.adapter), "correct": correct,
             "n": len(rows), "median_ms": median, "rows": rows}, indent=2))
 
 
@@ -1427,6 +1482,9 @@ def build_parser() -> argparse.ArgumentParser:
         "--source-prefix", default=None,
         help="optional manifest source prefix for a per-domain corpus gate")
     wer_parser.add_argument("-n", "--examples", type=int, default=64)
+    wer_parser.add_argument(
+        "--id-file", type=Path,
+        help="locked IDs or JSONL manifest, preserving identical A/B order")
     wer_parser.add_argument("--words-per-second", type=float, default=2.8)
     wer_parser.add_argument("--output", type=Path,
                             default=REPO / "research/stock_whisper_wer.json")

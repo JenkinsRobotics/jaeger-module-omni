@@ -17,7 +17,9 @@
 > See [`dev/docs/reality/STATUS.md`](dev/docs/reality/STATUS.md) for what
 > actually runs today.
 
-The concise, current runtime/model inventory is [`PIPELINES.md`](PIPELINES.md).
+The concise, current runtime/model inventory is [`PIPELINES.md`](PIPELINES.md),
+and the generated MiniCPM comparison is
+[`PARITY_SCORECARD.md`](PARITY_SCORECARD.md).
 Use it instead of inferring active pipelines from historical experiment files.
 
 ## What it is

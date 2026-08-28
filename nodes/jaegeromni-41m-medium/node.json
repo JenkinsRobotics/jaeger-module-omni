@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "kind": "jaeger_audio_node",
+  "id": "jaegeromni-41m-medium",
+  "runtime": "stock_whisper_gemma",
+  "slot": "audio_perception",
+  "enabled_by_default": false,
+  "consumes": [
+    "pcm_s16le_16khz_mono"
+  ],
+  "produces": [
+    "gemma_audio_embeddings_2560"
+  ],
+  "status": "production_1to1_candidate_direct_duplex_validated_physical_pending",
+  "implementation": "runtime.py:build",
+  "encoder": {
+    "id": "openai/whisper-medium",
+    "revision": "abdf7c39ab9d0397620ccaea8974cc764cd0953e",
+    "path": "weights/encoder",
+    "weights_sha256": "62f73550fa6db24b0c6f6c5962bd0dae80fa644e93cde9cd9c3792971b47fd28",
+    "boundary": "stock_whisper_encoder_50hz",
+    "output_dim": 1024,
+    "decoder_runtime": false
+  },
+  "adapter": {
+    "path": "weights/adapter.npz",
+    "sha256": "a7f96bfb889866f75df7b838f84aae368a56ab10f6469e766511d700e32fe13a",
+    "architecture": "cleanroom_context_v2",
+    "parameters": 40915456,
+    "pool_step": 2,
+    "lineage": "qwen_free"
+  },
+  "backbone": {
+    "family": "gemma-4-e4b",
+    "runtime_variant": "gemma-4-E4B-it-4bit-mlx",
+    "frozen": true
+  },
+  "training": {
+    "method": "checkpoint_interpolation",
+    "base": "stock-whisper-medium-cleanroom-ctx93h-step2000",
+    "base_sha256": "0fec52869087ac244c68d44d39a5dc704a6205b3785f9032546301d9b060cdc1",
+    "room_candidate_sha256": "ab02fa12bdcf9a1296ff3644b2a36b6985cbb9b1c8652cef00d1f413ca68b40c",
+    "room_candidate_weight": 0.1,
+    "selection": "five locked corpus gates; cases12 excluded"
+  },
+  "evaluation": {
+    "mode": "free_running_generation",
+    "teacher_forced": false,
+    "devclean64_wer": 0.049214659685863874,
+    "mindsvox591_wer": 0.15221857025472474,
+    "clean360val128_wer": 0.05175469691598724,
+    "novelvox128_wer": 0.09483368719037509,
+    "ami64_wer": 0.34175334323922733,
+    "testclean2603_wer": 0.03971857886223227,
+    "testclean2603_words": 51311,
+    "cases12": {
+      "correct": 12,
+      "total": 12,
+      "median_ms": 560.0,
+      "report": "research/results/jaegeromni-41m-production-cases12-20260828.json"
+    },
+    "qualified_1to1_conversation": {
+      "source": "MINDS14 English clips with matched Whisper-medium normalized per-clip WER below 1%",
+      "clips": 69,
+      "reference_words": 667,
+      "edits": 22,
+      "wer": 0.03298350824587706,
+      "report": "research/candidate_evals/jaegeromni-41m-conversation-gold-baseline-standard.json"
+    },
+    "qualified_clean_controls": {
+      "devclean64_normalized_wer": 0.04953560371517028,
+      "clean360val128_normalized_wer": 0.05094869992972593,
+      "normalizer": "transformers.WhisperTokenizer.normalize"
+    },
+    "five_minute_duplex": {
+      "phase": "direct-wav",
+      "source": "AMI ES2008c.Mix-Headset.wav",
+      "fed_seconds": 300.0,
+      "dropped_seconds": 0.0,
+      "replies": 14,
+      "barge_events_continue": 13,
+      "context_rolls": 1,
+      "roll_at_tokens": 6010,
+      "end_to_audio_median_ms": 1043.5,
+      "end_to_audio_p95_ms": 3725.0,
+      "physical_room": false,
+      "report": "Full DuplexDemo App/runtime/reports/20260827-jaegeromni41m-alpha10-ami5m-cadence12.json"
+    }
+  }
+}

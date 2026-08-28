@@ -782,6 +782,15 @@ class StockWhisperGemmaSession:
     def _cache_size(self) -> int:
         if not self.cache:
             return 0
+        # Gemma 3n mixes full-attention KVCache layers with 512-token
+        # RotatingKVCache layers.  ``size()`` on a rotating layer is its
+        # physical ring-buffer occupancy, not the logical conversation
+        # position, so it plateaus at 512 and used to prevent max-context
+        # rolls entirely.  Every layer advances ``offset`` for every token;
+        # use that authoritative logical position when it is available.
+        offset = getattr(self.cache[0], "offset", None)
+        if offset is not None:
+            return int(offset)
         size = getattr(self.cache[0], "size", None)
         return int(size()) if callable(size) else self.n_prefilled
 
@@ -1041,12 +1050,19 @@ def selfcheck() -> None:
             self.offset -= amount
             return amount
 
+        def size(self):
+            # Model Gemma's bounded sliding-cache storage.  Logical context
+            # must continue beyond this physical capacity.
+            return min(self.offset, 512)
+
     probe.cache = [FakeCache(13)]
     probe.n_prefilled = 13
     probe._generation_start = 9
     probe._cancelled = True
     assert probe.interrupt() == 4
     assert probe.n_prefilled == 9 and probe.cache[0].offset == 9
+    probe.cache = [FakeCache(6001)]
+    assert probe._cache_size() == 6001
 
     # The live session uses the adapter's training-length window instead of
     # handing a five-minute uninterrupted meeting to one quadratic context

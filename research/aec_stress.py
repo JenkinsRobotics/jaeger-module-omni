@@ -12,13 +12,14 @@ No model or GPU is used.  The room paths include delay, reflections, spectral
 colouring, background noise, and mild loudspeaker non-linearity.
 
     python research/aec_stress.py
-    python research/aec_stress.py --cases 32 --json /tmp/aec-stress.json
+    python research/aec_stress.py --cases 43 --json /tmp/aec-stress.json
 """
 
 from __future__ import annotations
 
 import argparse
 import json
+import math
 from pathlib import Path
 
 import numpy as np
@@ -68,6 +69,15 @@ def _at_rms(audio: np.ndarray, target: float) -> np.ndarray:
     return (audio * (target / max(_rms(audio), 1e-8))).astype(np.float32)
 
 
+def _nearest_rank(values: list[float], fraction: float) -> float | None:
+    """Return a conservative percentile that includes small-corpus tails."""
+    if not values:
+        return None
+    ordered = sorted(values)
+    rank = max(1, math.ceil(len(ordered) * fraction))
+    return float(ordered[min(rank - 1, len(ordered) - 1)])
+
+
 def _trim_leading_silence(audio: np.ndarray) -> np.ndarray:
     """Make reported barge delay start at acoustic speech, not WAV padding."""
     frame = round(0.020 * RATE)
@@ -100,13 +110,17 @@ def _room_echo(far: np.ndarray, rng: np.random.Generator,
 
 
 def _run_aec(mic: np.ndarray, far: np.ndarray,
-             with_detector: bool = False) -> tuple[np.ndarray, dict]:
+             with_detector: bool = False,
+             detector_options: dict | None = None,
+             include_trace: bool = False) -> tuple[np.ndarray, dict]:
     aec = SpeexEchoCanceller(RATE)
-    detector = EchoAwareBargeIn(RATE, SPEECH_RMS)
+    detector = EchoAwareBargeIn(
+        RATE, SPEECH_RMS, **(detector_options or {}))
     aec.start_playback(far, RATE, started_at=0.0)
     cleaned: list[np.ndarray] = []
     old_first = None
     new_first = None
+    trace = []
     for start in range(0, len(mic), BLOCK):
         block = aec.process(
             mic[start:start + BLOCK], captured_at=(start + BLOCK) / RATE)
@@ -119,18 +133,34 @@ def _run_aec(mic: np.ndarray, far: np.ndarray,
             now = (start + len(block)) / RATE
             if old and old_first is None:
                 old_first = now
-            if detector.update(aec, clean_rms, len(block)) and new_first is None:
+            fired = detector.update(aec, clean_rms, len(block))
+            if include_trace:
+                trace.append({
+                    "end_s": now,
+                    "clean_rms": clean_rms,
+                    "echo_floor": detector.echo_floor,
+                    "raw_correlation": aec.raw_reference_correlation,
+                    "residual_correlation":
+                        aec.residual_reference_correlation,
+                    "attenuation_db": aec.block_attenuation_db,
+                    "reference_rms": aec.reference_rms,
+                    "fired": fired,
+                })
+            if fired and new_first is None:
                 new_first = now
     metrics = {
         "old_first_s": old_first,
         "new_first_s": new_first,
         "aggregate_attenuation_db": aec.attenuation_db,
+        "trace": trace,
     }
     aec.close()
     return np.concatenate(cleaned), metrics
 
 
-def evaluate(count: int = 32, seed: int = 20260825) -> dict:
+def evaluate(count: int = 43, seed: int = 20260825,
+             detector_options: dict | None = None,
+             include_traces: bool = False) -> dict:
     far_paths = sorted((ROOT / "demo_out").glob("q*.wav"))
     near_paths = sorted((ROOT / "research/cases12").glob("q*.wav"))
     if not far_paths or not near_paths:
@@ -160,7 +190,8 @@ def evaluate(count: int = 32, seed: int = 20260825) -> dict:
         near[begin:end] = _at_rms(voice, rng.uniform(0.025, 0.070))
 
         echo_clean, _ = _run_aec(echo + noise, far)
-        mixed_clean, decisions = _run_aec(echo + near + noise, far, True)
+        mixed_clean, decisions = _run_aec(
+            echo + near + noise, far, True, detector_options, include_traces)
 
         # Measure a full second immediately before the near talker enters,
         # after at least two seconds of adaptive-filter convergence.
@@ -187,6 +218,8 @@ def evaluate(count: int = 32, seed: int = 20260825) -> dict:
                              1000 * (old_first - onset)),
             "new_delay_ms": (None if new_first is None or new_first < onset else
                              1000 * (new_first - onset)),
+            **({"detector_trace": decisions["trace"]}
+               if include_traces else {}),
         })
 
     def detected(key: str) -> list[float]:
@@ -196,6 +229,8 @@ def evaluate(count: int = 32, seed: int = 20260825) -> dict:
     new_delays = detected("new_delay_ms")
     result = {
         "cases": count,
+        "seed": seed,
+        "detector": detector_options or {},
         "callback_ms": 100,
         "echo_attenuation_median_db": float(np.median(
             [r["echo_attenuation_db"] for r in rows])),
@@ -214,22 +249,52 @@ def evaluate(count: int = 32, seed: int = 20260825) -> dict:
             "recall_percent": 100 * len(new_delays) / count,
             "median_delay_ms": (float(np.median(new_delays))
                                 if new_delays else None),
+            "p95_delay_ms": _nearest_rank(new_delays, 0.95),
         },
         "rows": rows,
     }
+    result["gates"] = {
+        "echo_attenuation_at_least_6db":
+            result["echo_attenuation_median_db"] >= 6.0,
+        "near_survival_at_least_70_percent":
+            result["near_survival_median_percent"] >= 70.0,
+        "no_reference_aware_false_barges":
+            result["reference_aware"]["false_barges"] == 0,
+        "reference_aware_recall_at_least_90_percent":
+            result["reference_aware"]["recall_percent"] >= 90.0,
+        "reference_aware_p95_at_most_300ms": (
+            result["reference_aware"]["p95_delay_ms"] is not None and
+            result["reference_aware"]["p95_delay_ms"] <= 300.0),
+    }
+    result["passed"] = all(result["gates"].values())
     return result
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("--cases", type=int, default=32)
+    parser.add_argument("--cases", type=int, default=43)
     parser.add_argument("--seed", type=int, default=20260825)
-    parser.add_argument("--json", type=Path)
+    parser.add_argument("--echo-correlation", type=float, default=0.45)
+    parser.add_argument("--residual-echo-correlation", type=float,
+                        default=0.35)
+    parser.add_argument("--residual-margin", type=float, default=1.1)
+    parser.add_argument("--confirm-ms", type=float, default=80.0)
+    parser.add_argument("--trace", action="store_true",
+                        help="include per-callback detector telemetry")
+    parser.add_argument("--json", type=Path,
+                        default=Path("research/results/aec_stress.json"))
     args = parser.parse_args()
     if args.cases < 8:
         parser.error("--cases must be at least 8")
 
-    result = evaluate(args.cases, args.seed)
+    detector_options = {
+        "echo_correlation": args.echo_correlation,
+        "residual_echo_correlation": args.residual_echo_correlation,
+        "residual_margin": args.residual_margin,
+        "confirm_ms": args.confirm_ms,
+    }
+    result = evaluate(
+        args.cases, args.seed, detector_options, include_traces=args.trace)
     old, new = result["old"], result["reference_aware"]
     def delay_text(value) -> str:
         return "n/a" if value is None else f"{value:.0f} ms"
@@ -242,19 +307,17 @@ def main() -> int:
           f"{delay_text(old['median_delay_ms'])} median")
     print(f"  reference-aware rule   {new['false_barges']}/{args.cases} false, "
           f"{new['detected']}/{args.cases} detected, "
-          f"{delay_text(new['median_delay_ms'])} median")
+          f"{delay_text(new['median_delay_ms'])} median, "
+          f"{delay_text(new['p95_delay_ms'])} p95")
 
     if args.json:
         args.json.write_text(json.dumps(result, indent=2) + "\n")
         print(f"  artifact               {args.json}")
 
     # This is a regression gate, not a claim about the untested physical room.
-    assert result["echo_attenuation_median_db"] >= 6.0, result
-    assert result["near_survival_median_percent"] >= 70.0, result
-    assert new["false_barges"] == 0, result
-    assert new["recall_percent"] >= 90.0, result
-    assert new["median_delay_ms"] <= 300.0, result
-    return 0
+    print(f"  gate                   "
+          f"{'PASS' if result['passed'] else 'FAIL'}")
+    return 0 if result["passed"] else 2
 
 
 if __name__ == "__main__":

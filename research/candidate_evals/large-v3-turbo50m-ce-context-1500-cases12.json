@@ -1,0 +1,83 @@
+{
+  "front_end": "stock_whisper_qwen_free",
+  "encoder": "openai/whisper-large-v3-turbo",
+  "adapter": "artifacts/stock-whisper-gemma-large-v3-turbo50m-ce-context.npz",
+  "adapter_sha256": "3633baa083d4cc0d10b93e64226c69e2c1320f780c50afc9eecf5b5a2c463cd8",
+  "correct": 1,
+  "n": 12,
+  "median_ms": 413.4720419533551,
+  "rows": [
+    {
+      "case": "q00",
+      "ok": false,
+      "ms": 1650.4298751242459,
+      "reply": "I'm sorry, I didn't catch that."
+    },
+    {
+      "case": "q01",
+      "ok": false,
+      "ms": 472.13641717098653,
+      "reply": "I'm sorry, I didn't catch that."
+    },
+    {
+      "case": "q02",
+      "ok": false,
+      "ms": 412.9620420280844,
+      "reply": "I'm sorry, I didn't catch that."
+    },
+    {
+      "case": "q03",
+      "ok": true,
+      "ms": 339.0047918073833,
+      "reply": "The capital of France is Paris."
+    },
+    {
+      "case": "q04",
+      "ok": false,
+      "ms": 384.32991690933704,
+      "reply": "I'm sorry, I didn't catch that."
+    },
+    {
+      "case": "q05",
+      "ok": false,
+      "ms": 423.0869160965085,
+      "reply": "I'm sorry, I didn't catch that."
+    },
+    {
+      "case": "q06",
+      "ok": false,
+      "ms": 413.98204187862575,
+      "reply": "I'm sorry, I didn't catch that."
+    },
+    {
+      "case": "q07",
+      "ok": false,
+      "ms": 301.638042088598,
+      "reply": "it's a yes."
+    },
+    {
+      "case": "q08",
+      "ok": false,
+      "ms": 332.1857079863548,
+      "reply": "What is the weather like today?"
+    },
+    {
+      "case": "q09",
+      "ok": false,
+      "ms": 335.83079115487635,
+      "reply": "Are you okay? Are you okay?"
+    },
+    {
+      "case": "q10",
+      "ok": false,
+      "ms": 550.6756249815226,
+      "reply": "I'm sorry, I didn't catch that. Could you please repeat your question?"
+    },
+    {
+      "case": "q11",
+      "ok": false,
+      "ms": 427.3240838665515,
+      "reply": "I'm sorry, I didn't catch that."
+    }
+  ]
+}

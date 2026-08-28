@@ -50,9 +50,56 @@ checkpoint writer, and evaluation commands are repo-local. The checkpoint is
 already in runtime format; the clean-room importer remains only for historical
 artifacts created before this ownership boundary was enforced.
 
-The large-v3-turbo A/B is closed and its checkpoints were removed: it scored
-0--1/12 despite healthy cosine and added latency. Do not recreate it without a
-new architectural hypothesis.
+The original large-v3-turbo A/B is closed and its checkpoints were removed: it
+scored 0--1/12 despite healthy cosine and added latency. That rejected the old
+native-distillation-only seam, not the encoder. A new, still-untrained branch
+is staged by `prepare_large_port.py`: a fresh 2560-input stack for large's
+1280-wide frames (52,768,768 deployed parameters), followed by native
+bootstrap and the same human CE +
+text-equivalence KL used by the medium challenger. `test_next_window.py`
+proves its checkpoint lineage, forward dimensions, exact trainable leaves,
+and nonzero CPU gradients before a GPU run.
+
+The next window is intentionally manual. `next_5pct_window.sh` refuses to run
+without `JAEGER_GPU_WINDOW=YES` and `run_gpu.sh` refuses any known concurrent
+GPU process. Run its named stages sequentially; it never promotes a result:
+
+```bash
+JAEGER_GPU_WINDOW=YES training/next_5pct_window.sh precompute-room-medium
+JAEGER_GPU_WINDOW=YES training/next_5pct_window.sh precompute-vox-medium
+JAEGER_GPU_WINDOW=YES training/next_5pct_window.sh precompute-clean360-medium
+JAEGER_GPU_WINDOW=YES training/next_5pct_window.sh medium
+JAEGER_GPU_WINDOW=YES training/next_5pct_window.sh precompute-room-large
+JAEGER_GPU_WINDOW=YES training/next_5pct_window.sh precompute-vox-large
+JAEGER_GPU_WINDOW=YES training/next_5pct_window.sh precompute-clean360-large
+JAEGER_GPU_WINDOW=YES training/next_5pct_window.sh large-native
+JAEGER_GPU_WINDOW=YES training/next_5pct_window.sh large-ce-input
+JAEGER_GPU_WINDOW=YES training/next_5pct_window.sh large-ce-context
+```
+
+The shared robustness corpus contains 14,565 deterministic RIR/MUSAN variants
+(26.255 h, 1,104 speakers) made from hard LibriSpeech and AMI, with clean IDs,
+human transcripts, licence, RIR, noise, and SNR provenance. It is training
+only; real AMI, MINDS/Vox, and room captures remain the robustness gates.
+The CE/KL stages also retain a 0.005 same/different-speaker contrastive loss on
+the contextual bottleneck. It preserves speaker continuity as the lexical
+objective moves the connector; it does not emit a speaker name or encode a
+barge-in policy in Gemma's content stream.
+
+The removable source pool now exceeds the requested scale without counting
+augmentation as new speech: 1,006.828 measured hours across LibriSpeech,
+deduplicated VoxPopuli, FLEURS, and AMI. The initial <=12-second curriculum
+uses only feature-cached eligible rows with explicit per-domain probability;
+the 961 hours of audiobooks cannot silently dominate the meeting/room mix.
+
+`evaluate_candidate.sh` locks medium and large to identical IDs and order,
+then records pooled integer WER edits, reference words, encoder, and adapter
+SHA on dev-clean64, MINDS/Vox591, clean360-validation128, and genuinely-new
+VoxPopuli128 plus cases12. A separately downloaded,
+official-MD5-verified test-clean lockbox contributes 2,603 clips from 40
+speakers once its medium/large features are cached. The lockbox is never a
+training source and is skipped by default; set `JAEGER_FINAL_LOCKBOX=YES` only
+for the candidate already selected on development gates.
 
 `pretrain-ctc` can load the stack connector for controlled experiments, but
 CTC fine-tuning the selected checkpoint is measured and rejected. With human

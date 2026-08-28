@@ -57,6 +57,8 @@ def run_one(session, meta, audio, voice: str, speed: float, out: Path,
 
 def main() -> int:
     import numpy as np
+    from jaeger_agent_omni.model_catalog import (
+        front_end_choices, resolve_front_end)
 
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--wav", help="spoken question")
@@ -69,9 +71,9 @@ def main() -> int:
                     choices=("kokoro", "token2wav"))
     ap.add_argument("--ref", help="reference clip to clone (token2wav)")
     ap.add_argument("--model", default=MODEL)
-    ap.add_argument("--front-end", default="tower",
-                    choices=("tower", "stock"),
-                    help="native Gemma ear or paired stock Whisper medium ear")
+    ap.add_argument("--front-end", default="gemma-native",
+                    choices=front_end_choices(),
+                    help="canonical Jaeger audio-ear identity")
     ap.add_argument("--adapter", default=None,
                     help="stock node/checkpoint override")
     ap.add_argument("--out", default="reply.wav")
@@ -110,9 +112,10 @@ def main() -> int:
         return 0
 
     if a.ask:
-        if a.front_end == "stock":
+        if resolve_front_end(a.front_end, a.adapter).engine == "stock":
             raise SystemExit(
-                "--ask is a text control; use --front-end tower or provide audio")
+                "--ask is a text control; use --front-end gemma-native or "
+                "provide audio")
         session.reset()
         session.open_turn()
         session.feed_text(a.ask)

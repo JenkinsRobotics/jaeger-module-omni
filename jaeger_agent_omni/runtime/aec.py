@@ -280,9 +280,9 @@ class EchoAwareBargeIn:
     """
 
     def __init__(self, sample_rate: int, speech_rms: float,
-                 warmup_ms: float = 250.0, confirm_ms: float = 80.0,
+                 warmup_ms: float = 500.0, confirm_ms: float = 80.0,
                  echo_correlation: float = 0.45,
-                 residual_echo_correlation: float = 0.75,
+                 residual_echo_correlation: float = 0.35,
                  residual_margin: float = 1.1):
         self.sample_rate = int(sample_rate)
         self.speech_rms = float(speech_rms)
@@ -316,8 +316,12 @@ class EchoAwareBargeIn:
         # near-end voice dilutes raw/reference coherence.  Searching the
         # residual itself can spuriously match some unrelated speech elsewhere
         # in the half-second reference history.
+        # Echo remains coherent with the known playback both before and after
+        # cancellation.  Independent near speech often leaves one accidental
+        # correlation high, but not both; treating either one alone as echo
+        # delays real interruptions well into an utterance.
         correlated = (
-            aec.raw_reference_correlation >= self.echo_correlation or
+            aec.raw_reference_correlation >= self.echo_correlation and
             aec.residual_reference_correlation >=
             self.residual_echo_correlation)
         # During filter convergence, learn the room's residual echo envelope

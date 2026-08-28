@@ -1,0 +1,431 @@
+{
+  "adapter": "nodes/jaegeromni-41m-medium/weights/adapter.npz",
+  "split": "mindsvox_validation",
+  "adapter_sha256": "a7f96bfb889866f75df7b838f84aae368a56ab10f6469e766511d700e32fe13a",
+  "encoder": "openai/whisper-medium",
+  "evaluation_mode": "free_running_generation",
+  "teacher_forced": false,
+  "input_handoff": "audio_embeddings_no_transcript",
+  "id_file": "/Users/jonathanjenkins/models/jaeger-training-data/whisper-medium-qualified-v1/minds14_validation/gold_under1.jsonl",
+  "source_prefix": null,
+  "n": 69,
+  "wer": 0.03533026113671275,
+  "edits": 23,
+  "reference_words": 651,
+  "rows": [
+    {
+      "id": "minds14:en-US:en-US~JOINT_ACCOUNT/602bae7a5f67b421554f64b4.wav",
+      "reference": "how do i set up a joint account",
+      "hypothesis": "how do i set up a joint account",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-US:en-US~BALANCE/602baca4963e11ccd901cdb7.wav",
+      "reference": "show me my account balance",
+      "hypothesis": "show me my account balance",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-US:en-US~BALANCE/602b98135f67b421554f636c.wav",
+      "reference": "i would like to know the amount in my current account",
+      "hypothesis": "i would like to know the amount in my current account",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-US:en-US~PAY_BILL/602bad1fbb1e6d0fbce921e3.wav",
+      "reference": "i have to pay my bill",
+      "hypothesis": "payment i have to pay my bill",
+      "wer": 0.16666666666666666
+    },
+    {
+      "id": "minds14:en-US:en-US~PAY_BILL/602bac65bb1e6d0fbce921c8.wav",
+      "reference": "i'd like to pay my electricity bill",
+      "hypothesis": "i'd like to pay my electricity bill",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-US:en-US~APP_ERROR/602ba2dabb1e6d0fbce92004.wav",
+      "reference": "my transactions aren't loading",
+      "hypothesis": "my transactions aren't loading",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-US:en-US~APP_ERROR/602ba9ddbb1e6d0fbce9213e.wav",
+      "reference": "the app is not working",
+      "hypothesis": "the app is not working",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-US:en-US~ADDRESS/602bae3cbb1e6d0fbce92246.wav",
+      "reference": "i want to change my address",
+      "hypothesis": "i want to change my address",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-US:en-US~DIRECT_DEBIT/602baabbbb1e6d0fbce9216f.wav",
+      "reference": "i'd like to cancel a direct debit",
+      "hypothesis": "i'd like to cancel a direct debit",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-US:en-US~HIGH_VALUE_PAYMENT/602baf9a5f67b421554f64da.wav",
+      "reference": "i want to make a large payment and i need a confirmation code",
+      "hypothesis": "i want to make a large payment and i need a confirmation code",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-GB:en-GB~PAY_BILL/60268e67dc3604f481bcb7c5.wav",
+      "reference": "i need to make a payment",
+      "hypothesis": "i need to make a payment",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-GB:en-GB~PAY_BILL/60268ff7cfa37e1cf217b128.wav",
+      "reference": "i have to make a payment",
+      "hypothesis": "i have to make a payment",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-GB:en-GB~FREEZE/60268f5fdc3604f481bcb864.wav",
+      "reference": "i need to freeze my card",
+      "hypothesis": "i need to freeze my card",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-GB:en-GB~APP_ERROR/60268e19c7abb7f832138ac4.wav",
+      "reference": "hi my bank app isn't working is there a technical issue or can you help me fix it thank you",
+      "hypothesis": "hi my bank app isn't working is there a technical issue or can you help me fix it thank you",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-GB:en-GB~ADDRESS/60268b50c7abb7f8321388cf.wav",
+      "reference": "i'd like to change my address please",
+      "hypothesis": "i'd like to change my address please",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-GB:en-GB~ADDRESS/60268da3c7abb7f832138a69.wav",
+      "reference": "i want to change my bank address",
+      "hypothesis": "i want to change my bank address",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-GB:en-GB~ADDRESS/60268dc4c7abb7f832138a84.wav",
+      "reference": "hello i have just recently moved house and i would like to change my address",
+      "hypothesis": "hello i have just recently moved house and i would like to change my address",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-GB:en-GB~ATM_LIMIT/60268c42c7abb7f832138971.wav",
+      "reference": "what is the maximum amount that i can withdraw from an atm",
+      "hypothesis": "what is the maximum amount that i can withdraw from an atm",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-GB:en-GB~ATM_LIMIT/60268fd9c7abb7f832138d63.wav",
+      "reference": "hi i was just wondering what is the maximum limit for withdrawal of cash at the atm and i was wondering whether i can increase the withdrawal limit from the standard price",
+      "hypothesis": "hi i am i was just wondering what is the maximum limit for withdrawal of cash at the atm and i was wondering whether i can increase the withdrawal limit from the standard price",
+      "wer": 0.0625
+    },
+    {
+      "id": "minds14:en-GB:en-GB~ATM_LIMIT/6026897acfa37e1cf217b06b.wav",
+      "reference": "i wonder what my limit at the atm is",
+      "hypothesis": "i wonder what my limit at the a t m is",
+      "wer": 0.3333333333333333
+    },
+    {
+      "id": "minds14:en-GB:en-GB~ABROAD/60268d1bc7abb7f832138a01.wav",
+      "reference": "do i need to do anything special to use my card abroad",
+      "hypothesis": "do i need anything special to use my card abroad",
+      "wer": 0.16666666666666666
+    },
+    {
+      "id": "minds14:en-GB:en-GB~JOINT_ACCOUNT/60268ffecfa37e1cf217b12e.wav",
+      "reference": "can you help me set up a joint account",
+      "hypothesis": "can you help me set up a joint account",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-GB:en-GB~JOINT_ACCOUNT/60268ffcc7abb7f832138dbb.wav",
+      "reference": "how do i set up a joint account with my partner",
+      "hypothesis": "how do i set up a joint account with my partner",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-GB:en-GB~JOINT_ACCOUNT/60268f68c7abb7f832138c51.wav",
+      "reference": "i'd like to set up a joint bank account",
+      "hypothesis": "i'd like to set up a joint bank account",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-GB:en-GB~BALANCE/60269156dc3604f481bcb8fc.wav",
+      "reference": "show me my account balance",
+      "hypothesis": "show me my account balance",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-GB:en-GB~BALANCE/60268e26dc3604f481bcb797.wav",
+      "reference": "what is my current account balance",
+      "hypothesis": "what is my current account balance",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-GB:en-GB~CARD_ISSUES/60268f52dc3604f481bcb85a.wav",
+      "reference": "why is my card not working",
+      "hypothesis": "why is my toad not working",
+      "wer": 0.16666666666666666
+    },
+    {
+      "id": "minds14:en-GB:en-GB~BUSINESS_LOAN/60268f1fc7abb7f832138bc0.wav",
+      "reference": "i'm calling about a business loan",
+      "hypothesis": "I'm calling about a business loan",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-GB:en-GB~BUSINESS_LOAN/60268b63c7abb7f8321388de.wav",
+      "reference": "information request for new business loan",
+      "hypothesis": "information request for new business loan",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-GB:en-GB~DIRECT_DEBIT/60268f78c7abb7f832138c7e.wav",
+      "reference": "i want to return a direct debit",
+      "hypothesis": "i want to return a directive",
+      "wer": 0.2857142857142857
+    },
+    {
+      "id": "minds14:en-GB:en-GB~DIRECT_DEBIT/6026901dc7abb7f832138df4.wav",
+      "reference": "show me my direct debit",
+      "hypothesis": "show me my direct debit",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-GB:en-GB~LATEST_TRANSACTIONS/6026900fc7abb7f832138de6.wav",
+      "reference": "i would like to see my latest transactions please so that i can verify them",
+      "hypothesis": "i would like to see my latest transactions please so that i can verify them",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-GB:en-GB~LATEST_TRANSACTIONS/60268fe1c7abb7f832138d77.wav",
+      "reference": "show me a list of my recent transactions",
+      "hypothesis": "show me a list of my recent transactions",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-GB:en-GB~LATEST_TRANSACTIONS/60269013c7abb7f832138def.wav",
+      "reference": "show me my most recent transactions",
+      "hypothesis": "show me my most recent transactions",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-GB:en-GB~LATEST_TRANSACTIONS/60269027c7abb7f832138dfc.wav",
+      "reference": "can you tell me what the last payment is for please",
+      "hypothesis": "can you tell me what the last payment is for please",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-GB:en-GB~CASH_DEPOSIT/60268fb8cfa37e1cf217b10c.wav",
+      "reference": "please can i deposit money into my account",
+      "hypothesis": "please can i deposit money into my account",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-GB:en-GB~CASH_DEPOSIT/60268f73c7abb7f832138c6d.wav",
+      "reference": "deposit money",
+      "hypothesis": "deposit money",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-GB:en-GB~CASH_DEPOSIT/60268f70dc3604f481bcb86d.wav",
+      "reference": "hi i'd like to make a deposit into my account how can i do that",
+      "hypothesis": "hi i like to make a deposit into my account how can i do that",
+      "wer": 0.06666666666666667
+    },
+    {
+      "id": "minds14:en-AU:en-AU~PAY_BILL/response_10.wav",
+      "reference": "hello how do i make a payment using bpay",
+      "hypothesis": "hello how do i make a payment using depay",
+      "wer": 0.1111111111111111
+    },
+    {
+      "id": "minds14:en-AU:en-AU~PAY_BILL/response_48.wav",
+      "reference": "make payment",
+      "hypothesis": "make payment",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-AU:en-AU~FREEZE/response_47.wav",
+      "reference": "please block my card",
+      "hypothesis": "please block my card",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-AU:en-AU~APP_ERROR/response_5.wav",
+      "reference": "the app isn't loading properly it is not loading my new account balance",
+      "hypothesis": "the app isn't loading properly it is not um loading my new account balance",
+      "wer": 0.07692307692307693
+    },
+    {
+      "id": "minds14:en-AU:en-AU~APP_ERROR/response_3.wav",
+      "reference": "i'm having difficulties loading my account from the app",
+      "hypothesis": "i'm having difficulties loading my account from the app",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-AU:en-AU~ATM_LIMIT/response_20.wav",
+      "reference": "cash can i withdraw at an atm",
+      "hypothesis": "cash can i withdraw at an atm",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-AU:en-AU~ATM_LIMIT/response_24.wav",
+      "reference": "how much in total can i withdraw from the atm",
+      "hypothesis": "how much in total can i withdraw from the atm",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-AU:en-AU~ATM_LIMIT/response_25.wav",
+      "reference": "what is the maximum amount of money i can withdraw from the atm",
+      "hypothesis": "what is the maximum amount of money i can withdraw from the atm",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-AU:en-AU~ADDRESS/response_29.wav",
+      "reference": "i want to change my address",
+      "hypothesis": "i want to change my address",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-AU:en-AU~ADDRESS/response_39.wav",
+      "reference": "hello i'm looking to change my address how would i go about changing this",
+      "hypothesis": "hello i'm looking to change my address how would i go about changing this",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-AU:en-AU~ADDRESS/response_42.wav",
+      "reference": "my address",
+      "hypothesis": "my address",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-AU:en-AU~ADDRESS/response_27.wav",
+      "reference": "i want to change my address",
+      "hypothesis": "though i want to change my address",
+      "wer": 0.16666666666666666
+    },
+    {
+      "id": "minds14:en-AU:en-AU~ABROAD/CA9f4ad3056ee9c6bfb84ccf50dc21bfa4_8.wav",
+      "reference": "i need to use my card when i'm going overseas",
+      "hypothesis": "i need to use my card when i'm going overseas",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-AU:en-AU~ABROAD/CA63219acaee54a906a4522e1536f3ce36_2.wav",
+      "reference": "i need my card to work abroad",
+      "hypothesis": "i need my card to work abroad",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-AU:en-AU~JOINT_ACCOUNT/response_29.wav",
+      "reference": "how can i set up a joint account",
+      "hypothesis": "how can i sit up a joint account",
+      "wer": 0.125
+    },
+    {
+      "id": "minds14:en-AU:en-AU~JOINT_ACCOUNT/response_44.wav",
+      "reference": "hi for my savings account i want to make that a joint account with my wife please and i just want to see how i can do that",
+      "hypothesis": "hi i'm for my savings account i want to make that a joint account with my wife please and i just want to see how i can do that",
+      "wer": 0.03571428571428571
+    },
+    {
+      "id": "minds14:en-AU:en-AU~JOINT_ACCOUNT/response_24.wav",
+      "reference": "i would like to set up a joint account with my wife",
+      "hypothesis": "i would like to set up a joint account with my wife",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-AU:en-AU~BALANCE/CAd3a9108c5cace09ee64a684a5d6075cc_1.wav",
+      "reference": "i would like to get my account balance",
+      "hypothesis": "i would like to get my account balance",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-AU:en-AU~BALANCE/response_38.wav",
+      "reference": "hey i just want to know what's my current account balance at the moment",
+      "hypothesis": "aye i just want to know what's my current account balance at the moment",
+      "wer": 0.07142857142857142
+    },
+    {
+      "id": "minds14:en-AU:en-AU~BALANCE/response_3.wav",
+      "reference": "what is my account balance",
+      "hypothesis": "what is my account balance",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-AU:en-AU~BALANCE/response_40.wav",
+      "reference": "show me my account balance please",
+      "hypothesis": "show me my account balance please",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-AU:en-AU~BALANCE/response_43.wav",
+      "reference": "hello i'm just inquiring about my current bank balance could you tell me what my current account balance is showing",
+      "hypothesis": "hello i'm just inquiring about my current bank balance could you tell me what my current account balance is showing",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-AU:en-AU~CARD_ISSUES/response_39.wav",
+      "reference": "so i've got a problem with my bank card whenever i try and tap it it stopped working it's not working anymore and i want to find out what the problem is",
+      "hypothesis": "so i've got a problem with my bank card whenever i try and tap it it stopped working it's not working anymore and i want to find out what the problem is",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-AU:en-AU~CARD_ISSUES/response_23.wav",
+      "reference": "hello i was wondering if you could please help me with my card",
+      "hypothesis": "hello i was wondering if you could please help move my cot",
+      "wer": 0.23076923076923078
+    },
+    {
+      "id": "minds14:en-AU:en-AU~BUSINESS_LOAN/response_1.wav",
+      "reference": "i want to apply for a business loan",
+      "hypothesis": "i want to apply for a business loan",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-AU:en-AU~LATEST_TRANSACTIONS/response_43.wav",
+      "reference": "i need to clarify this most recent transaction",
+      "hypothesis": "i need to clarify this most recent transaction",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-AU:en-AU~LATEST_TRANSACTIONS/CA9941e4f1775407ad8464d950241d76ab_2.wav",
+      "reference": "calling about recent transactions",
+      "hypothesis": "uh calling about recent transactions",
+      "wer": 0.25
+    },
+    {
+      "id": "minds14:en-AU:en-AU~DIRECT_DEBIT/response_23.wav",
+      "reference": "show me my direct debits please",
+      "hypothesis": "show me my direct debits please",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-AU:en-AU~DIRECT_DEBIT/response_27.wav",
+      "reference": "how do i set up a direct debit",
+      "hypothesis": "how do i set up a direct edit",
+      "wer": 0.125
+    },
+    {
+      "id": "minds14:en-AU:en-AU~DIRECT_DEBIT/response_26.wav",
+      "reference": "can you please tell me about direct debits",
+      "hypothesis": "can you please tell me about direct debits",
+      "wer": 0.0
+    },
+    {
+      "id": "minds14:en-AU:en-AU~CASH_DEPOSIT/response_34.wav",
+      "reference": "could you please help me to deposit some money into my account",
+      "hypothesis": "could you please help me to deposit some money into my account",
+      "wer": 0.0
+    }
+  ]
+}

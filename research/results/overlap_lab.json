@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "kind": "jaeger_overlap_lab",
+  "sample_rate": 16000,
+  "sources": [
+    "/Users/jonathanjenkins/models/jaeger-training-audio/open-corpora-v1/librispeech/LibriSpeech/train-clean-360/2618/138042/2618-138042-0066.flac",
+    "/Users/jonathanjenkins/models/jaeger-training-audio/open-corpora-v1/librispeech/LibriSpeech/train-clean-360/5092/28465/5092-28465-0084.flac",
+    "/Users/jonathanjenkins/models/jaeger-training-audio/open-corpora-v1/librispeech/LibriSpeech/train-clean-360/3157/119295/3157-119295-0009.flac"
+  ],
+  "segments": [
+    {
+      "segment": 0,
+      "start_sample": 0,
+      "end_sample": 32000,
+      "start_s": 0.0,
+      "end_s": 2.0,
+      "active_speakers": [
+        "A"
+      ],
+      "overlap": false
+    },
+    {
+      "segment": 1,
+      "start_sample": 32000,
+      "end_sample": 64000,
+      "start_s": 2.0,
+      "end_s": 4.0,
+      "active_speakers": [
+        "B"
+      ],
+      "overlap": false
+    },
+    {
+      "segment": 2,
+      "start_sample": 64000,
+      "end_sample": 96000,
+      "start_s": 4.0,
+      "end_s": 6.0,
+      "active_speakers": [
+        "A"
+      ],
+      "overlap": false
+    },
+    {
+      "segment": 3,
+      "start_sample": 96000,
+      "end_sample": 128000,
+      "start_s": 6.0,
+      "end_s": 8.0,
+      "active_speakers": [
+        "A",
+        "B"
+      ],
+      "overlap": true
+    },
+    {
+      "segment": 4,
+      "start_sample": 128000,
+      "end_sample": 160000,
+      "start_s": 8.0,
+      "end_s": 10.0,
+      "active_speakers": [
+        "B"
+      ],
+      "overlap": false
+    },
+    {
+      "segment": 5,
+      "start_sample": 160000,
+      "end_sample": 192000,
+      "start_s": 10.0,
+      "end_s": 12.0,
+      "active_speakers": [
+        "A"
+      ],
+      "overlap": false
+    },
+    {
+      "segment": 6,
+      "start_sample": 192000,
+      "end_sample": 224000,
+      "start_s": 12.0,
+      "end_s": 14.0,
+      "active_speakers": [
+        "C"
+      ],
+      "overlap": false
+    },
+    {
+      "segment": 7,
+      "start_sample": 224000,
+      "end_sample": 256000,
+      "start_s": 14.0,
+      "end_s": 16.0,
+      "active_speakers": [
+        "B",
+        "C"
+      ],
+      "overlap": true
+    },
+    {
+      "segment": 8,
+      "start_sample": 256000,
+      "end_sample": 288000,
+      "start_s": 16.0,
+      "end_s": 18.0,
+      "active_speakers": [
+        "C"
+      ],
+      "overlap": false
+    }
+  ],
+  "assignments": [
+    {
+      "segment": 0,
+      "true_speaker": "A",
+      "predicted_speaker": "A"
+    },
+    {
+      "segment": 1,
+      "true_speaker": "B",
+      "predicted_speaker": "B"
+    },
+    {
+      "segment": 2,
+      "true_speaker": "A",
+      "predicted_speaker": "C"
+    },
+    {
+      "segment": 4,
+      "true_speaker": "B",
+      "predicted_speaker": "B"
+    },
+    {
+      "segment": 5,
+      "true_speaker": "A",
+      "predicted_speaker": "C"
+    },
+    {
+      "segment": 6,
+      "true_speaker": "C",
+      "predicted_speaker": "B"
+    },
+    {
+      "segment": 8,
+      "true_speaker": "C",
+      "predicted_speaker": "B"
+    }
+  ],
+  "continuity": {
+    "turns": 7,
+    "continuity_accuracy": 0.8571428571428571,
+    "distinct_true_speakers": 3,
+    "distinct_predicted_speakers": 3,
+    "separated_identities": false,
+    "dominant_mapping": {
+      "A": "C",
+      "B": "B",
+      "C": "B"
+    }
+  },
+  "mixture_matches_stems": true,
+  "overlap_seconds": 4.0,
+  "word_level_overlap_attribution_supported": false,
+  "passed_turn_level_identity": false
+}

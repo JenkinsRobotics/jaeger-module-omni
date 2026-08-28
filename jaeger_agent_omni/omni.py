@@ -56,20 +56,22 @@ DUAL_SYSTEM = (
     "question as the answer."
 )
 MODEL = "/Users/jonathanjenkins/models/gemma-4-e4b-it-mlx-full"
-STOCK = (Path(__file__).resolve().parent.parent / "nodes"
-         / "stock-whisper-medium-cekl-blend50")
-
-
-def build(model_path: str = MODEL, front_end: str = "tower", adapter_path=None,
+def build(model_path: str = MODEL, front_end: str = "gemma-native",
+          adapter_path=None,
           system: str | None = SYSTEM):
     """Load the one graph. Returns (session, meta)."""
-    if front_end == "stock":
+    from jaeger_agent_omni.model_catalog import resolve_front_end
+
+    selection = resolve_front_end(front_end, adapter_path)
+    if selection.engine == "stock":
         from jaeger_agent_omni.runtime.stock_whisper import (
             DEFAULT_GEMMA, StockWhisperGemmaSession)
-        selected_adapter = Path(adapter_path or STOCK)
+        selected_adapter = selection.node
+        assert selected_adapter is not None
         if not selected_adapter.exists():
             raise SystemExit(
-                "--front-end stock needs a trained adapter (--adapter PATH).")
+                f"{selection.model_id} needs its paired node: "
+                f"{selected_adapter}")
         stock_model = DEFAULT_GEMMA if model_path == MODEL else model_path
         if selected_adapter.is_dir():
             from jaeger_agent_omni.model_nodes import (
@@ -85,7 +87,9 @@ def build(model_path: str = MODEL, front_end: str = "tower", adapter_path=None,
         configured_eos = getattr(session.tokenizer, "eos_token_id", 1)
         eos = {1, 106, int(configured_eos)}
         return session, {
-            "model": str(stock_model), "front_end": front_end,
+            "model": str(stock_model), "front_end": selection.engine,
+            "model_id": selection.model_id, "model_name": selection.label,
+            "checkpoint": selection.checkpoint,
             "adapter": str(session.adapter_path),
             "node": session.node.node_id if session.node else None,
             "eos": eos,
@@ -105,7 +109,10 @@ def build(model_path: str = MODEL, front_end: str = "tower", adapter_path=None,
                          config=cfg, system=system)
     eos = cfg.get("eos_token_id", proc.tokenizer.eos_token_id)
     eos = {int(x) for x in (eos if isinstance(eos, list) else [eos])}
-    return s, {"model": model_path, "front_end": front_end, "eos": eos}
+    return s, {"model": model_path, "front_end": selection.engine,
+               "model_id": selection.model_id,
+               "model_name": selection.label,
+               "checkpoint": selection.checkpoint, "eos": eos}
 
 
 def one_turn(s, meta, audio, max_tokens: int = 48,
@@ -289,7 +296,8 @@ def bench(cases_dir: str, model_path: str, front_end: str, adapter_path=None,
         transcript_wer, transcript_words = corpus_wer([
             (case["transcript"], row["transcript"])
             for case, row in zip(cases, rows)])
-    print(f"\nomni [{front_end}]  {n}/{len(rows)} = {100*n/len(rows):.0f}%  "
+    print(f"\nomni [{meta['model_id']}]  {n}/{len(rows)} = "
+          f"{100*n/len(rows):.0f}%  "
           f"median {med:.0f} ms")
     if transcript_wer is not None:
         print(f"generated transcript WER {100*transcript_wer:.2f}% "
@@ -299,7 +307,11 @@ def bench(cases_dir: str, model_path: str, front_end: str, adapter_path=None,
           .replace('%%', '%'))
     out = Path(out_path)
     out.parent.mkdir(parents=True, exist_ok=True)
-    payload = {"front_end": front_end, "dual_output": dual_output,
+    payload = {"front_end": meta["front_end"],
+               "model_id": meta["model_id"],
+               "model_name": meta["model_name"],
+               "checkpoint": meta["checkpoint"],
+               "dual_output": dual_output,
                "correct": n, "n": len(rows), "median_ms": med,
                "rows": rows}
     if transcript_wer is not None:
@@ -336,13 +348,15 @@ def selfcheck() -> int:
 
 
 def main() -> int:
+    from jaeger_agent_omni.model_catalog import front_end_choices
+
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--wav")
     ap.add_argument("--bench")
     ap.add_argument("--duplex", action="store_true")
     ap.add_argument("--seconds", type=float, default=20.0)
-    ap.add_argument("--front-end", default="tower",
-                    choices=("tower", "stock"))
+    ap.add_argument("--front-end", default="gemma-native",
+                    choices=front_end_choices())
     ap.add_argument("--adapter", default=None,
                     help="adapter checkpoint for the stock front end")
     ap.add_argument("--model", default=MODEL)
@@ -357,7 +371,7 @@ def main() -> int:
                     default="training/runs/gemma_talker_conditioner.pt")
     ap.add_argument("--selfcheck", action="store_true")
     a = ap.parse_args()
-    adapter_path = a.adapter or str(STOCK)
+    adapter_path = a.adapter
 
     if a.selfcheck:
         return selfcheck()

@@ -9,6 +9,8 @@
         "campplus-speaker"
       ],
       "disabled": [
+        "stock-whisper-medium-cleanroom-ctx93h-step2000",
+        "jaegeromni-41m-medium",
         "stock-whisper-medium-cekl-blend50",
         "stock-whisper-large-v3-turbo50m",
         "whisper-medium-stt",
@@ -24,6 +26,40 @@
         "campplus-speaker"
       ],
       "disabled": [
+        "stock-whisper-medium-cleanroom-ctx93h-step2000",
+        "jaegeromni-41m-medium",
+        "stock-whisper-large-v3-turbo50m",
+        "whisper-medium-stt",
+        "whisper-large-v3-turbo-stt",
+        "gemma-minicpm-hidden-talker"
+      ]
+    },
+    "gemmaomni-41m-medium": {
+      "enabled": [
+        "stock-whisper-medium-cleanroom-ctx93h-step2000",
+        "gemma-4-e4b-cognition",
+        "kokoro-tts",
+        "campplus-speaker"
+      ],
+      "disabled": [
+        "jaegeromni-41m-medium",
+        "stock-whisper-medium-cekl-blend50",
+        "stock-whisper-large-v3-turbo50m",
+        "whisper-medium-stt",
+        "whisper-large-v3-turbo-stt",
+        "gemma-minicpm-hidden-talker"
+      ]
+    },
+    "jaegeromni-41m-medium": {
+      "enabled": [
+        "jaegeromni-41m-medium",
+        "gemma-4-e4b-cognition",
+        "kokoro-tts",
+        "campplus-speaker"
+      ],
+      "disabled": [
+        "stock-whisper-medium-cleanroom-ctx93h-step2000",
+        "stock-whisper-medium-cekl-blend50",
         "stock-whisper-large-v3-turbo50m",
         "whisper-medium-stt",
         "whisper-large-v3-turbo-stt",
@@ -38,6 +74,8 @@
         "campplus-speaker"
       ],
       "disabled": [
+        "stock-whisper-medium-cleanroom-ctx93h-step2000",
+        "jaegeromni-41m-medium",
         "stock-whisper-medium-cekl-blend50",
         "stock-whisper-large-v3-turbo50m",
         "whisper-medium-stt",
@@ -51,6 +89,8 @@
         "gemma-4-e4b-cognition"
       ],
       "disabled": [
+        "stock-whisper-medium-cleanroom-ctx93h-step2000",
+        "jaegeromni-41m-medium",
         "stock-whisper-medium-cekl-blend50",
         "whisper-medium-stt",
         "whisper-large-v3-turbo-stt",
@@ -66,6 +106,8 @@
         "campplus-speaker"
       ],
       "disabled": [
+        "stock-whisper-medium-cleanroom-ctx93h-step2000",
+        "jaegeromni-41m-medium",
         "stock-whisper-medium-cekl-blend50",
         "stock-whisper-large-v3-turbo50m",
         "whisper-medium-stt",

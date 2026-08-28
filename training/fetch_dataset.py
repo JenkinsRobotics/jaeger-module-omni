@@ -204,7 +204,8 @@ def fetch(corpus: Corpus, out, *, hours=None, limit=None, skip_hours=0.0,
                      confidence=1.0,          # human transcript: ground truth
                      session_id=corpus.key,
                      meta={"source": corpus.hf_id, "tier": corpus.tier,
-                           "speaker": str(sample.get("speaker_id", ""))})
+                           "speaker": str(sample.get("speaker_id", "")),
+                           "license": corpus.licence})
         written += 1
         seconds += dur
 

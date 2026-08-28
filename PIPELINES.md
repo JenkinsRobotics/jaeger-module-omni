@@ -1,28 +1,43 @@
 # Current pipeline roster
 
-This is the canonical list. Historical measurements remain in `STATUS.md` and
-`research/`, but they are not selectable production pipelines.
+This is the canonical active-development list. Historical measurements remain
+in `STATUS.md` and `research/`; the rejected Large connector is selectable for
+diagnostics but is not a production candidate.
 
-| Pipeline | Role | Measured quality | Speech out | Status |
-| --- | --- | --- | --- | --- |
-| Gemma native audio tower | live assistant/demo | 10/12 cases12; 363 ms text median | Kokoro clause streaming; 693--1,275 ms measured END-to-audio medians | **Live default** |
-| Stock Whisper-medium -> clean-room 41M context adapter -> Gemma | Qwen-free clean-speech leader | **12/12**, 572 ms; **0.00%** Gemma-generated transcript WER/67 words; 3.234% instructed WER on matched 2,041 words | same Kokoro output; selectable in live/GUI | **Accuracy candidate; room gate pending** |
-| Stock Whisper-medium -> owned 50M connector -> Gemma | Qwen-free production candidate | 11/12; 319 ms; 11.20% dev-clean64; 17.86% MINDS/Vox591; 13.51% clean-360val128; 12.56% novel-Vox128 | same Kokoro clause-streamed output; selectable in live/GUI | **Candidate; positive-room gate pending** |
-| Stock Whisper-medium -> AMI-balanced 50M connector -> Gemma | meeting-domain research | 49.93% AMI64 versus 53.79% general baseline; 10/12; one clean error worse | not production gated | **Specialist only** |
-| MiniCPM-tuned Whisper -> sparse connector -> Gemma | transcript/meeting observer | 13.61% on its fixed 977-word observer gate | minutes/output path, not assistant speech | **Retained observer** |
-| MiniCPM-o 4.5 native | external reference | 12/12; 525 ms to text; 1,380 ms to speech | native | **Reference, not Jaeger runtime** |
-| Whisper/`pywhispercpp` -> text -> Gemma -> Kokoro | shipped sequential reference | 12/12; approximately 0.5--1% reported STT WER | Kokoro | **Reference; violates omni text-free premise** |
+The generated, checkpoint-pinned comparison against MiniCPM-o 4.5 is
+[`PARITY_SCORECARD.md`](PARITY_SCORECARD.md). Regenerate it after new fixed
+corpus or duplex reports; never copy a best value from another checkpoint.
+
+| Correct model name | What it is | Current results | Status |
+| --- | --- | --- | --- |
+| **Gemma Native** | Gemma's built-in audio tower | 10/12, 363 ms | Duplex-validated fallback |
+| **GemmaOmni 41M Medium** | Exact frozen GemmaOmni checkpoint currently imported here | **12/12**, 4.92% clean, 34.47% AMI, 501 ms independent recheck | Best general accuracy; five-minute gate pending |
+| **JaegerOmni 41M Medium** | 10% interpolation from the frozen import toward Jaeger's retained room continuation | **3.30%** on the source-qualified one-to-one conversation gate; **12/12**, 560 ms; **3.97%** untouched test-clean/51,311 words | Production 1:1 candidate; physical-room gate pending |
+| **JaegerOmni 50M Medium** | Jaeger's independently developed Medium connector | 11/12, 11.20% clean, 47.85% AMI, **319 ms** | Fastest viable adapter |
+| **JaegerOmni 50M Large** | Large-v3-turbo-paired connector, exactly 52,768,768 deployed parameters | 1/12, 17.80% clean, 413 ms | Transfer failed; active experimental branch |
+
+MiniCPM-o 4.5, the tuned-Whisper observer, the Whisper text cascade, and the
+hidden-state Talker remain references or downstream components. They are not
+additional active Jaeger audio-model identities.
 
 ## What is actually selected
 
-- `demo.py` and `jaeger_agent_omni.live` retain the Gemma native tower as the
-  rollback default and accept `--front-end stock`.
-- `omni.py --front-end stock`, `jaeger_agent_omni.demo --front-end stock`, and
-  the full-duplex GUI's Whisper selector use the paired, pinned node at
-  `nodes/stock-whisper-medium-cekl-blend50`.
-- The full-duplex GUI also exposes the independent clean-room node at
-  `nodes/stock-whisper-medium-cleanroom-ctx93h-step2000`; CLI callers select it
-  with `--front-end stock --adapter NODE_DIR`.
+- The full-duplex GUI and its exact-worker self-test expose all five canonical
+  identities. `tower`, `stock`, and `cleanroom` remain compatibility aliases
+  for Gemma Native, JaegerOmni 50M Medium, and GemmaOmni 41M Medium.
+- JaegerOmni 41M Medium is independently packaged at
+  `nodes/jaegeromni-41m-medium`; it does not overwrite the frozen import. Its
+  10% room blend was selected without cases12 and passed five corpus gates
+  without regression before scoring 3.97% on the untouched lockbox.
+- The final pre-production window kept that checkpoint frozen. On 69 English
+  MINDS14 conversational clips where matched Whisper-medium is exact after
+  standard normalization, it scores 22 edits / 667 words = **3.30% WER**.
+  It independently rechecks at **12/12** spoken answers and 560 ms median.
+  Four full/partial refinements, three independent seed repeats, and checkpoint
+  soups either tied that conversation score or regressed another locked gate;
+  none replaced the packaged SHA `a7f96bfb8898`.
+- JaegerOmni 50M Large remains clearly marked experimental and is never
+  selected by a non-diagnostic node profile.
 - The stock live session now owns a persistent Gemma KV cache across turns,
   exact abandoned-reply rewind, monotonic soak counters, full-path warmup, and
   encoder-only Whisper loading. Continuous speech is prefilled in bounded
@@ -36,15 +51,16 @@ This is the canonical list. Historical measurements remain in `STATUS.md` and
 
 The clean-room stock node now matches MiniCPM's 12/12 on the shared question
 suite, while the retained 50M node is 11/12 and the native tower is 10/12.
-This is answer-quality parity, not full production parity: the clean-room node
-has not passed the independent lockboxes or live-room gate and its 572 ms
-median is slower than MiniCPM's measured 525 ms to text. Jaeger has demonstrated a faster best
-END-to-first-audio session than MiniCPM's measured 1,380 ms speech start, but
-Jaeger's 693--1,275 ms session variance means latency superiority is not yet a
-stable claim. Jaeger does own its 50M stock-Whisper connector, source-balanced
-training path, AEC/duplex controls, speaker telemetry, and rolling Gemma
-context; those are product and extensibility advantages, not evidence of equal
-perception accuracy.
+This is answer-ear parity, not full production parity. The exact imported 41M
+checkpoint independently rechecks at 501 ms versus MiniCPM's measured 525 ms
+on the shared answer harness. That narrow speed crossover does not establish
+speech-start superiority: Jaeger's saved END-to-first-audio sessions were not
+run as a paired MiniCPM test and vary from 693--1,275 ms. The broader 32-room
+CPU AEC stress currently fails (19 false barges, 41% recall), distinct speaker
+separation fails, and the checkpoint-matched physical five-minute matrix is
+unmeasured. Jaeger's owned connectors, source-balanced training path, duplex
+controls, speaker telemetry, and rolling context are extensibility advantages,
+not evidence of complete system parity.
 
 The honest target is therefore two separate gates:
 
@@ -53,12 +69,16 @@ The honest target is therefore two separate gates:
 2. pass repeated five-minute duplex sessions with stable latency, AEC,
    speaker telemetry, and context rolls.
 
-Until both pass, MiniCPM remains the quality reference and the native Gemma
-tower remains Jaeger's live default.
+Until the physical-room phase passes, MiniCPM remains the quality reference and
+the native Gemma tower remains Jaeger's rollback/default. Select
+`jaegeromni-41m-medium` explicitly for production testing.
 
-Canonical candidate gate:
+Canonical five-model gate: [`PRODUCTION_TESTING.md`](PRODUCTION_TESTING.md).
+Current generated comparison: [`PARITY_SCORECARD.md`](PARITY_SCORECARD.md).
+One example:
 
 ```bash
-python demo.py --selftest-jaeger ROOM.wav --front-end stock --seconds 300 \
+python demo.py --selftest-jaeger ROOM.wav \
+  --front-end gemmaomni-41m-medium --seconds 300 \
   --threshold 0.20 --silence-ms 700 --cooldown 20 --max-context 6000
 ```
