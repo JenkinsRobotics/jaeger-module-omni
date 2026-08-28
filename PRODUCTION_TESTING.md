@@ -116,6 +116,23 @@ label. That is a production blocker, not a passing diarization claim. The
 tool always marks word-level overlap attribution unsupported until a separator
 and overlap-aware evaluation exist.
 
+## Exclusive latency attribution
+
+The historical 41M and 50M medians were produced by different harnesses. Run
+the prepared three-way A/B only with exclusive accelerator access:
+
+```bash
+research/run_latency_ab.sh
+```
+
+It measures Whisper encoding, adapter/audio prefill, prompt closure,
+first-token latency, remaining decode, and complete-reply latency separately.
+The middle run packs the 41M connector's three bias-free Q/K/V projections
+into one inference matrix. It is opt-in and cannot be promoted unless its
+checkpoint, answers, cases, and repetitions match the baseline and the speed
+gain repeats. The test does not solve MiniCPM's one-second cached audio prefill;
+that remains a separate streaming architecture gate.
+
 ## Record for every model
 
 - canonical model identity and adapter hash;

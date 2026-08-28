@@ -20,6 +20,7 @@ worker runs; causal incremental Whisper remains a separate measured milestone.
 from __future__ import annotations
 
 import math
+import os
 from pathlib import Path
 
 import numpy as np
@@ -396,6 +397,12 @@ class StockWhisperGemmaSession:
         self.system = system
         self.pool_step = int(values.get("pool_step", POOL_STEP))
         self.output_mode = output_mode
+        # Inference-only, mathematically equivalent QKV packing for the 41M
+        # clean-room connector. Keep it opt-in until the checkpoint-pinned
+        # latency harness verifies identical replies and a real speed gain.
+        self.fused_cleanroom_attention = (
+            architecture == ARCH_CLEANROOM_CONTEXT and
+            os.environ.get("JAEGER_FUSED_CLEANROOM_ATTN") == "1")
         self._audio: list[np.ndarray] = []
         self._features: np.ndarray | None = None
         self._metadata: list[str] = []
@@ -427,7 +434,11 @@ class StockWhisperGemmaSession:
                     hidden = int(values["hidden"][0])
                     inner.ln = nn.LayerNorm(self.input_dim)
                     inner.up = nn.Linear(self.input_dim, hidden)
-                    inner.attn = nn.MultiHeadAttention(hidden, 8)
+                    if self.fused_cleanroom_attention:
+                        inner.qkv = nn.Linear(hidden, hidden * 3, bias=False)
+                        inner.attn_out = nn.Linear(hidden, hidden, bias=False)
+                    else:
+                        inner.attn = nn.MultiHeadAttention(hidden, 8)
                     inner.ln_a = nn.LayerNorm(hidden)
                     inner.ff1 = nn.Linear(hidden, hidden * 2)
                     inner.ff2 = nn.Linear(hidden * 2, hidden)
@@ -437,14 +448,23 @@ class StockWhisperGemmaSession:
                     inner.ln.bias = mx.array(values["ln.bias"])
                     inner.up.weight = mx.array(values["up.weight"])
                     inner.up.bias = mx.array(values["up.bias"])
-                    inner.attn.query_proj.weight = mx.array(
-                        values["attn.query_proj.weight"])
-                    inner.attn.key_proj.weight = mx.array(
-                        values["attn.key_proj.weight"])
-                    inner.attn.value_proj.weight = mx.array(
-                        values["attn.value_proj.weight"])
-                    inner.attn.out_proj.weight = mx.array(
-                        values["attn.out_proj.weight"])
+                    if self.fused_cleanroom_attention:
+                        inner.qkv.weight = mx.array(np.concatenate((
+                            values["attn.query_proj.weight"],
+                            values["attn.key_proj.weight"],
+                            values["attn.value_proj.weight"],
+                        ), axis=0))
+                        inner.attn_out.weight = mx.array(
+                            values["attn.out_proj.weight"])
+                    else:
+                        inner.attn.query_proj.weight = mx.array(
+                            values["attn.query_proj.weight"])
+                        inner.attn.key_proj.weight = mx.array(
+                            values["attn.key_proj.weight"])
+                        inner.attn.value_proj.weight = mx.array(
+                            values["attn.value_proj.weight"])
+                        inner.attn.out_proj.weight = mx.array(
+                            values["attn.out_proj.weight"])
                     inner.ln_a.weight = mx.array(values["ln_a.weight"])
                     inner.ln_a.bias = mx.array(values["ln_a.bias"])
                     inner.ff1.weight = mx.array(values["ff1.weight"])
@@ -602,8 +622,27 @@ class StockWhisperGemmaSession:
                             h[:usable].reshape(-1, self.pool_step, hidden),
                             axis=1)
                     context = h[None, :]
+                    if self.fused_cleanroom_attention:
+                        query, key, value = mx.split(
+                            inner.qkv(context), 3, axis=-1)
+                        heads = 8
+                        head_dim = hidden // heads
+                        query = query.reshape(
+                            1, -1, heads, head_dim).transpose(0, 2, 1, 3)
+                        key = key.reshape(
+                            1, -1, heads, head_dim).transpose(0, 2, 1, 3)
+                        value = value.reshape(
+                            1, -1, heads, head_dim).transpose(0, 2, 1, 3)
+                        attended = mx.fast.scaled_dot_product_attention(
+                            query, key, value,
+                            scale=math.sqrt(1.0 / head_dim))
+                        attended = attended.transpose(
+                            0, 2, 1, 3).reshape(context.shape)
+                        attended = inner.attn_out(attended)
+                    else:
+                        attended = inner.attn(context, context, context)
                     context = inner.ln_a(
-                        context + inner.attn(context, context, context))
+                        context + attended)
                     context = inner.ln_f(
                         context + inner.ff2(nn.gelu(inner.ff1(context))))
                     y = inner.out(context[0])
@@ -984,6 +1023,17 @@ class StockWhisperGemmaSession:
 def selfcheck() -> None:
     assert INPUT_DIM == 1024 and OUTPUT_DIM == 2560
     assert "qwen" not in DEFAULT_WHISPER.lower()
+    # Packing three bias-free projections into one larger matrix is exact;
+    # the exclusive-GPU A/B separately proves that optimized inference keeps
+    # the real checkpoint's generated replies unchanged.
+    rng = np.random.default_rng(20260828)
+    probe_values = rng.normal(size=(5, 7)).astype(np.float32)
+    projection_weights = [
+        rng.normal(size=(11, 7)).astype(np.float32) for _ in range(3)]
+    separate = np.concatenate(
+        [probe_values @ weight.T for weight in projection_weights], axis=-1)
+    fused = probe_values @ np.concatenate(projection_weights, axis=0).T
+    assert np.allclose(separate, fused, rtol=1e-6, atol=1e-6)
     five_minute_chunks = (
         math.ceil((5 * 60 - WHISPER_WINDOW_S) /
                   (WHISPER_WINDOW_S - WHISPER_OVERLAP_S)) + 1)

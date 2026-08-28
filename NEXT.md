@@ -16,6 +16,25 @@ more Medium training until the physical-room five-minute gate runs. The broad
 43-room AEC gate has 0 false barges and 100% recall, but its 843 ms p95 still
 fails the 300 ms tail gate. The old 12-case AEC lab is not a promotion signal.
 
+2026-08-28 latency CPU preparation: the published 319 ms JaegerOmni 50M and
+560 ms JaegerOmni 41M values came from different benchmark harnesses and must
+not be treated as an architectural A/B. `research/run_latency_ab.sh` is ready
+to run the 41M baseline, an opt-in mathematically equivalent packed-QKV 41M
+runtime, and the 50M node with identical warmup, prompts, cases, repetitions,
+and per-stage timing. It also requires identical generated replies before the
+packed-QKV path can be considered. The repository GPU guard now recognizes the
+parallel GemmaOmni `eval/benchmark_suite.py`, so this A/B cannot contaminate
+that agent's active training.
+
+The MiniCPM audit identified a larger input-latency gap: MiniCPM incrementally
+encodes and prefills one-second audio chunks while the user is speaking. The
+stock Jaeger path currently buffers a short utterance until turn-end and uses
+12-second/one-second-overlap windows only for long continuous input. Stock
+Whisper and the 41M global-attention adapter are bidirectional, so a cached
+causal replacement is not a safe runtime toggle; it needs a stability/quality
+gate or streaming-specific training before previously emitted audio vectors
+can be committed to Gemma. Do not claim this feature until that gate exists.
+
 ## 1. Run physical production testing
 
 Start with the frozen candidate, never an intermediate:
