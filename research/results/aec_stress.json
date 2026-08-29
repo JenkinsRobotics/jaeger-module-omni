@@ -1,11 +1,15 @@
 {
   "cases": 43,
   "seed": 20260825,
+  "reference_mode": "wallclock",
   "detector": {
     "echo_correlation": 0.45,
     "residual_echo_correlation": 0.35,
     "residual_margin": 1.1,
-    "confirm_ms": 80.0
+    "confirm_ms": 80.0,
+    "strong_margin": 1.5,
+    "strong_attenuation_db": 2.5,
+    "strong_confirm_ms": 250.0
   },
   "callback_ms": 100,
   "echo_attenuation_median_db": 8.10931439594454,
@@ -21,7 +25,7 @@
     "detected": 43,
     "recall_percent": 100.0,
     "median_delay_ms": 188.40115379297018,
-    "p95_delay_ms": 843.0005066173569
+    "p95_delay_ms": 601.9062767512157
   },
   "rows": [
     {
@@ -62,7 +66,7 @@
       "old_false_barge": true,
       "new_false_barge": false,
       "old_delay_ms": null,
-      "new_delay_ms": 843.0005066173569
+      "new_delay_ms": 243.00050661735727
     },
     {
       "case": 4,
@@ -202,7 +206,7 @@
       "old_false_barge": true,
       "new_false_barge": false,
       "old_delay_ms": null,
-      "new_delay_ms": 1054.650974859042
+      "new_delay_ms": 254.6509748590422
     },
     {
       "case": 18,
@@ -352,7 +356,7 @@
       "old_false_barge": true,
       "new_false_barge": false,
       "old_delay_ms": null,
-      "new_delay_ms": 390.4313325300235
+      "new_delay_ms": 290.43133253002384
     },
     {
       "case": 33,
@@ -412,7 +416,7 @@
       "old_false_barge": true,
       "new_false_barge": false,
       "old_delay_ms": null,
-      "new_delay_ms": 627.1070068907641
+      "new_delay_ms": 327.10700689076424
     },
     {
       "case": 39,

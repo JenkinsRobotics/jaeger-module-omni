@@ -100,3 +100,6 @@ Full DuplexDemo App/runtime/
 # All checkpoint/port artifacts — 19 GB of weights; JSON evidence lives in
 # research/candidate_evals and research/results instead.
 artifacts/
+
+# AEC path-probe waveform dumps: room audio captures, keep local.
+research/results/aec-path-*/

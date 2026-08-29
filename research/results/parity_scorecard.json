@@ -321,7 +321,7 @@
   "system": {
     "aec": {
       "status": "behind",
-      "summary": "8.1 dB synthetic room-stress attenuation, 0/43 false, 100% recall, 843 ms p95",
+      "summary": "8.1 dB synthetic room-stress attenuation, 0/43 false, 100% recall, 602 ms p95",
       "source": "research/results/aec_stress.json"
     },
     "speaker": {

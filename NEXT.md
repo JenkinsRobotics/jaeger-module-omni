@@ -30,11 +30,21 @@ k=3 offline diarization separated the two dominant alternating recorded
 talkers in both captures (maximum centroid cosine 0.477/0.467); validate the
 small 12-second third cluster against labeled source timing, then feed stable
 speaker changes between turns. Do not claim overlapping word attribution.
-Physical AEC is still the first duplex blocker: wallclock/contiguous forced-
-playback diagnostics reached only 0.17/0.51 dB, and the unequal exposure means
-the delta is not a win. Next isolate the output path with a fixed known reply
-waveform and identical playback duration; add gradual drift resampling rather
-than promoting the two-correction contiguous run.
+
+The AEC root cause is now measured, not hypothesized
+(`research/aec_path_probe.py`): a constant 614 ms output-path delay beyond
+the 500 ms filter span, plus ~1,250 ppm capture-clock drift that no fixed
+offset can survive (offline replay shows cancellation dies when the
+reference runs >20 ms late). Echo-locked contiguous mode self-aligns onto
+the measured echo and reaches 10.5 dB coupling reduction on the
+equal-exposure fixed-waveform probe — matching the 10.3 dB offline ideal —
+while wallclock varies 0--7.8 dB run-to-run. Drift resampling is demoted:
+drift is real but the servo already absorbs it. Next: rerun the 90-second
+interactive diagnostic with `--aec-reference-mode contiguous`, then a fresh
+physical raw-vs-fed audit; promotion still requires the 43-room gate
+(now 0/43 false, 43/43 recall, 188/602 ms median/p95 — the 300 ms tail
+gate is still red) and the audit showing Jaeger's own words no longer
+survive into model-fed audio.
 
 The latest GemmaOmni causal model is now imported exactly, and a Jaeger 15%
 causal blend is packaged separately. Keep `jaegeromni-41m-medium` as the 1:1

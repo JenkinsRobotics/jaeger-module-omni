@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "kind": "aec_path_fixed_waveform_probe",
+  "reference_mode": "wallclock",
+  "playback_seconds": 27.55,
+  "processed_seconds": 29.4,
+  "speex_filter_ms": 1200,
+  "attenuation_db": 0.30162811772679365,
+  "raw_rms": 0.2523488700389862,
+  "clean_rms": 0.24401593208312988,
+  "raw_reference_correlation_last": 0.0,
+  "residual_reference_correlation_last": 0.0,
+  "alignment_corrections": 0,
+  "estimated_lag_ms": 0.0,
+  "estimated_drift_ppm": 0.0,
+  "reference_underflow_seconds": 0.0,
+  "note": "room background acts as constant double-talk; compare modes against each other, not against silence"
+}

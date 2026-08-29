@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "kind": "aec_path_chirp_probe",
+  "sample_rate": 48000,
+  "detections": [
+    {
+      "chirp_at_s": 0.5,
+      "delay_ms": 614.1041666666666,
+      "peak_correlation": 0.6100841253746209
+    },
+    {
+      "chirp_at_s": 3.0,
+      "delay_ms": 614.1041666666666,
+      "peak_correlation": 0.5609935618783853
+    },
+    {
+      "chirp_at_s": 5.5,
+      "delay_ms": 614.1041666666666,
+      "peak_correlation": 0.6229495702328848
+    }
+  ],
+  "median_delay_ms": 614.1041666666666,
+  "delay_spread_ms": 0.0,
+  "drift_ppm_between_chirps": 0.0,
+  "speex_filter_ms": 500,
+  "delay_within_filter_span": false,
+  "weak_coupling": false
+}

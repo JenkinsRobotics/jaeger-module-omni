@@ -330,6 +330,14 @@ def main() -> int:
 
     import queue as _q
     say_q: _q.Queue = _q.Queue()
+    wav_q: _q.Queue = _q.Queue(maxsize=2)
+
+    def _drain(q):
+        while not q.empty():
+            try:
+                q.get_nowait()
+            except _q.Empty:
+                break
 
     def _barge_watcher():
         while not stop.is_set():
@@ -339,30 +347,43 @@ def main() -> int:
             if speaking_out.is_set():
                 sd.stop()
                 speaking_out.clear()
-                while not say_q.empty():
-                    try:
-                        say_q.get_nowait()
-                    except _q.Empty:
-                        break
+                _drain(say_q)
+                _drain(wav_q)
                 barged["stops"] += 1
                 print("\n  (barge-in: residual speech — stopping)", flush=True)
 
     threading.Thread(target=_barge_watcher, daemon=True).start()
 
-    def _player():
-        """Sequential sentence player. Synthesises and plays each sentence as
-        it arrives, so audio starts after the FIRST sentence is generated
-        instead of after the whole reply."""
+    def _synth_worker():
+        """Stage 1 of the mouth: synthesise clause N+1 WHILE clause N is
+        still playing.  The old single-thread player left a full Kokoro
+        synthesis of dead air between clauses."""
         import soundfile as sf
         while True:
             sent = say_q.get()
             if sent is None:
+                wav_q.put(None)
                 break
             try:
                 t0 = time.monotonic()
                 speak_kokoro(sent, "/tmp/_sent.wav", a.voice, a.speed)
                 stage_ms["synth"].append((time.monotonic() - t0) * 1000)
                 wav, sr = sf.read("/tmp/_sent.wav", dtype="float32")
+                wav_q.put((wav, sr))
+            except Exception as exc:
+                run_errors.append(
+                    f"speech synthesis: {type(exc).__name__}: {exc}")
+
+    def _player():
+        """Stage 2: sequential playback of pre-synthesised clauses.  The AEC
+        reference is registered here, immediately before output, so playback
+        timing — not synthesis timing — anchors the far-end timeline."""
+        while True:
+            item = wav_q.get()
+            if item is None:
+                break
+            wav, sr = item
+            try:
                 if aec is not None:
                     if aec.reference_mode == "contiguous":
                         aec.append_playback(wav, sr)
@@ -384,6 +405,8 @@ def main() -> int:
             finally:
                 speaking_out.clear()
 
+    synth_thread = threading.Thread(target=_synth_worker, daemon=True)
+    synth_thread.start()
     player_thread = threading.Thread(target=_player, daemon=True)
     player_thread.start()
 
@@ -565,6 +588,7 @@ def main() -> int:
         except _q.Empty:
             break
     say_q.put(None)
+    synth_thread.join(timeout=5.0)
     player_thread.join(timeout=5.0)
 
     minutes = None

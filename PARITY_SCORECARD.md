@@ -26,7 +26,7 @@ Generated from checkpoint-pinned artifacts. WER columns are Jaeger quality gates
 
 | Gate | Jaeger now | MiniCPM reference | State |
 | --- | --- | --- | --- |
-| AEC/double-talk | 8.1 dB synthetic room-stress attenuation, 0/43 false, 100% recall, 843 ms p95 | no comparable saved baseline | BEHIND |
+| AEC/double-talk | 8.1 dB synthetic room-stress attenuation, 0/43 false, 100% recall, 602 ms p95 | no comparable saved baseline | BEHIND |
 | Speaker identity/overlap | 86% continuity; separation fail; word attribution unavailable | no comparable saved baseline | BEHIND |
 | Speech output | decoded text → resident Kokoro | native speech generation | BEHIND |
 | Vision | not connected in Jaeger GUI | 379 ms/frame | BEHIND |

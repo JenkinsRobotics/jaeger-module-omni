@@ -284,6 +284,16 @@ def main() -> int:
                         default=0.35)
     parser.add_argument("--residual-margin", type=float, default=1.1)
     parser.add_argument("--confirm-ms", type=float, default=80.0)
+    parser.add_argument("--strong-margin", type=float, default=1.5,
+                        help="loudness-over-floor ratio required by the "
+                             "low-attenuation double-talk override")
+    parser.add_argument("--strong-attenuation-db", type=float,
+                        default=2.5,
+                        help="block attenuation below which a loud "
+                             "correlated block counts as double-talk")
+    parser.add_argument("--strong-confirm-ms", type=float, default=250.0,
+                        help="sustained low-attenuation loudness required "
+                             "by the double-talk override")
     parser.add_argument("--reference-mode",
                         choices=("wallclock", "contiguous"),
                         default="wallclock",
@@ -303,6 +313,9 @@ def main() -> int:
         "residual_echo_correlation": args.residual_echo_correlation,
         "residual_margin": args.residual_margin,
         "confirm_ms": args.confirm_ms,
+        "strong_margin": args.strong_margin,
+        "strong_attenuation_db": args.strong_attenuation_db,
+        "strong_confirm_ms": args.strong_confirm_ms,
     }
     result = evaluate(
         args.cases, args.seed, detector_options, include_traces=args.trace,

@@ -101,8 +101,9 @@ This broader real-speech/noisy/nonlinear test is the only CPU AEC promotion
 gate; the old 12-case synthetic lab is diagnostic history and is not run for
 selection. It currently **fails only its detection-tail gate**: 8.1 dB median
 attenuation, 99% near-speech survival, 0/43 self-echo false barges, and 43/43
-valid double-talk detections, but 843 ms p95 exceeds the 300 ms limit (188 ms
-median). The previous rule produced 27/43 false barges and only 37% recall.
+valid double-talk detections, but 602 ms p95 exceeds the 300 ms limit (188 ms
+median; the attenuation-based double-talk override cut the tail from
+843 ms). The previous rule produced 27/43 false barges and only 37% recall.
 
 Build factual overlap mixtures from two or three known single-speaker files:
 
@@ -122,14 +123,15 @@ and overlap-aware evaluation exist.
 
 The experimental `--aec-reference-mode contiguous` feeds Speex one unbroken
 reply-level far-end stream (clauses plus real silence, one playback
-generation per reply) instead of per-block wall-clock slices, and records
-reference underflow/overflow, alignment corrections, and estimated lag/drift.
-On the 43-room synthetic gate it is measurement-identical to wallclock
-(8.1 dB, 0/43 false, 188/843 ms), because that offline harness has no
-callback jitter — the mode targets the physical failure only. Wallclock
-remains the locked baseline; run the same 90-second interactive diagnostic
-under both modes and compare attenuation and the drift telemetry before any
-promotion:
+generation per reply) and ECHO-LOCKS it: a periodic mic-vs-stream
+correlation servo absorbs the measured constant 614 ms output-path delay and
+the ~1,250 ppm capture-clock drift that defeat any fixed offset. On the
+equal-exposure fixed-waveform probe (`research/aec_path_probe.py`) it
+reaches 10.5 dB echo-coupling reduction versus wallclock's run-dependent
+0--7.8 dB. Wallclock remains the locked baseline until an interactive
+physical run plus raw-vs-fed audit confirms; run the same 90-second
+diagnostic under both modes and compare coupling, attenuation, and the
+drift telemetry:
 
 ```bash
 AB="--front-end jaegeromni-41m-medium --seconds 90 --threshold 0.055 \

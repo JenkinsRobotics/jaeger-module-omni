@@ -103,6 +103,28 @@ Measured ledger. Every claim here has a command that reproduces it.
 > measured only **0.17 dB wallclock** and **0.51 dB contiguous** attenuation;
 > the runs had unequal 19/61-second playback exposure, and contiguous word
 > survival regressed from 96.8% to 82.7%. Keep contiguous experimental.
+>
+> 2026-08-29 afternoon AEC root cause, measured with
+> `research/aec_path_probe.py`: the loudspeaker-to-mic path delay is a
+> **constant 614.1 ms** (three chirps, 0.0 ms spread, 0 ppm drift, coupling
+> 0.56--0.62) — beyond Speex's 500 ms filter span — and the capture
+> wall-clock-vs-sample mapping drifts **~1,250 ppm**, so no fixed offset can
+> hold the ±20 ms alignment window offline replay proves is required.
+> Offline replay of the real room recording with perfect alignment reaches
+> **10.3 dB echo-coupling reduction**, proving the echo is linearly
+> cancellable. The new echo-locked contiguous mode (mic-vs-stream
+> correlation servo, deadband, early-side target) reaches **10.5 dB
+> physical coupling reduction** on the equal-exposure fixed-waveform probe;
+> a paired wallclock run measured 7.8 dB but wallclock varies 0--7.8 dB
+> across runs with device buffering. Aggregate attenuation stays ~1 dB only
+> because continuous room speech (which must survive) dominates total
+> energy. Separately, the barge detector gained an attenuation-based
+> double-talk override (loud + filter-failed-to-suppress + 6 dB
+> filter-proven guard + 200 ms leaky sustain): the 43-room gate improved
+> from 188/843 ms to **188/602 ms** median/p95 at 0/43 false and 43/43
+> recall. The 300 ms tail gate remains red. The live mouth is now a
+> two-stage synth-ahead pipeline, removing one full Kokoro synthesis of
+> dead air between clauses.
 
 ---
 

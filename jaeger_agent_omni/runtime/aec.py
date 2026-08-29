@@ -22,6 +22,7 @@ from pathlib import Path
 SPEEX_ECHO_SET_SAMPLING_RATE = 24
 CONTIGUOUS_MAX_S = 600      # reply-stream capacity; beyond counts as overflow
 CONTIGUOUS_STALE_GAP_S = 10.0   # append this long after the tail = new reply
+ECHO_LOCK_TARGET_S = 0.08       # fed-vs-echo depth the servo steers toward
 
 
 def _library_path() -> str:
@@ -82,7 +83,8 @@ class SpeexEchoCanceller:
 
     def __init__(self, sample_rate: int = 16000, frame_ms: int = 20,
                  filter_ms: int = 500, library_path: str | Path | None = None,
-                 reference_mode: str = "wallclock"):
+                 reference_mode: str = "wallclock",
+                 output_latency_ms: float = 0.0):
         import numpy as np
 
         if reference_mode not in ("wallclock", "contiguous"):
@@ -90,6 +92,13 @@ class SpeexEchoCanceller:
                 f"reference_mode must be wallclock or contiguous, "
                 f"got {reference_mode!r}")
         self.reference_mode = reference_mode
+        # Measured constant output-path latency (chirp probe 2026-08-29:
+        # 614 ms on External Headphones, zero spread/drift).  Shifting the
+        # reference timeline by it moves the echo inside the adaptive
+        # filter's span instead of asking the filter to model a delay it
+        # physically cannot reach.  0.0 preserves the measured baseline.
+        self.output_latency_ms = float(output_latency_ms)
+        self._output_latency_s = self.output_latency_ms / 1000.0
 
         self.np = np
         self.sample_rate = int(sample_rate)
@@ -138,6 +147,18 @@ class SpeexEchoCanceller:
         self.alignment_corrections = 0
         self.estimated_lag_ms = 0.0
         self.estimated_drift_ppm = 0.0
+        # Echo lock (contiguous mode): wall clock only provides the INITIAL
+        # alignment; afterwards the read position is servoed onto the echo
+        # itself by periodic mic-vs-stream cross-correlation.  Measured need:
+        # the capture clock drifts ~1,250 ppm against wall time and offline
+        # replay shows cancellation dies when the reference runs >20 ms late,
+        # so a fixed offset cannot hold for a 30-second reply.
+        self._mic_recent = np.zeros(0, dtype=np.float32)
+        self._samples_since_lock = 0
+        self._lock_offset = 0              # echo-measured refinement, samples
+        self.echo_lock_corrections = 0
+        self.echo_lock_lag_ms = None       # last measured fed-vs-echo depth
+        self.echo_lock_confidence = 0.0
         self.playback_generation = 0
         self.raw_energy = 0.0
         self.clean_energy = 0.0
@@ -188,7 +209,8 @@ class SpeexEchoCanceller:
             self.begin_reply_playback()
             return self.append_playback(samples, sample_rate, started_at)
         wav = self._resampled(samples, sample_rate)
-        start = time.monotonic() if started_at is None else float(started_at)
+        start = (time.monotonic() if started_at is None
+                 else float(started_at)) + self._output_latency_s
         with self._lock:
             self._reference = wav
             self._started_at = start
@@ -221,7 +243,8 @@ class SpeexEchoCanceller:
             raise RuntimeError("append_playback requires contiguous mode")
         np = self.np
         wav = self._resampled(samples, sample_rate)
-        now = time.monotonic() if started_at is None else float(started_at)
+        now = (time.monotonic() if started_at is None
+               else float(started_at)) + self._output_latency_s
         with self._lock:
             # ``begin_reply_playback`` is the intended reply boundary; the
             # stale-gap fallback only nets a caller that forgot it.  Synth
@@ -237,6 +260,8 @@ class SpeexEchoCanceller:
                 self._offset_first = None
                 self._offset_last = None
                 self._new_reply = False
+                self._samples_since_lock = 0
+                self._lock_offset = 0
                 self.playback_generation += 1
             write = round((now - self._stream_t0) * self.sample_rate)
             if write < 0:
@@ -291,13 +316,69 @@ class SpeexEchoCanceller:
         history = reference[history_begin:history_end]
         return out, history
 
-    def _contiguous_reference_for(self, n: int, captured_at: float):
-        """Consume the reply stream sequentially, auditing wall-clock error.
+    def _try_echo_lock(self, stream) -> None:
+        """Servo the read position onto the echo actually in the microphone.
+
+        Called with the lock held.  Cross-correlates the last ~0.8 s of raw
+        mic against the reference stream around the read position, measures
+        the fed-vs-echo depth, and nudges the read position so the echo sits
+        ECHO_LOCK_TARGET_S behind the fed reference — inside the filter span
+        with an early-side margin, since offline replay shows cancellation
+        survives an early reference but dies ~20 ms late.
+        """
+        np = self.np
+        dec = 4
+        window = int(0.8 * self.sample_rate)
+        mic = self._mic_recent
+        if len(mic) < window or self._read_pos is None:
+            return
+        mic = mic[-window:]
+        lo = max(0, self._read_pos - window - self.filter_length)
+        hi = min(len(stream),
+                 self._read_pos + int(0.25 * self.sample_rate))
+        segment = stream[lo:hi]
+        a = mic[:(window // dec) * dec].reshape(-1, dec).mean(1)
+        b = segment[:(len(segment) // dec) * dec].reshape(-1, dec).mean(1)
+        if len(b) <= len(a) + 8:
+            return
+        a = a - a.mean()
+        b = b - b.mean()
+        corr = np.correlate(b, a, mode="valid")
+        cumulative = np.concatenate((
+            np.zeros(1), np.cumsum(np.square(b), dtype=np.float64)))
+        energy = cumulative[len(a):] - cumulative[:-len(a)]
+        normalized = np.abs(corr) / np.sqrt(
+            np.maximum(energy * float(np.dot(a, a)), 1e-12))
+        peak = int(np.argmax(normalized))
+        confidence = float(normalized[peak])
+        self.echo_lock_confidence = confidence
+        if confidence < 0.15:
+            return                       # silence or no audible echo: hold
+        echo_end = lo + peak * dec + window   # stream idx of mic[-1]'s echo
+        depth = self._read_pos - echo_end     # fed-vs-echo delay, samples
+        self.echo_lock_lag_ms = 1000.0 * depth / self.sample_rate
+        # Deadband, not a servo-to-setpoint: any depth Speex can model is
+        # left alone (constant in-band delay is the filter's job, and
+        # correcting sub-frame measurement noise every cycle thrashes the
+        # filter into Speex's divergence reset).  Only a depth outside the
+        # usable span — echo ahead of the fed reference, or beyond the
+        # filter — jumps back to the early-side target.
+        low = self.frame_size // 2
+        high = self.filter_length - self.sample_rate // 10
+        if depth < low or depth > high:
+            adjust = int(ECHO_LOCK_TARGET_S * self.sample_rate) - depth
+            self._read_pos += adjust
+            self._lock_offset += adjust
+            self.echo_lock_corrections += 1
+
+    def _contiguous_reference_for(self, n: int, captured_at: float, mic):
+        """Consume the reply stream sequentially, echo-locked.
 
         The stream advances exactly ``n`` samples per call, so Speex sees a
-        continuous far-end signal.  Wall clock only measures the drift/lag
-        between the two clock domains; discrete jumps are applied — and
-        counted — when the error exceeds one Speex frame.
+        continuous far-end signal.  Wall clock provides only the initial and
+        between-gap alignment; the periodic echo lock then refines a
+        ``_lock_offset`` that absorbs output latency AND the measured
+        ~1,250 ppm capture-clock drift a fixed offset cannot hold.
         """
         np = self.np
         with self._lock:
@@ -306,22 +387,38 @@ class SpeexEchoCanceller:
             tail_until = self._tail_until
             if stream is None:
                 return None, None
-            ideal_begin = round((captured_at - t0) * self.sample_rate) - n
+            # ideal_raw audits the pure wall-clock mapping (drift telemetry
+            # must not see the servo's own moves); ideal_eff adds the
+            # echo-locked refinement and drives alignment.
+            ideal_raw = round((captured_at - t0) * self.sample_rate) - n
+            ideal_begin = ideal_raw + self._lock_offset
             if captured_at > tail_until:
                 # Between-clause or post-reply quiet: resync the audit
                 # positions instead of freezing them, so the resume after a
                 # legitimate gap is neither a fake alignment correction nor a
-                # fake drift trend.
+                # fake drift trend.  The echo-locked offset is retained.
                 if self._read_pos is not None:
                     self._read_pos = ideal_begin + n
-                    self._uncorrected_read = ideal_begin + n
+                    self._uncorrected_read = ideal_raw + n
                     self._offset_first = None
                     self._offset_last = None
                 return None, None
             if self._read_pos is None:
                 self._read_pos = ideal_begin
-                self._uncorrected_read = ideal_begin
-            raw_offset = ideal_begin - self._uncorrected_read
+                self._uncorrected_read = ideal_raw
+            if mic is not None and len(mic):
+                # Lock BEFORE appending this block: the retained window then
+                # ends exactly at the current read position, so the measured
+                # fed-vs-echo depth carries no one-block bias.
+                self._samples_since_lock += len(mic)
+                if self._samples_since_lock >= 2 * self.sample_rate:
+                    self._samples_since_lock = 0
+                    self._try_echo_lock(stream)
+                    ideal_begin = ideal_raw + self._lock_offset
+                keep = int(1.0 * self.sample_rate)
+                self._mic_recent = np.concatenate(
+                    (self._mic_recent, mic))[-keep:]
+            raw_offset = ideal_raw - self._uncorrected_read
             error = ideal_begin - self._read_pos
             self.estimated_lag_ms = 1000.0 * error / self.sample_rate
             if self._offset_first is None:
@@ -388,7 +485,7 @@ class SpeexEchoCanceller:
         mic = self._mono(microphone)
         now = time.monotonic() if captured_at is None else float(captured_at)
         if self.reference_mode == "contiguous":
-            ref, history = self._contiguous_reference_for(len(mic), now)
+            ref, history = self._contiguous_reference_for(len(mic), now, mic)
         else:
             ref, history = self._reference_for(len(mic), now)
         if ref is None or not len(mic):
@@ -458,7 +555,10 @@ class EchoAwareBargeIn:
                  warmup_ms: float = 500.0, confirm_ms: float = 80.0,
                  echo_correlation: float = 0.45,
                  residual_echo_correlation: float = 0.35,
-                 residual_margin: float = 1.1):
+                 residual_margin: float = 1.1,
+                 strong_margin: float = 1.5,
+                 strong_attenuation_db: float = 2.5,
+                 strong_confirm_ms: float = 200.0):
         self.sample_rate = int(sample_rate)
         self.speech_rms = float(speech_rms)
         self.warmup_s = float(warmup_ms) / 1000.0
@@ -467,6 +567,12 @@ class EchoAwareBargeIn:
         self.echo_correlation = float(echo_correlation)
         self.residual_echo_correlation = float(residual_echo_correlation)
         self.residual_margin = float(residual_margin)
+        self.strong_margin = float(strong_margin)
+        self.strong_attenuation_db = float(strong_attenuation_db)
+        self.strong_confirm_samples = max(
+            1, round(self.sample_rate * float(strong_confirm_ms) / 1000.0))
+        self._strong_samples = 0
+        self._filter_proven = False
         self._generation = -1
         self._candidate_samples = 0
         self._echo_floor = self.speech_rms * 0.5
@@ -478,6 +584,8 @@ class EchoAwareBargeIn:
     def reset(self, generation: int = -1) -> None:
         self._generation = int(generation)
         self._candidate_samples = 0
+        self._strong_samples = 0
+        self._filter_proven = False
         self._echo_floor = self.speech_rms * 0.5
 
     def update(self, aec: SpeexEchoCanceller, clean_rms: float,
@@ -508,7 +616,28 @@ class EchoAwareBargeIn:
             self._candidate_samples = 0
             return False
 
-        if correlated or clean_rms <= self.speech_rms:
+        # Correlation proves reference content is PRESENT; it cannot prove
+        # the block is ONLY echo.  Genuine double-talk keeps the mixture
+        # correlated for seconds (measured p95 843 ms).  The separating
+        # feature is per-block attenuation: a converged filter SUPPRESSES
+        # loud echo-only blocks (measured p5 3.05 dB) but cannot suppress
+        # near speech (measured median 0.88 dB), so a loud block the filter
+        # failed to attenuate is double-talk.  Guards against echo-only
+        # bursts: mature floor, 250 ms sustain, and a strong candidate never
+        # teaches the floor its own energy.
+        # "Filter failed to suppress this block" is only evidence of
+        # double-talk once the filter has PROVEN it suppresses echo in this
+        # room: in a misaligned physical path nothing is ever attenuated and
+        # the override would fire on Jaeger's own voice.  Unproven rooms
+        # fall back to the correlation-only rule.
+        if aec.block_attenuation_db >= 6.0:
+            self._filter_proven = True
+        mature = aec.block_playback_age >= self.warmup_s + 1.0
+        strong = (mature and self._filter_proven and
+                  aec.block_attenuation_db < self.strong_attenuation_db and
+                  clean_rms > max(self.speech_rms * 1.5,
+                                  self._echo_floor * self.strong_margin))
+        if (correlated or clean_rms <= self.speech_rms) and not strong:
             self._echo_floor = max(
                 self.speech_rms * 0.25,
                 0.92 * self._echo_floor + 0.08 * clean_rms)
@@ -519,7 +648,14 @@ class EchoAwareBargeIn:
         external = clean_rms > minimum and not correlated
         self._candidate_samples = (
             self._candidate_samples + int(samples) if external else 0)
-        return self._candidate_samples >= self.confirm_samples
+        # Leaky, not hard-reset: double-talk blocks are intermittently
+        # attenuated when near and far pause out of phase, and one such
+        # block must not restart the whole confirmation.
+        self._strong_samples = (
+            self._strong_samples + int(samples) if strong
+            else self._strong_samples // 2)
+        return (self._candidate_samples >= self.confirm_samples or
+                self._strong_samples >= self.strong_confirm_samples)
 
 
 def demo() -> None:
