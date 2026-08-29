@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "kind": "self_speech_deployment_diagnostic",
+  "front_end": "jaegeromni-41m-causal-balanced",
+  "checkpoint": "e4ea88b9c99e",
+  "feature": "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-eval-v1/devclean/features/11ec77eed45b154e06cf.npy",
+  "input_frames_50hz": 293,
+  "output_frames_25hz": 146,
+  "output_mode": "raw",
+  "call_vs_perceive_none_max_abs_delta": 0.0,
+  "none_vs_zero_max_abs_delta": 12.036517143249512,
+  "zero_vs_one_max_abs_delta": 4.590190410614014,
+  "mean_embedding_l2_norm": 79.07978820800781,
+  "self_proj_bias_l2": 7.796506881713867,
+  "self_proj_bias_max_abs": 1.0043938159942627,
+  "self_proj_weight_l2": 4.16151237487793,
+  "deployment_training_mismatch": true,
+  "measurement_only": true
+}

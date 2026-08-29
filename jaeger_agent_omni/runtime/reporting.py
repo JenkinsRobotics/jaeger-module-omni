@@ -33,6 +33,43 @@ def latency_summary(values) -> dict:
     }
 
 
+def memory_summary() -> dict:
+    """Best-effort process memory for a run report.  NEVER raises.
+
+    RSS alone cannot see MPS/Metal allocations (STATUS.md, measurement
+    rules), so the MLX active/peak counters are reported alongside it when
+    the runtime is present.  Missing sources stay ``None`` rather than
+    aborting a live session.
+    """
+    import sys
+
+    out = {"rss_peak_mb": None, "mlx_active_mb": None, "mlx_peak_mb": None}
+    try:
+        import resource
+
+        peak = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+        # ru_maxrss is bytes on macOS and kilobytes on Linux.
+        out["rss_peak_mb"] = round(
+            peak / (1e6 if sys.platform == "darwin" else 1e3), 1)
+    except Exception:                                    # noqa: BLE001
+        pass
+    try:
+        import mlx.core as mx
+
+        metal = getattr(mx, "metal", None)
+        active = (getattr(mx, "get_active_memory", None) or
+                  getattr(metal, "get_active_memory", None))
+        peak_fn = (getattr(mx, "get_peak_memory", None) or
+                   getattr(metal, "get_peak_memory", None))
+        if callable(active):
+            out["mlx_active_mb"] = round(active() / 1e6, 1)
+        if callable(peak_fn):
+            out["mlx_peak_mb"] = round(peak_fn() / 1e6, 1)
+    except Exception:                                    # noqa: BLE001
+        pass
+    return out
+
+
 def new_run_report(*, phase: str, model_id: str, model_name: str,
                    checkpoint: str, configuration: dict,
                    source: str | None = None) -> dict:
@@ -113,7 +150,11 @@ def demo() -> None:
     with tempfile.TemporaryDirectory() as directory:
         saved = write_report(Path(directory) / "run.json", report)
         assert json.loads(saved.read_text())["kind"] == "jaeger_duplex_run"
-    print("runtime.reporting: schema, latency tails, and finalization OK")
+    memory = memory_summary()
+    assert set(memory) == {"rss_peak_mb", "mlx_active_mb", "mlx_peak_mb"}
+    assert memory["rss_peak_mb"] is None or memory["rss_peak_mb"] > 0
+    print("runtime.reporting: schema, latency tails, memory summary, and "
+          "finalization OK")
 
 
 if __name__ == "__main__":

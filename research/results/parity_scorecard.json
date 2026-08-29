@@ -36,7 +36,8 @@
       },
       "answer_latency_ms": {
         "value": 362.77999996673316,
-        "status": "surpassed",
+        "status": "unpaired",
+        "paired_harness": false,
         "source": "research/omni_bench.json"
       },
       "devclean_wer": null,
@@ -66,17 +67,22 @@
       },
       "answer_latency_ms": {
         "value": 501.49970839265734,
-        "status": "surpassed",
+        "status": "unpaired",
+        "paired_harness": false,
         "source": "research/candidate_evals/cleanroom41m-step2000-recheck-20260826-cases12.json"
       },
       "devclean_wer": {
         "value": 0.049214659685863874,
         "n": 64,
+        "budget12": false,
         "source": "research/candidate_evals/cleanroom41m-step2000-recheck-20260826-devclean64.json"
       },
       "ami_wer": {
         "value": 0.3447251114413076,
         "n": 64,
+        "edits": 232,
+        "words": 673,
+        "budget12": false,
         "source": "research/candidate_evals/cleanroom41m-step2000-recheck-20260826-ami64.json"
       },
       "testclean_wer": null,
@@ -89,7 +95,7 @@
         "status": "unmeasured",
         "source": null
       },
-      "core_ear_status": "parity accuracy + faster"
+      "core_ear_status": "answer parity; latency unpaired"
     },
     {
       "id": "jaegeromni-41m-medium",
@@ -104,23 +110,29 @@
       },
       "answer_latency_ms": {
         "value": 559.6929579041898,
-        "status": "behind",
+        "status": "unpaired",
+        "paired_harness": false,
         "source": "research/results/jaegeromni-41m-production-cases12-20260828.json"
       },
       "devclean_wer": {
         "value": 0.048167539267015703,
         "n": 64,
+        "budget12": true,
         "source": "research/candidate_evals/jaegeromni-41m-budget12-20260828-devclean64.json"
       },
       "ami_wer": {
         "value": 0.3298662704309064,
         "n": 64,
+        "edits": 222,
+        "words": 673,
+        "budget12": true,
         "source": "research/candidate_evals/jaegeromni-41m-budget12-20260828-ami64.json"
       },
       "testclean_wer": {
         "value": 0.03971857886223227,
         "n": 2603,
         "words": 51311,
+        "budget12": false,
         "source": "research/candidate_evals/cleanroom41m-room-alpha10-20260827-testclean2603.json"
       },
       "first_audio_ms": {
@@ -132,7 +144,7 @@
         "status": "unmeasured",
         "source": "Full DuplexDemo App/runtime/reports/20260827-jaegeromni41m-alpha10-ami5m-cadence12.json"
       },
-      "core_ear_status": "behind"
+      "core_ear_status": "answer parity; latency unpaired"
     },
     {
       "id": "gemmaomni-41m-final4000",
@@ -147,17 +159,22 @@
       },
       "answer_latency_ms": {
         "value": 506.3176670082612,
-        "status": "surpassed",
+        "status": "unpaired",
+        "paired_harness": false,
         "source": "research/candidate_evals/gemmaomni-final4000-budget12-20260828-cases12.json"
       },
       "devclean_wer": {
         "value": 0.06806282722513089,
         "n": 64,
+        "budget12": true,
         "source": "research/candidate_evals/gemmaomni-final4000-budget12-20260828-devclean64.json"
       },
       "ami_wer": {
         "value": 0.2288261515601783,
         "n": 64,
+        "edits": 154,
+        "words": 673,
+        "budget12": true,
         "source": "research/candidate_evals/gemmaomni-final4000-budget12-20260828-ami64.json"
       },
       "testclean_wer": null,
@@ -185,17 +202,22 @@
       },
       "answer_latency_ms": {
         "value": 501.8913964959211,
-        "status": "surpassed",
+        "status": "unpaired",
+        "paired_harness": false,
         "source": "research/candidate_evals/jaeger-gemma-causal-a0.15-budget12-20260828-cases12.json"
       },
       "devclean_wer": {
         "value": 0.050261780104712044,
         "n": 64,
+        "budget12": true,
         "source": "research/candidate_evals/jaeger-gemma-causal-a0.15-budget12-20260828-devclean64.json"
       },
       "ami_wer": {
         "value": 0.2823179791976226,
         "n": 64,
+        "edits": 190,
+        "words": 673,
+        "budget12": true,
         "source": "research/candidate_evals/jaeger-gemma-causal-a0.15-budget12-20260828-ami64.json"
       },
       "testclean_wer": null,
@@ -208,7 +230,7 @@
         "status": "unmeasured",
         "source": null
       },
-      "core_ear_status": "parity accuracy + faster"
+      "core_ear_status": "answer parity; latency unpaired"
     },
     {
       "id": "jaegeromni-50m-medium",
@@ -223,23 +245,29 @@
       },
       "answer_latency_ms": {
         "value": 319.1652708919719,
-        "status": "surpassed",
+        "status": "unpaired",
+        "paired_harness": false,
         "source": "research/candidate_evals/medium50m-cekl-blend50-cases12.json"
       },
       "devclean_wer": {
         "value": 0.11204188481675392,
         "n": 64,
+        "budget12": false,
         "source": "research/candidate_evals/medium50m-cekl-blend50-devclean64.json"
       },
       "ami_wer": {
         "value": 0.4784546805349183,
         "n": 64,
+        "edits": 322,
+        "words": 673,
+        "budget12": false,
         "source": "research/candidate_evals/medium50m-cekl-blend50-ami64.json"
       },
       "testclean_wer": {
         "value": 0.10683868955974353,
         "n": 2603,
         "words": 51311,
+        "budget12": false,
         "source": "research/candidate_evals/medium50m-cekl-blend50-testclean2603.json"
       },
       "first_audio_ms": {
@@ -266,12 +294,14 @@
       },
       "answer_latency_ms": {
         "value": 413.4720419533551,
-        "status": "surpassed",
+        "status": "unpaired",
+        "paired_harness": false,
         "source": "research/candidate_evals/large-v3-turbo50m-ce-context-1500-cases12.json"
       },
       "devclean_wer": {
         "value": 0.17801047120418848,
         "n": 64,
+        "budget12": false,
         "source": "research/candidate_evals/large-v3-turbo50m-ce-context-1500-devclean64.json"
       },
       "ami_wer": null,
@@ -291,7 +321,7 @@
   "system": {
     "aec": {
       "status": "behind",
-      "summary": "8.1 dB room-stress attenuation, 0/43 false, 100% recall, 843 ms p95",
+      "summary": "8.1 dB synthetic room-stress attenuation, 0/43 false, 100% recall, 843 ms p95",
       "source": "research/results/aec_stress.json"
     },
     "speaker": {
@@ -300,5 +330,5 @@
       "source": "research/results/overlap_lab.json"
     }
   },
-  "verdict": "GemmaOmni 41M Medium is the current core-ear leader: 12/12 matches MiniCPM and 501 ms is faster than the 525 ms reference. JaegerOmni 41M independently matches cases12 at 12/12, but its 560 ms answer latency is behind the reference. The new causal-balanced Jaeger checkpoint retains 12/12 at 502 ms and reduces AMI to 28.23%, but its perception heads still require post-blend calibration. The frozen Jaeger 41M remains the broad lockbox leader at 3.97% free-running WER and has a zero-drop direct five-minute context-roll run. Jaeger has not surpassed MiniCPM as a complete system: physical five-minute reports are absent, speaker separation is failed, the broad AEC stress gate fails, speech still crosses decoded text into Kokoro, and Jaeger vision is not connected."
+  "verdict": "GemmaOmni 41M Medium matches MiniCPM at 12/12 on the shared question suite. Every 41M variant's answer median (502\u2013560 ms here) sits in the neighborhood of the 525 ms MiniCPM reference, but the runs are not paired under one harness, so no faster/slower conclusion is drawn. JaegerOmni 41M independently matches cases12 at 12/12. The new causal-balanced Jaeger checkpoint retains 12/12 and reduces the 673-word AMI64 validation slice to 28.23%, but its perception heads still require post-blend calibration. The frozen Jaeger 41M remains the broad lockbox leader at 3.97% free-running WER (measured before the corrected 12-token/s budget) and has a zero-drop direct five-minute context-roll run. Jaeger has not surpassed MiniCPM as a complete system: physical five-minute reports are absent, speaker separation is failed, the broad AEC stress gate fails, speech still crosses decoded text into Kokoro, and Jaeger vision is not connected."
 }

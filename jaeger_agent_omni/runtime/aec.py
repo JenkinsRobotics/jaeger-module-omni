@@ -20,6 +20,8 @@ import time
 from pathlib import Path
 
 SPEEX_ECHO_SET_SAMPLING_RATE = 24
+CONTIGUOUS_MAX_S = 600      # reply-stream capacity; beyond counts as overflow
+CONTIGUOUS_STALE_GAP_S = 10.0   # append this long after the tail = new reply
 
 
 def _library_path() -> str:
@@ -59,11 +61,35 @@ class SpeexEchoCanceller:
     waveform.  ``process`` is then called from the microphone callback.  The
     adaptive filter absorbs normal sound-card and acoustic delay (up to
     ``filter_ms``); callers do not need to guess a fixed delay.
+
+    ``reference_mode`` selects how the far-end stream is reconstructed:
+
+    ``wallclock``
+        The measured baseline: every microphone block independently re-derives
+        its reference slice from wall-clock time.  Callback jitter therefore
+        appears to Speex as far-end discontinuities.
+    ``contiguous`` (experimental, opt-in)
+        One reply-level reference stream.  Clauses are appended at their
+        playback times with real silence between them, and ``process``
+        consumes the stream sequentially, advancing exactly one block per
+        call.  Wall clock is only used to *audit* alignment: the measured
+        error is recorded (``estimated_lag_ms`` / ``estimated_drift_ppm``)
+        and corrected in discrete jumps (``alignment_corrections``) when it
+        exceeds one Speex frame.  A contiguous stream does NOT by itself fix
+        independent ADC/DAC clock drift; the drift telemetry exists to
+        measure that hypothesis in the physical room.
     """
 
     def __init__(self, sample_rate: int = 16000, frame_ms: int = 20,
-                 filter_ms: int = 500, library_path: str | Path | None = None):
+                 filter_ms: int = 500, library_path: str | Path | None = None,
+                 reference_mode: str = "wallclock"):
         import numpy as np
+
+        if reference_mode not in ("wallclock", "contiguous"):
+            raise ValueError(
+                f"reference_mode must be wallclock or contiguous, "
+                f"got {reference_mode!r}")
+        self.reference_mode = reference_mode
 
         self.np = np
         self.sample_rate = int(sample_rate)
@@ -97,6 +123,21 @@ class SpeexEchoCanceller:
         self._reference = None
         self._started_at = 0.0
         self._tail_until = 0.0
+        # Contiguous-mode reply stream state and telemetry.  The fields exist
+        # in both modes so report writers never need mode-specific guards.
+        self._stream = None            # reply-level far-end sample stream
+        self._stream_t0 = 0.0          # wall-clock time of stream sample 0
+        self._read_pos = None          # next sample ``process`` consumes
+        self._uncorrected_read = None  # read position had we never corrected
+        self._new_reply = True
+        self._offset_first = None      # (time, uncorrected offset) for drift
+        self._offset_last = None
+        self._align_tolerance = self.frame_size    # one Speex frame (20 ms)
+        self.reference_underflow_samples = 0
+        self.reference_overflow_samples = 0
+        self.alignment_corrections = 0
+        self.estimated_lag_ms = 0.0
+        self.estimated_drift_ppm = 0.0
         self.playback_generation = 0
         self.raw_energy = 0.0
         self.clean_energy = 0.0
@@ -126,9 +167,7 @@ class SpeexEchoCanceller:
             x = x.mean(axis=1)
         return np.ascontiguousarray(x.reshape(-1))
 
-    def start_playback(self, samples, sample_rate: int,
-                       started_at: float | None = None):
-        """Register the exact waveform immediately before output starts."""
+    def _resampled(self, samples, sample_rate: int):
         np = self.np
         wav = self._mono(samples)
         if int(sample_rate) != self.sample_rate and len(wav):
@@ -138,6 +177,17 @@ class SpeexEchoCanceller:
             old = np.arange(len(wav), dtype=np.float64)
             new = np.arange(n, dtype=np.float64) * int(sample_rate) / self.sample_rate
             wav = np.interp(new, old, wav).astype(np.float32)
+        return wav
+
+    def start_playback(self, samples, sample_rate: int,
+                       started_at: float | None = None):
+        """Register the exact waveform immediately before output starts."""
+        if self.reference_mode == "contiguous":
+            # Mode-agnostic callers keep working: a bare start is a one-clause
+            # reply in the contiguous stream.
+            self.begin_reply_playback()
+            return self.append_playback(samples, sample_rate, started_at)
+        wav = self._resampled(samples, sample_rate)
         start = time.monotonic() if started_at is None else float(started_at)
         with self._lock:
             self._reference = wav
@@ -145,6 +195,71 @@ class SpeexEchoCanceller:
             self._tail_until = start + len(wav) / self.sample_rate + \
                 self.filter_length / self.sample_rate
             self.playback_generation += 1
+
+    def begin_reply_playback(self) -> None:
+        """Mark the next appended clause as the start of a new reply.
+
+        One assistant reply keeps ONE playback generation, so downstream
+        barge/echo-floor state is no longer reset for every spoken clause.
+        A no-op in wallclock mode.
+        """
+        if self.reference_mode != "contiguous":
+            return
+        with self._lock:
+            self._new_reply = True
+
+    def append_playback(self, samples, sample_rate: int,
+                        started_at: float | None = None):
+        """Append one clause to the reply-level far-end stream.
+
+        Gaps between clause start times become literal zeros — silence the
+        loudspeaker really produced.  A clause that arrives after ``process``
+        already consumed its position counts the late samples as reference
+        underflow; samples beyond the stream capacity count as overflow.
+        """
+        if self.reference_mode != "contiguous":
+            raise RuntimeError("append_playback requires contiguous mode")
+        np = self.np
+        wav = self._resampled(samples, sample_rate)
+        now = time.monotonic() if started_at is None else float(started_at)
+        with self._lock:
+            # ``begin_reply_playback`` is the intended reply boundary; the
+            # stale-gap fallback only nets a caller that forgot it.  Synth
+            # pauses between clauses may legitimately exceed the filter tail.
+            stale = (self._stream is not None and
+                     now > self._tail_until + CONTIGUOUS_STALE_GAP_S)
+            if self._new_reply or self._stream is None or stale:
+                self._stream = np.zeros(0, dtype=np.float32)
+                self._stream_t0 = now
+                self._started_at = now
+                self._read_pos = None
+                self._uncorrected_read = None
+                self._offset_first = None
+                self._offset_last = None
+                self._new_reply = False
+                self.playback_generation += 1
+            write = round((now - self._stream_t0) * self.sample_rate)
+            if write < 0:
+                write = 0
+            cap = CONTIGUOUS_MAX_S * self.sample_rate
+            end = write + len(wav)
+            if end > cap:
+                self.reference_overflow_samples += end - cap
+                wav = wav[:max(0, cap - write)]
+                end = write + len(wav)
+            if self._read_pos is not None and write < self._read_pos:
+                # Those positions were already fed to Speex as zeros.
+                self.reference_underflow_samples += min(
+                    len(wav), self._read_pos - write)
+            if end > len(self._stream):
+                self._stream = np.concatenate(
+                    (self._stream,
+                     np.zeros(end - len(self._stream), dtype=np.float32)))
+            if len(wav):
+                self._stream[write:end] = wav
+            self._tail_until = (self._stream_t0 +
+                                len(self._stream) / self.sample_rate +
+                                self.filter_length / self.sample_rate)
 
     @property
     def playback_age(self) -> float:
@@ -174,6 +289,63 @@ class SpeexEchoCanceller:
         history_begin = max(0, begin - self.filter_length)
         history_end = min(len(reference), max(0, end))
         history = reference[history_begin:history_end]
+        return out, history
+
+    def _contiguous_reference_for(self, n: int, captured_at: float):
+        """Consume the reply stream sequentially, auditing wall-clock error.
+
+        The stream advances exactly ``n`` samples per call, so Speex sees a
+        continuous far-end signal.  Wall clock only measures the drift/lag
+        between the two clock domains; discrete jumps are applied — and
+        counted — when the error exceeds one Speex frame.
+        """
+        np = self.np
+        with self._lock:
+            stream = self._stream
+            t0 = self._stream_t0
+            tail_until = self._tail_until
+            if stream is None:
+                return None, None
+            ideal_begin = round((captured_at - t0) * self.sample_rate) - n
+            if captured_at > tail_until:
+                # Between-clause or post-reply quiet: resync the audit
+                # positions instead of freezing them, so the resume after a
+                # legitimate gap is neither a fake alignment correction nor a
+                # fake drift trend.
+                if self._read_pos is not None:
+                    self._read_pos = ideal_begin + n
+                    self._uncorrected_read = ideal_begin + n
+                    self._offset_first = None
+                    self._offset_last = None
+                return None, None
+            if self._read_pos is None:
+                self._read_pos = ideal_begin
+                self._uncorrected_read = ideal_begin
+            raw_offset = ideal_begin - self._uncorrected_read
+            error = ideal_begin - self._read_pos
+            self.estimated_lag_ms = 1000.0 * error / self.sample_rate
+            if self._offset_first is None:
+                self._offset_first = (captured_at, raw_offset)
+            self._offset_last = (captured_at, raw_offset)
+            span = self._offset_last[0] - self._offset_first[0]
+            if span > 1.0:
+                self.estimated_drift_ppm = 1e6 * (
+                    self._offset_last[1] - self._offset_first[1]) / (
+                        span * self.sample_rate)
+            if abs(error) > self._align_tolerance:
+                self._read_pos += error
+                self.alignment_corrections += 1
+            begin = self._read_pos
+            end = begin + n
+            out = np.zeros(n, dtype=np.float32)
+            src0, src1 = max(0, begin), min(len(stream), end)
+            if src1 > src0:
+                out[src0 - begin:src1 - begin] = stream[src0:src1]
+            history_begin = max(0, begin - self.filter_length)
+            history_end = min(len(stream), max(0, end))
+            history = stream[history_begin:history_end]
+            self._read_pos = end
+            self._uncorrected_read += n
         return out, history
 
     @staticmethod
@@ -215,7 +387,10 @@ class SpeexEchoCanceller:
         np = self.np
         mic = self._mono(microphone)
         now = time.monotonic() if captured_at is None else float(captured_at)
-        ref, history = self._reference_for(len(mic), now)
+        if self.reference_mode == "contiguous":
+            ref, history = self._contiguous_reference_for(len(mic), now)
+        else:
+            ref, history = self._reference_for(len(mic), now)
         if ref is None or not len(mic):
             self.reference_active = False
             self.block_playback_age = max(0.0, now - self._started_at)
@@ -404,11 +579,35 @@ def demo() -> None:
     assert false_barges == 0, false_barges
     assert len(barge_latencies) == 8 and np.median(barge_latencies) <= 0.1, \
         barge_latencies
+
+    # Experimental contiguous mode: one reply-level generation across
+    # clauses, silence between them, and a safe do-nothing fallback once the
+    # reference stream is exhausted.  The full six-case matrix lives in
+    # jaeger_agent_omni/tests/test_aec_contiguous.py.
+    aec = SpeexEchoCanceller(rate, reference_mode="contiguous")
+    clause = rng.normal(0, 0.1, rate).astype(np.float32)
+    aec.begin_reply_playback()
+    aec.append_playback(clause, rate, started_at=0.0)
+    aec.append_playback(clause, rate, started_at=1.5)     # 0.5 s real gap
+    assert aec.playback_generation == 1, "clauses must share one generation"
+    mic = np.zeros(int(rate * 2.5), dtype=np.float32)
+    mic[:rate] = 0.4 * clause
+    mic[int(1.5 * rate):] = 0.4 * clause
+    for i in range(0, len(mic), frame):
+        out = aec.process(mic[i:i + frame], captured_at=(i + frame) / rate)
+        assert len(out) == frame
+    assert aec.alignment_corrections == 0
+    late = aec.process(np.zeros(frame, np.float32), captured_at=60.0)
+    assert not aec.reference_active and len(late) == frame, \
+        "exhausted reference must fall back to a pass-through"
+    aec.close()
+
     print(f"runtime.aec: 8-case median echo attenuation "
           f"{np.median(cancellations):.1f} dB; double-talk survival "
           f"{100*np.median(near_ratios):.0f}%; reference-aware barge "
           f"{1000*np.median(barge_latencies):.0f}ms, "
-          f"{false_barges} self-echo false triggers")
+          f"{false_barges} self-echo false triggers; contiguous reply "
+          f"stream OK")
 
 
 if __name__ == "__main__":

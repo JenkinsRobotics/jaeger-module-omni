@@ -118,6 +118,38 @@ label. That is a production blocker, not a passing diarization claim. The
 tool always marks word-level overlap attribution unsupported until a separator
 and overlap-aware evaluation exist.
 
+## Optional AEC reference A/B (after the phase-2 matrix)
+
+The experimental `--aec-reference-mode contiguous` feeds Speex one unbroken
+reply-level far-end stream (clauses plus real silence, one playback
+generation per reply) instead of per-block wall-clock slices, and records
+reference underflow/overflow, alignment corrections, and estimated lag/drift.
+On the 43-room synthetic gate it is measurement-identical to wallclock
+(8.1 dB, 0/43 false, 188/843 ms), because that offline harness has no
+callback jitter — the mode targets the physical failure only. Wallclock
+remains the locked baseline; run the same 90-second interactive diagnostic
+under both modes and compare attenuation and the drift telemetry before any
+promotion:
+
+```bash
+AB="--front-end jaegeromni-41m-medium --seconds 90 --threshold 0.055 \
+  --silence-ms 300 --cooldown 20 --max-context 6000 --barge-policy continue"
+
+./.venv/bin/python -m jaeger_agent_omni.live $AB \
+  --record /tmp/jaeger-aec-ab-wallclock \
+  --report /tmp/jaeger-aec-ab-wallclock/report.json
+./.venv/bin/python -m jaeger_agent_omni.live $AB \
+  --aec-reference-mode contiguous \
+  --record /tmp/jaeger-aec-ab-contiguous \
+  --report /tmp/jaeger-aec-ab-contiguous/report.json
+./.venv/bin/python research/session_audit.py --dir /tmp/jaeger-aec-ab-wallclock
+./.venv/bin/python research/session_audit.py --dir /tmp/jaeger-aec-ab-contiguous
+```
+
+A large `estimated_drift_ppm` with rising `alignment_corrections` implicates
+separate ADC/DAC clocks — a contiguous stream alone does not fix that; it
+measures it.
+
 ## Exclusive latency attribution
 
 The historical 41M and 50M medians were produced by different harnesses. Run
@@ -139,6 +171,11 @@ that remains a separate streaming architecture gate.
 
 - canonical model identity and adapter hash;
 - input seconds fed and dropped;
+- mic queue-overflow blocks/seconds, SEPARATELY from loop-lag dropped
+  seconds (the report's `mic_queue_overflow_*` fields; overflow audio never
+  reached the loop at all);
+- process peak RSS plus MLX active/peak memory from the report's `memory`
+  block (RSS alone cannot see Metal allocations);
 - turns, completed replies, cancelled generations, and visible barge-ins;
 - phase-2 raw and residual playback correlation plus AEC attenuation (mark
   these `N/A: direct file input` for phase 1);

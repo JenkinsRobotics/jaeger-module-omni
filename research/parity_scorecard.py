@@ -137,8 +137,17 @@ def load_model(entry: dict, reference: dict, tolerance: float,
         ) else "fail"
 
     ref_metrics = reference["metrics"]
-    answer_status = compare(
-        answer_ms, float(ref_metrics["answer_latency_ms"]), "lower", tolerance)
+    # The per-model cases12 medians and MiniCPM's 525 ms come from different
+    # harnesses run on different days; the same checkpoint moves ~7% between
+    # this repository's own harnesses, far beyond the 2% noise tolerance.
+    # Latency is therefore never graded against the reference unless the
+    # artifact explicitly marks a paired MiniCPM harness run.
+    paired_answer = bool(cases and cases.get("minicpm_paired_harness"))
+    answer_status = (
+        compare(answer_ms, float(ref_metrics["answer_latency_ms"]),
+                "lower", tolerance)
+        if paired_answer else
+        ("unpaired" if answer_ms is not None else "unmeasured"))
     accuracy_status = compare(
         accuracy,
         ref_metrics["cases12_correct"] / ref_metrics["cases12_n"],
@@ -152,16 +161,15 @@ def load_model(entry: dict, reference: dict, tolerance: float,
         if paired_first_audio else
         ("not-comparable" if first_audio is not None else "unmeasured")
     )
-    core_ok = accuracy_status in ("parity", "surpassed") and \
-        answer_status in ("parity", "surpassed")
     if accuracy_status == "unmeasured" and testclean is not None:
         core_status = "broad corpus winner; answer unmeasured"
-    elif not core_ok:
+    elif accuracy_status not in ("parity", "surpassed"):
         core_status = "behind"
-    elif answer_status == "surpassed":
-        core_status = "parity accuracy + faster"
     else:
-        core_status = "core ear parity"
+        # Latency never upgrades the conclusion: without a paired harness the
+        # honest statement is answer parity in MiniCPM's latency
+        # neighborhood, not "faster".
+        core_status = "answer parity; latency unpaired"
     return {
         "id": entry["id"], "name": entry["name"],
         "checkpoint": expected,
@@ -169,16 +177,22 @@ def load_model(entry: dict, reference: dict, tolerance: float,
                     "accuracy": accuracy, "status": accuracy_status,
                     "source": entry["cases12"]},
         "answer_latency_ms": {"value": answer_ms, "status": answer_status,
+                              "paired_harness": paired_answer,
                               "source": entry["cases12"]},
         "devclean_wer": ({"value": float(clean["wer"]),
                            "n": int(clean["n"]),
+                           "budget12": "token_budget" in clean,
                            "source": entry["devclean"]}
                           if clean else None),
         "ami_wer": ({"value": float(ami["wer"]), "n": int(ami["n"]),
+                      "edits": ami.get("edits"),
+                      "words": ami.get("reference_words"),
+                      "budget12": "token_budget" in ami,
                       "source": entry["ami"]} if ami else None),
         "testclean_wer": ({"value": float(testclean["wer"]),
                             "n": int(testclean["n"]),
                             "words": int(testclean["reference_words"]),
+                            "budget12": "token_budget" in testclean,
                             "source": entry["testclean"]}
                            if testclean else None),
         "first_audio_ms": {"value": first_audio,
@@ -196,8 +210,8 @@ def status_label(status: str) -> str:
         "parity": "PARITY",
         "behind": "BEHIND",
         "unmeasured": "UNMEASURED",
-        "parity accuracy + faster": "PARITY + FASTER",
-        "core ear parity": "CORE PARITY",
+        "unpaired": "NOT PAIRED",
+        "answer parity; latency unpaired": "ANSWER PARITY",
         "broad corpus winner; answer unmeasured":
             "BROAD CORPUS WINNER; ANSWER UNMEASURED",
         "validated": "VALIDATED",
@@ -208,7 +222,10 @@ def status_label(status: str) -> str:
 
 
 def percent(metric: dict | None) -> str:
-    return "—" if metric is None else f"{100*metric['value']:.2f}%"
+    if metric is None:
+        return "—"
+    suffix = "" if metric.get("budget12", True) else "\\*"
+    return f"{100*metric['value']:.2f}%{suffix}"
 
 
 def milliseconds(metric: dict) -> str:
@@ -226,11 +243,18 @@ def build_markdown(scorecard: dict) -> str:
     reference = scorecard["reference"]
     lines = [
         "# MiniCPM parity scorecard", "",
-        "Generated from checkpoint-pinned artifacts. A two-percent tolerance "
-        "prevents timing noise from being called a win. WER columns are "
+        "Generated from checkpoint-pinned artifacts. WER columns are "
         "Jaeger quality gates because no same-corpus MiniCPM WER baseline is "
-        "saved yet. First-audio results are comparable only when a run is "
-        "explicitly marked as a paired MiniCPM harness.", "",
+        "saved yet. Answer-latency medians come from per-model bench runs "
+        "that are NOT paired with the MiniCPM harness: the same checkpoint "
+        "moves ~7% between this repository's own harnesses, so latency is "
+        "reported for context only and never graded against the reference. "
+        "The 41M variants sit in the neighborhood of MiniCPM's separately "
+        "measured 525 ms. Latency and first-audio comparisons require a run "
+        "explicitly marked as a paired MiniCPM harness. AMI WER is the "
+        "64-clip / 673-word training-adjacent, speaker-disjoint AMI "
+        "validation slice — a ranking signal, not a deployable meeting-WER "
+        "claim.", "",
         "## Reference", "",
         "| System | cases12 | answer latency | first audio | memory | vision |",
         "| --- | ---: | ---: | ---: | ---: | ---: |",
@@ -243,7 +267,7 @@ def build_markdown(scorecard: dict) -> str:
          f"{reference['metrics']['vision_ms_per_frame']:.0f} ms/frame |"),
         "", "## Audio-ear comparison", "",
         "| Model | checkpoint | cases12 | vs reference | answer latency | "
-        "vs reference | first audio | vs reference | clean WER | AMI WER | "
+        "vs reference | first audio | vs reference | clean WER | AMI64 WER | "
         "test-clean lockbox | physical 5 min | conclusion |",
         "| --- | --- | ---: | --- | ---: | --- | ---: | --- | ---: | ---: | "
         "---: | --- | --- |",
@@ -262,6 +286,12 @@ def build_markdown(scorecard: dict) -> str:
             f"{percent(model['testclean_wer'])} | "
             f"{status_label(model['five_minute_physical']['status'])} | "
             f"{status_label(model['core_ear_status'])} |")
+    lines.extend([
+        "",
+        "\\* measured before the corrected 12-token/s / 24-token-floor "
+        "decoding budget; remeasure at the authoritative budget before any "
+        "cross-checkpoint comparison.",
+    ])
     system = scorecard["system"]
     lines.extend([
         "", "## System-level parity", "",
@@ -313,21 +343,25 @@ def generate(registry_path: Path) -> dict:
     causal = next(model for model in models
                   if model["id"] == "jaegeromni-41m-causal-balanced")
     verdict = (
-        f"{leading['name']} is the current core-ear leader: "
-        f"{leading['cases12']['correct']}/{leading['cases12']['n']} matches "
-        f"MiniCPM and {leading['answer_latency_ms']['value']:.0f} ms is faster "
-        f"than the {reference['metrics']['answer_latency_ms']:.0f} ms "
-        "reference. JaegerOmni 41M independently matches cases12 at "
-        f"{jaeger['cases12']['correct']}/{jaeger['cases12']['n']}, but its "
-        f"{jaeger['answer_latency_ms']['value']:.0f} ms answer latency is "
-        "behind the reference. The new causal-balanced Jaeger checkpoint "
-        f"retains {causal['cases12']['correct']}/{causal['cases12']['n']} at "
-        f"{causal['answer_latency_ms']['value']:.0f} ms and reduces AMI to "
+        f"{leading['name']} matches MiniCPM at "
+        f"{leading['cases12']['correct']}/{leading['cases12']['n']} on the "
+        "shared question suite. Every 41M variant's answer median "
+        f"({causal['answer_latency_ms']['value']:.0f}–"
+        f"{jaeger['answer_latency_ms']['value']:.0f} ms here) sits in the "
+        f"neighborhood of the {reference['metrics']['answer_latency_ms']:.0f}"
+        " ms MiniCPM reference, but the runs are not paired under one "
+        "harness, so no faster/slower conclusion is drawn. JaegerOmni 41M "
+        "independently matches cases12 at "
+        f"{jaeger['cases12']['correct']}/{jaeger['cases12']['n']}. The new "
+        "causal-balanced Jaeger checkpoint retains "
+        f"{causal['cases12']['correct']}/{causal['cases12']['n']} and reduces "
+        f"the 673-word AMI64 validation slice to "
         f"{100*causal['ami_wer']['value']:.2f}%, but its perception heads "
         "still require post-blend calibration. The frozen Jaeger 41M remains "
         "the broad lockbox leader at "
-        f"{100*jaeger['testclean_wer']['value']:.2f}% free-running WER and "
-        "has a zero-drop direct five-minute context-roll run. "
+        f"{100*jaeger['testclean_wer']['value']:.2f}% free-running WER "
+        "(measured before the corrected 12-token/s budget) and has a "
+        "zero-drop direct five-minute context-roll run. "
         "Jaeger has not surpassed MiniCPM as a complete system: "
         "physical five-minute reports are absent, speaker separation is "
         "failed, the broad AEC stress gate fails, speech still crosses "
@@ -341,7 +375,7 @@ def generate(registry_path: Path) -> dict:
                 "status": "validated" if aec_passed else "behind",
                 "summary": (
                     f"{aec_stress['echo_attenuation_median_db']:.1f} dB "
-                    "room-stress attenuation, "
+                    "synthetic room-stress attenuation, "
                     f"{aec_stress['reference_aware']['false_barges']}/"
                     f"{aec_stress['cases']} false, "
                     f"{aec_stress['reference_aware']['recall_percent']:.0f}% "

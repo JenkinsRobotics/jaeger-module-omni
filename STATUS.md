@@ -12,7 +12,11 @@ Measured ledger. Every claim here has a command that reproduces it.
 >
 > 2026-08-27 current result: JaegerOmni 41M Medium SHA `a7f96bfb8898`
 > passes five locked corpus gates without regression and scores **3.97%**
-> free-running WER on the untouched 2,603-clip/51,311-word test-clean lockbox.
+> free-running WER on the untouched 2,603-clip/51,311-word test-clean lockbox
+> (pre-budget12: measured before the corrected 12-token/s/24-token-floor
+> budget; remeasure before cross-checkpoint comparison). AMI results
+> throughout are the 64-clip/673-word training-adjacent, speaker-disjoint
+> validation slice.
 > Its direct AMI five-minute duplex run fed 300.0 seconds with zero drops,
 > produced 14 replies, recorded 13 listen-while-speaking events, and rolled
 > context once at 6,010 logical tokens. A 12-word streaming cadence reduced

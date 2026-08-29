@@ -322,6 +322,70 @@ def bench(cases_dir: str, model_path: str, front_end: str, adapter_path=None,
     return 0
 
 
+def _audit_live_input_path() -> list:
+    """AST-verify the live input path cannot hand a transcript to Gemma.
+
+    The string scan in :func:`selfcheck` guards only this module.  This walk
+    covers the live entry point and the runtime sessions it drives.  Rules:
+
+    * no call to ``transcribe``/``batch_decode`` and no attribute-call to
+      ``generate`` (a Whisper decoder invocation) anywhere on the live path;
+    * no reference to ``WhisperForConditionalGeneration``;
+    * ``feed_text`` may be CALLED only at the documented metadata seams —
+      the inline ``[speaker X]`` tag, the context-roll reseed of Jaeger's
+      OWN prior replies, and the duplex module's offline self-check double.
+      Definitions of ``feed_text`` are metadata sinks and remain legal.
+
+    ``app.py`` is deliberately out of scope: its ``path == "text"`` branch is
+    the labelled legacy cascade comparator, not the live entry path.
+    """
+    import ast
+
+    root = Path(__file__).resolve().parent
+    files = ("live.py", "runtime/session.py", "runtime/stock_whisper.py",
+             "runtime/duplex.py", "runtime/tuned_whisper.py",
+             "runtime/gemma_audio.py")
+    allowed_feed_text = {
+        ("live.py", "tag_speaker"),        # inline [speaker X] metadata
+        ("live.py", "soak_watch"),         # roll reseeds Jaeger's OWN replies
+        ("runtime/duplex.py", "demo"),     # offline self-check test double
+    }
+    banned_calls = {"transcribe", "batch_decode"}
+    banned_names = {"WhisperForConditionalGeneration"}
+    problems = []
+
+    def visit(rel, node, func):
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            func = node.name
+        if isinstance(node, ast.Call):
+            target = node.func
+            called = (target.attr if isinstance(target, ast.Attribute) else
+                      target.id if isinstance(target, ast.Name) else None)
+            if called in banned_calls or (
+                    called == "generate" and isinstance(target, ast.Attribute)):
+                problems.append(f"{rel}:{node.lineno} calls {called}()")
+            if called == "feed_text" and (rel, func) not in allowed_feed_text:
+                problems.append(
+                    f"{rel}:{node.lineno} feed_text call outside the "
+                    f"metadata allowlist (in {func})")
+        if isinstance(node, ast.Name) and node.id in banned_names:
+            problems.append(f"{rel}:{node.lineno} references {node.id}")
+        if isinstance(node, ast.Attribute) and node.attr in banned_names:
+            problems.append(f"{rel}:{node.lineno} references {node.attr}")
+        if isinstance(node, (ast.Import, ast.ImportFrom)):
+            for alias in node.names:
+                if alias.name.split(".")[-1] in banned_names:
+                    problems.append(
+                        f"{rel}:{node.lineno} imports {alias.name}")
+        for child in ast.iter_child_nodes(node):
+            visit(rel, child, func)
+
+    for rel in files:
+        visit(rel, ast.parse((root / rel).read_text(), filename=rel),
+              "<module>")
+    return problems
+
+
 def selfcheck() -> int:
     """Structure only -- no models, no audio, runs in CI.
 
@@ -338,12 +402,16 @@ def selfcheck() -> int:
     for banned, why in (("transcribe(", "calls an ASR decoder"),
                         ("feed_text(", "injects a transcript into the cache")):
         assert banned not in code, f"omni path {why}"
+    problems = _audit_live_input_path()
+    assert not problems, "live input path violations:\n  " + \
+        "\n  ".join(problems)
     for fn in (build, one_turn, bench, speak):
         assert fn.__doc__, f"{fn.__name__} needs a docstring"
     assert split_dual_output(
         "TRANSCRIPT: What is two plus two?\nANSWER: Four.") == (
             "What is two plus two?", "Four.")
-    print("omni: no transcription step, no text injection, entry points OK")
+    print("omni: no transcription step, no text injection, live path "
+          "AST-audited, entry points OK")
     return 0
 
 

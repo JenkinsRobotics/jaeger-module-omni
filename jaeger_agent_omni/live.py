@@ -120,6 +120,13 @@ def main() -> int:
                     help="record raw mic AND model-fed audio for audit")
     ap.add_argument("--no-aec", action="store_true",
                     help="disable SpeexDSP acoustic echo cancellation")
+    ap.add_argument("--aec-reference-mode",
+                    choices=("wallclock", "contiguous"), default="wallclock",
+                    help="EXPERIMENTAL: contiguous feeds Speex one unbroken "
+                         "reply-level far-end stream (clauses plus real "
+                         "silence) instead of per-block wall-clock slices. "
+                         "wallclock remains the measured baseline until a "
+                         "physical A/B supports promotion.")
     ap.add_argument("--barge-policy", choices=("stop", "continue"),
                     default="stop",
                     help="action after speech-during-output notification")
@@ -153,7 +160,7 @@ def main() -> int:
 
     from jaeger_agent_omni.runtime.reporting import (
         default_report_path, finish_run_report, latency_summary,
-        new_run_report, write_report)
+        memory_summary, new_run_report, write_report)
     input_name = (str(sd.query_devices(a.device, "input")["name"])
                   if a.device is not None else
                   str(sd.query_devices(kind="input")["name"]))
@@ -177,6 +184,7 @@ def main() -> int:
             "observer_mode": bool(a.meeting_minutes),
             "aec_requested": not a.no_aec,
             "aec": not a.no_aec and not a.no_speak,
+            "aec_reference_mode": a.aec_reference_mode,
         })
 
     if not a.no_speak:
@@ -195,6 +203,7 @@ def main() -> int:
     barge_latched = threading.Event()
     level = {"rms": 0.0, "raw_rms": 0.0}
     heard = {"n": 0}
+    overflow = {"blocks": 0, "samples": 0}
     barged = {"events": 0, "stops": 0}
     echo_floor = {"rms": 0.35}
     rec = {"raw": [], "fed": []}
@@ -218,9 +227,10 @@ def main() -> int:
         from jaeger_agent_omni.runtime.aec import (
             EchoAwareBargeIn, SpeexEchoCanceller,
         )
-        aec = SpeexEchoCanceller(RATE)
+        aec = SpeexEchoCanceller(RATE, reference_mode=a.aec_reference_mode)
         barge_detector = EchoAwareBargeIn(RATE, a.threshold)
-        print(f"AEC      SpeexDSP ({aec.library_path})", flush=True)
+        print(f"AEC      SpeexDSP ({aec.library_path}) "
+              f"reference={a.aec_reference_mode}", flush=True)
 
     def notify_barge(stage: str) -> None:
         """Record speech during output, then apply policy independently."""
@@ -281,7 +291,11 @@ def main() -> int:
         try:
             q.put_nowait(clean)
         except queue.Full:
-            pass
+            # Distinct from the duplex loop's lag-based drops: this audio
+            # never reached the loop at all.  Count it so "zero dropped"
+            # in a report is airtight.
+            overflow["blocks"] += 1
+            overflow["samples"] += len(clean)
 
     def source():
         got = []
@@ -350,7 +364,10 @@ def main() -> int:
                 stage_ms["synth"].append((time.monotonic() - t0) * 1000)
                 wav, sr = sf.read("/tmp/_sent.wav", dtype="float32")
                 if aec is not None:
-                    aec.start_playback(wav, sr)
+                    if aec.reference_mode == "contiguous":
+                        aec.append_playback(wav, sr)
+                    else:
+                        aec.start_playback(wav, sr)
                 speaking_out.set()
                 if turn_t0["t"] is not None:
                     stage_ms["to_first_audio"].append(
@@ -396,6 +413,9 @@ def main() -> int:
         turn_t0["t"] = time.monotonic()
         barge_active.clear()
         barge_latched.clear()
+        if aec is not None:
+            # One reply = one playback generation (no-op in wallclock mode).
+            aec.begin_reply_playback()
         generating.set()
         ids, consumed = [], 0
         inner = kw.get("on_token")
@@ -572,6 +592,9 @@ def main() -> int:
     dropped_s = stats.audio_samples_dropped / RATE
     print(f"  audio        {stats.audio_chunks} model chunks · "
           f"{fed_s:.1f}s fed of {wall:.0f}s · {dropped_s:.1f}s dropped")
+    if overflow["blocks"]:
+        print(f"  mic queue    OVERFLOW {overflow['blocks']} blocks · "
+              f"{overflow['samples']/RATE:.1f}s never reached the loop")
     print(f"  endpoint     {' -> '.join(stats.endpoint_events[:8]) or '(none)'}")
     print(f"  peak lag     {stats.max_lag_s*1000:.0f} ms")
     print(f"  replies      {heard['n']}    speech-during-output events "
@@ -608,6 +631,12 @@ def main() -> int:
         metrics={
             "wall_seconds": wall, "fed_seconds": fed_s,
             "dropped_seconds": dropped_s, "audio_chunks": stats.audio_chunks,
+            # Loop-lag drops (above) and mic-queue overflow (below) are
+            # different failures: the first reached the loop too late, the
+            # second never reached it at all.
+            "mic_queue_overflow_blocks": overflow["blocks"],
+            "mic_queue_overflow_seconds": overflow["samples"] / RATE,
+            "memory": memory_summary(),
             "turns": stats.turns, "completed_replies": heard["n"],
             "interrupts": stats.interrupts,
             "barge_events": barged["events"],
@@ -620,6 +649,8 @@ def main() -> int:
             "synthesis": latency_summary(stage_ms["synth"]),
             "aec": {
                 "available": aec is not None,
+                "reference_mode": (
+                    aec.reference_mode if aec is not None else None),
                 "attenuation_db": (
                     aec.attenuation_db if aec is not None else None),
                 "seconds_cancelled": (
@@ -628,6 +659,17 @@ def main() -> int:
                     aec, "raw_reference_correlation", None),
                 "residual_reference_correlation_last": getattr(
                     aec, "residual_reference_correlation", None),
+                "reference_underflow_seconds": (
+                    getattr(aec, "reference_underflow_samples", 0) / RATE
+                    if aec is not None else None),
+                "reference_overflow_seconds": (
+                    getattr(aec, "reference_overflow_samples", 0) / RATE
+                    if aec is not None else None),
+                "alignment_corrections": getattr(
+                    aec, "alignment_corrections", None),
+                "estimated_lag_ms": getattr(aec, "estimated_lag_ms", None),
+                "estimated_drift_ppm": getattr(
+                    aec, "estimated_drift_ppm", None),
             },
         }, replies=all_replies, speaker_labels=speaker_tags,
         interactions=interaction_policy.as_dicts(), errors=run_errors,

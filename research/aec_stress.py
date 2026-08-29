@@ -112,8 +112,9 @@ def _room_echo(far: np.ndarray, rng: np.random.Generator,
 def _run_aec(mic: np.ndarray, far: np.ndarray,
              with_detector: bool = False,
              detector_options: dict | None = None,
-             include_trace: bool = False) -> tuple[np.ndarray, dict]:
-    aec = SpeexEchoCanceller(RATE)
+             include_trace: bool = False,
+             reference_mode: str = "wallclock") -> tuple[np.ndarray, dict]:
+    aec = SpeexEchoCanceller(RATE, reference_mode=reference_mode)
     detector = EchoAwareBargeIn(
         RATE, SPEECH_RMS, **(detector_options or {}))
     aec.start_playback(far, RATE, started_at=0.0)
@@ -160,7 +161,8 @@ def _run_aec(mic: np.ndarray, far: np.ndarray,
 
 def evaluate(count: int = 43, seed: int = 20260825,
              detector_options: dict | None = None,
-             include_traces: bool = False) -> dict:
+             include_traces: bool = False,
+             reference_mode: str = "wallclock") -> dict:
     far_paths = sorted((ROOT / "demo_out").glob("q*.wav"))
     near_paths = sorted((ROOT / "research/cases12").glob("q*.wav"))
     if not far_paths or not near_paths:
@@ -189,9 +191,11 @@ def evaluate(count: int = 43, seed: int = 20260825,
         voice = voice[:end - begin]
         near[begin:end] = _at_rms(voice, rng.uniform(0.025, 0.070))
 
-        echo_clean, _ = _run_aec(echo + noise, far)
+        echo_clean, _ = _run_aec(
+            echo + noise, far, reference_mode=reference_mode)
         mixed_clean, decisions = _run_aec(
-            echo + near + noise, far, True, detector_options, include_traces)
+            echo + near + noise, far, True, detector_options, include_traces,
+            reference_mode=reference_mode)
 
         # Measure a full second immediately before the near talker enters,
         # after at least two seconds of adaptive-filter convergence.
@@ -230,6 +234,7 @@ def evaluate(count: int = 43, seed: int = 20260825,
     result = {
         "cases": count,
         "seed": seed,
+        "reference_mode": reference_mode,
         "detector": detector_options or {},
         "callback_ms": 100,
         "echo_attenuation_median_db": float(np.median(
@@ -279,6 +284,12 @@ def main() -> int:
                         default=0.35)
     parser.add_argument("--residual-margin", type=float, default=1.1)
     parser.add_argument("--confirm-ms", type=float, default=80.0)
+    parser.add_argument("--reference-mode",
+                        choices=("wallclock", "contiguous"),
+                        default="wallclock",
+                        help="wallclock is the promotion gate; contiguous "
+                             "measures the experimental reply-stream mode "
+                             "on the same corpus")
     parser.add_argument("--trace", action="store_true",
                         help="include per-callback detector telemetry")
     parser.add_argument("--json", type=Path,
@@ -294,12 +305,14 @@ def main() -> int:
         "confirm_ms": args.confirm_ms,
     }
     result = evaluate(
-        args.cases, args.seed, detector_options, include_traces=args.trace)
+        args.cases, args.seed, detector_options, include_traces=args.trace,
+        reference_mode=args.reference_mode)
     old, new = result["old"], result["reference_aware"]
     def delay_text(value) -> str:
         return "n/a" if value is None else f"{value:.0f} ms"
 
-    print(f"AEC stress: {result['cases']} real-speech synthetic rooms")
+    print(f"AEC stress: {result['cases']} real-speech synthetic rooms "
+          f"({result['reference_mode']} reference)")
     print(f"  echo attenuation       {result['echo_attenuation_median_db']:.1f} dB median")
     print(f"  double-talk survival   {result['near_survival_median_percent']:.0f}% median")
     print(f"  old energy rule        {old['false_barges']}/{args.cases} false, "

@@ -18,6 +18,12 @@ corpus or duplex reports; never copy a best value from another checkpoint.
 | **JaegerOmni 50M Medium** | Jaeger's independently developed Medium connector | 11/12, 11.20% clean, 47.85% AMI, 619.7 ms same-harness | Viable historical adapter; not latency leader |
 | **JaegerOmni 50M Large** | Large-v3-turbo-paired connector, exactly 52,768,768 deployed parameters | 1/12, 17.80% clean, 413 ms | Transfer failed; active experimental branch |
 
+AMI figures throughout are the 64-clip / 673-word training-adjacent,
+speaker-disjoint AMI validation slice — a ranking signal, not a deployable
+meeting WER. The 3.97% untouched test-clean result was measured before the
+corrected 12-token/s / 24-token-floor decoding budget and is labeled
+pre-budget12 until remeasured.
+
 MiniCPM-o 4.5, the tuned-Whisper observer, the Whisper text cascade, and the
 hidden-state Talker remain references or downstream components. They are not
 additional active Jaeger audio-model identities.
@@ -53,10 +59,12 @@ additional active Jaeger audio-model identities.
 
 The clean-room stock node now matches MiniCPM's 12/12 on the shared question
 suite, while the retained 50M node is 11/12 and the native tower is 10/12.
-This is answer-ear parity, not full production parity. The exact imported 41M
-checkpoint independently rechecks at 501 ms versus MiniCPM's measured 525 ms
-on the shared answer harness. That narrow speed crossover does not establish
-speech-start superiority: Jaeger's saved END-to-first-audio sessions were not
+This is answer-ear parity, not full production parity. The 41M checkpoints'
+answer medians (502--560 ms quick-bench, 548--602 ms on the warmed repeated
+internal A/B) sit in the neighborhood of MiniCPM's separately measured
+525 ms; the runs are not paired under one harness — the same checkpoint moves
+~7% between this repository's own harnesses — so no faster/slower conclusion
+is drawn. Jaeger's saved END-to-first-audio sessions were likewise not
 run as a paired MiniCPM test and vary from 693--1,275 ms. The broader 32-room
 CPU AEC stress currently fails (19 false barges, 41% recall), distinct speaker
 separation fails, and the checkpoint-matched physical five-minute matrix is

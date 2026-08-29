@@ -2,7 +2,9 @@
 
 One GPU job at a time. JaegerOmni 41M Medium SHA `a7f96bfb8898` is the current
 broad-corpus winner: 3.97% free-running WER on the untouched 51,311-word
-test-clean lockbox, with no regression across the five selection corpora.
+test-clean lockbox (pre-budget12; remeasure at the corrected 12-token/s
+budget before cross-checkpoint comparison), with no regression across the
+five selection corpora.
 The final pre-production training window is closed: the same checkpoint also
 scores 3.30% normalized WER (22/667) on the source-qualified one-to-one
 conversation gate and 12/12 spoken answers at 560 ms median. Do not run more
@@ -20,8 +22,9 @@ The latest GemmaOmni causal model is now imported exactly, and a Jaeger 15%
 causal blend is packaged separately. Keep `jaegeromni-41m-medium` as the 1:1
 production candidate because it still wins dev-clean by two words. Use
 `jaegeromni-41m-causal-balanced` for the next full-duplex experiment: it is
-24/24 at 574.2 ms and improves four of five corpus gates, including AMI from
-32.99% to 28.23%. Before any promotion, rerun the overlap/speaker/turn-end
+24/24 at 574.2 ms and improves four of five corpus gates, including the
+64-clip/673-word training-adjacent AMI validation slice from 32.99% to
+28.23%. Before any promotion, rerun the overlap/speaker/turn-end
 heads on held-out real mixtures after the trunk blend and connect their
 calibrated logits to policy. Structural causality and self-speech wiring pass;
 head calibration does not yet.
