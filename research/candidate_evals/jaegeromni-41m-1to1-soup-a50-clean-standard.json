@@ -1,0 +1,19 @@
+{
+  "normalizer": "transformers.WhisperTokenizer.normalize",
+  "whisper": "openai/whisper-medium",
+  "datasets": {
+    "clean360val128": {
+      "report": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/candidate_evals/jaegeromni-41m-1to1-soup-a50-clean360val128.json",
+      "normalized_wer": 0.05130007027406887,
+      "normalized_edits": 146,
+      "normalized_reference_words": 2846,
+      "passes_under_5pct": false
+    }
+  },
+  "aggregate": {
+    "normalized_wer": 0.05130007027406887,
+    "normalized_edits": 146,
+    "normalized_reference_words": 2846
+  },
+  "gate_pass": false
+}

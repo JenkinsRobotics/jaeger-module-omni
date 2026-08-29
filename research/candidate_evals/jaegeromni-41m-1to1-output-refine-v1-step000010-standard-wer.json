@@ -1,0 +1,26 @@
+{
+  "normalizer": "transformers.WhisperTokenizer.normalize",
+  "whisper": "openai/whisper-medium",
+  "datasets": {
+    "devclean64": {
+      "report": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/candidate_evals/jaegeromni-41m-1to1-output-refine-v1-step000010-devclean64.json",
+      "normalized_wer": 0.04953560371517028,
+      "normalized_edits": 48,
+      "normalized_reference_words": 969,
+      "passes_under_5pct": true
+    },
+    "clean360val128": {
+      "report": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/candidate_evals/jaegeromni-41m-1to1-output-refine-v1-step000010-clean360val128.json",
+      "normalized_wer": 0.050597329585382995,
+      "normalized_edits": 144,
+      "normalized_reference_words": 2846,
+      "passes_under_5pct": false
+    }
+  },
+  "aggregate": {
+    "normalized_wer": 0.05032765399737877,
+    "normalized_edits": 192,
+    "normalized_reference_words": 3815
+  },
+  "gate_pass": false
+}

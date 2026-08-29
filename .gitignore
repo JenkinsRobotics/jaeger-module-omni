@@ -96,3 +96,7 @@ training/samples/*.mp3
 
 # Full-duplex demo state (captures may contain private room audio).
 Full DuplexDemo App/runtime/
+
+# All checkpoint/port artifacts — 19 GB of weights; JSON evidence lives in
+# research/candidate_evals and research/results instead.
+artifacts/

@@ -1,0 +1,782 @@
+{
+  "adapter": "artifacts/41m-room-blend-sweep/cleanroom41m-room-alpha10.npz",
+  "split": "clean360_validation",
+  "adapter_sha256": "a7f96bfb889866f75df7b838f84aae368a56ab10f6469e766511d700e32fe13a",
+  "encoder": "openai/whisper-medium",
+  "id_file": "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-clean360-v1/clean360_validation/manifest.jsonl",
+  "source_prefix": null,
+  "n": 128,
+  "wer": 0.05175469691598724,
+  "edits": 146,
+  "reference_words": 2821,
+  "rows": [
+    {
+      "id": "5039-1189-0055",
+      "reference": "THE SHAGGY MAN SAT DOWN AGAIN AND SEEMED WELL PLEASED",
+      "hypothesis": "the shaggy man sat down again and seemed well pleased",
+      "wer": 0.0
+    },
+    {
+      "id": "5876-8675-0063",
+      "reference": "OF WHOSE SKILL IN NEEDLEWORK HE HAD HEARD SO MUCH",
+      "hypothesis": "of whose skill and needlework he had heard so much",
+      "wer": 0.1
+    },
+    {
+      "id": "4425-14497-0024",
+      "reference": "I REALLY COULD NOT SAY I BEG YOUR PARDON BUT IT HAS COME WITHOUT ANY WARNING IF YOU WILL LET ME I'LL SIT HERE FOR A MINUTE AND THEN I'LL GO",
+      "hypothesis": "i really could not say i beg your pardon but it has come without any warning if you will let me i'll sit here for a minute and then i'll go",
+      "wer": 0.0
+    },
+    {
+      "id": "335-125943-0002",
+      "reference": "SCARECROW BECAME GREATLY ANIMATED AT THIS SIGHT AND EXCLAIMED HOW DELIGHTED I SHALL BE TO SEE MY OLD FRIEND THE TIN WOODMAN AGAIN",
+      "hypothesis": "the scarecrow became greatly animated at this sight and exclaimed how delighted i shall be to see my old friend the tinwoodman again",
+      "wer": 0.13043478260869565
+    },
+    {
+      "id": "1271-136861-0003",
+      "reference": "THE FATHER OF HIS MUCH VALUED FRIEND BUT HE DID NOT ACCEPT OF IT",
+      "hypothesis": "the father of his much valued friend but he did not accept of it",
+      "wer": 0.0
+    },
+    {
+      "id": "6865-95959-0019",
+      "reference": "ON HIS FIRST ENTRY INTO THE GRAND TEMPLE HE INQUIRED ABOUT EVERY MATTER CONNECTED WITH ITS USAGES SOME ONE THEREUPON REMARKED",
+      "hypothesis": "on his first entry into the grand temple he inquired about every matter connected with its usages someone there upon remarked",
+      "wer": 0.14285714285714285
+    },
+    {
+      "id": "4719-25766-0065",
+      "reference": "AND I ACCOMPLISHED MY PURPOSE AND YOU GOT THOSE LETTERS FROM ME TO GIVE TO HIM YES",
+      "hypothesis": "and i accomplished my purpose and you got those letters for me to give to him yes",
+      "wer": 0.058823529411764705
+    },
+    {
+      "id": "487-129440-0065",
+      "reference": "TO WARME EARTHS INMOST WOMB MORE WARMTH THEN ADAM NEED",
+      "hypothesis": "to warm earths in most whom more warmth than adam need",
+      "wer": 0.5
+    },
+    {
+      "id": "4719-25766-0001",
+      "reference": "AS HE APPROACHED ROGERSVILLE",
+      "hypothesis": "as he approached stratus's hill",
+      "wer": 0.5
+    },
+    {
+      "id": "487-129440-0042",
+      "reference": "DUSKIE OR GREY TILL THE SUN PAINT YOUR FLEECIE SKIRTS WITH GOLD IN HONOUR TO THE WORLDS GREAT AUTHOR RISE",
+      "hypothesis": "dusky or gray till the sun paints your fleecy skirts with gold in honor to the world's great author rise",
+      "wer": 0.3
+    },
+    {
+      "id": "4846-18524-0000",
+      "reference": "THEY HAD BEEN DAYS AT DEAR INTERLAKEN",
+      "hypothesis": "they have been days of dear entelokin",
+      "wer": 0.42857142857142855
+    },
+    {
+      "id": "6352-83633-0017",
+      "reference": "GUIPUSCOA NAPLES AND SICILY THAN BY SENDING THE DUKE OF ANJOU OR THE DUKE OF BERRY TO REIGN AT THE ESCURIAL",
+      "hypothesis": "diapscoia naples and sicily then by sending the duke of anjou or the duke of berry to reign at the escurial",
+      "wer": 0.09523809523809523
+    },
+    {
+      "id": "6352-88007-0028",
+      "reference": "EXCITED BY THE MOST MATERIAL DIFFERENCES IN RELIGION OR RATHER BY THE MOST FRIVOLOUS SINCE IT IS A JUST REMARK THAT THE MORE AFFINITY THERE IS BETWEEN THEOLOGICAL PARTIES",
+      "hypothesis": "excited by the most material differences in religion or rather by the most frivolous since it is a just remark that the more affinity there is between theological parties",
+      "wer": 0.0
+    },
+    {
+      "id": "335-125941-0023",
+      "reference": "I EXPECTED THIS BLOW SAID THE SOLDIER SULKILY BUT I CAN BEAR IT I SHALL DISGUISE MYSELF BY CUTTING OFF MY LOVELY GREEN WHISKERS AND AFTER ALL",
+      "hypothesis": "i expected this blow said the soldier saukely but i can bear it i shall disguise myself by cutting off my lovely green whiskers and after all",
+      "wer": 0.037037037037037035
+    },
+    {
+      "id": "4899-32637-0030",
+      "reference": "AND TO DAY SHE SAID TO ME I WOULD NOT ARGUE WITH HIM IF I WERE YOU HE NEVER WILL YIELD",
+      "hypothesis": "and today she said to me i would not argue with him if i were you he never will yield",
+      "wer": 0.09523809523809523
+    },
+    {
+      "id": "7120-118112-0007",
+      "reference": "HAS BEEN MADE CHIEFLY ON ACCOUNT OF A FEMALE CHILD OF TEN OR ELEVEN YEARS OLD FOR WHOSE PURCHASE I HAVE BEEN AUTHORIZED TO OFFER",
+      "hypothesis": "has been made chiefly on account of a female child of ten or eleven years old for whose purchase i have been authorized to offer",
+      "wer": 0.0
+    },
+    {
+      "id": "4731-58193-0001",
+      "reference": "A GIRL THAT HE HAD MARRIED IN THE HUMBLE WALKS OF LIFE",
+      "hypothesis": "a girl that he had married in the humble walks of life",
+      "wer": 0.0
+    },
+    {
+      "id": "5637-41166-0005",
+      "reference": "AND IT WAS IMPOSSIBLE TO GET THE SIMPLEST THING DONE THAT DEPENDED UPON THE COURT OF WARDSHIP",
+      "hypothesis": "and it was impossible to get the simplest thing done that depended upon the court of warship",
+      "wer": 0.058823529411764705
+    },
+    {
+      "id": "4846-18524-0017",
+      "reference": "YES BIGGER A THOUSAND FEET OR MORE ANSWERED POLLY GLAD THAT SHE HAD LOOKED IT UP IS IT SAID PHRONSIE EVERY MOUNTAIN IS BIGGER ISN'T IT POLLY",
+      "hypothesis": "yes bigger a thousand feet or more answered polly glad that she had looked it up is it said francy every mountain is bigger isn't it polly",
+      "wer": 0.037037037037037035
+    },
+    {
+      "id": "2929-85685-0000",
+      "reference": "THE LARGER SYNTHESIS WE HAVE SEEN THAT THE ESSENTIAL PROCESS ARISING OUT OF THE GROWTH OF SCIENCE AND MECHANISM AND MORE PARTICULARLY OUT OF THE STILL DEVELOPING NEW FACILITIES OF LOCOMOTION",
+      "hypothesis": "the larger synthesis we have seen that the essential process arising out of the growth of science and mechanism and more particularly out of the still developing new facilities of locomotion",
+      "wer": 0.0
+    },
+    {
+      "id": "1241-137614-0027",
+      "reference": "BUT SHE MEANT THAT EITHER OF THEM HAD LOVED OTHER WITH ENTIRE HEART BUT SIR TRISTRAM ANSWERED HER THUS FAIR LADY IT IS NOT MY PART TO HAVE ADO IN SUCH MATTERS WHILE HER LORD AND HUSBAND IS PRESENT HERE",
+      "hypothesis": "but she meant that either of them had loved other with entire heart but sir christopher answered her thus fair lady it is not my part to have a do in such matters while her lord and husband is present here",
+      "wer": 0.075
+    },
+    {
+      "id": "4719-25766-0070",
+      "reference": "AS MY GUEST I CAN DO NO LESS REPLIED MISTER OSBORNE IF LIEUTENANT PENNINGTON HAD NOT TAKEN HIS I SHOULD HAVE LET HIM HAVE ONE TO CONTINUE ON HIS WAY TO KENTUCKY SO YOU SEE AFTER ALL I AM OUT NOTHING",
+      "hypothesis": "as my guest i can do no less replied mister osborne if lieutenant pennington had not taken his i should have let him have one to continue on his way to kentucky so you see after all i am out nothing",
+      "wer": 0.0
+    },
+    {
+      "id": "249-121331-0071",
+      "reference": "OH AMORY LOOK AT THAT FOREHEAD ON EMERSON LOOK AT TOLSTOI'S EYES HIS TONE WAS REPROACHFUL AMORY SHOOK HIS HEAD NO CALL THEM REMARKABLE LOOKING",
+      "hypothesis": "oh amory look at the forehead on emerison like at tolstoy's eyes his tone is reproachful amory shook his head no call them remarkable looking",
+      "wer": 0.2
+    },
+    {
+      "id": "2929-85685-0049",
+      "reference": "THE INTELLECTUAL DEVELOPMENT OF THE GERMANS IS DEFINED TO A VERY LARGE EXTENT BY A COURT DIRECTED OFFICIALDOM IN MANY THINGS",
+      "hypothesis": "the intellectual development of the germans is defined to a very large extent by a court directed officialdom in many things",
+      "wer": 0.0
+    },
+    {
+      "id": "7832-114468-0038",
+      "reference": "HAD THAT FORD IN MIND AND HE WAS GLAD TO BE WITH HIM ON THE MARCH TO IT",
+      "hypothesis": "had that ford in mind and he was glad to be with him on the march to it",
+      "wer": 0.0
+    },
+    {
+      "id": "4839-15305-0016",
+      "reference": "IN GIVING THE SENATE AN ACCOUNT OF HIS MISSION ONE OF THE AMBASSADORS DOMINIC OF TREVISO",
+      "hypothesis": "in giving the senate an account of his mission one of the ambassadors dominic of treviso",
+      "wer": 0.0
+    },
+    {
+      "id": "4731-58193-0003",
+      "reference": "FROM THE VERY FIRST I DID THE WORK OF THREE SERVANTS AND YET I WAS SCOLDED AND REGARDED WITH DISTRUST THE YEARS PASSED SLOWLY AND I CONTINUED TO SERVE THEM",
+      "hypothesis": "from the very first i did the work of three servants and yet i was scolded at and regarded with distrust the years passed slowly and i continued to serve them",
+      "wer": 0.03333333333333333
+    },
+    {
+      "id": "718-129596-0015",
+      "reference": "AND THERE I SAT CHIN ON KNEES THE SUN BEATING DOWN UPON MY HEAD AND UNSPEAKABLE DREAD IN MY MIND PLOTTING HOW I COULD LIVE ON AGAINST THE HOUR OF MY RESCUE IF EVER RESCUE CAME",
+      "hypothesis": "and there i sat shin on knees the sun beating down upon my head and an unspeakable dread in my mind plotting how i could live on against the hour of my rescue if ever rescue came",
+      "wer": 0.05555555555555555
+    },
+    {
+      "id": "2532-163402-0013",
+      "reference": "AIN'T NECESSITY ENOUGH FOR IT FOR WHAT I SAYS",
+      "hypothesis": "there ain't necessity enough for it for what i says",
+      "wer": 0.1111111111111111
+    },
+    {
+      "id": "6865-95959-0011",
+      "reference": "AH EXCLAIMED THE MASTER YOU ARE THE MAN TO CATCH THE DRIFT OF MY THOUGHT SUCH AS YOU MAY WELL INTRODUCE A DISCUSSION ON THE ODES SAID THE MASTER",
+      "hypothesis": "ah exclaimed the master you are the man to catch the drift of my thought such as you may well introduce a discussion on the odds said the master",
+      "wer": 0.034482758620689655
+    },
+    {
+      "id": "3521-12715-0040",
+      "reference": "MOULD THEM UP INTO SMALL BISCUIT AND BAKE THEM IMMEDIATELY",
+      "hypothesis": "mold them up into small biscuits and bake them immediately",
+      "wer": 0.2
+    },
+    {
+      "id": "4899-32658-0035",
+      "reference": "HOW STRANGE THAT WE EVER FORGET THAT WE ARE ALL SUCH",
+      "hypothesis": "how strange that we ever forget that we are all such",
+      "wer": 0.0
+    },
+    {
+      "id": "594-127731-0032",
+      "reference": "ONE MORNING AS SLID SANG OF OLD OUTRAGEOUS WARS",
+      "hypothesis": "one morning as sled sang of old outrageous wars",
+      "wer": 0.1111111111111111
+    },
+    {
+      "id": "783-126739-0042",
+      "reference": "WITH OLD STOTT WARTENHEIM HIMSELF AND HAD COME TO REGARD HIS SERVICES AS INDISPENSABLE IT WAS AN EXTREMELY RUDE AWAKENING",
+      "hypothesis": "with old stout wardenhime himself and had come to regard his services as indispensable it was an extremely rude awakening",
+      "wer": 0.1
+    },
+    {
+      "id": "1241-137614-0034",
+      "reference": "HAVE YE NO DOUBT BUT I WILL HAVE ADO WITH THEM TO INCREASE MY WORSHIP",
+      "hypothesis": "have you no doubt but i will have a do with them to increase my worship",
+      "wer": 0.2
+    },
+    {
+      "id": "154-293987-0005",
+      "reference": "NOTHING OF THE KIND THEY ONLY INVENT THEM FOR THE MOST PART TO FURNISH A SUBJECT FOR THEIR VERSES AND THAT THEY MAY PASS FOR LOVERS OR FOR MEN VALIANT ENOUGH TO BE SO",
+      "hypothesis": "nothing of the kind they only invent them for the most part to furnish a subject for their verses and that they may pass for lovers or for men valiant enough to be so",
+      "wer": 0.0
+    },
+    {
+      "id": "957-132568-0030",
+      "reference": "AFTER SOME DELIBERATION SHE DETERMINED THAT MONTONI SHOULD NOT BE INFORMED OF THIS EVENT TILL THE MORNING FOR SHE CONSIDERED THAT HE MIGHT PERHAPS UTTER SOME INHUMAN EXPRESSIONS",
+      "hypothesis": "after some deliberation she determined that montoni should not be informed of this event till the morning for she considered that he might perhaps utter some inhuman expressions",
+      "wer": 0.0
+    },
+    {
+      "id": "9022-282357-0030",
+      "reference": "SOMETHING HAPPENED A FEW YANKEE PROSPECTORS HAD GONE DOWN ON THE HUDSON'S BAY STEAMER OTTER TO SAN FRANCISCO IN FEBRUARY WITH GOLD DUST AND NUGGETS",
+      "hypothesis": "something happened a few yankee prospectors had gone down on the hudson's bay steamer otter to san francisco in february with gold dust and nuggets",
+      "wer": 0.0
+    },
+    {
+      "id": "5039-1189-0039",
+      "reference": "PROTESTED THE SHAGGY MAN MAY BE ANSWERED THE WOOZY",
+      "hypothesis": "protested the shaggy man me be answered the woozy",
+      "wer": 0.1111111111111111
+    },
+    {
+      "id": "5290-39475-0014",
+      "reference": "BUT NOW I DO NOT SEE THAT IT HAS MUCH BEARING ON THE MIRACLE ITSELF EVEN THOUGH WE KNOW THAT AFTER THAT SHE ALWAYS SPOKE OF THE POOR FOXES",
+      "hypothesis": "but now i do not see that it has much bearing on the miracle itself even though we know that after that she always spoke of the poor foxes",
+      "wer": 0.0
+    },
+    {
+      "id": "4899-32658-0018",
+      "reference": "BUT NO SEE HIM SHE MUST HE WAS HER",
+      "hypothesis": "but no see him she must he was her",
+      "wer": 0.0
+    },
+    {
+      "id": "8066-114256-0019",
+      "reference": "OF NERVES STRETCHED IN SOME PURPOSE LONG SUSTAINED AND WHY NOT WHEN A MAN WOULD DO MURDER",
+      "hypothesis": "of nerve stretched in some purpose long sustained and why not when a man would do murder",
+      "wer": 0.058823529411764705
+    },
+    {
+      "id": "957-132568-0005",
+      "reference": "WHILE EMILY REPEATEDLY DECLARED TO HIM HER WILLINGNESS TO RESIGN ALL CLAIM TO THOSE ESTATES RATHER THAN THAT THE LAST HOURS OF HER AUNT SHOULD BE DISTURBED BY CONTENTION",
+      "hypothesis": "while emily repeatedly declared to him her willingness to resign all claim to those estates rather than that the last hours of her aunt should be disturbed by contention",
+      "wer": 0.0
+    },
+    {
+      "id": "1271-136861-0028",
+      "reference": "I ONCE PRINTED THEM AT LENGTH IN THE CHRONICLE AND SOME OF MY FRIENDS I BELIEVE MISTER MURPHY",
+      "hypothesis": "i once printed them at length in the chronicle and some of my friends i believe mister murchy",
+      "wer": 0.05555555555555555
+    },
+    {
+      "id": "783-126739-0091",
+      "reference": "HE REMAINED SILENT FOR A LITTLE WHILE WE'VE GOT HOLD OF A MAN CALLED VERLOC HE ANNOUNCED CASUALLY",
+      "hypothesis": "he remains silent for a little while we've got hold of a man called verlock he announced casually",
+      "wer": 0.1111111111111111
+    },
+    {
+      "id": "2319-138631-0048",
+      "reference": "I'LL OVERTAKE YOU IN A MINUTE SHE SAID TO THE YOUNGER PAIR AND WENT BACK",
+      "hypothesis": "i'll overtake you in a minute she said to the younger pair and went back",
+      "wer": 0.0
+    },
+    {
+      "id": "2060-150843-0039",
+      "reference": "POOH VOLCANIC SAYS THE LEADING TOURIST",
+      "hypothesis": "poo volcanic says the leading tourist",
+      "wer": 0.16666666666666666
+    },
+    {
+      "id": "2929-85685-0073",
+      "reference": "SHE WILL FIGHT WITH THE GRAVITY OF REMEMBERED HUMILIATIONS WITH THE WHOLE AWAKENED SLAV RACE AT THE BACK OF HER ANTAGONIST AND VERY PROBABLY WITH THE SUPPORT OF THE ENGLISH SPEAKING PEOPLES",
+      "hypothesis": "she will fight with the gravity of remembered humiliations with the whole awakened slav race at the back of her antagonist and very probably with the support of the english speaking peoples",
+      "wer": 0.0
+    },
+    {
+      "id": "7241-90850-0038",
+      "reference": "EVEN AS A SHIP THAT HAS COME INTO HARBOR FAR AHEAD OF THE VAST SWARM FLEW ONE LONELY BIRD AND SUDDENLY THIS BIRD UTTERED A SHRILL AND PIERCING CRY",
+      "hypothesis": "even as a ship that has come into harbor far ahead of the vast swarm flew one lonely bird and suddenly this bird uttered a shrill and piercing cry",
+      "wer": 0.0
+    },
+    {
+      "id": "718-129594-0016",
+      "reference": "IMMEDIATELY AFTER APPEARED A MONSTER IN HEADLONG PURSUIT BLOOD BEDABBLED",
+      "hypothesis": "immediately after appeared a monster in head long pursuit blood bedabbled",
+      "wer": 0.2
+    },
+    {
+      "id": "4719-25765-0023",
+      "reference": "I WAS DRESSED IN CITIZEN'S CLOTHES",
+      "hypothesis": "i was dressed in citizens clothes",
+      "wer": 0.16666666666666666
+    },
+    {
+      "id": "5876-10347-0017",
+      "reference": "AND NOT MERELY VIRTUALLY FOR THE FIRMAMENT",
+      "hypothesis": "and not merely virtually for the firmament",
+      "wer": 0.0
+    },
+    {
+      "id": "783-126739-0032",
+      "reference": "THE MAN FIGURATIVELY SPEAKING FLUNG HIMSELF ON MY BREAST IT WAS ENOUGH ON MY PART TO WHISPER TO HIM WHO I WAS AND TO ADD I KNOW THAT YOU ARE AT THE BOTTOM OF THIS AFFAIR",
+      "hypothesis": "the man figuratively speaking flung himself on my breast it was enough on my part to whisper to him who i was and to add i know that you are at the bottom of this affair",
+      "wer": 0.0
+    },
+    {
+      "id": "4839-15305-0033",
+      "reference": "THE FRENCH ARMY WAS DISPERSING ABOUT IN SEARCH OF SHELTER AND PROVISIONS",
+      "hypothesis": "the french army was dispersing about in search of shelter and provisions",
+      "wer": 0.0
+    },
+    {
+      "id": "114-129317-0048",
+      "reference": "IF YOU BURIED HIM FIFTY FEET DEEP AND TOOK ME ACROSS HIS GRAVE I FANCY I SHOULD KNOW IF THERE WASN'T A MARK ABOVE IT",
+      "hypothesis": "if you buried him fifty feet deep and took me across his grave i fancy i should know if there wasn't to mark above it",
+      "wer": 0.04
+    },
+    {
+      "id": "335-125941-0016",
+      "reference": "IF YOU'LL KEEP QUIET LONG ENOUGH FOR ME TO THINK I'LL TRY TO FIND SOME WAY FOR US ALL TO ESCAPE",
+      "hypothesis": "if you'll keep quiet long enough for me to think i'll try to find some way for us",
+      "wer": 0.14285714285714285
+    },
+    {
+      "id": "2272-152262-0002",
+      "reference": "THE BRITONS WERE DRIVEN INTO WALES AND CORNWALL THE WESTERN SECTIONS OF THE ISLAND THE ROMANS KEPT POSSESSION OF THE ISLAND FOR NEARLY FOUR HUNDRED YEARS",
+      "hypothesis": "the britons were driven into wales and cornwall the western sections of the island the romans kept possession of the island for nearly four hundred years",
+      "wer": 0.0
+    },
+    {
+      "id": "249-121331-0037",
+      "reference": "THE GAUDY RITUALISTIC PARADOXICAL CATHOLICISM WHOSE PROPHET WAS CHESTERTON",
+      "hypothesis": "the goudy ritualistic paradoxical catholicism whose prophet was chesterton",
+      "wer": 0.1111111111111111
+    },
+    {
+      "id": "2272-152265-0000",
+      "reference": "HENRY THE FOWLER KING FROM",
+      "hypothesis": "henry the fowler king from",
+      "wer": 0.0
+    },
+    {
+      "id": "4064-19132-0022",
+      "reference": "THEY'RE STUNNING GIRLS I TELL YOU I'D LIKE YOU TO MEET THEM MISTER MONTAGUE I SHOULD BE PLEASED SAID MONTAGUE WRITHING INWARDLY",
+      "hypothesis": "their stunning girls i tell you i'd like you to meet them mister monagueu i should be pleased said monagueu rhyming inwardly",
+      "wer": 0.18181818181818182
+    },
+    {
+      "id": "114-129324-0052",
+      "reference": "CONCERNED WITH THE GANG IN ANY OF THEIR ROBBERIES IF HE WERE NOT DISCHARGED IT IS VERY UNLIKELY THAT HE COULD RECEIVE ANY FURTHER PUNISHMENT THAN BEING COMMITTED TO PRISON AS A ROGUE AND VAGABOND",
+      "hypothesis": "concerned with a gang in any of their robberies if he were not discharged it is very unlikely that he could receive any further punishment than being committed to prison as a rogue and vagabond",
+      "wer": 0.02857142857142857
+    },
+    {
+      "id": "4731-95875-0027",
+      "reference": "THE DARKNESS THAT SURROUNDED THE WHOLE FIELD OF SEX WAS MADE AS COMPLETE AS POSSIBLE SINCE THEN THE FEELING OF THE AWAKENED WOMEN OF AMERICA HAS INTENSIFIED",
+      "hypothesis": "the darkness that surrounded the whole field of sex was made as complete as possible since then the feeling of the awakened woman of america has been intensified",
+      "wer": 0.07407407407407407
+    },
+    {
+      "id": "249-121331-0040",
+      "reference": "QUITE SUBMERGED IN HIS BROTHER'S PERSONALITY",
+      "hypothesis": "quite submerged in his brother's personality",
+      "wer": 0.0
+    },
+    {
+      "id": "1769-143485-0061",
+      "reference": "THE DEFINITION OF A TRIANGLE CAN ALONE GIVE YOU A JUST IDEA OF THAT FIGURE THE MOMENT YOU FORM A TRIANGLE IN YOUR MIND IT IS THIS OR THAT PARTICULAR TRIANGLE AND NO OTHER",
+      "hypothesis": "the definition of a triangle can alone give you a just idea of that figure the moment you form a triangle in your mind it is this or that particular triangle and no other",
+      "wer": 0.0
+    },
+    {
+      "id": "7802-104398-0003",
+      "reference": "JUST TO HER KNEES WITH A BIG RENT IN THE SKIRT HER HAIR WAS SHORT AND BUSHY AND DARK AND HER FACE WAS SOBERER THAN MOST FOREST PEOPLE'S FACES",
+      "hypothesis": "just to her knees with a big rent in the skirt her hair was short and bushy and dark and her face was soberer than most poorish people's faces",
+      "wer": 0.034482758620689655
+    },
+    {
+      "id": "2272-152262-0005",
+      "reference": "JUST AS THEIR FOREFATHERS HAD DONE WHEN THE ROMANS INVADED BRITAIN THUS NEARLY ALL ENGLAND CAME INTO THE POSSESSION OF THE THREE INVADING TRIBES TWO",
+      "hypothesis": "just as their forefathers had done when the romans invaded britain thus nearly all england came into the possession of the three invading tribes two",
+      "wer": 0.0
+    },
+    {
+      "id": "3187-168500-0034",
+      "reference": "THE INEXPLICABLE AND IRREMEDIABLE MAY INTEREST HIM BUT THEY DO NOT ENRAGE HIM OR I MAY ADD FOOL HIM",
+      "hypothesis": "the inexplicable and era media bull may interest him but they do not enrage him or i may add fool him",
+      "wer": 0.15789473684210525
+    },
+    {
+      "id": "2531-156724-0031",
+      "reference": "THE PHOENIX LOWERED ITS VOICE IMPRESSIVELY MY BOY WE ARE GOING TO INSTALL THIS BELL IN YOUR ROOM AND THE PUSHBUTTON ON THE BASE OF THAT TELEPHONE POLE",
+      "hypothesis": "the phoenix lowered its voice impressively my boy we are going to install this bell in your room and the push button on the base of that telephone pole",
+      "wer": 0.07142857142857142
+    },
+    {
+      "id": "114-129317-0014",
+      "reference": "AND THAT YOUR ARRIVAL HERE A DAY SOONER OR A DAY LATER",
+      "hypothesis": "and that your arrival here a day sooner or a day later",
+      "wer": 0.0
+    },
+    {
+      "id": "1271-136861-0041",
+      "reference": "AND POLLUTE HIS CANVAS WITH DEFORMITY BEING ADDED BY JOHNSON AS SIR JOSHUA INFORMED ME",
+      "hypothesis": "and pollute his canvas with deformity being added by johnson else sir josephus informed me",
+      "wer": 0.13333333333333333
+    },
+    {
+      "id": "4719-25765-0036",
+      "reference": "I TRUST I SHALL NEVER PROVE MYSELF UNWORTHY OF YOUR GOOD OPINION MAY GOD BLESS YOU AND CROWN YOUR EFFORTS WITH VICTORY",
+      "hypothesis": "i trust i shall never prove myself unworthy of your good opinion may god bless you and crown your efforts with victory",
+      "wer": 0.0
+    },
+    {
+      "id": "335-125945-0024",
+      "reference": "EXCLAIMED THE WOGGLE BUG ADMIRINGLY YES MY BRAINS ARE WORKING WELL TODAY ADMITTED THE SCARECROW AN ACCENT OF PRIDE IN HIS VOICE THEN",
+      "hypothesis": "exclaimed the woggle bug admiringly yes my brains are working well today admitted the scarecrow an accent of pride in his voice then",
+      "wer": 0.0
+    },
+    {
+      "id": "3187-168500-0065",
+      "reference": "IT AT ONCE TAKES ON ALL THE SINISTER FASCINATION IT HAD IN LUTHER'S DAY",
+      "hypothesis": "it at once takes on all the sinister fascination it had in luther's day",
+      "wer": 0.0
+    },
+    {
+      "id": "154-124003-0002",
+      "reference": "A VOWEL IS A LETTER HAVING AN AUDIBLE SOUND WITHOUT THE ADDITION OF ANOTHER LETTER",
+      "hypothesis": "a vowel is a letter having an audible sound without the addition of another letter",
+      "wer": 0.0
+    },
+    {
+      "id": "7802-104394-0049",
+      "reference": "DID THEY LAUGH AT ME",
+      "hypothesis": "did they laugh at me",
+      "wer": 0.0
+    },
+    {
+      "id": "487-129440-0030",
+      "reference": "THEN WHEN FAIR MORNING FIRST SMILES ON THE WORLD AND LET US TO OUR FRESH IMPLOYMENTS RISE AMONG THE GROVES THE FOUNTAINS AND THE FLOURS",
+      "hypothesis": "then when fair morning first smiles on the world and let us to our fresh employments rise among the groves the fountains and the flowers",
+      "wer": 0.08
+    },
+    {
+      "id": "1769-143484-0011",
+      "reference": "PLACE THEM NAKED AND UNARMED ONE OPPOSITE TO THE OTHER AND YOU WILL SOON DISCOVER THE ADVANTAGE THERE IS IN PERPETUALLY HAVING ALL OUR FORCES AT OUR DISPOSAL IN BEING CONSTANTLY PREPARED AGAINST ALL EVENTS",
+      "hypothesis": "place them naked and unarmed one opposite to the other and you will soon discover the advantage there is in perpetually having all our forces at our disposal in being constantly prepared against all events",
+      "wer": 0.0
+    },
+    {
+      "id": "1241-121106-0029",
+      "reference": "BECAUSE HE APPEARED DISPOSED TO INTERFERE BETWEEN US IN ONE RESPECT YOU ARE RIGHT FOR I AM READY TO QUARREL WITH EVERY ONE TO DAY",
+      "hypothesis": "because he appeared disposed to interfere between us in one respect you were right for i am ready to quarrel with everyone today",
+      "wer": 0.2
+    },
+    {
+      "id": "1241-121106-0016",
+      "reference": "HOW AND WHY BECAUSE A FORTNIGHT SINCE I WAS QUESTIONED ON THE SAME SUBJECT",
+      "hypothesis": "how and why because a fortnight since i was questioned on the same subject",
+      "wer": 0.0
+    },
+    {
+      "id": "718-129597-0026",
+      "reference": "I REALLY BELIEVE THAT WAS AT THE ROOT OF THE BRUTE'S ATTACHMENT TO ME IT WAS SOON EVIDENT TO ME THAT THE FORMER MONSTER HAD TASTED BLOOD AND GONE THE WAY OF THE LEOPARD MAN",
+      "hypothesis": "i really believed that was at the root of the roots attachment to me it was soon evident to me that the former monster had tasted blood and had gone the way of the leper man",
+      "wer": 0.11428571428571428
+    },
+    {
+      "id": "3521-12715-0024",
+      "reference": "IF IT DOES NOT FOAM WELL WHEN PUT IN IT IS TOO STALE TO USE",
+      "hypothesis": "if it does not foam well when put in it is too stale to use",
+      "wer": 0.0
+    },
+    {
+      "id": "4839-15305-0015",
+      "reference": "TWO MONTHS AFTERWARDS AND NOT BEFORE HE WAS CONDUCTED TO THE KING HIMSELF WHO WAS THEN AT BLOIS LOUIS WELCOMED HIM WITH HIS NATURAL KINDNESS AND SECURED TO HIM FIFTY THOUSAND LIVRES A YEAR ON THE DUCHY OF ANJOU",
+      "hypothesis": "two months afterwards and not before he was conducted to the king himself who was then at blaye louis welcomed him with his natural kindness and secured to him fifty thousand livres a year on the duchy of anjou",
+      "wer": 0.02564102564102564
+    },
+    {
+      "id": "4899-32658-0036",
+      "reference": "THE DESOLATE PILGRIMAGE WAS NOT LONG",
+      "hypothesis": "the desolate pilgrim was not long",
+      "wer": 0.16666666666666666
+    },
+    {
+      "id": "718-129594-0006",
+      "reference": "I RECOGNISED THE APE MAN I HAD INDEED ALREADY IDENTIFIED HIS VOICE AND TWO OF THE WHITE SWATHED BROWN FEATURED CREATURES I HAD SEEN IN MONTGOMERY'S BOAT",
+      "hypothesis": "i recognize the ape man i had indeed already identified his voice and two of the white swathed brown featured creatures i had seen in montgomery's boat",
+      "wer": 0.037037037037037035
+    },
+    {
+      "id": "1012-133424-0054",
+      "reference": "HIS FACE HAD GONE BLACK WITH RAGE BUT HE SAW THAT THEY BELIEVED THEIR WORDS AND HE WAS STARTLED LADS HE SAID SHAKING A LITTLE",
+      "hypothesis": "his face had gone black with rage but he saw that they believed their words and he was startled lads he said shaking a little",
+      "wer": 0.0
+    },
+    {
+      "id": "7994-258960-0019",
+      "reference": "THE QUALITIES WHOSE USE GIVES VALUE ARE NOT USUALLY INDESTRUCTIBLE",
+      "hypothesis": "the qualities whose use gives value are not usually indestructible",
+      "wer": 0.0
+    },
+    {
+      "id": "4425-14497-0063",
+      "reference": "AND RETIRED INTO THE DARKNESS THAT THE SPOTS IN HIS EYES AND THE PAINS ACROSS HIS HEAD WERE VERY TROUBLESOME",
+      "hypothesis": "and retired into the darkness that the spots in his eyes and the pains across his head were very troublesome",
+      "wer": 0.0
+    },
+    {
+      "id": "718-129596-0009",
+      "reference": "AT THE FIRST EXCUSE IT MAY SEEM TREACHEROUS BUT SO I WAS RESOLVED I WAS FAR MORE AFRAID OF HIM THAN OF ANY OTHER TWO OF THE BEAST FOLK HIS CONTINUED LIFE WAS I KNEW A THREAT AGAINST MINE",
+      "hypothesis": "at the first excuse it may seem treacherous but so i was resolved i was far more afraid of him than of any other two of the beast folk his continued life was i knew a threat against mine",
+      "wer": 0.0
+    },
+    {
+      "id": "2532-163402-0021",
+      "reference": "WE'RE GOING TO GET INTO TROUBLE WITH AUNT SALLY JUST AS SURE AS YOU'RE BORN NOW THE WAY I LOOK AT IT A HICKRY BARK LADDER DON'T COST NOTHING AND DON'T WASTE NOTHING",
+      "hypothesis": "we're going to get into trouble with aunt sally just as sure as you're born now the way i look at it a hickory bark ladder don't cost nothing and don't waste nothing",
+      "wer": 0.030303030303030304
+    },
+    {
+      "id": "4899-32637-0037",
+      "reference": "HE HAS NOT ONE HONEST DESIRE TO PLEASE BECAUSE IT IS RIGHT TO BE PLEASING OH MY PRECIOUS CHILD WHAT A FATAL MISTAKE YOU ARE MAKING IN RELYING ON YOUR OWN JUDGMENT IN THIS",
+      "hypothesis": "he has not one honest desire to please because it is right to be pleasing o my precious child what a fatal mistake you are making in relying on your own judgment in this",
+      "wer": 0.029411764705882353
+    },
+    {
+      "id": "7832-258250-0008",
+      "reference": "AFTER WHICH HE NUMBERED THEM AND FOUND THEM THIRTY THOUSAND HORSE",
+      "hypothesis": "after which he numbered them and found them thirty thousand horse",
+      "wer": 0.0
+    },
+    {
+      "id": "7994-258960-0040",
+      "reference": "SO THAT THERE WAS NO OCCASION TO ESTIMATE ITS TOTAL SELLING VALUE IT WAS THOUGHT OF AS A PLACE ON WHICH TO LIVE",
+      "hypothesis": "so that there was no occasion to estimate its total selling value it was thought of as a place on which to live",
+      "wer": 0.0
+    },
+    {
+      "id": "2532-163402-0044",
+      "reference": "SO HE COMES OUT AND JIM DON'T EITHER I RECKON BUT THERE'S ONE THING ANYWAY JIM'S TOO OLD TO BE DUG OUT WITH A CASE KNIFE",
+      "hypothesis": "so he comes out and jim don't either i reckon but there is one thing anyway jim's too old to be dug out with a case knife",
+      "wer": 0.07692307692307693
+    },
+    {
+      "id": "2581-157857-0016",
+      "reference": "WHAT ABOUT YOUR OWN SHE ASKED HIM BUT YOU ARE A MANUFACTURER ARE YOU NOT SOMEHOW OR OTHER THAT SURPRISES ME AND ME HE ACKNOWLEDGED FRANKLY",
+      "hypothesis": "what about your own she asked him but you are a manufacturer are you not somehow rather that surprises me and me he acknowledged frankly",
+      "wer": 0.07692307692307693
+    },
+    {
+      "id": "2004-147173-0000",
+      "reference": "THIRTY ONE HOW MARY PASSED THE NIGHT TO THINK THAT ALL THIS LONG INTERMINABLE NIGHT WHICH I HAVE PASSED IN THINKING ON TWO WORDS GUILTY'",
+      "hypothesis": "thirty one how mary passed the night to think that all this long interminable night which i have passed in thinking on two words guilty",
+      "wer": 0.04
+    },
+    {
+      "id": "2004-147967-0022",
+      "reference": "SHE GLANCED DISTRUSTFULLY AT AMBROSCH WHO WAS NOW EATING HIS BREAKFAST AT THE KITCHEN TABLE",
+      "hypothesis": "she glanced distrustfully at ambrose who was now eating his breakfast at the kitchen table",
+      "wer": 0.06666666666666667
+    },
+    {
+      "id": "594-127732-0020",
+      "reference": "AND THE CHILD CRIED AND THREW IT UPON THE STAIRWAY AND CHIPPED AND BROKE ITS EDGES AND ASKED FOR THE GOLDEN BALL AND LIMPANG TUNG",
+      "hypothesis": "and the child cried and threw it upon the stairway and chipped and broke its edges and asked for the golden ball and limpain tongue",
+      "wer": 0.08
+    },
+    {
+      "id": "783-126739-0010",
+      "reference": "WHO LOOKED TO HIM UNCOMMONLY LIKE A MAN WHO HAS MADE A MESS OF HIS JOB BUT HIS CURIOSITY WAS TOO STRONG TO BE RESTRAINED BY MERE COMPASSION HE COULD NOT HELP",
+      "hypothesis": "who looked to him uncommonly like a man who has made a mess of his job but his curiosity was too strong to be restrained by mere compassion he could not help",
+      "wer": 0.0
+    },
+    {
+      "id": "2272-152262-0008",
+      "reference": "THE SAXONS ANGLES AND JUTES BELIEVED IN THE OLD NORSE GODS AND TIEW AND WODEN THOR AND FRIGA OR FRIJA",
+      "hypothesis": "the saxons angles and jutes believed in the old norse gods and tiw and woden thor and freya or freja",
+      "wer": 0.15
+    },
+    {
+      "id": "6426-64290-0010",
+      "reference": "IT MAY APPEAR A PRESUMPTUOUS THING TO SAY BUT MY RECOLLECTION SEEMS OF A FINER COLOR WHILE SHE SPOKE SHE HAD AGAIN TAKEN THE RING AND WAS LOOKING AT IT MISTER REDMAIN SNATCHED IT FROM HER HAND",
+      "hypothesis": "it may appear a presumptuous thing to say but my recollection seems of a finer colour while she spoke she had again taken the ring and was looking at it mister redmane snatched it from her hand",
+      "wer": 0.05405405405405406
+    },
+    {
+      "id": "6426-64292-0039",
+      "reference": "FOR TEN PERSONS WILL REPENT OF A SIN FOR ONE WHO WILL CONFESS IT I DO NOT MEAN TO THE PRIEST THAT MAY BE AN EASY MATTER BUT TO THE ONLY ONE WHO HAS A CLAIM TO THE CONFESSION",
+      "hypothesis": "for ten persons will repent of a sin for one who will confess it i do not mean to the priest that may be an easy matter but to the only one who has a claim to the confession",
+      "wer": 0.0
+    },
+    {
+      "id": "2929-85685-0074",
+      "reference": "IT MUST BE POINTED OUT HOW STRONG SEEMS THE TENDENCY OF THE GERMAN EMPIRE TO REPEAT THE HISTORY OF HOLLAND UPON A LARGER SCALE",
+      "hypothesis": "it must be pointed out how strong seems the tendency of the german empire to repeat the history of holland upon a larger scale",
+      "wer": 0.0
+    },
+    {
+      "id": "5876-8675-0013",
+      "reference": "BUT BEWARE HOW YOU STRETCH OUT A HAND TOWARDS THE JEWELS IN THE MIDST OF THE CAVERN STANDS A COPPER CHEST IN THAT YOU WILL FIND GOLD AND SILVER",
+      "hypothesis": "but beware how you stretch out a hand towards the jewels in the midst of the cavern stands a copper chest in that you will find gold and silver",
+      "wer": 0.0
+    },
+    {
+      "id": "2929-85685-0011",
+      "reference": "AND YET AT TIMES ALMOST IMPERCEPTIBLY AS SOME HUGE SECULAR MOVEMENT IN NATURE THE RAISING OF A CONTINENT THE CRUMBLING OF A MOUNTAIN CHAIN GOES ON TO ITS APPOINTED CULMINATION",
+      "hypothesis": "and yet at times almost imperceptibly as some huge secular movement in nature the raising of a continent the crumbling of a mountain chain goes on to its appointed culmination",
+      "wer": 0.0
+    },
+    {
+      "id": "718-129597-0011",
+      "reference": "FOR A MOMENT THE OPENING OF THE HUT WAS BLACKENED BY THE EXIT OF THE DOG MAN THEN I FOLLOWED AND STOOD UP ALMOST IN THE EXACT SPOT WHERE I HAD BEEN WHEN I HAD HEARD MOREAU AND HIS STAGHOUND PURSUING ME",
+      "hypothesis": "for a moment the opening of the hut was blackened by the exit of the dog man then i followed and stood up almost in the exact spot where i had been when i had heard moreau and his stag hound pursuing me",
+      "wer": 0.047619047619047616
+    },
+    {
+      "id": "7241-90852-0053",
+      "reference": "WHILE THE CAT REMAINED OUTSIDE WHEN TWILIGHT CAME THE DOG RAN OUT AND MET THE CAT IN THE CASTLE GARDEN",
+      "hypothesis": "while the cat remained outside when twilight came the dog ran out and met the cat in the castle garden",
+      "wer": 0.0
+    },
+    {
+      "id": "7802-104398-0032",
+      "reference": "AND LAID HER BUSHY HEAD AGAINST HER BREAST FOR WILD THYME ONLY OF ALL THE FOREST PEOPLE LOVED HER WITHOUT AWE",
+      "hypothesis": "and laid her bushy head against her breast for while time only of all the forest people loved her without awe",
+      "wer": 0.09523809523809523
+    },
+    {
+      "id": "9022-282357-0010",
+      "reference": "THERE WAS A SHORT LIVED FLURRY OVER THE DISCOVERY IN QUEEN CHARLOTTE ISLANDS OF A NUGGET VALUED AT SIX HUNDRED DOLLARS AND A VEIN OF GOLD BEARING QUARTZ",
+      "hypothesis": "there is a short lived flurry over the discovery in queen charlotte islands of a nugget valued at six hundred dollars and a vein of gold bearing quartz",
+      "wer": 0.03571428571428571
+    },
+    {
+      "id": "1241-137614-0037",
+      "reference": "AND GREAT WORDS HE SPAKE AND ANON WITH LITTLE MIGHT HE WAS LAID TO THE EARTH",
+      "hypothesis": "and great words he spake and anon with little might he was laid to earth",
+      "wer": 0.0625
+    },
+    {
+      "id": "3922-715-0023",
+      "reference": "THE GYPSY CAME TO TRY THE GIRLS WOULD THEY LOVE HIM WOULD THEY NOT BUT THEY COULDN'T LOVE THE GYPSY EITHER HE WOULD BE A THIEF I FEAR AND WOULD CAUSE ME MANY A TEAR",
+      "hypothesis": "the gypsy came to try the girls who would they love him would they not but they couldn't love the gypsy either he would be a thief i fear and would cause me many a tear",
+      "wer": 0.02857142857142857
+    },
+    {
+      "id": "335-125943-0008",
+      "reference": "I'M SURE THE EMPEROR WILL RECEIVE US EVEN IN HIS PRESENT STATE THE EMPEROR'S STATE IS ALWAYS MAGNIFICENT SAID THE MAN",
+      "hypothesis": "i am sure the emperor will receive us even in his present state the emperor's state is always magnificent said the man",
+      "wer": 0.09523809523809523
+    },
+    {
+      "id": "2929-86777-0003",
+      "reference": "THE COUNT LOOKED AT MERCEDES AS IF TO INTERROGATE HER BUT SHE CONTINUED TO WALK ON IN SILENCE AND HE REFRAINED FROM SPEAKING THEY REACHED THE BUILDING",
+      "hypothesis": "the count looked at mercedes as if to interrogate her but she continued to walk on in silence and he refrained from speaking they reached the building",
+      "wer": 0.0
+    },
+    {
+      "id": "2929-85685-0083",
+      "reference": "EUROPE WILL HAVE HER IRELANDS AS WELL AS HER SCOTLANDS HER IRELANDS OF UNFORGETTABLE WRONGS KICKING SQUALLING BAWLING MOST DESOLATINGLY FOR NOTHING THAT ANY ONE CAN UNDERSTAND",
+      "hypothesis": "europe will have her irish as well as her scotlands her irish of unforgettable wrongs kicking squalling bawling most desolatingly for nothing that anyone can understand",
+      "wer": 0.14814814814814814
+    },
+    {
+      "id": "3852-175448-0030",
+      "reference": "AND HUMBOLDT WAS THE FIRST SCIENTIFIC MAN OF INTELLECTUAL INDEPENDENCE WHO HAD PERMISSION TO VISIT THEM TO THIS DAY MANY OF HIS SCIENTIFIC OBSERVATIONS ARE OF REAL VALUE",
+      "hypothesis": "and humbled was the first scientific man of intellectual independence who had permission to visit them to this day many of his scientific observations are of real value",
+      "wer": 0.03571428571428571
+    },
+    {
+      "id": "3187-168500-0000",
+      "reference": "WITHOUT IT THE CRUELTIES OF GOD WOULD STRAIN FAITH TO THE BREAKING POINT BUT OUTSIDE THE FOLD IT IS GRADUALLY FALLING INTO DECAY",
+      "hypothesis": "without it the cruelties of god would strain faith to the breaking point but outside the fold it is gradually falling into decay",
+      "wer": 0.0
+    },
+    {
+      "id": "249-121331-0038",
+      "reference": "WITH HIS ADULATION OF THIRTEENTH CENTURY CATHEDRALS A CATHOLICISM WHICH AMORY FOUND CONVENIENT AND READY MADE WITHOUT PRIEST OR SACRAMENTS OR SACRIFICE",
+      "hypothesis": "with his adulation of thirteenth century cathedrals ecatholicism which amery found convenient and ready made without priest or sacraments or sacrifice",
+      "wer": 0.13636363636363635
+    },
+    {
+      "id": "4719-25765-0005",
+      "reference": "NO CHARGE COULD PIERCE THAT LINE OF HEROES WITH FACES TO THE FOE THEY SLOWLY FELL BACK CONTESTING EVERY INCH OF GROUND",
+      "hypothesis": "no charge could pierce that line of heroes with faces to the foe they slowly fell back contesting every inch of ground",
+      "wer": 0.0
+    },
+    {
+      "id": "5876-8675-0008",
+      "reference": "DEEP UNDER THE EARTH AT TWILIGHT AND AT HIGH NOON IT IS HIDDEN BUT AT MIDNIGHT IT MAY BE DUG UP FOR SEVEN HUNDRED YEARS HAVE I WATCHED OVER IT BUT NOW",
+      "hypothesis": "deep under the earth at twilight and at high noon it is hidden but at midnight it may be dug up for seven hundred years have i watched over it but now",
+      "wer": 0.0
+    },
+    {
+      "id": "5876-10347-0003",
+      "reference": "FURTHER THE LUMINARIES ARE AS IT WERE VESSELS OF LIGHT BUT LIGHT WAS MADE ON THE FIRST DAY THE LUMINARIES THEREFORE SHOULD HAVE BEEN MADE ON THE FIRST DAY",
+      "hypothesis": "further the luminaries are as it were vessels of light but light was made on the first day the luminaries therefore should have been made on the first day",
+      "wer": 0.0
+    },
+    {
+      "id": "7832-258250-0004",
+      "reference": "AND THEY ALL BECAME TRUE BELIEVERS AFTER WHICH JAMAK RETURNED TO THE CITY AND DESPATCHED THENCE",
+      "hypothesis": "and they all became true believers after which jamac returned to the city and dispatched dens",
+      "wer": 0.1875
+    },
+    {
+      "id": "1271-136861-0020",
+      "reference": "THAT I SHOULD BE AT FORTY NINE WHAT I NOW AM",
+      "hypothesis": "that i should be at forty nine what i now am",
+      "wer": 0.0
+    },
+    {
+      "id": "487-129440-0012",
+      "reference": "AND AS I WONDRING LOOKT BESIDE IT STOOD ONE SHAP'D AND WING'D LIKE ONE OF THOSE FROM HEAV'N BY US OFT SEEN HIS DEWIE LOCKS DISTILL'D AMBROSIA",
+      "hypothesis": "and as i wondering looked beside it stood one shaped and winged like one of those from heaven by us oft seen his douy locks distilled ambrosia",
+      "wer": 0.25925925925925924
+    },
+    {
+      "id": "7802-104398-0012",
+      "reference": "BUT NOW IN A FLASH",
+      "hypothesis": "but now in a flash",
+      "wer": 0.0
+    },
+    {
+      "id": "3852-175448-0060",
+      "reference": "USE COMPLEXUS IN MUCH THE SAME SPIRIT AS THAT DISPLAYED BY THE FAMOUS OLD LADY WHO DERIVED RELIGIOUS INSTEAD OF SCIENTIFIC CONSOLATION FROM THE USE OF",
+      "hypothesis": "use complexus in much the same spirit as that displayed by the famous old lady who derived religious instead of scientific consolation from the use of",
+      "wer": 0.0
+    },
+    {
+      "id": "2004-147967-0011",
+      "reference": "WHEN WE FOUND HIM EVERYTHING WAS DECENT EXCEPT FUCHS WRINKLED HIS BROW AND HESITATED",
+      "hypothesis": "when we found him everything was decent except fox wrinkled his brow and hesitated",
+      "wer": 0.07142857142857142
+    },
+    {
+      "id": "2004-147173-0017",
+      "reference": "WOULD HE HAVE SHOWN ANY OF THE LOVE THAT WAS HIDDEN BENEATH HIS ROUGH OUTSIDE WHAT'S THE OLD FELLOW AFTER SAID SHE BENDING OVER MARY SO AS TO ACCOMMODATE THE DROOPING HEAD",
+      "hypothesis": "would he have shown any of the love that was hidden beneath his rough outside what's the old fellow after said she bending over mary so as to accommodate the drooping head",
+      "wer": 0.0
+    },
+    {
+      "id": "249-121331-0033",
+      "reference": "THEY TALKED UNTIL THREE FROM BIOLOGY TO ORGANIZED RELIGION AND WHEN AMORY CREPT SHIVERING INTO BED",
+      "hypothesis": "they talked until three from biology to organized religion and when amary crept shivering in the bed",
+      "wer": 0.1875
+    },
+    {
+      "id": "2060-147963-0028",
+      "reference": "MAREK SLID CAUTIOUSLY TOWARD US AND BEGAN TO EXHIBIT HIS WEBBED FINGERS I KNEW HE WANTED TO MAKE HIS QUEER NOISES FOR ME TO BARK LIKE A DOG OR WHINNY LIKE A HORSE BUT HE DID NOT DARE IN THE PRESENCE OF HIS ELDERS",
+      "hypothesis": "barrick slowly turned towards us and began to exhibit his webbed fingers i knew he wanted to make his queer noises for me to bark like a dog or whine like a horse but he did not dare in the presence of his elders",
+      "wer": 0.11363636363636363
+    }
+  ]
+}

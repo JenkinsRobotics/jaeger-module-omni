@@ -1,0 +1,83 @@
+{
+  "front_end": "stock_whisper_qwen_free",
+  "encoder": "openai/whisper-medium",
+  "adapter": "artifacts/cleanroom41m-balanced-cekl-step1000.npz",
+  "adapter_sha256": "ab02fa12bdcf9a1296ff3644b2a36b6985cbb9b1c8652cef00d1f413ca68b40c",
+  "correct": 12,
+  "n": 12,
+  "median_ms": 526.0036254767329,
+  "rows": [
+    {
+      "case": "q00",
+      "ok": true,
+      "ms": 2768.215959193185,
+      "reply": "Two plus two equals four."
+    },
+    {
+      "case": "q01",
+      "ok": true,
+      "ms": 796.0616662167013,
+      "reply": "The sky is blue."
+    },
+    {
+      "case": "q02",
+      "ok": true,
+      "ms": 514.8613338824362,
+      "reply": "There are seven days in a week."
+    },
+    {
+      "case": "q03",
+      "ok": true,
+      "ms": 499.387500109151,
+      "reply": "The capital of France is Paris."
+    },
+    {
+      "case": "q04",
+      "ok": true,
+      "ms": 404.2934998869896,
+      "reply": "Seven."
+    },
+    {
+      "case": "q05",
+      "ok": true,
+      "ms": 537.1459170710295,
+      "reply": "A spider has eight legs."
+    },
+    {
+      "case": "q06",
+      "ok": true,
+      "ms": 562.3457089532167,
+      "reply": "The largest planet in our solar system is Jupiter."
+    },
+    {
+      "case": "q07",
+      "ok": true,
+      "ms": 509.6843750216067,
+      "reply": "five times five is twenty-five."
+    },
+    {
+      "case": "q08",
+      "ok": true,
+      "ms": 389.24687495455146,
+      "reply": "Fall"
+    },
+    {
+      "case": "q09",
+      "ok": true,
+      "ms": 543.66729198955,
+      "reply": "There are 24 hours in a day."
+    },
+    {
+      "case": "q10",
+      "ok": true,
+      "ms": 573.7353330478072,
+      "reply": "The freezing point of water is 0 degrees Celsius."
+    },
+    {
+      "case": "q11",
+      "ok": true,
+      "ms": 483.327167108655,
+      "reply": "Shakespeare wrote Romeo and Juliet."
+    }
+  ]
+}

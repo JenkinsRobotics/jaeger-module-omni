@@ -1,0 +1,19 @@
+{
+  "normalizer": "transformers.WhisperTokenizer.normalize",
+  "whisper": "openai/whisper-medium",
+  "datasets": {
+    "conversation69": {
+      "report": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/candidate_evals/jaegeromni-41m-conversation-gold-fullstep50.json",
+      "normalized_wer": 0.03298350824587706,
+      "normalized_edits": 22,
+      "normalized_reference_words": 667,
+      "passes_under_5pct": true
+    }
+  },
+  "aggregate": {
+    "normalized_wer": 0.03298350824587706,
+    "normalized_edits": 22,
+    "normalized_reference_words": 667
+  },
+  "gate_pass": true
+}

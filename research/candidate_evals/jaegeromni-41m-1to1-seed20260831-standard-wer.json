@@ -1,0 +1,33 @@
+{
+  "normalizer": "transformers.WhisperTokenizer.normalize",
+  "whisper": "openai/whisper-medium",
+  "datasets": {
+    "devclean64": {
+      "report": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/candidate_evals/jaegeromni-41m-1to1-seed20260831-devclean64.json",
+      "normalized_wer": 0.04953560371517028,
+      "normalized_edits": 48,
+      "normalized_reference_words": 969,
+      "passes_under_5pct": true
+    },
+    "clean360val128": {
+      "report": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/candidate_evals/jaegeromni-41m-1to1-seed20260831-clean360val128.json",
+      "normalized_wer": 0.05094869992972593,
+      "normalized_edits": 145,
+      "normalized_reference_words": 2846,
+      "passes_under_5pct": false
+    },
+    "conversation69": {
+      "report": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/candidate_evals/jaegeromni-41m-1to1-seed20260831-conversation69.json",
+      "normalized_wer": 0.03298350824587706,
+      "normalized_edits": 22,
+      "normalized_reference_words": 667,
+      "passes_under_5pct": true
+    }
+  },
+  "aggregate": {
+    "normalized_wer": 0.04796965640339134,
+    "normalized_edits": 215,
+    "normalized_reference_words": 4482
+  },
+  "gate_pass": false
+}

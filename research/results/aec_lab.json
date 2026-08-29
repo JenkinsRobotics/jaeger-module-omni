@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "kind": "jaeger_aec_corpus",
+  "sample_rate": 16000,
+  "summary": {
+    "cases": 12,
+    "median_erle_db": 15.147455811984235,
+    "minimum_erle_db": 10.753158722354234,
+    "median_near_projection": 0.8812418282032013,
+    "minimum_near_projection": 0.8679372668266296,
+    "false_barge_events": 0,
+    "barge_detection_cases": 12,
+    "barge_latency_p95_ms": 99.99999999999964
+  },
+  "gates": {
+    "median_erle_at_least_12db": true,
+    "median_near_projection_at_least_0_65": true,
+    "no_self_echo_false_barge": true,
+    "all_double_talk_detected": true,
+    "barge_p95_at_most_150ms": true
+  },
+  "passed": true,
+  "cases": [
+    {
+      "id": 0,
+      "delay_ms": 40.0,
+      "echo_gain": 0.4,
+      "near_gain": 0.65,
+      "erle_db": 18.972510159433654,
+      "near_projection": 0.8797513246536255,
+      "near_snr_db": 6.765954888568707,
+      "false_barge_events": 0,
+      "barge_latency_ms": 99.99999999999964
+    },
+    {
+      "id": 1,
+      "delay_ms": 40.0,
+      "echo_gain": 0.4,
+      "near_gain": 1.0,
+      "erle_db": 18.304488020643422,
+      "near_projection": 0.8854734897613525,
+      "near_snr_db": 7.148525195945261,
+      "false_barge_events": 0,
+      "barge_latency_ms": 99.99999999999964
+    },
+    {
+      "id": 2,
+      "delay_ms": 40.0,
+      "echo_gain": 0.65,
+      "near_gain": 0.65,
+      "erle_db": 19.00867797418684,
+      "near_projection": 0.8679372668266296,
+      "near_snr_db": 6.252925618089496,
+      "false_barge_events": 0,
+      "barge_latency_ms": 99.99999999999964
+    },
+    {
+      "id": 3,
+      "delay_ms": 40.0,
+      "echo_gain": 0.65,
+      "near_gain": 1.0,
+      "erle_db": 18.53327425290333,
+      "near_projection": 0.8763512969017029,
+      "near_snr_db": 6.681490482786819,
+      "false_barge_events": 0,
+      "barge_latency_ms": 99.99999999999964
+    },
+    {
+      "id": 4,
+      "delay_ms": 85.0,
+      "echo_gain": 0.4,
+      "near_gain": 0.65,
+      "erle_db": 12.545072788697297,
+      "near_projection": 0.8806677460670471,
+      "near_snr_db": 6.673755358582709,
+      "false_barge_events": 0,
+      "barge_latency_ms": 99.99999999999964
+    },
+    {
+      "id": 5,
+      "delay_ms": 85.0,
+      "echo_gain": 0.4,
+      "near_gain": 1.0,
+      "erle_db": 15.372591487553446,
+      "near_projection": 0.8876262307167053,
+      "near_snr_db": 7.201132253106296,
+      "false_barge_events": 0,
+      "barge_latency_ms": 99.99999999999964
+    },
+    {
+      "id": 6,
+      "delay_ms": 85.0,
+      "echo_gain": 0.65,
+      "near_gain": 0.65,
+      "erle_db": 14.366400917036525,
+      "near_projection": 0.8985921144485474,
+      "near_snr_db": 7.055352456797733,
+      "false_barge_events": 0,
+      "barge_latency_ms": 99.99999999999964
+    },
+    {
+      "id": 7,
+      "delay_ms": 85.0,
+      "echo_gain": 0.65,
+      "near_gain": 1.0,
+      "erle_db": 14.967667837492684,
+      "near_projection": 0.8848897814750671,
+      "near_snr_db": 6.993006811004808,
+      "false_barge_events": 0,
+      "barge_latency_ms": 99.99999999999964
+    },
+    {
+      "id": 8,
+      "delay_ms": 145.0,
+      "echo_gain": 0.4,
+      "near_gain": 0.65,
+      "erle_db": 10.753158722354234,
+      "near_projection": 0.8818159103393555,
+      "near_snr_db": 6.866067600222527,
+      "false_barge_events": 0,
+      "barge_latency_ms": 99.99999999999964
+    },
+    {
+      "id": 9,
+      "delay_ms": 145.0,
+      "echo_gain": 0.4,
+      "near_gain": 1.0,
+      "erle_db": 11.836018844313479,
+      "near_projection": 0.8806503415107727,
+      "near_snr_db": 6.792906864960672,
+      "false_barge_events": 0,
+      "barge_latency_ms": 99.99999999999964
+    },
+    {
+      "id": 10,
+      "delay_ms": 145.0,
+      "echo_gain": 0.65,
+      "near_gain": 0.65,
+      "erle_db": 14.82005366074314,
+      "near_projection": 0.8682534098625183,
+      "near_snr_db": 6.367368873682184,
+      "false_barge_events": 0,
+      "barge_latency_ms": 99.99999999999964
+    },
+    {
+      "id": 11,
+      "delay_ms": 145.0,
+      "echo_gain": 0.65,
+      "near_gain": 1.0,
+      "erle_db": 15.327243786475787,
+      "near_projection": 0.8940407633781433,
+      "near_snr_db": 7.4728197840507615,
+      "false_barge_events": 0,
+      "barge_latency_ms": 99.99999999999964
+    }
+  ]
+}

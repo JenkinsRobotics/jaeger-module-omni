@@ -1,0 +1,83 @@
+{
+  "front_end": "stock_whisper_qwen_free",
+  "encoder": "openai/whisper-large-v3-turbo",
+  "adapter": "artifacts/stock-whisper-gemma-large-v3-turbo50m-ce-input.npz",
+  "adapter_sha256": "067b4671dd66922ad3209eeed60f8bed1d3f0e2e65859560af357ba649a12763",
+  "correct": 1,
+  "n": 12,
+  "median_ms": 536.6320004686713,
+  "rows": [
+    {
+      "case": "q00",
+      "ok": false,
+      "ms": 1681.7841669544578,
+      "reply": "I'm sorry, I didn't catch that."
+    },
+    {
+      "case": "q01",
+      "ok": false,
+      "ms": 613.0228750407696,
+      "reply": "I'm sorry, I didn't catch that. Could you please repeat your question?"
+    },
+    {
+      "case": "q02",
+      "ok": false,
+      "ms": 535.014667082578,
+      "reply": "I'm sorry, I didn't catch that. Could you repeat the question?"
+    },
+    {
+      "case": "q03",
+      "ok": true,
+      "ms": 340.90433293022215,
+      "reply": "The capital of France is Paris."
+    },
+    {
+      "case": "q04",
+      "ok": false,
+      "ms": 516.230084002018,
+      "reply": "I'm sorry, I didn't catch that. Could you please repeat your question?"
+    },
+    {
+      "case": "q05",
+      "ok": false,
+      "ms": 428.64929093047976,
+      "reply": "I'm sorry, I didn't catch that."
+    },
+    {
+      "case": "q06",
+      "ok": false,
+      "ms": 529.5504170935601,
+      "reply": "I'm sorry, I didn't catch that. Could you repeat your question?"
+    },
+    {
+      "case": "q07",
+      "ok": false,
+      "ms": 539.7016250062734,
+      "reply": "I'm sorry, I didn't catch that. Could you please repeat your question?"
+    },
+    {
+      "case": "q08",
+      "ok": false,
+      "ms": 427.2496250923723,
+      "reply": "I'm sorry, I didn't catch that."
+    },
+    {
+      "case": "q09",
+      "ok": false,
+      "ms": 538.6157911270857,
+      "reply": "I'm sorry, I didn't catch that. Could you please repeat your question?"
+    },
+    {
+      "case": "q10",
+      "ok": false,
+      "ms": 554.8946249764413,
+      "reply": "I'm sorry, I didn't catch that. Could you please repeat your question?"
+    },
+    {
+      "case": "q11",
+      "ok": false,
+      "ms": 538.2493338547647,
+      "reply": "I'm sorry, I didn't catch that. Could you repeat your question?"
+    }
+  ]
+}

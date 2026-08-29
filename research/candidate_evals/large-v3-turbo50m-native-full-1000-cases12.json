@@ -1,0 +1,83 @@
+{
+  "front_end": "stock_whisper_qwen_free",
+  "encoder": "openai/whisper-large-v3-turbo",
+  "adapter": "artifacts/stock-whisper-gemma-large-v3-turbo50m-native-full.npz",
+  "adapter_sha256": "edc23bd06e6eaa2400f123af5624a671c75cc887cef29aeb8a102d520dca5bff",
+  "correct": 0,
+  "n": 12,
+  "median_ms": 531.065916409716,
+  "rows": [
+    {
+      "case": "q00",
+      "ok": false,
+      "ms": 2658.708625007421,
+      "reply": "I'm sorry, I didn't catch that. Could you repeat your question?"
+    },
+    {
+      "case": "q01",
+      "ok": false,
+      "ms": 600.2138750627637,
+      "reply": "I'm sorry, I didn't catch that. Could you repeat your question?"
+    },
+    {
+      "case": "q02",
+      "ok": false,
+      "ms": 528.8327499292791,
+      "reply": "I'm sorry, I didn't catch that. Could you repeat your question?"
+    },
+    {
+      "case": "q03",
+      "ok": false,
+      "ms": 376.4744580257684,
+      "reply": "The potpourri is in the basket."
+    },
+    {
+      "case": "q04",
+      "ok": false,
+      "ms": 390.0166670791805,
+      "reply": "I'm sorry, I didn't catch that."
+    },
+    {
+      "case": "q05",
+      "ok": false,
+      "ms": 355.2276659756899,
+      "reply": "The United States is a federal republic."
+    },
+    {
+      "case": "q06",
+      "ok": false,
+      "ms": 533.2990828901529,
+      "reply": "I'm sorry, I didn't catch that. Could you repeat your question?"
+    },
+    {
+      "case": "q07",
+      "ok": false,
+      "ms": 519.7063330560923,
+      "reply": "I'm sorry, I didn't catch that. Could you repeat your question?"
+    },
+    {
+      "case": "q08",
+      "ok": false,
+      "ms": 551.7864171415567,
+      "reply": "I'm sorry, I didn't quite catch that. Could you repeat your question?"
+    },
+    {
+      "case": "q09",
+      "ok": false,
+      "ms": 517.6425408571959,
+      "reply": "I'm sorry, I didn't catch that. Could you repeat your question?"
+    },
+    {
+      "case": "q10",
+      "ok": false,
+      "ms": 534.6387920435518,
+      "reply": "I'm sorry, I didn't catch that. Could you repeat your question?"
+    },
+    {
+      "case": "q11",
+      "ok": false,
+      "ms": 556.0953749809414,
+      "reply": "I'm sorry, I didn't quite catch that. Could you repeat your question?"
+    }
+  ]
+}

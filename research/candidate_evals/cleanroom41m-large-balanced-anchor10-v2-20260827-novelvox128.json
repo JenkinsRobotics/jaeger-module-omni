@@ -1,0 +1,785 @@
+{
+  "adapter": "artifacts/cleanroom41m-large-v3-turbo-balanced-anchor10-v2.npz",
+  "split": "voxpopuli33_validation",
+  "adapter_sha256": "87604c6e9b4699f02af951d3cb91d8dc8eabc8a425bd36191cc093989452b1ab",
+  "encoder": "openai/whisper-large-v3-turbo",
+  "evaluation_mode": "free_running_generation",
+  "teacher_forced": false,
+  "input_handoff": "audio_embeddings_no_transcript",
+  "id_file": "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-voxpopuli33-v1/voxpopuli33_validation/manifest.jsonl",
+  "source_prefix": null,
+  "n": 128,
+  "wer": 1.0070771408351027,
+  "edits": 2846,
+  "reference_words": 2826,
+  "rows": [
+    {
+      "id": "f4658f8824ff",
+      "reference": "the eu must create a system that would coordinate the fast movement of defence forces personnel and equipment when the solidarity clause is invoked.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "6154061ed03e",
+      "reference": "and i think what we are doing here today is helping to bring that dream into reality for many people across the european union but specifically the roma community.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "3bce83b8102e",
+      "reference": "equal participation of romani people must be achieved at all levels of government through binding targets and legislation at national regional and local level.",
+      "hypothesis": "and so it was said.",
+      "wer": 0.9583333333333334
+    },
+    {
+      "id": "712ec62be9a0",
+      "reference": "but above all it is the fact that you ignored that irish referendum that you said the irish cannot stop this treaty for that reason alone i simply cannot support",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "69b088e320dd",
+      "reference": "that is enormously encouraging and for that my grateful thanks to commissioner georgieva who brings real common sense and discipline to the whole budget procedure.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "ad9332bd1a7c",
+      "reference": "this comes with new challenges and fifa clearly has proved unable to address them. fifa needs action from the outside world to clean up the organisation.",
+      "hypothesis": "the word is",
+      "wer": 0.9615384615384616
+    },
+    {
+      "id": "79719f296df0",
+      "reference": "and lastly we are proposing the introduction of a european galizia prize here in this house for investigative journalists modelled on the sakharov prize.",
+      "hypothesis": "[no text]",
+      "wer": 1.0
+    },
+    {
+      "id": "0e1c5c551f1b",
+      "reference": "before this vote the econ coordinators tried to get additional parliamentary control rights for our house in the nomination of ecb board members.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "8a4583659248",
+      "reference": "these nice open borders attract people for the most part young men from sub saharan countries who want to have a better life.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "9455d837c696",
+      "reference": "the person will always be able to fully exercise his defence rights in the issuing member state where the trial on the merits of the case takes place.",
+      "hypothesis": "and the said to the said",
+      "wer": 0.9285714285714286
+    },
+    {
+      "id": "8fff6b27dcd6",
+      "reference": "the international community can and must help the haitians in their fight against poverty and help them make education accessible to each child's biological family all over the country.",
+      "hypothesis": "[sound]",
+      "wer": 1.0
+    },
+    {
+      "id": "7d94930211cd",
+      "reference": "if we do that we will make a good effort at solving this ridiculous situation that is denying citizens so much in terms of jobs and wealth.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "fa7e43e824e2",
+      "reference": "we think that it is still the case that if we have a big bank fail there will only really be states behind that bank and that our construction will not be sufficient.",
+      "hypothesis": "[no text]",
+      "wer": 1.0
+    },
+    {
+      "id": "8a3b49f6e632",
+      "reference": "in the last few weeks i had in depth discussions with the team of negotiators led by mr lehne whom you appointed for the revision of the framework agreement.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "46e29abce07b",
+      "reference": "this is hardly surprising given that hate speech and intolerance are quite common phenomena in many of the most popular mosques and other muslim institutions in europe.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "777aa0269f8f",
+      "reference": "that is very important because this gives a legal certainty to investors which is vital if we want to develop particularly advanced biofuels into the future.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "73e52c8ea53a",
+      "reference": "and by all means help them to promote and market their products and overall encourage all players in the marketplace to form mature contractual arrangements.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "6bb83035d678",
+      "reference": "member state employers should have the obligation to keep a positive work oriented approach to people with disabilities especially because they are very often excluded.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "f1c2a869be05",
+      "reference": "he gave us the names of concrete countries in europe that escaped terrorist attacks recently because of the cooperation in this matter between us and them.",
+      "hypothesis": "(The audio is unintelligible and appears to be a sequence of indistinct sounds or noise, possibly static or garbled speech. I cannot transcribe it.)",
+      "wer": 1.0
+    },
+    {
+      "id": "16977a6c52dd",
+      "reference": "and dare i say one instant solution we could make is perhaps having this conversation this much needed dialogue in the hemicycle at a time when there's a little bit more than forty or fifty meps discussing it.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "aae0f4b0c470",
+      "reference": "it is still a major handicap for our credibility and efficiency in the world that often we have not been able to form a unified position in these areas.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "00b96dd735c6",
+      "reference": "information on the implementation of eu law in the area of freedom security and justice and other policy areas should be more structured transparent and accessible.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "04bb23cb7fc2",
+      "reference": "nowhere could that be more apparent than in your recent proposal for a direct tax to be levied by the european institutions on the peoples of this continent.",
+      "hypothesis": "and the other one is a young man",
+      "wer": 0.9642857142857143
+    },
+    {
+      "id": "9126e02b3802",
+      "reference": "mr president this point is often made namely that a country like britain is only sixty two million people and are we not better off being part of a big european club so that we can have more of a voice on the world stage?",
+      "hypothesis": "and as a result of the fact that there was no agreement on the matter, the country was unable to reach a decision.",
+      "wer": 0.9555555555555556
+    },
+    {
+      "id": "82dc7bb49519",
+      "reference": "in particular i strongly agree with him that the key test for eu expenditure must be the creation of european added value.",
+      "hypothesis": "and the three of them are going to be able to get a good idea of what's going on",
+      "wer": 0.9545454545454546
+    },
+    {
+      "id": "4f8d3631a76b",
+      "reference": "instead of which we now have a template which every independence movement on our continent can use to provoke unrest.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "785a42994d04",
+      "reference": "such developments may of course coincide with the interests of certain external actors but they are caused by the failure and incompetence of the set mainstream.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "5d52a39d4154",
+      "reference": "two years have now passed since the proposal was published by the commission. a final agreement was reached in trialogue last",
+      "hypothesis": "I'm sorry, but the input provided appears to be a sequence of characters or symbols that does not form recognizable words or phrases in a standard language. Therefore, I cannot accurately transcribe it. If you could provide the text again or clarify what language this",
+      "wer": 2.0952380952380953
+    },
+    {
+      "id": "b8fa091a4bb1",
+      "reference": "i would like to compliment the countries who have introduced the ftt on their enhanced cooperation. hopefully it will prove successful so that all countries will join in eventually.",
+      "hypothesis": "I'm sorry, I cannot fulfill this request. The input provided is garbled or unintelligible. Please provide clear audio or text for me to repeat.",
+      "wer": 0.9655172413793104
+    },
+    {
+      "id": "ed1b0365aae2",
+      "reference": "first an international investigator has to be appointed who will be fully involved in the ongoing investigations on money laundering and corruption in malta.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "14c14bbe003f",
+      "reference": "we free them.",
+      "hypothesis": "[Silence]",
+      "wer": 1.0
+    },
+    {
+      "id": "fa5ec42b22d2",
+      "reference": "you famously said back in two thousand and six that it was only beer and football that held the country together. now i suppose with the trappings of power that has all been forgotten!",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "0e12aaa3a916",
+      "reference": "do you think that is the primary purpose of legislation and ideas coming out of strasbourg and brussels to interfere with the democratic process and to combat parties that you personally don't agree with?",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "f691604064ce",
+      "reference": "the whole concept of harmonising taxes across the eu is entirely against business against competition totally undemocratic and totally against the nation state and all its values.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "f3e6d1496ae5",
+      "reference": "it is an ambitious agreement which seeks to secure a permanent ceasefire and to put an end to impunity but also to manage better the country's oil revenues.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "25aef88815b3",
+      "reference": "this has always been the case. the fact is that when faced with a massive arrival of migrants no member state will ultimately be in a better position if it tries to deal with them",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "aded8caf6b64",
+      "reference": "sustainable policies addressing deforestation can stimulate economic growth and development. they can encourage agricultural productivity and reduce social conflict.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "17ec4c4ad756",
+      "reference": "and crucially the key point as mr barnier said this morning there is the backstop which means of course the united kingdom can be held effectively as a hostage for many years to come.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "7bd784d7ade1",
+      "reference": "it is the member states who on the one hand have the responsibility for spending eighty of the budget and who on the other hand restrict the size of the budget.",
+      "hypothesis": "and the other one is a good thing to do",
+      "wer": 0.9032258064516129
+    },
+    {
+      "id": "1384bd9692a5",
+      "reference": "but let me stress that the good functioning of schengen requires member states to fully implement the rules and thus enhance mutual trust among themselves.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "e0cf37376615",
+      "reference": "the lisbon treaty will enable us to deliver better on citizens' expectations but whether we use the opportunities it offers will be first and foremost a matter of political will.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "59bbd9053b9b",
+      "reference": "these are just a few of the stark conclusions that the intergovernmental panel on climate change of the united nations presented in its latest report this september.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "6e79d88b817f",
+      "reference": "mr president eu urban policies are an attempt to bypass the nation state to put eu policies directly into city regions.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "c75d7d2baa73",
+      "reference": "the first pillar which is supervision is in place. the second pillar which is resolution is kind of in place but not really in office in office but not in power' i guess is a better way to put it.",
+      "hypothesis": "[sound]",
+      "wer": 1.0
+    },
+    {
+      "id": "f1a43255fac0",
+      "reference": "the expansion of the schengen information system increases the window for corruption and creates a much larger collection of information for criminals wishing to hack into the network.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "5777a3fd54f0",
+      "reference": "let me therefore also underline the agreement reached yesterday by the council on the commission's proposal on hedge",
+      "hypothesis": "AND THE PRESENCE OF THE KINGDOM OF GOD IS NEAR",
+      "wer": 0.8888888888888888
+    },
+    {
+      "id": "de84d147ff0c",
+      "reference": "the argument is somewhat circular.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "b0ca76298b85",
+      "reference": "as the leaders of europe have been bickering and squabbling and falling deeper into the mire the newly elected president should surely have jumped to attention and started to flex his muscles.",
+      "hypothesis": "and the other one is a good thing to say to him and to her as well",
+      "wer": 0.84375
+    },
+    {
+      "id": "58bf76ccdc65",
+      "reference": "how are we preparing for the first meeting of the high level political forum which takes place in less than two months' time?",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "97e37ef66535",
+      "reference": "there is not enough opportunity for them to do that on a professional basis as distinct from a voluntary basis and that will make a huge difference.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "f92678dda083",
+      "reference": "that is what real genuine parliamentary democracy is about and you seem to actually despise that and everything that those of us that stand for national democracy believe in.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "d918ad68fa75",
+      "reference": "youth unemployment is a pan european disease that destroys the social fabric and threatens the future development of our societies.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "f2f88df374c5",
+      "reference": "ultimately that is the way to guarantee the situation and ensure the freedom that we long to achieve.",
+      "hypothesis": "and the rest of the story is that he was a man who had been in love with her and she was a woman who had been",
+      "wer": 1.4444444444444444
+    },
+    {
+      "id": "b027ba2c1d87",
+      "reference": "we met young women girls who were being married at ever younger ages in northern kenya. why?",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "d5851cf0a139",
+      "reference": "at first glance one does not notice any cost any payment that might result from filling in this form.",
+      "hypothesis": "AND",
+      "wer": 1.0
+    },
+    {
+      "id": "68ba9c735721",
+      "reference": "and on a personal note i would like to thank you commissioner in your final debate here for all your work over the past years to keep our trade free and fair.",
+      "hypothesis": "and the other side of the bridge was a pile of rubble and debris",
+      "wer": 0.90625
+    },
+    {
+      "id": "88743a2a84f3",
+      "reference": "we should now be getting the benefits from the investment we have made as the pioneers in this agenda.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "abf3338f6adf",
+      "reference": "to use it in this manner exposes the budget to risk.",
+      "hypothesis": "all right",
+      "wer": 1.0
+    },
+    {
+      "id": "46ddde63eb63",
+      "reference": "these are exceptional times and exceptional circumstances and farming is caught up in a perfect storm. so i make two points.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "b91dbe348a34",
+      "reference": "if successful it will be able to provide incisive and forward looking documents which will help prepare eu decisions in an open manner having access to the best information available.",
+      "hypothesis": "and so the sound of the bells rang out and the crowd cheered",
+      "wer": 0.9333333333333333
+    },
+    {
+      "id": "10ee9b94f4cf",
+      "reference": "eu procurement spending linked to research and development is less than one of that total procurement budget.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "2de3ef8d5c50",
+      "reference": "i am happy to say that i called it correctly.",
+      "hypothesis": "[inaudible]",
+      "wer": 1.0
+    },
+    {
+      "id": "0ec6aba6fefd",
+      "reference": "but there are three points which i have to make.",
+      "hypothesis": "well he was a man of his word",
+      "wer": 1.0
+    },
+    {
+      "id": "a18e228cf29a",
+      "reference": "you seek to rush in this new fiendishly complex scheme so it may even affect the uk during the dreaded transitional period.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "f780194ab695",
+      "reference": "of the most outrageous emission of all that which flows from the unnecessary travel to this place twelve times a year.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "3c68f82f7dca",
+      "reference": "we want to see that list.",
+      "hypothesis": "the spoken words were not audible.",
+      "wer": 1.0
+    },
+    {
+      "id": "39c1addfb8a1",
+      "reference": "this is how many of them become easy prey for those trying to push them into illegal activities. i believe that this report is very important for our workers.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "ef3d7f619b23",
+      "reference": "i would also like to see an eu wide target to end street homelessness by two thousand and fifteen by member states and to develop integrated homelessness strategies.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "bca820c75ac9",
+      "reference": "the international community is now looking at what should replace the mdgs and it is clear that safe schools need to be part of what we are talking about.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "29fe7f97046c",
+      "reference": "at least the digital single market topic has made a breakthrough into eu priorities.",
+      "hypothesis": "and the rest of the people",
+      "wer": 0.9285714285714286
+    },
+    {
+      "id": "d95a506236a2",
+      "reference": "since last friday we have reinforced our presence on the ground with a civil protection team composed of logistics and nuclear experts.",
+      "hypothesis": "the sound of the wind was blowing through the trees and the sound of the wind was blowing through the trees",
+      "wer": 0.9545454545454546
+    },
+    {
+      "id": "930c7a1f52b2",
+      "reference": "so to meet that expectation we shall have to oppose the cuts which are currently proposed by council when it comes to the coming negotiations.",
+      "hypothesis": "AND THE SAME IS TRUE OF THE MATTER OF THE MARRIAGE OF THE KING AND QUEEN OF ENGLAND AND SCOTLAND AND THE KING AND QUEEN OF FRANCE AND SPAIN AND THE KING AND",
+      "wer": 1.24
+    },
+    {
+      "id": "129a81e9ddaa",
+      "reference": "and we do not discriminate when it comes to protecting the fundamental rights of any of our european citizens.",
+      "hypothesis": "and the rest of the words are not there.",
+      "wer": 0.8421052631578947
+    },
+    {
+      "id": "53ffe90572e9",
+      "reference": "it then takes them back out and sells them.",
+      "hypothesis": "all alone",
+      "wer": 1.0
+    },
+    {
+      "id": "1d988236ec32",
+      "reference": "this now will be put under severe pressure because of the provisions of this proposal and also particularly increased insurance costs which may drive them out of business.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "8660168b74c9",
+      "reference": "i am already thinking ahead with my colleagues to.",
+      "hypothesis": "[inaudible]",
+      "wer": 1.0
+    },
+    {
+      "id": "7f0484a7008d",
+      "reference": "the money is running out.",
+      "hypothesis": "[inaudible]",
+      "wer": 1.0
+    },
+    {
+      "id": "fed42eaabf69",
+      "reference": "the simple and major reason for that is a lack of political will to do something to help roma and solve the problems they are facing.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "1e5997332bd3",
+      "reference": "in the puppet's efforts to get the mps to vote for the bail out package he warned them that if they did not do so there would be a dramatic decline in living standards.",
+      "hypothesis": "and the same thing is true of the other side.",
+      "wer": 0.9411764705882353
+    },
+    {
+      "id": "45acb29eccdb",
+      "reference": "also when it comes to security innovation agriculture fighting terrorism or even fighting climate change israel has so much to give europe.",
+      "hypothesis": "AND THE SUNRISE WAS ON HIS FACE AND HE SAW THE SEA AND HE KNEW THAT IT WAS THE DAY OF HIS BIRTH.",
+      "wer": 1.0454545454545454
+    },
+    {
+      "id": "3a46c8fb60ac",
+      "reference": "first copenhagen must show that the drive to cut emissions is on its way;",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "7fd3c2b0a0fc",
+      "reference": "when i was in washington and new delhi last week i was reminded just how far these two partners have come in the past year or so.",
+      "hypothesis": "and so it was said to the king and he agreed to the terms of the treaty and they went to the banquet and they ate and they drank and they talked and they laughed and they sang and they danced and they played",
+      "wer": 1.5555555555555556
+    },
+    {
+      "id": "b76c683cbba0",
+      "reference": "i think we have a compromise that adds real value for consumers and for businesses particularly in the areas of internet and cross border trade.",
+      "hypothesis": "and the other side of the door, or the other side of the door, or the other side of the door",
+      "wer": 0.96
+    },
+    {
+      "id": "9c69ca7101a6",
+      "reference": "country strategy papers which represent specific planning documents made for each beneficiary for a seven year period.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "9affdd6ec4c2",
+      "reference": "if we can get that sense of priority there and timing and speed to come up with the best solutions quickly i think that is the way that i commend you to think about moving forward.",
+      "hypothesis": "on the other side of the bridge",
+      "wer": 0.9444444444444444
+    },
+    {
+      "id": "2da33c634eb4",
+      "reference": "there is a risk of a decade of low growth and high unemployment and that would put severe strain on our social models and our living standards.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "d5489bbb2240",
+      "reference": "the purpose of the treaty change is very specific. it is a straightforward pragmatic amendment to meet a specific",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "95b98b5e4c50",
+      "reference": "it should be the norm that every item of electrical waste is collected and most of it recycled not the exception.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "f63096f676c9",
+      "reference": "for our part here in this chamber we must ensure that the information the support and a zero tolerance approach in dealing with this are in place.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "99bf2bcab895",
+      "reference": "i support the protection of rights holders from copyright infringement.",
+      "hypothesis": "and the word of the god was in the midst of the church and the word of the god",
+      "wer": 1.7
+    },
+    {
+      "id": "0b75b7fd76aa",
+      "reference": "this was a major effort accomplished in a very short time and unmatched anywhere in the world.",
+      "hypothesis": "I'M AWEIGHED",
+      "wer": 1.0
+    },
+    {
+      "id": "4cb30f782115",
+      "reference": "i want to refer to some points on that in a moment but i just want to support what mrs bers said about the wide ranging nature of the debate this afternoon.",
+      "hypothesis": "and so it was said",
+      "wer": 0.96875
+    },
+    {
+      "id": "0b1a682fc3a5",
+      "reference": "we must use access to our markets to incentivise israel.",
+      "hypothesis": "all the same",
+      "wer": 1.0
+    },
+    {
+      "id": "d866fe6571a3",
+      "reference": "is the banking sector we still have in europe today.",
+      "hypothesis": "the spoken words were not audible.",
+      "wer": 0.9
+    },
+    {
+      "id": "4e81a81fddc6",
+      "reference": "we have a whole series of fragmented initiatives including your work on consumer contracts and other revisions.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "76420e4f1045",
+      "reference": "they are intended to promote fiscal consolidation correct macroeconomic imbalances and ensure financial stability all prerequisites for sound growth.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "f5cb82ce78fa",
+      "reference": "the environment dg has already launched several studies and is working on assessing the impacts of the key elements of the convention.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "d15a2d303310",
+      "reference": "all human beings need the right to freedom of expression and the expression of their opinions but most importantly the right to wield justice just like that which this place sought to deny jennifer.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "a1e049f15264",
+      "reference": "with all due respect where are the others?",
+      "hypothesis": "[inaudible]",
+      "wer": 1.0
+    },
+    {
+      "id": "b37f54bbbf1b",
+      "reference": "while policies may be made at national level their application at local level is what really impacts on peoples' lives.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "b330af66c96a",
+      "reference": "they should see themselves as teachers.",
+      "hypothesis": "lalu lala lala",
+      "wer": 1.0
+    },
+    {
+      "id": "be79d1f8a457",
+      "reference": "but we need to act together.",
+      "hypothesis": "[inaudible]",
+      "wer": 1.0
+    },
+    {
+      "id": "3c304e948538",
+      "reference": "we were also very impressed by the candid presentation made by the prime minister of greece in the last european council.",
+      "hypothesis": "and the other one is that there's no way that I can say that it's going to be the same as it was before and after",
+      "wer": 1.1904761904761905
+    },
+    {
+      "id": "0f7e43857a8e",
+      "reference": "let's forget the political differences and focus on the reality of jobs and employment in our economies.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "eca8e65d332d",
+      "reference": "certainly having a country like canada in a position to have a free trade agreement with us offers huge opportunities for us.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "75c1ff87e14a",
+      "reference": "you will find a friendship in the united kingdom.",
+      "hypothesis": "the spoken words exactly. Output only what was said",
+      "wer": 1.0
+    },
+    {
+      "id": "712d98e48c88",
+      "reference": "mr president protecting people in the workplace is of the utmost importance and while much has improved fifty three of work related deaths are still caused by occupational cancer.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "5835cc63c3af",
+      "reference": "for the sake of transparency the programme moreover includes one hundred and fifty other proposals which the commission is working on.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "9ae7e43935d4",
+      "reference": "it should not be viewed as something that has to be done on a fifty fifty basis.",
+      "hypothesis": "and so it was said",
+      "wer": 1.0
+    },
+    {
+      "id": "0295245e4084",
+      "reference": "it also contributes to reducing the administrative and bureaucratic burden on both member states and third countries.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "8a0c48578e10",
+      "reference": "statute. follow up measures will be considered when the full assessment is completed",
+      "hypothesis": "[sound]",
+      "wer": 1.0
+    },
+    {
+      "id": "008b026e55ee",
+      "reference": "baroness ashton ran cnd and still refuses to tell us whether she took money from the communist party of great britain.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "381f5abb4901",
+      "reference": "so it means countries like kazakhstan indeed the ukraine joining the european union.",
+      "hypothesis": "[sound]",
+      "wer": 1.0
+    },
+    {
+      "id": "15be95b769b7",
+      "reference": "how many more children will be tortured?",
+      "hypothesis": "[inaudible]",
+      "wer": 1.0
+    },
+    {
+      "id": "1859b4e2dfca",
+      "reference": "as well as the really important issues about the protection of our citizens' rights that we have talked about today.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "86e3ceb2c2d8",
+      "reference": "so do better next time please. send us a proper work programme initiatives continuity quality implementation.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "a62a2c41b8fd",
+      "reference": "also private companies have a great role in preventing detecting containing and responding to cybersecurity incidents as well as in stimulating innovation.",
+      "hypothesis": "and the rest of the words are missing",
+      "wer": 0.9545454545454546
+    },
+    {
+      "id": "476985308b82",
+      "reference": "and too much for those of us who wish nothing more than to be good friends neighbours allies and partners of those we leave behind.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "57bbeab7fce6",
+      "reference": "what is the point of a foreign secretary if we have got an eu foreign secretary with his own diplomatic service?",
+      "hypothesis": "and the other one is",
+      "wer": 0.9523809523809523
+    },
+    {
+      "id": "f727c1d22d23",
+      "reference": "my colleague brian hayes spoke about this very clearly a few moments ago and i think it must be seen in the context of what has been done over the last four or five years in parliament here with the previous commissioner barnier.",
+      "hypothesis": "and the other one is that you've got to be able to say that you're going to do it and then you've got to follow through on it and you've got to be able to say that you're going to do",
+      "wer": 1.0
+    },
+    {
+      "id": "2a06de3551d9",
+      "reference": "how will the commission be represented?",
+      "hypothesis": "[inaudible]",
+      "wer": 1.0
+    },
+    {
+      "id": "27073e572e6b",
+      "reference": "this is their opportunity to be creative and innovative and to help rebuild an entire system that actually works.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "b8cdaa6ce53e",
+      "reference": "sadly this is an example of the bad lawmaking which so often characterises this place.",
+      "hypothesis": "",
+      "wer": 1.0
+    },
+    {
+      "id": "32e3ac3f9ed1",
+      "reference": "but the general prosecutor is at the same time the minister of justice and supervises their proceedings.",
+      "hypothesis": "the passage of the word",
+      "wer": 0.8823529411764706
+    },
+    {
+      "id": "8fa59f5443a7",
+      "reference": "as you all know the population of the roma is ever expanding and consistently becoming a huge and influential force throughout europe.",
+      "hypothesis": "and the man was asleep and the woman was sleeping and the baby was crying",
+      "wer": 0.8636363636363636
+    },
+    {
+      "id": "976887d48e1c",
+      "reference": "i want to thank michel barnier for his tireless efforts to try and reach an agreement.",
+      "hypothesis": "but as i was trying to say",
+      "wer": 0.9375
+    },
+    {
+      "id": "348333de14e1",
+      "reference": "i am particularly concerned about increased extremists attacks against christian communities.",
+      "hypothesis": "the word was said",
+      "wer": 1.0
+    },
+    {
+      "id": "7af3a8d3618a",
+      "reference": "i would say hungary is lucky to have you.",
+      "hypothesis": "the spoken words exactly. Output only what",
+      "wer": 1.0
+    }
+  ]
+}

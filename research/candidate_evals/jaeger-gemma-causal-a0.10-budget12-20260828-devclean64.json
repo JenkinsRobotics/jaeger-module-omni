@@ -1,0 +1,406 @@
+{
+  "adapter": "training/runs/gemmaomni-final4000-blends/causal-a0.10.npz",
+  "split": "devclean",
+  "adapter_sha256": "13e4141d3d6446247863c4399a21d04496cdd8c0db621b3b1b2ce75d73ca5b5e",
+  "encoder": "openai/whisper-medium",
+  "evaluation_mode": "free_running_generation",
+  "teacher_forced": false,
+  "input_handoff": "audio_embeddings_no_transcript",
+  "token_budget": {
+    "tokens_per_second": 12.0,
+    "floor": 24,
+    "source": "measured_speech_rate_p99_with_headroom"
+  },
+  "id_file": "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-eval-v1/devclean/manifest.jsonl",
+  "source_prefix": null,
+  "n": 64,
+  "wer": 0.050261780104712044,
+  "edits": 48,
+  "reference_words": 955,
+  "rows": [
+    {
+      "id": "1272-128104-0000",
+      "reference": "MISTER QUILTER IS THE APOSTLE OF THE MIDDLE CLASSES AND WE ARE GLAD TO WELCOME HIS GOSPEL",
+      "hypothesis": "mister quilter is the apostle of the middle classes and we are glad to welcome his gospel",
+      "wer": 0.0
+    },
+    {
+      "id": "1272-128104-0001",
+      "reference": "NOR IS MISTER QUILTER'S MANNER LESS INTERESTING THAN HIS MATTER",
+      "hypothesis": "nor is mister quilter's manner less interesting than his matter",
+      "wer": 0.0
+    },
+    {
+      "id": "1272-128104-0002",
+      "reference": "HE TELLS US THAT AT THIS FESTIVE SEASON OF THE YEAR WITH CHRISTMAS AND ROAST BEEF LOOMING BEFORE US SIMILES DRAWN FROM EATING AND ITS RESULTS OCCUR MOST READILY TO THE MIND",
+      "hypothesis": "he tells us that at this festive season of the year with christmas and roast beef looming before us similes drawn from eating and its results occur most readily to the mind",
+      "wer": 0.0
+    },
+    {
+      "id": "1272-128104-0003",
+      "reference": "HE HAS GRAVE DOUBTS WHETHER SIR FREDERICK LEIGHTON'S WORK IS REALLY GREEK AFTER ALL AND CAN DISCOVER IN IT BUT LITTLE OF ROCKY ITHACA",
+      "hypothesis": "he has grave doubts whether sir frederick latin's work is really greek after all and can discover in it but little of rocky ithaca",
+      "wer": 0.041666666666666664
+    },
+    {
+      "id": "1272-128104-0005",
+      "reference": "IT IS OBVIOUSLY UNNECESSARY FOR US TO POINT OUT HOW LUMINOUS THESE CRITICISMS ARE HOW DELICATE IN EXPRESSION",
+      "hypothesis": "it is obviously unnecessary for us to point out how luminous these criticisms are how delicate in expression",
+      "wer": 0.0
+    },
+    {
+      "id": "1272-128104-0006",
+      "reference": "ON THE GENERAL PRINCIPLES OF ART MISTER QUILTER WRITES WITH EQUAL LUCIDITY",
+      "hypothesis": "on the general principles of art mister quilter writes with equal lucidity",
+      "wer": 0.0
+    },
+    {
+      "id": "1272-128104-0007",
+      "reference": "PAINTING HE TELLS US IS OF A DIFFERENT QUALITY TO MATHEMATICS AND FINISH IN ART IS ADDING MORE FACT",
+      "hypothesis": "painting he tells us is of a different quality to mathematics and finish in art is adding more fact",
+      "wer": 0.0
+    },
+    {
+      "id": "1272-128104-0008",
+      "reference": "AS FOR ETCHINGS THEY ARE OF TWO KINDS BRITISH AND FOREIGN",
+      "hypothesis": "as for etchings there are of two kinds british and foreign",
+      "wer": 0.09090909090909091
+    },
+    {
+      "id": "1272-128104-0009",
+      "reference": "HE LAMENTS MOST BITTERLY THE DIVORCE THAT HAS BEEN MADE BETWEEN DECORATIVE ART AND WHAT WE USUALLY CALL PICTURES MAKES THE CUSTOMARY APPEAL TO THE LAST JUDGMENT AND REMINDS US THAT IN THE GREAT DAYS OF ART MICHAEL ANGELO WAS THE FURNISHING UPHOLSTERER",
+      "hypothesis": "he laments most bitterly the divorce that has been made between decorative art and what we usually call pictures makes a customary appeal to the last judgment and reminds us that in the great days of art michelangelo was the furnishing aposterior",
+      "wer": 0.09302325581395349
+    },
+    {
+      "id": "1272-128104-0010",
+      "reference": "NEAR THE FIRE AND THE ORNAMENTS FRED BROUGHT HOME FROM INDIA ON THE MANTEL BOARD",
+      "hypothesis": "near the fire and the ornaments fred brought home from india on the mantel board",
+      "wer": 0.0
+    },
+    {
+      "id": "1272-128104-0011",
+      "reference": "IN FACT HE IS QUITE SEVERE ON MISTER RUSKIN FOR NOT RECOGNISING THAT A PICTURE SHOULD DENOTE THE FRAILTY OF MAN AND REMARKS WITH PLEASING COURTESY AND FELICITOUS GRACE THAT MANY PHASES OF FEELING",
+      "hypothesis": "in fact he is quite severe on mister ruskin for not recognizing that a picture should denote the frailty of man and remarks with pleasing courtesy and philosophic grace that many phases of feeling",
+      "wer": 0.058823529411764705
+    },
+    {
+      "id": "1272-128104-0012",
+      "reference": "ONLY UNFORTUNATELY HIS OWN WORK NEVER DOES GET GOOD",
+      "hypothesis": "only unfortunately his own work never does get good",
+      "wer": 0.0
+    },
+    {
+      "id": "1272-128104-0013",
+      "reference": "MISTER QUILTER HAS MISSED HIS CHANCE FOR HE HAS FAILED EVEN TO MAKE HIMSELF THE TUPPER OF PAINTING",
+      "hypothesis": "mister quildor has missed his chance for he has failed even to make himself the tupper of painting",
+      "wer": 0.05555555555555555
+    },
+    {
+      "id": "1272-128104-0014",
+      "reference": "BY HARRY QUILTER M A",
+      "hypothesis": "by harry quilter m a",
+      "wer": 0.0
+    },
+    {
+      "id": "1272-135031-0000",
+      "reference": "BECAUSE YOU WERE SLEEPING INSTEAD OF CONQUERING THE LOVELY ROSE PRINCESS HAS BECOME A FIDDLE WITHOUT A BOW WHILE POOR SHAGGY SITS THERE A COOING DOVE",
+      "hypothesis": "because you were sleeping instead of conquering the lovely rose princess has become a fiddle without a bow poor shaggy sits there a cooing dove",
+      "wer": 0.038461538461538464
+    },
+    {
+      "id": "1272-135031-0001",
+      "reference": "HE HAS GONE AND GONE FOR GOOD ANSWERED POLYCHROME WHO HAD MANAGED TO SQUEEZE INTO THE ROOM BESIDE THE DRAGON AND HAD WITNESSED THE OCCURRENCES WITH MUCH INTEREST",
+      "hypothesis": "he has gone and gone for good answered pollychrome who had managed to squeeze into the room beside the dragon and had witnessed the occurrences with much interest",
+      "wer": 0.03571428571428571
+    },
+    {
+      "id": "1272-135031-0002",
+      "reference": "I HAVE REMAINED A PRISONER ONLY BECAUSE I WISHED TO BE ONE AND WITH THIS HE STEPPED FORWARD AND BURST THE STOUT CHAINS AS EASILY AS IF THEY HAD BEEN THREADS",
+      "hypothesis": "i have remained a prisoner only because i wished to be one and with this he stepped forward and burst the stout chains as easily as if they had been threads",
+      "wer": 0.0
+    },
+    {
+      "id": "1272-135031-0003",
+      "reference": "THE LITTLE GIRL HAD BEEN ASLEEP BUT SHE HEARD THE RAPS AND OPENED THE DOOR",
+      "hypothesis": "the little girl had been asleep but she heard the raps and opened the door",
+      "wer": 0.0
+    },
+    {
+      "id": "1272-135031-0004",
+      "reference": "THE KING HAS FLED IN DISGRACE AND YOUR FRIENDS ARE ASKING FOR YOU",
+      "hypothesis": "the king is flooded disgrace and your friends are asking for you",
+      "wer": 0.23076923076923078
+    },
+    {
+      "id": "1272-135031-0005",
+      "reference": "I BEGGED RUGGEDO LONG AGO TO SEND HIM AWAY BUT HE WOULD NOT DO SO",
+      "hypothesis": "i begged ruggedillo long ago to send him away but he would not do so",
+      "wer": 0.06666666666666667
+    },
+    {
+      "id": "1272-135031-0006",
+      "reference": "I ALSO OFFERED TO HELP YOUR BROTHER TO ESCAPE BUT HE WOULD NOT GO",
+      "hypothesis": "i also offered to help your brother to escape but he would not go",
+      "wer": 0.0
+    },
+    {
+      "id": "1272-135031-0007",
+      "reference": "HE EATS AND SLEEPS VERY STEADILY REPLIED THE NEW KING",
+      "hypothesis": "he eats and sleeps very steadily replied the nooking",
+      "wer": 0.2
+    },
+    {
+      "id": "1272-135031-0008",
+      "reference": "I HOPE HE DOESN'T WORK TOO HARD SAID SHAGGY",
+      "hypothesis": "i hope he doesn't work too hard said shaggy",
+      "wer": 0.0
+    },
+    {
+      "id": "1272-135031-0009",
+      "reference": "HE DOESN'T WORK AT ALL",
+      "hypothesis": "he doesn't work at all",
+      "wer": 0.0
+    },
+    {
+      "id": "1272-135031-0010",
+      "reference": "IN FACT THERE IS NOTHING HE CAN DO IN THESE DOMINIONS AS WELL AS OUR NOMES WHOSE NUMBERS ARE SO GREAT THAT IT WORRIES US TO KEEP THEM ALL BUSY",
+      "hypothesis": "in fact there is nothing he can do in these dominions as well as our gnomes whose numbers are so great that it worries us to keep them all busy",
+      "wer": 0.03333333333333333
+    },
+    {
+      "id": "1272-135031-0011",
+      "reference": "NOT EXACTLY RETURNED KALIKO",
+      "hypothesis": "not exactly we've turned calico",
+      "wer": 0.75
+    },
+    {
+      "id": "1272-135031-0012",
+      "reference": "WHERE IS MY BROTHER NOW",
+      "hypothesis": "where is my brother now",
+      "wer": 0.0
+    },
+    {
+      "id": "1272-135031-0013",
+      "reference": "INQUIRED SHAGGY IN THE METAL FOREST",
+      "hypothesis": "inquired shaggy in the metal forest",
+      "wer": 0.0
+    },
+    {
+      "id": "1272-135031-0014",
+      "reference": "WHERE IS THAT",
+      "hypothesis": "where is that",
+      "wer": 0.0
+    },
+    {
+      "id": "1272-135031-0015",
+      "reference": "THE METAL FOREST IS IN THE GREAT DOMED CAVERN THE LARGEST IN ALL OUR DOMINIONS REPLIED KALIKO",
+      "hypothesis": "the middle forest is in the great domed cavern the largest in all our dominions replied callico",
+      "wer": 0.11764705882352941
+    },
+    {
+      "id": "1272-135031-0016",
+      "reference": "KALIKO HESITATED",
+      "hypothesis": "canlego hesitated",
+      "wer": 0.5
+    },
+    {
+      "id": "1272-135031-0017",
+      "reference": "HOWEVER IF WE LOOK SHARP WE MAY BE ABLE TO DISCOVER ONE OF THESE SECRET WAYS",
+      "hypothesis": "however if we look sharp we may be able to discover one of these secret ways",
+      "wer": 0.0
+    },
+    {
+      "id": "1272-135031-0018",
+      "reference": "OH NO I'M QUITE SURE HE DIDN'T",
+      "hypothesis": "oh no i'm quite sure he didn't",
+      "wer": 0.0
+    },
+    {
+      "id": "1272-135031-0019",
+      "reference": "THAT'S FUNNY REMARKED BETSY THOUGHTFULLY",
+      "hypothesis": "that's funny remarked bed sea thoughtfully",
+      "wer": 0.4
+    },
+    {
+      "id": "1272-135031-0020",
+      "reference": "I DON'T BELIEVE ANN KNEW ANY MAGIC OR SHE'D HAVE WORKED IT BEFORE",
+      "hypothesis": "i don't believe i knew any magic or see it worked it before",
+      "wer": 0.23076923076923078
+    },
+    {
+      "id": "1272-135031-0021",
+      "reference": "I DO NOT KNOW CONFESSED SHAGGY",
+      "hypothesis": "i do not know confessed shaggy",
+      "wer": 0.0
+    },
+    {
+      "id": "1272-135031-0022",
+      "reference": "TRUE AGREED KALIKO",
+      "hypothesis": "true a green calico",
+      "wer": 1.0
+    },
+    {
+      "id": "1272-135031-0023",
+      "reference": "KALIKO WENT TO THE BIG GONG AND POUNDED ON IT JUST AS RUGGEDO USED TO DO BUT NO ONE ANSWERED THE SUMMONS",
+      "hypothesis": "gallico went to the big gong and pounded on it just as vargato used to do but no one answered the summons",
+      "wer": 0.09090909090909091
+    },
+    {
+      "id": "1272-135031-0024",
+      "reference": "HAVING RETURNED TO THE ROYAL CAVERN KALIKO FIRST POUNDED THE GONG AND THEN SAT IN THE THRONE WEARING RUGGEDO'S DISCARDED RUBY CROWN AND HOLDING IN HIS HAND THE SCEPTRE WHICH RUGGEDO HAD SO OFTEN THROWN AT HIS HEAD",
+      "hypothesis": "having returned to the royal cavern calico first pounded the gong and then sat on the throne wearing ragado's discarded ruby crown and holding in his hand the scepter which ragado had so often thrown at his head",
+      "wer": 0.13157894736842105
+    },
+    {
+      "id": "1272-141231-0000",
+      "reference": "A MAN SAID TO THE UNIVERSE SIR I EXIST",
+      "hypothesis": "a man said to the universe sir i exist",
+      "wer": 0.0
+    },
+    {
+      "id": "1272-141231-0001",
+      "reference": "SWEAT COVERED BRION'S BODY TRICKLING INTO THE TIGHT LOINCLOTH THAT WAS THE ONLY GARMENT HE WORE",
+      "hypothesis": "sweat covered brean's body trickling into the tight loincloth that was the only garment he wore",
+      "wer": 0.0625
+    },
+    {
+      "id": "1272-141231-0002",
+      "reference": "THE CUT ON HIS CHEST STILL DRIPPING BLOOD THE ACHE OF HIS OVERSTRAINED EYES EVEN THE SOARING ARENA AROUND HIM WITH THE THOUSANDS OF SPECTATORS WERE TRIVIALITIES NOT WORTH THINKING ABOUT",
+      "hypothesis": "the cut on his chest still dripping blood the ache of his overstrained eyes even the soaring arena around him with the thousands of spectators or trivialities not worth thinking about",
+      "wer": 0.03225806451612903
+    },
+    {
+      "id": "1272-141231-0003",
+      "reference": "HIS INSTANT OF PANIC WAS FOLLOWED BY A SMALL SHARP BLOW HIGH ON HIS CHEST",
+      "hypothesis": "his instinct of panic was followed by a small sharp blow high on his chest",
+      "wer": 0.06666666666666667
+    },
+    {
+      "id": "1272-141231-0004",
+      "reference": "ONE MINUTE A VOICE SAID AND THE TIME BUZZER SOUNDED",
+      "hypothesis": "one minute a voice said and the time buzzer sounded",
+      "wer": 0.0
+    },
+    {
+      "id": "1272-141231-0005",
+      "reference": "A MINUTE IS NOT A VERY LARGE MEASURE OF TIME AND HIS BODY NEEDED EVERY FRACTION OF IT",
+      "hypothesis": "a minute is not a very large measure of time and his body needed every fraction of it",
+      "wer": 0.0
+    },
+    {
+      "id": "1272-141231-0006",
+      "reference": "THE BUZZER'S WHIRR TRIGGERED HIS MUSCLES INTO COMPLETE RELAXATION",
+      "hypothesis": "the buzzer's were triggered his muscles into complete relaxation",
+      "wer": 0.1111111111111111
+    },
+    {
+      "id": "1272-141231-0007",
+      "reference": "ONLY HIS HEART AND LUNGS WORKED ON AT A STRONG MEASURED RATE",
+      "hypothesis": "only his heart and lungs worked on at a strong measured rate",
+      "wer": 0.0
+    },
+    {
+      "id": "1272-141231-0008",
+      "reference": "HE WAS IN REVERIE SLIDING ALONG THE BORDERS OF CONSCIOUSNESS",
+      "hypothesis": "he was in reverie sliding along the borders of consciousness",
+      "wer": 0.0
+    },
+    {
+      "id": "1272-141231-0009",
+      "reference": "THE CONTESTANTS IN THE TWENTIES NEEDED UNDISTURBED REST THEREFORE NIGHTS IN THE DORMITORIES WERE AS QUIET AS DEATH",
+      "hypothesis": "the contestants in the twenties needed undisturbed rest therefore nights in the dormitories were as quiet as death",
+      "wer": 0.0
+    },
+    {
+      "id": "1272-141231-0010",
+      "reference": "PARTICULARLY SO ON THIS LAST NIGHT WHEN ONLY TWO OF THE LITTLE CUBICLES WERE OCCUPIED THE THOUSANDS OF OTHERS STANDING WITH DARK EMPTY DOORS",
+      "hypothesis": "particularly so on this last night when only two of the little cubicles were occupied the thousands of others standing with dark empty doors",
+      "wer": 0.0
+    },
+    {
+      "id": "1272-141231-0011",
+      "reference": "THE OTHER VOICE SNAPPED WITH A HARSH URGENCY CLEARLY USED TO COMMAND",
+      "hypothesis": "the other voice snapped with a harsh urgency clearly used to command",
+      "wer": 0.0
+    },
+    {
+      "id": "1272-141231-0012",
+      "reference": "I'M HERE BECAUSE THE MATTER IS OF UTMOST IMPORTANCE AND BRANDD IS THE ONE I MUST SEE NOW STAND ASIDE",
+      "hypothesis": "i'm here because the matter is of utmost importance and brand is the one i must see now stand aside",
+      "wer": 0.05
+    },
+    {
+      "id": "1272-141231-0013",
+      "reference": "THE TWENTIES",
+      "hypothesis": "the twenties",
+      "wer": 0.0
+    },
+    {
+      "id": "1272-141231-0014",
+      "reference": "HE MUST HAVE DRAWN HIS GUN BECAUSE THE INTRUDER SAID QUICKLY PUT THAT AWAY YOU'RE BEING A FOOL OUT",
+      "hypothesis": "he must have drawn his gun because the intruder said quickly but that away you're being a fool out",
+      "wer": 0.05263157894736842
+    },
+    {
+      "id": "1272-141231-0015",
+      "reference": "THERE WAS SILENCE THEN AND STILL WONDERING BRION WAS ONCE MORE ASLEEP",
+      "hypothesis": "there was silence then and still wondering brean was once more asleep",
+      "wer": 0.08333333333333333
+    },
+    {
+      "id": "1272-141231-0016",
+      "reference": "TEN SECONDS",
+      "hypothesis": "ten seconds",
+      "wer": 0.0
+    },
+    {
+      "id": "1272-141231-0017",
+      "reference": "HE ASKED THE HANDLER WHO WAS KNEADING HIS ACHING MUSCLES",
+      "hypothesis": "he asked the handler who was kneading his aching muscles",
+      "wer": 0.0
+    },
+    {
+      "id": "1272-141231-0018",
+      "reference": "A RED HAIRED MOUNTAIN OF A MAN WITH AN APPARENTLY INEXHAUSTIBLE STORE OF ENERGY",
+      "hypothesis": "a red haired mountain of a man with an apparently inexhaustible store of energy",
+      "wer": 0.0
+    },
+    {
+      "id": "1272-141231-0019",
+      "reference": "THERE COULD BE LITTLE ART IN THIS LAST AND FINAL ROUND OF FENCING",
+      "hypothesis": "there could be a little art in this last and final round of fencing",
+      "wer": 0.07692307692307693
+    },
+    {
+      "id": "1272-141231-0020",
+      "reference": "JUST THRUST AND PARRY AND VICTORY TO THE STRONGER",
+      "hypothesis": "just thrust and parry and victory to the stronger",
+      "wer": 0.0
+    },
+    {
+      "id": "1272-141231-0021",
+      "reference": "EVERY MAN WHO ENTERED THE TWENTIES HAD HIS OWN TRAINING TRICKS",
+      "hypothesis": "every man who entered the twenties had his own training tricks",
+      "wer": 0.0
+    },
+    {
+      "id": "1272-141231-0022",
+      "reference": "THERE APPEARED TO BE AN IMMEDIATE ASSOCIATION WITH THE DEATH TRAUMA AS IF THE TWO WERE INEXTRICABLY LINKED INTO ONE",
+      "hypothesis": "there appeared to be an immediate association between the death trauma as if the two were inextricably linked into one",
+      "wer": 0.05
+    },
+    {
+      "id": "1272-141231-0023",
+      "reference": "THE STRENGTH THAT ENABLES SOMEONE IN A TRANCE TO HOLD HIS BODY STIFF AND UNSUPPORTED EXCEPT AT TWO POINTS THE HEAD AND HEELS",
+      "hypothesis": "the strength that enables someone in a trance to hold his body stiff and unsupported except at two points the head and heels",
+      "wer": 0.0
+    },
+    {
+      "id": "1272-141231-0024",
+      "reference": "THIS IS PHYSICALLY IMPOSSIBLE WHEN CONSCIOUS",
+      "hypothesis": "this is physically impossible when conscious",
+      "wer": 0.0
+    }
+  ]
+}
