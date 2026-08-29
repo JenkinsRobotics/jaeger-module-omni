@@ -26,6 +26,12 @@ packed-QKV path can be considered. The repository GPU guard now recognizes the
 parallel GemmaOmni `eval/benchmark_suite.py`, so this A/B cannot contaminate
 that agent's active training.
 
+The final GPU A/B is now complete. On 24 warmed, repeated cases the frozen 41M
+scored 24/24 at 601.9 ms median, packed-QKV scored the same answers at 610.7 ms,
+and 50M scored 22/24 at 619.7 ms. Keep the ordinary 41M path; do not enable
+packed QKV or cite 319 ms for 50M. Reports are under
+`research/results/final-gpu-20260828-final/latency/`.
+
 The MiniCPM audit identified a larger input-latency gap: MiniCPM incrementally
 encodes and prefills one-second audio chunks while the user is speaking. The
 stock Jaeger path currently buffers a short utterance until turn-end and uses
@@ -49,6 +55,12 @@ including Adam momentum, rather than calling `scheduler.step()` before an
 optimizer update. Its CPU self-check proves equality with an uninterrupted
 new-horizon schedule and rejects an off-by-one reconstruction.
 
+The measured stability sweep rejects cached one-second prefill on the frozen
+checkpoint. With four seconds held back, the 41M adapter still had 0.977 p05
+cosine and 0.206 p95 relative-L2 error against full-utterance vectors. The next
+streaming experiment therefore requires prefix-consistency/causal training and
+then free-running WER/answer gates; it is not a runtime flag.
+
 ## 1. Run physical production testing
 
 Start with the frozen candidate, never an intermediate:
@@ -66,6 +78,14 @@ The physical five-minute run must retain all of the following:
   barge-in under each policy;
 - five-minute context roll plus END-to-audio median/p95;
 - physical AEC attenuation and false-barge count.
+
+The 2026-08-28 continuous-floor Elgato soak is useful but does not close this
+gate: 298.0 seconds fed, zero drops, 178 ms peak lag, one successful 6,151-token
+roll, and 11/11 audit-word survival, but zero endpointed turns because the room
+never stayed below the measured floor for 700 ms. Repeat with a real 1:1
+speaker who deliberately pauses and interrupts Jaeger's playback; retain the
+continuous-floor capture as the no-yield stress case rather than weakening the
+endpoint until fragments masquerade as turns.
 
 Teacher forcing is permitted as a training loss. It is never an evaluation
 number. Do not promote from a single clip, a teacher-forced score, cosine, or

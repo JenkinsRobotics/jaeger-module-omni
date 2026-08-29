@@ -32,6 +32,26 @@ Measured ledger. Every claim here has a command that reproduces it.
 > output-only, three-seed, and soup candidates were retained as experiments but
 > rejected because none improved every production gate. Physical-room five-
 > minute testing is the remaining promotion gate.
+>
+> 2026-08-28 final GPU validation used one identical warmed harness for all
+> adapter timings. JaegerOmni 41M Medium answered **24/24** repeated cases at
+> **601.9 ms** median end-to-complete-reply; JaegerOmni 50M Medium answered
+> **22/24** at **619.7 ms**. The historical 319 ms 50M result is therefore not
+> an architectural advantage. Mathematically equivalent packed-QKV inference
+> retained 24/24 identical replies but regressed 41M latency to 610.7 ms, so it
+> remains disabled. Prefix-vs-final representation testing also rejects an
+> immediate cached-Whisper prefill: even with four seconds of held right
+> context, adapter cosine p05/relative-L2 p95 were 0.977/0.206 versus the strict
+> 0.999/0.05 gate.
+>
+> A physical Elgato continuous-floor run then fed **298.0 seconds with zero
+> dropped audio**, rolled context once at 6,151 tokens, retained positive soak
+> accounting after the roll, and held peak loop lag to 178 ms. Raw-vs-fed audit
+> survival was 11/11 words. It is a runtime soak, not the final interactive
+> promotion: the source never provided 700 ms silence, so no turn closed and
+> AEC/playback, reply latency, or barge-in could be measured. k=3 produced two
+> nearly identical clusters (cosine 0.961), so shared-loudspeaker talkers remain
+> unresolved.
 
 ---
 

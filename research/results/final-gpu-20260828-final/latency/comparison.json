@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "kind": "adapter_latency_comparison",
+  "comparisons": [
+    {
+      "baseline": "research/results/final-gpu-20260828-final/latency/jaeger41-baseline.json",
+      "candidate": "research/results/final-gpu-20260828-final/latency/jaeger41-fused-qkv.json",
+      "baseline_model": "jaegeromni-41m-medium",
+      "candidate_model": "jaegeromni-41m-medium",
+      "same_checkpoint": true,
+      "replies_identical": true,
+      "semantic_equivalence_required": true,
+      "semantic_equivalence_pass": true,
+      "stages": {
+        "encoder_ms": {
+          "baseline_ms": 31.52618749663816,
+          "candidate_ms": 31.71716700308025,
+          "delta_ms": 0.1909795064420905,
+          "change_percent": 0.6057805323350813
+        },
+        "adapter_and_audio_prefill_ms": {
+          "baseline_ms": 335.52447900001425,
+          "candidate_ms": 349.2708129924722,
+          "delta_ms": 13.746333992457949,
+          "change_percent": 4.096969029928027
+        },
+        "prompt_close_ms": {
+          "baseline_ms": 47.6686454967421,
+          "candidate_ms": 51.04097900039051,
+          "delta_ms": 3.372333503648406,
+          "change_percent": 7.074531840597164
+        },
+        "first_token_ms": {
+          "baseline_ms": 39.87441650315304,
+          "candidate_ms": 41.22589599865023,
+          "delta_ms": 1.3514794954971876,
+          "change_percent": 3.389339867557235
+        },
+        "decode_after_first_ms": {
+          "baseline_ms": 138.68210399959935,
+          "candidate_ms": 133.2036669991794,
+          "delta_ms": -5.4784370004199445,
+          "change_percent": -3.9503561327824763
+        },
+        "turn_end_to_reply_ms": {
+          "baseline_ms": 601.8500419995689,
+          "candidate_ms": 610.6564370020351,
+          "delta_ms": 8.80639500246616,
+          "change_percent": 1.4632208005183571
+        }
+      }
+    },
+    {
+      "baseline": "research/results/final-gpu-20260828-final/latency/jaeger41-baseline.json",
+      "candidate": "research/results/final-gpu-20260828-final/latency/jaeger50.json",
+      "baseline_model": "jaegeromni-41m-medium",
+      "candidate_model": "jaegeromni-50m-medium",
+      "same_checkpoint": false,
+      "replies_identical": false,
+      "semantic_equivalence_required": false,
+      "semantic_equivalence_pass": null,
+      "stages": {
+        "encoder_ms": {
+          "baseline_ms": 31.52618749663816,
+          "candidate_ms": 31.80458349743276,
+          "delta_ms": 0.2783960007946007,
+          "change_percent": 0.8830626945433471
+        },
+        "adapter_and_audio_prefill_ms": {
+          "baseline_ms": 335.52447900001425,
+          "candidate_ms": 340.84864600299625,
+          "delta_ms": 5.324167002981994,
+          "change_percent": 1.5868192445600275
+        },
+        "prompt_close_ms": {
+          "baseline_ms": 47.6686454967421,
+          "candidate_ms": 50.06983349812799,
+          "delta_ms": 2.40118800138589,
+          "change_percent": 5.037248229656533
+        },
+        "first_token_ms": {
+          "baseline_ms": 39.87441650315304,
+          "candidate_ms": 41.385229502338916,
+          "delta_ms": 1.5108129991858732,
+          "change_percent": 3.788928169184386
+        },
+        "decode_after_first_ms": {
+          "baseline_ms": 138.68210399959935,
+          "candidate_ms": 154.3278749959427,
+          "delta_ms": 15.645770996343344,
+          "change_percent": 11.28175196735445
+        },
+        "turn_end_to_reply_ms": {
+          "baseline_ms": 601.8500419995689,
+          "candidate_ms": 619.7116035000363,
+          "delta_ms": 17.86156150046736,
+          "change_percent": 2.9677760661317945
+        }
+      }
+    }
+  ]
+}

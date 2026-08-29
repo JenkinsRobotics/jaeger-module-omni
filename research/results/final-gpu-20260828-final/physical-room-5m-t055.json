@@ -1,0 +1,78 @@
+{
+  "artifacts": {
+    "meeting_minutes": "research/results/final-gpu-20260828-final/meeting-minutes-t055.md",
+    "recording_dir": "/tmp/jaeger-final-room-20260828-t055"
+  },
+  "configuration": {
+    "aec": true,
+    "barge_policy": "continue",
+    "cooldown_s": 20.0,
+    "max_context": 6000,
+    "seconds": 300.0,
+    "silence_ms": 700.0,
+    "speakers": 3,
+    "speed": 1.0,
+    "threshold": 0.055,
+    "voice": "af_heart"
+  },
+  "errors": [],
+  "finished_at": "2026-08-29T02:15:58.939963+00:00",
+  "host": {
+    "hostname": "Mac-Studio-3.localdomain",
+    "pid": 20890,
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.11.9"
+  },
+  "interactions": [],
+  "kind": "jaeger_duplex_run",
+  "metrics": {
+    "aec": {
+      "attenuation_db": null,
+      "available": false,
+      "raw_reference_correlation_last": null,
+      "residual_reference_correlation_last": null,
+      "seconds_cancelled": 0.0
+    },
+    "audio_chunks": 27,
+    "barge_events": 0,
+    "barge_stops": 0,
+    "completed_replies": 0,
+    "context_rolls": 1,
+    "dropped_seconds": 0.0,
+    "end_to_audio": {
+      "max_ms": null,
+      "median_ms": null,
+      "n": 0,
+      "p95_ms": null
+    },
+    "endpoint_events": [
+      "speech_start"
+    ],
+    "fed_seconds": 298.0,
+    "final_cache_tokens": 1195,
+    "interrupts": 0,
+    "peak_loop_lag_ms": 178.14562499552267,
+    "synthesis": {
+      "max_ms": null,
+      "median_ms": null,
+      "n": 0,
+      "p95_ms": null
+    },
+    "turns": 0,
+    "wall_seconds": 301.71336837499985
+  },
+  "model": {
+    "checkpoint": "a7f96bfb8898",
+    "id": "jaegeromni-41m-medium",
+    "name": "JaegerOmni 41M Medium"
+  },
+  "passed_runtime": true,
+  "phase": "physical-room",
+  "replies": [],
+  "schema_version": 1,
+  "source": "Elgato XLR Dock",
+  "speaker_labels": [
+    "A"
+  ],
+  "started_at": "2026-08-29T02:10:56.783031+00:00"
+}

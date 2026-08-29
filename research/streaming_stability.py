@@ -110,6 +110,8 @@ def main() -> int:
     parser.add_argument("--front-end", default="jaegeromni-41m-medium")
     parser.add_argument("--cases", type=Path,
                         default=ROOT / "research/cases12")
+    parser.add_argument("--wav", type=Path, action="append", default=[],
+                        help="long WAV to measure instead of the cases directory")
     parser.add_argument("--cadence-s", type=float, default=1.0)
     parser.add_argument("--min-prefix-s", type=float, default=1.0)
     parser.add_argument("--right-context-s", type=float, nargs="+",
@@ -130,7 +132,13 @@ def main() -> int:
     from jaeger_agent_omni.app import read_wav
     from jaeger_agent_omni.omni import build
 
-    cases = json.loads((args.cases / "cases.json").read_text())
+    if args.wav:
+        inputs = [(f"{path.stem}-{index}", path.expanduser().resolve())
+                  for index, path in enumerate(args.wav)]
+    else:
+        cases = json.loads((args.cases / "cases.json").read_text())
+        inputs = [(case["key"], args.cases / f"{case['key']}.wav")
+                  for case in cases]
     session, meta = build(front_end=args.front_end)
     if meta["front_end"] != "stock":
         raise SystemExit("streaming stability currently requires a stock node")
@@ -144,8 +152,8 @@ def main() -> int:
     rows = []
     case_reports = []
     started = time.monotonic()
-    for case in cases:
-        audio = read_wav(args.cases / f"{case['key']}.wav")
+    for case_key, audio_path in inputs:
+        audio = read_wav(audio_path)
         full_features = session.front_end(audio)
         full_adapter = project(full_features)
         duration_s = len(audio) / SAMPLE_RATE
@@ -156,7 +164,7 @@ def main() -> int:
             prefix_features = session.front_end(audio[:cut])
             prefix_adapter = project(prefix_features)
             rows.append({
-                "case": case["key"],
+                "case": case_key,
                 "prefix_s": cut / SAMPLE_RATE,
                 "prefix_whisper": prefix_features,
                 "final_whisper": full_features,
@@ -169,13 +177,14 @@ def main() -> int:
             case_rows += 1
             cut_s += args.cadence_s
         case_reports.append({
-            "case": case["key"],
+            "case": case_key,
+            "path": str(audio_path),
             "duration_s": duration_s,
             "prefixes": case_rows,
             "whisper_frames": len(full_features),
             "adapter_tokens": len(full_adapter),
         })
-        print(f"{case['key']}: {duration_s:.2f}s, {case_rows} prefixes",
+        print(f"{case_key}: {duration_s:.2f}s, {case_rows} prefixes",
               flush=True)
 
     whisper_sweep = [

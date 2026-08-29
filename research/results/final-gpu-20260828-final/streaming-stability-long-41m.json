@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "kind": "streaming_representation_stability",
+  "diagnostic_only": true,
+  "promotion_metric": false,
+  "front_end": "jaegeromni-41m-medium",
+  "model_id": "jaegeromni-41m-medium",
+  "checkpoint": "a7f96bfb8898",
+  "cadence_s": 1.0,
+  "cases": [
+    {
+      "case": "q10-0",
+      "path": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/demo_out/q10.wav",
+      "duration_s": 5.7,
+      "prefixes": 5,
+      "whisper_frames": 285,
+      "adapter_tokens": 142
+    },
+    {
+      "case": "q11-1",
+      "path": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/demo_out/q11.wav",
+      "duration_s": 5.275,
+      "prefixes": 5,
+      "whisper_frames": 264,
+      "adapter_tokens": 132
+    },
+    {
+      "case": "q06-2",
+      "path": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/demo_out/q06.wav",
+      "duration_s": 3.55,
+      "prefixes": 3,
+      "whisper_frames": 178,
+      "adapter_tokens": 89
+    }
+  ],
+  "prefix_comparisons": 13,
+  "whisper_sweep": [
+    {
+      "right_context_s": 0.0,
+      "prefix_comparisons": 13,
+      "compared_positions": 1800,
+      "cosine_median": 0.9718874096870422,
+      "cosine_p05": 0.6207734763622285,
+      "relative_l2_median": 0.23741380870342255,
+      "relative_l2_p95": 0.8799710303544995,
+      "strict_stability_pass": false
+    },
+    {
+      "right_context_s": 0.5,
+      "prefix_comparisons": 13,
+      "compared_positions": 1475,
+      "cosine_median": 0.9819929003715515,
+      "cosine_p05": 0.7457313001155853,
+      "relative_l2_median": 0.19101306796073914,
+      "relative_l2_p95": 0.7452359557151789,
+      "strict_stability_pass": false
+    },
+    {
+      "right_context_s": 1.0,
+      "prefix_comparisons": 10,
+      "compared_positions": 1150,
+      "cosine_median": 0.987575113773346,
+      "cosine_p05": 0.8219626128673554,
+      "relative_l2_median": 0.1589650884270668,
+      "relative_l2_p95": 0.6379981130361556,
+      "strict_stability_pass": false
+    },
+    {
+      "right_context_s": 2.0,
+      "prefix_comparisons": 7,
+      "compared_positions": 650,
+      "cosine_median": 0.9908746182918549,
+      "cosine_p05": 0.8464658558368683,
+      "relative_l2_median": 0.13494087755680084,
+      "relative_l2_p95": 0.5577089637517919,
+      "strict_stability_pass": false
+    },
+    {
+      "right_context_s": 3.0,
+      "prefix_comparisons": 4,
+      "compared_positions": 300,
+      "cosine_median": 0.9952912330627441,
+      "cosine_p05": 0.8448796361684799,
+      "relative_l2_median": 0.10161832720041275,
+      "relative_l2_p95": 0.5470531433820734,
+      "strict_stability_pass": false
+    },
+    {
+      "right_context_s": 4.0,
+      "prefix_comparisons": 2,
+      "compared_positions": 100,
+      "cosine_median": 0.9970930814743042,
+      "cosine_p05": 0.8374878644943238,
+      "relative_l2_median": 0.0770430900156498,
+      "relative_l2_p95": 0.5391544729471194,
+      "strict_stability_pass": false
+    }
+  ],
+  "adapter_sweep": [
+    {
+      "right_context_s": 0.0,
+      "prefix_comparisons": 13,
+      "compared_positions": 900,
+      "cosine_median": 0.9956068396568298,
+      "cosine_p05": 0.9264186829328537,
+      "relative_l2_median": 0.09418920427560806,
+      "relative_l2_p95": 0.38168635219335556,
+      "strict_stability_pass": false
+    },
+    {
+      "right_context_s": 0.5,
+      "prefix_comparisons": 13,
+      "compared_positions": 731,
+      "cosine_median": 0.996930718421936,
+      "cosine_p05": 0.9508014917373657,
+      "relative_l2_median": 0.07878502458333969,
+      "relative_l2_p95": 0.31557542085647583,
+      "strict_stability_pass": false
+    },
+    {
+      "right_context_s": 1.0,
+      "prefix_comparisons": 10,
+      "compared_positions": 575,
+      "cosine_median": 0.9974850416183472,
+      "cosine_p05": 0.9614397764205933,
+      "relative_l2_median": 0.07114057242870331,
+      "relative_l2_p95": 0.2765626370906827,
+      "strict_stability_pass": false
+    },
+    {
+      "right_context_s": 2.0,
+      "prefix_comparisons": 7,
+      "compared_positions": 325,
+      "cosine_median": 0.9984097480773926,
+      "cosine_p05": 0.9727784633636475,
+      "relative_l2_median": 0.05648728832602501,
+      "relative_l2_p95": 0.23627131581306463,
+      "strict_stability_pass": false
+    },
+    {
+      "right_context_s": 3.0,
+      "prefix_comparisons": 4,
+      "compared_positions": 150,
+      "cosine_median": 0.9989872574806213,
+      "cosine_p05": 0.9831173837184906,
+      "relative_l2_median": 0.045196158811450005,
+      "relative_l2_p95": 0.18226017057895597,
+      "strict_stability_pass": false
+    },
+    {
+      "right_context_s": 4.0,
+      "prefix_comparisons": 2,
+      "compared_positions": 50,
+      "cosine_median": 0.9994600415229797,
+      "cosine_p05": 0.9769254595041275,
+      "relative_l2_median": 0.03318602964282036,
+      "relative_l2_p95": 0.20602774024009674,
+      "strict_stability_pass": false
+    }
+  ],
+  "elapsed_s": 1.4106872499978635,
+  "interpretation": "Only vectors passing a selected right-context gate become candidates for later free-running cached-prefill evaluation."
+}
