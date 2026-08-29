@@ -5,6 +5,25 @@ Jaeger's production speech gate remains the packaged Silero VAD. The selectable
 path: the same stock-Whisper-medium → causal 41M → Gemma embeddings plus heads
 for scene, overlap, speaker state/change, and turn completion.
 
+This node is **after Whisper**. It is not the intended unified pre-Whisper
+acoustic controller and cannot cancel echo or save Whisper work on rejected
+audio. The production target is a separate small causal network that consumes
+microphone PCM plus Jaeger's exact playback reference and emits both enhanced
+PCM and typed control tensors:
+
+```text
+mic PCM + playback reference
+  -> neural acoustic controller (continuous, low-rate causal state)
+       -> enhanced external-speech PCM -> Whisper -> JaegerOmni 41M -> Gemma
+       -> speech/self/external/music/noise/overlap/turn-state tensors ----^
+```
+
+That controller may eventually absorb Silero, Speex, fixed energy thresholds,
+and endpoint heuristics. It must first prove echo removal, near-end speech
+survival, false-open rate, endpoint delay, and compute latency. Classification
+heads alone cannot replace AEC because AEC must produce a cleaned waveform, not
+merely label the echo.
+
 This is deliberately one neural node because all outputs consume the same
 causal adapter states. It does not contain an STT decoder and never hands text
 from Whisper to Gemma.

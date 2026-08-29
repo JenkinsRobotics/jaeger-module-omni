@@ -72,6 +72,7 @@ JAEGER_MODEL = Path(os.environ.get(
     "JAEGER_OMNI_MODEL",
     Path.home() / "models/gemma-4-e4b-it-mlx-full"))
 from jaeger_agent_omni.model_catalog import (  # noqa: E402
+    DEFAULT_FRONT_END as JAEGER_DEFAULT_FRONT_END,
     FRONT_ENDS as JAEGER_FRONT_ENDS,
     FRONT_END_ALIASES as JAEGER_FRONT_END_ALIASES,
     resolve_front_end,
@@ -509,7 +510,7 @@ class JaegerEngineWorker(QThread):
                  speed: float = 1.0, threshold: float = 0.012,
                  silence_ms: float = 700.0, cooldown: float = 4.0,
                  max_context: int = 6000, speakers: int = 2,
-                 front_end: str = "gemma-native",
+                 front_end: str = JAEGER_DEFAULT_FRONT_END,
                  interaction_mode: str = "assistant",
                  duplex_mode: str = "full",
                  vad_mode: str = "neural",
@@ -718,6 +719,17 @@ class JaegerEngineWorker(QThread):
 
     def _prepare_turn(self) -> None:
         label = self._tag_speaker()
+        perception = getattr(
+            self.session, "perception_snapshot", lambda: {})()
+        scene = perception.get("scene", {})
+        if scene.get("calibrated"):
+            metadata = (
+                f" [audio_scene={scene['class']}; "
+                f"confidence={scene['probability']:.3f}]"
+            )
+            self.session.feed_text(metadata)
+            self.status.emit(f"neural scene · {scene['class']} "
+                             f"{scene['probability']:.2f}")
         if self.companion is not None:
             self.session.feed_text(self.companion.turn_metadata(
                 label, self_speech_overlap=self._turn_self_speech_overlap))
@@ -945,8 +957,7 @@ class JaegerEngineWorker(QThread):
                 session, audio_source=self._source,
                 user_speaking=self.barge_active.is_set,
                 on_reply=on_reply,
-                before_respond=(self._prepare_turn if (
-                    self.speakers or self.companion is not None) else None),
+                before_respond=self._prepare_turn,
                 on_endpoint_event=(
                     lambda event: self.companion.speech_started()
                     if self.companion is not None and event == "speech_start"
@@ -1241,6 +1252,9 @@ class OmniDuplexWindow(QMainWindow):
         for model_id, spec in JAEGER_FRONT_ENDS.items():
             self.front_end_combo.addItem(
                 f"{spec.label} · {spec.status}", model_id)
+        default_index = self.front_end_combo.findData(JAEGER_DEFAULT_FRONT_END)
+        if default_index >= 0:
+            self.front_end_combo.setCurrentIndex(default_index)
         row.addWidget(QLabel("audio input:"))
         row.addWidget(self.front_end_combo)
         self.lang_combo = QComboBox()
@@ -1761,6 +1775,8 @@ def check() -> int:
     if selected_ids != set(JAEGER_FRONT_ENDS):
         problems.append(
             "audio selector does not expose exactly the canonical models")
+    if win.front_end_combo.currentData() != JAEGER_DEFAULT_FRONT_END:
+        problems.append("audio selector does not default to JaegerOmni 41M")
     if win.interaction_combo.findData("companion") < 0:
         problems.append("companion interaction mode is not exposed")
     if {win.duplex_combo.itemData(i) for i in range(
@@ -1902,7 +1918,8 @@ def minicpm_selftest(seconds: int) -> int:
 
 def jaeger_selftest(wav_path: Path, seconds: int, threshold: float,
                     silence_ms: float, cooldown: float,
-                    max_context: int, front_end: str = "gemma-native",
+                    max_context: int,
+                    front_end: str = JAEGER_DEFAULT_FRONT_END,
                     barge_policy: str = "stop",
                     report_path: Path | None = None,
                     interaction_mode: str = "assistant",
@@ -2035,7 +2052,7 @@ def main() -> int:
     ap.add_argument(
         "--front-end",
         choices=tuple(JAEGER_FRONT_ENDS) + tuple(JAEGER_FRONT_END_ALIASES),
-        default="gemma-native",
+        default=JAEGER_DEFAULT_FRONT_END,
         help="Jaeger self-test model identity (old tower/stock/cleanroom "
              "aliases remain accepted)")
     args = ap.parse_args()

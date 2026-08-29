@@ -92,7 +92,8 @@ def main() -> int:
     ap.add_argument("--speed", type=float, default=1.0)
     ap.add_argument("--device", type=int, default=None, help="input device id")
     ap.add_argument("--model", default=MODEL)
-    ap.add_argument("--front-end", default="gemma-native",
+    from jaeger_agent_omni.model_catalog import DEFAULT_FRONT_END
+    ap.add_argument("--front-end", default=DEFAULT_FRONT_END,
                     choices=front_end_choices(),
                     help="canonical Jaeger audio-ear identity")
     ap.add_argument("--adapter", default=None,

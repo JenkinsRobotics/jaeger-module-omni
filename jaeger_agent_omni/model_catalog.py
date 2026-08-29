@@ -16,6 +16,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 NODES_ROOT = REPO_ROOT / "nodes"
+DEFAULT_FRONT_END = "jaegeromni-41m-medium"
 
 
 @dataclass(frozen=True)
@@ -162,6 +163,7 @@ def demo() -> None:
     assert canonical_id("tower") == "gemma-native"
     assert canonical_id("stock") == "jaegeromni-50m-medium"
     assert canonical_id("cleanroom") == "gemmaomni-41m-medium"
+    assert DEFAULT_FRONT_END == "jaegeromni-41m-medium"
     assert resolve_front_end("gemma-native").checkpoint == "built-in"
     try:
         resolve_front_end("gemma-native", "adapter.npz")

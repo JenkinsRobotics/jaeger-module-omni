@@ -23,6 +23,14 @@ Measured ledger. Every claim here has a command that reproduces it.
 > speaker-change/turn-end regressed to 0.040/0.234. Full evidence and limits:
 > [`AUDIO_PERCEPTION.md`](AUDIO_PERCEPTION.md).
 >
+> Runtime identity correction: CLI, live, spoken demo, desktop GUI, and the
+> node profile now default to `jaegeromni-41m-medium`; `gemma-native` is the
+> explicit rollback. The post-Whisper perception node remains opt-in. When it
+> is selected, both CLI and GUI append its validated scene result before Gemma
+> responds. It is not represented as neural AEC: the planned pre-Whisper
+> controller must consume microphone plus playback reference and emit enhanced
+> PCM as well as typed control tensors.
+>
 > 2026-08-27 current result: JaegerOmni 41M Medium SHA `a7f96bfb8898`
 > passes five locked corpus gates without regression and scores **3.97%**
 > free-running WER on the untouched 2,603-clip/51,311-word test-clean lockbox

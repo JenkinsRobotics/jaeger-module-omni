@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "default": "live-native",
+  "default": "jaegeromni-41m-medium",
   "profiles": {
     "live-native": {
       "enabled": [

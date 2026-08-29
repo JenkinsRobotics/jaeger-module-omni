@@ -16,7 +16,8 @@ python -m jaeger_agent_omni.live --front-end jaegeromni-41m-medium \
   --max-context 6000 --record /tmp/jaeger-production-1to1
 ```
 
-Gemma Native remains the rollback/default until this physical phase passes.
+JaegerOmni 41M Medium is the production-test default. Gemma Native remains the
+explicit rollback until this physical phase passes.
 
 ## CPU/static readiness
 
@@ -207,7 +208,7 @@ A production candidate must:
 8. pass speaker continuity and distinct-identity gates on unseen talkers;
 9. pass both phases again before replacing the rollback default.
 
-Gemma Native remains a rollback because it already has a complete five-minute
+Gemma Native remains the rollback because it already has a complete five-minute
 worker run. It is not presumed more accurate than the adapter models.
 
 After adding any checkpoint-pinned corpus or duplex report, regenerate

@@ -24,7 +24,7 @@ class NodeRegistryTests(unittest.TestCase):
         for package in packages.values():
             self.assertTrue(callable(load_factory(package)))
         profiles = validate_profiles(root, packages)
-        self.assertEqual(profiles["default"], "live-native")
+        self.assertEqual(profiles["default"], "jaegeromni-41m-medium")
         selected = select_profile(root)
         self.assertIn("kokoro-tts", selected)
         self.assertNotIn("stock-whisper-large-v3-turbo50m", selected)

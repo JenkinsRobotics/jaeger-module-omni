@@ -25,7 +25,8 @@ changes:
 
     tower   Gemma's own audio tower. Works today, scores 10/12 (83% of
             legacy's 12/12). Frozen Google weights -- cannot be extended, and
-            measured transcription-shaped (delivery ratio 0.192).
+            measured transcription-shaped (delivery ratio 0.192). It is the
+            rollback path, not the production default.
     stock   stock OpenAI Whisper encoder -> fresh Jaeger adapter -> Gemma.
             The promoted owned checkpoint distils Gemma's native audio tower
             and contains no MiniCPM/Qwen model or ASR decoder.
@@ -56,12 +57,13 @@ DUAL_SYSTEM = (
     "question as the answer."
 )
 MODEL = "/Users/jonathanjenkins/models/gemma-4-e4b-it-mlx-full"
-def build(model_path: str = MODEL, front_end: str = "gemma-native",
+def build(model_path: str = MODEL, front_end: str | None = None,
           adapter_path=None,
           system: str | None = SYSTEM):
     """Load the one graph. Returns (session, meta)."""
-    from jaeger_agent_omni.model_catalog import resolve_front_end
+    from jaeger_agent_omni.model_catalog import DEFAULT_FRONT_END, resolve_front_end
 
+    front_end = front_end or DEFAULT_FRONT_END
     selection = resolve_front_end(front_end, adapter_path)
     if selection.engine == "stock":
         from jaeger_agent_omni.runtime.stock_whisper import (
@@ -429,7 +431,8 @@ def main() -> int:
     ap.add_argument("--bench")
     ap.add_argument("--duplex", action="store_true")
     ap.add_argument("--seconds", type=float, default=20.0)
-    ap.add_argument("--front-end", default="gemma-native",
+    from jaeger_agent_omni.model_catalog import DEFAULT_FRONT_END
+    ap.add_argument("--front-end", default=DEFAULT_FRONT_END,
                     choices=front_end_choices())
     ap.add_argument("--adapter", default=None,
                     help="adapter checkpoint for the stock front end")

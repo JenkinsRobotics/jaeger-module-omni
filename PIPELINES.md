@@ -80,9 +80,9 @@ The honest target is therefore two separate gates:
 2. pass repeated five-minute duplex sessions with stable latency, AEC,
    speaker telemetry, and context rolls.
 
-Until the physical-room phase passes, MiniCPM remains the quality reference and
-the native Gemma tower remains Jaeger's rollback/default. Select
-`jaegeromni-41m-medium` explicitly for production testing.
+Until the physical-room phase passes, MiniCPM remains the quality reference.
+`jaegeromni-41m-medium` is Jaeger's default production-test ear; the native
+Gemma tower remains the explicit rollback.
 
 Canonical eight-model gate: [`PRODUCTION_TESTING.md`](PRODUCTION_TESTING.md).
 Current generated comparison: [`PARITY_SCORECARD.md`](PARITY_SCORECARD.md).
