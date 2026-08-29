@@ -1,5 +1,31 @@
 # Next steps — current plan
 
+The always-on companion control path is now implemented behind
+`--interaction-mode companion`: Gemma emits a fail-closed RESPOND/LISTEN
+decision from native audio, follow-up state is judged at speech start, and
+half/full duplex are explicit. The desktop demo exposes the same modes. Causal
+speaker-change/overlap/turn-end/speaker-ID probabilities are recorded as
+shadow telemetry and do not control policy because the blended checkpoint's
+heads remain uncalibrated. Populate and run the corpus-level gate described in
+`COMPANION.md` before calling this production-qualified; specifically require
+direct address, follow-up, overheard human conversation, recorded media,
+environmental noise, incomplete thought, and self-speech categories. The
+first named-address run is red at 4/12 recall even though the audio-answer
+probe is 11/12; train/calibrate a dedicated addressed-to-agent head with name
+variants and negative human-human speech rather than weakening the parser.
+
+The repository-owned Silero neural VAD is now the default acoustic gate in
+live and the GUI; `--vad energy` is an explicit diagnostic fallback. It opened
+and endpointed 12/12 cases12 clips, then found six complete turns in a
+five-minute continuous-floor physical run while feeding 299.5 seconds with
+zero drops and preserving 430/430 audited words. This verifies speech
+admission and fixes the old zero-turn RMS soak, not environmental rejection or
+semantic turn completion. Next collect the labeled physical noise/media/
+quiet-speech corpus and report false opens, missed speech, open delay, and
+endpoint delay independently of companion admission. Also investigate the
+separate audio-understanding failure: every silent-observer running note in
+that run was only "less than 10 seconds" despite full input survival.
+
 One GPU job at a time. JaegerOmni 41M Medium SHA `a7f96bfb8898` is the current
 broad-corpus winner: 3.97% free-running WER on the untouched 51,311-word
 test-clean lockbox (pre-budget12; remeasure at the corrected 12-token/s

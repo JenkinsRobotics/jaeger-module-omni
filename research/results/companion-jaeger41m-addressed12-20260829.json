@@ -1,0 +1,162 @@
+{
+  "kind": "jaeger_companion_admission_gate",
+  "evaluation": "free_running_audio_native",
+  "teacher_forced": false,
+  "front_end": "jaegeromni-41m-medium",
+  "model": "/Users/jonathanjenkins/models/gemma-4-e4b-it-mlx-full",
+  "checkpoint": "a7f96bfb8898",
+  "manifest": "/private/tmp/jaeger-companion-addressed.jsonl",
+  "summary": {
+    "clips": 12,
+    "correct": 4,
+    "accuracy": 0.3333333333333333,
+    "respond_precision": 1.0,
+    "respond_recall": 0.3333333333333333,
+    "false_responses": 0,
+    "missed_addresses": 8,
+    "latency_ms": {
+      "median": 141.11518749268726,
+      "max": 417.08966699661687
+    },
+    "by_category": {
+      "named_direct_question": {
+        "n": 12,
+        "correct": 4
+      }
+    }
+  },
+  "results": [
+    {
+      "audio": "/tmp/jaeger-companion-addressed/q00.wav",
+      "expected": "respond",
+      "category": "named_direct_question",
+      "predicted": "listen",
+      "valid_control": true,
+      "reason": "unspecified",
+      "response": "",
+      "raw_control_output": "DECISION: LISTEN",
+      "latency_ms": 125.49658298667055
+    },
+    {
+      "audio": "/tmp/jaeger-companion-addressed/q01.wav",
+      "expected": "respond",
+      "category": "named_direct_question",
+      "predicted": "listen",
+      "valid_control": true,
+      "reason": "unspecified",
+      "response": "",
+      "raw_control_output": "DECISION: LISTEN",
+      "latency_ms": 149.04687499802094
+    },
+    {
+      "audio": "/tmp/jaeger-companion-addressed/q02.wav",
+      "expected": "respond",
+      "category": "named_direct_question",
+      "predicted": "listen",
+      "valid_control": true,
+      "reason": "unspecified",
+      "response": "",
+      "raw_control_output": "DECISION: LISTEN",
+      "latency_ms": 140.25616699655075
+    },
+    {
+      "audio": "/tmp/jaeger-companion-addressed/q03.wav",
+      "expected": "respond",
+      "category": "named_direct_question",
+      "predicted": "respond",
+      "valid_control": true,
+      "reason": "",
+      "response": "paris",
+      "raw_control_output": "DECISION: RESPOND\nRESPONSE: paris",
+      "latency_ms": 247.05120800354052
+    },
+    {
+      "audio": "/tmp/jaeger-companion-addressed/q04.wav",
+      "expected": "respond",
+      "category": "named_direct_question",
+      "predicted": "listen",
+      "valid_control": true,
+      "reason": "unspecified",
+      "response": "",
+      "raw_control_output": "DECISION: LISTEN",
+      "latency_ms": 136.68891599809285
+    },
+    {
+      "audio": "/tmp/jaeger-companion-addressed/q05.wav",
+      "expected": "respond",
+      "category": "named_direct_question",
+      "predicted": "listen",
+      "valid_control": true,
+      "reason": "unspecified",
+      "response": "",
+      "raw_control_output": "DECISION: LISTEN",
+      "latency_ms": 139.07437500893138
+    },
+    {
+      "audio": "/tmp/jaeger-companion-addressed/q06.wav",
+      "expected": "respond",
+      "category": "named_direct_question",
+      "predicted": "respond",
+      "valid_control": true,
+      "reason": "",
+      "response": "Jupiter is the largest planet.",
+      "raw_control_output": "DECISION: RESPOND\nRESPONSE: Jupiter is the largest planet.",
+      "latency_ms": 344.36899999855086
+    },
+    {
+      "audio": "/tmp/jaeger-companion-addressed/q07.wav",
+      "expected": "respond",
+      "category": "named_direct_question",
+      "predicted": "listen",
+      "valid_control": true,
+      "reason": "unspecified",
+      "response": "",
+      "raw_control_output": "DECISION: LISTEN",
+      "latency_ms": 141.47183299064636
+    },
+    {
+      "audio": "/tmp/jaeger-companion-addressed/q08.wav",
+      "expected": "respond",
+      "category": "named_direct_question",
+      "predicted": "respond",
+      "valid_control": true,
+      "reason": "",
+      "response": "autumn",
+      "raw_control_output": "DECISION: RESPOND\nRESPONSE: autumn",
+      "latency_ms": 236.4820829970995
+    },
+    {
+      "audio": "/tmp/jaeger-companion-addressed/q09.wav",
+      "expected": "respond",
+      "category": "named_direct_question",
+      "predicted": "listen",
+      "valid_control": true,
+      "reason": "unspecified",
+      "response": "",
+      "raw_control_output": "DECISION: LISTEN",
+      "latency_ms": 140.75854199472815
+    },
+    {
+      "audio": "/tmp/jaeger-companion-addressed/q10.wav",
+      "expected": "respond",
+      "category": "named_direct_question",
+      "predicted": "respond",
+      "valid_control": true,
+      "reason": "",
+      "response": "The freezing point of water is zero degrees Celsius.",
+      "raw_control_output": "DECISION: RESPOND\nRESPONSE: The freezing point of water is zero degrees Celsius.",
+      "latency_ms": 417.08966699661687
+    },
+    {
+      "audio": "/tmp/jaeger-companion-addressed/q11.wav",
+      "expected": "respond",
+      "category": "named_direct_question",
+      "predicted": "listen",
+      "valid_control": true,
+      "reason": "unspecified",
+      "response": "",
+      "raw_control_output": "DECISION: LISTEN",
+      "latency_ms": 138.27029199455865
+    }
+  ]
+}

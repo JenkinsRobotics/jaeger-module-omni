@@ -99,7 +99,14 @@ def main() -> int:
                     help="explicit research override for the selected stock "
                          "node (reported as custom)")
     ap.add_argument("--threshold", type=float, default=0.012,
-                    help="speech RMS floor; raise it in a noisy room")
+                    help="barge-in RMS floor and legacy --vad energy floor")
+    ap.add_argument("--vad", choices=("neural", "energy"), default="neural",
+                    help="turn-opening gate; neural uses the packaged Silero "
+                         "network, energy is the legacy RMS fallback")
+    ap.add_argument("--vad-open", type=float, default=0.30,
+                    help="Silero probability needed to open a speech turn")
+    ap.add_argument("--vad-close", type=float, default=0.125,
+                    help="Silero probability that holds an open turn")
     ap.add_argument("--silence-ms", type=float, default=510.0,
                     help="quiet needed to close a turn; a continuous "
                          "conversation never reaches the default")
@@ -113,9 +120,8 @@ def main() -> int:
                          "Rolling keeps the model in real time forever.")
     ap.add_argument("--cooldown", type=float, default=4.0,
                     help="seconds after a reply before another turn may "
-                         "close. A continuous speaker never yields the "
-                         "floor; without this the model answers every "
-                         "pause, and each reply DEAFENS it (half-duplex).")
+                         "close in direct-assistant mode; companion uses its "
+                         "semantic RESPOND/LISTEN decision instead")
     ap.add_argument("--record", default=None, metavar="DIR",
                     help="record raw mic AND model-fed audio for audit")
     ap.add_argument("--no-aec", action="store_true",
@@ -130,6 +136,14 @@ def main() -> int:
     ap.add_argument("--barge-policy", choices=("stop", "continue"),
                     default="stop",
                     help="action after speech-during-output notification")
+    ap.add_argument("--interaction-mode",
+                    choices=("assistant", "companion"), default="assistant",
+                    help="assistant answers every endpointed turn; companion "
+                         "uses Gemma's audio-native RESPOND/LISTEN decision")
+    ap.add_argument("--duplex-mode", choices=("half", "full"),
+                    default="full",
+                    help="half ignores microphone audio while generating or "
+                         "speaking; full keeps listening through AEC")
     ap.add_argument("--speakers", type=int, default=0, metavar="K",
                     help="diarize up to K room talkers and append inline "
                          "[speaker A/B] context tags (0 disables)")
@@ -149,13 +163,21 @@ def main() -> int:
         return list_devices()
 
     from jaeger_agent_omni.omni import SYSTEM, build
+    from jaeger_agent_omni.runtime.companion import (
+        CompanionState, parse_decision, streaming_response, system_prompt,
+    )
     from jaeger_agent_omni.runtime.duplex import DuplexLoop
+    from jaeger_agent_omni.runtime.neural_vad import configure_endpoint
     from jaeger_agent_omni.voice import speak_kokoro
+
+    companion = CompanionState() if a.interaction_mode == "companion" else None
+    selected_system = MEETING_SYSTEM if a.meeting_minutes else (
+        system_prompt() if companion is not None else SYSTEM)
 
     print("loading Gemma…", flush=True)
     session, meta = build(
         a.model, a.front_end, a.adapter,
-        system=MEETING_SYSTEM if a.meeting_minutes else SYSTEM)
+        system=selected_system)
     session.warmup()
 
     from jaeger_agent_omni.runtime.reporting import (
@@ -173,17 +195,22 @@ def main() -> int:
         source=input_name,
         configuration={
             "seconds": a.seconds, "threshold": a.threshold,
+            "vad": a.vad, "vad_open": a.vad_open,
+            "vad_close": a.vad_close,
             "silence_ms": a.silence_ms, "cooldown_s": a.cooldown,
             "max_context": a.max_context, "speakers": a.speakers,
             "voice": a.voice, "speed": a.speed,
             "barge_policy": a.barge_policy,
+            "interaction_mode": a.interaction_mode,
+            "duplex_mode": a.duplex_mode,
             # Meeting-minutes mode is deliberately a silent observer. AEC is
             # only meaningful while Jaeger is playing a known far-end signal;
             # reporting a requested-but-inactive canceller as active made the
             # physical soak artifact contradict its metrics section.
             "observer_mode": bool(a.meeting_minutes),
             "aec_requested": not a.no_aec,
-            "aec": not a.no_aec and not a.no_speak,
+            "aec": (not a.no_aec and not a.no_speak and
+                    a.duplex_mode == "full"),
             "aec_reference_mode": a.aec_reference_mode,
         })
 
@@ -204,11 +231,14 @@ def main() -> int:
     level = {"rms": 0.0, "raw_rms": 0.0}
     heard = {"n": 0}
     overflow = {"blocks": 0, "samples": 0}
+    half_muted = {"blocks": 0, "samples": 0}
     barged = {"events": 0, "stops": 0}
     echo_floor = {"rms": 0.35}
     rec = {"raw": [], "fed": []}
+    turn_facts = {"self_speech_overlap": False}
     speaker_recent = deque(maxlen=max(1, round(3 * RATE / BLOCK)))
     speaker_tags = []
+    perception_turns: list[dict] = []
     run_errors: list[str] = []
 
     from jaeger_agent_omni.runtime.interaction import InteractionPolicy
@@ -223,7 +253,8 @@ def main() -> int:
 
     aec = None
     barge_detector = None
-    if not a.no_aec and not a.no_speak:
+    if (not a.no_aec and not a.no_speak and
+            a.duplex_mode == "full"):
         from jaeger_agent_omni.runtime.aec import (
             EchoAwareBargeIn, SpeexEchoCanceller,
         )
@@ -260,6 +291,19 @@ def main() -> int:
         level["raw_rms"], level["rms"] = raw_rms, clean_rms
         if a.record:
             rec["raw"].append(raw.copy())
+        if speaking_out.is_set() and a.duplex_mode == "full":
+            turn_facts["self_speech_overlap"] = True
+
+        if (a.duplex_mode == "half" and
+                (speaking_out.is_set() or generating.is_set())):
+            # Half duplex is explicit and measurable: capture remains alive,
+            # but model input is paused until the agent finishes.  This gives
+            # perfect self-rejection at the cost of zero interruptibility.
+            half_muted["blocks"] += 1
+            half_muted["samples"] += len(raw)
+            if a.record:
+                rec["fed"].append(np.zeros_like(raw))
+            return
 
         if speaking_out.is_set():
             if aec is None:
@@ -314,16 +358,26 @@ def main() -> int:
 
     def tag_speaker():
         if speaker_tracker is None or not speaker_recent:
-            return
+            return None
         audio = np.concatenate(tuple(speaker_recent))
         speaker_recent.clear()
         label = speaker_tracker.identify(audio)
         if label is None:
-            return
+            return None
         tag = f"[speaker {label}]"
         session.feed_text(f" {tag}")
         speaker_tags.append(label)
         print(f"\n          [context: {tag}]", flush=True)
+        return label
+
+    def prepare_turn():
+        label = tag_speaker()
+        if companion is not None:
+            metadata = companion.turn_metadata(
+                label, self_speech_overlap=turn_facts["self_speech_overlap"])
+            session.feed_text(metadata)
+            print(f"\n          [context: {metadata.strip()}]", flush=True)
+        turn_facts["self_speech_overlap"] = False
 
     stage_ms = {"synth": [], "reply_len": [], "to_first_audio": []}
     turn_t0 = {"t": None}          # when the turn closed (speech_end)
@@ -425,7 +479,8 @@ def main() -> int:
     def turn_gate():
         # Measured: 13 replies in 90 s took input survival from 86% to 38%,
         # because every reply is a deaf window. Rate-limit the mouth.
-        if time.monotonic() - last_reply["t"] < a.cooldown:
+        if (companion is None and
+                time.monotonic() - last_reply["t"] < a.cooldown):
             return False
         return loop.endpoint.ended if loop.endpoint else False
 
@@ -449,37 +504,56 @@ def main() -> int:
             # Decode is cheap at this length.  Clause boundaries keep a long
             # first sentence from delaying all audio until its final period.
             text = tok.decode(ids)
+            if companion is not None:
+                text = streaming_response(text)
             chunks, consumed = _ready_chunks(text, consumed)
-            for chunk in chunks:
-                say_q.put(chunk)
+            if not a.no_speak:
+                for chunk in chunks:
+                    say_q.put(chunk)
             if inner:
                 inner(tid, n)
 
         kw["on_token"] = on_token
         try:
-            out = _orig_respond(**kw)
+            raw_out = _orig_respond(**kw)
         finally:
             generating.clear()
+        if companion is not None:
+            decision = parse_decision(raw_out)
+            companion.observe(decision)
+            out = decision.response if decision.should_respond else ""
+            verdict = "RESPOND" if decision.should_respond else "LISTEN"
+            detail = decision.reason or "addressed"
+            print(f"\n          [companion: {verdict} · {detail}]", flush=True)
+            if not decision.should_respond:
+                turn_t0["t"] = None
+        else:
+            out = raw_out
+        snapshot = getattr(session, "perception_snapshot", lambda: {
+            "available": False, "controls_policy": False})()
+        perception_turns.append(snapshot)
         tail = out[consumed:].split("<")[0].strip()
-        if len(tail.split()) >= 2:
+        if not a.no_speak and len(tail.split()) >= 2:
             say_q.put(tail)
         return out
 
-    if not a.no_speak:
+    if not a.no_speak or companion is not None:
         session.respond = _streaming_respond
 
     loop = DuplexLoop(session, audio_source=source, user_speaking=user_speaking,
                       on_reply=on_reply, turn_ended=None,
-                      before_respond=tag_speaker if speaker_tracker else None)
+                      before_respond=(prepare_turn if (
+                          speaker_tracker or companion is not None) else None),
+                      on_endpoint_event=(
+                          lambda event: companion.speech_started()
+                          if companion is not None and event == "speech_start"
+                          else None))
     _default_ended = loop.turn_ended
     loop.turn_ended = turn_gate
-    # A live room is never silent. The endpoint floor has to sit above the
-    # room, not at a synthetic zero: measured on the Elgato, an occupied room
-    # runs 0.10-0.36 RMS while speaking and does not fall to 0.012 between
-    # sentences.
-    loop.endpoint.speech_rms = a.threshold
     loop.endpoint.silence_ms = a.silence_ms
-    loop.endpoint.__post_init__()
+    vad_label = configure_endpoint(
+        loop.endpoint, mode=a.vad, energy_threshold=a.threshold,
+        open_threshold=a.vad_open, close_threshold=a.vad_close)
 
     def meter():
         while not stop.is_set():
@@ -487,7 +561,7 @@ def main() -> int:
             n = int(min(1.0, r / 0.08) * 22)
             state = "AEC OUT " if speaking_out.is_set() and aec else (
                 "SPEAKING" if speaking_out.is_set() else (
-                "hearing " if r > a.threshold else "quiet   ")
+                "hearing " if loop.endpoint.speaking else "quiet   ")
             )
             print(f"\r  {state} |{'#'*n}{'.'*(22-n)}| {r:.4f}",
                   end="", flush=True)
@@ -507,6 +581,8 @@ def main() -> int:
     node_label = f" · {meta['node']}" if meta.get("node") else ""
     print(f"input    {meta['model_name']} @{meta['checkpoint']}{node_label}")
     print(f"voice    {a.voice} @ {a.speed}x")
+    print(f"policy   {a.interaction_mode} · {a.duplex_mode} duplex")
+    print(f"VAD      {vad_label} · {loop.endpoint.frame_ms:.0f}ms frames")
     print(f"listening for {a.seconds:.0f}s — speak, pause, and it will answer.")
     print("talk over the reply to test barge-in.\n")
 
@@ -633,6 +709,9 @@ def main() -> int:
     if overflow["blocks"]:
         print(f"  mic queue    OVERFLOW {overflow['blocks']} blocks · "
               f"{overflow['samples']/RATE:.1f}s never reached the loop")
+    if half_muted["blocks"]:
+        print(f"  half duplex  {half_muted['samples']/RATE:.1f}s intentionally "
+              "not fed while Jaeger was active")
     print(f"  endpoint     {' -> '.join(stats.endpoint_events[:8]) or '(none)'}")
     print(f"  peak lag     {stats.max_lag_s*1000:.0f} ms")
     print(f"  replies      {heard['n']}    speech-during-output events "
@@ -674,6 +753,7 @@ def main() -> int:
             # second never reached it at all.
             "mic_queue_overflow_blocks": overflow["blocks"],
             "mic_queue_overflow_seconds": overflow["samples"] / RATE,
+            "half_duplex_muted_seconds": half_muted["samples"] / RATE,
             "memory": memory_summary(),
             "turns": stats.turns, "completed_replies": heard["n"],
             "interrupts": stats.interrupts,
@@ -685,6 +765,7 @@ def main() -> int:
             "final_cache_tokens": session.n_prefilled,
             "peak_loop_lag_ms": stats.max_lag_s * 1000,
             "endpoint_events": list(stats.endpoint_events),
+            "vad": loop.endpoint.probability_summary(),
             "end_to_audio": latency_summary(stage_ms["to_first_audio"]),
             "synthesis": latency_summary(stage_ms["synth"]),
             "aec": {
@@ -711,6 +792,18 @@ def main() -> int:
                 "estimated_drift_ppm": getattr(
                     aec, "estimated_drift_ppm", None),
             },
+            "companion": {
+                "enabled": companion is not None,
+                "respond": (sum(d["action"] == "respond" and d["valid"]
+                                for d in companion.decisions)
+                            if companion is not None else 0),
+                "listen": (sum(d["action"] == "listen"
+                               for d in companion.decisions)
+                           if companion is not None else 0),
+                "decisions": (companion.decisions
+                              if companion is not None else []),
+            },
+            "neural_perception_shadow": perception_turns,
         }, replies=all_replies, speaker_labels=speaker_tags,
         interactions=interaction_policy.as_dicts(), errors=run_errors,
         artifacts={"recording_dir": a.record,

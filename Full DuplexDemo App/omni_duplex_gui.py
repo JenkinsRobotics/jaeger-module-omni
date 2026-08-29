@@ -510,6 +510,9 @@ class JaegerEngineWorker(QThread):
                  silence_ms: float = 700.0, cooldown: float = 4.0,
                  max_context: int = 6000, speakers: int = 2,
                  front_end: str = "gemma-native",
+                 interaction_mode: str = "assistant",
+                 duplex_mode: str = "full",
+                 vad_mode: str = "neural",
                  barge_policy: str = "stop", report_path: Path | None = None,
                  report_phase: str = "physical-room",
                  report_source: str | None = None) -> None:
@@ -522,6 +525,9 @@ class JaegerEngineWorker(QThread):
         self.cooldown = cooldown
         self.max_context = max_context
         self.speakers = speakers
+        self.interaction_mode = interaction_mode
+        self.duplex_mode = duplex_mode
+        self.vad_mode = vad_mode
         self.barge_policy = barge_policy
         self.report_path = report_path
         self.report_phase = report_phase
@@ -545,6 +551,7 @@ class JaegerEngineWorker(QThread):
         self.clean_level = 0.0
         self.fed_samples = 0
         self.dropped_samples = 0
+        self.half_muted_samples = 0
         self.barge_count = 0
         self.rolls = 0
         self._last_metric = 0.0
@@ -556,6 +563,11 @@ class JaegerEngineWorker(QThread):
         self._errors: list[str] = []
         self._speaker_audio: deque[np.ndarray] = deque(maxlen=30)
         self._speaker_tracker = None
+        self._turn_self_speech_overlap = False
+        self._perception_turns: list[dict] = []
+        from jaeger_agent_omni.runtime.companion import CompanionState
+        self.companion = (
+            CompanionState() if interaction_mode == "companion" else None)
         from jaeger_agent_omni.runtime.interaction import InteractionPolicy
         from jaeger_agent_omni.runtime.reporting import new_run_report
         self.interaction_policy = InteractionPolicy(barge_policy)
@@ -568,6 +580,9 @@ class JaegerEngineWorker(QThread):
                 "cooldown_s": cooldown, "max_context": max_context,
                 "speakers": speakers, "voice": voice, "speed": speed,
                 "barge_policy": barge_policy,
+                "interaction_mode": interaction_mode,
+                "duplex_mode": duplex_mode,
+                "vad": vad_mode,
             })
 
     def _detect_barge(self, stage: str) -> None:
@@ -608,6 +623,13 @@ class JaegerEngineWorker(QThread):
         self.raw_level = float(np.sqrt(np.mean(np.square(raw)))) if raw.size else 0.0
         self.clean_level = (float(np.sqrt(np.mean(np.square(clean))))
                             if clean.size else 0.0)
+        if self.player.playing.is_set() and self.duplex_mode == "full":
+            self._turn_self_speech_overlap = True
+
+        if (self.duplex_mode == "half" and
+                (self.player.playing.is_set() or self.generating.is_set())):
+            self.half_muted_samples += clean.size
+            return
 
         if self.player.playing.is_set():
             is_barge = (
@@ -681,17 +703,25 @@ class JaegerEngineWorker(QThread):
             f"stops {self.interaction_policy.stop_count} · rolls {self.rolls} · "
             f"AEC {aec_db:.1f}dB corr {raw_corr:.2f}→{residual_corr:.2f}")
 
-    def _tag_speaker(self) -> None:
+    def _tag_speaker(self):
         if self._speaker_tracker is None or not self._speaker_audio:
-            return
+            return None
         audio = np.concatenate(tuple(self._speaker_audio))
         self._speaker_audio.clear()
         label = self._speaker_tracker.identify(audio)
         if label is None:
-            return
+            return None
         self.session.feed_text(f" [speaker {label}]")
         self._speaker_labels.append(label)
         self.speaker.emit(label)
+        return label
+
+    def _prepare_turn(self) -> None:
+        label = self._tag_speaker()
+        if self.companion is not None:
+            self.session.feed_text(self.companion.turn_metadata(
+                label, self_speech_overlap=self._turn_self_speech_overlap))
+        self._turn_self_speech_overlap = False
 
     def _final_report(self) -> dict:
         """Build one checkpoint-specific report from final worker state."""
@@ -707,12 +737,17 @@ class JaegerEngineWorker(QThread):
             "interrupts": getattr(stats, "interrupts", 0) if stats else 0,
             "barge_events": self.barge_count,
             "barge_stops": self.interaction_policy.stop_count,
+            "half_duplex_muted_seconds": (
+                self.half_muted_samples / SAMPLE_RATE),
             "context_rolls": self.rolls,
             "final_cache_tokens": getattr(self.session, "n_prefilled", 0),
             "peak_loop_lag_ms": (
                 getattr(stats, "max_lag_s", 0.0) * 1000 if stats else 0.0),
             "endpoint_events": list(
                 getattr(stats, "endpoint_events", ())) if stats else [],
+            "vad": (self.loop.endpoint.probability_summary()
+                    if self.loop is not None and self.loop.endpoint is not None
+                    else {"mode": self.vad_mode}),
             "end_to_audio": latency_summary(self.end_audio_ms),
             "aec": {
                 "available": aec is not None,
@@ -725,6 +760,12 @@ class JaegerEngineWorker(QThread):
                 "residual_reference_correlation_last": getattr(
                     aec, "residual_reference_correlation", None),
             },
+            "companion": {
+                "enabled": self.companion is not None,
+                "decisions": (self.companion.decisions
+                              if self.companion is not None else []),
+            },
+            "neural_perception_shadow": self._perception_turns,
         }
         return finish_run_report(
             self._report, metrics=metrics, replies=self._all_replies,
@@ -801,16 +842,23 @@ class JaegerEngineWorker(QThread):
             sys.path.insert(0, str(HERE.parent))
             from jaeger_agent_omni.live import _ready_chunks
             from jaeger_agent_omni.omni import SYSTEM, build
+            from jaeger_agent_omni.runtime.companion import (
+                parse_decision, streaming_response, system_prompt,
+            )
             from jaeger_agent_omni.runtime.aec import (
                 EchoAwareBargeIn, SpeexEchoCanceller,
             )
             from jaeger_agent_omni.runtime.duplex import DuplexLoop
+            from jaeger_agent_omni.runtime.neural_vad import configure_endpoint
             from jaeger_agent_omni.runtime.speaker import OnlineSpeakerTracker
 
             self.status.emit("loading Jaeger Gemma-4 E4B…")
-            system = SYSTEM
-            if self.system_prompt:
-                system = f"{SYSTEM} {self.system_prompt}"
+            if self.companion is not None:
+                system = system_prompt(self.system_prompt)
+            else:
+                system = SYSTEM
+                if self.system_prompt:
+                    system = f"{SYSTEM} {self.system_prompt}"
             session, meta = build(
                 str(JAEGER_MODEL), self.front_end, system=system)
             self.session = session
@@ -821,9 +869,10 @@ class JaegerEngineWorker(QThread):
             WORK_DIR.mkdir(parents=True, exist_ok=True)
             speak_kokoro("ready", WORK_DIR / "jaeger_warm.wav",
                          self.voice, self.speed)
-            self.aec = SpeexEchoCanceller(SAMPLE_RATE)
-            self.barge_detector = EchoAwareBargeIn(
-                SAMPLE_RATE, self.threshold)
+            if self.duplex_mode == "full":
+                self.aec = SpeexEchoCanceller(SAMPLE_RATE)
+                self.barge_detector = EchoAwareBargeIn(
+                    SAMPLE_RATE, self.threshold)
             if self.speakers:
                 self._speaker_tracker = OnlineSpeakerTracker(self.speakers)
 
@@ -845,6 +894,8 @@ class JaegerEngineWorker(QThread):
                     nonlocal consumed
                     ids.append(tid)
                     text = tok.decode(ids)
+                    if self.companion is not None:
+                        text = streaming_response(text)
                     chunks, consumed = _ready_chunks(text, consumed)
                     for chunk in chunks:
                         self.say_q.put(chunk)
@@ -853,9 +904,26 @@ class JaegerEngineWorker(QThread):
 
                 kw["on_token"] = on_token
                 try:
-                    answer = original_respond(**kw)
+                    raw_answer = original_respond(**kw)
                 finally:
                     self.generating.clear()
+                if self.companion is not None:
+                    decision = parse_decision(raw_answer)
+                    self.companion.observe(decision)
+                    answer = (decision.response
+                              if decision.should_respond else "")
+                    if not decision.should_respond:
+                        self._turn_t0 = None
+                    self.status.emit(
+                        f"companion {'RESPOND' if decision.should_respond else 'LISTEN'}"
+                        f" · {decision.reason or 'addressed'}")
+                else:
+                    answer = raw_answer
+                snapshot = getattr(
+                    session, "perception_snapshot",
+                    lambda: {"available": False,
+                             "controls_policy": False})()
+                self._perception_turns.append(snapshot)
                 tail = answer[consumed:].split("<")[0].strip()
                 if len(tail.split()) >= 2:
                     self.say_q.put(tail)
@@ -877,25 +945,34 @@ class JaegerEngineWorker(QThread):
                 session, audio_source=self._source,
                 user_speaking=self.barge_active.is_set,
                 on_reply=on_reply,
-                before_respond=self._tag_speaker if self.speakers else None)
+                before_respond=(self._prepare_turn if (
+                    self.speakers or self.companion is not None) else None),
+                on_endpoint_event=(
+                    lambda event: self.companion.speech_started()
+                    if self.companion is not None and event == "speech_start"
+                    else None))
             self.loop = loop
 
             def turn_gate() -> bool:
                 self._maybe_roll()
-                if time.monotonic() - last_reply["at"] < self.cooldown:
+                if (self.companion is None and
+                        time.monotonic() - last_reply["at"] < self.cooldown):
                     return False
                 return bool(loop.endpoint and loop.endpoint.ended)
 
             loop.turn_ended = turn_gate
-            loop.endpoint.speech_rms = self.threshold
             loop.endpoint.silence_ms = self.silence_ms
-            loop.endpoint.__post_init__()
+            vad_label = configure_endpoint(
+                loop.endpoint, mode=self.vad_mode,
+                energy_threshold=self.threshold)
 
             self.ready.emit()
             self.status.emit(
                 f"LIVE · {self.model_name} @{self.checkpoint_label} · "
                 f"{meta['front_end']} embeddings · "
-                f"AEC on · "
+                f"{self.interaction_mode} · {self.duplex_mode} duplex · "
+                f"VAD {vad_label} · "
+                f"AEC {'on' if self.aec is not None else 'off'} · "
                 f"warmup {warm_ms:.0f}ms")
             loop.run(eos_ids=meta["eos"])
         except Exception as exc:
@@ -1087,7 +1164,8 @@ class OmniDuplexWindow(QMainWindow):
         for widget in (self.voice_combo, self.speed_spin, self.speaker_spin,
                        self.threshold_spin, self.silence_spin,
                        self.cooldown_spin, self.context_spin,
-                       self.front_end_combo):
+                       self.front_end_combo, self.interaction_combo,
+                       self.duplex_combo):
             widget.setEnabled(not minicpm)
         self._refresh_counts()
 
@@ -1191,6 +1269,15 @@ class OmniDuplexWindow(QMainWindow):
         self.barge_policy_combo = QComboBox()
         self.barge_policy_combo.addItem("stop and listen", "stop")
         self.barge_policy_combo.addItem("notify; keep speaking", "continue")
+        self.interaction_combo = QComboBox()
+        self.interaction_combo.addItem("direct assistant", "assistant")
+        self.interaction_combo.addItem("always-on companion", "companion")
+        self.duplex_combo = QComboBox()
+        self.duplex_combo.addItem("full duplex", "full")
+        self.duplex_combo.addItem("half duplex", "half")
+        self.vad_combo = QComboBox()
+        self.vad_combo.addItem("neural VAD (Silero)", "neural")
+        self.vad_combo.addItem("legacy energy gate", "energy")
         tuning.addWidget(QLabel("voice:"))
         tuning.addWidget(self.voice_combo)
         tuning.addWidget(QLabel("speed:"))
@@ -1199,6 +1286,10 @@ class OmniDuplexWindow(QMainWindow):
         tuning.addWidget(self.speaker_spin)
         tuning.addWidget(QLabel("speech during output:"))
         tuning.addWidget(self.barge_policy_combo)
+        tuning.addWidget(QLabel("behavior:"))
+        tuning.addWidget(self.interaction_combo)
+        tuning.addWidget(self.duplex_combo)
+        tuning.addWidget(self.vad_combo)
         tuning.addStretch(1)
         lay.addLayout(tuning)
 
@@ -1271,6 +1362,12 @@ class OmniDuplexWindow(QMainWindow):
             "listen continuously; contribute only when useful and track decisions")
         meeting.clicked.connect(self._apply_meeting_preset)
         chips.addWidget(meeting)
+        companion = QPushButton("Companion")
+        companion.setToolTip(
+            "answer direct address and active follow-ups; ignore overheard "
+            "conversation and environmental sounds")
+        companion.clicked.connect(self._apply_companion_preset)
+        chips.addWidget(companion)
         chips.addStretch(1)
         lay.addLayout(chips)
 
@@ -1306,15 +1403,31 @@ class OmniDuplexWindow(QMainWindow):
     def _apply_meeting_preset(self) -> None:
         self.engine_jaeger.setChecked(True)
         self.lang_combo.setCurrentText("en")
+        self.interaction_combo.setCurrentIndex(
+            self.interaction_combo.findData("companion"))
+        self.duplex_combo.setCurrentIndex(
+            self.duplex_combo.findData("full"))
         self.prompt_edit.setText(
             "You are the third participant in a live meeting. Listen "
             "continuously. Speak only when directly asked or when you can "
             "fill a missing gap, resolve ambiguity, or briefly summarize a "
             "decision and its action items. Do not narrate or repeat the "
             "conversation.")
-        self.cooldown_spin.setValue(20.0)
+        self.cooldown_spin.setValue(0.0)
         self._set_status(
-            "meeting preset applied · selective contributions · 20 s cooldown")
+            "meeting preset applied · neural selective-contribution policy")
+
+    def _apply_companion_preset(self) -> None:
+        self.engine_jaeger.setChecked(True)
+        self.lang_combo.setCurrentText("en")
+        self.interaction_combo.setCurrentIndex(
+            self.interaction_combo.findData("companion"))
+        self.duplex_combo.setCurrentIndex(
+            self.duplex_combo.findData("full"))
+        self.prompt_edit.setText("")
+        self.cooldown_spin.setValue(0.0)
+        self._set_status(
+            "companion preset · neural RESPOND/LISTEN admission · full duplex")
 
     def _start(self) -> None:
         self.counts = {"frames": 0, "listen": 0, "speak": 0,
@@ -1345,6 +1458,9 @@ class OmniDuplexWindow(QMainWindow):
                 max_context=self.context_spin.value(),
                 speakers=self.speaker_spin.value(),
                 front_end=self.front_end_combo.currentData(),
+                interaction_mode=self.interaction_combo.currentData(),
+                duplex_mode=self.duplex_combo.currentData(),
+                vad_mode=self.vad_combo.currentData(),
                 barge_policy=self.barge_policy_combo.currentData(),
                 report_path=report_path, report_phase=phase,
                 report_source=(str(self.source_wav)
@@ -1615,16 +1731,27 @@ def check() -> int:
     optional = []
     try:
         from jaeger_agent_omni.runtime.aec import available
+        from jaeger_agent_omni.runtime.companion import parse_decision
         from jaeger_agent_omni.live import _ready_chunks
-        from jaeger_agent_omni.node_registry import discover, validate_profiles
+        from jaeger_agent_omni.node_registry import (
+            SUPPORTED_GATE_KINDS, discover, validate_profiles, verify_weights,
+        )
         chunks, _ = _ready_chunks(
             "A deliberately long opening clause, followed by the answer.", 0)
         if not chunks:
             problems.append("clause streaming check failed")
+        if not parse_decision(
+                "DECISION: RESPOND\nRESPONSE: ready").should_respond:
+            problems.append("companion admission parser failed")
         if not available():
             problems.append("SpeexDSP missing (macOS: brew install speexdsp)")
         packages = discover(HERE.parent / "nodes")
         validate_profiles(HERE.parent / "nodes", packages)
+        gates = discover(
+            HERE.parent / "gates", manifest_name="gate.json",
+            supported_kinds=SUPPORTED_GATE_KINDS)
+        validate_profiles(HERE.parent / "gates", gates)
+        verify_weights(gates["silero-vad"])
     except Exception as exc:
         problems.append(f"Jaeger runtime import: {exc}")
     selected_ids = {
@@ -1634,6 +1761,14 @@ def check() -> int:
     if selected_ids != set(JAEGER_FRONT_ENDS):
         problems.append(
             "audio selector does not expose exactly the canonical models")
+    if win.interaction_combo.findData("companion") < 0:
+        problems.append("companion interaction mode is not exposed")
+    if {win.duplex_combo.itemData(i) for i in range(
+            win.duplex_combo.count())} != {"half", "full"}:
+        problems.append("half/full duplex controls are incomplete")
+    if {win.vad_combo.itemData(i) for i in range(
+            win.vad_combo.count())} != {"neural", "energy"}:
+        problems.append("neural/energy VAD controls are incomplete")
     if not JAEGER_MODEL.exists():
         problems.append(f"Jaeger model missing: {JAEGER_MODEL}")
     for model_id, spec in JAEGER_FRONT_ENDS.items():
@@ -1652,6 +1787,7 @@ def check() -> int:
         print(f"CHECK NOTE: {msg}")
     if not problems:
         print("demo --check ok: window, Jaeger model, audio-native runtime, "
+              "companion admission, half/full duplex, verified neural VAD, "
               "SpeexDSP AEC, clause streaming, and mic present")
         if not optional:
             print(f"MiniCPM reference detected: {SHIM}")
@@ -1768,7 +1904,10 @@ def jaeger_selftest(wav_path: Path, seconds: int, threshold: float,
                     silence_ms: float, cooldown: float,
                     max_context: int, front_end: str = "gemma-native",
                     barge_policy: str = "stop",
-                    report_path: Path | None = None) -> int:
+                    report_path: Path | None = None,
+                    interaction_mode: str = "assistant",
+                    duplex_mode: str = "full",
+                    vad_mode: str = "neural") -> int:
     """Paced-file test of the exact Jaeger worker used by the window."""
     from PySide6.QtCore import QCoreApplication
 
@@ -1789,6 +1928,8 @@ def jaeger_selftest(wav_path: Path, seconds: int, threshold: float,
         threshold=threshold, silence_ms=silence_ms, cooldown=cooldown,
         max_context=max_context, speakers=2, front_end=front_end,
         barge_policy=barge_policy, report_path=report_path,
+        interaction_mode=interaction_mode, duplex_mode=duplex_mode,
+        vad_mode=vad_mode,
         report_phase="direct-wav", report_source=str(wav_path.resolve()))
     tally = {"replies": 0, "failed": False, "speakers": []}
     state = {"i": 0, "started": 0.0}
@@ -1884,6 +2025,11 @@ def main() -> int:
     ap.add_argument("--barge-policy", choices=("stop", "continue"),
                     default="stop",
                     help="action after speech-during-output notification")
+    ap.add_argument("--interaction-mode", choices=("assistant", "companion"),
+                    default="assistant")
+    ap.add_argument("--duplex-mode", choices=("half", "full"),
+                    default="full")
+    ap.add_argument("--vad", choices=("neural", "energy"), default="neural")
     ap.add_argument("--report", type=Path,
                     help="JSON report path (default: GUI runtime/reports)")
     ap.add_argument(
@@ -1899,7 +2045,8 @@ def main() -> int:
         return jaeger_selftest(
             args.selftest_jaeger, args.seconds, args.threshold,
             args.silence_ms, args.cooldown, args.max_context, args.front_end,
-            args.barge_policy, args.report)
+            args.barge_policy, args.report, args.interaction_mode,
+            args.duplex_mode, args.vad)
     if args.selftest_minicpm is not None:
         return minicpm_selftest(args.selftest_minicpm)
     app = QApplication([sys.argv[0]])

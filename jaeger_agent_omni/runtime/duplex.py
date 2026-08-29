@@ -93,7 +93,7 @@ class DuplexLoop:
 
     def __init__(self, session, audio_source, frame_source=None,
                  turn_ended=None, on_reply=None, user_speaking=None,
-                 before_respond=None,
+                 before_respond=None, on_endpoint_event=None,
                  frame_interval_s: float = FRAME_INTERVAL_S,
                  max_lag_s: float = MAX_LAG_S, clock=time.monotonic):
         self.session = session
@@ -114,6 +114,7 @@ class DuplexLoop:
         # user turn closes.  Live diarization uses this seam to append an
         # inline [speaker A] tag without moving any audio out of sequence.
         self.before_respond = before_respond
+        self.on_endpoint_event = on_endpoint_event
         self.frame_interval_s = frame_interval_s
         self.max_lag_s = max_lag_s
         self.clock = clock
@@ -121,6 +122,7 @@ class DuplexLoop:
         self._next_frame_at = 0.0
         self._last_drain = 0.0
         self._running = False
+        self._endpoint_residual = None
 
     def stop(self):
         self._running = False
@@ -167,11 +169,23 @@ class DuplexLoop:
         """
         if self.endpoint is None:
             return
+        # Capture arrives in 100 ms blocks while the neural VAD consumes
+        # exact 30 ms frames.  Keep the 10/20 ms tail instead of silently
+        # discarding it on every source read (one second lost per ten seconds
+        # with the old range-only framing).
+        if self._endpoint_residual is not None and len(self._endpoint_residual):
+            import numpy as np
+            samples = np.concatenate((self._endpoint_residual, samples))
         n = int(SAMPLE_RATE * self.endpoint.frame_ms / 1000)
+        consumed = 0
         for i in range(0, len(samples) - n + 1, n):
             ev = self.endpoint.push(samples[i:i + n])
+            consumed = i + n
             if ev:
                 self.stats.endpoint_events.append(ev)
+                if self.on_endpoint_event is not None:
+                    self.on_endpoint_event(ev)
+        self._endpoint_residual = samples[consumed:].copy()
 
     def _pump_audio(self, now: float):
         samples = self.audio_source()
@@ -218,6 +232,7 @@ class DuplexLoop:
             self.on_reply(text)
         if self.endpoint is not None:
             self.endpoint.reset()      # else `ended` latches and every tick answers
+            self._endpoint_residual = None
         self.session.resume_listening()
         # Audio callbacks continue filling their lock-free queue while decode
         # runs.  Drain that capture into the newly opened turn immediately.
@@ -398,7 +413,9 @@ def demo():
         return tick[0]
 
     sess = _S()
-    hf = DuplexLoop(sess, audio_source=lambda: next(src, None), clock=_clock)
+    observed = []
+    hf = DuplexLoop(sess, audio_source=lambda: next(src, None), clock=_clock,
+                    on_endpoint_event=observed.append)
     assert hf.endpoint is not None, "no turn_ended must mean hands-free"
     hs = hf.run(eos_ids=(), max_seconds=3.0, tick_s=0.0)
     for want in ("speech_start", "probably_ended", "speech_end"):
@@ -407,8 +424,25 @@ def demo():
     assert (hs.endpoint_events.index("probably_ended")
             < hs.endpoint_events.index("speech_end"))
     assert sess.replies >= 1, "hands-free must answer with no external signal"
+    assert observed == hs.endpoint_events
+
+    # Neural VAD frames are 30 ms while capture blocks are 100 ms. Ten blocks
+    # contain exactly 33 full frames plus 160 samples; none of the remainders
+    # may disappear between source drains.
+    residual_session = _S()
+    residual = DuplexLoop(
+        residual_session, audio_source=lambda: None, clock=_clock)
+    calls = []
+    residual.endpoint.frame_ms = 30.0
+    residual.endpoint.speech_probability = (
+        lambda frame: calls.append(len(frame)) or 0.0)
+    residual.endpoint.__post_init__()
+    for _ in range(10):
+        residual._watch_endpoint(np.zeros(1600, np.float32))
+    assert calls == [480] * 33
+    assert len(residual._endpoint_residual) == 160
     print("runtime.duplex: hands-free turn detection OK "
-          f"({'/'.join(hs.endpoint_events)})")
+          f"({'/'.join(hs.endpoint_events)}); 30ms residual framing OK")
 
 if __name__ == "__main__":
     demo()

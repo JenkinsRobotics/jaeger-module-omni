@@ -1,0 +1,149 @@
+{
+  "artifacts": {
+    "meeting_minutes": "/tmp/jaeger-neural-vad-5m-minutes.md",
+    "recording_dir": "/tmp/jaeger-neural-vad-5m"
+  },
+  "configuration": {
+    "aec": false,
+    "aec_reference_mode": "wallclock",
+    "aec_requested": true,
+    "barge_policy": "stop",
+    "cooldown_s": 4.0,
+    "duplex_mode": "full",
+    "interaction_mode": "assistant",
+    "max_context": 6000,
+    "observer_mode": true,
+    "seconds": 300.0,
+    "silence_ms": 700.0,
+    "speakers": 2,
+    "speed": 1.0,
+    "threshold": 0.012,
+    "vad": "neural",
+    "vad_close": 0.125,
+    "vad_open": 0.3,
+    "voice": "af_heart"
+  },
+  "errors": [],
+  "finished_at": "2026-08-29T22:18:41.577377+00:00",
+  "host": {
+    "hostname": "Mac-Studio-3.localdomain",
+    "pid": 13490,
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.11.9"
+  },
+  "interactions": [],
+  "kind": "jaeger_duplex_run",
+  "metrics": {
+    "aec": {
+      "alignment_corrections": null,
+      "attenuation_db": null,
+      "available": false,
+      "estimated_drift_ppm": null,
+      "estimated_lag_ms": null,
+      "raw_reference_correlation_last": null,
+      "reference_mode": null,
+      "reference_overflow_seconds": null,
+      "reference_underflow_seconds": null,
+      "residual_reference_correlation_last": null,
+      "seconds_cancelled": 0.0
+    },
+    "audio_chunks": 23,
+    "barge_events": 0,
+    "barge_stops": 0,
+    "companion": {
+      "decisions": [],
+      "enabled": false,
+      "listen": 0,
+      "respond": 0
+    },
+    "completed_replies": 6,
+    "context_rolls": 1,
+    "dropped_seconds": 0.0,
+    "end_to_audio": {
+      "max_ms": null,
+      "median_ms": null,
+      "n": 0,
+      "p95_ms": null
+    },
+    "endpoint_events": [
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "probably_ended",
+      "speech_end"
+    ],
+    "fed_seconds": 299.5,
+    "final_cache_tokens": 1631,
+    "half_duplex_muted_seconds": 0.0,
+    "interrupt_rewind_failures": 0,
+    "interrupts": 0,
+    "memory": {
+      "mlx_active_mb": 4463.3,
+      "mlx_peak_mb": 5918.5,
+      "rss_peak_mb": 5143.0
+    },
+    "mic_queue_overflow_blocks": 0,
+    "mic_queue_overflow_seconds": 0.0,
+    "neural_perception_shadow": [],
+    "peak_loop_lag_ms": 158.4442500025034,
+    "synthesis": {
+      "max_ms": null,
+      "median_ms": null,
+      "n": 0,
+      "p95_ms": null
+    },
+    "turns": 6,
+    "vad": {
+      "close_threshold": 0.125,
+      "frames": 9977,
+      "max": 0.9191367626190186,
+      "mean": 0.05723160183583852,
+      "mode": "neural",
+      "open_threshold": 0.3
+    },
+    "wall_seconds": 302.2727432910033
+  },
+  "model": {
+    "checkpoint": "a7f96bfb8898",
+    "id": "jaegeromni-41m-medium",
+    "name": "JaegerOmni 41M Medium"
+  },
+  "passed_runtime": true,
+  "phase": "physical-room",
+  "replies": [
+    "[less than 10 seconds]",
+    "[less than 10 seconds]",
+    "[less than 10 seconds]",
+    "[less than 10 seconds]",
+    "[less than 10 seconds]",
+    "[less than 10 seconds]"
+  ],
+  "schema_version": 1,
+  "source": "Elgato XLR Dock",
+  "speaker_labels": [
+    "A",
+    "A",
+    "A",
+    "B",
+    "A",
+    "A",
+    "B"
+  ],
+  "started_at": "2026-08-29T22:13:38.782044+00:00"
+}

@@ -33,7 +33,9 @@ is invisible in every log and quietly shortens every turn.
 from __future__ import annotations
 
 import math
+from collections import deque
 from dataclasses import dataclass, field
+from typing import Callable
 
 SAMPLE_RATE = 16000
 SILENCE_MS = 510.0        # quiet needed to declare the turn over
@@ -51,13 +53,26 @@ def frames_up(ms: float, frame_ms: float) -> int:
 
 @dataclass
 class Endpoint:
-    """Feed it frames, ask it what happened. No model, no allocation."""
+    """Feed it frames, ask it what happened.
+
+    With ``speech_probability`` unset this retains the measured RMS fallback.
+    Production passes the local Silero gate instead: four positive 30 ms
+    frames within 180 ms open a turn, then a lower threshold holds it open.
+    The hysteresis keeps quiet syllables without letting one transient start a
+    turn.  Semantic addressee and turn-completeness decisions live downstream;
+    this object answers only whether human speech is acoustically present.
+    """
 
     frame_ms: float = 20.0
     silence_ms: float = SILENCE_MS
     semantic_min_ms: float = SEMANTIC_MIN_MS
     guard_ms: float = GUARD_MS
     speech_rms: float = SPEECH_RMS
+    speech_probability: Callable | None = None
+    speech_open_threshold: float = 0.30
+    speech_close_threshold: float = 0.125
+    speech_open_frames: int = 4
+    speech_open_window_frames: int = 6
 
     speaking: bool = False
     quiet_frames: int = 0
@@ -65,16 +80,28 @@ class Endpoint:
     speculated: bool = False
     ended: bool = False
     events: list = field(default_factory=list)
+    probabilities: deque = field(default_factory=deque)
+    probability_frames: int = 0
+    probability_sum: float = 0.0
+    probability_max: float = 0.0
 
     def __post_init__(self):
         self.n_silence = frames_up(self.silence_ms, self.frame_ms)
         self.n_semantic = frames_up(self.semantic_min_ms, self.frame_ms)
         self.n_guard = frames_up(self.guard_ms, self.frame_ms)
+        if self.speech_open_frames > self.speech_open_window_frames:
+            raise ValueError("speech_open_frames cannot exceed its window")
+        self.probabilities = deque(
+            self.probabilities, maxlen=self.speech_open_window_frames)
 
     def reset(self):
         self.speaking = self.ended = self.speculated = False
         self.quiet_frames = self.speech_frames = 0
         self.events = []
+        self.probabilities.clear()
+        detector = getattr(self.speech_probability, "__self__", None)
+        if detector is not None and callable(getattr(detector, "reset", None)):
+            detector.reset()
 
     @staticmethod
     def rms(frame) -> float:
@@ -90,12 +117,30 @@ class Endpoint:
         """
         if self.ended:
             return None
-        loud = self.rms(frame) >= self.speech_rms
+        if self.speech_probability is None:
+            loud = self.rms(frame) >= self.speech_rms
+        else:
+            probability = float(self.speech_probability(frame))
+            self.probability_frames += 1
+            self.probability_sum += probability
+            self.probability_max = max(self.probability_max, probability)
+            if self.speaking:
+                loud = probability >= self.speech_close_threshold
+            else:
+                self.probabilities.append(
+                    probability >= self.speech_open_threshold)
+                loud = (len(self.probabilities) >= self.speech_open_frames and
+                        sum(self.probabilities) >= self.speech_open_frames)
         if loud:
             self.speech_frames += 1
             self.quiet_frames = 0
             if not self.speaking:
                 self.speaking = True
+                # Count the evidence that opened the neural gate so the short
+                # utterance guard does not pretend those frames never existed.
+                if self.speech_probability is not None:
+                    self.speech_frames = max(
+                        self.speech_frames, sum(self.probabilities))
                 self.events.append("speech_start")
                 return "speech_start"
             # Speech resumed after a pause: the speculation is now stale. This
@@ -123,6 +168,24 @@ class Endpoint:
     @property
     def quiet_ms(self) -> float:
         return self.quiet_frames * self.frame_ms
+
+    @property
+    def speech_mode(self) -> str:
+        return "neural" if self.speech_probability is not None else "energy"
+
+    def probability_summary(self) -> dict:
+        return {
+            "mode": self.speech_mode,
+            "frames": self.probability_frames,
+            "mean": (self.probability_sum / self.probability_frames
+                     if self.probability_frames else None),
+            "max": (self.probability_max
+                    if self.probability_frames else None),
+            "open_threshold": (self.speech_open_threshold
+                               if self.speech_probability is not None else None),
+            "close_threshold": (self.speech_close_threshold
+                                if self.speech_probability is not None else None),
+        }
 
 
 def demo() -> None:
@@ -173,8 +236,21 @@ def demo() -> None:
     assert Endpoint.rms([0.0] * 10) == 0.0
     assert abs(Endpoint.rms([0.5] * 10) - 0.5) < 1e-9
     assert Endpoint.rms([]) == 0.0
+
+    # Neural admission requires sustained evidence and uses a lower threshold
+    # only after the turn is open.  This is a deterministic detector stub; the
+    # packaged ONNX model is exercised by runtime.neural_vad.
+    values = iter([0.31, 0.32, 0.01, 0.33, 0.34, 0.13, 0.12])
+    ep4 = Endpoint(frame_ms=30.0, speech_probability=lambda _x: next(values))
+    neural_frame = [0.0] * 480
+    assert [ep4.push(neural_frame) for _ in range(4)] == [None] * 4
+    assert ep4.push(neural_frame) == "speech_start"
+    assert ep4.push(neural_frame) is None  # 0.13 holds an open turn
+    assert ep4.push(neural_frame) is None  # 0.12 begins quiet accumulation
+    assert ep4.quiet_frames == 1
     random.seed(0)
-    print(f"endpoint: rounding, speculate-then-commit, resume, guard OK "
+    print(f"endpoint: energy/neural admission, rounding, speculate-then-commit, "
+          f"resume, guard OK "
           f"(silence {SILENCE_MS:.0f}ms = {ep.n_silence} frames)")
 
 

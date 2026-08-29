@@ -125,6 +125,39 @@ Measured ledger. Every claim here has a command that reproduces it.
 > recall. The 300 ms tail gate remains red. The live mouth is now a
 > two-stage synth-ahead pipeline, removing one full Kokoro synthesis of
 > dead air between clauses.
+>
+> 2026-08-29 companion control implementation: the CLI and desktop demo now
+> expose explicit `assistant|companion` behavior and `half|full` duplex.
+> Companion admission is a fail-closed Gemma RESPOND/LISTEN decision made
+> directly from native audio embeddings; control text is withheld from Kokoro,
+> malformed output stays silent, and contextual follow-up permission is judged
+> at speech-start time with speaker-continuity metadata. Causal speaker-change,
+> overlap, turn-end, and speaker-ID probabilities are recorded as shadow
+> telemetry only; their blended-checkpoint calibration is still invalid. A
+> corpus-level free-running gate now measures direct-address recall, false
+> responses, follow-ups, categories, and latency. Initial results reject
+> promotion: 11/12 unaddressed questions were ignored, but only 4/12 explicit
+> "Hey Jaeger" questions received a response. The same named audio produced
+> 11/12 correct answers in the dual-output probe, so content transfer is not
+> the main blocker; address admission is. The frozen model commonly renders
+> the name as "Yeeger/Yeger", motivating a trained address head with phonetic
+> positives rather than a looser output parser.
+>
+> 2026-08-29 neural VAD integration: the packaged, hash-verified Silero ONNX
+> gate is now the default live and GUI speech detector. Four positive 30 ms
+> frames within 180 ms open a turn at probability 0.30; a 0.125 hold threshold
+> preserves quiet syllables. Exact-frame residual buffering prevents the 30 ms
+> gate from losing 10 ms from each 100 ms capture block. The old RMS detector
+> is retained only as explicit `--vad energy` fallback. On cases12, Silero
+> opened and endpointed 12/12 clips (maximum probabilities 0.9970--0.9996).
+> A five-minute Elgato/loudspeaker run then produced **6 complete neural-VAD
+> turns**, fed 299.5/302.3 seconds with zero drops/queue overflow, held peak
+> loop lag to 158.4 ms, rolled context once, and preserved 430/430 audited
+> raw-room words in model-fed audio. Across 9,977 frames, mean/max speech
+> probability was 0.0572/0.9191. The prior RMS continuous-floor run produced
+> zero turns. This promotes neural VAD as the acoustic default, not the whole
+> companion: its six generated observer notes were uninformative ("less than
+> 10 seconds"), and environmental/addressee rejection remain separate gates.
 
 ---
 

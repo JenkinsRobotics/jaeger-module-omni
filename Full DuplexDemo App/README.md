@@ -21,6 +21,11 @@ microphone → selected audio ear → rolling Gemma cache → response tokens
   default `stop` policy interrupts without discarding the conversation;
   `continue` records the same event while allowing Jaeger to finish.
 - CampPlus adds inline `[speaker A/B]` metadata between audio turns.
+- Companion mode asks Gemma directly from native audio whether to `RESPOND` or
+  `LISTEN`; overheard speech, environmental sounds, self-speech, and incomplete
+  thoughts are explicitly silence cases. Malformed control output fails closed.
+- Half/full duplex are explicit. Half duplex withholds microphone blocks while
+  Jaeger is active; full duplex keeps AEC and barge-in enabled.
 - The cache rolls at 6000 tokens and carries recent assistant replies forward,
   so five-minute and longer sessions stay bounded.
 
@@ -57,21 +62,27 @@ The default model location is
 `JAEGER_OMNI_MODEL=/path/to/model`.
 
 The window defaults the room floor to `0.20`, the measured Elgato XLR Dock
-setting for a continuous conversation playing in the room. Lower it toward
-`0.012` for close-mic speech in a quiet room. The floor, endpoint silence,
-reply cooldown, and context-roll threshold are all visible controls.
+setting for barge-in during a continuous conversation playing in the room.
+Speech turn opening now defaults to the packaged Silero neural VAD; the GUI
+can select the legacy energy gate explicitly. The VAD choice, energy/barge
+floor, endpoint silence, reply cooldown, and context-roll threshold are all
+visible controls.
 The speech-during-output control separates detection from action: choose
 `stop and listen` or `notify; keep speaking` without changing AEC.
+The **Companion** preset enables audio-native admission and full duplex. The
+direct-assistant mode remains available for ordinary 1:1 testing. See
+[`../COMPANION.md`](../COMPANION.md) for the behavior contract and release gate.
 
 The microphone is selectable in the window and its PortAudio callback health
 is visible throughout the run. Set `JAEGER_INPUT_DEVICE` to an input-device ID
 or a case-insensitive name fragment (for example `Elgato`) to choose it at
 launch.
 
-`Meeting third-person` applies a selective-participant system prompt and a
-20-second response cooldown. It asks Jaeger to fill gaps, answer direct
-questions, and track decisions/action items without turning the room audio
-into a displayed or model-input transcript.
+`Meeting third-person` applies companion admission plus a selective-participant
+instruction. It asks Jaeger to fill gaps, answer direct questions, and track
+decisions/action items without turning the room audio into a displayed or
+model-input transcript. A fixed cooldown no longer substitutes for deciding
+whether the room actually addressed Jaeger.
 
 ## Exact-worker self-test
 

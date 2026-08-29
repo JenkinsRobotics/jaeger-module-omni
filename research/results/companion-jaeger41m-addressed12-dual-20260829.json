@@ -1,0 +1,110 @@
+{
+ "front_end": "stock",
+ "model_id": "jaegeromni-41m-medium",
+ "model_name": "JaegerOmni 41M Medium",
+ "checkpoint": "a7f96bfb8898",
+ "dual_output": true,
+ "correct": 11,
+ "n": 12,
+ "median_ms": 853.2205834999331,
+ "rows": [
+  {
+   "case": "q00",
+   "ok": true,
+   "ms": 854.9552500044229,
+   "reply": "TRANSCRIPT: hey yeeger what is two plus two\nANSWER: four",
+   "transcript": "hey yeeger what is two plus two",
+   "answer": "four"
+  },
+  {
+   "case": "q01",
+   "ok": true,
+   "ms": 882.8407080000034,
+   "reply": "TRANSCRIPT: hey yeeger what color is the sky\nANSWER: it's blue",
+   "transcript": "hey yeeger what color is the sky",
+   "answer": "it's blue"
+  },
+  {
+   "case": "q02",
+   "ok": true,
+   "ms": 833.2987920002779,
+   "reply": "TRANSCRIPT: hey yeeger how many days in a week\nANSWER: seven",
+   "transcript": "hey yeeger how many days in a week",
+   "answer": "seven"
+  },
+  {
+   "case": "q03",
+   "ok": true,
+   "ms": 837.3510410019662,
+   "reply": "TRANSCRIPT: hey yeeger what is the capital of france\nANSWER: paris",
+   "transcript": "hey yeeger what is the capital of france",
+   "answer": "paris"
+  },
+  {
+   "case": "q04",
+   "ok": true,
+   "ms": 806.0373750049621,
+   "reply": "TRANSCRIPT: hey yeeger what is ten minus three\nANSWER: seven",
+   "transcript": "hey yeeger what is ten minus three",
+   "answer": "seven"
+  },
+  {
+   "case": "q05",
+   "ok": true,
+   "ms": 859.7649590083165,
+   "reply": "TRANSCRIPT: hey yeeger how many legs does a spider have\nANSWER: eight",
+   "transcript": "hey yeeger how many legs does a spider have",
+   "answer": "eight"
+  },
+  {
+   "case": "q06",
+   "ok": true,
+   "ms": 836.9297919998644,
+   "reply": "TRANSCRIPT: hey yeeger what is the largest planet\nANSWER: jupiter",
+   "transcript": "hey yeeger what is the largest planet",
+   "answer": "jupiter"
+  },
+  {
+   "case": "q07",
+   "ok": true,
+   "ms": 952.8909579967149,
+   "reply": "TRANSCRIPT: hey yeeger what is five times five\nANSWER: it's twenty five",
+   "transcript": "hey yeeger what is five times five",
+   "answer": "it's twenty five"
+  },
+  {
+   "case": "q08",
+   "ok": true,
+   "ms": 826.121707999846,
+   "reply": "TRANSCRIPT: hey yeeger what season comes after summer\nANSWER: autumn",
+   "transcript": "hey yeeger what season comes after summer",
+   "answer": "autumn"
+  },
+  {
+   "case": "q09",
+   "ok": true,
+   "ms": 851.4859169954434,
+   "reply": "TRANSCRIPT: hey yeeger how many hours in a day\nANSWER: twenty four",
+   "transcript": "hey yeeger how many hours in a day",
+   "answer": "twenty four"
+  },
+  {
+   "case": "q10",
+   "ok": true,
+   "ms": 1046.1577919923002,
+   "reply": "TRANSCRIPT: hey yeeger what is the freezing point of water\nANSWER: it's zero degrees celsius",
+   "transcript": "hey yeeger what is the freezing point of water",
+   "answer": "it's zero degrees celsius"
+  },
+  {
+   "case": "q11",
+   "ok": false,
+   "ms": 979.1614589921664,
+   "reply": "TRANSCRIPT: hey yeger who wrote romeo and juliet\nANSWER: he was a playwright",
+   "transcript": "hey yeger who wrote romeo and juliet",
+   "answer": "he was a playwright"
+  }
+ ],
+ "transcript_wer": 0.13186813186813187,
+ "transcript_words": 91
+}

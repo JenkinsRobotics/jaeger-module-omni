@@ -389,6 +389,7 @@ class StockWhisperGemmaSession:
         self.adapter_path = Path(adapter_path).resolve()
         self.node = node
         architecture = str(values.get("adapter_arch", ARCH_PAIRED))
+        self.adapter_architecture = architecture
         checkpoint_encoder = str(values["encoder"])
         self.input_dim = int(values.get(
             "input_dim", ENCODER_DIMS[checkpoint_encoder]))
@@ -445,6 +446,11 @@ class StockWhisperGemmaSession:
         self._response_seed: int | None = None
         self.hidden: list = []
         self.output_ids: list[int] = []
+        # Causal checkpoints carry speaker-change, overlap, turn-end, and
+        # speaker-ID heads.  Until each imported/blended checkpoint is
+        # calibrated on held-out mixtures these are telemetry only: exposing
+        # their scores is useful; silently letting them drive policy is not.
+        self._turn_perception: list[dict] = []
 
         class Adapter(nn.Module):
             def __init__(inner):
@@ -823,6 +829,7 @@ class StockWhisperGemmaSession:
         self._response_seed = None
         self.hidden.clear()
         self.output_ids.clear()
+        self._turn_perception.clear()
 
     def open_turn(self) -> None:
         self._cancelled = False
@@ -834,6 +841,7 @@ class StockWhisperGemmaSession:
         self._turn_prefix_open = False
         self._turn_closed = False
         self._response_seed = None
+        self._turn_perception.clear()
 
     def feed_audio(self, samples) -> int:
         block = np.asarray(samples, dtype=np.float32).reshape(-1).copy()
@@ -937,13 +945,72 @@ class StockWhisperGemmaSession:
     def _prefill_audio(self, features: np.ndarray) -> int:
         mx = self.mx
         self._ensure_turn_prefix()
-        raw = self.adapter(mx.array(features))
+        if self.adapter_architecture == ARCH_STREAMING_CAUSAL:
+            raw, logits = self.adapter.perceive(mx.array(features))
+            probabilities = {}
+            for name in ("speaker_change", "overlap", "turn_end"):
+                values = np.array(mx.sigmoid(logits[name]), copy=True)
+                probabilities[name] = values.astype(np.float32).reshape(-1)
+            speaker = np.array(logits["speaker_id"], copy=True).astype(
+                np.float32)
+            speaker -= speaker.max(axis=-1, keepdims=True)
+            speaker = np.exp(speaker)
+            probabilities["speaker_id"] = speaker / np.maximum(
+                speaker.sum(axis=-1, keepdims=True), 1e-12)
+            self._turn_perception.append(probabilities)
+        else:
+            raw = self.adapter(mx.array(features))
         audio = (raw if self.output_mode == OUTPUT_MODE_DIRECT else
                  raw / math.sqrt(OUTPUT_DIM))
         count = int(audio.shape[0])
         self._prefill([0] * count, audio)
         self._features = features
         return count
+
+    def perception_snapshot(self) -> dict:
+        """Aggregate causal perception heads for shadow-mode reporting.
+
+        Scores are probabilities, not claimed decisions.  The current causal
+        blend explicitly invalidated calibration by changing the shared trunk,
+        so callers must not use these fields as production gates yet.
+        """
+        if self.adapter_architecture != ARCH_STREAMING_CAUSAL:
+            return {
+                "available": False,
+                "controls_policy": False,
+                "reason": "selected adapter has no causal perception heads",
+            }
+        if not self._turn_perception:
+            return {
+                "available": True,
+                "controls_policy": False,
+                "calibrated": False,
+                "frames": 0,
+            }
+        result = {
+            "available": True,
+            "controls_policy": False,
+            "calibrated": False,
+            "self_speech_conditioning_used": False,
+        }
+        for name in ("speaker_change", "overlap", "turn_end"):
+            joined = np.concatenate([
+                block[name] for block in self._turn_perception])
+            result[name] = {
+                "mean": float(joined.mean()),
+                "max": float(joined.max()),
+                "last": float(joined[-1]),
+            }
+            result["frames"] = int(len(joined))
+        speaker = np.concatenate([
+            block["speaker_id"] for block in self._turn_perception], axis=0)
+        mean_speaker = speaker.mean(axis=0)
+        result["speaker_id"] = {
+            "class": int(mean_speaker.argmax()),
+            "probability": float(mean_speaker.max()),
+            "mean_probabilities": [float(x) for x in mean_speaker],
+        }
+        return result
 
     def _encode_available(self, final: bool) -> int:
         """Encode bounded windows, retaining one second across boundaries.

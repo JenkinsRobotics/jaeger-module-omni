@@ -122,7 +122,11 @@ It keeps listening while speaking, supports residual-speech barge-in, displays
 speaker metadata without displaying an input transcript, and exposes live
 queue/cache/AEC/latency metrics. The desktop surface also exposes the physical
 input device and callback health, and includes a selective meeting-participant
-preset. See
+preset. Its **Companion** mode makes a fail-closed neural RESPOND/LISTEN
+decision from native audio, creating an explicit seam for rejecting nearby
+conversation and environmental sounds instead of treating every endpoint as a
+request. That behavior gate is still pre-production. Half and full duplex are
+explicit runtime modes. See [`COMPANION.md`](COMPANION.md) and
 [`Full DuplexDemo App/README.md`](Full%20DuplexDemo%20App/README.md).
 
 The lower-level and batch entry points remain available:

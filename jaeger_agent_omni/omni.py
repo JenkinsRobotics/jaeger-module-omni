@@ -347,6 +347,7 @@ def _audit_live_input_path() -> list:
              "runtime/gemma_audio.py")
     allowed_feed_text = {
         ("live.py", "tag_speaker"),        # inline [speaker X] metadata
+        ("live.py", "prepare_turn"),       # companion state, never words heard
         ("live.py", "soak_watch"),         # roll reseeds Jaeger's OWN replies
         ("runtime/duplex.py", "demo"),     # offline self-check test double
     }
