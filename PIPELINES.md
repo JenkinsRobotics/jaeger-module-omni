@@ -35,7 +35,7 @@ additional active Jaeger audio-model identities.
   identities. `tower`, `stock`, and `cleanroom` remain compatibility aliases
   for Gemma Native, JaegerOmni 50M Medium, and GemmaOmni 41M Medium.
 - JaegerOmni 41M Medium is independently packaged at
-  `nodes/jaegeromni-41m-medium`; it does not overwrite the frozen import. Its
+  `jaeger_agent_omni/nodes/jaegeromni-41m-medium`; it does not overwrite the frozen import. Its
   10% room blend was selected without cases12 and passed five corpus gates
   without regression before scoring 3.97% on the untouched lockbox.
 - The final pre-production window kept that checkpoint frozen. On 69 English

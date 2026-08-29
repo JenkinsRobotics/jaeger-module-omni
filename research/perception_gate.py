@@ -27,7 +27,8 @@ from training.perception_model import HEADS, build, load_arrays
 
 SHARED = Path.home() / "models/jaeger-training-data/gemmaomni-cache-v1"
 DEFAULT_ADAPTER = (
-    REPO / "nodes/jaegeromni-41m-causal-balanced/weights/adapter.npz")
+    REPO / "jaeger_agent_omni/nodes/jaegeromni-41m-causal-balanced/"
+    "weights/adapter.npz")
 
 
 def report_path(path: Path) -> str:

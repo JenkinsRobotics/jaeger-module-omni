@@ -35,7 +35,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 KOKORO_RATE = 24000
-KOKORO_NODE = REPO / "nodes" / "kokoro-tts"
+KOKORO_NODE = Path(__file__).resolve().parent / "nodes" / "kokoro-tts"
 
 # af_* female, am_* male. Kokoro ships fixed voices — these are selections,
 # not clones. Cloning is token2wav's job.

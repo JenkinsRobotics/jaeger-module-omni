@@ -28,7 +28,8 @@ from training.perception_model import HEADS, build, load_arrays, save
 
 
 DEFAULT_ADAPTER = (
-    REPO / "nodes/jaegeromni-41m-causal-balanced/weights/adapter.npz")
+    REPO / "jaeger_agent_omni/nodes/jaegeromni-41m-causal-balanced/"
+    "weights/adapter.npz")
 
 
 def validation_metrics(adapter, rows: list[dict], meetings: list[dict]) -> dict:

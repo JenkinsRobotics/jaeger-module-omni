@@ -54,7 +54,7 @@ htmlcov/
 *.pth
 *.onnx
 *.safetensors
-nodes/*/weights/
+jaeger_agent_omni/nodes/*/weights/
 gates/*/weights/
 
 # Local secrets

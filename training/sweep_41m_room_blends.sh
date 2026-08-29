@@ -11,8 +11,8 @@ if [[ ${JAEGER_GPU_WINDOW:-} != YES ]]; then
 fi
 
 DATA="$HOME/models/jaeger-training-data"
-BASE="nodes/stock-whisper-medium-cleanroom-ctx93h-step2000/weights/adapter.npz"
-ROOM="nodes/jaegeromni-41m-medium/weights/adapter.npz"
+BASE="jaeger_agent_omni/nodes/stock-whisper-medium-cleanroom-ctx93h-step2000/weights/adapter.npz"
+ROOM="jaeger_agent_omni/nodes/jaegeromni-41m-medium/weights/adapter.npz"
 EVAL="$DATA/stock-whisper-medium-eval-v1"
 EXPANDED="$DATA/stock-whisper-medium-expanded-v1"
 MODEL="$HOME/models/gemma-4-E4B-it-4bit-mlx"

@@ -1,6 +1,6 @@
 # Neural nodes
 
-`nodes/` contains learned neural components in the Omni matrix. Signal
+`jaeger_agent_omni/nodes/` contains learned neural components in the Omni matrix. Signal
 conditioning and admission policy are deliberately separate under `gates/`.
 Every node owns a manifest, local runtime entry point, dependency declaration,
 and locally materialized immutable weights. Model files may be hard-linked to
@@ -18,7 +18,7 @@ never selected as a live default.
 The registry stays flat; capability is typed in each manifest:
 
 ```text
-nodes/
+jaeger_agent_omni/nodes/
   stock-whisper-medium-cekl-blend50/
   stock-whisper-medium-cleanroom-ctx93h-step2000/
   gemmaomni-41m-medium-final4000/

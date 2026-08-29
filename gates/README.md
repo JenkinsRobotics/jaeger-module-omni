@@ -9,7 +9,7 @@ Each gate owns its runtime, immutable assets, typed ports, and `gate.json`.
 - `speex-aec` is adaptive DSP. It subtracts the known playback reference from
   microphone PCM so the neural matrix can continue listening while it speaks.
 
-Keeping these components outside `nodes/` makes the boundary explicit: neural
+Keeping these components outside `jaeger_agent_omni/nodes/` makes the boundary explicit: neural
 nodes carry learned perception, identity, cognition, or generation state;
 gates only clean, time, or admit the signal. A deterministic DSP gate is not
 made better merely by replacing it with a trained network.

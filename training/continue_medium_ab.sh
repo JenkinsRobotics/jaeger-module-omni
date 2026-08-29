@@ -15,7 +15,7 @@ MEDIUM_CLEAN="$DATA/stock-whisper-medium-clean360-v1"
 MEDIUM_EXPANDED="$DATA/stock-whisper-medium-expanded-v1"
 MEDIUM_ROOM="$DATA/stock-whisper-medium-room-aug-v1"
 MEDIUM_VOX="$DATA/stock-whisper-medium-voxpopuli33-v1"
-BASE="nodes/stock-whisper-medium-cekl-blend50/weights/adapter.npz"
+BASE="jaeger_agent_omni/nodes/stock-whisper-medium-cekl-blend50/weights/adapter.npz"
 OUTPUT="artifacts/jaegeromni-medium50m-balanced-all-step1000.npz"
 
 echo "phase 1/3: restore missing medium feature caches from common audio"

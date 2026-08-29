@@ -42,7 +42,7 @@
       "devclean": "research/candidate_evals/cleanroom41m-step2000-recheck-20260826-devclean64.json",
       "ami": "research/candidate_evals/cleanroom41m-step2000-recheck-20260826-ami64.json",
       "testclean": null,
-      "node_manifest": "nodes/stock-whisper-medium-cleanroom-ctx93h-step2000/node.json"
+      "node_manifest": "jaeger_agent_omni/nodes/stock-whisper-medium-cleanroom-ctx93h-step2000/node.json"
     },
     {
       "id": "jaegeromni-41m-medium",
@@ -52,7 +52,7 @@
       "devclean": "research/candidate_evals/jaegeromni-41m-budget12-20260828-devclean64.json",
       "ami": "research/candidate_evals/jaegeromni-41m-budget12-20260828-ami64.json",
       "testclean": "research/candidate_evals/cleanroom41m-room-alpha10-20260827-testclean2603.json",
-      "node_manifest": "nodes/jaegeromni-41m-medium/node.json"
+      "node_manifest": "jaeger_agent_omni/nodes/jaegeromni-41m-medium/node.json"
     },
     {
       "id": "gemmaomni-41m-final4000",
@@ -62,7 +62,7 @@
       "devclean": "research/candidate_evals/gemmaomni-final4000-budget12-20260828-devclean64.json",
       "ami": "research/candidate_evals/gemmaomni-final4000-budget12-20260828-ami64.json",
       "testclean": null,
-      "node_manifest": "nodes/gemmaomni-41m-medium-final4000/node.json"
+      "node_manifest": "jaeger_agent_omni/nodes/gemmaomni-41m-medium-final4000/node.json"
     },
     {
       "id": "jaegeromni-41m-causal-balanced",
@@ -72,7 +72,7 @@
       "devclean": "research/candidate_evals/jaeger-gemma-causal-a0.15-budget12-20260828-devclean64.json",
       "ami": "research/candidate_evals/jaeger-gemma-causal-a0.15-budget12-20260828-ami64.json",
       "testclean": null,
-      "node_manifest": "nodes/jaegeromni-41m-causal-balanced/node.json"
+      "node_manifest": "jaeger_agent_omni/nodes/jaegeromni-41m-causal-balanced/node.json"
     },
     {
       "id": "jaegeromni-41m-audio-perception",
@@ -82,7 +82,7 @@
       "devclean": null,
       "ami": null,
       "testclean": null,
-      "node_manifest": "nodes/jaegeromni-41m-audio-perception/node.json"
+      "node_manifest": "jaeger_agent_omni/nodes/jaegeromni-41m-audio-perception/node.json"
     },
     {
       "id": "jaegeromni-50m-medium",
@@ -92,7 +92,7 @@
       "devclean": "research/candidate_evals/medium50m-cekl-blend50-devclean64.json",
       "ami": "research/candidate_evals/medium50m-cekl-blend50-ami64.json",
       "testclean": "research/candidate_evals/medium50m-cekl-blend50-testclean2603.json",
-      "node_manifest": "nodes/stock-whisper-medium-cekl-blend50/node.json"
+      "node_manifest": "jaeger_agent_omni/nodes/stock-whisper-medium-cekl-blend50/node.json"
     },
     {
       "id": "jaegeromni-50m-large",
@@ -102,7 +102,7 @@
       "devclean": "research/candidate_evals/large-v3-turbo50m-ce-context-1500-devclean64.json",
       "ami": null,
       "testclean": null,
-      "node_manifest": "nodes/stock-whisper-large-v3-turbo50m/node.json"
+      "node_manifest": "jaeger_agent_omni/nodes/stock-whisper-large-v3-turbo50m/node.json"
     }
   ],
   "system_evidence": {

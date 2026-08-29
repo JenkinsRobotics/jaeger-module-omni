@@ -31,5 +31,5 @@ Select without changing the default:
 ```bash
 python -m jaeger_agent_omni.omni --bench research/cases12 \
   --front-end stock \
-  --adapter nodes/stock-whisper-medium-cleanroom-ctx93h-step2000
+  --adapter jaeger_agent_omni/nodes/stock-whisper-medium-cleanroom-ctx93h-step2000
 ```

@@ -15,7 +15,7 @@ from pathlib import Path
 
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-NODES_ROOT = REPO_ROOT / "nodes"
+NODES_ROOT = Path(__file__).resolve().parent / "nodes"
 DEFAULT_FRONT_END = "jaegeromni-41m-medium"
 
 

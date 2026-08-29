@@ -17,9 +17,9 @@ fi
 
 DATA="$HOME/models/jaeger-training-data"
 GEMMA="$HOME/models/gemma-4-E4B-it-4bit-mlx"
-M41_BASE="nodes/jaegeromni-41m-medium/weights/adapter.npz"
+M41_BASE="jaeger_agent_omni/nodes/jaegeromni-41m-medium/weights/adapter.npz"
 M41_OUT="artifacts/jaegeromni-41m-medium-balanced-anchor20-v2.npz"
-M50_BASE="nodes/stock-whisper-medium-cekl-blend50/weights/adapter.npz"
+M50_BASE="jaeger_agent_omni/nodes/stock-whisper-medium-cekl-blend50/weights/adapter.npz"
 M50_OUT="artifacts/jaegeromni-50m-medium-balanced-anchor20-v2.npz"
 
 common_sources=(

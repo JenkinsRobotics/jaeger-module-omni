@@ -11,7 +11,7 @@ fi
 
 DATA="$HOME/models/jaeger-training-data"
 GEMMA="$HOME/models/gemma-4-E4B-it-4bit-mlx"
-BASE="nodes/jaegeromni-41m-medium/weights/adapter.npz"
+BASE="jaeger_agent_omni/nodes/jaegeromni-41m-medium/weights/adapter.npz"
 CONVERSATION_IDS="$DATA/whisper-medium-qualified-v1/minds14_validation/gold_under1.jsonl"
 
 for seed in 20260830 20260831 20260832; do

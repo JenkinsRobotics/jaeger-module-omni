@@ -11,7 +11,7 @@ if [[ ${JAEGER_GPU_WINDOW:-} != YES ]]; then
 fi
 
 DATA="$HOME/models/jaeger-training-data"
-BASE="nodes/jaegeromni-41m-medium/weights/adapter.npz"
+BASE="jaeger_agent_omni/nodes/jaegeromni-41m-medium/weights/adapter.npz"
 CANDIDATE="artifacts/jaegeromni-41m-medium-balanced-anchor20-v2.npz"
 EVAL="$DATA/stock-whisper-medium-eval-v1"
 EXPANDED="$DATA/stock-whisper-medium-expanded-v1"

@@ -17,7 +17,7 @@ fi
 # The balanced continuation already crossed a predeclared rejection boundary:
 # dev-clean 6.60% versus 4.92% for this checkpoint, and its running MINDS/Vox
 # score was also worse. Keep it for analysis, but port from the verified node.
-MEDIUM_BASE="nodes/stock-whisper-medium-cleanroom-ctx93h-step2000/weights/adapter.npz"
+MEDIUM_BASE="jaeger_agent_omni/nodes/stock-whisper-medium-cleanroom-ctx93h-step2000/weights/adapter.npz"
 LARGE_PORT="artifacts/cleanroom41m-large-v3-turbo-port750.npz"
 LARGE_FINAL="artifacts/cleanroom41m-large-v3-turbo-balanced-cekl1000.npz"
 SHARED="$HOME/GITHUB/VoiceLLM-Playground/Omni Model/gemma-backbone/cleanroom_cache50"

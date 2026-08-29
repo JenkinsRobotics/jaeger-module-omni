@@ -1,6 +1,6 @@
 {
   "kind": "jaeger_audio_scene_gate",
-  "adapter": "nodes/jaegeromni-41m-audio-perception/weights/adapter.npz",
+  "adapter": "jaeger_agent_omni/nodes/jaegeromni-41m-audio-perception/weights/adapter.npz",
   "classes": [
     "silence",
     "speech",

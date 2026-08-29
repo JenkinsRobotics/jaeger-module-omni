@@ -1759,8 +1759,9 @@ def check() -> int:
             problems.append("companion admission parser failed")
         if not available():
             problems.append("SpeexDSP missing (macOS: brew install speexdsp)")
-        packages = discover(HERE.parent / "nodes")
-        validate_profiles(HERE.parent / "nodes", packages)
+        node_root = HERE.parent / "jaeger_agent_omni" / "nodes"
+        packages = discover(node_root)
+        validate_profiles(node_root, packages)
         gates = discover(
             HERE.parent / "gates", manifest_name="gate.json",
             supported_kinds=SUPPORTED_GATE_KINDS)

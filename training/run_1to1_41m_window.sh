@@ -11,7 +11,7 @@ fi
 
 DATA="$HOME/models/jaeger-training-data"
 GEMMA="$HOME/models/gemma-4-E4B-it-4bit-mlx"
-BASE="nodes/jaegeromni-41m-medium/weights/adapter.npz"
+BASE="jaeger_agent_omni/nodes/jaegeromni-41m-medium/weights/adapter.npz"
 OUT="artifacts/jaegeromni-41m-1to1-clean-gated-v1.npz"
 RUN="research/candidate_evals/jaegeromni-41m-1to1-clean-gated-v1"
 

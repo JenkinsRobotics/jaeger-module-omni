@@ -2,7 +2,7 @@
   "kind": "jaeger_audio_perception_gate",
   "evaluation": "free_running_causal_heads",
   "teacher_forced": false,
-  "adapter": "nodes/jaegeromni-41m-causal-balanced/weights/adapter.npz",
+  "adapter": "jaeger_agent_omni/nodes/jaegeromni-41m-causal-balanced/weights/adapter.npz",
   "threshold_selection": "synthetic speaker-disjoint plus AMI meeting-disjoint validation",
   "thresholds": {
     "speaker_change": 0.85,

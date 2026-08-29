@@ -208,7 +208,7 @@ def select_profile(
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--root", type=Path,
-                        default=Path(__file__).resolve().parent.parent / "nodes")
+                        default=Path(__file__).resolve().parent / "nodes")
     parser.add_argument("--profile", default=None)
     parser.add_argument(
         "--all", action="store_true",

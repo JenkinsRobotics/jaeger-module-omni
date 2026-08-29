@@ -239,7 +239,7 @@ The independent 93-hour clean-room checkpoint is now packaged as its own
 immutable, selectable node rather than overwriting the retained 50M adapter:
 
 ```text
-nodes/stock-whisper-medium-cleanroom-ctx93h-step2000
+jaeger_agent_omni/nodes/stock-whisper-medium-cleanroom-ctx93h-step2000
 40,915,456 adapter parameters
 12/12 canonical spoken answers, 572 ms median
 0.00% Gemma-generated transcript WER, 67/67 words, 12/12 answers
@@ -262,7 +262,7 @@ checkpoint path, from `omni.py`, `jaeger_agent_omni.demo`,
 `jaeger_agent_omni.live`, and the full-duplex desktop app:
 
 ```text
-nodes/stock-whisper-medium-cekl-blend50
+jaeger_agent_omni/nodes/stock-whisper-medium-cekl-blend50
 50,146,816 deployed adapter parameters
 11.20% WER — dev-clean64
 17.86% WER — MINDS/Vox591

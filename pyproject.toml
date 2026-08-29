@@ -41,6 +41,16 @@ version = {attr = "jaeger_agent_omni.__version__"}
 where = ["."]
 include = ["jaeger_agent_omni*"]
 
+[tool.setuptools.package-data]
+jaeger_agent_omni = [
+    "nodes/*.json",
+    "nodes/*.md",
+    "nodes/*/*.json",
+    "nodes/*/*.py",
+    "nodes/*/*.md",
+    "nodes/*/*.txt",
+]
+
 [tool.pytest.ini_options]
 testpaths = ["jaeger_agent_omni/tests", "research", "training"]
 

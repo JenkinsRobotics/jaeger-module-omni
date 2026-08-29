@@ -12,7 +12,7 @@ from jaeger_agent_omni.gate_registry import discover_gates, select_gate_profile
 
 class NodeRegistryTests(unittest.TestCase):
     def test_real_registry_is_flat_complete_and_loadable(self):
-        root = Path(__file__).resolve().parents[2] / "nodes"
+        root = Path(__file__).resolve().parents[1] / "nodes"
         packages = discover(root)
         self.assertEqual(len(packages), 13)
         self.assertIn("gemmaomni-41m-medium-final4000", packages)
@@ -31,7 +31,7 @@ class NodeRegistryTests(unittest.TestCase):
 
     def test_gates_are_separate_from_neural_nodes(self):
         root = Path(__file__).resolve().parents[2]
-        nodes = discover(root / "nodes")
+        nodes = discover(root / "jaeger_agent_omni" / "nodes")
         gates = discover_gates(root / "gates")
         self.assertEqual(set(gates), {"silero-vad", "speex-aec"})
         self.assertTrue(set(nodes).isdisjoint(gates))

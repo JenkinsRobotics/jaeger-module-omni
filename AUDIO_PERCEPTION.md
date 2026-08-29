@@ -67,9 +67,9 @@ and endpoint F1; it was not added to runtime.
 
 ```bash
 ./.venv/bin/python research/perception_gate.py \
-  --adapter nodes/jaegeromni-41m-audio-perception/weights/adapter.npz
+  --adapter jaeger_agent_omni/nodes/jaegeromni-41m-audio-perception/weights/adapter.npz
 ./.venv/bin/python research/audio_scene_gate.py \
-  --adapter nodes/jaegeromni-41m-audio-perception/weights/adapter.npz
+  --adapter jaeger_agent_omni/nodes/jaegeromni-41m-audio-perception/weights/adapter.npz
 ./.venv/bin/python -m jaeger_agent_omni.omni \
   --front-end jaegeromni-41m-audio-perception --bench research/cases12
 ```
