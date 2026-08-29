@@ -10,7 +10,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-GPU_PATTERN='training/train\.py|training/context_(distill|ce)\.py|training/context_train\.py|training/precompute_stock_encoder\.py|training/stock_whisper_gemma\.py (precompute|pretrain-ctc|distill|train|probe|geometry|wer|bench)|research/(direct_whisper_wer|latency_breakdown|streaming_stability|causal_adapter_check)\.py|eval/benchmark_suite\.py|cleanroom_(train|distill)\.py|compare_tracks\.py|train_audio_adapter\.py'
+GPU_PATTERN='training/train\.py|training/context_(distill|ce)\.py|training/context_train\.py|training/(precompute_stock_encoder|train_perception_heads|train_scene_head)\.py|training/stock_whisper_gemma\.py (precompute|pretrain-ctc|distill|train|probe|geometry|wer|bench)|research/(direct_whisper_wer|latency_breakdown|streaming_stability|causal_adapter_check|perception_gate|audio_scene_gate)\.py|eval/benchmark_suite\.py|cleanroom_(train|distill)\.py|compare_tracks\.py|train_audio_adapter\.py'
 if pgrep -f "$GPU_PATTERN" >/dev/null; then
     echo "REFUSING: a training run is already active —" >&2
     ps -o pid=,etime=,command= $(pgrep -f "$GPU_PATTERN") | cut -c1-100 >&2

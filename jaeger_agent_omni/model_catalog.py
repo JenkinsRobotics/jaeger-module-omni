@@ -82,6 +82,13 @@ FRONT_END_SPECS = (
         "causal multidomain candidate; perception heads pending",
         production_candidate=False),
     FrontEndSpec(
+        "jaegeromni-41m-audio-perception",
+        "JaegerOmni 41M Audio Perception", "stock",
+        _node("JAEGER_41M_PERCEPTION_NODE",
+              "jaegeromni-41m-audio-perception"),
+        "scene validated; conversation-event heads shadow only",
+        production_candidate=False),
+    FrontEndSpec(
         "jaegeromni-50m-medium", "JaegerOmni 50M Medium", "stock",
         _node("JAEGER_STOCK_NODE", "stock-whisper-medium-cekl-blend50"),
         "fastest viable adapter"),
@@ -150,8 +157,8 @@ def front_end_choices(include_aliases: bool = True) -> tuple[str, ...]:
 
 def demo() -> None:
     """Model-free catalog contract used by the CPU check suite."""
-    assert len(FRONT_END_SPECS) == 7
-    assert len(FRONT_ENDS) == 7
+    assert len(FRONT_END_SPECS) == 8
+    assert len(FRONT_ENDS) == 8
     assert canonical_id("tower") == "gemma-native"
     assert canonical_id("stock") == "jaegeromni-50m-medium"
     assert canonical_id("cleanroom") == "gemmaomni-41m-medium"
@@ -165,7 +172,8 @@ def demo() -> None:
     assert not FRONT_ENDS["jaegeromni-50m-large"].production_candidate
     assert not FRONT_ENDS["gemmaomni-41m-final4000"].production_candidate
     assert not FRONT_ENDS["jaegeromni-41m-causal-balanced"].production_candidate
-    print("model_catalog: seven canonical ears, aliases, and identities OK")
+    assert not FRONT_ENDS["jaegeromni-41m-audio-perception"].production_candidate
+    print("model_catalog: eight canonical ears, aliases, and identities OK")
 
 
 if __name__ == "__main__":

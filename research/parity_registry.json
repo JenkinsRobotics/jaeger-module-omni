@@ -75,6 +75,16 @@
       "node_manifest": "nodes/jaegeromni-41m-causal-balanced/node.json"
     },
     {
+      "id": "jaegeromni-41m-audio-perception",
+      "name": "JaegerOmni 41M Audio Perception",
+      "checkpoint": "48877fdcad9b674d06cac0b6a4ede774e79b5a44e2ef7a4c7f6b2c5dec568250",
+      "cases12": "research/results/audio-perception-cases12-20260829.json",
+      "devclean": null,
+      "ami": null,
+      "testclean": null,
+      "node_manifest": "nodes/jaegeromni-41m-audio-perception/node.json"
+    },
+    {
       "id": "jaegeromni-50m-medium",
       "name": "JaegerOmni 50M Medium",
       "checkpoint": "b889e5b485654dabc50321fffdcc3305132d5188faa7ec2a7b1a96554b0af0a5",

@@ -10,6 +10,19 @@ Measured ledger. Every claim here has a command that reproduces it.
 > It is generated from exact checkpoint SHAs and supersedes stale latency or
 > promotion language in the historical sections below.
 >
+> 2026-08-29 neural audio-perception window: a separately selectable
+> `jaegeromni-41m-audio-perception` node now keeps the exact causal-balanced
+> audio/Gemma trunk frozen and adds trained scene and conversation-event heads.
+> It retains **12/12** free-running answers at **584 ms** median. On a
+> source-file-disjoint 128-clip MUSAN/silence test it scores **95.31%** scene
+> accuracy and **0.952 macro-F1**. On held-out speakers / unseen AMI meetings,
+> overlap reaches **0.723 / 0.742 F1**, but speaker-change is only 0.202/0.088
+> and turn-end 0.221/0.254. Scene metadata can reach Gemma between turns;
+> conversation-event heads remain shadow-only and Silero remains the live VAD.
+> A 262K causal temporal-head experiment was rejected because AMI
+> speaker-change/turn-end regressed to 0.040/0.234. Full evidence and limits:
+> [`AUDIO_PERCEPTION.md`](AUDIO_PERCEPTION.md).
+>
 > 2026-08-27 current result: JaegerOmni 41M Medium SHA `a7f96bfb8898`
 > passes five locked corpus gates without regression and scores **3.97%**
 > free-running WER on the untouched 2,603-clip/51,311-word test-clean lockbox

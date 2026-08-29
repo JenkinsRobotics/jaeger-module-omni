@@ -15,6 +15,7 @@ corpus or duplex reports; never copy a best value from another checkpoint.
 | **GemmaOmni 41M Final 4000** | Latest exact imported causal checkpoint with perception heads | 10/12 default-64 (22/24 repeated-48), 6.81% clean, **22.88% AMI**, 547.6 ms warmed | Best meeting ear; QA/clean regression |
 | **JaegerOmni 41M Medium** | 10% interpolation from the frozen import toward Jaeger's retained room continuation | **3.30%** source-qualified 1:1 gate; **12/12**, 4.82% clean, 32.99% AMI, 601.9 ms warmed; **3.97%** untouched test-clean | Production 1:1 candidate; physical-room gate pending |
 | **JaegerOmni 41M Causal Balanced** | 85% Jaeger 41M + 15% latest causal GemmaOmni trunk; heads retained but uncalibrated | **12/12**, 5.03% clean, 28.23% AMI, **574.2 ms** warmed | Full-duplex development candidate; head revalidation pending |
+| **JaegerOmni 41M Audio Perception** | Frozen causal-balanced ear plus trained scene and conversation-event heads | **12/12**, 584 ms; scene **95.31% / 0.952 macro-F1**; unseen-AMI overlap 0.742 F1 | Selectable shadow candidate; speaker-change/turn-end do not control policy |
 | **JaegerOmni 50M Medium** | Jaeger's independently developed Medium connector | 11/12, 11.20% clean, 47.85% AMI, 619.7 ms same-harness | Viable historical adapter; not latency leader |
 | **JaegerOmni 50M Large** | Large-v3-turbo-paired connector, exactly 52,768,768 deployed parameters | 1/12, 17.80% clean, 413 ms | Transfer failed; active experimental branch |
 
@@ -30,7 +31,7 @@ additional active Jaeger audio-model identities.
 
 ## What is actually selected
 
-- The full-duplex GUI and its exact-worker self-test expose all seven canonical
+- The full-duplex GUI and its exact-worker self-test expose all eight canonical
   identities. `tower`, `stock`, and `cleanroom` remain compatibility aliases
   for Gemma Native, JaegerOmni 50M Medium, and GemmaOmni 41M Medium.
 - JaegerOmni 41M Medium is independently packaged at
@@ -83,7 +84,7 @@ Until the physical-room phase passes, MiniCPM remains the quality reference and
 the native Gemma tower remains Jaeger's rollback/default. Select
 `jaegeromni-41m-medium` explicitly for production testing.
 
-Canonical seven-model gate: [`PRODUCTION_TESTING.md`](PRODUCTION_TESTING.md).
+Canonical eight-model gate: [`PRODUCTION_TESTING.md`](PRODUCTION_TESTING.md).
 Current generated comparison: [`PARITY_SCORECARD.md`](PARITY_SCORECARD.md).
 One example:
 

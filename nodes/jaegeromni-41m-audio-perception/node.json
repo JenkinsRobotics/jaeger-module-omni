@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "kind": "jaeger_audio_node",
+  "id": "jaegeromni-41m-audio-perception",
+  "runtime": "stock_whisper_gemma",
+  "slot": "audio_perception",
+  "enabled_by_default": false,
+  "consumes": [
+    "pcm_s16le_16khz_mono",
+    "self_speech_flag_25hz"
+  ],
+  "produces": [
+    "gemma_audio_embeddings_2560",
+    "audio_scene_probabilities_25hz",
+    "advisory_conversation_event_probabilities_25hz"
+  ],
+  "status": "development_scene_validated_events_shadow_only",
+  "implementation": "runtime.py:build",
+  "encoder": {
+    "id": "openai/whisper-medium",
+    "revision": "abdf7c39ab9d0397620ccaea8974cc764cd0953e",
+    "path": "weights/encoder",
+    "weights_sha256": "62f73550fa6db24b0c6f6c5962bd0dae80fa644e93cde9cd9c3792971b47fd28",
+    "boundary": "stock_whisper_encoder_50hz",
+    "output_dim": 1024,
+    "decoder_runtime": false
+  },
+  "adapter": {
+    "path": "weights/adapter.npz",
+    "sha256": "48877fdcad9b674d06cac0b6a4ede774e79b5a44e2ef7a4c7f6b2c5dec568250",
+    "architecture": "streaming_perception_v2",
+    "parameters": 40942112,
+    "trunk_parameters": 40915456,
+    "pool_step": 2,
+    "attention": "causal",
+    "lineage": "qwen_free"
+  },
+  "backbone": {
+    "family": "gemma-4-e4b",
+    "runtime_variant": "gemma-4-E4B-it-4bit-mlx",
+    "frozen": true
+  },
+  "construction": {
+    "source": "jaegeromni-41m-causal-balanced",
+    "frozen_non_head_parameters_bit_identical": true,
+    "event_training": "speaker-disjoint synthetic mixtures plus meeting-disjoint AMI",
+    "scene_training": "source-file-disjoint MUSAN speech/music/noise plus generated silence"
+  },
+  "evaluation": {
+    "teacher_forced": false,
+    "scene_test_clips": 128,
+    "scene_test_accuracy": 0.953125,
+    "scene_test_macro_f1": 0.9524816176470587,
+    "synthetic_speaker_change_f1": 0.20161290322580644,
+    "synthetic_overlap_f1": 0.7227963525835865,
+    "synthetic_turn_end_f1": 0.22072072072072071,
+    "ami_meeting_speaker_change_f1": 0.0879243183082916,
+    "ami_meeting_overlap_f1": 0.742111506524318,
+    "ami_meeting_turn_end_f1": 0.2538878842676311,
+    "event_thresholds": {
+      "speaker_change": 0.725,
+      "overlap": 0.5,
+      "turn_end": 0.775
+    }
+  },
+  "policy": {
+    "scene_metadata_to_gemma": true,
+    "scene_controls_live_gate": false,
+    "event_heads_control_live_gate": false,
+    "production_vad": "silero"
+  },
+  "known_limitations": [
+    "stock Whisper encoder is bidirectional within each bounded window",
+    "speaker-change and turn-end false-positive rates are not production-safe",
+    "speaker-state classes are mixture roles, not persistent human identities",
+    "physical-room AEC still requires real playback/microphone validation"
+  ]
+}

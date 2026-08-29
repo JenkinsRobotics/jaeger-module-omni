@@ -1,0 +1,145 @@
+{
+  "kind": "jaeger_audio_perception_gate",
+  "evaluation": "free_running_causal_heads",
+  "teacher_forced": false,
+  "adapter": "nodes/jaegeromni-41m-audio-perception/weights/adapter.npz",
+  "threshold_selection": "synthetic speaker-disjoint plus AMI meeting-disjoint validation",
+  "thresholds": {
+    "speaker_change": 0.725,
+    "overlap": 0.49999999999999994,
+    "turn_end": 0.775
+  },
+  "synthetic_validation": {
+    "clips": 154,
+    "heads": {
+      "speaker_change": {
+        "tp": 117,
+        "fp": 1541,
+        "fn": 440,
+        "precision": 0.07056694813027745,
+        "recall": 0.21005385996409337,
+        "f1": 0.1056433408577878,
+        "threshold": 0.725
+      },
+      "overlap": {
+        "tp": 13509,
+        "fp": 4982,
+        "fn": 3678,
+        "precision": 0.7305716294413499,
+        "recall": 0.7860010473031943,
+        "f1": 0.7572733897640003,
+        "threshold": 0.49999999999999994
+      },
+      "turn_end": {
+        "tp": 878,
+        "fp": 3906,
+        "fn": 1238,
+        "precision": 0.18352842809364547,
+        "recall": 0.41493383742911155,
+        "f1": 0.2544927536231884,
+        "threshold": 0.775
+      }
+    }
+  },
+  "synthetic_test": {
+    "clips": 128,
+    "seconds": 1309.2200000000005,
+    "heads": {
+      "speaker_change": {
+        "tp": 25,
+        "fp": 149,
+        "fn": 49,
+        "precision": 0.14367816091954022,
+        "recall": 0.33783783783783783,
+        "f1": 0.20161290322580644,
+        "threshold": 0.725,
+        "false_positives_per_minute": 6.828493301355003
+      },
+      "overlap": {
+        "tp": 2378,
+        "fp": 533,
+        "fn": 1291,
+        "precision": 0.8169014084507042,
+        "recall": 0.648133006268738,
+        "f1": 0.7227963525835865,
+        "threshold": 0.49999999999999994,
+        "false_positives_per_minute": 24.426757916927627
+      },
+      "turn_end": {
+        "tp": 49,
+        "fp": 153,
+        "fn": 193,
+        "precision": 0.24257425742574257,
+        "recall": 0.2024793388429752,
+        "f1": 0.22072072072072071,
+        "threshold": 0.775,
+        "false_positives_per_minute": 7.011808557767218
+      }
+    },
+    "speaker_id": {
+      "macro_f1": 0.4726973003104063,
+      "classes": {
+        "0": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 3551
+        },
+        "1": {
+          "precision": 0.6764757196859552,
+          "recall": 0.7681944260995905,
+          "f1": 0.7194235705229304,
+          "support": 15142
+        },
+        "2": {
+          "precision": 0.6385944946297745,
+          "recall": 0.7893441181642342,
+          "f1": 0.706011874336492,
+          "support": 11374
+        },
+        "3": {
+          "precision": 0.6568291008922443,
+          "recall": 0.36031626506024095,
+          "f1": 0.4653537563822027,
+          "support": 2656
+        }
+      }
+    }
+  },
+  "ami_real": {
+    "clips": 256,
+    "seconds": 1047.1199999999997,
+    "heads": {
+      "speaker_change": {
+        "tp": 79,
+        "fp": 1303,
+        "fn": 336,
+        "precision": 0.057163531114327065,
+        "recall": 0.19036144578313252,
+        "f1": 0.0879243183082916,
+        "threshold": 0.725,
+        "false_positives_per_minute": 74.66192986477196
+      },
+      "overlap": {
+        "tp": 9384,
+        "fp": 4289,
+        "fn": 2233,
+        "precision": 0.6863160974182696,
+        "recall": 0.8077816992338814,
+        "f1": 0.742111506524318,
+        "threshold": 0.49999999999999994,
+        "false_positives_per_minute": 245.7597983039194
+      },
+      "turn_end": {
+        "tp": 702,
+        "fp": 3306,
+        "fn": 820,
+        "precision": 0.1751497005988024,
+        "recall": 0.4612352168199737,
+        "f1": 0.2538878842676311,
+        "threshold": 0.775,
+        "false_positives_per_minute": 189.43387577355037
+      }
+    }
+  }
+}

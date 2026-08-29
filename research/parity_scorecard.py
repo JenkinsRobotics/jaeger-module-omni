@@ -342,6 +342,8 @@ def generate(registry_path: Path) -> dict:
                   if model["id"] == "jaegeromni-41m-medium")
     causal = next(model for model in models
                   if model["id"] == "jaegeromni-41m-causal-balanced")
+    perception = next(model for model in models
+                      if model["id"] == "jaegeromni-41m-audio-perception")
     verdict = (
         f"{leading['name']} matches MiniCPM at "
         f"{leading['cases12']['correct']}/{leading['cases12']['n']} on the "
@@ -357,7 +359,11 @@ def generate(registry_path: Path) -> dict:
         f"{causal['cases12']['correct']}/{causal['cases12']['n']} and reduces "
         f"the 673-word AMI64 validation slice to "
         f"{100*causal['ami_wer']['value']:.2f}%, but its perception heads "
-        "still require post-blend calibration. The frozen Jaeger 41M remains "
+        "still require post-blend calibration. Its frozen-trunk perception "
+        f"successor also retains {perception['cases12']['correct']}/"
+        f"{perception['cases12']['n']}; the scene head is validated, while "
+        "speaker-change and endpoint heads remain shadow-only. The frozen "
+        "Jaeger 41M remains "
         "the broad lockbox leader at "
         f"{100*jaeger['testclean_wer']['value']:.2f}% free-running WER "
         "(measured before the corrected 12-token/s budget) and has a "

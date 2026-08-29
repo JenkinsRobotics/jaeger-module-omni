@@ -372,6 +372,15 @@ def main() -> int:
 
     def prepare_turn():
         label = tag_speaker()
+        perception = getattr(session, "perception_snapshot", lambda: {})()
+        scene = perception.get("scene", {})
+        if scene.get("calibrated"):
+            scene_tag = (
+                f" [audio_scene={scene['class']}; "
+                f"confidence={scene['probability']:.3f}]"
+            )
+            session.feed_text(scene_tag)
+            print(f"\n          [context: {scene_tag.strip()}]", flush=True)
         if companion is not None:
             metadata = companion.turn_metadata(
                 label, self_speech_overlap=turn_facts["self_speech_overlap"])
@@ -542,8 +551,10 @@ def main() -> int:
 
     loop = DuplexLoop(session, audio_source=source, user_speaking=user_speaking,
                       on_reply=on_reply, turn_ended=None,
-                      before_respond=(prepare_turn if (
-                          speaker_tracker or companion is not None) else None),
+                      # Always offer the selected neural ear a chance to append
+                      # calibrated, non-transcript scene metadata.  Ears with
+                      # no perception head make this a no-op.
+                      before_respond=prepare_turn,
                       on_endpoint_event=(
                           lambda event: companion.speech_started()
                           if companion is not None and event == "speech_start"

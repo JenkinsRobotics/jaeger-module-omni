@@ -1,0 +1,85 @@
+{
+ "front_end": "stock",
+ "model_id": "jaegeromni-41m-audio-perception",
+ "model_name": "JaegerOmni 41M Audio Perception",
+ "checkpoint": "48877fdcad9b",
+ "dual_output": false,
+ "correct": 12,
+ "n": 12,
+ "median_ms": 584.3268960161367,
+ "rows": [
+  {
+   "case": "q00",
+   "ok": true,
+   "ms": 557.9606250103097,
+   "reply": "Two plus two equals four."
+  },
+  {
+   "case": "q01",
+   "ok": true,
+   "ms": 542.2298749908805,
+   "reply": "The sky is blue."
+  },
+  {
+   "case": "q02",
+   "ok": true,
+   "ms": 603.9258749806322,
+   "reply": "There are seven days in a week."
+  },
+  {
+   "case": "q03",
+   "ok": true,
+   "ms": 592.4653749971185,
+   "reply": "The capital of France is Paris."
+  },
+  {
+   "case": "q04",
+   "ok": true,
+   "ms": 491.04283400811255,
+   "reply": "Seven."
+  },
+  {
+   "case": "q05",
+   "ok": true,
+   "ms": 583.027459011646,
+   "reply": "A spider has eight legs."
+  },
+  {
+   "case": "q06",
+   "ok": true,
+   "ms": 563.0386670236476,
+   "reply": "The largest planet is Jupiter."
+  },
+  {
+   "case": "q07",
+   "ok": true,
+   "ms": 605.7108750101179,
+   "reply": "Five times five is twenty-five."
+  },
+  {
+   "case": "q08",
+   "ok": true,
+   "ms": 554.3397500005085,
+   "reply": "Autumn comes after summer."
+  },
+  {
+   "case": "q09",
+   "ok": true,
+   "ms": 631.6154999949504,
+   "reply": "There are 24 hours in a day."
+  },
+  {
+   "case": "q10",
+   "ok": true,
+   "ms": 664.0680829877965,
+   "reply": "The freezing point of water is 0 degrees Celsius."
+  },
+  {
+   "case": "q11",
+   "ok": true,
+   "ms": 585.6263330206275,
+   "reply": "William Shakespeare wrote Romeo and Juliet."
+  }
+ ],
+ "adapter_sha256": "48877fdcad9b674d06cac0b6a4ede774e79b5a44e2ef7a4c7f6b2c5dec568250"
+}

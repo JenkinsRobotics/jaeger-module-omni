@@ -9,6 +9,7 @@
         "campplus-speaker"
       ],
       "disabled": [
+        "jaegeromni-41m-audio-perception",
         "jaegeromni-41m-causal-balanced",
         "gemmaomni-41m-medium-final4000",
         "stock-whisper-medium-cleanroom-ctx93h-step2000",
@@ -28,6 +29,7 @@
         "campplus-speaker"
       ],
       "disabled": [
+        "jaegeromni-41m-audio-perception",
         "jaegeromni-41m-causal-balanced",
         "gemmaomni-41m-medium-final4000",
         "stock-whisper-medium-cleanroom-ctx93h-step2000",
@@ -46,6 +48,7 @@
         "campplus-speaker"
       ],
       "disabled": [
+        "jaegeromni-41m-audio-perception",
         "jaegeromni-41m-causal-balanced",
         "gemmaomni-41m-medium-final4000",
         "jaegeromni-41m-medium",
@@ -64,6 +67,7 @@
         "campplus-speaker"
       ],
       "disabled": [
+        "jaegeromni-41m-audio-perception",
         "jaegeromni-41m-causal-balanced",
         "gemmaomni-41m-medium-final4000",
         "stock-whisper-medium-cleanroom-ctx93h-step2000",
@@ -82,6 +86,7 @@
         "campplus-speaker"
       ],
       "disabled": [
+        "jaegeromni-41m-audio-perception",
         "jaegeromni-41m-causal-balanced",
         "gemmaomni-41m-medium-final4000",
         "stock-whisper-medium-cleanroom-ctx93h-step2000",
@@ -99,6 +104,7 @@
         "gemma-4-e4b-cognition"
       ],
       "disabled": [
+        "jaegeromni-41m-audio-perception",
         "jaegeromni-41m-causal-balanced",
         "gemmaomni-41m-medium-final4000",
         "stock-whisper-medium-cleanroom-ctx93h-step2000",
@@ -118,6 +124,7 @@
         "campplus-speaker"
       ],
       "disabled": [
+        "jaegeromni-41m-audio-perception",
         "jaegeromni-41m-causal-balanced",
         "gemmaomni-41m-medium-final4000",
         "stock-whisper-medium-cleanroom-ctx93h-step2000",
@@ -137,6 +144,7 @@
         "campplus-speaker"
       ],
       "disabled": [
+        "jaegeromni-41m-audio-perception",
         "jaegeromni-41m-causal-balanced",
         "stock-whisper-medium-cleanroom-ctx93h-step2000",
         "jaegeromni-41m-medium",
@@ -155,6 +163,26 @@
         "campplus-speaker"
       ],
       "disabled": [
+        "jaegeromni-41m-audio-perception",
+        "gemmaomni-41m-medium-final4000",
+        "stock-whisper-medium-cleanroom-ctx93h-step2000",
+        "jaegeromni-41m-medium",
+        "stock-whisper-medium-cekl-blend50",
+        "stock-whisper-large-v3-turbo50m",
+        "whisper-medium-stt",
+        "whisper-large-v3-turbo-stt",
+        "gemma-minicpm-hidden-talker"
+      ]
+    },
+    "jaegeromni-audio-perception-development": {
+      "enabled": [
+        "jaegeromni-41m-audio-perception",
+        "gemma-4-e4b-cognition",
+        "kokoro-tts",
+        "campplus-speaker"
+      ],
+      "disabled": [
+        "jaegeromni-41m-causal-balanced",
         "gemmaomni-41m-medium-final4000",
         "stock-whisper-medium-cleanroom-ctx93h-step2000",
         "jaegeromni-41m-medium",

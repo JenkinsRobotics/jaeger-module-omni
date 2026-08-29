@@ -233,6 +233,37 @@
       "core_ear_status": "answer parity; latency unpaired"
     },
     {
+      "id": "jaegeromni-41m-audio-perception",
+      "name": "JaegerOmni 41M Audio Perception",
+      "checkpoint": "48877fdcad9b674d06cac0b6a4ede774e79b5a44e2ef7a4c7f6b2c5dec568250",
+      "cases12": {
+        "correct": 12,
+        "n": 12,
+        "accuracy": 1.0,
+        "status": "parity",
+        "source": "research/results/audio-perception-cases12-20260829.json"
+      },
+      "answer_latency_ms": {
+        "value": 584.3268960161367,
+        "status": "unpaired",
+        "paired_harness": false,
+        "source": "research/results/audio-perception-cases12-20260829.json"
+      },
+      "devclean_wer": null,
+      "ami_wer": null,
+      "testclean_wer": null,
+      "first_audio_ms": {
+        "value": null,
+        "status": "unmeasured",
+        "source": null
+      },
+      "five_minute_physical": {
+        "status": "unmeasured",
+        "source": null
+      },
+      "core_ear_status": "answer parity; latency unpaired"
+    },
+    {
       "id": "jaegeromni-50m-medium",
       "name": "JaegerOmni 50M Medium",
       "checkpoint": "b889e5b485654dabc50321fffdcc3305132d5188faa7ec2a7b1a96554b0af0a5",
@@ -330,5 +361,5 @@
       "source": "research/results/overlap_lab.json"
     }
   },
-  "verdict": "GemmaOmni 41M Medium matches MiniCPM at 12/12 on the shared question suite. Every 41M variant's answer median (502\u2013560 ms here) sits in the neighborhood of the 525 ms MiniCPM reference, but the runs are not paired under one harness, so no faster/slower conclusion is drawn. JaegerOmni 41M independently matches cases12 at 12/12. The new causal-balanced Jaeger checkpoint retains 12/12 and reduces the 673-word AMI64 validation slice to 28.23%, but its perception heads still require post-blend calibration. The frozen Jaeger 41M remains the broad lockbox leader at 3.97% free-running WER (measured before the corrected 12-token/s budget) and has a zero-drop direct five-minute context-roll run. Jaeger has not surpassed MiniCPM as a complete system: physical five-minute reports are absent, speaker separation is failed, the broad AEC stress gate fails, speech still crosses decoded text into Kokoro, and Jaeger vision is not connected."
+  "verdict": "GemmaOmni 41M Medium matches MiniCPM at 12/12 on the shared question suite. Every 41M variant's answer median (502\u2013560 ms here) sits in the neighborhood of the 525 ms MiniCPM reference, but the runs are not paired under one harness, so no faster/slower conclusion is drawn. JaegerOmni 41M independently matches cases12 at 12/12. The new causal-balanced Jaeger checkpoint retains 12/12 and reduces the 673-word AMI64 validation slice to 28.23%, but its perception heads still require post-blend calibration. Its frozen-trunk perception successor also retains 12/12; the scene head is validated, while speaker-change and endpoint heads remain shadow-only. The frozen Jaeger 41M remains the broad lockbox leader at 3.97% free-running WER (measured before the corrected 12-token/s budget) and has a zero-drop direct five-minute context-roll run. Jaeger has not surpassed MiniCPM as a complete system: physical five-minute reports are absent, speaker separation is failed, the broad AEC stress gate fails, speech still crosses decoded text into Kokoro, and Jaeger vision is not connected."
 }

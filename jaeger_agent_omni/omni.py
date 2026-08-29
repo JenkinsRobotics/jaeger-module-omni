@@ -92,6 +92,9 @@ def build(model_path: str = MODEL, front_end: str = "gemma-native",
             "checkpoint": selection.checkpoint,
             "adapter": str(session.adapter_path),
             "node": session.node.node_id if session.node else None,
+            "adapter_sha256": (
+                session.node.manifest["adapter"]["sha256"]
+                if session.node else None),
             "eos": eos,
         }
 
@@ -314,6 +317,8 @@ def bench(cases_dir: str, model_path: str, front_end: str, adapter_path=None,
                "dual_output": dual_output,
                "correct": n, "n": len(rows), "median_ms": med,
                "rows": rows}
+    if meta.get("adapter_sha256"):
+        payload["adapter_sha256"] = meta["adapter_sha256"]
     if transcript_wer is not None:
         payload.update({"transcript_wer": transcript_wer,
                         "transcript_words": transcript_words})

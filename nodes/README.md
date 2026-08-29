@@ -24,6 +24,7 @@ nodes/
   gemmaomni-41m-medium-final4000/
   jaegeromni-41m-medium/
   jaegeromni-41m-causal-balanced/
+  jaegeromni-41m-audio-perception/
   stock-whisper-large-v3-turbo50m/
   whisper-medium-stt/
   whisper-large-v3-turbo-stt/
@@ -40,7 +41,7 @@ decoders are also different nodes, but they are not components of the
 transcript-free perception path. Typed `consumes`/`produces` ports prevent an
 STT transcript node from being silently substituted for an embedding node.
 
-All twelve currently registered nodes have a local `runtime.py`, dependencies,
+All thirteen currently registered nodes have a local `runtime.py`, dependencies,
 and installed immutable assets under their own ignored `weights/` directory.
 `profiles.json` explicitly enables or disables every node. Rejected nodes may
 only appear in a profile carrying `allow_rejected: true`.

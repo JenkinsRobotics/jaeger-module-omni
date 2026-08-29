@@ -57,6 +57,8 @@ ARCH_GEMMA_NATIVE_CONTEXT = (
     "gemma_native_stack_swiglu_residual_temporal2_context_v1")
 ARCH_CLEANROOM_CONTEXT = "cleanroom_context_v2"
 ARCH_STREAMING_CAUSAL = "streaming_causal_v1"
+ARCH_STREAMING_PERCEPTION = "streaming_perception_v2"
+CAUSAL_ARCHITECTURES = (ARCH_STREAMING_CAUSAL, ARCH_STREAMING_PERCEPTION)
 WHISPER_WINDOW_S = 28
 WHISPER_OVERLAP_S = 1
 LIVE_WINDOW_S = 12
@@ -194,14 +196,17 @@ def validate_checkpoint(path: str | Path) -> dict[str, np.ndarray]:
     arch_tag = (bytes(np.asarray(cleanroom_arch, dtype=np.uint8))
                 if cleanroom_arch is not None else b"")
     if ("adapter_arch" not in values and
-            arch_tag in (b"context_v2", b"streaming_causal_v1")):
+            arch_tag in (b"context_v2", b"streaming_causal_v1",
+                         b"streaming_perception_v2")):
         # The clean-room trainer intentionally emits only its owned weights
         # plus a byte architecture tag. Supply deployment metadata in memory;
         # the packaged node manifest independently pins the same boundary.
         values.update({
             "adapter_arch": np.array(
-                ARCH_STREAMING_CAUSAL
-                if arch_tag == b"streaming_causal_v1"
+                (ARCH_STREAMING_PERCEPTION
+                 if arch_tag == b"streaming_perception_v2" else
+                 ARCH_STREAMING_CAUSAL)
+                if arch_tag != b"context_v2"
                 else ARCH_CLEANROOM_CONTEXT),
             "encoder": np.array(DEFAULT_WHISPER),
             "input_dim": np.array(INPUT_DIM, dtype=np.int32),
@@ -219,7 +224,7 @@ def validate_checkpoint(path: str | Path) -> dict[str, np.ndarray]:
         raise ValueError(
             f"{path}: encoder {encoder!r} requires input_dim "
             f"{ENCODER_DIMS[encoder]}, got {input_dim}")
-    if architecture in (ARCH_CLEANROOM_CONTEXT, ARCH_STREAMING_CAUSAL):
+    if architecture in (ARCH_CLEANROOM_CONTEXT, *CAUSAL_ARCHITECTURES):
         hidden_values = np.asarray(values.get("hidden", []), dtype=np.int64)
         if hidden_values.size != 1 or int(hidden_values[0]) <= 0:
             raise ValueError(f"{path}: invalid clean-room hidden width")
@@ -238,7 +243,7 @@ def validate_checkpoint(path: str | Path) -> dict[str, np.ndarray]:
             "ln_f.weight": (hidden,), "ln_f.bias": (hidden,),
             "out.weight": (OUTPUT_DIM, hidden), "out.bias": (OUTPUT_DIM,),
         }
-        if architecture == ARCH_STREAMING_CAUSAL:
+        if architecture in CAUSAL_ARCHITECTURES:
             expected.update({
                 "head_speaker_change.weight": (1, hidden),
                 "head_speaker_change.bias": (1,),
@@ -251,6 +256,11 @@ def validate_checkpoint(path: str | Path) -> dict[str, np.ndarray]:
                 "self_proj.weight": (hidden, 1),
                 "self_proj.bias": (hidden,),
             })
+            if architecture == ARCH_STREAMING_PERCEPTION:
+                expected.update({
+                    "head_scene.weight": (4, hidden),
+                    "head_scene.bias": (4,),
+                })
     elif architecture in (ARCH_GEMMA_NATIVE_STACK,
                          ARCH_GEMMA_NATIVE_RESIDUAL,
                          ARCH_GEMMA_NATIVE_TEMPORAL,
@@ -456,7 +466,7 @@ class StockWhisperGemmaSession:
             def __init__(inner):
                 super().__init__()
                 if architecture in (ARCH_CLEANROOM_CONTEXT,
-                                     ARCH_STREAMING_CAUSAL):
+                                     *CAUSAL_ARCHITECTURES):
                     hidden = int(values["hidden"][0])
                     inner.ln = nn.LayerNorm(self.input_dim)
                     inner.up = nn.Linear(self.input_dim, hidden)
@@ -501,11 +511,13 @@ class StockWhisperGemmaSession:
                     inner.ln_f.bias = mx.array(values["ln_f.bias"])
                     inner.out.weight = mx.array(values["out.weight"])
                     inner.out.bias = mx.array(values["out.bias"])
-                    if architecture == ARCH_STREAMING_CAUSAL:
+                    if architecture in CAUSAL_ARCHITECTURES:
                         inner.head_speaker_change = nn.Linear(hidden, 1)
                         inner.head_overlap = nn.Linear(hidden, 1)
                         inner.head_turn_end = nn.Linear(hidden, 1)
                         inner.head_speaker_id = nn.Linear(hidden, 4)
+                        if architecture == ARCH_STREAMING_PERCEPTION:
+                            inner.head_scene = nn.Linear(hidden, 4)
                         inner.self_proj = nn.Linear(1, hidden)
                         for name in (
                                 "speaker_change", "overlap", "turn_end",
@@ -518,6 +530,11 @@ class StockWhisperGemmaSession:
                             values["self_proj.weight"])
                         inner.self_proj.bias = mx.array(
                             values["self_proj.bias"])
+                        if architecture == ARCH_STREAMING_PERCEPTION:
+                            inner.head_scene.weight = mx.array(
+                                values["head_scene.weight"])
+                            inner.head_scene.bias = mx.array(
+                                values["head_scene.bias"])
                 elif architecture in (ARCH_GEMMA_NATIVE_STACK,
                                      ARCH_GEMMA_NATIVE_RESIDUAL,
                                      ARCH_GEMMA_NATIVE_TEMPORAL,
@@ -664,7 +681,7 @@ class StockWhisperGemmaSession:
                     h = mx.mean(
                         h[:usable].reshape(-1, self.pool_step, hidden),
                         axis=1)
-                if (architecture == ARCH_STREAMING_CAUSAL and
+                if (architecture in CAUSAL_ARCHITECTURES and
                         self_speech is not None):
                     flag = np.asarray(self_speech, dtype=np.float32).reshape(-1)
                     flag = flag[:h.shape[0]]
@@ -673,7 +690,7 @@ class StockWhisperGemmaSession:
                     h = h + inner.self_proj(mx.array(flag[:, None]))
                 context = h[None, :]
                 mask = None
-                if architecture == ARCH_STREAMING_CAUSAL and context.shape[1] > 1:
+                if architecture in CAUSAL_ARCHITECTURES and context.shape[1] > 1:
                     n = context.shape[1]
                     mask = mx.where(
                         mx.tril(mx.ones((n, n))) > 0, 0.0, -1e9).astype(
@@ -704,21 +721,24 @@ class StockWhisperGemmaSession:
 
             def perceive(inner, x, self_speech=None):
                 """Return audio embeddings and honest 25 Hz perception logits."""
-                if architecture != ARCH_STREAMING_CAUSAL:
+                if architecture not in CAUSAL_ARCHITECTURES:
                     raise ValueError(
                         "perception heads require streaming_causal_v1")
                 context = inner._context_trunk(x, self_speech)
                 frames = context[0]
-                return inner.out(frames), {
+                logits = {
                     "speaker_change": inner.head_speaker_change(context)[0, :, 0],
                     "overlap": inner.head_overlap(context)[0, :, 0],
                     "turn_end": inner.head_turn_end(context)[0, :, 0],
                     "speaker_id": inner.head_speaker_id(context)[0],
                 }
+                if architecture == ARCH_STREAMING_PERCEPTION:
+                    logits["scene"] = inner.head_scene(context)[0]
+                return inner.out(frames), logits
 
             def __call__(inner, x):
                 if architecture in (ARCH_CLEANROOM_CONTEXT,
-                                     ARCH_STREAMING_CAUSAL):
+                                     *CAUSAL_ARCHITECTURES):
                     y = inner.out(inner._context_trunk(x)[0])
                 elif architecture in (ARCH_GEMMA_NATIVE_STACK,
                                      ARCH_GEMMA_NATIVE_RESIDUAL,
@@ -945,7 +965,7 @@ class StockWhisperGemmaSession:
     def _prefill_audio(self, features: np.ndarray) -> int:
         mx = self.mx
         self._ensure_turn_prefix()
-        if self.adapter_architecture == ARCH_STREAMING_CAUSAL:
+        if self.adapter_architecture in CAUSAL_ARCHITECTURES:
             raw, logits = self.adapter.perceive(mx.array(features))
             probabilities = {}
             for name in ("speaker_change", "overlap", "turn_end"):
@@ -957,6 +977,12 @@ class StockWhisperGemmaSession:
             speaker = np.exp(speaker)
             probabilities["speaker_id"] = speaker / np.maximum(
                 speaker.sum(axis=-1, keepdims=True), 1e-12)
+            if "scene" in logits:
+                scene = np.array(logits["scene"], copy=True).astype(np.float32)
+                scene -= scene.max(axis=-1, keepdims=True)
+                scene = np.exp(scene)
+                probabilities["scene"] = scene / np.maximum(
+                    scene.sum(axis=-1, keepdims=True), 1e-12)
             self._turn_perception.append(probabilities)
         else:
             raw = self.adapter(mx.array(features))
@@ -970,11 +996,11 @@ class StockWhisperGemmaSession:
     def perception_snapshot(self) -> dict:
         """Aggregate causal perception heads for shadow-mode reporting.
 
-        Scores are probabilities, not claimed decisions.  The current causal
-        blend explicitly invalidated calibration by changing the shared trunk,
-        so callers must not use these fields as production gates yet.
+        Scores are probabilities, not policy decisions.  Perception-v2's scene
+        head is held-out calibrated; the event heads remain advisory until a
+        physical-room gate confirms their thresholds.
         """
-        if self.adapter_architecture != ARCH_STREAMING_CAUSAL:
+        if self.adapter_architecture not in CAUSAL_ARCHITECTURES:
             return {
                 "available": False,
                 "controls_policy": False,
@@ -990,7 +1016,8 @@ class StockWhisperGemmaSession:
         result = {
             "available": True,
             "controls_policy": False,
-            "calibrated": False,
+            "calibrated": self.adapter_architecture == ARCH_STREAMING_PERCEPTION,
+            "event_heads_calibrated": False,
             "self_speech_conditioning_used": False,
         }
         for name in ("speaker_change", "overlap", "turn_end"):
@@ -1010,6 +1037,20 @@ class StockWhisperGemmaSession:
             "probability": float(mean_speaker.max()),
             "mean_probabilities": [float(x) for x in mean_speaker],
         }
+        if "scene" in self._turn_perception[0]:
+            scene = np.concatenate([
+                block["scene"] for block in self._turn_perception], axis=0)
+            mean_scene = scene.mean(axis=0)
+            labels = ("silence", "speech", "music", "noise")
+            result["scene"] = {
+                "class": labels[int(mean_scene.argmax())],
+                "probability": float(mean_scene.max()),
+                "calibrated": True,
+                "mean_probabilities": {
+                    label: float(mean_scene[index])
+                    for index, label in enumerate(labels)
+                },
+            }
         return result
 
     def _encode_available(self, final: bool) -> int:

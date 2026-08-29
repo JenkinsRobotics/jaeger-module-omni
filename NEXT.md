@@ -1,5 +1,17 @@
 # Next steps — current plan
 
+The richer neural observation node is now packaged as
+`jaegeromni-41m-audio-perception`. Its four-way scene head passes a
+source-file-disjoint gate at 0.952 macro-F1 and its frozen ear retains 12/12;
+use it for shadow-mode live collection. Do not replace Silero or drive
+barge-in/endpoint policy from its event heads: unseen-meeting speaker-change
+and turn-end are only 0.088/0.254 F1. The next useful training data is labeled
+physical 1:1 conversation with true speech start, semantic completion,
+interruption intent, playback overlap, music, and household noise. Promotion
+requires event-level false alarms/minute and detection-delay gates, then a
+prefix-consistent streaming encoder; more framewise linear-head epochs are
+closed.
+
 The always-on companion control path is now implemented behind
 `--interaction-mode companion`: Gemma emits a fail-closed RESPOND/LISTEN
 decision from native audio, follow-up state is judged at speech start, and
