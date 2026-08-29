@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "kind": "causal_adapter_integrity",
+  "front_end": "jaegeromni-41m-causal-balanced",
+  "checkpoint": "e4ea88b9c99e",
+  "feature": "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-eval-v1/devclean/features/11ec77eed45b154e06cf.npy",
+  "input_frames_50hz": 293,
+  "output_frames_25hz": 146,
+  "prefix_frames": 73,
+  "causal_prefix_max_abs_drift": 3.814697265625e-06,
+  "causality_pass": true,
+  "self_speech_embedding_max_abs_delta": 4.590190410614014,
+  "self_speech_connected": true,
+  "heads": {
+    "speaker_change": {
+      "shape": [
+        146
+      ],
+      "min": -8.910017013549805,
+      "max": 1.8490077257156372
+    },
+    "overlap": {
+      "shape": [
+        146
+      ],
+      "min": -5.928426742553711,
+      "max": 2.744985818862915
+    },
+    "turn_end": {
+      "shape": [
+        146
+      ],
+      "min": -6.236919403076172,
+      "max": 1.5950250625610352
+    },
+    "speaker_id": {
+      "shape": [
+        146,
+        4
+      ],
+      "min": -1.0362006425857544,
+      "max": 1.3727643489837646
+    }
+  },
+  "calibration_validated": false
+}

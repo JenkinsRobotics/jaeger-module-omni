@@ -1,0 +1,86 @@
+{
+  "front_end": "stock_whisper_qwen_free",
+  "encoder": "openai/whisper-medium",
+  "adapter": "nodes/gemmaomni-41m-medium-final4000/weights/adapter.npz",
+  "evaluation_mode": "free_running_generation",
+  "teacher_forced": false,
+  "input_handoff": "audio_embeddings_no_transcript",
+  "adapter_sha256": "185bd7b3f6ce0c98d074a40ca96a6e6ea4ac2b3a1ba3ffe851dcd59cf67430c2",
+  "correct": 10,
+  "n": 12,
+  "median_ms": 506.3176670082612,
+  "rows": [
+    {
+      "case": "q00",
+      "ok": true,
+      "ms": 1636.991166989901,
+      "reply": "one is two plus two equals four"
+    },
+    {
+      "case": "q01",
+      "ok": true,
+      "ms": 457.8382500039879,
+      "reply": "The sky is blue."
+    },
+    {
+      "case": "q02",
+      "ok": true,
+      "ms": 509.7001250105677,
+      "reply": "there are seven days in a week."
+    },
+    {
+      "case": "q03",
+      "ok": true,
+      "ms": 515.8610420039622,
+      "reply": "The capital of France is Paris."
+    },
+    {
+      "case": "q04",
+      "ok": false,
+      "ms": 453.15012498758733,
+      "reply": "what is ten minus three"
+    },
+    {
+      "case": "q05",
+      "ok": true,
+      "ms": 498.7862920097541,
+      "reply": "a spider has eight legs."
+    },
+    {
+      "case": "q06",
+      "ok": true,
+      "ms": 493.5980419977568,
+      "reply": "The largest planet is Jupiter."
+    },
+    {
+      "case": "q07",
+      "ok": true,
+      "ms": 502.9352090059547,
+      "reply": "five times five is twenty-five."
+    },
+    {
+      "case": "q08",
+      "ok": true,
+      "ms": 410.33758300181944,
+      "reply": "fall"
+    },
+    {
+      "case": "q09",
+      "ok": true,
+      "ms": 545.3997919976246,
+      "reply": "there are twenty four hours in a day."
+    },
+    {
+      "case": "q10",
+      "ok": true,
+      "ms": 556.4616670017131,
+      "reply": "The freezing point of water is zero degrees Celsius."
+    },
+    {
+      "case": "q11",
+      "ok": false,
+      "ms": 517.9073330073152,
+      "reply": "who wrote romeo and juliet"
+    }
+  ]
+}

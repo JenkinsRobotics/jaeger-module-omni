@@ -82,7 +82,7 @@ Return:
 
 1. a concise verdict on current production readiness;
 2. findings ordered by severity, with file/line or artifact evidence;
-3. a corrected five-model comparison table if any listed claim is unsupported;
+3. a corrected current-model comparison table if any listed claim is unsupported;
 4. CPU-only fixes or analyses that can be completed before the next GPU window;
 5. the smallest high-information next GPU experiment for Medium, followed by
    the corresponding Large plan only after Medium is understood;

@@ -1,0 +1,25 @@
+{
+  "date": "2026-08-28",
+  "evaluation_mode": "free_running_corpus_wer",
+  "teacher_forced": false,
+  "selection_rule": "Choose the smallest imported-candidate weight that materially improves AMI without adding more than two dev-clean edits; run all remaining gates only once for the selected point.",
+  "base": {
+    "name": "JaegerOmni 41M Medium",
+    "devclean64": {"edits": 46, "reference_words": 955, "wer": 0.048167539267015703},
+    "ami64": {"edits": 222, "reference_words": 673, "wer": 0.3298662704309064}
+  },
+  "imported": {
+    "name": "GemmaOmni 41M Medium final4000",
+    "devclean64": {"edits": 65, "reference_words": 955, "wer": 0.06806282722513089},
+    "ami64": {"edits": 154, "reference_words": 673, "wer": 0.2288261515601783}
+  },
+  "sweep": [
+    {"alpha": 0.05, "devclean64_edits": 48, "devclean64_wer": 0.050261780104712044, "ami64_edits": 211, "ami64_wer": 0.3135215453194651},
+    {"alpha": 0.10, "devclean64_edits": 48, "devclean64_wer": 0.050261780104712044, "ami64_edits": 198, "ami64_wer": 0.29420505200594355},
+    {"alpha": 0.15, "devclean64_edits": 48, "devclean64_wer": 0.050261780104712044, "ami64_edits": 190, "ami64_wer": 0.2823179791976226, "selected": true},
+    {"alpha": 0.20, "devclean64_edits": 49, "devclean64_wer": 0.05130890052356021, "ami64_edits": 187, "ami64_wer": 0.27786032689450224},
+    {"alpha": 0.35, "devclean64_edits": 55, "devclean64_wer": 0.05759162303664921, "ami64_edits": 172, "ami64_wer": 0.2555720653789004},
+    {"alpha": 0.50, "devclean64_edits": 53, "devclean64_wer": 0.05549738219895288, "ami64_edits": 169, "ami64_wer": 0.2511144130757801}
+  ],
+  "selected_sha256": "e4ea88b9c99e2b4d5ef8613d881848c1e9c444785c4821cacf31de2ac504c819"
+}

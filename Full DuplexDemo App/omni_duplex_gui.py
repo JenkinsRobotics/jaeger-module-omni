@@ -1160,20 +1160,9 @@ class OmniDuplexWindow(QMainWindow):
 
         row = QHBoxLayout()
         self.front_end_combo = QComboBox()
-        self.front_end_combo.addItem(
-            "Gemma Native · duplex-validated fallback", "gemma-native")
-        self.front_end_combo.addItem(
-            "GemmaOmni 41M Medium · imported · 12/12",
-            "gemmaomni-41m-medium")
-        self.front_end_combo.addItem(
-            "JaegerOmni 41M Medium · meeting candidate · 12/12",
-            "jaegeromni-41m-medium")
-        self.front_end_combo.addItem(
-            "JaegerOmni 50M Medium · 11/12 · 319 ms",
-            "jaegeromni-50m-medium")
-        self.front_end_combo.addItem(
-            "JaegerOmni 50M Large · experimental · 1/12",
-            "jaegeromni-50m-large")
+        for model_id, spec in JAEGER_FRONT_ENDS.items():
+            self.front_end_combo.addItem(
+                f"{spec.label} · {spec.status}", model_id)
         row.addWidget(QLabel("audio input:"))
         row.addWidget(self.front_end_combo)
         self.lang_combo = QComboBox()
@@ -1644,7 +1633,7 @@ def check() -> int:
     }
     if selected_ids != set(JAEGER_FRONT_ENDS):
         problems.append(
-            "audio selector does not expose exactly the five canonical models")
+            "audio selector does not expose exactly the canonical models")
     if not JAEGER_MODEL.exists():
         problems.append(f"Jaeger model missing: {JAEGER_MODEL}")
     for model_id, spec in JAEGER_FRONT_ENDS.items():

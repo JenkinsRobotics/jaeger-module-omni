@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "kind": "jaeger_audio_node",
+  "id": "gemmaomni-41m-medium-final4000",
+  "runtime": "stock_whisper_gemma",
+  "slot": "audio_perception",
+  "enabled_by_default": false,
+  "consumes": [
+    "pcm_s16le_16khz_mono",
+    "self_speech_flag_25hz"
+  ],
+  "produces": [
+    "gemma_audio_embeddings_2560",
+    "speaker_change_logit_25hz",
+    "overlap_logit_25hz",
+    "turn_end_logit_25hz",
+    "speaker_identity_logits_25hz"
+  ],
+  "status": "imported_meeting_specialist_validation_pending",
+  "implementation": "runtime.py:build",
+  "encoder": {
+    "id": "openai/whisper-medium",
+    "revision": "abdf7c39ab9d0397620ccaea8974cc764cd0953e",
+    "path": "weights/encoder",
+    "weights_sha256": "62f73550fa6db24b0c6f6c5962bd0dae80fa644e93cde9cd9c3792971b47fd28",
+    "boundary": "stock_whisper_encoder_50hz",
+    "output_dim": 1024,
+    "decoder_runtime": false
+  },
+  "adapter": {
+    "path": "weights/adapter.npz",
+    "sha256": "185bd7b3f6ce0c98d074a40ca96a6e6ea4ac2b3a1ba3ffe851dcd59cf67430c2",
+    "architecture": "streaming_causal_v1",
+    "parameters": 40933916,
+    "trunk_parameters": 40915456,
+    "pool_step": 2,
+    "attention": "causal",
+    "lineage": "qwen_free"
+  },
+  "backbone": {
+    "family": "gemma-4-e4b",
+    "runtime_variant": "gemma-4-E4B-it-4bit-mlx",
+    "frozen": true
+  },
+  "training": {
+    "source": "VoiceLLM-Playground/Omni Model/gemmaomni",
+    "source_checkpoint": "checkpoints/adapter_final_heads.npz",
+    "base": "adapter_balanced.step004000.npz",
+    "steps": 4000,
+    "mix_hours": 120,
+    "prompt_variety": true,
+    "read_floor": 0.16,
+    "heads_steps": 6000,
+    "heads_data": "real AMI overlap",
+    "checkpoint_selection": "final scheduled step"
+  },
+  "source_evaluation": {
+    "mode": "free_running_generation",
+    "teacher_forced": false,
+    "devclean64_wer": 0.06492146596858639,
+    "mindsvox591_wer": 0.1305598356445814,
+    "clean360val128_wer": 0.06451612903225806,
+    "novelvox128_wer": 0.07572540693559802,
+    "ami64_wer": 0.2303120356612184,
+    "cases12_correct": 8,
+    "cases12_total": 12,
+    "bargein_overlap_best_f1": 0.814,
+    "testclean2603_wer": null
+  },
+  "jaeger_reproduction": {
+    "mode": "free_running_generation",
+    "teacher_forced": false,
+    "token_budget_tokens_per_second": 12.0,
+    "devclean64_wer": 0.06806282722513089,
+    "mindsvox591_wer": 0.13188167625308134,
+    "clean360val128_wer": 0.06345267635590217,
+    "novelvox128_wer": 0.07572540693559802,
+    "ami64_wer": 0.2288261515601783,
+    "cases12_default64_correct": 10,
+    "cases12_default64_total": 12,
+    "cases12_default64_median_ms": 506.3156250037133,
+    "cases12_repeated_correct": 22,
+    "cases12_repeated_total": 24,
+    "turn_end_to_complete_reply_median_ms": 547.6257925001846,
+    "causal_prefix_max_abs_drift": 4.76837158203125e-06,
+    "self_speech_connected": true,
+    "perception_head_shapes_finite": true
+  },
+  "known_limitations": [
+    "source cases12 regressed from 12/12 to 8/12 because all prompt-variety targets were transcription targets",
+    "test-clean lockbox remains sealed in the source repo",
+    "causal attention recomputes the prefix and has no KV cache",
+    "Jaeger physical-room AEC remains a separate production blocker"
+  ]
+}

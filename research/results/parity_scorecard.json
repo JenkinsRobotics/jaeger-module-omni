@@ -108,14 +108,14 @@
         "source": "research/results/jaegeromni-41m-production-cases12-20260828.json"
       },
       "devclean_wer": {
-        "value": 0.049214659685863874,
+        "value": 0.048167539267015703,
         "n": 64,
-        "source": "research/candidate_evals/cleanroom41m-room-alpha10-20260827-devclean64.json"
+        "source": "research/candidate_evals/jaegeromni-41m-budget12-20260828-devclean64.json"
       },
       "ami_wer": {
-        "value": 0.34175334323922735,
+        "value": 0.3298662704309064,
         "n": 64,
-        "source": "research/candidate_evals/cleanroom41m-room-alpha10-20260827-ami64.json"
+        "source": "research/candidate_evals/jaegeromni-41m-budget12-20260828-ami64.json"
       },
       "testclean_wer": {
         "value": 0.03971857886223227,
@@ -133,6 +133,82 @@
         "source": "Full DuplexDemo App/runtime/reports/20260827-jaegeromni41m-alpha10-ami5m-cadence12.json"
       },
       "core_ear_status": "behind"
+    },
+    {
+      "id": "gemmaomni-41m-final4000",
+      "name": "GemmaOmni 41M Final 4000",
+      "checkpoint": "185bd7b3f6ce0c98d074a40ca96a6e6ea4ac2b3a1ba3ffe851dcd59cf67430c2",
+      "cases12": {
+        "correct": 10,
+        "n": 12,
+        "accuracy": 0.8333333333333334,
+        "status": "behind",
+        "source": "research/candidate_evals/gemmaomni-final4000-budget12-20260828-cases12.json"
+      },
+      "answer_latency_ms": {
+        "value": 506.3176670082612,
+        "status": "surpassed",
+        "source": "research/candidate_evals/gemmaomni-final4000-budget12-20260828-cases12.json"
+      },
+      "devclean_wer": {
+        "value": 0.06806282722513089,
+        "n": 64,
+        "source": "research/candidate_evals/gemmaomni-final4000-budget12-20260828-devclean64.json"
+      },
+      "ami_wer": {
+        "value": 0.2288261515601783,
+        "n": 64,
+        "source": "research/candidate_evals/gemmaomni-final4000-budget12-20260828-ami64.json"
+      },
+      "testclean_wer": null,
+      "first_audio_ms": {
+        "value": null,
+        "status": "unmeasured",
+        "source": null
+      },
+      "five_minute_physical": {
+        "status": "unmeasured",
+        "source": null
+      },
+      "core_ear_status": "behind"
+    },
+    {
+      "id": "jaegeromni-41m-causal-balanced",
+      "name": "JaegerOmni 41M Causal Balanced",
+      "checkpoint": "e4ea88b9c99e2b4d5ef8613d881848c1e9c444785c4821cacf31de2ac504c819",
+      "cases12": {
+        "correct": 12,
+        "n": 12,
+        "accuracy": 1.0,
+        "status": "parity",
+        "source": "research/candidate_evals/jaeger-gemma-causal-a0.15-budget12-20260828-cases12.json"
+      },
+      "answer_latency_ms": {
+        "value": 501.8913964959211,
+        "status": "surpassed",
+        "source": "research/candidate_evals/jaeger-gemma-causal-a0.15-budget12-20260828-cases12.json"
+      },
+      "devclean_wer": {
+        "value": 0.050261780104712044,
+        "n": 64,
+        "source": "research/candidate_evals/jaeger-gemma-causal-a0.15-budget12-20260828-devclean64.json"
+      },
+      "ami_wer": {
+        "value": 0.2823179791976226,
+        "n": 64,
+        "source": "research/candidate_evals/jaeger-gemma-causal-a0.15-budget12-20260828-ami64.json"
+      },
+      "testclean_wer": null,
+      "first_audio_ms": {
+        "value": null,
+        "status": "unmeasured",
+        "source": null
+      },
+      "five_minute_physical": {
+        "status": "unmeasured",
+        "source": null
+      },
+      "core_ear_status": "parity accuracy + faster"
     },
     {
       "id": "jaegeromni-50m-medium",
@@ -224,5 +300,5 @@
       "source": "research/results/overlap_lab.json"
     }
   },
-  "verdict": "GemmaOmni 41M Medium is the current core-ear leader: 12/12 matches MiniCPM and 501 ms is faster than the 525 ms reference. JaegerOmni 41M now independently matches cases12 at 12/12, but its 560 ms answer latency is behind the reference. It is the broad lockbox leader at 3.97% free-running WER and has a zero-drop direct five-minute context-roll run. Jaeger has not surpassed MiniCPM as a complete system: physical five-minute reports are absent, speaker separation is failed, the broad AEC stress gate fails, speech still crosses decoded text into Kokoro, and Jaeger vision is not connected."
+  "verdict": "GemmaOmni 41M Medium is the current core-ear leader: 12/12 matches MiniCPM and 501 ms is faster than the 525 ms reference. JaegerOmni 41M independently matches cases12 at 12/12, but its 560 ms answer latency is behind the reference. The new causal-balanced Jaeger checkpoint retains 12/12 at 502 ms and reduces AMI to 28.23%, but its perception heads still require post-blend calibration. The frozen Jaeger 41M remains the broad lockbox leader at 3.97% free-running WER and has a zero-drop direct five-minute context-roll run. Jaeger has not surpassed MiniCPM as a complete system: physical five-minute reports are absent, speaker separation is failed, the broad AEC stress gate fails, speech still crosses decoded text into Kokoro, and Jaeger vision is not connected."
 }

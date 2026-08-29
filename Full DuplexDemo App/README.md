@@ -27,11 +27,13 @@ microphone → selected audio ear → rolling Gemma cache → response tokens
 The camera control is enabled only for the optional MiniCPM reference. Jaeger's
 vision path is not connected in this demo, and the UI does not pretend it is.
 
-The Jaeger audio selector exposes exactly five active model identities:
+The Jaeger audio selector exposes exactly seven active model identities:
 
 - **Gemma Native**;
 - **GemmaOmni 41M Medium** (the frozen checkpoint currently imported here);
+- **GemmaOmni 41M Final 4000** (latest causal meeting specialist);
 - **JaegerOmni 41M Medium**;
+- **JaegerOmni 41M Causal Balanced** (full-duplex development candidate);
 - **JaegerOmni 50M Medium**;
 - **JaegerOmni 50M Large** (clearly marked experimental).
 
@@ -97,7 +99,7 @@ The five-minute room stress recipe is:
   --threshold 0.20 --silence-ms 700 --cooldown 20 --max-context 6000
 ```
 
-Use the complete sequential five-model matrix in
+Use the complete sequential seven-model matrix in
 [`../PRODUCTION_TESTING.md`](../PRODUCTION_TESTING.md). Old `tower`, `stock`,
 and `cleanroom` values remain accepted as compatibility aliases.
 

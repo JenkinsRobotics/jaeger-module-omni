@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "kind": "jaeger_audio_node",
+  "id": "jaegeromni-41m-causal-balanced",
+  "runtime": "stock_whisper_gemma",
+  "slot": "audio_perception",
+  "enabled_by_default": false,
+  "consumes": [
+    "pcm_s16le_16khz_mono",
+    "self_speech_flag_25hz"
+  ],
+  "produces": [
+    "gemma_audio_embeddings_2560",
+    "unvalidated_perception_logits_25hz"
+  ],
+  "status": "development_causal_quality_validated_heads_pending",
+  "implementation": "runtime.py:build",
+  "encoder": {
+    "id": "openai/whisper-medium",
+    "revision": "abdf7c39ab9d0397620ccaea8974cc764cd0953e",
+    "path": "weights/encoder",
+    "weights_sha256": "62f73550fa6db24b0c6f6c5962bd0dae80fa644e93cde9cd9c3792971b47fd28",
+    "boundary": "stock_whisper_encoder_50hz",
+    "output_dim": 1024,
+    "decoder_runtime": false
+  },
+  "adapter": {
+    "path": "weights/adapter.npz",
+    "sha256": "e4ea88b9c99e2b4d5ef8613d881848c1e9c444785c4821cacf31de2ac504c819",
+    "architecture": "streaming_causal_v1",
+    "parameters": 40933916,
+    "trunk_parameters": 40915456,
+    "pool_step": 2,
+    "attention": "causal",
+    "lineage": "qwen_free"
+  },
+  "backbone": {
+    "family": "gemma-4-e4b",
+    "runtime_variant": "gemma-4-E4B-it-4bit-mlx",
+    "frozen": true
+  },
+  "construction": {
+    "method": "checkpoint_interpolation",
+    "base": "jaegeromni-41m-medium",
+    "base_weight": 0.85,
+    "candidate": "gemmaomni-41m-medium-final4000",
+    "candidate_weight": 0.15,
+    "output_architecture": "streaming_causal_v1",
+    "selection_gates": ["devclean64", "ami64"]
+  },
+  "evaluation": {
+    "mode": "free_running_generation",
+    "teacher_forced": false,
+    "token_budget_tokens_per_second": 12.0,
+    "devclean64_wer": 0.05026178010471204,
+    "mindsvox591_wer": 0.1459531635168447,
+    "clean360val128_wer": 0.04891882311237151,
+    "novelvox128_wer": 0.0927105449398443,
+    "ami64_wer": 0.2823179791976226,
+    "cases12_correct": 12,
+    "cases12_total": 12,
+    "cases12_median_ms_unwarmed": 501.8913964959211,
+    "cases12_repeated_correct": 24,
+    "cases12_repeated_total": 24,
+    "turn_end_to_complete_reply_median_ms": 574.2359169962583,
+    "causal_prefix_max_abs_drift": 3.814697265625e-06,
+    "self_speech_connected": true,
+    "perception_head_shapes_finite": true,
+    "perception_heads": "revalidation_required_after_trunk_blend"
+  },
+  "known_limitations": [
+    "two more dev-clean edits than jaegeromni-41m-medium",
+    "perception-head calibration has not been rerun after trunk interpolation",
+    "causal attention recomputes the prefix and has no KV cache",
+    "physical-room AEC remains a separate production blocker"
+  ]
+}

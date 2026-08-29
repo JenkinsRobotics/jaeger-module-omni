@@ -9,6 +9,8 @@
         "campplus-speaker"
       ],
       "disabled": [
+        "jaegeromni-41m-causal-balanced",
+        "gemmaomni-41m-medium-final4000",
         "stock-whisper-medium-cleanroom-ctx93h-step2000",
         "jaegeromni-41m-medium",
         "stock-whisper-medium-cekl-blend50",
@@ -26,6 +28,8 @@
         "campplus-speaker"
       ],
       "disabled": [
+        "jaegeromni-41m-causal-balanced",
+        "gemmaomni-41m-medium-final4000",
         "stock-whisper-medium-cleanroom-ctx93h-step2000",
         "jaegeromni-41m-medium",
         "stock-whisper-large-v3-turbo50m",
@@ -42,6 +46,8 @@
         "campplus-speaker"
       ],
       "disabled": [
+        "jaegeromni-41m-causal-balanced",
+        "gemmaomni-41m-medium-final4000",
         "jaegeromni-41m-medium",
         "stock-whisper-medium-cekl-blend50",
         "stock-whisper-large-v3-turbo50m",
@@ -58,6 +64,8 @@
         "campplus-speaker"
       ],
       "disabled": [
+        "jaegeromni-41m-causal-balanced",
+        "gemmaomni-41m-medium-final4000",
         "stock-whisper-medium-cleanroom-ctx93h-step2000",
         "stock-whisper-medium-cekl-blend50",
         "stock-whisper-large-v3-turbo50m",
@@ -74,6 +82,8 @@
         "campplus-speaker"
       ],
       "disabled": [
+        "jaegeromni-41m-causal-balanced",
+        "gemmaomni-41m-medium-final4000",
         "stock-whisper-medium-cleanroom-ctx93h-step2000",
         "jaegeromni-41m-medium",
         "stock-whisper-medium-cekl-blend50",
@@ -89,6 +99,8 @@
         "gemma-4-e4b-cognition"
       ],
       "disabled": [
+        "jaegeromni-41m-causal-balanced",
+        "gemmaomni-41m-medium-final4000",
         "stock-whisper-medium-cleanroom-ctx93h-step2000",
         "jaegeromni-41m-medium",
         "stock-whisper-medium-cekl-blend50",
@@ -106,6 +118,8 @@
         "campplus-speaker"
       ],
       "disabled": [
+        "jaegeromni-41m-causal-balanced",
+        "gemmaomni-41m-medium-final4000",
         "stock-whisper-medium-cleanroom-ctx93h-step2000",
         "jaegeromni-41m-medium",
         "stock-whisper-medium-cekl-blend50",
@@ -113,6 +127,42 @@
         "whisper-medium-stt",
         "whisper-large-v3-turbo-stt",
         "kokoro-tts"
+      ]
+    },
+    "gemmaomni-final4000-development": {
+      "enabled": [
+        "gemmaomni-41m-medium-final4000",
+        "gemma-4-e4b-cognition",
+        "kokoro-tts",
+        "campplus-speaker"
+      ],
+      "disabled": [
+        "jaegeromni-41m-causal-balanced",
+        "stock-whisper-medium-cleanroom-ctx93h-step2000",
+        "jaegeromni-41m-medium",
+        "stock-whisper-medium-cekl-blend50",
+        "stock-whisper-large-v3-turbo50m",
+        "whisper-medium-stt",
+        "whisper-large-v3-turbo-stt",
+        "gemma-minicpm-hidden-talker"
+      ]
+    },
+    "jaegeromni-causal-balanced-development": {
+      "enabled": [
+        "jaegeromni-41m-causal-balanced",
+        "gemma-4-e4b-cognition",
+        "kokoro-tts",
+        "campplus-speaker"
+      ],
+      "disabled": [
+        "gemmaomni-41m-medium-final4000",
+        "stock-whisper-medium-cleanroom-ctx93h-step2000",
+        "jaegeromni-41m-medium",
+        "stock-whisper-medium-cekl-blend50",
+        "stock-whisper-large-v3-turbo50m",
+        "whisper-medium-stt",
+        "whisper-large-v3-turbo-stt",
+        "gemma-minicpm-hidden-talker"
       ]
     }
   }

@@ -1,6 +1,6 @@
 # Full-duplex production test
 
-This is the locked live comparison for the five active Jaeger audio-model
+This is the locked live comparison for the seven active Jaeger audio-model
 identities. Run one command at a time against the same WAV, machine state, and
 settings. Never compare a teacher-forced result or change the downstream
 Gemma/Kokoro/AEC worker between ears.
@@ -38,7 +38,7 @@ git diff --check
 ```
 
 The model catalog is shared by `omni.py`, `jaeger_agent_omni.demo`,
-`jaeger_agent_omni.live`, and the full-duplex GUI. All accept the same five
+`jaeger_agent_omni.live`, and the full-duplex GUI. All accept the same seven
 canonical identities; old `tower`, `stock`, and `cleanroom` values are aliases
 only.
 
@@ -53,7 +53,9 @@ COMMON="--seconds 300 --threshold 0.20 --silence-ms 700 --cooldown 20 --max-cont
 
 ./.venv/bin/python demo.py --selftest-jaeger ROOM.wav --front-end gemma-native $COMMON
 ./.venv/bin/python demo.py --selftest-jaeger ROOM.wav --front-end gemmaomni-41m-medium $COMMON
+./.venv/bin/python demo.py --selftest-jaeger ROOM.wav --front-end gemmaomni-41m-final4000 $COMMON
 ./.venv/bin/python demo.py --selftest-jaeger ROOM.wav --front-end jaegeromni-41m-medium $COMMON
+./.venv/bin/python demo.py --selftest-jaeger ROOM.wav --front-end jaegeromni-41m-causal-balanced $COMMON
 ./.venv/bin/python demo.py --selftest-jaeger ROOM.wav --front-end jaegeromni-50m-medium $COMMON
 ./.venv/bin/python demo.py --selftest-jaeger ROOM.wav --front-end jaegeromni-50m-large $COMMON
 ```

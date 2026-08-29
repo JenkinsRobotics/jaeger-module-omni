@@ -66,9 +66,21 @@ FRONT_END_SPECS = (
               "stock-whisper-medium-cleanroom-ctx93h-step2000"),
         "best general accuracy; five-minute gate pending"),
     FrontEndSpec(
+        "gemmaomni-41m-final4000", "GemmaOmni 41M Final 4000", "stock",
+        _node("JAEGER_GEMMAOMNI_FINAL4000_NODE",
+              "gemmaomni-41m-medium-final4000"),
+        "imported causal meeting specialist; validation pending",
+        production_candidate=False),
+    FrontEndSpec(
         "jaegeromni-41m-medium", "JaegerOmni 41M Medium", "stock",
         _node("JAEGER_41M_MEDIUM_NODE", "jaegeromni-41m-medium"),
         "broad-corpus winner; five-minute gate pending"),
+    FrontEndSpec(
+        "jaegeromni-41m-causal-balanced",
+        "JaegerOmni 41M Causal Balanced", "stock",
+        _node("JAEGER_41M_CAUSAL_NODE", "jaegeromni-41m-causal-balanced"),
+        "causal multidomain candidate; perception heads pending",
+        production_candidate=False),
     FrontEndSpec(
         "jaegeromni-50m-medium", "JaegerOmni 50M Medium", "stock",
         _node("JAEGER_STOCK_NODE", "stock-whisper-medium-cekl-blend50"),
@@ -138,8 +150,8 @@ def front_end_choices(include_aliases: bool = True) -> tuple[str, ...]:
 
 def demo() -> None:
     """Model-free catalog contract used by the CPU check suite."""
-    assert len(FRONT_END_SPECS) == 5
-    assert len(FRONT_ENDS) == 5
+    assert len(FRONT_END_SPECS) == 7
+    assert len(FRONT_ENDS) == 7
     assert canonical_id("tower") == "gemma-native"
     assert canonical_id("stock") == "jaegeromni-50m-medium"
     assert canonical_id("cleanroom") == "gemmaomni-41m-medium"
@@ -151,7 +163,9 @@ def demo() -> None:
     else:
         raise AssertionError("native ear must reject a silent adapter override")
     assert not FRONT_ENDS["jaegeromni-50m-large"].production_candidate
-    print("model_catalog: five canonical ears, aliases, and identities OK")
+    assert not FRONT_ENDS["gemmaomni-41m-final4000"].production_candidate
+    assert not FRONT_ENDS["jaegeromni-41m-causal-balanced"].production_candidate
+    print("model_catalog: seven canonical ears, aliases, and identities OK")
 
 
 if __name__ == "__main__":

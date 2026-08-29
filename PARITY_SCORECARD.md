@@ -14,7 +14,9 @@ Generated from checkpoint-pinned artifacts. A two-percent tolerance prevents tim
 | --- | --- | ---: | --- | ---: | --- | ---: | --- | ---: | ---: | ---: | --- | --- |
 | Gemma Native | `built-in` | 10/12 | BEHIND | 363 ms | SURPASSED | — | UNMEASURED | — | — | — | UNMEASURED | BEHIND |
 | GemmaOmni 41M Medium | `0fec52869087` | 12/12 | PARITY | 501 ms | SURPASSED | — | UNMEASURED | 4.92% | 34.47% | — | UNMEASURED | PARITY + FASTER |
-| JaegerOmni 41M Medium | `a7f96bfb8898` | 12/12 | PARITY | 560 ms | BEHIND | 1044 ms | NOT COMPARABLE | 4.92% | 34.18% | 3.97% | UNMEASURED | BEHIND |
+| JaegerOmni 41M Medium | `a7f96bfb8898` | 12/12 | PARITY | 560 ms | BEHIND | 1044 ms | NOT COMPARABLE | 4.82% | 32.99% | 3.97% | UNMEASURED | BEHIND |
+| GemmaOmni 41M Final 4000 | `185bd7b3f6ce` | 10/12 | BEHIND | 506 ms | SURPASSED | — | UNMEASURED | 6.81% | 22.88% | — | UNMEASURED | BEHIND |
+| JaegerOmni 41M Causal Balanced | `e4ea88b9c99e` | 12/12 | PARITY | 502 ms | SURPASSED | — | UNMEASURED | 5.03% | 28.23% | — | UNMEASURED | PARITY + FASTER |
 | JaegerOmni 50M Medium | `b889e5b48565` | 11/12 | BEHIND | 319 ms | SURPASSED | — | UNMEASURED | 11.20% | 47.85% | 10.68% | UNMEASURED | BEHIND |
 | JaegerOmni 50M Large | `3633baa083d4` | 1/12 | BEHIND | 413 ms | SURPASSED | — | UNMEASURED | 17.80% | — | — | UNMEASURED | BEHIND |
 
@@ -31,7 +33,7 @@ Generated from checkpoint-pinned artifacts. A two-percent tolerance prevents tim
 
 ## Current verdict
 
-GemmaOmni 41M Medium is the current core-ear leader: 12/12 matches MiniCPM and 501 ms is faster than the 525 ms reference. JaegerOmni 41M now independently matches cases12 at 12/12, but its 560 ms answer latency is behind the reference. It is the broad lockbox leader at 3.97% free-running WER and has a zero-drop direct five-minute context-roll run. Jaeger has not surpassed MiniCPM as a complete system: physical five-minute reports are absent, speaker separation is failed, the broad AEC stress gate fails, speech still crosses decoded text into Kokoro, and Jaeger vision is not connected.
+GemmaOmni 41M Medium is the current core-ear leader: 12/12 matches MiniCPM and 501 ms is faster than the 525 ms reference. JaegerOmni 41M independently matches cases12 at 12/12, but its 560 ms answer latency is behind the reference. The new causal-balanced Jaeger checkpoint retains 12/12 at 502 ms and reduces AMI to 28.23%, but its perception heads still require post-blend calibration. The frozen Jaeger 41M remains the broad lockbox leader at 3.97% free-running WER and has a zero-drop direct five-minute context-roll run. Jaeger has not surpassed MiniCPM as a complete system: physical five-minute reports are absent, speaker separation is failed, the broad AEC stress gate fails, speech still crosses decoded text into Kokoro, and Jaeger vision is not connected.
 
 Jaeger may be called *surpassed* only after one checkpoint retains cases12 parity, is faster on the same harness, passes the locked clean/meeting gates, and passes repeated physical five-minute duplex runs. Full Omni superiority additionally requires native expressive speech and connected vision.
 

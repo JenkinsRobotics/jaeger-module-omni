@@ -1,0 +1,406 @@
+{
+  "adapter": "nodes/gemmaomni-41m-medium-final4000/weights/adapter.npz",
+  "split": "ami5_train_validation",
+  "adapter_sha256": "185bd7b3f6ce0c98d074a40ca96a6e6ea4ac2b3a1ba3ffe851dcd59cf67430c2",
+  "encoder": "openai/whisper-medium",
+  "evaluation_mode": "free_running_generation",
+  "teacher_forced": false,
+  "input_handoff": "audio_embeddings_no_transcript",
+  "token_budget": {
+    "tokens_per_second": 12.0,
+    "floor": 24,
+    "source": "measured_speech_rate_p99_with_headroom"
+  },
+  "id_file": "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-expanded-v1/ami5_train_validation/manifest.jsonl",
+  "source_prefix": null,
+  "n": 64,
+  "wer": 0.2288261515601783,
+  "edits": 154,
+  "reference_words": 673,
+  "rows": [
+    {
+      "id": "f34b8a1a146f",
+      "reference": "where about just in appleton tower",
+      "hypothesis": "well about just in fact and tell",
+      "wer": 0.6666666666666666
+    },
+    {
+      "id": "081fdf58f057",
+      "reference": "but why don't we just write it as a new x. m. l. file",
+      "hypothesis": "well why don't we just write it in a new excel file",
+      "wer": 0.35714285714285715
+    },
+    {
+      "id": "eccc3b9c2ac6",
+      "reference": "but i don't think it will be very hard",
+      "hypothesis": "but i don't think it will be very hard",
+      "wer": 0.0
+    },
+    {
+      "id": "87e6e7f7ed4e",
+      "reference": "it's not t. f. i. d. f. it's just inverse document frequency",
+      "hypothesis": "it's not t f i d f it's just in verse document frequency",
+      "wer": 0.16666666666666666
+    },
+    {
+      "id": "382e0c76e7fe",
+      "reference": "like um yeah for each word or whatever but across the whole lot is what i mean by highest level",
+      "hypothesis": "like um yeah for each word or whatever but across the whole lot is what i mean by highest level",
+      "wer": 0.0
+    },
+    {
+      "id": "0d2032e1d0f8",
+      "reference": "and then averaging it over the utterances",
+      "hypothesis": "and then averaging it over the utterances",
+      "wer": 0.0
+    },
+    {
+      "id": "fe9f43f5b209",
+      "reference": "it's like that's one the papers i read",
+      "hypothesis": "it's like that's one the papers i read",
+      "wer": 0.0
+    },
+    {
+      "id": "0f77c0823da4",
+      "reference": "that would be really useful",
+      "hypothesis": "that would be really easy so",
+      "wer": 0.4
+    },
+    {
+      "id": "5d396828e56e",
+      "reference": "um well i'll be there from twelve",
+      "hypothesis": "um well i'll be there from twelve",
+      "wer": 0.0
+    },
+    {
+      "id": "3bf8949767cc",
+      "reference": "i would've thought that um i think all the collections and things implement serializable already",
+      "hypothesis": "i would have thought the um i think all the collections and things implement serialisable already",
+      "wer": 0.26666666666666666
+    },
+    {
+      "id": "6d4f85bf5849",
+      "reference": "i don't think it's really that much of a problem because if it's too big what we can do is just well all the off line stuff doesn't really matter",
+      "hypothesis": "i don't think it's really that much of a problem because if it's too big what we can do is just well all the offline stuff doesn't really matter",
+      "wer": 0.06666666666666667
+    },
+    {
+      "id": "462176bf88cb",
+      "reference": "i i dry read it the last time",
+      "hypothesis": "uh i i tried it last time so",
+      "wer": 0.625
+    },
+    {
+      "id": "3817d4e313b3",
+      "reference": "uh i'll be in um the appleton tower anyway",
+      "hypothesis": "i'll be in um the afterton tower anyway",
+      "wer": 0.2222222222222222
+    },
+    {
+      "id": "0708e2cb034b",
+      "reference": "might be wordnet",
+      "hypothesis": "might be word net",
+      "wer": 0.6666666666666666
+    },
+    {
+      "id": "bf404427b6c9",
+      "reference": "'cause that'd be really useful is if we had a big directory",
+      "hypothesis": "'cause that would be really useful as if we had a big directory",
+      "wer": 0.25
+    },
+    {
+      "id": "11db5233ea73",
+      "reference": "'cause i'm off all friday",
+      "hypothesis": "so much for friday",
+      "wer": 0.8
+    },
+    {
+      "id": "d5e5f2abc292",
+      "reference": "are you free after this",
+      "hypothesis": "they three of this",
+      "wer": 0.8
+    },
+    {
+      "id": "cb964e5bdb64",
+      "reference": "i mean it's impossible",
+      "hypothesis": "al least impossible",
+      "wer": 0.75
+    },
+    {
+      "id": "316a2abb5d57",
+      "reference": "and as long as your algorithm respects that then we can just",
+      "hypothesis": "as long as your algorithm respects that then we can",
+      "wer": 0.16666666666666666
+    },
+    {
+      "id": "db49cb1d34bf",
+      "reference": "it doesn't matter 'cause all the calculation's done off line",
+      "hypothesis": "but it doesn't matter 'cause all the calculations done offline",
+      "wer": 0.4
+    },
+    {
+      "id": "882ca282ec3f",
+      "reference": "yeah that's the other th",
+      "hypothesis": "yeah i shall",
+      "wer": 0.8
+    },
+    {
+      "id": "7ae47b448b23",
+      "reference": "that's easy",
+      "hypothesis": "so it",
+      "wer": 1.0
+    },
+    {
+      "id": "45fdb8b1d78f",
+      "reference": "but the actual stuff it's doing will be on line",
+      "hypothesis": "but the actual stuff is doing a be online",
+      "wer": 0.4
+    },
+    {
+      "id": "f8d821e4e6d7",
+      "reference": "and like the utterances come off of here maybe",
+      "hypothesis": "and like the utterances come off of here maybe",
+      "wer": 0.0
+    },
+    {
+      "id": "742d0a3dd93b",
+      "reference": "well all you really wanna do is look into getting some sub set of the icsi corpus off the dice machines",
+      "hypothesis": "well what you really want to do is look into getting some subset of the x c corpus off the dice machines",
+      "wer": 0.3333333333333333
+    },
+    {
+      "id": "42b25d1c4ddd",
+      "reference": "but um",
+      "hypothesis": "yeah",
+      "wer": 1.0
+    },
+    {
+      "id": "0cb94f082f25",
+      "reference": "i think we probably want to store sorry",
+      "hypothesis": "i think we probably want to store",
+      "wer": 0.125
+    },
+    {
+      "id": "cf1e0a329d5d",
+      "reference": "yeah",
+      "hypothesis": "yeah",
+      "wer": 0.0
+    },
+    {
+      "id": "9a49d64c3881",
+      "reference": "um yeah",
+      "hypothesis": "um yeah",
+      "wer": 0.0
+    },
+    {
+      "id": "a6acc051c018",
+      "reference": "i mean i don't see why that's really a big problem",
+      "hypothesis": "i mean i see why that's really a big problem",
+      "wer": 0.09090909090909091
+    },
+    {
+      "id": "b0a0c23fb798",
+      "reference": "and like just being able to scroll through it or something like that",
+      "hypothesis": "and like just being able to scroll through it or something like that",
+      "wer": 0.0
+    },
+    {
+      "id": "427a229d01c8",
+      "reference": "um well that's the t are you using t. f. i. d. f. for the information density",
+      "hypothesis": "um well that's it i using t f idf for the information density",
+      "wer": 0.4117647058823529
+    },
+    {
+      "id": "4ea5c9695d4d",
+      "reference": "well mostly skimming yeah",
+      "hypothesis": "well mostly skipping yeah",
+      "wer": 0.25
+    },
+    {
+      "id": "e29020556a1e",
+      "reference": "so just like unp there's bound to be like a media wave object or something like that",
+      "hypothesis": "so just like i'm b there bound to be like a media wave object or something like that",
+      "wer": 0.17647058823529413
+    },
+    {
+      "id": "1de998b65070",
+      "reference": "so anything that has less than say nought point five importance gets assigned to zero",
+      "hypothesis": "so anything that has the less than say naught point five importance gets assigned to zero",
+      "wer": 0.13333333333333333
+    },
+    {
+      "id": "902c17814d07",
+      "reference": "why does it need to be classified into like different segments",
+      "hypothesis": "why does it need to be classified into like different segments",
+      "wer": 0.0
+    },
+    {
+      "id": "c7d495d0ee0c",
+      "reference": "i mean i would have thought they'd make it able to",
+      "hypothesis": "i mean i would have thought they'd make it able to",
+      "wer": 0.0
+    },
+    {
+      "id": "4a0f14e8fb1d",
+      "reference": "i'm just building a dictionary",
+      "hypothesis": "i'm just building a dictionary",
+      "wer": 0.0
+    },
+    {
+      "id": "20e176c7a002",
+      "reference": "'cause if we're looking at the whole lot of meetings we'll consider each meeting a document in sort of terms of this algorithm",
+      "hypothesis": "so if we're looking at the whole lot of meetings we'll consider each meeting a document in sort of terms this algorithm",
+      "wer": 0.08695652173913043
+    },
+    {
+      "id": "55b9a40b067c",
+      "reference": "so it will make more sense and if you get just extract words",
+      "hypothesis": "so it will make more sense and if you just extract the word",
+      "wer": 0.23076923076923078
+    },
+    {
+      "id": "e44727b31caa",
+      "reference": "is that it",
+      "hypothesis": "so",
+      "wer": 1.0
+    },
+    {
+      "id": "a2057c1fd948",
+      "reference": "it would be useful to know how everyone's gonna store their things though",
+      "hypothesis": "it would be useful to know how everyone's gonna store their things",
+      "wer": 0.07692307692307693
+    },
+    {
+      "id": "d4643f5849b1",
+      "reference": "and we can just summarise based on that",
+      "hypothesis": "i will just summarise based on that",
+      "wer": 0.375
+    },
+    {
+      "id": "86348972ed42",
+      "reference": "might be funny to see what is summarised the whole corpus as anyway",
+      "hypothesis": "might be funny to see what is summarise the whole corpus as anyway",
+      "wer": 0.07692307692307693
+    },
+    {
+      "id": "c9c3b0d19004",
+      "reference": "but it won't be very um processor intensive or memory intensive i don't think",
+      "hypothesis": "but it won't be very um processor intensive or memory intensive i think",
+      "wer": 0.07142857142857142
+    },
+    {
+      "id": "d6f9e61f0ea3",
+      "reference": "we can just change the code",
+      "hypothesis": "i mean just change the",
+      "wer": 0.5
+    },
+    {
+      "id": "5ac4fc454ad9",
+      "reference": "is how much do we get",
+      "hypothesis": "'cause how much do you",
+      "wer": 0.5
+    },
+    {
+      "id": "00a47cf957cf",
+      "reference": "and all we can do is just process a bit at a time",
+      "hypothesis": "and all we can do is just process a lot of time",
+      "wer": 0.23076923076923078
+    },
+    {
+      "id": "6c36b41571ac",
+      "reference": "like so i can use my home machine",
+      "hypothesis": "like so it needs my home machine",
+      "wer": 0.375
+    },
+    {
+      "id": "d6fd455d9205",
+      "reference": "i mean it has to go through the gateway",
+      "hypothesis": "i mean it has to go through the gate well",
+      "wer": 0.2222222222222222
+    },
+    {
+      "id": "719370045f2c",
+      "reference": "we'll have to buffer it",
+      "hypothesis": "we'll have to buffer",
+      "wer": 0.2
+    },
+    {
+      "id": "e04b3be31980",
+      "reference": "and then if you wanted the next level up",
+      "hypothesis": "and then if you want it the next level up",
+      "wer": 0.2222222222222222
+    },
+    {
+      "id": "ea8b50225a3e",
+      "reference": "'cause i could just say at um going over s. c. p. one night and just leave it going all night if i had to",
+      "hypothesis": "'cause i could just set it um going over scp one night and just leave it going all night if i had",
+      "wer": 0.24
+    },
+    {
+      "id": "4e4f99285a7f",
+      "reference": "oh no no i was thinking of sshing just into some machine and then just scping it from there",
+      "hypothesis": "i know i was thinking if i just into some machine and then just s c p it from there",
+      "wer": 0.42105263157894735
+    },
+    {
+      "id": "2d7410b22945",
+      "reference": "yeah but it seems like a bit silly to be parsing it over and over again kinda thing",
+      "hypothesis": "yeah it seems like a bit silly to be parsing it over and over again kind of thing",
+      "wer": 0.16666666666666666
+    },
+    {
+      "id": "db124f0b7224",
+      "reference": "uh i don't know i thought were you gonna use that in the end",
+      "hypothesis": "uh i don't know so vegan ease uh yeah",
+      "wer": 0.7142857142857143
+    },
+    {
+      "id": "d27eea080e27",
+      "reference": "well if we're gonna dump the part of it into a database anyway",
+      "hypothesis": "well if we're gonna dump the part of it into a database anyway",
+      "wer": 0.0
+    },
+    {
+      "id": "7fc41b21ed0e",
+      "reference": "and like each time you want a higher level you just need to go up the tree",
+      "hypothesis": "and like each time you want a higher level you just need to go up the tree",
+      "wer": 0.0
+    },
+    {
+      "id": "d922cee9c4ed",
+      "reference": "then we don't even have to worry that much about the underlying x. m. l. representation",
+      "hypothesis": "then we don't even have to worry that much about the underlying xml representation",
+      "wer": 0.1875
+    },
+    {
+      "id": "261a3148f48f",
+      "reference": "and then just i can change that to work on whatever",
+      "hypothesis": "and then just i can change that to work on whatever",
+      "wer": 0.0
+    },
+    {
+      "id": "b8c3b2b0a648",
+      "reference": "file representation of it",
+      "hypothesis": "file representation",
+      "wer": 0.5
+    },
+    {
+      "id": "24af030ddc76",
+      "reference": "it doesn't need ordered no",
+      "hypothesis": "does need order it",
+      "wer": 0.8
+    },
+    {
+      "id": "e692d4cf6258",
+      "reference": "well like the ideas we're calculating are information density all off line first for every utterance in the whole corpus right",
+      "hypothesis": "well like the ideas we're calculating our information density all offline first for every utterance in the whole corpus right",
+      "wer": 0.14285714285714285
+    },
+    {
+      "id": "2cdc61c5be36",
+      "reference": "it's awful",
+      "hypothesis": "it is awful",
+      "wer": 1.0
+    }
+  ]
+}

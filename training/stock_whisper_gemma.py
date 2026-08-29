@@ -1194,6 +1194,20 @@ def command_geometry(args) -> None:
         }, indent=2))
 
 
+def transcript_token_budget(seconds: float, tokens_per_second: float = 12.0,
+                            floor: int = 24) -> int:
+    """Bound transcript decode without truncating measured conversational speech.
+
+    The historical 2.8 words/s × 1.6 estimate allowed only 4.48 tokens/s. It
+    silently truncated fast spontaneous speech and turned correct prefixes
+    into WER errors. Twelve tokens/s covers the measured 5.91 words/s p99 with
+    tokenizer headroom; the floor protects short clips.
+    """
+    if seconds < 0 or tokens_per_second <= 0 or floor < 1:
+        raise ValueError("transcript budget inputs must be positive")
+    return max(floor, int(seconds * tokens_per_second))
+
+
 def command_wer(args) -> None:
     """Free-run held-out clips and report corpus-level, pooled WER."""
     from evaluate import normalize, wer
@@ -1221,7 +1235,10 @@ def command_wer(args) -> None:
         session._turn_has_audio = True
         session._prefill_audio(features)
         session.close_turn()
-        budget = max(8, int(float(row["seconds"]) * args.words_per_second * 1.6))
+        rate = (args.words_per_second * 1.6
+                if args.words_per_second is not None
+                else args.tokens_per_second)
+        budget = transcript_token_budget(float(row["seconds"]), rate)
         hypothesis = session.respond(max_tokens=budget, eos_ids={1, 106})
         reference_words = normalize(row["target"])
         hypothesis_words = normalize(hypothesis)
@@ -1251,6 +1268,13 @@ def command_wer(args) -> None:
             "evaluation_mode": "free_running_generation",
             "teacher_forced": False,
             "input_handoff": "audio_embeddings_no_transcript",
+            "token_budget": {
+                "tokens_per_second": rate,
+                "floor": 24,
+                "source": ("deprecated_words_per_second_x_1.6"
+                           if args.words_per_second is not None
+                           else "measured_speech_rate_p99_with_headroom"),
+            },
             "id_file": str(args.id_file) if args.id_file else None,
             "source_prefix": args.source_prefix,
             "n": len(rows), "wer": score, "edits": total_edits,
@@ -1485,7 +1509,12 @@ def build_parser() -> argparse.ArgumentParser:
     wer_parser.add_argument(
         "--id-file", type=Path,
         help="locked IDs or JSONL manifest, preserving identical A/B order")
-    wer_parser.add_argument("--words-per-second", type=float, default=2.8)
+    wer_parser.add_argument(
+        "--tokens-per-second", type=float, default=12.0,
+        help="free-running transcript budget; 12 covers measured speech-rate p99")
+    wer_parser.add_argument(
+        "--words-per-second", type=float, default=None,
+        help="deprecated compatibility override; converted to tokens/s x1.6")
     wer_parser.add_argument("--output", type=Path,
                             default=REPO / "research/stock_whisper_wer.json")
     wer_parser.set_defaults(func=command_wer)

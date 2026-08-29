@@ -46,11 +46,12 @@
   "evaluation": {
     "mode": "free_running_generation",
     "teacher_forced": false,
-    "devclean64_wer": 0.049214659685863874,
-    "mindsvox591_wer": 0.15221857025472474,
-    "clean360val128_wer": 0.05175469691598724,
+    "transcript_token_budget_tokens_per_second": 12.0,
+    "devclean64_wer": 0.048167539267015703,
+    "mindsvox591_wer": 0.15345110928512737,
+    "clean360val128_wer": 0.05069124423963134,
     "novelvox128_wer": 0.09483368719037509,
-    "ami64_wer": 0.34175334323922733,
+    "ami64_wer": 0.3298662704309064,
     "testclean2603_wer": 0.03971857886223227,
     "testclean2603_words": 51311,
     "cases12": {

@@ -61,6 +61,24 @@ Measured ledger. Every claim here has a command that reproduces it.
 > 25/25 words of Jaeger's repeated “sound of a gong” reply. An offline sweep of
 > 0--900 ms reference lead and 500/1200 ms filter length peaked at only 2.05 dB;
 > timing/filter length alone does not solve continuous double-talk adaptation.
+>
+> 2026-08-28 GemmaOmni refresh: the exact latest causal checkpoint SHA
+> `185bd7b3f6ce` is packaged as `gemmaomni-41m-medium-final4000`. Independent
+> free-running reproduction at the corrected 12-token/s transcript budget is
+> **6.81% dev-clean, 13.19% MINDS/Vox, 6.35% clean-360, 7.57% novel Vox, and
+> 22.88% AMI**, with 22/24 repeated cases and 547.6 ms warmed median. The old
+> evaluator's 4.48-token/s cap truncated fast speech; the authoritative harness
+> now records its 12-token/s/24-token-floor budget in every artifact.
+>
+> A predeclared interpolation sweep produced
+> `jaegeromni-41m-causal-balanced` SHA `e4ea88b9c99e`. Versus the frozen
+> JaegerOmni 41M Medium it changes the five gates from 4.82/15.35/5.07/9.48/
+> 32.99% to **5.03/14.60/4.89/9.27/28.23%**, retains 24/24 repeated answers,
+> and improves warmed median latency from 601.9 to **574.2 ms**. It is a
+> development candidate, not a replacement: dev-clean loses two words and its
+> imported perception heads require recalibration after the trunk blend. Both
+> causal nodes pass prefix stability at <4.8e-6 max drift; head shapes are
+> finite and self-speech conditioning is connected.
 
 ---
 

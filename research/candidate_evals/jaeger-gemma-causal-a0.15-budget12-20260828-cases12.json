@@ -1,0 +1,86 @@
+{
+  "front_end": "stock_whisper_qwen_free",
+  "encoder": "openai/whisper-medium",
+  "adapter": "training/runs/gemmaomni-final4000-blends/causal-a0.15.npz",
+  "evaluation_mode": "free_running_generation",
+  "teacher_forced": false,
+  "input_handoff": "audio_embeddings_no_transcript",
+  "adapter_sha256": "e4ea88b9c99e2b4d5ef8613d881848c1e9c444785c4821cacf31de2ac504c819",
+  "correct": 12,
+  "n": 12,
+  "median_ms": 501.8913964959211,
+  "rows": [
+    {
+      "case": "q00",
+      "ok": true,
+      "ms": 1716.129499996896,
+      "reply": "Two plus two equals four."
+    },
+    {
+      "case": "q01",
+      "ok": true,
+      "ms": 459.75008299865294,
+      "reply": "The sky is blue."
+    },
+    {
+      "case": "q02",
+      "ok": true,
+      "ms": 535.0418750022072,
+      "reply": "There are seven days in a week."
+    },
+    {
+      "case": "q03",
+      "ok": true,
+      "ms": 496.0272919997806,
+      "reply": "The capital of France is Paris."
+    },
+    {
+      "case": "q04",
+      "ok": true,
+      "ms": 412.7409579959931,
+      "reply": "Seven."
+    },
+    {
+      "case": "q05",
+      "ok": true,
+      "ms": 488.14912501256913,
+      "reply": "A spider has eight legs."
+    },
+    {
+      "case": "q06",
+      "ok": true,
+      "ms": 498.37670900160447,
+      "reply": "The largest planet is Jupiter."
+    },
+    {
+      "case": "q07",
+      "ok": true,
+      "ms": 505.4060839902377,
+      "reply": "Five times five is twenty-five."
+    },
+    {
+      "case": "q08",
+      "ok": true,
+      "ms": 481.77974999998696,
+      "reply": "Autumn comes after summer."
+    },
+    {
+      "case": "q09",
+      "ok": true,
+      "ms": 543.9179160021013,
+      "reply": "There are 24 hours in a day."
+    },
+    {
+      "case": "q10",
+      "ok": true,
+      "ms": 574.1782919940306,
+      "reply": "The freezing point of water is 0 degrees Celsius."
+    },
+    {
+      "case": "q11",
+      "ok": true,
+      "ms": 506.1139169993112,
+      "reply": "William Shakespeare wrote Romeo and Juliet."
+    }
+  ]
+}

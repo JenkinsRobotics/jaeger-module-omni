@@ -14,7 +14,9 @@ class NodeRegistryTests(unittest.TestCase):
     def test_real_registry_is_flat_complete_and_loadable(self):
         root = Path(__file__).resolve().parents[2] / "nodes"
         packages = discover(root)
-        self.assertEqual(len(packages), 8)
+        self.assertEqual(len(packages), 12)
+        self.assertIn("gemmaomni-41m-medium-final4000", packages)
+        self.assertIn("jaegeromni-41m-causal-balanced", packages)
         self.assertIn("kokoro-tts", packages)
         self.assertIn("gemma-minicpm-hidden-talker", packages)
         self.assertIn("whisper-large-v3-turbo-stt", packages)

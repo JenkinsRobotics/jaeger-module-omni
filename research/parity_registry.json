@@ -49,10 +49,30 @@
       "name": "JaegerOmni 41M Medium",
       "checkpoint": "a7f96bfb889866f75df7b838f84aae368a56ab10f6469e766511d700e32fe13a",
       "cases12": "research/results/jaegeromni-41m-production-cases12-20260828.json",
-      "devclean": "research/candidate_evals/cleanroom41m-room-alpha10-20260827-devclean64.json",
-      "ami": "research/candidate_evals/cleanroom41m-room-alpha10-20260827-ami64.json",
+      "devclean": "research/candidate_evals/jaegeromni-41m-budget12-20260828-devclean64.json",
+      "ami": "research/candidate_evals/jaegeromni-41m-budget12-20260828-ami64.json",
       "testclean": "research/candidate_evals/cleanroom41m-room-alpha10-20260827-testclean2603.json",
       "node_manifest": "nodes/jaegeromni-41m-medium/node.json"
+    },
+    {
+      "id": "gemmaomni-41m-final4000",
+      "name": "GemmaOmni 41M Final 4000",
+      "checkpoint": "185bd7b3f6ce0c98d074a40ca96a6e6ea4ac2b3a1ba3ffe851dcd59cf67430c2",
+      "cases12": "research/candidate_evals/gemmaomni-final4000-budget12-20260828-cases12.json",
+      "devclean": "research/candidate_evals/gemmaomni-final4000-budget12-20260828-devclean64.json",
+      "ami": "research/candidate_evals/gemmaomni-final4000-budget12-20260828-ami64.json",
+      "testclean": null,
+      "node_manifest": "nodes/gemmaomni-41m-medium-final4000/node.json"
+    },
+    {
+      "id": "jaegeromni-41m-causal-balanced",
+      "name": "JaegerOmni 41M Causal Balanced",
+      "checkpoint": "e4ea88b9c99e2b4d5ef8613d881848c1e9c444785c4821cacf31de2ac504c819",
+      "cases12": "research/candidate_evals/jaeger-gemma-causal-a0.15-budget12-20260828-cases12.json",
+      "devclean": "research/candidate_evals/jaeger-gemma-causal-a0.15-budget12-20260828-devclean64.json",
+      "ami": "research/candidate_evals/jaeger-gemma-causal-a0.15-budget12-20260828-ami64.json",
+      "testclean": null,
+      "node_manifest": "nodes/jaegeromni-41m-causal-balanced/node.json"
     },
     {
       "id": "jaegeromni-50m-medium",

@@ -16,6 +16,16 @@ more Medium training until the physical-room five-minute gate runs. The broad
 43-room AEC gate has 0 false barges and 100% recall, but its 843 ms p95 still
 fails the 300 ms tail gate. The old 12-case AEC lab is not a promotion signal.
 
+The latest GemmaOmni causal model is now imported exactly, and a Jaeger 15%
+causal blend is packaged separately. Keep `jaegeromni-41m-medium` as the 1:1
+production candidate because it still wins dev-clean by two words. Use
+`jaegeromni-41m-causal-balanced` for the next full-duplex experiment: it is
+24/24 at 574.2 ms and improves four of five corpus gates, including AMI from
+32.99% to 28.23%. Before any promotion, rerun the overlap/speaker/turn-end
+heads on held-out real mixtures after the trunk blend and connect their
+calibrated logits to policy. Structural causality and self-speech wiring pass;
+head calibration does not yet.
+
 2026-08-28 latency CPU preparation: the published 319 ms JaegerOmni 50M and
 560 ms JaegerOmni 41M values came from different benchmark harnesses and must
 not be treated as an architectural A/B. `research/run_latency_ab.sh` is ready

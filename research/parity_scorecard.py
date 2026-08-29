@@ -310,15 +310,22 @@ def generate(registry_path: Path) -> dict:
                    if model["id"] == "gemmaomni-41m-medium")
     jaeger = next(model for model in models
                   if model["id"] == "jaegeromni-41m-medium")
+    causal = next(model for model in models
+                  if model["id"] == "jaegeromni-41m-causal-balanced")
     verdict = (
         f"{leading['name']} is the current core-ear leader: "
         f"{leading['cases12']['correct']}/{leading['cases12']['n']} matches "
         f"MiniCPM and {leading['answer_latency_ms']['value']:.0f} ms is faster "
         f"than the {reference['metrics']['answer_latency_ms']:.0f} ms "
-        "reference. JaegerOmni 41M now independently matches cases12 at "
+        "reference. JaegerOmni 41M independently matches cases12 at "
         f"{jaeger['cases12']['correct']}/{jaeger['cases12']['n']}, but its "
         f"{jaeger['answer_latency_ms']['value']:.0f} ms answer latency is "
-        "behind the reference. It is the broad lockbox leader at "
+        "behind the reference. The new causal-balanced Jaeger checkpoint "
+        f"retains {causal['cases12']['correct']}/{causal['cases12']['n']} at "
+        f"{causal['answer_latency_ms']['value']:.0f} ms and reduces AMI to "
+        f"{100*causal['ami_wer']['value']:.2f}%, but its perception heads "
+        "still require post-blend calibration. The frozen Jaeger 41M remains "
+        "the broad lockbox leader at "
         f"{100*jaeger['testclean_wer']['value']:.2f}% free-running WER and "
         "has a zero-drop direct five-minute context-roll run. "
         "Jaeger has not surpassed MiniCPM as a complete system: "

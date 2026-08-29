@@ -56,6 +56,7 @@ ARCH_GEMMA_NATIVE_TEMPORAL2 = (
 ARCH_GEMMA_NATIVE_CONTEXT = (
     "gemma_native_stack_swiglu_residual_temporal2_context_v1")
 ARCH_CLEANROOM_CONTEXT = "cleanroom_context_v2"
+ARCH_STREAMING_CAUSAL = "streaming_causal_v1"
 WHISPER_WINDOW_S = 28
 WHISPER_OVERLAP_S = 1
 LIVE_WINDOW_S = 12
@@ -190,13 +191,18 @@ def validate_checkpoint(path: str | Path) -> dict[str, np.ndarray]:
     with np.load(path, allow_pickle=False) as saved:
         values = {key: saved[key] for key in saved.files}
     cleanroom_arch = values.get("arch")
-    if ("adapter_arch" not in values and cleanroom_arch is not None and
-            bytes(np.asarray(cleanroom_arch, dtype=np.uint8)) == b"context_v2"):
+    arch_tag = (bytes(np.asarray(cleanroom_arch, dtype=np.uint8))
+                if cleanroom_arch is not None else b"")
+    if ("adapter_arch" not in values and
+            arch_tag in (b"context_v2", b"streaming_causal_v1")):
         # The clean-room trainer intentionally emits only its owned weights
         # plus a byte architecture tag. Supply deployment metadata in memory;
         # the packaged node manifest independently pins the same boundary.
         values.update({
-            "adapter_arch": np.array(ARCH_CLEANROOM_CONTEXT),
+            "adapter_arch": np.array(
+                ARCH_STREAMING_CAUSAL
+                if arch_tag == b"streaming_causal_v1"
+                else ARCH_CLEANROOM_CONTEXT),
             "encoder": np.array(DEFAULT_WHISPER),
             "input_dim": np.array(INPUT_DIM, dtype=np.int32),
             "input_boundary": np.array(INPUT_BOUNDARY),
@@ -213,7 +219,7 @@ def validate_checkpoint(path: str | Path) -> dict[str, np.ndarray]:
         raise ValueError(
             f"{path}: encoder {encoder!r} requires input_dim "
             f"{ENCODER_DIMS[encoder]}, got {input_dim}")
-    if architecture == ARCH_CLEANROOM_CONTEXT:
+    if architecture in (ARCH_CLEANROOM_CONTEXT, ARCH_STREAMING_CAUSAL):
         hidden_values = np.asarray(values.get("hidden", []), dtype=np.int64)
         if hidden_values.size != 1 or int(hidden_values[0]) <= 0:
             raise ValueError(f"{path}: invalid clean-room hidden width")
@@ -232,6 +238,19 @@ def validate_checkpoint(path: str | Path) -> dict[str, np.ndarray]:
             "ln_f.weight": (hidden,), "ln_f.bias": (hidden,),
             "out.weight": (OUTPUT_DIM, hidden), "out.bias": (OUTPUT_DIM,),
         }
+        if architecture == ARCH_STREAMING_CAUSAL:
+            expected.update({
+                "head_speaker_change.weight": (1, hidden),
+                "head_speaker_change.bias": (1,),
+                "head_overlap.weight": (1, hidden),
+                "head_overlap.bias": (1,),
+                "head_turn_end.weight": (1, hidden),
+                "head_turn_end.bias": (1,),
+                "head_speaker_id.weight": (4, hidden),
+                "head_speaker_id.bias": (4,),
+                "self_proj.weight": (hidden, 1),
+                "self_proj.bias": (hidden,),
+            })
     elif architecture in (ARCH_GEMMA_NATIVE_STACK,
                          ARCH_GEMMA_NATIVE_RESIDUAL,
                          ARCH_GEMMA_NATIVE_TEMPORAL,
@@ -430,7 +449,8 @@ class StockWhisperGemmaSession:
         class Adapter(nn.Module):
             def __init__(inner):
                 super().__init__()
-                if architecture == ARCH_CLEANROOM_CONTEXT:
+                if architecture in (ARCH_CLEANROOM_CONTEXT,
+                                     ARCH_STREAMING_CAUSAL):
                     hidden = int(values["hidden"][0])
                     inner.ln = nn.LayerNorm(self.input_dim)
                     inner.up = nn.Linear(self.input_dim, hidden)
@@ -475,6 +495,23 @@ class StockWhisperGemmaSession:
                     inner.ln_f.bias = mx.array(values["ln_f.bias"])
                     inner.out.weight = mx.array(values["out.weight"])
                     inner.out.bias = mx.array(values["out.bias"])
+                    if architecture == ARCH_STREAMING_CAUSAL:
+                        inner.head_speaker_change = nn.Linear(hidden, 1)
+                        inner.head_overlap = nn.Linear(hidden, 1)
+                        inner.head_turn_end = nn.Linear(hidden, 1)
+                        inner.head_speaker_id = nn.Linear(hidden, 4)
+                        inner.self_proj = nn.Linear(1, hidden)
+                        for name in (
+                                "speaker_change", "overlap", "turn_end",
+                                "speaker_id"):
+                            layer = getattr(inner, f"head_{name}")
+                            layer.weight = mx.array(
+                                values[f"head_{name}.weight"])
+                            layer.bias = mx.array(values[f"head_{name}.bias"])
+                        inner.self_proj.weight = mx.array(
+                            values["self_proj.weight"])
+                        inner.self_proj.bias = mx.array(
+                            values["self_proj.bias"])
                 elif architecture in (ARCH_GEMMA_NATIVE_STACK,
                                      ARCH_GEMMA_NATIVE_RESIDUAL,
                                      ARCH_GEMMA_NATIVE_TEMPORAL,
@@ -610,42 +647,73 @@ class StockWhisperGemmaSession:
                     inner.linear2.weight = mx.array(values["linear2_weight"])
                     inner.linear2.bias = mx.array(values["linear2_bias"])
 
+            def _context_trunk(inner, x, self_speech=None):
+                """Run the shared 41M trunk and retain its 2048-d frames."""
+                hidden = int(values["hidden"][0])
+                h = nn.gelu(inner.up(inner.ln(x)))
+                usable = (h.shape[0] // self.pool_step) * self.pool_step
+                if usable == 0:
+                    h = mx.mean(h, axis=0, keepdims=True)
+                else:
+                    h = mx.mean(
+                        h[:usable].reshape(-1, self.pool_step, hidden),
+                        axis=1)
+                if (architecture == ARCH_STREAMING_CAUSAL and
+                        self_speech is not None):
+                    flag = np.asarray(self_speech, dtype=np.float32).reshape(-1)
+                    flag = flag[:h.shape[0]]
+                    if len(flag) < h.shape[0]:
+                        flag = np.pad(flag, (0, h.shape[0] - len(flag)))
+                    h = h + inner.self_proj(mx.array(flag[:, None]))
+                context = h[None, :]
+                mask = None
+                if architecture == ARCH_STREAMING_CAUSAL and context.shape[1] > 1:
+                    n = context.shape[1]
+                    mask = mx.where(
+                        mx.tril(mx.ones((n, n))) > 0, 0.0, -1e9).astype(
+                            context.dtype)
+                if self.fused_cleanroom_attention:
+                    query, key, value = mx.split(
+                        inner.qkv(context), 3, axis=-1)
+                    heads = 8
+                    head_dim = hidden // heads
+                    query = query.reshape(
+                        1, -1, heads, head_dim).transpose(0, 2, 1, 3)
+                    key = key.reshape(
+                        1, -1, heads, head_dim).transpose(0, 2, 1, 3)
+                    value = value.reshape(
+                        1, -1, heads, head_dim).transpose(0, 2, 1, 3)
+                    attended = mx.fast.scaled_dot_product_attention(
+                        query, key, value,
+                        scale=math.sqrt(1.0 / head_dim), mask=mask)
+                    attended = attended.transpose(
+                        0, 2, 1, 3).reshape(context.shape)
+                    attended = inner.attn_out(attended)
+                else:
+                    attended = inner.attn(
+                        context, context, context, mask=mask)
+                context = inner.ln_a(context + attended)
+                return inner.ln_f(
+                    context + inner.ff2(nn.gelu(inner.ff1(context))))
+
+            def perceive(inner, x, self_speech=None):
+                """Return audio embeddings and honest 25 Hz perception logits."""
+                if architecture != ARCH_STREAMING_CAUSAL:
+                    raise ValueError(
+                        "perception heads require streaming_causal_v1")
+                context = inner._context_trunk(x, self_speech)
+                frames = context[0]
+                return inner.out(frames), {
+                    "speaker_change": inner.head_speaker_change(context)[0, :, 0],
+                    "overlap": inner.head_overlap(context)[0, :, 0],
+                    "turn_end": inner.head_turn_end(context)[0, :, 0],
+                    "speaker_id": inner.head_speaker_id(context)[0],
+                }
+
             def __call__(inner, x):
-                if architecture == ARCH_CLEANROOM_CONTEXT:
-                    hidden = int(values["hidden"][0])
-                    h = nn.gelu(inner.up(inner.ln(x)))
-                    usable = (h.shape[0] // self.pool_step) * self.pool_step
-                    if usable == 0:
-                        h = mx.mean(h, axis=0, keepdims=True)
-                    else:
-                        h = mx.mean(
-                            h[:usable].reshape(-1, self.pool_step, hidden),
-                            axis=1)
-                    context = h[None, :]
-                    if self.fused_cleanroom_attention:
-                        query, key, value = mx.split(
-                            inner.qkv(context), 3, axis=-1)
-                        heads = 8
-                        head_dim = hidden // heads
-                        query = query.reshape(
-                            1, -1, heads, head_dim).transpose(0, 2, 1, 3)
-                        key = key.reshape(
-                            1, -1, heads, head_dim).transpose(0, 2, 1, 3)
-                        value = value.reshape(
-                            1, -1, heads, head_dim).transpose(0, 2, 1, 3)
-                        attended = mx.fast.scaled_dot_product_attention(
-                            query, key, value,
-                            scale=math.sqrt(1.0 / head_dim))
-                        attended = attended.transpose(
-                            0, 2, 1, 3).reshape(context.shape)
-                        attended = inner.attn_out(attended)
-                    else:
-                        attended = inner.attn(context, context, context)
-                    context = inner.ln_a(
-                        context + attended)
-                    context = inner.ln_f(
-                        context + inner.ff2(nn.gelu(inner.ff1(context))))
-                    y = inner.out(context[0])
+                if architecture in (ARCH_CLEANROOM_CONTEXT,
+                                     ARCH_STREAMING_CAUSAL):
+                    y = inner.out(inner._context_trunk(x)[0])
                 elif architecture in (ARCH_GEMMA_NATIVE_STACK,
                                      ARCH_GEMMA_NATIVE_RESIDUAL,
                                      ARCH_GEMMA_NATIVE_TEMPORAL,
