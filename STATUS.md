@@ -83,6 +83,26 @@ Measured ledger. Every claim here has a command that reproduces it.
 > imported perception heads require recalibration after the trunk blend. Both
 > causal nodes pass prefix stability at <4.8e-6 max drift; head shapes are
 > finite and self-speech conditioning is connected.
+>
+> 2026-08-29 physical Elgato test: both JaegerOmni 41M Medium and Causal
+> Balanced fed **299.9/300 seconds**, dropped zero audio, had zero mic-queue
+> overflow, rolled once at 6,151 tokens, and preserved **100.0%** of the
+> offline-audited raw-room words (657/657 and 630/630). Peak loop lag was
+> 160.2/172.0 ms and MLX peak memory was 5,867.3/5,867.4 MB. Their native
+> post-roll meeting minutes were grounded in the final 50 seconds at 120/120
+> and 108/108 word survival. This is runtime parity, not a summary-quality A/B:
+> the continuous recording advanced between windows, and the context roll
+> discarded all pre-roll user audio because silent-observer mode had no prior
+> replies to reseed.
+>
+> Offline k=3 diarization now separated two dominant alternating recorded
+> talkers in both five-minute captures (pairwise centroid cosine maxima
+> 0.477/0.467); a 12-second third cluster remains unlabeled. k=4 over-split a
+> talker at cosine 0.912, so k=3 is the useful setting. This does not yet mean
+> live word attribution. Physical AEC remains blocked: forced-playback runs
+> measured only **0.17 dB wallclock** and **0.51 dB contiguous** attenuation;
+> the runs had unequal 19/61-second playback exposure, and contiguous word
+> survival regressed from 96.8% to 82.7%. Keep contiguous experimental.
 
 ---
 

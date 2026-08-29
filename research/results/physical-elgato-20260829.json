@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "kind": "physical_room_duplex_evaluation",
+  "date": "2026-08-29",
+  "input_device": "Elgato XLR Dock",
+  "output_device": "External Headphones",
+  "source": "continuous two-person conversation playing in the room",
+  "settings": {
+    "sample_rate": 16000,
+    "threshold": 0.055,
+    "meeting_silence_ms": 700,
+    "meeting_seconds": 300,
+    "max_context": 6000,
+    "speakers": 3
+  },
+  "meeting_observer_runs": [
+    {
+      "model": "jaegeromni-41m-medium",
+      "checkpoint": "a7f96bfb8898",
+      "wall_seconds": 302.87303137501294,
+      "fed_seconds": 299.9,
+      "dropped_seconds": 0.0,
+      "mic_queue_overflow_blocks": 0,
+      "peak_loop_lag_ms": 160.18175000499468,
+      "context_rolls": 1,
+      "roll_cache_tokens": 6151,
+      "final_cache_tokens": 1294,
+      "mlx_peak_mb": 5867.3,
+      "rss_peak_mb": 5992.3,
+      "raw_vs_fed_audit": {
+        "room_words": 657,
+        "model_received_words": 657,
+        "survived_words": 657,
+        "survival_percent": 100.0
+      },
+      "last_50_seconds": {
+        "room_words": 120,
+        "survival_percent": 100.0,
+        "topics": ["alarm systems", "outdoor lighting", "smart locks", "security cameras"],
+        "minutes_grounded": true
+      },
+      "minutes": "Security measures for the home: alarm systems, outdoor lighting, smart locks, and security cameras; no decisions or action items."
+    },
+    {
+      "model": "jaegeromni-41m-causal-balanced",
+      "checkpoint": "e4ea88b9c99e",
+      "wall_seconds": 303.07195075000345,
+      "fed_seconds": 299.9,
+      "dropped_seconds": 0.0,
+      "mic_queue_overflow_blocks": 0,
+      "peak_loop_lag_ms": 171.97250000026543,
+      "context_rolls": 1,
+      "roll_cache_tokens": 6151,
+      "final_cache_tokens": 1291,
+      "mlx_peak_mb": 5867.4,
+      "rss_peak_mb": 6479.5,
+      "raw_vs_fed_audit": {
+        "room_words": 630,
+        "model_received_words": 630,
+        "survived_words": 630,
+        "survival_percent": 100.0
+      },
+      "last_50_seconds": {
+        "room_words": 108,
+        "survival_percent": 100.0,
+        "topics": ["compost materials", "compost timing", "odor control", "buying a bicycle"],
+        "minutes_grounded": true
+      },
+      "minutes": "Composting, including odor control and timeline, and buying a bicycle; no decisions or action items."
+    }
+  ],
+  "offline_diarization": {
+    "method": "speaker_map.py k=3 on raw microphone",
+    "medium_pairwise_centroid_cosine": [0.003, 0.137, 0.477],
+    "medium_cluster_seconds": [12.0, 162.8, 166.5],
+    "causal_pairwise_centroid_cosine": [0.056, 0.146, 0.467],
+    "causal_cluster_seconds": [12.0, 168.8, 159.0],
+    "interpretation": "Two dominant alternating talker clusters separated in both captures. The 12-second third cluster requires labeling. k=4 over-split one talker into centroids with cosine 0.912, so k=3 is preferred. This is offline diarization, not live word attribution."
+  },
+  "active_aec_runs": {
+    "diagnostic_silence_ms": 100,
+    "barge_policy": "continue",
+    "wallclock": {
+      "replies": 5,
+      "playback_tail_seconds": 19.0,
+      "attenuation_db": 0.17481219705479836,
+      "end_to_audio_median_ms": 919.5227080053883,
+      "raw_vs_fed_survival_percent": 96.8,
+      "alignment_corrections": 0
+    },
+    "contiguous": {
+      "replies": 4,
+      "playback_tail_seconds": 61.0,
+      "attenuation_db": 0.5071491528399599,
+      "end_to_audio_median_ms": 1288.555063001695,
+      "raw_vs_fed_survival_percent": 82.7,
+      "alignment_corrections": 2,
+      "estimated_input_callback_drift_ppm": 11.57394654633801
+    },
+    "verdict": "Neither mode achieved usable physical echo cancellation. Different reply counts, content, and playback duration prevent treating the attenuation delta as a paired win. Keep wallclock as default and contiguous experimental."
+  },
+  "limitations": [
+    "The two five-minute model windows heard different portions of the continuously advancing source, so their summary content is not a quality A/B.",
+    "The 6000-token roll discards pre-roll user audio when no prior assistant replies exist; generated minutes cover the post-roll segment, not all five minutes.",
+    "Meeting observer mode is silent, so it does not exercise AEC or barge-in.",
+    "The 100 ms endpoint was used only to force playback during the AEC diagnostic and is not a production endpoint setting.",
+    "Offline speaker clusters are not live speaker-conditioned Gemma context and do not provide overlapping word attribution."
+  ]
+}

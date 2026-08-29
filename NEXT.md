@@ -18,6 +18,24 @@ more Medium training until the physical-room five-minute gate runs. The broad
 43-room AEC gate has 0 false barges and 100% recall, but its 843 ms p95 still
 fails the 300 ms tail gate. The old 12-case AEC lab is not a promotion signal.
 
+The 2026-08-29 physical five-minute observer gate now passes capture integrity
+for both 41M variants: 299.9/300 seconds fed, zero drops/queue overflow, one
+6,151-token roll, 100% raw-vs-fed word survival, and grounded post-roll
+minutes. Do not call full-meeting retention passed: a silent observer has no
+assistant replies to reseed, so the roll discarded the first four minutes of
+user audio. Preserve recent native audio embeddings or produce incremental
+audio-native notes before the next observer promotion gate.
+
+k=3 offline diarization separated the two dominant alternating recorded
+talkers in both captures (maximum centroid cosine 0.477/0.467); validate the
+small 12-second third cluster against labeled source timing, then feed stable
+speaker changes between turns. Do not claim overlapping word attribution.
+Physical AEC is still the first duplex blocker: wallclock/contiguous forced-
+playback diagnostics reached only 0.17/0.51 dB, and the unequal exposure means
+the delta is not a win. Next isolate the output path with a fixed known reply
+waveform and identical playback duration; add gradual drift resampling rather
+than promoting the two-correction contiguous run.
+
 The latest GemmaOmni causal model is now imported exactly, and a Jaeger 15%
 causal blend is packaged separately. Keep `jaegeromni-41m-medium` as the 1:1
 production candidate because it still wins dev-clean by two words. Use
