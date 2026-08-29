@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "kind": "raw_vs_model_fed_audit",
+  "command": "python research/session_audit.py --dir /tmp/jaeger-final-room-interactive-20260828",
+  "raw_words": 25,
+  "fed_words": 25,
+  "survived_words": 25,
+  "survival_percent": 100.0,
+  "raw_hypothesis": "Is the sound of a gong? Is the sound of a gong? Is the sound of a gong? Is the sound of a gong? So",
+  "fed_hypothesis": "Is the sound of a gong? Is the sound of a gong? Is the sound of a gong? Is the sound of a gong? So",
+  "interpretation": "Jaeger's own repeated playback survived the physical AEC and re-entered the model. This is evidence of self-echo, not useful near-end meeting content."
+}

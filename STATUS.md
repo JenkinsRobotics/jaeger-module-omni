@@ -52,6 +52,15 @@ Measured ledger. Every claim here has a command that reproduces it.
 > AEC/playback, reply latency, or barge-in could be measured. k=3 produced two
 > nearly identical clusters (cosine 0.961), so shared-loudspeaker talkers remain
 > unresolved.
+>
+> A separate 90-second interactive diagnostic shortened endpoint silence to
+> 300 ms solely to exercise playback. It completed 5 turns with zero dropped
+> audio, two continue-during-output events, and **494/522 ms** median/p95
+> END-to-first-audio. Physical AEC is still a production blocker: attenuation
+> was only **0.29 dB** over 9.5 playback seconds, and raw-vs-fed audit preserved
+> 25/25 words of Jaeger's repeated “sound of a gong” reply. An offline sweep of
+> 0--900 ms reference lead and 500/1200 ms filter length peaked at only 2.05 dB;
+> timing/filter length alone does not solve continuous double-talk adaptation.
 
 ---
 

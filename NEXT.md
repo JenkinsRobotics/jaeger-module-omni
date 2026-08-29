@@ -87,6 +87,17 @@ speaker who deliberately pauses and interrupts Jaeger's playback; retain the
 continuous-floor capture as the no-yield stress case rather than weakening the
 endpoint until fragments masquerade as turns.
 
+A separate 90-second diagnostic at 300 ms silence proves the downstream
+interactive mechanics: 5 turns/replies, zero drops, two continue-during-output
+events, and 494/522 ms median/p95 END-to-first-audio. It also makes AEC the
+remaining hard blocker rather than a paper concern. Physical attenuation was
+only 0.29 dB and 25/25 decoded words of Jaeger's own repeated playback survived
+into model-fed audio. Reference-lead and filter-length sweeps peaked at 2.05 dB,
+so do not tune timing and claim success. The next AEC implementation must
+calibrate/retain a loudspeaker-to-mic path when usable, freeze or slow adaptation
+during detected double-talk, and pass both the 43-room synthetic gate and a
+fresh physical raw-vs-fed audit before promotion.
+
 Teacher forcing is permitted as a training loss. It is never an evaluation
 number. Do not promote from a single clip, a teacher-forced score, cosine, or
 the training-only lexical head.

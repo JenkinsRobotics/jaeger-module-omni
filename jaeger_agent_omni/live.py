@@ -169,7 +169,14 @@ def main() -> int:
             "silence_ms": a.silence_ms, "cooldown_s": a.cooldown,
             "max_context": a.max_context, "speakers": a.speakers,
             "voice": a.voice, "speed": a.speed,
-            "barge_policy": a.barge_policy, "aec": not a.no_aec,
+            "barge_policy": a.barge_policy,
+            # Meeting-minutes mode is deliberately a silent observer. AEC is
+            # only meaningful while Jaeger is playing a known far-end signal;
+            # reporting a requested-but-inactive canceller as active made the
+            # physical soak artifact contradict its metrics section.
+            "observer_mode": bool(a.meeting_minutes),
+            "aec_requested": not a.no_aec,
+            "aec": not a.no_aec and not a.no_speak,
         })
 
     if not a.no_speak:
