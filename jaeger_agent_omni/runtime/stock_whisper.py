@@ -810,6 +810,7 @@ class StockWhisperGemmaSession:
         self._cancelled = False
         self._cancel_at = 0.0
         self.cancel_latency_ms = None
+        self.rewind_failures = getattr(self, "rewind_failures", 0)
         self.n_prefilled = 0
         self.cache = None
         self._has_history = False
@@ -1063,11 +1064,19 @@ class StockWhisperGemmaSession:
             self._cancelled = False
             return 0
         trimmed = trim_prompt_cache(self.cache, drop)
-        if trimmed != drop:
-            raise RuntimeError(
-                f"cache rewind trimmed {trimmed} tokens, expected {drop}")
-        self.n_prefilled -= drop
         self._cancelled = False
+        if trimmed != drop:
+            # A wrapped RotatingKVCache layer (>512 tokens of history)
+            # refuses to rewind, so trim returns 0.  Raising here turned a
+            # live barge-in into a crash four minutes into a conversation
+            # (measured 2026-08-29).  Keeping the few abandoned tokens is
+            # the lesser harm: the next prompt prefix already closes an
+            # unfinished assistant turn, so the dangling suffix is
+            # terminated rather than continued.
+            self.rewind_failures += 1
+            self._assistant_closed = False
+            return 0
+        self.n_prefilled -= drop
         self._assistant_closed = False
         return drop
 

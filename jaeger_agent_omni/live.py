@@ -576,11 +576,25 @@ def main() -> int:
 
     threading.Thread(target=meter, daemon=True).start()
     t0 = time.monotonic()
-    with sd.InputStream(samplerate=RATE, blocksize=BLOCK, channels=1,
-                        dtype="float32", device=a.device, callback=on_block):
+    # Crash-only teardown: a wedged output device can deadlock PortAudio
+    # stream close (measured 2026-08-29: a healthy 300 s run finished, then
+    # parked forever inside the cffi close call, losing its report and
+    # recordings).  So the stream is closed LAST, after every artifact is on
+    # disk, and a hung close forces exit rather than hanging the session.
+    mic_stream = sd.InputStream(samplerate=RATE, blocksize=BLOCK, channels=1,
+                                dtype="float32", device=a.device,
+                                callback=on_block)
+    mic_stream.start()
+    try:
         stats = loop.run(eos_ids=meta["eos"], max_seconds=a.seconds)
-    stop.set()
-    sd.stop()
+    except Exception as exc:                               # noqa: BLE001
+        # A worker exception must still produce the report and recordings —
+        # a five-minute physical run is too expensive to lose to one bug.
+        run_errors.append(f"duplex loop: {type(exc).__name__}: {exc}")
+        stats = loop.stats
+    finally:
+        stop.set()
+    threading.Thread(target=sd.stop, daemon=True).start()
     speaking_out.clear()
     while not say_q.empty():
         try:
@@ -666,6 +680,8 @@ def main() -> int:
             "barge_events": barged["events"],
             "barge_stops": barged["stops"],
             "context_rolls": soak["rolls"],
+            "interrupt_rewind_failures": getattr(
+                session, "rewind_failures", 0),
             "final_cache_tokens": session.n_prefilled,
             "peak_loop_lag_ms": stats.max_lag_s * 1000,
             "endpoint_events": list(stats.endpoint_events),
@@ -703,6 +719,23 @@ def main() -> int:
     print(f"  report       {saved_report}")
     if aec is not None:
         aec.close()
+    # Every artifact is on disk; only now is a PortAudio hang survivable.
+    import os as _os
+
+    def _close_audio():
+        try:
+            mic_stream.abort()
+            mic_stream.close()
+        except Exception:                                  # noqa: BLE001
+            pass
+
+    closer = threading.Thread(target=_close_audio, daemon=True)
+    closer.start()
+    closer.join(timeout=5.0)
+    if closer.is_alive():
+        print("  (audio teardown wedged; artifacts saved — forcing exit)",
+              flush=True)
+        _os._exit(0)
     return 0
 
 
