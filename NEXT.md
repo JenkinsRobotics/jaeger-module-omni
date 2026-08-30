@@ -12,14 +12,17 @@ requires event-level false alarms/minute and detection-delay gates, then a
 prefix-consistent streaming encoder; more framewise linear-head epochs are
 closed.
 
-For the separate pre-Whisper neural acoustic controller, start with an FP16
-causal baseline that consumes microphone PCM plus the exact playback reference
-and emits enhanced PCM plus typed speech/self/external/music/noise/overlap/turn
-state. Do not spend the next window on ternary QAT: the packed Metal go/no-go
-benchmark delivered 0.98x FP16 speed at the representative 262K-parameter
-shape despite 87% smaller weights. Keep Silero and Speex as authoritative
-fallbacks until the new node independently passes waveform AEC, near-end
-survival, false-opens/minute, endpoint-delay, and 10 ms compute gates.
+The separate pre-Whisper neural acoustic controller now has its FP16 causal
+baseline, typed runtime contract, factual JSONL/NPZ trainer, source-disjoint
+split guard, CPU gradient check, and shadow profile. The 262,060-parameter node
+consumes microphone PCM plus the exact playback reference and emits enhanced
+PCM plus typed speech/self/external/music/noise/overlap/turn state. The next
+GPU window is data curation and training, not more architecture churn. Do not
+spend it on ternary QAT: the packed Metal go/no-go benchmark delivered 0.98x
+FP16 speed at the representative shape despite 87% smaller weights. Keep
+Silero and Speex authoritative until the node independently passes waveform
+AEC, near-end survival, false-opens/minute, endpoint-delay, and 10 ms compute
+gates.
 
 Keep the separate JaegerOmni 41M feed-forward-only ternary result as an
 embedded-deployment lead, not a production option. One-shot full-adapter

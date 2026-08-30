@@ -18,11 +18,16 @@ mic PCM + playback reference
        -> speech/self/external/music/noise/overlap/turn-state tensors ----^
 ```
 
-That controller may eventually absorb Silero, Speex, fixed energy thresholds,
-and endpoint heuristics. It must first prove echo removal, near-end speech
-survival, false-open rate, endpoint delay, and compute latency. Classification
-heads alone cannot replace AEC because AEC must produce a cleaned waveform, not
-merely label the echo.
+The controller architecture and training contract now live in
+`jaeger_agent_omni/nodes/neural-acoustic-controller`. It is a 262,060-parameter
+causal FP16 target operating at a 10 ms hop, with a waveform residual head and
+typed scene/event/turn/wake heads over a shared 128-dimensional state. It has
+only passed CPU shape, gradient, passthrough, causality, and contract tests; no
+trained checkpoint is packaged. It may eventually absorb Silero, Speex, fixed
+energy thresholds, and endpoint heuristics, but must first prove echo removal,
+near-end speech survival, false-open rate, endpoint delay, and compute latency.
+Classification heads alone cannot replace AEC because AEC must produce a
+cleaned waveform, not merely label the echo.
 
 ## Ternary go/no-go
 

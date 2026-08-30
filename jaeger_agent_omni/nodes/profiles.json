@@ -18,7 +18,8 @@
         "stock-whisper-large-v3-turbo50m",
         "whisper-medium-stt",
         "whisper-large-v3-turbo-stt",
-        "gemma-minicpm-hidden-talker"
+        "gemma-minicpm-hidden-talker",
+        "neural-acoustic-controller"
       ]
     },
     "stock-medium-development": {
@@ -37,7 +38,8 @@
         "stock-whisper-large-v3-turbo50m",
         "whisper-medium-stt",
         "whisper-large-v3-turbo-stt",
-        "gemma-minicpm-hidden-talker"
+        "gemma-minicpm-hidden-talker",
+        "neural-acoustic-controller"
       ]
     },
     "gemmaomni-41m-medium": {
@@ -56,7 +58,8 @@
         "stock-whisper-large-v3-turbo50m",
         "whisper-medium-stt",
         "whisper-large-v3-turbo-stt",
-        "gemma-minicpm-hidden-talker"
+        "gemma-minicpm-hidden-talker",
+        "neural-acoustic-controller"
       ]
     },
     "jaegeromni-41m-medium": {
@@ -75,7 +78,8 @@
         "stock-whisper-large-v3-turbo50m",
         "whisper-medium-stt",
         "whisper-large-v3-turbo-stt",
-        "gemma-minicpm-hidden-talker"
+        "gemma-minicpm-hidden-talker",
+        "neural-acoustic-controller"
       ]
     },
     "cascade-large-stt": {
@@ -94,7 +98,8 @@
         "stock-whisper-medium-cekl-blend50",
         "stock-whisper-large-v3-turbo50m",
         "whisper-medium-stt",
-        "gemma-minicpm-hidden-talker"
+        "gemma-minicpm-hidden-talker",
+        "neural-acoustic-controller"
       ]
     },
     "large-adapter-diagnostic-only": {
@@ -114,7 +119,8 @@
         "whisper-large-v3-turbo-stt",
         "kokoro-tts",
         "campplus-speaker",
-        "gemma-minicpm-hidden-talker"
+        "gemma-minicpm-hidden-talker",
+        "neural-acoustic-controller"
       ]
     },
     "hidden-state-voice-cloning-experimental": {
@@ -133,7 +139,8 @@
         "stock-whisper-large-v3-turbo50m",
         "whisper-medium-stt",
         "whisper-large-v3-turbo-stt",
-        "kokoro-tts"
+        "kokoro-tts",
+        "neural-acoustic-controller"
       ]
     },
     "gemmaomni-final4000-development": {
@@ -152,7 +159,8 @@
         "stock-whisper-large-v3-turbo50m",
         "whisper-medium-stt",
         "whisper-large-v3-turbo-stt",
-        "gemma-minicpm-hidden-talker"
+        "gemma-minicpm-hidden-talker",
+        "neural-acoustic-controller"
       ]
     },
     "jaegeromni-causal-balanced-development": {
@@ -171,7 +179,8 @@
         "stock-whisper-large-v3-turbo50m",
         "whisper-medium-stt",
         "whisper-large-v3-turbo-stt",
-        "gemma-minicpm-hidden-talker"
+        "gemma-minicpm-hidden-talker",
+        "neural-acoustic-controller"
       ]
     },
     "jaegeromni-audio-perception-development": {
@@ -186,6 +195,27 @@
         "gemmaomni-41m-medium-final4000",
         "stock-whisper-medium-cleanroom-ctx93h-step2000",
         "jaegeromni-41m-medium",
+        "stock-whisper-medium-cekl-blend50",
+        "stock-whisper-large-v3-turbo50m",
+        "whisper-medium-stt",
+        "whisper-large-v3-turbo-stt",
+        "gemma-minicpm-hidden-talker",
+        "neural-acoustic-controller"
+      ]
+    },
+    "neural-acoustic-controller-shadow": {
+      "enabled": [
+        "jaegeromni-41m-medium",
+        "neural-acoustic-controller",
+        "gemma-4-e4b-cognition",
+        "kokoro-tts",
+        "campplus-speaker"
+      ],
+      "disabled": [
+        "jaegeromni-41m-audio-perception",
+        "jaegeromni-41m-causal-balanced",
+        "gemmaomni-41m-medium-final4000",
+        "stock-whisper-medium-cleanroom-ctx93h-step2000",
         "stock-whisper-medium-cekl-blend50",
         "stock-whisper-large-v3-turbo50m",
         "whisper-medium-stt",

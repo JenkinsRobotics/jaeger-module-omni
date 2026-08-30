@@ -43,6 +43,17 @@ Measured ledger. Every claim here has a command that reproduces it.
 > matrix storage about **36% versus FP16 (78 to 50 MiB)**, but is not built, so
 > actual packed latency/RAM remain unclaimed and no production node was added.
 >
+> 2026-08-29 CPU acoustic-controller scaffold: a separate flat neural node,
+> `neural-acoustic-controller`, now implements the pre-Whisper boundary as a
+> **262,060-parameter** causal network. It consumes 10 ms microphone frames and
+> Jaeger's exact playback reference, returns waveform-safe echo-residual PCM,
+> a 128-dimensional acoustic state, and typed scene/self/external/overlap/turn/
+> wake probabilities. Its factual source-disjoint training contract and loss
+> path pass a one-step CPU gradient check (loss 1.9138); 6 focused tests and
+> the 31/31 repository suite pass. No checkpoint is packaged: the node is
+> shadow-disabled and Speex/Silero remain authoritative until physical AEC,
+> VAD, endpoint, prefix-causality, and latency promotion gates pass.
+>
 > Runtime identity correction: CLI, live, spoken demo, desktop GUI, and the
 > node profile now default to `jaegeromni-41m-medium`; `gemma-native` is the
 > explicit rollback. The post-Whisper perception node remains opt-in. When it

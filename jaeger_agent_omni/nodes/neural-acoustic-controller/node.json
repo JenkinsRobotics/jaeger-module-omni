@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "kind": "jaeger_neural_node",
+  "id": "neural-acoustic-controller",
+  "slot": "acoustic_control",
+  "status": "architecture_ready_untrained_shadow_disabled",
+  "enabled_by_default": false,
+  "implementation": "runtime.py:build",
+  "consumes": [
+    "microphone_pcm_f32_16khz_mono",
+    "playback_reference_pcm_f32_16khz_mono"
+  ],
+  "produces": [
+    "echo_reduced_pcm_f32_16khz_mono",
+    "acoustic_embedding_100hz",
+    "voice_probability_100hz",
+    "scene_probabilities_100hz",
+    "self_external_overlap_probabilities_100hz",
+    "forming_committed_probabilities_100hz",
+    "wake_probability_100hz"
+  ],
+  "architecture": {
+    "name": "causal_frame_gru_multitask_v1",
+    "sample_rate": 16000,
+    "hop_samples": 160,
+    "hop_ms": 10,
+    "frame_input": "microphone_and_exact_playback_reference",
+    "hidden": 128,
+    "recurrent_layers": 2,
+    "target_precision": "fp16",
+    "transcript_decoder": false
+  },
+  "policy": {
+    "mode": "shadow_only",
+    "authoritative_aec": "speex-aec",
+    "authoritative_vad": "silero-vad",
+    "may_gate_live_audio": false,
+    "may_trigger_barge_in": false,
+    "may_close_turn": false
+  },
+  "promotion_gates": [
+    "echo attenuation and near-end survival",
+    "speech false opens and misses",
+    "speech open and endpoint delay",
+    "self versus external speech and overlap",
+    "source-disjoint scene classification",
+    "causal prefix invariance",
+    "sub-10ms frame compute",
+    "physical five-minute duplex audit"
+  ],
+  "notes": "Raw acoustics can propose HEAR/CATEGORISE and acoustic turn state. Semantic completion, addressee, and RESPOND remain downstream JaegerOmni/Gemma decisions. No trained checkpoint is packaged yet."
+}
