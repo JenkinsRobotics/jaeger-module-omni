@@ -1,0 +1,7 @@
+AEC stress: 43 real-speech synthetic rooms (wallclock reference)
+  echo attenuation       8.1 dB median
+  double-talk survival   99% median
+  old energy rule        43/43 false, 0/43 detected, n/a median
+  reference-aware rule   0/43 false, 43/43 detected, 188 ms median, 602 ms p95
+  artifact               /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-control-recheck/artifacts/aec-stress.json
+  gate                   FAIL

@@ -1,0 +1,7 @@
+PASS pinned_agent_commit
+PASS pinned_os_commit
+PASS cases_a_exact
+PASS cases_b_exact
+PASS tool_names_exact
+legacy/embedded: 81+81 cases, 97 tools
+wrote /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-control-recheck/artifacts/agentic-source-parity.json

@@ -1,0 +1,722 @@
+{
+  "schema_version": 1,
+  "kind": "jaeger_omni_deep_benchmark",
+  "evaluation": "free_running_where_model_is_used",
+  "teacher_forced": false,
+  "profile": "release",
+  "repository": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni",
+  "git_commit": "3d653864f7c2bfb0f7844f6899eab5f1295c454e",
+  "dirty_at_start": true,
+  "host": {
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "machine": "arm64",
+    "python": "3.11.9"
+  },
+  "summary": {
+    "pass": 15,
+    "fail": 4,
+    "skip": 1,
+    "total": 20,
+    "required_failures": [
+      "companion_ambient",
+      "companion_addressed",
+      "agentic_full_corpus",
+      "aec_room_stress"
+    ],
+    "required_skips": [
+      "physical_five_minute"
+    ],
+    "complete": false,
+    "profile_pass": false,
+    "groups": {
+      "cpu": {
+        "PASS": 3,
+        "FAIL": 0,
+        "SKIP": 0
+      },
+      "agent": {
+        "PASS": 3,
+        "FAIL": 1,
+        "SKIP": 0
+      },
+      "evidence": {
+        "PASS": 1,
+        "FAIL": 0,
+        "SKIP": 0
+      },
+      "output": {
+        "PASS": 3,
+        "FAIL": 0,
+        "SKIP": 0
+      },
+      "companion": {
+        "PASS": 2,
+        "FAIL": 2,
+        "SKIP": 0
+      },
+      "model": {
+        "PASS": 1,
+        "FAIL": 0,
+        "SKIP": 0
+      },
+      "duplex": {
+        "PASS": 1,
+        "FAIL": 0,
+        "SKIP": 0
+      },
+      "perception": {
+        "PASS": 1,
+        "FAIL": 0,
+        "SKIP": 0
+      },
+      "aec": {
+        "PASS": 0,
+        "FAIL": 1,
+        "SKIP": 0
+      },
+      "physical": {
+        "PASS": 0,
+        "FAIL": 0,
+        "SKIP": 1
+      }
+    },
+    "elapsed_s": 976.517,
+    "release_ready": false
+  },
+  "gates": [
+    {
+      "id": "repo_contracts",
+      "group": "cpu",
+      "description": "31 repository module contracts",
+      "status": "PASS",
+      "required": true,
+      "elapsed_s": 8.911,
+      "returncode": 0,
+      "command": [
+        "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+        "research/check_all.py"
+      ],
+      "detail": "exit 0",
+      "metrics": {},
+      "artifact": null,
+      "log": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-control-recheck/logs/repo_contracts.log"
+    },
+    {
+      "id": "transcript_ban",
+      "group": "cpu",
+      "description": "native input-path AST audit",
+      "status": "PASS",
+      "required": true,
+      "elapsed_s": 0.916,
+      "returncode": 0,
+      "command": [
+        "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+        "-m",
+        "jaeger_agent_omni.omni",
+        "--selfcheck"
+      ],
+      "detail": "exit 0",
+      "metrics": {},
+      "artifact": null,
+      "log": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-control-recheck/logs/transcript_ban.log"
+    },
+    {
+      "id": "package_tests",
+      "group": "cpu",
+      "description": "all package regression tests",
+      "status": "PASS",
+      "required": true,
+      "elapsed_s": 1.982,
+      "returncode": 0,
+      "command": [
+        "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "jaeger_agent_omni/tests"
+      ],
+      "detail": "exit 0",
+      "metrics": {},
+      "artifact": null,
+      "log": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-control-recheck/logs/package_tests.log"
+    },
+    {
+      "id": "agentic_selfcheck",
+      "group": "agent",
+      "description": "19 tool/skill/dialect checks",
+      "status": "PASS",
+      "required": true,
+      "elapsed_s": 2.074,
+      "returncode": 0,
+      "command": [
+        "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+        "-m",
+        "jaeger_agent_omni.core.agentic.selfcheck",
+        "--json"
+      ],
+      "detail": "exit 0",
+      "metrics": {},
+      "artifact": null,
+      "log": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-control-recheck/logs/agentic_selfcheck.log"
+    },
+    {
+      "id": "parity_artifacts",
+      "group": "evidence",
+      "description": "checkpoint-pinned MiniCPM scorecard",
+      "status": "PASS",
+      "required": true,
+      "elapsed_s": 0.051,
+      "returncode": 0,
+      "command": [
+        "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+        "research/parity_scorecard.py",
+        "--check"
+      ],
+      "detail": "exit 0",
+      "metrics": {},
+      "artifact": null,
+      "log": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-control-recheck/logs/parity_artifacts.log"
+    },
+    {
+      "id": "live_assembly",
+      "group": "output",
+      "description": "live AEC/Kokoro/clause wiring",
+      "status": "PASS",
+      "required": true,
+      "elapsed_s": 0.874,
+      "returncode": 0,
+      "command": [
+        "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+        "-m",
+        "jaeger_agent_omni.live",
+        "--demo"
+      ],
+      "detail": "exit 0",
+      "metrics": {},
+      "artifact": null,
+      "log": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-control-recheck/logs/live_assembly.log"
+    },
+    {
+      "id": "voice_contract",
+      "group": "output",
+      "description": "resident voice-node contract",
+      "status": "PASS",
+      "required": true,
+      "elapsed_s": 0.877,
+      "returncode": 0,
+      "command": [
+        "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+        "-m",
+        "jaeger_agent_omni.voice",
+        "--demo"
+      ],
+      "detail": "exit 0",
+      "metrics": {},
+      "artifact": null,
+      "log": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-control-recheck/logs/voice_contract.log"
+    },
+    {
+      "id": "companion_scoring",
+      "group": "companion",
+      "description": "admission grader selfcheck",
+      "status": "PASS",
+      "required": true,
+      "elapsed_s": 0.828,
+      "returncode": 0,
+      "command": [
+        "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+        "research/companion_gate.py",
+        "--selfcheck"
+      ],
+      "detail": "exit 0",
+      "metrics": {},
+      "artifact": null,
+      "log": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-control-recheck/logs/companion_scoring.log"
+    },
+    {
+      "id": "agentic_source_parity",
+      "group": "agent",
+      "description": "pinned 81+81 corpora and 97-tool source parity",
+      "status": "PASS",
+      "required": true,
+      "elapsed_s": 1.597,
+      "returncode": 0,
+      "command": [
+        "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+        "research/benchmark_agentic_parity.py",
+        "--out",
+        "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-control-recheck/artifacts/agentic-source-parity.json"
+      ],
+      "detail": "5/5 exact checks",
+      "metrics": {
+        "pinned_agent_commit": true,
+        "pinned_os_commit": true,
+        "cases_a_exact": true,
+        "cases_b_exact": true,
+        "tool_names_exact": true
+      },
+      "artifact": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-control-recheck/artifacts/agentic-source-parity.json",
+      "log": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-control-recheck/logs/agentic_source_parity.log"
+    },
+    {
+      "id": "omni_cases12",
+      "group": "model",
+      "description": "frozen neural ear answer gate",
+      "status": "PASS",
+      "required": true,
+      "elapsed_s": 21.222,
+      "returncode": 0,
+      "command": [
+        "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+        "-m",
+        "jaeger_agent_omni.omni",
+        "--bench",
+        "research/cases12",
+        "--front-end",
+        "jaegeromni-41m-medium",
+        "--model",
+        "/Users/jonathanjenkins/models/gemma-4-e4b-it-mlx-full",
+        "--out",
+        "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-control-recheck/artifacts/omni-cases12.json"
+      ],
+      "detail": "12/12 \u00b7 579 ms",
+      "metrics": {
+        "correct": 12,
+        "n": 12,
+        "median_ms": 578.6623125000006
+      },
+      "artifact": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-control-recheck/artifacts/omni-cases12.json",
+      "log": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-control-recheck/logs/omni_cases12.log"
+    },
+    {
+      "id": "agentic_cases12",
+      "group": "agent",
+      "description": "native-audio loop + tool dispatch",
+      "status": "PASS",
+      "required": true,
+      "elapsed_s": 50.375,
+      "returncode": 0,
+      "command": [
+        "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+        "research/benchmark_agentic_omni.py",
+        "--front-end",
+        "jaegeromni-41m-medium",
+        "--model",
+        "/Users/jonathanjenkins/models/gemma-4-e4b-it-mlx-full",
+        "--out",
+        "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-control-recheck/artifacts/agentic-cases12.json"
+      ],
+      "detail": "12/12 \u00b7 2391 ms \u00b7 unexpected=0",
+      "metrics": {
+        "correct": 12,
+        "n": 12,
+        "median_ms": 2391.3718960000097,
+        "unexpected_tool_cases": [],
+        "registered_tools": 107,
+        "omni_safe_tools": 105,
+        "initial_visible_tools": 8
+      },
+      "artifact": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-control-recheck/artifacts/agentic-cases12.json",
+      "log": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-control-recheck/logs/agentic_cases12.log"
+    },
+    {
+      "id": "duplex_barge",
+      "group": "duplex",
+      "description": "stream integrity and <=50ms cancel",
+      "status": "PASS",
+      "required": true,
+      "elapsed_s": 22.075,
+      "returncode": 0,
+      "command": [
+        "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+        "research/duplex_check.py",
+        "--barge-in",
+        "--seconds",
+        "8",
+        "--front-end",
+        "jaegeromni-41m-medium",
+        "--model",
+        "/Users/jonathanjenkins/models/gemma-4-e4b-it-mlx-full",
+        "--json",
+        "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-control-recheck/artifacts/duplex-barge.json"
+      ],
+      "detail": "interrupt 18.155374999878404 ms \u00b7 drops 0",
+      "metrics": {
+        "turns": 1,
+        "interrupts": 1,
+        "audio_dropped": 0,
+        "max_lag_ms": 59.47250000008353,
+        "cancel_latency_ms": 18.155374999878404,
+        "consumed_seconds": 3.5
+      },
+      "artifact": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-control-recheck/artifacts/duplex-barge.json",
+      "log": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-control-recheck/logs/duplex_barge.log"
+    },
+    {
+      "id": "kokoro_pcm",
+      "group": "output",
+      "description": "resident Kokoro neural synthesis",
+      "status": "PASS",
+      "required": true,
+      "elapsed_s": 8.557,
+      "returncode": 0,
+      "command": [
+        "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+        "-m",
+        "jaeger_agent_omni.voice",
+        "--say",
+        "Jaeger neural speech output is ready.",
+        "--out",
+        "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-control-recheck/artifacts/kokoro.wav"
+      ],
+      "detail": "2.80s \u00b7 24000 Hz \u00b7 1ch",
+      "metrics": {
+        "seconds": 2.8,
+        "sample_rate": 24000,
+        "channels": 1
+      },
+      "artifact": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-control-recheck/artifacts/kokoro.wav",
+      "log": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-control-recheck/logs/kokoro_pcm.log"
+    },
+    {
+      "id": "companion_ambient",
+      "group": "companion",
+      "description": "unaddressed speech suppression",
+      "status": "FAIL",
+      "required": true,
+      "elapsed_s": 25.548,
+      "returncode": 0,
+      "command": [
+        "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+        "research/companion_gate.py",
+        "--manifest",
+        "research/companion_ambient_cases12.jsonl",
+        "--front-end",
+        "jaegeromni-41m-medium",
+        "--model",
+        "/Users/jonathanjenkins/models/gemma-4-e4b-it-mlx-full",
+        "--out",
+        "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-control-recheck/artifacts/companion-ambient.json"
+      ],
+      "detail": "false responses 1/12",
+      "metrics": {
+        "clips": 12,
+        "correct": 11,
+        "accuracy": 0.9166666666666666,
+        "respond_precision": 0.0,
+        "respond_recall": 0.0,
+        "false_responses": 1,
+        "missed_addresses": 0,
+        "latency_ms": {
+          "median": 131.7941869999686,
+          "max": 413.02666599995064
+        },
+        "by_category": {
+          "unaddressed_question": {
+            "n": 12,
+            "correct": 11
+          }
+        }
+      },
+      "artifact": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-control-recheck/artifacts/companion-ambient.json",
+      "log": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-control-recheck/logs/companion_ambient.log"
+    },
+    {
+      "id": "build_addressed_audio",
+      "group": "companion",
+      "description": "fixed Kokoro named-address corpus",
+      "status": "PASS",
+      "required": true,
+      "elapsed_s": 11.375,
+      "returncode": 0,
+      "command": [
+        "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+        "research/make_companion_addressed.py",
+        "--dir",
+        "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-control-recheck/artifacts/addressed-audio"
+      ],
+      "detail": "exit 0",
+      "metrics": {},
+      "artifact": null,
+      "log": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-control-recheck/logs/build_addressed_audio.log"
+    },
+    {
+      "id": "companion_addressed",
+      "group": "companion",
+      "description": "named-address response recall",
+      "status": "FAIL",
+      "required": true,
+      "elapsed_s": 26.669,
+      "returncode": 0,
+      "command": [
+        "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+        "research/companion_gate.py",
+        "--manifest",
+        "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-control-recheck/artifacts/jaeger-companion-addressed.jsonl",
+        "--front-end",
+        "jaegeromni-41m-medium",
+        "--model",
+        "/Users/jonathanjenkins/models/gemma-4-e4b-it-mlx-full",
+        "--out",
+        "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-control-recheck/artifacts/companion-addressed.json"
+      ],
+      "detail": "address recall 33.3%",
+      "metrics": {
+        "clips": 12,
+        "correct": 4,
+        "accuracy": 0.3333333333333333,
+        "respond_precision": 1.0,
+        "respond_recall": 0.3333333333333333,
+        "false_responses": 0,
+        "missed_addresses": 8,
+        "latency_ms": {
+          "median": 140.11214599986488,
+          "max": 402.9419999997117
+        },
+        "by_category": {
+          "named_direct_question": {
+            "n": 12,
+            "correct": 4
+          }
+        }
+      },
+      "artifact": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-control-recheck/artifacts/companion-addressed.json",
+      "log": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-control-recheck/logs/companion_addressed.log"
+    },
+    {
+      "id": "neural_vad_cases12",
+      "group": "perception",
+      "description": "speech open/end on cases12",
+      "status": "PASS",
+      "required": true,
+      "elapsed_s": 1.431,
+      "returncode": 0,
+      "command": [
+        "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+        "research/vad_gate.py",
+        "--speech-dir",
+        "research/cases12",
+        "--out",
+        "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-control-recheck/artifacts/vad-cases12.json"
+      ],
+      "detail": "opened 12/12 \u00b7 ended 12/12 \u00b7 false opens 0/5",
+      "metrics": {
+        "clips": 17,
+        "speech_opened": 12,
+        "speech_total": 12,
+        "speech_ended": 12,
+        "false_opens": 0,
+        "nonspeech_total": 5
+      },
+      "artifact": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-control-recheck/artifacts/vad-cases12.json",
+      "log": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-control-recheck/logs/neural_vad_cases12.log"
+    },
+    {
+      "id": "agentic_full_corpus",
+      "group": "agent",
+      "description": "81+81 routing/multistep/memory/recovery/safety cases as audio",
+      "status": "FAIL",
+      "required": true,
+      "elapsed_s": 780.961,
+      "returncode": 1,
+      "command": [
+        "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+        "research/benchmark_agentic_corpus.py",
+        "--suite",
+        "both",
+        "--front-end",
+        "jaegeromni-41m-medium",
+        "--model",
+        "/Users/jonathanjenkins/models/gemma-4-e4b-it-mlx-full",
+        "--case-timeout-s",
+        "20",
+        "--audio-cache",
+        "/Users/jonathanjenkins/models/jaeger-benchmark-audio",
+        "--out",
+        "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-control-recheck/artifacts/agentic-native-audio-corpus.json"
+      ],
+      "detail": "28/162 \u00b7 routing 20/128",
+      "metrics": {
+        "summary": {
+          "passed": 28,
+          "total": 162,
+          "pass_rate": 0.1728395061728395,
+          "routing_passed": 20,
+          "routing_total": 128,
+          "routing_rate": 0.15625,
+          "answer_passed": 42,
+          "answer_total": 96,
+          "errors": 14,
+          "unexpected_markup": 0,
+          "safety_failures": 0,
+          "latency_ms": {
+            "median": 3000.7908540001154,
+            "p95": 20987.504167000225
+          },
+          "by_tag": {
+            "routing": {
+              "passed": 12,
+              "total": 56
+            },
+            "files": {
+              "passed": 0,
+              "total": 30
+            },
+            "audio": {
+              "passed": 1,
+              "total": 4
+            },
+            "web": {
+              "passed": 0,
+              "total": 18
+            },
+            "memory": {
+              "passed": 0,
+              "total": 22
+            },
+            "code": {
+              "passed": 0,
+              "total": 10
+            },
+            "schedule": {
+              "passed": 0,
+              "total": 8
+            },
+            "multistep": {
+              "passed": 1,
+              "total": 22
+            },
+            "multiturn": {
+              "passed": 2,
+              "total": 24
+            },
+            "recovery": {
+              "passed": 2,
+              "total": 18
+            },
+            "safety": {
+              "passed": 7,
+              "total": 10
+            },
+            "destructive": {
+              "passed": 2,
+              "total": 2
+            },
+            "injection": {
+              "passed": 2,
+              "total": 2
+            },
+            "credential": {
+              "passed": 2,
+              "total": 2
+            },
+            "hallucination": {
+              "passed": 1,
+              "total": 4
+            },
+            "cross_turn": {
+              "passed": 0,
+              "total": 8
+            },
+            "parallel": {
+              "passed": 0,
+              "total": 4
+            },
+            "skill": {
+              "passed": 0,
+              "total": 8
+            },
+            "creative": {
+              "passed": 0,
+              "total": 2
+            },
+            "research": {
+              "passed": 0,
+              "total": 2
+            },
+            "kanban": {
+              "passed": 0,
+              "total": 10
+            },
+            "deepthink": {
+              "passed": 0,
+              "total": 2
+            },
+            "self_improve": {
+              "passed": 0,
+              "total": 2
+            },
+            "workflow": {
+              "passed": 0,
+              "total": 4
+            },
+            "persona": {
+              "passed": 0,
+              "total": 2
+            },
+            "plan_first": {
+              "passed": 4,
+              "total": 8
+            }
+          }
+        },
+        "gates": {
+          "full_pass_rate_at_least_70_percent": false,
+          "routing_rate_at_least_85_percent": false,
+          "no_dispatch_errors": false,
+          "no_visible_markup": true,
+          "no_safety_failures": true
+        }
+      },
+      "artifact": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-control-recheck/artifacts/agentic-native-audio-corpus.json",
+      "log": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-control-recheck/logs/agentic_full_corpus.log"
+    },
+    {
+      "id": "aec_room_stress",
+      "group": "aec",
+      "description": "43-room echo/barge promotion gate",
+      "status": "FAIL",
+      "required": true,
+      "elapsed_s": 10.194,
+      "returncode": 2,
+      "command": [
+        "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+        "research/aec_stress.py",
+        "--cases",
+        "43",
+        "--json",
+        "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-control-recheck/artifacts/aec-stress.json"
+      ],
+      "detail": "failed: reference_aware_p95_at_most_300ms",
+      "metrics": {
+        "gates": {
+          "echo_attenuation_at_least_6db": true,
+          "near_survival_at_least_70_percent": true,
+          "no_reference_aware_false_barges": true,
+          "reference_aware_recall_at_least_90_percent": true,
+          "reference_aware_p95_at_most_300ms": false
+        },
+        "false_barges": 0,
+        "recall_percent": 100.0,
+        "median_delay_ms": 188.40115379297018,
+        "p95_delay_ms": 601.9062767512157
+      },
+      "artifact": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-control-recheck/artifacts/aec-stress.json",
+      "log": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-control-recheck/logs/aec_room_stress.log"
+    },
+    {
+      "id": "physical_five_minute",
+      "group": "physical",
+      "description": "real mic/AEC/turn/barge/context-roll evidence",
+      "status": "SKIP",
+      "required": true,
+      "elapsed_s": 0.0,
+      "returncode": null,
+      "command": [],
+      "detail": "pass --physical-report from a real 5-minute run",
+      "metrics": {},
+      "artifact": null,
+      "log": null
+    }
+  ]
+}

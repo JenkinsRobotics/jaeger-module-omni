@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="2" failures="0" skipped="0" tests="2" time="3.405" timestamp="2026-08-29T23:26:16.712540-07:00" hostname="Mac-Studio-3.localdomain"><testcase classname="" name="dev.tests.jaeger_ai.core.test_lazy_deps" time="0.000"><error message="collection failure">ImportError while importing test module '/Users/jonathanjenkins/GITHUB/JaegerAI/dev/tests/jaeger_ai/core/test_lazy_deps.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+../../.pyenv/versions/3.11.9/lib/python3.11/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+dev/tests/jaeger_ai/core/test_lazy_deps.py:14: in &lt;module&gt;
+    from jaeger_ai.core.models import lazy_deps
+E   ImportError: cannot import name 'lazy_deps' from 'jaeger_ai.core.models' (/Users/jonathanjenkins/GITHUB/JaegerAI/jaeger_ai/core/models/__init__.py)</error></testcase><testcase classname="" name="dev.tests.jaeger_ai.skills.test_computer_use" time="0.000"><error message="collection failure">dev/tests/jaeger_ai/skills/test_computer_use.py:33: in &lt;module&gt;
+    cu = _load()
+         ^^^^^^^
+dev/tests/jaeger_ai/skills/test_computer_use.py:29: in _load
+    spec.loader.exec_module(mod)
+&lt;frozen importlib._bootstrap_external&gt;:936: in exec_module
+    ???
+&lt;frozen importlib._bootstrap_external&gt;:1073: in get_code
+    ???
+&lt;frozen importlib._bootstrap_external&gt;:1130: in get_data
+    ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/jonathanjenkins/GITHUB/JaegerAI/jaeger_ai/agent/skills/computer_use_v1/computer_use.py'</error></testcase></testsuite></testsuites>
