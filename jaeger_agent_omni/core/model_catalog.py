@@ -14,8 +14,8 @@ from dataclasses import dataclass, replace
 from pathlib import Path
 
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
-NODES_ROOT = Path(__file__).resolve().parent / "nodes"
+PACKAGE_ROOT = Path(__file__).resolve().parent.parent
+NODES_ROOT = PACKAGE_ROOT / "nodes"
 DEFAULT_FRONT_END = "jaegeromni-41m-medium"
 
 

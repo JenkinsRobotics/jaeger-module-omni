@@ -70,6 +70,30 @@ class AgenticOmniTests(unittest.TestCase):
         self.assertIn('"tool_result"', session.controls[0])
         self.assertNotIn(NATIVE_MULTIMODAL_TURN, session.controls[0])
 
+    def test_stripped_native_tool_boundaries_are_recovered(self):
+        session = _FakeSession([])
+        adapter = OmniSessionAdapter(session)
+
+        message = adapter.parse_response(
+            'call:calculate{expression:"10-3"}'
+        )
+
+        self.assertIsNone(message["content"])
+        self.assertEqual(message["tool_calls"][0]["name"], "calculate")
+        self.assertEqual(
+            message["tool_calls"][0]["arguments"], {"expression": "10-3"}
+        )
+
+    def test_call_word_inside_prose_is_not_dispatched(self):
+        session = _FakeSession([])
+        adapter = OmniSessionAdapter(session)
+
+        message = adapter.parse_response(
+            'Please call:calculate{expression:"10-3"} if needed.'
+        )
+
+        self.assertNotIn("tool_calls", message)
+
     def test_interrupt_reaches_native_session_at_token_boundary(self):
         session = _FakeSession(["stopped"])
         adapter = OmniSessionAdapter(session)
@@ -86,8 +110,11 @@ class AgenticOmniTests(unittest.TestCase):
         self.assertNotIn("listen", names)
         self.assertNotIn("text_to_speech", names)
         self.assertIn("load_tools", names)
+        self.assertIn("use_skill", names)
         self.assertIn("ACTIVE TOOL SCHEMAS", preparation.system)
         self.assertEqual(names, {tool.name for tool in omni_tools()})
+        self.assertEqual(len(names), 8)
+        self.assertNotIn('"enum"', preparation.system)
 
     def test_selected_session_must_support_agentic_continuation(self):
         class Incomplete:

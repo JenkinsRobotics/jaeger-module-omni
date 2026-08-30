@@ -69,15 +69,11 @@ from jaeger_agent_omni.core.skill_registry.manifest_v3 import (
 # M3.5 rename; the new name matches `<instance_dir>/skills/` for symmetry
 # (same word, different zone).
 #
-# 0.11: this was ``parent.parent.parent / "agent" / "skills"`` while the
-# loader lived in jaeger_ai/agent/skill_registry/, where it resolved to
-# jaeger_ai/agent/skills. After the move the same walk lands on the
-# jaeger-agent repo ROOT, which has no such directory — and _scan_zone
-# treats a missing zone as empty, so the loader reported zero skills
-# without raising. 107 recipe skills disappeared silently and only the
-# benchmark noticed. Now it resolves inside this package, which is where
-# the skills actually ship, so it needs no host and cannot drift again.
-CORE_SKILLS_DIR = Path(__file__).resolve().parent.parent / "skills"
+# The registry now lives below ``jaeger_agent_omni/core`` while shipped skills
+# remain in ``jaeger_agent_omni/skills``. A missing zone is intentionally
+# tolerated, so the old ``core/skills`` path failed silently and hid all 107
+# recipes. Anchor this path at the package root.
+CORE_SKILLS_DIR = Path(__file__).resolve().parents[2] / "skills"
 
 
 _SKILL_RE = re.compile(r"^(?P<name>[A-Za-z][A-Za-z0-9_]*)_v(?P<v>\d+)$")

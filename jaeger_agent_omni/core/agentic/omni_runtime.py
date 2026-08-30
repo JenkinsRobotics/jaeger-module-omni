@@ -34,10 +34,23 @@ NATIVE_MULTIMODAL_TURN = (
 # generation-id-bound output router, so neither belongs in its action catalog.
 OMNI_BLOCKED_TOOLS = frozenset({"listen", "text_to_speech"})
 
+# The audio model pays attention over every schema token for every generated
+# token.  Jaeger Agent's desktop-oriented 18-tool CORE made a five-token voice
+# answer take ~7.2 seconds.  Keep the neural voice bootstrap deliberately
+# small; all 95 base safe tools (plus skill-provided tools) remain registered,
+# and ``load_tools`` can expose a specialist set without rebuilding the session.
+OMNI_CORE_TOOLS = frozenset({
+    "calculate", "get_time", "load_tools", "list_skills",
+    "memory", "recall", "use_skill", "web_search",
+})
+
 _CALL_BLOCKS = (
     re.compile(r"<\|tool_call\|>\s*.*?\s*<\|/tool_call\|>", re.DOTALL),
     re.compile(r"<\|tool_call>\s*call:[^<]*<tool_call\|>", re.DOTALL),
     re.compile(r"<tool_call>\s*.*?\s*</tool_call>", re.DOTALL),
+)
+_BARE_GEMMA_CALL = re.compile(
+    r"^\s*call:[A-Za-z_][A-Za-z0-9_]*\s*\{.*\}\s*$", re.DOTALL,
 )
 
 
@@ -45,7 +58,7 @@ def omni_tool_visible(name: str) -> bool:
     """Omni's context-tight visibility rule, independent of process env."""
     if name in OMNI_BLOCKED_TOOLS:
         return False
-    if name in toolset_scoping.CORE:
+    if name in OMNI_CORE_TOOLS:
         return True
     active = toolset_scoping.active_toolset_names() - {"core"}
     if any(name in toolset_scoping.TOOLSETS.get(group, ()) for group in active):
@@ -54,7 +67,8 @@ def omni_tool_visible(name: str) -> bool:
            toolset_scoping._SKILL_TOOLSETS.items() if group in active):
         return True
     classified = (
-        any(name in members for members in toolset_scoping.TOOLSETS.values())
+        name in toolset_scoping.CORE
+        or any(name in members for members in toolset_scoping.TOOLSETS.values())
         or any(name in members
                for members in toolset_scoping._SKILL_TOOLSETS.values())
     )
@@ -79,24 +93,29 @@ def _function_schema(tool: ToolDef) -> dict[str, Any]:
     schema = tool.to_openai_schema()
     function = dict(schema.get("function") or {})
     function["description"] = " ".join(
-        str(function.get("description") or "").split())[:240]
+        str(function.get("description") or "").split())[:96]
 
-    def compact(value: Any) -> Any:
-        if isinstance(value, dict):
-            result = {}
-            for key, item in value.items():
-                if key == "title":
-                    continue
-                if key == "description":
-                    result[key] = " ".join(str(item).split())[:160]
-                else:
-                    result[key] = compact(item)
-            return result
-        if isinstance(value, list):
-            return [compact(item) for item in value]
-        return value
-
-    function["parameters"] = compact(function.get("parameters") or {})
+    # This is a generation hint, not the dispatch validator: ToolDef keeps the
+    # authoritative Pydantic schema.  Retain argument names, primitive types,
+    # requiredness and small enums while dropping titles/descriptions/defaults
+    # that dominate a voice model's attention prefix.
+    source = function.get("parameters") or {}
+    properties: dict[str, Any] = {}
+    for name, value in (source.get("properties") or {}).items():
+        value = value if isinstance(value, dict) else {}
+        prop: dict[str, Any] = {"type": value.get("type", "string")}
+        enum = value.get("enum")
+        if isinstance(enum, list) and len(enum) <= 8:
+            prop["enum"] = enum
+        items = value.get("items")
+        if isinstance(items, dict) and items.get("type"):
+            prop["items"] = {"type": items["type"]}
+        properties[name] = prop
+    function["parameters"] = {
+        "type": "object",
+        "properties": properties,
+        "required": source.get("required") or [],
+    }
     return function
 
 
@@ -224,9 +243,21 @@ class OmniSessionAdapter(ProviderAdapter):
     def parse_response(self, raw: Any) -> Message:
         text = strip_reasoning_channels(str(raw or ""))
         calls = extract_tool_calls(text)
+        # The stock-Whisper session decodes with ``skip_special_tokens`` so
+        # Gemma's <|tool_call> ... <tool_call|> boundary tokens can disappear
+        # while the semantic body survives. Recover only when the *entire*
+        # response is the native ``call:name{args}`` form; prose containing
+        # ``call:`` remains ordinary user-facing text.
+        bare_call = bool(_BARE_GEMMA_CALL.fullmatch(text))
+        if not calls and bare_call:
+            calls = extract_tool_calls(
+                f"<|tool_call>{text.strip()}<tool_call|>"
+            )
         cleaned = text
         for pattern in _CALL_BLOCKS:
             cleaned = pattern.sub("", cleaned)
+        if calls and bare_call:
+            cleaned = ""
         message: Message = {
             "role": "assistant",
             "content": cleaned.strip() or None,
@@ -264,6 +295,7 @@ class OmniAgentRuntime:
             max_iterations=max_iterations,
             blocked_tools=OMNI_BLOCKED_TOOLS,
             tool_visibility=omni_tool_visible,
+            skip_final_tools={"calculate", "get_time", "recall"},
         )
         self.session = session
         self._native_cancel = session.cancel
@@ -288,6 +320,7 @@ class OmniAgentRuntime:
 
 __all__ = [
     "AgenticPreparation", "NATIVE_MULTIMODAL_TURN", "OMNI_BLOCKED_TOOLS",
+    "OMNI_CORE_TOOLS",
     "OmniAgentRuntime", "OmniSessionAdapter", "omni_tool_visible",
     "omni_tools", "prepare_agentic_system",
 ]

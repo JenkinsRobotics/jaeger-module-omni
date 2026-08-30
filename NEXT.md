@@ -13,6 +13,17 @@ removes sentence streaming. The next output-side architecture experiment is a
 gated hidden-state talker; do not describe decoded-text Kokoro as tensor-native
 in the meantime.
 
+The post-alignment automated gates are green: frozen-ear audio remains 12/12
+at 575 ms, native-audio agent mode is 12/12 at 2421 ms with three valid math
+dispatches and zero unexpected calls, embedded/source corpora and tool names
+are exact, and the same 101 loop/parser/safety tests pass in both namespaces.
+Do not spend GPU time on this seam. The remaining agentic deficit is runtime
+latency: the eight-tool compact voice prefix is much better than the original
+18-tool prefix (2421 ms versus 6766 ms median) but still materially slower than
+plain Omni. Optimize schema routing/prefix attention only against corpus-level
+tool-routing accuracy; never obtain a latency win by silently removing access
+to registered capabilities.
+
 The richer neural observation node is now packaged as
 `jaegeromni-41m-audio-perception`. Its four-way scene head passes a
 source-file-disjoint gate at 0.952 macro-F1 and its frozen ear retains 12/12;

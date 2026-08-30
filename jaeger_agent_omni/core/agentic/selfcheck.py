@@ -272,7 +272,7 @@ def _check_skills_declare_real_tools() -> Check:
     import yaml as _yaml
 
     live = {t.name for t in _tools()}
-    root = pathlib.Path(__file__).resolve().parent / "skills"
+    root = pathlib.Path(__file__).resolve().parents[2] / "skills"
     gaps: dict[str, list[str]] = {}
     for f in root.rglob("SKILL.md"):
         head = _re.match(r"^---\n(.*?)\n---", f.read_text(), _re.S)
@@ -353,7 +353,7 @@ def _check_declared_dependencies_import() -> Check:
     import importlib.util
     import tomllib
 
-    root = pathlib.Path(__file__).resolve().parents[1] / "pyproject.toml"
+    root = pathlib.Path(__file__).resolve().parents[3] / "pyproject.toml"
     try:
         declared = tomllib.loads(root.read_text())["project"]["dependencies"]
     except Exception as exc:  # noqa: BLE001 — installed without the source tree
@@ -381,7 +381,7 @@ def _check_runtime_imports_are_declared() -> Check:
     import sys as _sys
     import tomllib
 
-    root = pathlib.Path(__file__).resolve().parents[1]
+    root = pathlib.Path(__file__).resolve().parents[3]
     try:
         proj = tomllib.loads((root / "pyproject.toml").read_text())["project"]
     except Exception:  # noqa: BLE001
@@ -397,7 +397,7 @@ def _check_runtime_imports_are_declared() -> Check:
 
     stdlib = set(_sys.stdlib_module_names)
     undeclared: set[str] = set()
-    for f in (root / "jaeger_agent_omni.core.agentic").rglob("*.py"):
+    for f in (root / "jaeger_agent_omni" / "core" / "agentic").rglob("*.py"):
         if "/skills/" in str(f):
             continue                      # skill payloads carry their own deps
         try:

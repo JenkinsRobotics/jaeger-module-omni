@@ -19,11 +19,10 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-# skills/ sits at the package root:  core/skills/ → core/ → jaeger_agent_omni.core.agentic._vendor.jaeger_os/ → skills/
-# 0.11: same silent breakage as skill_loader.CORE_SKILLS_DIR — the
-# old walk landed on the repo root after the move. Skills ship
-# inside this package now, so resolve within it.
-_SKILLS_DIR = Path(__file__).resolve().parent.parent / "skills"
+# ``skill_registry`` moved under ``core`` while built-in recipes stayed at the
+# package root. Resolve ``jaeger_agent_omni/skills`` explicitly; the former
+# parent walk silently inspected the nonexistent ``core/skills`` directory.
+_SKILLS_DIR = Path(__file__).resolve().parents[2] / "skills"
 
 
 # Where a skill came from — for trust decisions and a future curator

@@ -1,0 +1,159 @@
+{
+  "kind": "agentic_omni_native_audio_regression",
+  "front_end": "jaegeromni-41m-medium",
+  "checkpoint": "a7f96bfb8898",
+  "adapter_sha256": "a7f96bfb889866f75df7b838f84aae368a56ab10f6469e766511d700e32fe13a",
+  "correct": 12,
+  "n": 12,
+  "median_ms": 2420.5165620078333,
+  "unexpected_tool_cases": [],
+  "allowed_tool_cases": [
+    "q00",
+    "q04",
+    "q07"
+  ],
+  "registered_tools": 107,
+  "omni_safe_tools": 105,
+  "initial_visible_tools": 8,
+  "skills": 107,
+  "rows": [
+    {
+      "case": "q00",
+      "ok": true,
+      "latency_ms": 3051.966083003208,
+      "answer": "{\"expression\": \"2 + 2\", \"result\": 4}",
+      "tool_calls": [
+        "calculate"
+      ],
+      "iterations": 1,
+      "halt_reason": null,
+      "generated_tokens": 14,
+      "raw_response": "call:calculate{expression: \"2 + 2\"}"
+    },
+    {
+      "case": "q01",
+      "ok": true,
+      "latency_ms": 2486.505125008989,
+      "answer": "The sky is blue.",
+      "tool_calls": [],
+      "iterations": 1,
+      "halt_reason": null,
+      "generated_tokens": 5,
+      "raw_response": "The sky is blue."
+    },
+    {
+      "case": "q02",
+      "ok": true,
+      "latency_ms": 2353.166249988135,
+      "answer": "There are seven days in a week.",
+      "tool_calls": [],
+      "iterations": 1,
+      "halt_reason": null,
+      "generated_tokens": 8,
+      "raw_response": "There are seven days in a week."
+    },
+    {
+      "case": "q03",
+      "ok": true,
+      "latency_ms": 2345.8601669990458,
+      "answer": "The capital of France is Paris.",
+      "tool_calls": [],
+      "iterations": 1,
+      "halt_reason": null,
+      "generated_tokens": 7,
+      "raw_response": "The capital of France is Paris."
+    },
+    {
+      "case": "q04",
+      "ok": true,
+      "latency_ms": 2502.650040987646,
+      "answer": "{\"expression\": \"10 - 3\", \"result\": 7}",
+      "tool_calls": [
+        "calculate"
+      ],
+      "iterations": 1,
+      "halt_reason": null,
+      "generated_tokens": 15,
+      "raw_response": "call:calculate{expression: \"10 - 3\"}"
+    },
+    {
+      "case": "q05",
+      "ok": true,
+      "latency_ms": 2480.5577090010047,
+      "answer": "A spider has eight legs.",
+      "tool_calls": [],
+      "iterations": 1,
+      "halt_reason": null,
+      "generated_tokens": 6,
+      "raw_response": "A spider has eight legs."
+    },
+    {
+      "case": "q06",
+      "ok": true,
+      "latency_ms": 2333.3069999935105,
+      "answer": "The largest planet is Jupiter.",
+      "tool_calls": [],
+      "iterations": 1,
+      "halt_reason": null,
+      "generated_tokens": 6,
+      "raw_response": "The largest planet is Jupiter."
+    },
+    {
+      "case": "q07",
+      "ok": true,
+      "latency_ms": 2437.812957999995,
+      "answer": "{\"expression\": \"5*5\", \"result\": 25}",
+      "tool_calls": [
+        "calculate"
+      ],
+      "iterations": 1,
+      "halt_reason": null,
+      "generated_tokens": 12,
+      "raw_response": "call:calculate{expression:\"5*5\"}"
+    },
+    {
+      "case": "q08",
+      "ok": true,
+      "latency_ms": 2549.1595409985166,
+      "answer": "The next season after summer is autumn.",
+      "tool_calls": [],
+      "iterations": 1,
+      "halt_reason": null,
+      "generated_tokens": 8,
+      "raw_response": "The next season after summer is autumn."
+    },
+    {
+      "case": "q09",
+      "ok": true,
+      "latency_ms": 2403.2201660156716,
+      "answer": "There are 24 hours in a day.",
+      "tool_calls": [],
+      "iterations": 1,
+      "halt_reason": null,
+      "generated_tokens": 10,
+      "raw_response": "There are 24 hours in a day."
+    },
+    {
+      "case": "q10",
+      "ok": true,
+      "latency_ms": 2359.2955830099527,
+      "answer": "Water freezes at 0 degrees Celsius.",
+      "tool_calls": [],
+      "iterations": 1,
+      "halt_reason": null,
+      "generated_tokens": 8,
+      "raw_response": "Water freezes at 0 degrees Celsius."
+    },
+    {
+      "case": "q11",
+      "ok": true,
+      "latency_ms": 2319.696999998996,
+      "answer": "Shakespeare wrote Romeo and Juliet.",
+      "tool_calls": [],
+      "iterations": 1,
+      "halt_reason": null,
+      "generated_tokens": 6,
+      "raw_response": "Shakespeare wrote Romeo and Juliet."
+    }
+  ]
+}

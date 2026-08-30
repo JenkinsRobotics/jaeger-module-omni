@@ -8,9 +8,17 @@ from jaeger_agent_omni.core.model_nodes import (
     load_audio_node,
     validate_node_checkpoint,
 )
+from jaeger_agent_omni.core.model_catalog import NODES_ROOT, resolve_front_end
 
 
 class AudioNodeTests(unittest.TestCase):
+    def test_catalog_nodes_resolve_from_package_root_after_core_move(self):
+        package_root = Path(__file__).resolve().parents[1]
+        self.assertEqual(NODES_ROOT, package_root / "nodes")
+        selected = resolve_front_end("jaegeromni-41m-medium")
+        self.assertEqual(selected.node, NODES_ROOT / "jaegeromni-41m-medium")
+        self.assertTrue((selected.node / "node.json").is_file())
+
     def test_audio_node_pins_adapter_and_boundary(self):
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)

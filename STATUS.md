@@ -18,14 +18,26 @@ Measured ledger. Every claim here has a command that reproduces it.
 > native adapter starts from audio already embedded in Gemma's session, blocks
 > the copied `listen` and `text_to_speech` tools, dispatches structured calls,
 > and appends trusted results to the same cache without an input transcript.
-> The copied catalog contains 96 registered tools, 94 Omni-safe tools, and 17
-> initially visible tools. Five focused integration tests pass, as do 101
-> selected copied-core tests after namespace relocation. This mode is opt-in
+> The copied catalog contains 97 registered tools and 95 Omni-safe tools. The
+> voice bootstrap exposes 8 common tools; every other safe tool remains
+> registered and can be exposed by `load_tools`. Seven focused integration
+> tests pass, as do 101 selected copied-core tests after namespace relocation.
+> The same 101 source tests also pass against the read-only legacy package;
+> both 81+81 case corpora have identical SHA-256s and both catalogs contain the
+> same 97 names. After fixing stripped Gemma tool-boundary tokens, the
+> free-running native-audio agent gate scores **12/12**, makes three valid
+> `calculate` calls, makes zero unexpected calls, and has **2421 ms** median
+> turn latency (versus an initial broken **9/12 at 6766 ms**). The ordinary
+> non-agentic frozen-ear gate remains **12/12 at 575 ms**. This mode is opt-in
 > behind `live --agentic` pending a physical five-minute tool/memory/barge-in
 > gate. Tool-capable replies are currently buffered to guarantee markup is
-> never spoken, so their END-to-audio latency is not yet a production claim.
+> never spoken; agentic latency is therefore functional, not yet production
+> parity with the plain voice path.
 > Speech output remains decoded response text into resident Kokoro; the hidden-
 > state talker is experimental.
+> Loading the installed skill set adds ten runtime tools, so the recorded live
+> agent surface is 107 registered / 105 Omni-safe; 97/95 is the exact base
+> catalog comparison before skill registration.
 >
 > 2026-08-29 neural audio-perception window: a separately selectable
 > `jaegeromni-41m-audio-perception` node now keeps the exact causal-balanced

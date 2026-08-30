@@ -1,0 +1,85 @@
+{
+ "front_end": "stock",
+ "model_id": "jaegeromni-41m-medium",
+ "model_name": "JaegerOmni 41M Medium",
+ "checkpoint": "a7f96bfb8898",
+ "dual_output": false,
+ "correct": 12,
+ "n": 12,
+ "median_ms": 574.5964375091717,
+ "rows": [
+  {
+   "case": "q00",
+   "ok": true,
+   "ms": 523.4473330201581,
+   "reply": "Two plus two equals four."
+  },
+  {
+   "case": "q01",
+   "ok": true,
+   "ms": 539.9793750257231,
+   "reply": "The sky is blue."
+  },
+  {
+   "case": "q02",
+   "ok": true,
+   "ms": 591.4973750186618,
+   "reply": "There are seven days in a week."
+  },
+  {
+   "case": "q03",
+   "ok": true,
+   "ms": 590.4755830124486,
+   "reply": "The capital of France is Paris."
+  },
+  {
+   "case": "q04",
+   "ok": true,
+   "ms": 488.8910409936216,
+   "reply": "Seven."
+  },
+  {
+   "case": "q05",
+   "ok": true,
+   "ms": 566.8379999988247,
+   "reply": "A spider has eight legs."
+  },
+  {
+   "case": "q06",
+   "ok": true,
+   "ms": 565.614208986517,
+   "reply": "The largest planet is Jupiter."
+  },
+  {
+   "case": "q07",
+   "ok": true,
+   "ms": 594.5282919856254,
+   "reply": "Five times five is twenty-five."
+  },
+  {
+   "case": "q08",
+   "ok": true,
+   "ms": 474.3799590214621,
+   "reply": "Fall"
+  },
+  {
+   "case": "q09",
+   "ok": true,
+   "ms": 630.5429580097552,
+   "reply": "There are 24 hours in a day."
+  },
+  {
+   "case": "q10",
+   "ok": true,
+   "ms": 653.7489999900572,
+   "reply": "The freezing point of water is 0 degrees Celsius."
+  },
+  {
+   "case": "q11",
+   "ok": true,
+   "ms": 582.3548750195187,
+   "reply": "William Shakespeare wrote Romeo and Juliet."
+  }
+ ],
+ "adapter_sha256": "a7f96bfb889866f75df7b838f84aae368a56ab10f6469e766511d700e32fe13a"
+}
