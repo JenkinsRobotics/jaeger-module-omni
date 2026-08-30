@@ -1,0 +1,20 @@
+
+consumed     3.5 s of 3.5 s (100%)
+audio        3.5 s, streamed in 100 ms chunks
+wall         8.1 s   (2.30x realtime)
+endpoint     speech_start -> probably_ended -> speech_end
+turns        1    interrupts 1
+audio        0 chunks, 0 dropped
+peak lag     81 ms
+barge-in     17.8 ms to stop
+
+  [ok ] accepted live PCM
+  [ok ] detected speech end
+  [ok ] closed a turn unprompted
+  [ok ] kept up with realtime
+  [ok ] consumed most of the audio
+  [ok ] dropped nothing
+  [ok ] interrupted mid-reply
+artifact     /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-release-final/artifacts/duplex-barge.json
+
+FULL DUPLEX OK

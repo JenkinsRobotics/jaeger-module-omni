@@ -104,3 +104,12 @@ artifacts/
 
 # AEC path-probe waveform dumps: room audio captures, keep local.
 research/results/aec-path-*/
+
+# Deep-benchmark WAVs are reproducible fixtures. Keep scored JSON/log evidence,
+# not duplicate audio. Superseded interrupted baselines remain local only.
+research/results/deep-benchmark/*-initial/
+research/results/deep-benchmark/**/artifacts/*.wav
+research/results/deep-benchmark/**/artifacts/addressed-audio/
+!research/results/deep-benchmark/*-final/artifacts/
+!research/results/deep-benchmark/*-final/artifacts/*.json
+!research/results/deep-benchmark/*-final/artifacts/*.jsonl

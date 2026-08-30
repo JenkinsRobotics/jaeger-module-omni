@@ -158,6 +158,25 @@ python -m jaeger_agent_omni --audio clip.wav --backbone <hf-id> --path omni \
 python -m jaeger_agent_omni.live --agentic --front-end jaegeromni-41m-medium
 ```
 
+## Deep benchmark
+
+The repository now has one tiered release harness rather than a collection of
+unrelated green checks:
+
+```sh
+python -m jaeger_agent_omni.benchmark --profile cpu
+python -m jaeger_agent_omni.benchmark --profile model
+python -m jaeger_agent_omni.benchmark --profile release \
+  --physical-report research/results/live/<five-minute-report>.json
+```
+
+The release profile adds both imported 81-case agent corpora as native audio,
+duplex/barge-in, Kokoro PCM, neural VAD, addressed/ambient companion behavior,
+the 43-room AEC stress gate, and mandatory physical five-minute evidence.
+Missing required evidence is `INCOMPLETE`, never pass. See
+[`BENCHMARK.md`](BENCHMARK.md) for thresholds, artifacts, and direct subset
+commands.
+
 Verified end to end on real models (whisper-tiny + SmolLM2-135M, CPU, 1.3 s of
 speech):
 

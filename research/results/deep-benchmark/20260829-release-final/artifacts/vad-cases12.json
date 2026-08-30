@@ -1,0 +1,349 @@
+{
+  "kind": "jaeger_neural_vad_gate",
+  "evaluation": "free_running_corpus_cpu",
+  "configuration": {
+    "model": "silero-vad",
+    "frame_ms": 30,
+    "open_threshold": 0.3,
+    "close_threshold": 0.125,
+    "open_evidence": "4 positive frames in 180ms",
+    "silence_ms": 510.0,
+    "negative_fixture": "five deterministic sanity signals; physical room still required"
+  },
+  "summary": {
+    "clips": 17,
+    "speech_opened": 12,
+    "speech_total": 12,
+    "speech_ended": 12,
+    "false_opens": 0,
+    "nonspeech_total": 5
+  },
+  "results": [
+    {
+      "audio": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q00.wav",
+      "expected": "speech",
+      "opened": true,
+      "ended": true,
+      "correct": true,
+      "probability_max": 0.9986910820007324,
+      "probability_mean": 0.6359438215692838,
+      "events": [
+        {
+          "event": "speech_start",
+          "at_ms": 120.0
+        },
+        {
+          "event": "probably_ended",
+          "at_ms": 1740.0
+        },
+        {
+          "event": "speech_end",
+          "at_ms": 1770.0
+        }
+      ]
+    },
+    {
+      "audio": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q01.wav",
+      "expected": "speech",
+      "opened": true,
+      "ended": true,
+      "correct": true,
+      "probability_max": 0.9983305335044861,
+      "probability_mean": 0.6629003891439149,
+      "events": [
+        {
+          "event": "speech_start",
+          "at_ms": 120.0
+        },
+        {
+          "event": "probably_ended",
+          "at_ms": 1920.0
+        },
+        {
+          "event": "speech_end",
+          "at_ms": 1950.0
+        }
+      ]
+    },
+    {
+      "audio": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q02.wav",
+      "expected": "speech",
+      "opened": true,
+      "ended": true,
+      "correct": true,
+      "probability_max": 0.9969567060470581,
+      "probability_mean": 0.6220294315781858,
+      "events": [
+        {
+          "event": "speech_start",
+          "at_ms": 150.0
+        },
+        {
+          "event": "probably_ended",
+          "at_ms": 2100.0
+        },
+        {
+          "event": "speech_end",
+          "at_ms": 2130.0
+        }
+      ]
+    },
+    {
+      "audio": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q03.wav",
+      "expected": "speech",
+      "opened": true,
+      "ended": true,
+      "correct": true,
+      "probability_max": 0.9982997179031372,
+      "probability_mean": 0.6994537934660912,
+      "events": [
+        {
+          "event": "speech_start",
+          "at_ms": 120.0
+        },
+        {
+          "event": "probably_ended",
+          "at_ms": 2220.0
+        },
+        {
+          "event": "speech_end",
+          "at_ms": 2250.0
+        }
+      ]
+    },
+    {
+      "audio": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q04.wav",
+      "expected": "speech",
+      "opened": true,
+      "ended": true,
+      "correct": true,
+      "probability_max": 0.9989472031593323,
+      "probability_mean": 0.6786147347137109,
+      "events": [
+        {
+          "event": "speech_start",
+          "at_ms": 120.0
+        },
+        {
+          "event": "probably_ended",
+          "at_ms": 1950.0
+        },
+        {
+          "event": "speech_end",
+          "at_ms": 1980.0
+        }
+      ]
+    },
+    {
+      "audio": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q05.wav",
+      "expected": "speech",
+      "opened": true,
+      "ended": true,
+      "correct": true,
+      "probability_max": 0.9996421337127686,
+      "probability_mean": 0.7119424684220049,
+      "events": [
+        {
+          "event": "speech_start",
+          "at_ms": 150.0
+        },
+        {
+          "event": "probably_ended",
+          "at_ms": 2430.0
+        },
+        {
+          "event": "speech_end",
+          "at_ms": 2460.0
+        }
+      ]
+    },
+    {
+      "audio": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q06.wav",
+      "expected": "speech",
+      "opened": true,
+      "ended": true,
+      "correct": true,
+      "probability_max": 0.9981697797775269,
+      "probability_mean": 0.6276448572027511,
+      "events": [
+        {
+          "event": "speech_start",
+          "at_ms": 120.0
+        },
+        {
+          "event": "probably_ended",
+          "at_ms": 2009.9999999999998
+        },
+        {
+          "event": "speech_end",
+          "at_ms": 2040.0
+        }
+      ]
+    },
+    {
+      "audio": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q07.wav",
+      "expected": "speech",
+      "opened": true,
+      "ended": true,
+      "correct": true,
+      "probability_max": 0.9978437423706055,
+      "probability_mean": 0.649417026361949,
+      "events": [
+        {
+          "event": "speech_start",
+          "at_ms": 120.0
+        },
+        {
+          "event": "probably_ended",
+          "at_ms": 2070.0
+        },
+        {
+          "event": "speech_end",
+          "at_ms": 2100.0
+        }
+      ]
+    },
+    {
+      "audio": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q08.wav",
+      "expected": "speech",
+      "opened": true,
+      "ended": true,
+      "correct": true,
+      "probability_max": 0.9981856942176819,
+      "probability_mean": 0.7180354171074353,
+      "events": [
+        {
+          "event": "speech_start",
+          "at_ms": 120.0
+        },
+        {
+          "event": "probably_ended",
+          "at_ms": 2280.0
+        },
+        {
+          "event": "speech_end",
+          "at_ms": 2310.0
+        }
+      ]
+    },
+    {
+      "audio": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q09.wav",
+      "expected": "speech",
+      "opened": true,
+      "ended": true,
+      "correct": true,
+      "probability_max": 0.9980190992355347,
+      "probability_mean": 0.6469964099966962,
+      "events": [
+        {
+          "event": "speech_start",
+          "at_ms": 150.0
+        },
+        {
+          "event": "probably_ended",
+          "at_ms": 2009.9999999999998
+        },
+        {
+          "event": "speech_end",
+          "at_ms": 2040.0
+        }
+      ]
+    },
+    {
+      "audio": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q10.wav",
+      "expected": "speech",
+      "opened": true,
+      "ended": true,
+      "correct": true,
+      "probability_max": 0.9991697072982788,
+      "probability_mean": 0.6941122726390236,
+      "events": [
+        {
+          "event": "speech_start",
+          "at_ms": 120.0
+        },
+        {
+          "event": "probably_ended",
+          "at_ms": 2220.0
+        },
+        {
+          "event": "speech_end",
+          "at_ms": 2250.0
+        }
+      ]
+    },
+    {
+      "audio": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q11.wav",
+      "expected": "speech",
+      "opened": true,
+      "ended": true,
+      "correct": true,
+      "probability_max": 0.9978899359703064,
+      "probability_mean": 0.6938518969945504,
+      "events": [
+        {
+          "event": "speech_start",
+          "at_ms": 150.0
+        },
+        {
+          "event": "probably_ended",
+          "at_ms": 2070.0
+        },
+        {
+          "event": "speech_end",
+          "at_ms": 2100.0
+        }
+      ]
+    },
+    {
+      "audio": "synthetic:silence",
+      "expected": "nonspeech",
+      "opened": false,
+      "ended": false,
+      "correct": true,
+      "probability_max": 0.04426267743110657,
+      "probability_mean": 0.0025161415338516234,
+      "events": []
+    },
+    {
+      "audio": "synthetic:60hz-hum",
+      "expected": "nonspeech",
+      "opened": false,
+      "ended": false,
+      "correct": true,
+      "probability_max": 0.01403096318244934,
+      "probability_mean": 0.001918741762638092,
+      "events": []
+    },
+    {
+      "audio": "synthetic:1khz-tone",
+      "expected": "nonspeech",
+      "opened": false,
+      "ended": false,
+      "correct": true,
+      "probability_max": 0.06920614838600159,
+      "probability_mean": 0.0025881832838058473,
+      "events": []
+    },
+    {
+      "audio": "synthetic:low-white-noise",
+      "expected": "nonspeech",
+      "opened": false,
+      "ended": false,
+      "correct": true,
+      "probability_max": 0.08608034253120422,
+      "probability_mean": 0.004141472280025482,
+      "events": []
+    },
+    {
+      "audio": "synthetic:impulse-clicks",
+      "expected": "nonspeech",
+      "opened": false,
+      "ended": false,
+      "correct": true,
+      "probability_max": 0.04426267743110657,
+      "probability_mean": 0.002547842562198639,
+      "events": []
+    }
+  ]
+}

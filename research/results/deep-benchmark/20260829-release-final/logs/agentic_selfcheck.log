@@ -1,0 +1,119 @@
+{
+  "ok": true,
+  "checks": [
+    {
+      "name": "tools registered",
+      "ok": true,
+      "detail": "97 tools",
+      "count": 97
+    },
+    {
+      "name": "tool names unique",
+      "ok": true,
+      "detail": "",
+      "count": 0
+    },
+    {
+      "name": "tool names wire-safe",
+      "ok": true,
+      "detail": "",
+      "count": 0
+    },
+    {
+      "name": "tools described",
+      "ok": true,
+      "detail": "",
+      "count": 0
+    },
+    {
+      "name": "schemas serialise",
+      "ok": true,
+      "detail": "",
+      "count": 0
+    },
+    {
+      "name": "tools dispatchable",
+      "ok": true,
+      "detail": "",
+      "count": 0
+    },
+    {
+      "name": "toolsets resolve (info)",
+      "ok": true,
+      "detail": "host/MCP-provided or absent: avatar -> ['play_timeline', 'set_avatar_state']; comm -> ['activate_plugin', 'certify_admin', 'send_message']; computer -> ['computer_use', 'computer_do', 'computer_look']; computer_umbrella_only -> ['computer_use', 'computer_do']; delegate -> ['clarify', 'delegate_task']; full -> ['activate_plugin', 'certify_admin', 'clarify']; host -> ['diagnostics']; media -> ['generate_image_fal', 'generate_video_fal']",
+      "count": 8
+    },
+    {
+      "name": "toolsets non-empty",
+      "ok": true,
+      "detail": "",
+      "count": 0
+    },
+    {
+      "name": "toolset includes exist",
+      "ok": true,
+      "detail": "",
+      "count": 0
+    },
+    {
+      "name": "default bundle resolves",
+      "ok": true,
+      "detail": "39 tools",
+      "count": 39
+    },
+    {
+      "name": "skills load",
+      "ok": true,
+      "detail": "107 skills",
+      "count": 107
+    },
+    {
+      "name": "skill names unique",
+      "ok": true,
+      "detail": "",
+      "count": 0
+    },
+    {
+      "name": "use_skill enum is honest",
+      "ok": true,
+      "detail": "",
+      "count": 0
+    },
+    {
+      "name": "skills declare real tools (info)",
+      "ok": true,
+      "detail": "17 skill(s) need host-provided tools: ai-image-gen, baoyu-comic, baoyu-infographic, computer_use, home-assistant, kanban-orchestrator",
+      "count": 17
+    },
+    {
+      "name": "dialects render",
+      "ok": true,
+      "detail": "13617 chars",
+      "count": 13617
+    },
+    {
+      "name": "adapters import",
+      "ok": true,
+      "detail": "",
+      "count": 0
+    },
+    {
+      "name": "prompt fragments declared",
+      "ok": true,
+      "detail": "",
+      "count": 11
+    },
+    {
+      "name": "declared deps import",
+      "ok": true,
+      "detail": "",
+      "count": 0
+    },
+    {
+      "name": "runtime imports declared (info)",
+      "ok": true,
+      "detail": "AVFoundation, PySide6, cv2, jaeger_agent_omni, jaeger_ai, mlx_lm, mlx_vlm, numpy, scipy, serial, speexdsp, zmq",
+      "count": 12
+    }
+  ]
+}

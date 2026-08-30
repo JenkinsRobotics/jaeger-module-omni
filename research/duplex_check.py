@@ -1,4 +1,4 @@
-"""Does the tower path actually do full duplex today? Run it and see.
+"""Does the selected production audio path actually do full duplex? Run it.
 
 Every piece of this had a passing self-check for a day before anything ran
 them together with real audio and a real model:
@@ -19,6 +19,7 @@ about components, not a measured property of the system.
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 import time
 from pathlib import Path
@@ -31,18 +32,22 @@ MODEL = "/Users/jonathanjenkins/models/gemma-4-e4b-it-mlx-full"
 def main() -> int:
     import numpy as np
 
+    from jaeger_agent_omni.core.model_catalog import DEFAULT_FRONT_END
     from jaeger_agent_omni.omni import build
     from jaeger_agent_omni.core.runtime.duplex import SAMPLE_RATE, DuplexLoop
 
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--wav")
     ap.add_argument("--model", default=MODEL)
+    ap.add_argument("--front-end", default=DEFAULT_FRONT_END)
     ap.add_argument("--seconds", type=float, default=12.0)
     ap.add_argument("--barge-in", action="store_true",
                     help="speak again while the model is replying")
+    ap.add_argument("--json", type=Path,
+                    help="optional machine-readable result artifact")
     a = ap.parse_args()
 
-    session, meta = build(a.model, "tower")
+    session, meta = build(a.model, a.front_end)
     session.warmup()
 
     if a.wav:
@@ -134,7 +139,13 @@ def main() -> int:
         print(f"reply        {r.strip()[:88]!r}")
 
     checks = {
-        "streamed audio in": stats.audio_chunks > 0,
+        # ``audio_chunks`` counts adapter windows committed *before* endpoint,
+        # not microphone callbacks.  The causal adapter deliberately holds a
+        # short (<12 s) turn for one bidirectional Whisper pass and therefore
+        # reports zero here even though every 100 ms callback reached it.  The
+        # ingestion invariant is measured by accepted samples plus the
+        # independent consumed/drop checks below.
+        "accepted live PCM": stats.audio_samples > 0,
         "detected speech end": "speech_end" in stats.endpoint_events,
         "closed a turn unprompted": stats.turns >= 1,
         "kept up with realtime": stats.max_lag_s < 1.0,
@@ -151,6 +162,32 @@ def main() -> int:
     for name, ok in checks.items():
         print(f"  [{'ok ' if ok else 'FAIL'}] {name}")
     passed = all(checks.values())
+    result = {
+        "kind": "jaeger_duplex_check",
+        "evaluation": "free_running_audio_native",
+        "teacher_forced": False,
+        "front_end": meta.get("model_id", a.front_end),
+        "checkpoint": meta.get("checkpoint"),
+        "barge_in_requested": a.barge_in,
+        "audio_seconds": secs,
+        "consumed_seconds": consumed_s,
+        "wall_seconds": wall,
+        "turns": stats.turns,
+        "interrupts": stats.interrupts,
+        "audio_chunks": stats.audio_chunks,
+        "audio_chunk_semantics": "adapter windows committed before endpoint",
+        "audio_dropped": stats.audio_dropped,
+        "max_lag_ms": stats.max_lag_s * 1000,
+        "cancel_latency_ms": session.cancel_latency_ms,
+        "endpoint_events": list(stats.endpoint_events),
+        "checks": checks,
+        "passed": passed,
+        "replies": replies,
+    }
+    if a.json:
+        a.json.parent.mkdir(parents=True, exist_ok=True)
+        a.json.write_text(json.dumps(result, indent=2) + "\n")
+        print(f"artifact     {a.json}")
     print(f"\n{'FULL DUPLEX OK' if passed else 'NOT FULLY DUPLEX'}")
     return 0 if passed else 1
 

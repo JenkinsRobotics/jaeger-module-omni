@@ -1,0 +1,34 @@
+{
+  "kind": "jaeger_duplex_check",
+  "evaluation": "free_running_audio_native",
+  "teacher_forced": false,
+  "front_end": "jaegeromni-41m-medium",
+  "checkpoint": "a7f96bfb8898",
+  "barge_in_requested": true,
+  "audio_seconds": 3.5,
+  "consumed_seconds": 3.5,
+  "wall_seconds": 8.0539353749773,
+  "turns": 1,
+  "interrupts": 1,
+  "audio_chunks": 0,
+  "audio_chunk_semantics": "adapter windows committed before endpoint",
+  "audio_dropped": 0,
+  "max_lag_ms": 80.82141698105261,
+  "cancel_latency_ms": 17.803833994548768,
+  "endpoint_events": [
+    "speech_start",
+    "probably_ended",
+    "speech_end"
+  ],
+  "checks": {
+    "accepted live PCM": true,
+    "detected speech end": true,
+    "closed a turn unprompted": true,
+    "kept up with realtime": true,
+    "consumed most of the audio": true,
+    "dropped nothing": true,
+    "interrupted mid-reply": true
+  },
+  "passed": true,
+  "replies": []
+}

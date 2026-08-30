@@ -5,7 +5,10 @@ from __future__ import annotations
 from pathlib import Path
 
 
-REPO = Path(__file__).resolve().parents[2]
+# runtime/neural_vad.py lives three directories below the repository root.
+# Keep the packaged gate outside the import package: it is an independently
+# verified runtime asset, not Python package data.
+REPO = Path(__file__).resolve().parents[3]
 GATE_ROOT = REPO / "gates" / "silero-vad"
 
 

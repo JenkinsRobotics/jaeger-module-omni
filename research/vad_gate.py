@@ -30,10 +30,11 @@ def load_audio(path: Path) -> np.ndarray:
     return np.asarray(audio, dtype=np.float32)
 
 
-def evaluate_file(path: Path, expected: str, silence_ms: float) -> dict:
+def evaluate_audio(audio: np.ndarray, source: str, expected: str,
+                   silence_ms: float) -> dict:
     endpoint = Endpoint(silence_ms=silence_ms)
     configure_endpoint(endpoint, mode="neural", energy_threshold=0.012)
-    audio = np.concatenate((load_audio(path), np.zeros(RATE, np.float32)))
+    audio = np.concatenate((audio, np.zeros(RATE, np.float32)))
     events = []
     for offset in range(0, len(audio) - FRAME + 1, FRAME):
         event = endpoint.push(audio[offset:offset + FRAME])
@@ -42,7 +43,7 @@ def evaluate_file(path: Path, expected: str, silence_ms: float) -> dict:
     opened = any(item["event"] == "speech_start" for item in events)
     ended = any(item["event"] == "speech_end" for item in events)
     return {
-        "audio": str(path.resolve()), "expected": expected,
+        "audio": source, "expected": expected,
         "opened": opened, "ended": ended,
         "correct": opened == (expected == "speech"),
         "probability_max": endpoint.probability_max,
@@ -50,6 +51,27 @@ def evaluate_file(path: Path, expected: str, silence_ms: float) -> dict:
             endpoint.probability_sum / max(1, endpoint.probability_frames)),
         "events": events,
     }
+
+
+def evaluate_file(path: Path, expected: str, silence_ms: float) -> dict:
+    return evaluate_audio(
+        load_audio(path), str(path.resolve()), expected, silence_ms)
+
+
+def synthetic_nonspeech() -> list[tuple[str, np.ndarray]]:
+    """Small deterministic sanity set; not a substitute for a room corpus."""
+    count = RATE * 2
+    timeline = np.arange(count, dtype=np.float32) / RATE
+    rng = np.random.default_rng(9137)
+    clicks = np.zeros(count, np.float32)
+    clicks[::RATE // 4] = 0.7
+    return [
+        ("synthetic:silence", np.zeros(count, np.float32)),
+        ("synthetic:60hz-hum", (0.04 * np.sin(2*np.pi*60*timeline)).astype(np.float32)),
+        ("synthetic:1khz-tone", (0.05 * np.sin(2*np.pi*1000*timeline)).astype(np.float32)),
+        ("synthetic:low-white-noise", rng.normal(0, 0.008, count).astype(np.float32)),
+        ("synthetic:impulse-clicks", clicks),
+    ]
 
 
 def wavs(root: Path) -> list[Path]:
@@ -73,6 +95,11 @@ def main() -> int:
                for path in positive]
     results += [evaluate_file(path, "nonspeech", args.silence_ms)
                 for path in negative]
+    if not negative:
+        results += [
+            evaluate_audio(audio, source, "nonspeech", args.silence_ms)
+            for source, audio in synthetic_nonspeech()
+        ]
     speech = [row for row in results if row["expected"] == "speech"]
     nonspeech = [row for row in results if row["expected"] == "nonspeech"]
     report = {
@@ -83,6 +110,9 @@ def main() -> int:
             "open_threshold": 0.30, "close_threshold": 0.125,
             "open_evidence": "4 positive frames in 180ms",
             "silence_ms": args.silence_ms,
+            "negative_fixture": (
+                "provided corpus" if negative else
+                "five deterministic sanity signals; physical room still required"),
         },
         "summary": {
             "clips": len(results),

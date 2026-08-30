@@ -1,5 +1,33 @@
 # Next steps — current plan
 
+The new release-depth benchmark supersedes the earlier inference that source
+parity plus cases12 meant broad agent parity. Source/code parity is exact and
+simple native-audio questions remain 12/12, but the full 81+81 corpus is only
+28/162 with 20/128 required tool routes. Fix the capability-reveal seam first:
+the compact eight-tool voice prefix keeps simple latency reasonable, but Gemma
+usually declines file, memory, scheduling, skill, code, and workflow requests
+instead of calling `load_tools` and continuing. Develop against category-level
+held-out improvements, not individual prompt exceptions. Keep the bounded web
+case deadlines; network unavailability must score as an error without erasing
+the other 161 rows. Preserve zero safety failures and zero markup leakage.
+
+Companion admission is the other immediate production blocker. Its current
+operating point is simultaneously one false response among 12 unaddressed
+questions and only 4/12 recall for explicit “Hey Jaeger” questions. Do not
+loosen the parser globally. Train/calibrate an audio-native addressee signal
+with phonetic name variants, conversation state, speaker continuity, and
+hard-negative nearby questions, then require zero ambient false responses and
+at least 90% addressed recall.
+
+AEC passes false-barge and recall gates but misses tail latency: 0/43 false,
+43/43 detected, 188 ms median, 602 ms p95 versus the 300 ms gate. Work the
+outlier path rather than optimizing the median. Release evidence must finally
+come from one five-minute physical run with neural VAD, full duplex, active
+AEC, companion RESPOND and LISTEN decisions, at least three agent tool calls,
+a deliberate stopped barge-in, a context roll, spoken END-to-audio timing,
+zero drops/overflow, and no runtime errors. The run report now records agentic
+tool names/counts so this gate is machine-verifiable.
+
 The copied Jaeger Agent control plane is integrated CPU-side and the package
 layout is now `nodes/`, `tools/`, `skills/`, `memory/`, plus internal `core/`.
 Do not add a transcript bridge: `live --agentic` must continue from the native

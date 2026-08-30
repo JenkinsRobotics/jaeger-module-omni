@@ -1,0 +1,58 @@
+performance_spec: 7 emotions, 4 deliveries
+performance_spec: round-trip, spans, validation OK
+outputs: three-way routing, cancel-key binding, round-trip OK
+capture: round-trip OK (manifest, wav, float32 fidelity)
+capture: confidence gate rejects bad and unscored transcripts
+streaming: 1s chunks, 50 frames each, 1500-frame cache = 30s context
+streaming: 10 audio tokens/s -> 300 tokens at full context
+streaming: buffering, boundaries, padding, eviction, budget OK
+prompt: template overhead 55 tokens, audio spliced at position 35
+prompt: split, splice, batch sharing, guards OK
+runtime.gemma_audio: 1.0s chunks -> 25 tokens, buffering + overlap accounting OK
+runtime.session: chunked prefill into one KV cache, wait/hidden split, cancellation OK
+runtime.duplex: interleave a/v, drop-don't-queue, barge-in OK (0 turns · 5 audio chunks · 3 frames (0 dropped) · 0 interrupts · peak lag 0ms)
+runtime.duplex: hands-free turn detection OK (speech_start/probably_ended/speech_end); 30ms residual framing OK
+neural.base: registry contract, trim/pool/token math OK
+neural.audio    6.3M params  10 tok/s  1024 -> 2048
+minicpm ref    21.0M params  10 tok/s  1024 -> 4096
+neural.audio: shapes, token formula, trimming, ReLU, pool-order, embed_norm OK
+turn_end: 525K params, threshold 0.7, patience 2 = 200ms worst-case delay
+turn_end: shapes, hysteresis, reset, asymmetric loss, grads OK
+neural.gate: enroll, match, multi-take, length invariance OK
+neural.delta: 3.1K trainable of 9K total (33%)
+neural.delta: freeze split, norm pin, structure preservation OK
+neural.speech: tensor-only boundary, ID expansion, guards, checkpoint OK
+app: text transcribe 0ms + generate 55ms = 56ms
+app: omni encode 1ms + project 0ms + generate 57ms = 58ms
+app: streaming generate 150ms = 150ms  (+3ms overlapped, free)
+app: routing, timing split, capture policy, streaming prefill OK
+artifacts: adapter 12KB vs full checkpoint 38KB
+artifacts: export strips frozen, round-trip, card preserved OK
+stubs: encoder 34K, backbone 174K params
+stubs: rates, both entry points, embed/id equivalence, causality OK
+load_minicpm_projector: 21.0M params loaded OK
+load_minicpm: name mapping OK
+overfit_probe: collapse metric OK
+pipeline: 16K trainable of 223K total (7%)
+pipeline: overfit loss 5.054 -> 3.242 in 250 steps (uniform floor 4.852)
+pipeline: capture->encoder->projector->backbone->loss->step OK
+data: 7 sources across 4 tiers, 4 stage mixes
+data: stage4 = {<Tier.LABELED_ASR: 1>: 400, <Tier.FAR_FIELD: 2>: 250, <Tier.OURS: 4>: 350}
+data: mixes normalised, coverage, exact counts, licence flags OK
+config: warmup lr=0.0003 steps=20000 eff_batch=32 10 tok/s
+config: presets, round-trip, guards OK
+distill: warmup=DistillWeights(hidden=0.0, kl=0.0, ce=1.0, temperature=2.0), distill=DistillWeights(hidden=1.0, kl=0.5, ce=0.5, temperature=2.0)
+distill: cosine floor, monotonicity, detach, presets, guards OK
+dataset: 2 turns kept of 4 (confidence + length gates)
+dataset: prefix augmentation cut 18/40 clips, turn-end labels free
+dataset: stage targets, padding, ignore-index, determinism OK
+make_corpus: 4 synthetic turns, real audio, gate-passing OK
+import_audio: segmentation 2 segs, bounds + splitting + confidence OK
+evaluate: WER, normalisation, pooling OK
+encoder_cache: per-encoder isolation, round-trip, graceful miss OK
+fetch_dataset: 10 corpora (5 verified), adapters + normalisation OK
+train: schedule horizon 120 -> 360; rebuilt at step 120
+train: 120 steps 4.932 -> 4.717, agreement 0.00
+train: loop, clipping, schedule, freezing, checkpoint identity OK
+
+31/31 modules OK in 10.2s

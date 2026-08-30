@@ -18,7 +18,7 @@ case "$ENTRYPOINT" in
         ;;
 esac
 
-GPU_PATTERN='training/train\.py|training/(cleanroom_context_ce|port_cleanroom_large|context_(distill|ce)|context_train)\.py|training/precompute_stock_encoder\.py|training/stock_whisper_gemma\.py (precompute|pretrain-ctc|distill|train|probe|geometry|wer|bench)|neural-acoustic-controller/train\.py|research/(transfer_probe|direct_whisper_wer|latency_breakdown|streaming_stability|causal_adapter_check)\.py|eval/benchmark_suite\.py|cleanroom_(train|distill)\.py|compare_tracks\.py|train_audio_adapter\.py'
+GPU_PATTERN='training/train\.py|training/(cleanroom_context_ce|port_cleanroom_large|context_(distill|ce)|context_train)\.py|training/precompute_stock_encoder\.py|training/stock_whisper_gemma\.py (precompute|pretrain-ctc|distill|train|probe|geometry|wer|bench)|neural-acoustic-controller/train\.py|jaeger_agent_omni\.benchmark|research/(transfer_probe|direct_whisper_wer|latency_breakdown|streaming_stability|causal_adapter_check|benchmark_agentic_(omni|corpus)|duplex_check)\.py|eval/benchmark_suite\.py|cleanroom_(train|distill)\.py|compare_tracks\.py|train_audio_adapter\.py'
 CONFLICTS=()
 while IFS= read -r PID; do
     [[ -n "$PID" ]] || continue

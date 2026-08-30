@@ -1,0 +1,162 @@
+{
+  "kind": "jaeger_companion_admission_gate",
+  "evaluation": "free_running_audio_native",
+  "teacher_forced": false,
+  "front_end": "jaegeromni-41m-medium",
+  "model": "/Users/jonathanjenkins/models/gemma-4-e4b-it-mlx-full",
+  "checkpoint": "a7f96bfb8898",
+  "manifest": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-release-final/artifacts/jaeger-companion-addressed.jsonl",
+  "summary": {
+    "clips": 12,
+    "correct": 4,
+    "accuracy": 0.3333333333333333,
+    "respond_precision": 1.0,
+    "respond_recall": 0.3333333333333333,
+    "false_responses": 0,
+    "missed_addresses": 8,
+    "latency_ms": {
+      "median": 134.82002101955004,
+      "max": 403.0598330136854
+    },
+    "by_category": {
+      "named_direct_question": {
+        "n": 12,
+        "correct": 4
+      }
+    }
+  },
+  "results": [
+    {
+      "audio": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-release-final/artifacts/addressed-audio/q00.wav",
+      "expected": "respond",
+      "category": "named_direct_question",
+      "predicted": "listen",
+      "valid_control": true,
+      "reason": "unspecified",
+      "response": "",
+      "raw_control_output": "DECISION: LISTEN",
+      "latency_ms": 122.23008397268131
+    },
+    {
+      "audio": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-release-final/artifacts/addressed-audio/q01.wav",
+      "expected": "respond",
+      "category": "named_direct_question",
+      "predicted": "listen",
+      "valid_control": true,
+      "reason": "unspecified",
+      "response": "",
+      "raw_control_output": "DECISION: LISTEN",
+      "latency_ms": 131.18129098438658
+    },
+    {
+      "audio": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-release-final/artifacts/addressed-audio/q02.wav",
+      "expected": "respond",
+      "category": "named_direct_question",
+      "predicted": "listen",
+      "valid_control": true,
+      "reason": "unspecified",
+      "response": "",
+      "raw_control_output": "DECISION: LISTEN",
+      "latency_ms": 121.15387499216013
+    },
+    {
+      "audio": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-release-final/artifacts/addressed-audio/q03.wav",
+      "expected": "respond",
+      "category": "named_direct_question",
+      "predicted": "respond",
+      "valid_control": true,
+      "reason": "",
+      "response": "paris",
+      "raw_control_output": "DECISION: RESPOND\nRESPONSE: paris",
+      "latency_ms": 224.72825000295416
+    },
+    {
+      "audio": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-release-final/artifacts/addressed-audio/q04.wav",
+      "expected": "respond",
+      "category": "named_direct_question",
+      "predicted": "listen",
+      "valid_control": true,
+      "reason": "unspecified",
+      "response": "",
+      "raw_control_output": "DECISION: LISTEN",
+      "latency_ms": 130.4638330184389
+    },
+    {
+      "audio": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-release-final/artifacts/addressed-audio/q05.wav",
+      "expected": "respond",
+      "category": "named_direct_question",
+      "predicted": "listen",
+      "valid_control": true,
+      "reason": "unspecified",
+      "response": "",
+      "raw_control_output": "DECISION: LISTEN",
+      "latency_ms": 121.56379100633785
+    },
+    {
+      "audio": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-release-final/artifacts/addressed-audio/q06.wav",
+      "expected": "respond",
+      "category": "named_direct_question",
+      "predicted": "respond",
+      "valid_control": true,
+      "reason": "",
+      "response": "Jupiter is the largest planet.",
+      "raw_control_output": "DECISION: RESPOND\nRESPONSE: Jupiter is the largest planet.",
+      "latency_ms": 324.2481659981422
+    },
+    {
+      "audio": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-release-final/artifacts/addressed-audio/q07.wav",
+      "expected": "respond",
+      "category": "named_direct_question",
+      "predicted": "listen",
+      "valid_control": true,
+      "reason": "unspecified",
+      "response": "",
+      "raw_control_output": "DECISION: LISTEN",
+      "latency_ms": 138.40775002609007
+    },
+    {
+      "audio": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-release-final/artifacts/addressed-audio/q08.wav",
+      "expected": "respond",
+      "category": "named_direct_question",
+      "predicted": "respond",
+      "valid_control": true,
+      "reason": "",
+      "response": "autumn",
+      "raw_control_output": "DECISION: RESPOND\nRESPONSE: autumn",
+      "latency_ms": 225.03495900309645
+    },
+    {
+      "audio": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-release-final/artifacts/addressed-audio/q09.wav",
+      "expected": "respond",
+      "category": "named_direct_question",
+      "predicted": "listen",
+      "valid_control": true,
+      "reason": "unspecified",
+      "response": "",
+      "raw_control_output": "DECISION: LISTEN",
+      "latency_ms": 131.23229201301
+    },
+    {
+      "audio": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-release-final/artifacts/addressed-audio/q10.wav",
+      "expected": "respond",
+      "category": "named_direct_question",
+      "predicted": "respond",
+      "valid_control": true,
+      "reason": "",
+      "response": "The freezing point of water is zero degrees Celsius.",
+      "raw_control_output": "DECISION: RESPOND\nRESPONSE: The freezing point of water is zero degrees Celsius.",
+      "latency_ms": 403.0598330136854
+    },
+    {
+      "audio": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-release-final/artifacts/addressed-audio/q11.wav",
+      "expected": "respond",
+      "category": "named_direct_question",
+      "predicted": "listen",
+      "valid_control": true,
+      "reason": "unspecified",
+      "response": "",
+      "raw_control_output": "DECISION: LISTEN",
+      "latency_ms": 143.4236659843009
+    }
+  ]
+}

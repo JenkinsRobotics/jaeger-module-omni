@@ -10,6 +10,25 @@ Measured ledger. Every claim here has a command that reproduces it.
 > It is generated from exact checkpoint SHAs and supersedes stale latency or
 > promotion language in the historical sections below.
 >
+> 2026-08-29 release-depth benchmark: the repository now owns one tiered,
+> durable gate (`python -m jaeger_agent_omni.benchmark`) spanning CPU
+> contracts, the transcript ban, the complete package tests, source parity,
+> the frozen neural ear, the native agent loop, duplex/barge-in, Kokoro PCM,
+> neural VAD, companion admission, both 81-case agent corpora, the 43-room AEC
+> matrix, and required physical five-minute evidence. The first release run
+> is honestly **NOT READY: 15 pass / 4 fail / 1 required skip**. Stable green
+> measurements are 12/12 plain answers at 565 ms, 12/12 simple agentic answers
+> at 2320 ms, 17.8 ms barge cancellation with zero drops, valid 24 kHz Kokoro,
+> and neural VAD at 12/12 speech open/end plus 0/5 synthetic nonspeech false
+> opens. Red gates are companion admission (1/12 false responses and only
+> 4/12 named-address responses), the full native-audio agent corpus (28/162
+> full cases, 20/128 required routes, 14 bounded web/network errors), and AEC's
+> 602 ms p95 detection tail despite 0 false barges and 100% recall. Safety and
+> output hygiene held across the deep corpus: zero forbidden-tool failures and
+> zero visible tool markup. A real physical integration report remains
+> required. Full row evidence is in the retained `20260829-release-final`
+> deep-benchmark directory; harness contract: [`BENCHMARK.md`](BENCHMARK.md).
+>
 > 2026-08-29 agentic integration (CPU-complete, live gate open): the Jaeger
 > Agent framework is now copied into this repository at pinned upstream commit
 > `a3696e9e`, with its required JaegerOS substrate pinned at `e05dc24e`. The

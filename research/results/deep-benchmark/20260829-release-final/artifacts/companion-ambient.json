@@ -1,0 +1,162 @@
+{
+  "kind": "jaeger_companion_admission_gate",
+  "evaluation": "free_running_audio_native",
+  "teacher_forced": false,
+  "front_end": "jaegeromni-41m-medium",
+  "model": "/Users/jonathanjenkins/models/gemma-4-e4b-it-mlx-full",
+  "checkpoint": "a7f96bfb8898",
+  "manifest": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/companion_ambient_cases12.jsonl",
+  "summary": {
+    "clips": 12,
+    "correct": 11,
+    "accuracy": 0.9166666666666666,
+    "respond_precision": 0.0,
+    "respond_recall": 0.0,
+    "false_responses": 1,
+    "missed_addresses": 0,
+    "latency_ms": {
+      "median": 121.63041651365347,
+      "max": 401.527709007496
+    },
+    "by_category": {
+      "unaddressed_question": {
+        "n": 12,
+        "correct": 11
+      }
+    }
+  },
+  "results": [
+    {
+      "audio": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q00.wav",
+      "expected": "listen",
+      "category": "unaddressed_question",
+      "predicted": "listen",
+      "valid_control": true,
+      "reason": "unspecified",
+      "response": "",
+      "raw_control_output": "DECISION: LISTEN",
+      "latency_ms": 119.11687499377877
+    },
+    {
+      "audio": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q01.wav",
+      "expected": "listen",
+      "category": "unaddressed_question",
+      "predicted": "listen",
+      "valid_control": true,
+      "reason": "unspecified",
+      "response": "",
+      "raw_control_output": "DECISION: LISTEN",
+      "latency_ms": 123.62650001887232
+    },
+    {
+      "audio": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q02.wav",
+      "expected": "listen",
+      "category": "unaddressed_question",
+      "predicted": "listen",
+      "valid_control": true,
+      "reason": "unspecified",
+      "response": "",
+      "raw_control_output": "DECISION: LISTEN",
+      "latency_ms": 119.63433300843462
+    },
+    {
+      "audio": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q03.wav",
+      "expected": "listen",
+      "category": "unaddressed_question",
+      "predicted": "listen",
+      "valid_control": true,
+      "reason": "unspecified",
+      "response": "",
+      "raw_control_output": "DECISION: LISTEN",
+      "latency_ms": 118.12820899649523
+    },
+    {
+      "audio": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q04.wav",
+      "expected": "listen",
+      "category": "unaddressed_question",
+      "predicted": "listen",
+      "valid_control": true,
+      "reason": "unspecified",
+      "response": "",
+      "raw_control_output": "DECISION: LISTEN",
+      "latency_ms": 118.86412499006838
+    },
+    {
+      "audio": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q05.wav",
+      "expected": "listen",
+      "category": "unaddressed_question",
+      "predicted": "listen",
+      "valid_control": true,
+      "reason": "unspecified",
+      "response": "",
+      "raw_control_output": "DECISION: LISTEN",
+      "latency_ms": 119.33683298411779
+    },
+    {
+      "audio": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q06.wav",
+      "expected": "listen",
+      "category": "unaddressed_question",
+      "predicted": "listen",
+      "valid_control": true,
+      "reason": "unspecified",
+      "response": "",
+      "raw_control_output": "DECISION: LISTEN",
+      "latency_ms": 119.60879201069474
+    },
+    {
+      "audio": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q07.wav",
+      "expected": "listen",
+      "category": "unaddressed_question",
+      "predicted": "listen",
+      "valid_control": true,
+      "reason": "not_addressed",
+      "response": "",
+      "raw_control_output": "DECISION: LISTEN\nREASON: not_addressed",
+      "latency_ms": 253.06420898414217
+    },
+    {
+      "audio": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q08.wav",
+      "expected": "listen",
+      "category": "unaddressed_question",
+      "predicted": "listen",
+      "valid_control": true,
+      "reason": "not_addressed",
+      "response": "",
+      "raw_control_output": "DECISION: LISTEN\nREASON: not_addressed",
+      "latency_ms": 260.7243340171408
+    },
+    {
+      "audio": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q09.wav",
+      "expected": "listen",
+      "category": "unaddressed_question",
+      "predicted": "listen",
+      "valid_control": true,
+      "reason": "unspecified",
+      "response": "",
+      "raw_control_output": "DECISION: LISTEN",
+      "latency_ms": 131.27408298896626
+    },
+    {
+      "audio": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q10.wav",
+      "expected": "listen",
+      "category": "unaddressed_question",
+      "predicted": "respond",
+      "valid_control": true,
+      "reason": "",
+      "response": "The freezing point of water is 0 degrees Celsius.",
+      "raw_control_output": "DECISION: RESPOND\nRESPONSE: The freezing point of water is 0 degrees Celsius.",
+      "latency_ms": 401.527709007496
+    },
+    {
+      "audio": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q11.wav",
+      "expected": "listen",
+      "category": "unaddressed_question",
+      "predicted": "listen",
+      "valid_control": true,
+      "reason": "unspecified",
+      "response": "",
+      "raw_control_output": "DECISION: LISTEN",
+      "latency_ms": 131.6756659944076
+    }
+  ]
+}

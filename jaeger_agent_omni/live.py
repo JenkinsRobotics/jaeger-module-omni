@@ -792,6 +792,14 @@ def main() -> int:
         sf.write(str(d / "fed_model.wav"), np.concatenate(rec["fed"]), RATE)
         print(f"  recorded     {d}/raw_mic.wav + fed_model.wav — audit with"
               f" research/session_audit.py")
+    agentic_calls = []
+    if agentic_runtime is not None:
+        agentic_calls = [
+            str(call.get("name") or "")
+            for message in agentic_runtime.agent.messages
+            for call in (message.get("tool_calls") or [])
+            if call.get("name")
+        ]
     run_report = finish_run_report(
         run_report,
         metrics={
@@ -851,6 +859,17 @@ def main() -> int:
                            if companion is not None else 0),
                 "decisions": (companion.decisions
                               if companion is not None else []),
+            },
+            "agentic": {
+                "enabled": agentic_runtime is not None,
+                "tool_calls": len(agentic_calls),
+                "tool_names": agentic_calls,
+                "last_iterations": (
+                    agentic_runtime.agent.last_iteration_count
+                    if agentic_runtime is not None else 0),
+                "last_halt_reason": (
+                    agentic_runtime.agent.last_halt_reason
+                    if agentic_runtime is not None else None),
             },
             "neural_perception_shadow": perception_turns,
         }, replies=all_replies, speaker_labels=speaker_tags,

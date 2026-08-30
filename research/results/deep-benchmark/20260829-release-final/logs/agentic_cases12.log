@@ -1,0 +1,18 @@
+[jaeger-skills] 2 skill(s) provide tools (registered): computer_use@1.0.0(core), macos_computer@1.0.0(core)
+[jaeger-skills] 107 skill(s) provide a recipe (loadable via use_skill).
+[jaeger-skills] agentic surface: 107 tools · 2 tool-providing skill(s) · 107 recipe skill(s).
+  q00 OK     2731ms iter=1 tok=14 tools=['calculate'] '{"expression": "2 + 2", "result": 4}'
+  q01 OK     2397ms iter=1 tok=5 tools=[] 'The sky is blue.'
+  q02 OK     2279ms iter=1 tok=8 tools=[] 'There are seven days in a week.'
+  q03 OK     2268ms iter=1 tok=7 tools=[] 'The capital of France is Paris.'
+  q04 OK     2410ms iter=1 tok=15 tools=['calculate'] '{"expression": "10 - 3", "result": 7}'
+  q05 OK     2402ms iter=1 tok=6 tools=[] 'A spider has eight legs.'
+  q06 OK     2221ms iter=1 tok=6 tools=[] 'The largest planet is Jupiter.'
+  q07 OK     2349ms iter=1 tok=12 tools=['calculate'] '{"expression": "5*5", "result": 25}'
+  q08 OK     2441ms iter=1 tok=8 tools=[] 'The next season after summer is autumn.'
+  q09 OK     2292ms iter=1 tok=10 tools=[] 'There are 24 hours in a day.'
+  q10 OK     2280ms iter=1 tok=8 tools=[] 'Water freezes at 0 degrees Celsius.'
+  q11 OK     2236ms iter=1 tok=6 tools=[] 'Shakespeare wrote Romeo and Juliet.'
+
+agentic omni 12/12; median 2320 ms; unexpected tools 0
+wrote /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-release-final/artifacts/agentic-cases12.json

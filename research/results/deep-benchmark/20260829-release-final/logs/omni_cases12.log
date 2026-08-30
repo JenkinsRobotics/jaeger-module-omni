@@ -1,0 +1,17 @@
+  q00 OK      502ms  'Two plus two equals four.'
+  q01 OK      531ms  'The sky is blue.'
+  q02 OK      578ms  'There are seven days in a week.'
+  q03 OK      574ms  'The capital of France is Paris.'
+  q04 OK      485ms  'Seven.'
+  q05 OK      559ms  'A spider has eight legs.'
+  q06 OK      559ms  'The largest planet is Jupiter.'
+  q07 OK      585ms  'Five times five is twenty-five.'
+  q08 OK      468ms  'Fall'
+  q09 OK      612ms  'There are 24 hours in a day.'
+  q10 OK      649ms  'The freezing point of water is 0 degrees Celsius.'
+  q11 OK      571ms  'William Shakespeare wrote Romeo and Juliet.'
+
+omni [jaegeromni-41m-medium]  12/12 = 100%  median 565 ms
+legacy reference   12/12 = 100%   (text between modules)
+ratio to legacy    100% accuracy
+wrote /Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/results/deep-benchmark/20260829-release-final/artifacts/omni-cases12.json
