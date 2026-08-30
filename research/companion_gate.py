@@ -28,7 +28,7 @@ from pathlib import Path
 import numpy as np
 
 from jaeger_agent_omni.omni import MODEL, build
-from jaeger_agent_omni.runtime.companion import (
+from jaeger_agent_omni.core.runtime.companion import (
     CompanionState, LISTEN, RESPOND, parse_decision, system_prompt,
 )
 

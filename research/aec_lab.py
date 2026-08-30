@@ -16,7 +16,7 @@ from pathlib import Path
 
 import numpy as np
 
-from jaeger_agent_omni.runtime.aec import EchoAwareBargeIn, SpeexEchoCanceller
+from jaeger_agent_omni.core.runtime.aec import EchoAwareBargeIn, SpeexEchoCanceller
 
 
 RATE = 16000

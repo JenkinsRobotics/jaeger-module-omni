@@ -40,7 +40,7 @@ machine, not more code.
 Two things that attempt did establish:
 
   * their distribution model is adapter-only with the base referenced by id —
-    exactly what `jaeger_agent_omni.artifacts` does. Independent confirmation
+    exactly what `jaeger_agent_omni.core.artifacts` does. Independent confirmation
     that our artifact design matches field practice.
   * v0.5-1b is Llama-based; the Gemma variants are Gemma-2/3, i.e. models with
     no native audio. Ultravox exists to give audio to LLMs that lack it —
@@ -102,7 +102,7 @@ def run_ours(cases, cases_dir, model_path):
     from mlx_vlm.utils import load
 
     from jaeger_agent_omni.app import read_wav
-    from jaeger_agent_omni.runtime import GemmaAudioPrefiller, StreamingSession
+    from jaeger_agent_omni.core.runtime import GemmaAudioPrefiller, StreamingSession
 
     m, proc = load(model_path)
     cfg = _json.load(open(Path(model_path) / "config.json"))
@@ -142,7 +142,7 @@ def run_ultravox(cases, cases_dir, repo="fixie-ai/ultravox-v0_5-llama-3_2-1b",
     # the base LLM is pulled from its text_model_id at load time. That id is
     # Meta's gated repo, so we point it at an ungated mirror of the same
     # weights. (The adapter-only distribution model is itself a finding: it is
-    # exactly what jaeger_agent_omni.artifacts does.)
+    # exactly what jaeger_agent_omni.core.artifacts does.)
     from transformers import AutoConfig, AutoModel, AutoProcessor
     cfg = AutoConfig.from_pretrained(repo, trust_remote_code=True)
     if base:

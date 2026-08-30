@@ -23,6 +23,12 @@ dynamic = ["version"]
 # (e.g. a git URL or VCS ref) rather than here.
 dependencies = [
     # "jaeger-os>=0.9,<0.10",
+    "pydantic>=2.0",
+    "jinja2>=3.1",
+    "pyyaml>=6",
+    "croniter>=2",
+    "requests>=2.31",
+    "msgspec>=0.18",
 ]
 
 [project.optional-dependencies]
@@ -33,6 +39,9 @@ demo = [
     "soundfile>=0.12",
     "kokoro>=0.9",
 ]
+agentic-remote = ["anthropic>=0.40", "openai>=1.0"]
+agentic-local-gguf = ["llama-cpp-python>=0.3"]
+agentic-bus = ["pyzmq>=26"]
 
 [tool.setuptools.dynamic]
 version = {attr = "jaeger_agent_omni.__version__"}
@@ -42,7 +51,16 @@ where = ["."]
 include = ["jaeger_agent_omni*"]
 
 [tool.setuptools.package-data]
+# Skills and the copied agent contain Markdown plus templates in many formats,
+# so those bounded trees are intentionally broad. Neural node weights are
+# local multi-gigabyte artifacts and must never enter the Python wheel.
 jaeger_agent_omni = [
+    "module.yaml",
+    "core/agentic/**/*",
+    "core/skill_registry/**/*",
+    "tools/**/*",
+    "skills/**/*",
+    "memory/**/*",
     "nodes/*.json",
     "nodes/*.md",
     "nodes/*/*.json",

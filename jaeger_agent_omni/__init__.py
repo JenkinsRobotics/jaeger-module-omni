@@ -1,40 +1,39 @@
-"""Jaeger Agent Omni — native multimodal neural agent for JaegerOS.
+"""Jaeger Agent Omni — a native multimodal, agentic runtime.
 
-Parallel development to `jaeger-agent`, not a replacement for it:
+The package keeps its extension surfaces visible at the top level:
 
-    jaeger-agent          sequential pipeline, text as the transfer format
-    jaeger-agent-omni     neural module integration, tensors as the transfer format
+``nodes``
+    Neural capabilities that exchange learned representations with cognition.
+``tools``
+    Symbolic actions the cognition model may invoke.
+``skills``
+    Procedures that coordinate tools and nodes.
+``memory``
+    Persistent agent state.
+``core``
+    Model plumbing, streaming runtimes, and the imported Jaeger agent loop.
 
-Audio reaches cognition as learned representations rather than as a transcript,
-so prosody, hesitation and speaker state survive the trip. Text remains a
-parallel output — it is no longer the only road.
-
-    jaeger_agent_omni/    the runtime
-      neural/             modality projectors and heads
-      capture.py          turn log format, with a transcript-confidence gate
-      streaming.py        1 s chunking + rolling encoder cache
-      performance_spec.py voice + face intent
-      outputs.py          text / speech / tool-call routing
-    research/             experiment harness — stubs, wiring, inspection
-    training/             corpus policy, losses, run configuration
-
-Architecture is ported from MiniCPM-o 4.5, read out of its weights and
-llama.cpp implementation. See `dev/minicpm-o measured architecture.md`.
-
-Status: research. `node.py` is a stub and nothing is discoverable yet —
-`dev/docs/reality/STATUS.md` is the honest account.
+Audio reaches Gemma as learned representations, not as an ASR transcript.
+Text is an output and a trusted tool-control format, not the input bridge.
+Production speech currently streams decoded response text through the resident
+Kokoro neural synthesizer; the tensor-native talker remains experimental.
 """
 
 from __future__ import annotations
 
 __version__ = "0.1.0"
 
-from . import neural
-from .capture import CaptureReader, CaptureWriter, Turn
-from .neural import JaegerAudioProjector, ModalityProjector, TurnEndDetector, TurnEndHead
-from .outputs import CognitiveOutput, ToolCall
-from .performance_spec import DELIVERIES, EMOTIONS, PerformanceSpec, neutral
-from .streaming import EncoderCache, StreamingChunker
+from .core import neural
+from .core.capture import CaptureReader, CaptureWriter, Turn
+from .core.neural import (
+    JaegerAudioProjector,
+    ModalityProjector,
+    TurnEndDetector,
+    TurnEndHead,
+)
+from .core.outputs import CognitiveOutput, ToolCall
+from .core.performance_spec import DELIVERIES, EMOTIONS, PerformanceSpec, neutral
+from .core.streaming import EncoderCache, StreamingChunker
 
 __all__ = [
     "CaptureReader",

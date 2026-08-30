@@ -9,3 +9,13 @@ numpy==2.4.6
 # datasets v5 would otherwise want torchcodec, which drags in ffmpeg.
 datasets
 soundfile
+
+# Bundled agentic runtime (tools, skills, memory, prompt assembly).  Heavy
+# provider clients remain optional because Omni uses its already-loaded Gemma
+# model in-process.
+pydantic>=2.0
+jinja2>=3.1
+pyyaml>=6
+croniter>=2
+requests>=2.31
+msgspec>=0.18

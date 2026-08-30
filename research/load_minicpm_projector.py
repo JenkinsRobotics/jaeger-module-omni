@@ -26,7 +26,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from inspect_gguf import read_tensor                                # noqa: E402
-from jaeger_agent_omni.neural import JaegerAudioProjector           # noqa: E402
+from jaeger_agent_omni.core.neural import JaegerAudioProjector           # noqa: E402
 
 DEFAULT_GGUF = Path.home() / "models/MiniCPM-o-4_5-gguf/audio/MiniCPM-o-4_5-audio-F16.gguf"
 WHISPER_MEDIUM_DIM = 1024
@@ -75,7 +75,7 @@ def main() -> int:
     # does the output distinguish one utterance from another?
     from transformers import WhisperModel, WhisperProcessor
 
-    from jaeger_agent_omni.capture import SAMPLE_RATE, CaptureReader
+    from jaeger_agent_omni.core.capture import SAMPLE_RATE, CaptureReader
 
     corpus = sys.argv[1] if len(sys.argv) > 1 else None
     if not corpus:

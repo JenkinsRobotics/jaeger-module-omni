@@ -32,7 +32,7 @@ from pathlib import Path
 
 import numpy as np
 
-from jaeger_agent_omni.runtime.stock_whisper import (
+from jaeger_agent_omni.core.runtime.stock_whisper import (
     ARCH_GEMMA_NATIVE_CONTEXT,
     ARCH_GEMMA_NATIVE_TEMPORAL2,
     DEFAULT_GEMMA,

@@ -29,9 +29,9 @@ import torch.nn.functional as F
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "training"))
 
-from jaeger_agent_omni.capture import SAMPLE_RATE, CaptureReader  # noqa: E402
-from jaeger_agent_omni.neural import JaegerAudioProjector          # noqa: E402
-from jaeger_agent_omni.prompt import ChatWrapper                   # noqa: E402
+from jaeger_agent_omni.core.capture import SAMPLE_RATE, CaptureReader  # noqa: E402
+from jaeger_agent_omni.core.neural import JaegerAudioProjector          # noqa: E402
+from jaeger_agent_omni.core.prompt import ChatWrapper                   # noqa: E402
 
 
 def cross_clip_cosine(vecs: torch.Tensor) -> float:

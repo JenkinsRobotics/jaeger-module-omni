@@ -99,7 +99,7 @@ def load_remapped_front_end(map_path: str | Path | None = None,
     """
     import numpy as np
 
-    from jaeger_agent_omni.neural import MiniCPMRemappedProjector
+    from jaeger_agent_omni.core.neural import MiniCPMRemappedProjector
 
     encoder = load_encoder(gguf_path)
     original = load_projector(gguf_path)
@@ -135,7 +135,7 @@ def load_remapped_front_end(map_path: str | Path | None = None,
 def main() -> int:
     import torch.nn.functional as F
 
-    from jaeger_agent_omni.capture import SAMPLE_RATE, CaptureReader
+    from jaeger_agent_omni.core.capture import SAMPLE_RATE, CaptureReader
     from transformers import WhisperProcessor
 
     encoder, projector = load_front_end()

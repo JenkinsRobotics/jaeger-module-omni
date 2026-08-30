@@ -64,6 +64,7 @@ gates/*/weights/
 
 # Operator/instance state, if this repo ever runs standalone
 .jaeger_os/
+.jaeger_agent_omni/
 
 # Template-only ignores. An INSTANTIATED repo commits its real config —
 # JaegerWhisperSTT tracks both pyproject.toml and module.yaml. Removed the

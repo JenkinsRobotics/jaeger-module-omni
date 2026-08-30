@@ -171,7 +171,7 @@ minicpm    HARNESS MISMATCH. llama-omni-cli --test uses the input clip as a
 Two findings that survive regardless:
 
   * Ultravox distributes **adapter-only with the base referenced by id** —
-    exactly what `jaeger_agent_omni.artifacts` does. Independent confirmation
+    exactly what `jaeger_agent_omni.core.artifacts` does. Independent confirmation
     our artifact design matches field practice.
   * Every Ultravox variant targets a model with NO native audio (Llama, Gemma
     2/3). It exists to give audio to LLMs that lack it. Gemma 4 has it.

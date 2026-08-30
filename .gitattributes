@@ -1,0 +1,5 @@
+# Preserve copied upstream sources and template assets byte-for-byte. Some
+# Markdown documents intentionally use trailing spaces for hard line breaks,
+# and publication templates carry upstream whitespace conventions.
+jaeger_agent_omni/core/agentic/** -whitespace
+jaeger_agent_omni/skills/** -whitespace

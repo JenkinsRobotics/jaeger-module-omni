@@ -14,7 +14,7 @@ import unittest
 
 import numpy as np
 
-from jaeger_agent_omni.runtime.aec import SpeexEchoCanceller, available
+from jaeger_agent_omni.core.runtime.aec import SpeexEchoCanceller, available
 
 RATE = 16_000
 BLOCK = 1_600           # live callback cadence: 100 ms

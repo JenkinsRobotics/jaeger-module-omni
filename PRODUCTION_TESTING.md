@@ -29,10 +29,10 @@ These commands do not load an audio model:
 ./.venv/bin/python -m jaeger_agent_omni.gate_registry --verify
 ./.venv/bin/python research/check_all.py
 ./.venv/bin/python -m jaeger_agent_omni.omni --selfcheck
-./.venv/bin/python -m jaeger_agent_omni.model_catalog
-./.venv/bin/python -m jaeger_agent_omni.runtime.interaction
-./.venv/bin/python -m jaeger_agent_omni.runtime.reporting
-./.venv/bin/python -m jaeger_agent_omni.runtime.aec
+./.venv/bin/python -m jaeger_agent_omni.core.model_catalog
+./.venv/bin/python -m jaeger_agent_omni.core.runtime.interaction
+./.venv/bin/python -m jaeger_agent_omni.core.runtime.reporting
+./.venv/bin/python -m jaeger_agent_omni.core.runtime.aec
 ./.venv/bin/python research/parity_scorecard.py --check
 ./.venv/bin/python research/overlap_lab.py --demo
 git diff --check

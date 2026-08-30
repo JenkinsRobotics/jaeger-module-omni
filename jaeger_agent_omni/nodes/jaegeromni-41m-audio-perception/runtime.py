@@ -2,7 +2,7 @@
 
 from pathlib import Path
 
-from jaeger_agent_omni.runtime.stock_whisper import StockWhisperGemmaSession
+from jaeger_agent_omni.core.runtime.stock_whisper import StockWhisperGemmaSession
 
 NODE_ROOT = Path(__file__).resolve().parent
 

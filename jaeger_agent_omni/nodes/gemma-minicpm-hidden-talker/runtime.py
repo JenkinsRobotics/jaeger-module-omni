@@ -9,7 +9,7 @@ class Engine:
     def __init__(self, talker_device="mps", vocoder_device="cpu"):
         import torch
 
-        from jaeger_agent_omni.neural.speech import (
+        from jaeger_agent_omni.core.neural.speech import (
             GemmaQwenHiddenBridge,
             TokenIdBridge,
         )

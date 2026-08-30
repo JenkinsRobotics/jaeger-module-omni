@@ -84,7 +84,7 @@ def list_devices() -> int:
 def main() -> int:
     import numpy as np
     import sounddevice as sd
-    from jaeger_agent_omni.model_catalog import front_end_choices
+    from jaeger_agent_omni.core.model_catalog import front_end_choices
 
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--seconds", type=float, default=90.0)
@@ -92,7 +92,7 @@ def main() -> int:
     ap.add_argument("--speed", type=float, default=1.0)
     ap.add_argument("--device", type=int, default=None, help="input device id")
     ap.add_argument("--model", default=MODEL)
-    from jaeger_agent_omni.model_catalog import DEFAULT_FRONT_END
+    from jaeger_agent_omni.core.model_catalog import DEFAULT_FRONT_END
     ap.add_argument("--front-end", default=DEFAULT_FRONT_END,
                     choices=front_end_choices(),
                     help="canonical Jaeger audio-ear identity")
@@ -151,6 +151,12 @@ def main() -> int:
     ap.add_argument("--meeting-minutes", metavar="PATH",
                     help="silent third-person observer; write native "
                          "audio-to-minutes output at the end (no transcript)")
+    ap.add_argument("--agentic", action="store_true",
+                    help="enable the bundled JaegerAgent tool/skill/memory "
+                         "loop over the same native multimodal Gemma cache")
+    ap.add_argument("--agentic-workspace", metavar="DIR",
+                    help="agent memory/skills/workspace root (default: "
+                         "<cwd>/.jaeger_agent_omni)")
     ap.add_argument("--report", metavar="PATH",
                     help="JSON run report (default: GUI runtime/reports)")
     a = ap.parse_args()
@@ -164,24 +170,49 @@ def main() -> int:
         return list_devices()
 
     from jaeger_agent_omni.omni import SYSTEM, build
-    from jaeger_agent_omni.runtime.companion import (
+    from jaeger_agent_omni.core.runtime.companion import (
         CompanionState, parse_decision, streaming_response, system_prompt,
     )
-    from jaeger_agent_omni.runtime.duplex import DuplexLoop
-    from jaeger_agent_omni.runtime.neural_vad import configure_endpoint
+    from jaeger_agent_omni.core.runtime.duplex import DuplexLoop
+    from jaeger_agent_omni.core.runtime.neural_vad import configure_endpoint
     from jaeger_agent_omni.voice import speak_kokoro
 
     companion = CompanionState() if a.interaction_mode == "companion" else None
     selected_system = MEETING_SYSTEM if a.meeting_minutes else (
         system_prompt() if companion is not None else SYSTEM)
+    agentic_preparation = None
+    if a.agentic:
+        if a.meeting_minutes:
+            raise SystemExit(
+                "--agentic and --meeting-minutes are separate modes; meeting "
+                "minutes must remain a silent observation artifact")
+        from jaeger_agent_omni.core.agentic.omni_runtime import (
+            prepare_agentic_system,
+        )
+        agentic_preparation = prepare_agentic_system(selected_system)
+        selected_system = agentic_preparation.system
 
     print("loading Gemma…", flush=True)
     session, meta = build(
         a.model, a.front_end, a.adapter,
         system=selected_system)
     session.warmup()
+    agentic_runtime = None
+    if agentic_preparation is not None:
+        from jaeger_agent_omni.core.agentic.omni_runtime import OmniAgentRuntime
+        agentic_runtime = OmniAgentRuntime(
+            session, agentic_preparation, eos_ids=meta["eos"],
+            workspace=a.agentic_workspace)
+        session.respond = agentic_runtime.respond_native
+        # DuplexLoop calls session.cancel() on barge-in. Route that signal to
+        # both the native token generator and the outer agent/tool loop so an
+        # interrupted tool-capable turn cannot advance to another iteration.
+        session.cancel = agentic_runtime.interrupt
+        print(f"agentic  bundled JaegerAgent · "
+              f"{len(agentic_runtime.agent.tools)} active tools · skills/memory on",
+              flush=True)
 
-    from jaeger_agent_omni.runtime.reporting import (
+    from jaeger_agent_omni.core.runtime.reporting import (
         default_report_path, finish_run_report, latency_summary,
         memory_summary, new_run_report, write_report)
     input_name = (str(sd.query_devices(a.device, "input")["name"])
@@ -204,6 +235,7 @@ def main() -> int:
             "barge_policy": a.barge_policy,
             "interaction_mode": a.interaction_mode,
             "duplex_mode": a.duplex_mode,
+            "agentic": bool(a.agentic),
             # Meeting-minutes mode is deliberately a silent observer. AEC is
             # only meaningful while Jaeger is playing a known far-end signal;
             # reporting a requested-but-inactive canceller as active made the
@@ -242,12 +274,12 @@ def main() -> int:
     perception_turns: list[dict] = []
     run_errors: list[str] = []
 
-    from jaeger_agent_omni.runtime.interaction import InteractionPolicy
+    from jaeger_agent_omni.core.runtime.interaction import InteractionPolicy
     interaction_policy = InteractionPolicy(a.barge_policy)
 
     speaker_tracker = None
     if a.speakers:
-        from jaeger_agent_omni.runtime.speaker import OnlineSpeakerTracker
+        from jaeger_agent_omni.core.runtime.speaker import OnlineSpeakerTracker
         speaker_tracker = OnlineSpeakerTracker(a.speakers)
         print(f"speakers online CampPlus, up to {a.speakers} room talkers",
               flush=True)
@@ -256,7 +288,7 @@ def main() -> int:
     barge_detector = None
     if (not a.no_aec and not a.no_speak and
             a.duplex_mode == "full"):
-        from jaeger_agent_omni.runtime.aec import (
+        from jaeger_agent_omni.core.runtime.aec import (
             EchoAwareBargeIn, SpeexEchoCanceller,
         )
         aec = SpeexEchoCanceller(RATE, reference_mode=a.aec_reference_mode)
@@ -510,16 +542,21 @@ def main() -> int:
 
         def on_token(tid, n):
             nonlocal consumed
-            ids.append(tid)
-            # Decode is cheap at this length.  Clause boundaries keep a long
-            # first sentence from delaying all audio until its final period.
-            text = tok.decode(ids)
-            if companion is not None:
-                text = streaming_response(text)
-            chunks, consumed = _ready_chunks(text, consumed)
-            if not a.no_speak:
-                for chunk in chunks:
-                    say_q.put(chunk)
+            # An agentic turn may first emit executable tool markup. Buffer
+            # until the copied loop has parsed/dispatched it and returned the
+            # final answer; otherwise Kokoro could literally speak a command.
+            if not getattr(session, "agentic_buffering", False):
+                ids.append(tid)
+                # Decode is cheap at this length. Clause boundaries keep a
+                # long first sentence from delaying all audio until its final
+                # period.
+                text = tok.decode(ids)
+                if companion is not None:
+                    text = streaming_response(text)
+                chunks, consumed = _ready_chunks(text, consumed)
+                if not a.no_speak:
+                    for chunk in chunks:
+                        say_q.put(chunk)
             if inner:
                 inner(tid, n)
 

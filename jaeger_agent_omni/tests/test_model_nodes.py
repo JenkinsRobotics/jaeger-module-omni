@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from jaeger_agent_omni.model_nodes import (
+from jaeger_agent_omni.core.model_nodes import (
     load_audio_node,
     validate_node_checkpoint,
 )

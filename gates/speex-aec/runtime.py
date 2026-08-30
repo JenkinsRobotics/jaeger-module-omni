@@ -2,7 +2,7 @@
 
 from pathlib import Path
 
-from jaeger_agent_omni.runtime.aec import SpeexEchoCanceller
+from jaeger_agent_omni.core.runtime.aec import SpeexEchoCanceller
 
 ROOT = Path(__file__).resolve().parent
 

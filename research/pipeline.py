@@ -18,8 +18,8 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from jaeger_agent_omni.capture import CaptureReader, CaptureWriter, SAMPLE_RATE
-from jaeger_agent_omni.neural import JaegerAudioProjector
+from jaeger_agent_omni.core.capture import CaptureReader, CaptureWriter, SAMPLE_RATE
+from jaeger_agent_omni.core.neural import JaegerAudioProjector
 from distill import DistillWeights, agreement_rate, total_loss
 from stubs import StubAudioEncoder, StubBackbone
 

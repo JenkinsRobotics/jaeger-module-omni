@@ -29,7 +29,7 @@ from pathlib import Path
 import numpy as np
 
 from jaeger_agent_omni.omni import STOCK
-from jaeger_agent_omni.runtime.tuned_whisper import (
+from jaeger_agent_omni.core.runtime.tuned_whisper import (
     DEFAULT_ADAPTER as TUNED_ADAPTER,
     DEFAULT_AUDIO_GGUF as TUNED_AUDIO_GGUF,
     DEFAULT_MODEL, TunedWhisperGemmaSession)
@@ -123,7 +123,7 @@ def minutes_from_transcript(session, transcript: str,
     from mlx_lm.generate import generate_step
     from mlx_lm.sample_utils import make_logits_processors
 
-    from jaeger_agent_omni.runtime.tuned_whisper import (
+    from jaeger_agent_omni.core.runtime.tuned_whisper import (
         _token_loop_blocker, _word_loop_blocker)
 
     messages = [
@@ -175,7 +175,7 @@ def observe(audio: np.ndarray, adapter: str | Path = TUNED_ADAPTER,
             whisper: str = "openai/whisper-medium") \
             -> tuple[list[dict], str | None]:
     """Decode every window free-running, then optionally write final minutes."""
-    from jaeger_agent_omni.runtime.speaker import OnlineSpeakerTracker
+    from jaeger_agent_omni.core.runtime.speaker import OnlineSpeakerTracker
 
     tracker = OnlineSpeakerTracker(k)
     admission = SpeechAdmission(silero_model)
@@ -199,7 +199,7 @@ def observe(audio: np.ndarray, adapter: str | Path = TUNED_ADAPTER,
             continue
         if session is None:
             if front_end == "stock":
-                from jaeger_agent_omni.runtime.stock_whisper import (
+                from jaeger_agent_omni.core.runtime.stock_whisper import (
                     StockWhisperGemmaSession)
                 session = StockWhisperGemmaSession(
                     adapter, model_path=model, whisper_id=whisper,

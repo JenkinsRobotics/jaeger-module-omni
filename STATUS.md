@@ -10,6 +10,23 @@ Measured ledger. Every claim here has a command that reproduces it.
 > It is generated from exact checkpoint SHAs and supersedes stale latency or
 > promotion language in the historical sections below.
 >
+> 2026-08-29 agentic integration (CPU-complete, live gate open): the Jaeger
+> Agent framework is now copied into this repository at pinned upstream commit
+> `a3696e9e`, with its required JaegerOS substrate pinned at `e05dc24e`. The
+> package presents `nodes/`, `tools/`, `skills/`, and `memory/` as sibling
+> extension surfaces and keeps implementation plumbing under `core/`. The
+> native adapter starts from audio already embedded in Gemma's session, blocks
+> the copied `listen` and `text_to_speech` tools, dispatches structured calls,
+> and appends trusted results to the same cache without an input transcript.
+> The copied catalog contains 96 registered tools, 94 Omni-safe tools, and 17
+> initially visible tools. Five focused integration tests pass, as do 101
+> selected copied-core tests after namespace relocation. This mode is opt-in
+> behind `live --agentic` pending a physical five-minute tool/memory/barge-in
+> gate. Tool-capable replies are currently buffered to guarantee markup is
+> never spoken, so their END-to-audio latency is not yet a production claim.
+> Speech output remains decoded response text into resident Kokoro; the hidden-
+> state talker is experimental.
+>
 > 2026-08-29 neural audio-perception window: a separately selectable
 > `jaegeromni-41m-audio-perception` node now keeps the exact causal-balanced
 > audio/Gemma trunk frozen and adds trained scene and conversation-event heads.
@@ -253,8 +270,8 @@ tower's: one read audio as an image, one never named Shakespeare.
 | capability | state | command |
 | --- | --- | --- |
 | audio -> text, no transcript | **10/12, 363 ms** | `omni.py --bench` |
-| hands-free turn detection | **works** | `python -m jaeger_agent_omni.runtime.endpoint` |
-| always-on duplex | **works** | `python -m jaeger_agent_omni.runtime.duplex` |
+| hands-free turn detection | **works** | `python -m jaeger_agent_omni.core.runtime.endpoint` |
+| always-on duplex | **works** | `python -m jaeger_agent_omni.core.runtime.duplex` |
 | barge-in | **20.7 ms**, context kept | same |
 | omni input (a/v/text, one cache) | **works** | `research/check_all.py` |
 | speech codes -> audible cloned voice | **works** | `research/t2w_client.py --say` |

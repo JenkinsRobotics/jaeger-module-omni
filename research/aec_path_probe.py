@@ -119,7 +119,7 @@ def probe_aec(out_path: Path, reference_mode: str, filter_ms: int,
     import sounddevice as sd
     import soundfile as sf
 
-    from jaeger_agent_omni.runtime.aec import SpeexEchoCanceller
+    from jaeger_agent_omni.core.runtime.aec import SpeexEchoCanceller
     from jaeger_agent_omni.voice import speak_kokoro
 
     # One deterministic waveform, reused verbatim by every mode.

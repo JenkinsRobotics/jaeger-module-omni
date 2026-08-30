@@ -34,7 +34,7 @@ import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from jaeger_agent_omni.capture import SAMPLE_RATE, CaptureReader  # noqa: E402
+from jaeger_agent_omni.core.capture import SAMPLE_RATE, CaptureReader  # noqa: E402
 
 CACHE_DIRNAME = "encoder_cache"
 FRAME_RATE = 50          # whisper encoder frames per second of audio
@@ -124,7 +124,7 @@ def main() -> int:
 def demo():
     import tempfile
 
-    from jaeger_agent_omni.capture import CaptureWriter
+    from jaeger_agent_omni.core.capture import CaptureWriter
 
     with tempfile.TemporaryDirectory() as tmp:
         w = CaptureWriter(tmp)

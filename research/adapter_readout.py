@@ -107,7 +107,7 @@ def main() -> int:
 
     from transformers import WhisperFeatureExtractor, WhisperModel
 
-    from jaeger_agent_omni.neural import DeltaAdapter, MiniCPMDeltaPath
+    from jaeger_agent_omni.core.neural import DeltaAdapter, MiniCPMDeltaPath
     from load_minicpm import load_front_end
 
     ck = torch.load(a.ckpt, map_location="cpu", weights_only=False)

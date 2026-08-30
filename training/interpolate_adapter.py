@@ -10,7 +10,7 @@ from pathlib import Path
 
 import numpy as np
 
-from jaeger_agent_omni.runtime.stock_whisper import validate_checkpoint
+from jaeger_agent_omni.core.runtime.stock_whisper import validate_checkpoint
 
 
 CONTEXT_ARCHITECTURES = frozenset({

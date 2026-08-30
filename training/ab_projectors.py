@@ -59,7 +59,7 @@ import torch.nn.functional as F
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from jaeger_agent_omni.neural.base import ModalityProjector  # noqa: E402
+from jaeger_agent_omni.core.neural.base import ModalityProjector  # noqa: E402
 
 
 class RMSNorm(nn.Module):

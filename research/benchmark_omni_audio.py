@@ -20,7 +20,7 @@ REPO = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO))
 
 from jaeger_agent_omni.app import read_wav
-from jaeger_agent_omni.neural.speech import (GemmaQwenHiddenBridge,
+from jaeger_agent_omni.core.neural.speech import (GemmaQwenHiddenBridge,
                                              GemmaTalkerConditioner,
                                              TokenIdBridge)
 from jaeger_agent_omni.omni import (build, condition_session,

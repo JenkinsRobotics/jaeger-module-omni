@@ -16,22 +16,22 @@ from pathlib import Path
 # Package contracts import as jaeger_agent_omni.*; research/training modules
 # import flat. Both are exercised here so one command covers the repo.
 PACKAGE_MODULES = [
-    "jaeger_agent_omni.performance_spec",
-    "jaeger_agent_omni.outputs",
-    "jaeger_agent_omni.capture",
-    "jaeger_agent_omni.streaming",
-    "jaeger_agent_omni.prompt",
-    "jaeger_agent_omni.runtime.gemma_audio",
-    "jaeger_agent_omni.runtime.session",
-    "jaeger_agent_omni.runtime.duplex",
-    "jaeger_agent_omni.neural.base",
-    "jaeger_agent_omni.neural.audio",
-    "jaeger_agent_omni.neural.heads",
-    "jaeger_agent_omni.neural.gate",
-    "jaeger_agent_omni.neural.delta",
-    "jaeger_agent_omni.neural.speech",
+    "jaeger_agent_omni.core.performance_spec",
+    "jaeger_agent_omni.core.outputs",
+    "jaeger_agent_omni.core.capture",
+    "jaeger_agent_omni.core.streaming",
+    "jaeger_agent_omni.core.prompt",
+    "jaeger_agent_omni.core.runtime.gemma_audio",
+    "jaeger_agent_omni.core.runtime.session",
+    "jaeger_agent_omni.core.runtime.duplex",
+    "jaeger_agent_omni.core.neural.base",
+    "jaeger_agent_omni.core.neural.audio",
+    "jaeger_agent_omni.core.neural.heads",
+    "jaeger_agent_omni.core.neural.gate",
+    "jaeger_agent_omni.core.neural.delta",
+    "jaeger_agent_omni.core.neural.speech",
     "jaeger_agent_omni.app",
-    "jaeger_agent_omni.artifacts",
+    "jaeger_agent_omni.core.artifacts",
 ]
 
 TRAINING_MODULES = [

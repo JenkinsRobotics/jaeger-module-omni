@@ -27,7 +27,7 @@ import torch.nn.functional as F
 REPO = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO))
 
-from jaeger_agent_omni.neural.speech import (  # noqa: E402
+from jaeger_agent_omni.core.neural.speech import (  # noqa: E402
     GemmaTalkerConditioner, SpeechConditionerConfig)
 
 

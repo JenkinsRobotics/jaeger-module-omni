@@ -60,7 +60,7 @@ def main() -> int:
 
     projector = None
     if args.projector:
-        from .neural import JaegerAudioProjector
+        from .core.neural import JaegerAudioProjector
         ck = torch.load(args.projector, map_location=device, weights_only=False)
         projector = JaegerAudioProjector(
             audio_dim=whisper.config.d_model, cognition_dim=ck["cognition_dim"])

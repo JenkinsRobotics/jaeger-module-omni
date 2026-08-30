@@ -30,7 +30,7 @@ import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from jaeger_agent_omni.capture import SAMPLE_RATE, CaptureReader  # noqa: E402
+from jaeger_agent_omni.core.capture import SAMPLE_RATE, CaptureReader  # noqa: E402
 
 WARMUP_TARGET = "transcript"
 DISTILL_TARGET = "response"
@@ -191,7 +191,7 @@ def loader(dataset, batch_size: int, pad_id: int, shuffle: bool = True):
 def demo():
     import tempfile
 
-    from jaeger_agent_omni.capture import CaptureWriter
+    from jaeger_agent_omni.core.capture import CaptureWriter
 
     class FakeProcessor:
         def __call__(self, audio, sampling_rate, return_tensors):

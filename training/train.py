@@ -32,8 +32,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "research"))
 
-from jaeger_agent_omni.neural import JaegerAudioProjector      # noqa: E402
-from jaeger_agent_omni.prompt import (ChatWrapper, DEFAULT_SYSTEM,  # noqa: E402
+from jaeger_agent_omni.core.neural import JaegerAudioProjector      # noqa: E402
+from jaeger_agent_omni.core.prompt import (ChatWrapper, DEFAULT_SYSTEM,  # noqa: E402
                                       WARMUP_SYSTEM)
 from config import TrainConfig, distill as distill_cfg, warmup  # noqa: E402
 from dataset import IGNORE_INDEX  # noqa: E402
@@ -469,7 +469,7 @@ def real_setup(cfg: TrainConfig, corpus: str, device: str):
         # THEIR fine-tuned encoder + THEIR projector, both frozen. Only the
         # delta trains — collapse of the front end is structurally impossible.
         from load_minicpm import load_front_end
-        from jaeger_agent_omni.neural import DeltaAdapter, MiniCPMDeltaPath
+        from jaeger_agent_omni.core.neural import DeltaAdapter, MiniCPMDeltaPath
         encoder, front = load_front_end()
         encoder = encoder.to(device, dtype).eval()
         delta = DeltaAdapter(source_dim=front.cognition_dim,

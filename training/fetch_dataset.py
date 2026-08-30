@@ -38,7 +38,7 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from jaeger_agent_omni.capture import SAMPLE_RATE, CaptureWriter  # noqa: E402
+from jaeger_agent_omni.core.capture import SAMPLE_RATE, CaptureWriter  # noqa: E402
 
 MIN_CLIP_S = 0.5
 MAX_CLIP_S = 30.0        # whisper's context window

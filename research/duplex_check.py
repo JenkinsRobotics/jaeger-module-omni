@@ -32,7 +32,7 @@ def main() -> int:
     import numpy as np
 
     from jaeger_agent_omni.omni import build
-    from jaeger_agent_omni.runtime.duplex import SAMPLE_RATE, DuplexLoop
+    from jaeger_agent_omni.core.runtime.duplex import SAMPLE_RATE, DuplexLoop
 
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--wav")

@@ -49,8 +49,8 @@ def main() -> int:
 
     from fit_alignment import embedding_table
     from jaeger_agent_omni.app import read_wav
-    from jaeger_agent_omni.neural.whisper_to_gemma import WhisperToGemma
-    from jaeger_agent_omni.runtime.endpoint import Endpoint
+    from jaeger_agent_omni.core.neural.whisper_to_gemma import WhisperToGemma
+    from jaeger_agent_omni.core.runtime.endpoint import Endpoint
 
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--ckpt", required=True)

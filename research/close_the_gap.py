@@ -41,7 +41,7 @@ def run(mode, cases, cases_dir, model_path, whisper_id="openai/whisper-medium.en
     from mlx_vlm.utils import load
 
     from jaeger_agent_omni.app import read_wav
-    from jaeger_agent_omni.runtime import GemmaAudioPrefiller, StreamingSession
+    from jaeger_agent_omni.core.runtime import GemmaAudioPrefiller, StreamingSession
 
     m, proc = load(model_path)
     cfg = json.load(open(Path(model_path) / "config.json"))

@@ -2,7 +2,7 @@
 
 from pathlib import Path
 
-from jaeger_agent_omni.runtime.speaker import OnlineSpeakerTracker
+from jaeger_agent_omni.core.runtime.speaker import OnlineSpeakerTracker
 
 ROOT = Path(__file__).resolve().parent
 

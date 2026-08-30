@@ -28,7 +28,7 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from jaeger_agent_omni.capture import SAMPLE_RATE, CaptureWriter  # noqa: E402
+from jaeger_agent_omni.core.capture import SAMPLE_RATE, CaptureWriter  # noqa: E402
 
 # Short factual prompts: the answers are short and deterministic, so a tiny
 # backbone produces stable targets and loss curves stay readable.
@@ -105,7 +105,7 @@ def main() -> int:
 
     out = Path(args.out)
     n = build(out, args.n)
-    from jaeger_agent_omni.capture import CaptureReader
+    from jaeger_agent_omni.core.capture import CaptureReader
     r = CaptureReader(out)
     print(f"wrote {n} turns, {r.hours()*3600:.0f}s of audio to {out}")
     print("NOTE synthetic — smoke test only, not a real-run corpus")
@@ -118,7 +118,7 @@ def demo():
         print("make_corpus: `say` unavailable, skipped (macOS only)")
         return
 
-    from jaeger_agent_omni.capture import CaptureReader
+    from jaeger_agent_omni.core.capture import CaptureReader
 
     with tempfile.TemporaryDirectory() as tmp:
         out = Path(tmp) / "c"

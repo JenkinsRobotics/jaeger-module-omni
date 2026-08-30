@@ -26,7 +26,7 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from jaeger_agent_omni.capture import SAMPLE_RATE, CaptureWriter  # noqa: E402
+from jaeger_agent_omni.core.capture import SAMPLE_RATE, CaptureWriter  # noqa: E402
 
 MIN_SEGMENT_S = 1.0
 MAX_SEGMENT_S = 28.0      # under whisper's 30 s window, with headroom
@@ -166,7 +166,7 @@ def main() -> int:
         if kept % 10 == 0:
             print(f"  {kept}/{len(segments)}  conf {conf:.2f}  {text[:52]}")
 
-    from jaeger_agent_omni.capture import CaptureReader
+    from jaeger_agent_omni.core.capture import CaptureReader
     r = CaptureReader(args.out)
     print(f"wrote {kept} turns, {r.hours()*60:.1f} min to {args.out}")
     print(f"      {len(list(CaptureReader(args.out, min_confidence=0.8)))} pass the 0.8 gate")

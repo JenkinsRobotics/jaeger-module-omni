@@ -80,7 +80,7 @@ def main() -> int:
     from mlx_vlm.utils import load
 
     from jaeger_agent_omni.app import read_wav
-    from jaeger_agent_omni.runtime import GemmaAudioPrefiller, StreamingSession
+    from jaeger_agent_omni.core.runtime import GemmaAudioPrefiller, StreamingSession
 
     cases = json.load(open(Path(args.cases) / "cases.json"))
     m, proc = load(args.model)

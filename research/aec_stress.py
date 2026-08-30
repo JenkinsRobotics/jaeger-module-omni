@@ -26,7 +26,7 @@ import numpy as np
 import soundfile as sf
 from scipy.signal import resample_poly
 
-from jaeger_agent_omni.runtime.aec import (
+from jaeger_agent_omni.core.runtime.aec import (
     EchoAwareBargeIn,
     SpeexEchoCanceller,
 )

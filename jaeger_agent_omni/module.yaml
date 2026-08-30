@@ -1,9 +1,8 @@
 # module.yaml — the manifest JaegerOS's discover_modules() reads.
 #
-# NOTE: this module is NOT discoverable yet. It declares the contract the
-# staged build is working toward so the shape is agreed before there is an
-# implementation to argue about. `node.py` is a stub; see dev/docs/reality/
-# STATUS.md for what actually runs.
+# The live implementation is production-candidate research. This manifest is
+# the JaegerOS slot contract; `live.py` and `core/runtime/` are the directly
+# runnable path. See STATUS.md for the remaining physical promotion gates.
 
 module: "jaeger_agent_omni"
 
@@ -18,10 +17,8 @@ version: 0.1.0
 # Jaeger-native backbone, means swapping this module, not editing it.
 kind: engine
 
-# Does not open the microphone. jaeger_os.nodes.audio_io owns the device and
-# publishes echo-cancelled frames; we subscribe like anything else. Same
-# discipline JaegerWhisperSTT 2.0 adopted, and for the same reason — a
-# recorder, a wake-word detector and this can share one mic.
+# The JaegerOS module consumes shared microphone PCM. The standalone live/demo
+# entry points may own a selected device directly.
 consumes:
   - /sense/mic/pcm
 

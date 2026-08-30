@@ -57,7 +57,7 @@ def run_one(session, meta, audio, voice: str, speed: float, out: Path,
 
 def main() -> int:
     import numpy as np
-    from jaeger_agent_omni.model_catalog import (
+    from jaeger_agent_omni.core.model_catalog import (
         front_end_choices, resolve_front_end)
 
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
@@ -71,7 +71,7 @@ def main() -> int:
                     choices=("kokoro", "token2wav"))
     ap.add_argument("--ref", help="reference clip to clone (token2wav)")
     ap.add_argument("--model", default=MODEL)
-    from jaeger_agent_omni.model_catalog import DEFAULT_FRONT_END
+    from jaeger_agent_omni.core.model_catalog import DEFAULT_FRONT_END
     ap.add_argument("--front-end", default=DEFAULT_FRONT_END,
                     choices=front_end_choices(),
                     help="canonical Jaeger audio-ear identity")

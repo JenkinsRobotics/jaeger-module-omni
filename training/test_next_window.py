@@ -19,7 +19,7 @@ REPO = Path(__file__).resolve().parent.parent
 if str(REPO) not in sys.path:
     sys.path.insert(0, str(REPO))
 
-from jaeger_agent_omni.runtime.stock_whisper import (  # noqa: E402
+from jaeger_agent_omni.core.runtime.stock_whisper import (  # noqa: E402
     INPUT_DIM,
     LARGE_WHISPER,
     DEFAULT_WHISPER,

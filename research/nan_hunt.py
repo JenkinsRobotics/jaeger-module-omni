@@ -37,7 +37,7 @@ def main() -> int:
     from config import warmup
     from dataset import CaptureDataset
 
-    from jaeger_agent_omni.neural import hidden_size_of
+    from jaeger_agent_omni.core.neural import hidden_size_of
 
     dev = "mps"
     cfg = warmup("google/gemma-4-E4B-it")

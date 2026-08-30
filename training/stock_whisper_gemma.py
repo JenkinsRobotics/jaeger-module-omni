@@ -33,7 +33,7 @@ from pathlib import Path
 
 import numpy as np
 
-from jaeger_agent_omni.runtime.stock_whisper import (
+from jaeger_agent_omni.core.runtime.stock_whisper import (
     AUDIO_MARKER,
     DEFAULT_GEMMA,
     DEFAULT_WHISPER,
@@ -504,7 +504,7 @@ def command_pretrain_ctc(args) -> None:
 
     adapter = Adapter().to(device)
     if args.resume:
-        from jaeger_agent_omni.runtime.stock_whisper import validate_checkpoint
+        from jaeger_agent_omni.core.runtime.stock_whisper import validate_checkpoint
         saved = validate_checkpoint(args.resume)
         if str(saved["encoder"]) != args.whisper:
             raise ValueError(
@@ -679,7 +679,7 @@ def command_distill(args) -> None:
     import torch.nn as nn
     import torch.nn.functional as functional
 
-    from jaeger_agent_omni.runtime.stock_whisper import validate_checkpoint
+    from jaeger_agent_omni.core.runtime.stock_whisper import validate_checkpoint
 
     stock_train = {
         row["id"]: row for row in _rows(
@@ -946,7 +946,7 @@ def command_train(args) -> None:
     saved = None
     start_step = 0
     if args.resume:
-        from jaeger_agent_omni.runtime.stock_whisper import validate_checkpoint
+        from jaeger_agent_omni.core.runtime.stock_whisper import validate_checkpoint
         saved = validate_checkpoint(args.resume)
         if str(saved["encoder"]) != args.whisper:
             raise ValueError(
@@ -966,7 +966,7 @@ def command_train(args) -> None:
                 self.linear2.bias = mx.array(saved["linear2_bias"])
 
         def __call__(self, x):
-            from jaeger_agent_omni.runtime.stock_whisper import _pool_mlx
+            from jaeger_agent_omni.core.runtime.stock_whisper import _pool_mlx
             y = self.linear2(nn.relu(self.linear1(x)))
             y = _pool_mlx(mx, y)
             norms = mx.sqrt(mx.sum(y * y, axis=-1, keepdims=True) + 1e-8)
@@ -1105,7 +1105,7 @@ def command_geometry(args) -> None:
     from transformers import AutoTokenizer
 
     from fit_alignment import embedding_table
-    from jaeger_agent_omni.runtime.stock_whisper import validate_checkpoint
+    from jaeger_agent_omni.core.runtime.stock_whisper import validate_checkpoint
 
     rows = _rows(args.cache, args.split, "transcript", args.whisper)
     if args.source_prefix:

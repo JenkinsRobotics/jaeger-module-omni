@@ -118,7 +118,7 @@ def main() -> int:
         sf.write(args.out_dir / f"speaker_{chr(65 + index)}.wav", stem, RATE)
     sf.write(args.out_dir / "mixture.wav", mixture, RATE)
 
-    from jaeger_agent_omni.runtime.speaker import OnlineSpeakerTracker
+    from jaeger_agent_omni.core.runtime.speaker import OnlineSpeakerTracker
     tracker = OnlineSpeakerTracker(k=len(sources))
     truth, predicted, assignments = [], [], []
     for label in labels:

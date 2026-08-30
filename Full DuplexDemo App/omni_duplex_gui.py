@@ -71,7 +71,7 @@ ENGINE_LOG = WORK_DIR / "engine.log"
 JAEGER_MODEL = Path(os.environ.get(
     "JAEGER_OMNI_MODEL",
     Path.home() / "models/gemma-4-e4b-it-mlx-full"))
-from jaeger_agent_omni.model_catalog import (  # noqa: E402
+from jaeger_agent_omni.core.model_catalog import (  # noqa: E402
     DEFAULT_FRONT_END as JAEGER_DEFAULT_FRONT_END,
     FRONT_ENDS as JAEGER_FRONT_ENDS,
     FRONT_END_ALIASES as JAEGER_FRONT_END_ALIASES,
@@ -566,11 +566,11 @@ class JaegerEngineWorker(QThread):
         self._speaker_tracker = None
         self._turn_self_speech_overlap = False
         self._perception_turns: list[dict] = []
-        from jaeger_agent_omni.runtime.companion import CompanionState
+        from jaeger_agent_omni.core.runtime.companion import CompanionState
         self.companion = (
             CompanionState() if interaction_mode == "companion" else None)
-        from jaeger_agent_omni.runtime.interaction import InteractionPolicy
-        from jaeger_agent_omni.runtime.reporting import new_run_report
+        from jaeger_agent_omni.core.runtime.interaction import InteractionPolicy
+        from jaeger_agent_omni.core.runtime.reporting import new_run_report
         self.interaction_policy = InteractionPolicy(barge_policy)
         self._report = new_run_report(
             phase=report_phase, model_id=self.front_end,
@@ -737,7 +737,7 @@ class JaegerEngineWorker(QThread):
 
     def _final_report(self) -> dict:
         """Build one checkpoint-specific report from final worker state."""
-        from jaeger_agent_omni.runtime.reporting import (
+        from jaeger_agent_omni.core.runtime.reporting import (
             finish_run_report, latency_summary)
         stats = getattr(self.loop, "stats", None)
         aec = self.aec
@@ -854,15 +854,15 @@ class JaegerEngineWorker(QThread):
             sys.path.insert(0, str(HERE.parent))
             from jaeger_agent_omni.live import _ready_chunks
             from jaeger_agent_omni.omni import SYSTEM, build
-            from jaeger_agent_omni.runtime.companion import (
+            from jaeger_agent_omni.core.runtime.companion import (
                 parse_decision, streaming_response, system_prompt,
             )
-            from jaeger_agent_omni.runtime.aec import (
+            from jaeger_agent_omni.core.runtime.aec import (
                 EchoAwareBargeIn, SpeexEchoCanceller,
             )
-            from jaeger_agent_omni.runtime.duplex import DuplexLoop
-            from jaeger_agent_omni.runtime.neural_vad import configure_endpoint
-            from jaeger_agent_omni.runtime.speaker import OnlineSpeakerTracker
+            from jaeger_agent_omni.core.runtime.duplex import DuplexLoop
+            from jaeger_agent_omni.core.runtime.neural_vad import configure_endpoint
+            from jaeger_agent_omni.core.runtime.speaker import OnlineSpeakerTracker
 
             self.status.emit("loading Jaeger Gemma-4 E4B…")
             if self.companion is not None:
@@ -1001,7 +1001,7 @@ class JaegerEngineWorker(QThread):
             self._emit_metrics(force=True)
             if self.report_path is not None:
                 try:
-                    from jaeger_agent_omni.runtime.reporting import write_report
+                    from jaeger_agent_omni.core.runtime.reporting import write_report
                     saved = write_report(self.report_path, self._final_report())
                     self.status.emit(f"report saved: {saved}")
                 except Exception as exc:
@@ -1457,7 +1457,7 @@ class OmniDuplexWindow(QMainWindow):
         if self.engine_jaeger.isChecked():
             if self.lang_combo.currentText() != "en":
                 self._set_status("note: Jaeger path is English-tuned; zh untested")
-            from jaeger_agent_omni.runtime.reporting import default_report_path
+            from jaeger_agent_omni.core.runtime.reporting import default_report_path
             selection = resolve_front_end(self.front_end_combo.currentData())
             phase = "direct-wav" if self.source_wav else "physical-room"
             report_path = default_report_path(
@@ -1744,8 +1744,8 @@ def check() -> int:
     problems = []
     optional = []
     try:
-        from jaeger_agent_omni.runtime.aec import available
-        from jaeger_agent_omni.runtime.companion import parse_decision
+        from jaeger_agent_omni.core.runtime.aec import available
+        from jaeger_agent_omni.core.runtime.companion import parse_decision
         from jaeger_agent_omni.live import _ready_chunks
         from jaeger_agent_omni.node_registry import (
             SUPPORTED_GATE_KINDS, discover, validate_profiles, verify_weights,
@@ -1938,7 +1938,7 @@ def jaeger_selftest(wav_path: Path, seconds: int, threshold: float,
         pcm = np.interp(np.linspace(0, len(pcm) - 1, n),
                         np.arange(len(pcm)), pcm).astype(np.float32)
 
-    from jaeger_agent_omni.runtime.reporting import default_report_path
+    from jaeger_agent_omni.core.runtime.reporting import default_report_path
     selection = resolve_front_end(front_end)
     report_path = report_path or default_report_path(
         WORK_DIR, selection.model_id, "direct-wav")

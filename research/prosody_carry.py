@@ -62,7 +62,7 @@ def main() -> int:
     import mlx.core as mx
     from mlx_vlm.utils import load
 
-    from jaeger_agent_omni.runtime import GemmaAudioPrefiller
+    from jaeger_agent_omni.core.runtime import GemmaAudioPrefiller
 
     model_path = "/Users/jonathanjenkins/models/gemma-4-e4b-it-mlx-full"
     m, proc = load(model_path)

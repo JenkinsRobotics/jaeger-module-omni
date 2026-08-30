@@ -78,8 +78,8 @@ def main() -> int:
     import torch
 
     from jaeger_agent_omni.app import OmniApp, load_models
-    from jaeger_agent_omni.capture import CaptureReader
-    from jaeger_agent_omni.neural import JaegerAudioProjector
+    from jaeger_agent_omni.core.capture import CaptureReader
+    from jaeger_agent_omni.core.neural import JaegerAudioProjector
     from dataset import CaptureDataset
 
     device = args.device or ("cuda" if torch.cuda.is_available()
@@ -92,7 +92,7 @@ def main() -> int:
         # Artifact directory. For a delta artifact this also swaps in THEIR
         # fine-tuned encoder — the pairing the delta was trained against;
         # evaluating on stock whisper would silently break it.
-        from jaeger_agent_omni.artifacts import load_audio_path
+        from jaeger_agent_omni.core.artifacts import load_audio_path
         enc, projector = load_audio_path(args.projector)
         if enc is not None:
             class _W:                      # transcription still needs the
@@ -129,7 +129,7 @@ def main() -> int:
     # legacy artifacts means the old assistant default, which OmniApp already
     # uses.
     import json as _json
-    from jaeger_agent_omni.prompt import ChatWrapper
+    from jaeger_agent_omni.core.prompt import ChatWrapper
     if Path(args.projector).is_dir():
         _cfg = _json.loads((Path(args.projector) / "adapter_config.json").read_text())
         trained_prompt = _cfg.get("training", {}).get("system_prompt")

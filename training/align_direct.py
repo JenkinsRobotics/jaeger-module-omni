@@ -91,7 +91,7 @@ def main() -> int:
     from transformers import AutoTokenizer, WhisperFeatureExtractor, WhisperModel
 
     from fit_alignment import embedding_table
-    from jaeger_agent_omni.neural.whisper_to_gemma import WhisperToGemma
+    from jaeger_agent_omni.core.neural.whisper_to_gemma import WhisperToGemma
 
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--corpus", required=True)

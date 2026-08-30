@@ -28,12 +28,12 @@ from pathlib import Path
 
 import numpy as np
 
-from .capture import SAMPLE_RATE, CaptureWriter
-from .neural import JaegerAudioProjector, hidden_size_of
-from .outputs import CognitiveOutput
-from .performance_spec import neutral
-from .prompt import ChatWrapper
-from .streaming import CHUNK_SECONDS, StreamingChunker
+from .core.capture import SAMPLE_RATE, CaptureWriter
+from .core.neural import JaegerAudioProjector, hidden_size_of
+from .core.outputs import CognitiveOutput
+from .core.performance_spec import neutral
+from .core.prompt import ChatWrapper
+from .core.streaming import CHUNK_SECONDS, StreamingChunker
 
 PATHS = ("text", "omni")
 
@@ -438,7 +438,7 @@ def demo():
         assert t.transcribe_ms > 0 and t.generate_ms > 0
         assert t.encode_ms == 0 and t.project_ms == 0
 
-        from .capture import CaptureReader
+        from .core.capture import CaptureReader
         turns = list(CaptureReader(tmp))
         assert len(turns) == 1
         assert turns[0].transcript == "what is two plus two"

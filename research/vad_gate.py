@@ -10,8 +10,8 @@ from pathlib import Path
 import numpy as np
 import soundfile as sf
 
-from jaeger_agent_omni.runtime.endpoint import Endpoint
-from jaeger_agent_omni.runtime.neural_vad import configure_endpoint
+from jaeger_agent_omni.core.runtime.endpoint import Endpoint
+from jaeger_agent_omni.core.runtime.neural_vad import configure_endpoint
 
 
 RATE = 16_000

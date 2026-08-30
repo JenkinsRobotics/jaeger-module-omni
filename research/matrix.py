@@ -110,7 +110,7 @@ def main() -> int:
         row("audio -> omni", "SKIP", "no test speech")
     else:
         try:
-            from jaeger_agent_omni.artifacts import load_audio_path
+            from jaeger_agent_omni.core.artifacts import load_audio_path
             enc, projector = load_audio_path(args.artifact)
             omni = OmniApp(processor, enc or whisper, tokenizer, backbone,
                            path="omni", projector=projector,

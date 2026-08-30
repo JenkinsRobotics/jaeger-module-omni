@@ -12,10 +12,10 @@
 
 ---
 
-> **Research repo.** Nothing here ships yet. `jaeger_agent_omni/node.py` is a
-> stub; `module.yaml` declares the contract the staged build is working toward.
-> See [`dev/docs/reality/STATUS.md`](dev/docs/reality/STATUS.md) for what
-> actually runs today.
+> **Production-candidate research repo.** The audio-native 41M runtime, duplex
+> demo, and imported agent framework run today; neural turn-policy heads and
+> tensor-native speech generation remain pre-production. See
+> [`STATUS.md`](STATUS.md) for measured state and open gates.
 
 The concise, current runtime/model inventory is [`PIPELINES.md`](PIPELINES.md),
 and the generated MiniCPM comparison is
@@ -35,57 +35,68 @@ That works, ships today, and has a ceiling. Every conversion costs latency, and
 everything not expressible as words — prosody, hesitation, emotion, who is
 speaking — is discarded at the first arrow and cannot be recovered at the last.
 
-Omni removes text as the mandatory bridge:
+Omni removes text as the mandatory input bridge and adds the Jaeger agent loop
+inside the same package:
 
 ```text
-mic → whisper encoder → JaegerAudioProjector → gemma-4-E4B
-                                                    │
-                                             PerformanceSpec
-                                    ┌───────────────┼───────────────┐
-                                    ▼               ▼               ▼
-                                  text        cloned TTS         avatar
-                              tools / logs       audio             rig
+mic → neural ear → native embeddings → Gemma cognition
+                                           │
+                     ┌── structured tool call ──┐
+                     ▼                         │
+              tools / skills / memory ────┘  (same session cache)
+                                           │
+                             ┌────────────────┴───────────────┐
+                             ▼                                ▼
+                           text                   decoded text → Kokoro → audio
 ```
 
-Audio reaches cognition as learned representations. Text remains available as a
-parallel output — it is no longer the only road.
+Audio reaches cognition as learned representations. Trusted tool results are
+the only symbolic control messages appended between native turns. Text remains
+an output. The current production TTS boundary is deliberately stated plainly:
+Kokoro is a neural node, but it still consumes decoded response text. The
+experimental hidden-state talker has not passed production gates.
 
-## Parallel to jaeger-agent, not a replacement
+## Jaeger Agent, embedded rather than linked
 
 ```text
-jaeger-agent          sequential pipeline, text as the transfer format
-                      ships today, keeps shipping
-jaeger-agent-omni     neural module integration, tensors as the transfer format
-                      research, proves its own path
+jaeger-agent          upstream/reference agentic framework
+jaeger-agent-omni     copied agent loop + native multimodal neural runtime
 ```
 
-Nothing here patches, imports from, or depends on `jaeger-agent`. Omni runs its
-own `whisper → text → gemma` teacher to generate training targets. The two
-converge later at the **slot** level, when Omni ships a module a project can
-select instead of the sequential stack.
+Omni does not import or link the sibling repository at runtime. Its agent loop,
+tools, skills, and memory implementation are copied under the Apache-2.0
+license with pinned upstream commit provenance. The sibling repository remains
+a read-only reference; Omni owns its integrated copy and its native-session
+adapter.
 
 ## Layout
 
 ```text
-jaeger_agent_omni/   the runtime
-  neural/              modality projectors and heads
-    base.py              ModalityProjector — the shared contract
-    audio.py             JaegerAudioProjector (MiniCPM port)
-    heads.py             TurnEndHead — our <|speak|>/<|listen|>
-  capture.py           turn log format + transcript-confidence gate
-  streaming.py         1 s chunking + rolling encoder cache
-  performance_spec.py  voice + face intent
-  outputs.py           text / speech / tool-call routing
-  module.yaml          the slot contract
+jaeger_agent_omni/
+  nodes/               neural capabilities and their manifests/weights
+  tools/               symbolic actions registered for cognition
+  skills/              reusable procedures coordinating tools and nodes
+  memory/              persistent agent state
+  core/                implementation plumbing
+    agentic/              copied Jaeger agent loop + native-session adapter
+    neural/               modality projectors and learned heads
+    runtime/              streaming, duplex, AEC, sessions, reporting
+    skill_registry/       skill discovery and tool visibility
+    capture.py            turn log format
+    outputs.py            text / speech / tool-call routing
+  live.py              native microphone entry point
+  demo.py              spoken benchmark entry point
+  omni.py              canonical model runner and self-check
+  module.yaml          Omni slot contract
 research/            experiment harness — stubs, wiring, GGUF inspection
 training/            corpus policy, losses, run config, the training loop
 dev/                 the plan, the long-term architecture, measured findings
 ```
 
-**Where things live:** `jaeger_agent_omni/` is what runs — contracts and neural
-modules. `research/` is the harness that proves them (stubs, end-to-end wiring,
-inspection tools) and is not shipped. `training/` is everything that only
-matters while learning weights.
+**Where things live:** add a learned capability to `nodes/`, a symbolic action
+to `tools/`, an orchestration recipe to `skills/`, and durable state behavior
+to `memory/`. Runtime plumbing belongs in `core/`. `research/` proves the
+implementation and `training/` contains learning-only code.
 
 ## Neural modules
 
@@ -97,7 +108,7 @@ vision   → SigLIP          → JaegerVisionProjector ─┼→ shared cognitio
 memory   → retrieval net   → JaegerMemoryProjector ─┘
 ```
 
-`neural/base.py` owns the arithmetic every modality needs — trim the encoder's
+`core/neural/base.py` owns the arithmetic every modality needs — trim the encoder's
 padding, compress time, project into cognition's width — so adding a modality
 is a known job rather than a research question. **A neural tool is just another
 projector.**
@@ -142,6 +153,9 @@ python -m jaeger_agent_omni --audio clip.wav --backbone <hf-id> \
 # no transcript anywhere; nonsense until the projector is trained
 python -m jaeger_agent_omni --audio clip.wav --backbone <hf-id> --path omni \
     --projector training/runs/run_stage3_warmup.pt
+
+# native audio cognition plus the copied tools/skills/memory loop
+python -m jaeger_agent_omni.live --agentic --front-end jaegeromni-41m-medium
 ```
 
 Verified end to end on real models (whisper-tiny + SmolLM2-135M, CPU, 1.3 s of
@@ -193,8 +207,8 @@ artifacts/<name>/
 ```
 
 ```sh
-python -m jaeger_agent_omni.artifacts list
-python -m jaeger_agent_omni.artifacts export training/runs/<ckpt>.pt artifacts/<name>
+python -m jaeger_agent_omni.core.artifacts list
+python -m jaeger_agent_omni.core.artifacts export training/runs/<ckpt>.pt artifacts/<name>
 python demo.py --backbone <id> --path omni --projector artifacts/<name>
 ```
 
@@ -211,7 +225,7 @@ python -m venv .venv
 .venv/bin/python research/check_all.py
 ```
 
-Eighteen modules, ~15 seconds, fully offline, no model weights required. That
+Thirty-one checks run fully offline with no model weights required. That
 includes a real 120-step training run against stub models — a broken loop fails
 here in seconds rather than an hour into a rented GPU:
 

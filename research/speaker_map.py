@@ -22,7 +22,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from jaeger_agent_omni.runtime.speaker import (  # noqa: E402
+from jaeger_agent_omni.core.runtime.speaker import (  # noqa: E402
     CAMPPLUS,
     SAMPLE_RATE as SR,
     WINDOW_S as WIN_S,

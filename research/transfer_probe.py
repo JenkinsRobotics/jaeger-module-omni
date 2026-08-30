@@ -30,11 +30,11 @@ if str(REPO) not in sys.path:
     sys.path.insert(0, str(REPO))
 
 from jaeger_agent_omni.app import read_wav  # noqa: E402
-from jaeger_agent_omni.model_nodes import (  # noqa: E402
+from jaeger_agent_omni.core.model_nodes import (  # noqa: E402
     resolve_audio_node,
     validate_node_checkpoint,
 )
-from jaeger_agent_omni.runtime.stock_whisper import (  # noqa: E402
+from jaeger_agent_omni.core.runtime.stock_whisper import (  # noqa: E402
     DEFAULT_GEMMA,
     StockWhisperGemmaSession,
     validate_checkpoint,

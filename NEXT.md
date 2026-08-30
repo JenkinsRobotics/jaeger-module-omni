@@ -1,5 +1,18 @@
 # Next steps — current plan
 
+The copied Jaeger Agent control plane is integrated CPU-side and the package
+layout is now `nodes/`, `tools/`, `skills/`, `memory/`, plus internal `core/`.
+Do not add a transcript bridge: `live --agentic` must continue from the native
+audio-prefilled Gemma cache, and the copied `listen`/`text_to_speech` tools
+remain denied. Before making agentic mode a default, run a physical five-minute
+gate covering ordinary conversation, at least three tool calls, skill loading,
+memory persistence across turns, deliberate barge-in during both plain and
+tool-using answers, forbidden-tool rejection, and context roll. Report
+END-to-first-audio separately because safe tool-markup buffering currently
+removes sentence streaming. The next output-side architecture experiment is a
+gated hidden-state talker; do not describe decoded-text Kokoro as tensor-native
+in the meantime.
+
 The richer neural observation node is now packaged as
 `jaegeromni-41m-audio-perception`. Its four-way scene head passes a
 source-file-disjoint gate at 0.952 macro-F1 and its frozen ear retains 12/12;

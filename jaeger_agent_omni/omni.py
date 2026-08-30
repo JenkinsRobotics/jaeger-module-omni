@@ -61,12 +61,12 @@ def build(model_path: str = MODEL, front_end: str | None = None,
           adapter_path=None,
           system: str | None = SYSTEM):
     """Load the one graph. Returns (session, meta)."""
-    from jaeger_agent_omni.model_catalog import DEFAULT_FRONT_END, resolve_front_end
+    from jaeger_agent_omni.core.model_catalog import DEFAULT_FRONT_END, resolve_front_end
 
     front_end = front_end or DEFAULT_FRONT_END
     selection = resolve_front_end(front_end, adapter_path)
     if selection.engine == "stock":
-        from jaeger_agent_omni.runtime.stock_whisper import (
+        from jaeger_agent_omni.core.runtime.stock_whisper import (
             DEFAULT_GEMMA, StockWhisperGemmaSession)
         selected_adapter = selection.node
         assert selected_adapter is not None
@@ -76,7 +76,7 @@ def build(model_path: str = MODEL, front_end: str | None = None,
                 f"{selected_adapter}")
         stock_model = DEFAULT_GEMMA if model_path == MODEL else model_path
         if selected_adapter.is_dir():
-            from jaeger_agent_omni.model_nodes import (
+            from jaeger_agent_omni.core.model_nodes import (
                 load_audio_node,
                 load_node_factory,
             )
@@ -104,7 +104,7 @@ def build(model_path: str = MODEL, front_end: str | None = None,
     from mlx_vlm.models.cache import KVCache
     from mlx_vlm.utils import load
 
-    from jaeger_agent_omni.runtime import GemmaAudioPrefiller, StreamingSession
+    from jaeger_agent_omni.core.runtime import GemmaAudioPrefiller, StreamingSession
 
     m, proc = load(model_path)
     cfg = json.load(open(Path(model_path) / "config.json"))
@@ -244,7 +244,7 @@ def speak(session, out_path: str, ref_audio=None,
             f"  Until it is, speech out produces babble, not these words.\n"
             f"  Component-only Talker proof: research/verify_talker_port.py")
 
-    from jaeger_agent_omni.neural.speech import GemmaTalkerConditioner
+    from jaeger_agent_omni.core.neural.speech import GemmaTalkerConditioner
 
     ck = torch.load(conditioner_path, map_location="cpu", weights_only=False)
     conditioner = GemmaTalkerConditioner.from_checkpoint(ck)
@@ -349,14 +349,15 @@ def _audit_live_input_path() -> list:
     import ast
 
     root = Path(__file__).resolve().parent
-    files = ("live.py", "runtime/session.py", "runtime/stock_whisper.py",
-             "runtime/duplex.py", "runtime/tuned_whisper.py",
-             "runtime/gemma_audio.py")
+    files = ("live.py", "core/runtime/session.py",
+             "core/runtime/stock_whisper.py", "core/runtime/duplex.py",
+             "core/runtime/tuned_whisper.py",
+             "core/runtime/gemma_audio.py")
     allowed_feed_text = {
         ("live.py", "tag_speaker"),        # inline [speaker X] metadata
         ("live.py", "prepare_turn"),       # companion state, never words heard
         ("live.py", "soak_watch"),         # roll reseeds Jaeger's OWN replies
-        ("runtime/duplex.py", "demo"),     # offline self-check test double
+        ("core/runtime/duplex.py", "demo"),  # offline self-check test double
     }
     banned_calls = {"transcribe", "batch_decode"}
     banned_names = {"WhisperForConditionalGeneration"}
@@ -424,14 +425,14 @@ def selfcheck() -> int:
 
 
 def main() -> int:
-    from jaeger_agent_omni.model_catalog import front_end_choices
+    from jaeger_agent_omni.core.model_catalog import front_end_choices
 
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--wav")
     ap.add_argument("--bench")
     ap.add_argument("--duplex", action="store_true")
     ap.add_argument("--seconds", type=float, default=20.0)
-    from jaeger_agent_omni.model_catalog import DEFAULT_FRONT_END
+    from jaeger_agent_omni.core.model_catalog import DEFAULT_FRONT_END
     ap.add_argument("--front-end", default=DEFAULT_FRONT_END,
                     choices=front_end_choices())
     ap.add_argument("--adapter", default=None,
