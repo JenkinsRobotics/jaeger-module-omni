@@ -1,0 +1,86 @@
+{
+  "front_end": "stock_whisper_qwen_free",
+  "encoder": "openai/whisper-medium",
+  "adapter": "jaeger_agent_omni/nodes/jaegeromni-41m-medium/weights/adapter.npz",
+  "evaluation_mode": "free_running_generation",
+  "teacher_forced": false,
+  "input_handoff": "audio_embeddings_no_transcript",
+  "adapter_sha256": "a7f96bfb889866f75df7b838f84aae368a56ab10f6469e766511d700e32fe13a",
+  "correct": 12,
+  "n": 12,
+  "median_ms": 505.320958502125,
+  "rows": [
+    {
+      "case": "q00",
+      "ok": true,
+      "ms": 1640.3023329912685,
+      "reply": "Two plus two equals four."
+    },
+    {
+      "case": "q01",
+      "ok": true,
+      "ms": 463.7672080134507,
+      "reply": "The sky is blue."
+    },
+    {
+      "case": "q02",
+      "ok": true,
+      "ms": 520.2388330071699,
+      "reply": "There are seven days in a week."
+    },
+    {
+      "case": "q03",
+      "ok": true,
+      "ms": 506.8382500030566,
+      "reply": "The capital of France is Paris."
+    },
+    {
+      "case": "q04",
+      "ok": true,
+      "ms": 402.96566698816605,
+      "reply": "Seven."
+    },
+    {
+      "case": "q05",
+      "ok": true,
+      "ms": 488.26254199957475,
+      "reply": "A spider has eight legs."
+    },
+    {
+      "case": "q06",
+      "ok": true,
+      "ms": 484.2877920018509,
+      "reply": "The largest planet is Jupiter."
+    },
+    {
+      "case": "q07",
+      "ok": true,
+      "ms": 513.2802500156686,
+      "reply": "Five times five is twenty-five."
+    },
+    {
+      "case": "q08",
+      "ok": true,
+      "ms": 394.2421249812469,
+      "reply": "Fall"
+    },
+    {
+      "case": "q09",
+      "ok": true,
+      "ms": 548.1324169959407,
+      "reply": "There are 24 hours in a day."
+    },
+    {
+      "case": "q10",
+      "ok": true,
+      "ms": 574.9407919938676,
+      "reply": "The freezing point of water is 0 degrees Celsius."
+    },
+    {
+      "case": "q11",
+      "ok": true,
+      "ms": 503.8036670011934,
+      "reply": "William Shakespeare wrote Romeo and Juliet."
+    }
+  ]
+}

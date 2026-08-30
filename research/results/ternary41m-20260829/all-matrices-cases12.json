@@ -1,0 +1,86 @@
+{
+  "front_end": "stock_whisper_qwen_free",
+  "encoder": "openai/whisper-medium",
+  "adapter": "/tmp/jaeger41m-ternary-ls-all.npz",
+  "evaluation_mode": "free_running_generation",
+  "teacher_forced": false,
+  "input_handoff": "audio_embeddings_no_transcript",
+  "adapter_sha256": "306ff794b7e8c1b23228e6d7399e6ea7bfc294db8acb2508127567bd1d1cc0a3",
+  "correct": 8,
+  "n": 12,
+  "median_ms": 539.747813003487,
+  "rows": [
+    {
+      "case": "q00",
+      "ok": false,
+      "ms": 1601.901625021128,
+      "reply": "The answer is three."
+    },
+    {
+      "case": "q01",
+      "ok": true,
+      "ms": 485.9732089971658,
+      "reply": "The sky is blue."
+    },
+    {
+      "case": "q02",
+      "ok": true,
+      "ms": 520.0360839953646,
+      "reply": "There are seven days in a week."
+    },
+    {
+      "case": "q03",
+      "ok": false,
+      "ms": 730.8908750128467,
+      "reply": "I'm sorry, I didn't catch that. Could you please repeat your question?"
+    },
+    {
+      "case": "q04",
+      "ok": false,
+      "ms": 504.59899997804314,
+      "reply": "The answer is 13."
+    },
+    {
+      "case": "q05",
+      "ok": true,
+      "ms": 493.4476249909494,
+      "reply": "A spider has eight legs."
+    },
+    {
+      "case": "q06",
+      "ok": true,
+      "ms": 560.3517909767106,
+      "reply": "Jupiter is the largest planet in our solar system."
+    },
+    {
+      "case": "q07",
+      "ok": true,
+      "ms": 515.0191659922712,
+      "reply": "Five times five is twenty-five."
+    },
+    {
+      "case": "q08",
+      "ok": true,
+      "ms": 471.9747499912046,
+      "reply": "Autumn comes after summer."
+    },
+    {
+      "case": "q09",
+      "ok": true,
+      "ms": 559.4595420116093,
+      "reply": "There are 24 hours in a day."
+    },
+    {
+      "case": "q10",
+      "ok": true,
+      "ms": 603.0564999964554,
+      "reply": "The freezing point of water is 32 degrees Fahrenheit."
+    },
+    {
+      "case": "q11",
+      "ok": false,
+      "ms": 726.1673339817207,
+      "reply": "I'm sorry, I didn't catch that. Could you please repeat your question?"
+    }
+  ]
+}

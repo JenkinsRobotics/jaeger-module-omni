@@ -1,0 +1,86 @@
+{
+  "front_end": "stock_whisper_qwen_free",
+  "encoder": "openai/whisper-medium",
+  "adapter": "/tmp/jaeger41m-ternary-ls-upout.npz",
+  "evaluation_mode": "free_running_generation",
+  "teacher_forced": false,
+  "input_handoff": "audio_embeddings_no_transcript",
+  "adapter_sha256": "d15213e258fd90c309143b0b596575d475fc73f81eed93b5a41ac660d2790b4a",
+  "correct": 9,
+  "n": 12,
+  "median_ms": 519.2123539891327,
+  "rows": [
+    {
+      "case": "q00",
+      "ok": false,
+      "ms": 1453.7068330100738,
+      "reply": "Five."
+    },
+    {
+      "case": "q01",
+      "ok": true,
+      "ms": 517.6730829989538,
+      "reply": "The sky is blue."
+    },
+    {
+      "case": "q02",
+      "ok": true,
+      "ms": 520.7516249793116,
+      "reply": "There are seven days in a week."
+    },
+    {
+      "case": "q03",
+      "ok": false,
+      "ms": 726.5787920041475,
+      "reply": "I'm sorry, I didn't catch that. Could you please repeat your question?"
+    },
+    {
+      "case": "q04",
+      "ok": true,
+      "ms": 409.554667014163,
+      "reply": "Seven."
+    },
+    {
+      "case": "q05",
+      "ok": true,
+      "ms": 490.96937497961335,
+      "reply": "A spider has eight legs."
+    },
+    {
+      "case": "q06",
+      "ok": true,
+      "ms": 483.69129200000316,
+      "reply": "The largest planet is Jupiter."
+    },
+    {
+      "case": "q07",
+      "ok": true,
+      "ms": 513.6044160171878,
+      "reply": "Five times five is twenty-five."
+    },
+    {
+      "case": "q08",
+      "ok": true,
+      "ms": 397.660167014692,
+      "reply": "Fall"
+    },
+    {
+      "case": "q09",
+      "ok": true,
+      "ms": 553.1202919955831,
+      "reply": "There are 24 hours in a day."
+    },
+    {
+      "case": "q10",
+      "ok": true,
+      "ms": 576.7659170087427,
+      "reply": "The freezing point of water is 0 degrees Celsius."
+    },
+    {
+      "case": "q11",
+      "ok": false,
+      "ms": 730.2102090034168,
+      "reply": "I'm sorry, I didn't catch that. Could you please repeat your question?"
+    }
+  ]
+}

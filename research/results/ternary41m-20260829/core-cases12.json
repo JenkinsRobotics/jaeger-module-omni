@@ -1,0 +1,86 @@
+{
+  "front_end": "stock_whisper_qwen_free",
+  "encoder": "openai/whisper-medium",
+  "adapter": "/tmp/jaeger41m-ternary-ls-core.npz",
+  "evaluation_mode": "free_running_generation",
+  "teacher_forced": false,
+  "input_handoff": "audio_embeddings_no_transcript",
+  "adapter_sha256": "c772ea8223f5fe8baa4d7d1538f12d54a4395044eb7d94b4d68d7d1a20fad12b",
+  "correct": 11,
+  "n": 12,
+  "median_ms": 512.3858959996141,
+  "rows": [
+    {
+      "case": "q00",
+      "ok": true,
+      "ms": 1579.2482499964535,
+      "reply": "Two plus two equals four."
+    },
+    {
+      "case": "q01",
+      "ok": true,
+      "ms": 477.9443330189679,
+      "reply": "The sky is blue."
+    },
+    {
+      "case": "q02",
+      "ok": true,
+      "ms": 518.9728749974165,
+      "reply": "There are seven days in a week."
+    },
+    {
+      "case": "q03",
+      "ok": true,
+      "ms": 507.82916697789915,
+      "reply": "The capital of France is Paris."
+    },
+    {
+      "case": "q04",
+      "ok": true,
+      "ms": 406.2272919982206,
+      "reply": "Seven."
+    },
+    {
+      "case": "q05",
+      "ok": true,
+      "ms": 491.8632910121232,
+      "reply": "A spider has eight legs."
+    },
+    {
+      "case": "q06",
+      "ok": true,
+      "ms": 489.72991600749083,
+      "reply": "The largest planet is Jupiter."
+    },
+    {
+      "case": "q07",
+      "ok": true,
+      "ms": 516.9426250213291,
+      "reply": "Five times five is twenty-five."
+    },
+    {
+      "case": "q08",
+      "ok": true,
+      "ms": 398.3532499987632,
+      "reply": "Fall"
+    },
+    {
+      "case": "q09",
+      "ok": true,
+      "ms": 552.803957980359,
+      "reply": "There are 24 hours in a day."
+    },
+    {
+      "case": "q10",
+      "ok": true,
+      "ms": 585.0202080036979,
+      "reply": "The freezing point of water is 0 degrees Celsius."
+    },
+    {
+      "case": "q11",
+      "ok": false,
+      "ms": 525.3663749899715,
+      "reply": "The poem was written by Emily Dickinson."
+    }
+  ]
+}

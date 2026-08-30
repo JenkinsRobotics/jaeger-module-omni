@@ -1,0 +1,58 @@
+{
+  "kind": "jaegeromni_41m_post_training_ternary_ab",
+  "date": "2026-08-29",
+  "evaluation_mode": "free_running_generation",
+  "teacher_forced": false,
+  "source": {
+    "node": "jaegeromni-41m-medium",
+    "adapter_sha256": "a7f96bfb889866f75df7b838f84aae368a56ab10f6469e766511d700e32fe13a",
+    "matrix_parameters": 40894464
+  },
+  "method": {
+    "kind": "post_training_fake_quantization",
+    "scheme": "per-output-row least-squares ternary {-1,0,+1}",
+    "preserved": ["layer norms", "biases", "checkpoint metadata"],
+    "warning": "The test checkpoint reconstructs ternary weights as float32 for the existing runtime. Quality is real; packed runtime memory and latency are not measured."
+  },
+  "cases12_sensitivity": {
+    "baseline": {"quantized_parameters": 0, "correct": 12, "total": 12, "median_ms": 505.320958502125},
+    "all_matrices": {"quantized_parameters": 40894464, "correct": 8, "total": 12, "median_ms": 539.747813003487},
+    "attention_plus_feedforward": {"quantized_parameters": 33554432, "correct": 11, "total": 12, "median_ms": 512.3858959996141},
+    "attention_only": {"quantized_parameters": 16777216, "correct": 10, "total": 12, "median_ms": 516.2598959868774},
+    "feedforward_only": {"quantized_parameters": 16777216, "correct": 12, "total": 12, "median_ms": 506.2324170139618},
+    "input_output_only": {"quantized_parameters": 7340032, "correct": 9, "total": 12, "median_ms": 519.2123539891327}
+  },
+  "feedforward_only_locked_quality": {
+    "candidate_sha256": "3c1c3345617b37e743c00522b29ed0eae3e187bafab36c3135a39c66b5cbcda5",
+    "conversation69": {
+      "baseline": {"normalized_edits": 22, "normalized_words": 667, "normalized_wer": 0.03298350824587706},
+      "candidate": {"normalized_edits": 19, "normalized_words": 667, "normalized_wer": 0.02848575712143928}
+    },
+    "devclean64": {
+      "baseline": {"normalized_edits": 46, "normalized_words": 969, "normalized_wer": 0.047471620227038186},
+      "candidate": {"normalized_edits": 47, "normalized_words": 969, "normalized_wer": 0.048503611971104234}
+    },
+    "clean360val128": {
+      "baseline": {"normalized_edits": 142, "normalized_words": 2846, "normalized_wer": 0.049894588896697116},
+      "candidate": {"normalized_edits": 138, "normalized_words": 2846, "normalized_wer": 0.04848910751932537}
+    },
+    "pooled": {
+      "baseline": {"normalized_edits": 210, "normalized_words": 4482, "normalized_wer": 0.04685408299866131},
+      "candidate": {"normalized_edits": 204, "normalized_words": 4482, "normalized_wer": 0.04551539491298527},
+      "interpretation": "six edits favor the candidate, but this screen supports quality retention rather than a quality-improvement claim"
+    }
+  },
+  "storage_if_implemented": {
+    "all_fp16_matrix_mib": 78.0,
+    "mixed_fp16_ternary_matrix_mib": 50.01171875,
+    "whole_matrix_reduction_vs_fp16": 0.3588241185897436,
+    "saving_mib": 27.98828125,
+    "scope": "adapter matrices only, not Whisper, Gemma, activations, KV cache, or total process memory"
+  },
+  "decision": {
+    "full_adapter_post_training_ternary": "rejected",
+    "feedforward_only_mixed_precision": "quality_feasible_research_candidate",
+    "production_node": false,
+    "reason": "A packed 41M runtime and its total-process memory/latency are still unimplemented; the 28 MiB advantage over an FP16 adapter is immaterial on the current 32 GB host."
+  }
+}

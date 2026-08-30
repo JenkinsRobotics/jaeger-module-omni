@@ -50,6 +50,27 @@ claim, and can be rerun if the topology or MLX kernels materially change:
 The saved measurements are in
 `research/results/ternary-controller-m1max-20260829.json`.
 
+That tiny-controller latency result must not be generalized into "ternary is
+useless." A second test converted the real JaegerOmni 41M adapter with
+per-output-row least-squares post-training ternarization. Converting all eight
+matrices damaged the free-running answer gate from 12/12 to 8/12. Sensitivity
+was highly structured: ternarizing only the two 16.78M-parameter feed-forward
+matrices retained 12/12 at 506 ms versus the unchanged checkpoint's 12/12 at
+505 ms. Across three locked corpora it changed normalized pooled WER from
+210/4,482 (**4.69%**) to 204/4,482 (**4.55%**): one corpus lost one edit and
+two gained seven combined. Treat that as quality retention, not a claimed
+quality improvement.
+
+A real mixed FP16/ternary implementation would reduce the adapter's matrix
+weights from about 78 MiB to 50 MiB, a **36% whole-adapter-matrix reduction**.
+The evaluation checkpoint reconstructs ternary weights as FP32 so it validates
+quality only; it does not validate packed 41M latency or process memory. The
+candidate is therefore research evidence, not a selectable node. Its roughly
+28 MiB advantage over simply storing this adapter in FP16 is immaterial beside
+Whisper, Gemma, activations, and KV cache on the current 32 GB host, but it is a
+credible future embedded-device path. Full reports:
+`research/results/ternary41m-20260829/summary.json`.
+
 This is deliberately one neural node because all outputs consume the same
 causal adapter states. It does not contain an STT decoder and never hands text
 from Whisper to Gemma.

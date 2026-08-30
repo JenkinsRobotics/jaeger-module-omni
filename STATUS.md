@@ -33,6 +33,16 @@ Measured ledger. Every claim here has a command that reproduces it.
 > an acoustic-quality result; the separate pre-Whisper controller should be
 > developed and gated in FP16 first.
 >
+> A separate real-model counter-test prevents overgeneralizing that decision.
+> Post-training ternarization of every JaegerOmni 41M matrix regressed cases12
+> from 12/12 to 8/12, but ternarizing only its two feed-forward matrices
+> (16.78M/40.89M matrix parameters) retained **12/12, 506 ms** versus **12/12,
+> 505 ms** unchanged. Three locked corpora pooled at **4.55% normalized WER
+> (204/4,482)** versus **4.69% (210/4,482)** unchanged; this establishes quality
+> retention, not improvement. A packed mixed runtime would reduce adapter
+> matrix storage about **36% versus FP16 (78 to 50 MiB)**, but is not built, so
+> actual packed latency/RAM remain unclaimed and no production node was added.
+>
 > Runtime identity correction: CLI, live, spoken demo, desktop GUI, and the
 > node profile now default to `jaegeromni-41m-medium`; `gemma-native` is the
 > explicit rollback. The post-Whisper perception node remains opt-in. When it

@@ -21,6 +21,14 @@ shape despite 87% smaller weights. Keep Silero and Speex as authoritative
 fallbacks until the new node independently passes waveform AEC, near-end
 survival, false-opens/minute, endpoint-delay, and 10 ms compute gates.
 
+Keep the separate JaegerOmni 41M feed-forward-only ternary result as an
+embedded-deployment lead, not a production option. One-shot full-adapter
+ternarization fails (8/12), while selective FF ternarization retains 12/12 and
+4.55% pooled normalized WER versus 4.69% unchanged across 4,482 words. Do not
+package it until a truly packed mixed FP16/W2 runtime demonstrates total-process
+memory and end-to-end latency; the theoretical saving is only about 28 MiB
+beyond an FP16 adapter on the current 32 GB host.
+
 The always-on companion control path is now implemented behind
 `--interaction-mode companion`: Gemma emits a fail-closed RESPOND/LISTEN
 decision from native audio, follow-up state is judged at speech start, and

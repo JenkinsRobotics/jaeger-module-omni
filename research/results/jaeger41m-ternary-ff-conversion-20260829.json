@@ -1,0 +1,50 @@
+{
+  "kind": "jaegeromni_41m_post_training_ternary_conversion",
+  "quality_claim": false,
+  "source": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/jaeger_agent_omni/nodes/jaegeromni-41m-medium/weights/adapter.npz",
+  "source_sha256": "a7f96bfb889866f75df7b838f84aae368a56ab10f6469e766511d700e32fe13a",
+  "output": "/private/tmp/jaeger41m-ternary-ls-ff.npz",
+  "output_sha256": "3c1c3345617b37e743c00522b29ed0eae3e187bafab36c3135a39c66b5cbcda5",
+  "scheme": "per_output_row_least-squares_ternary",
+  "include": "^ff",
+  "exclude": "$^",
+  "scope": "rank-2 learned *.weight matrices; norms and biases retained",
+  "runtime_storage_warning": "fake-quant output expands reconstructed weights to float32; packed size is theoretical until a packed runtime exists",
+  "quantized_parameters": 16777216,
+  "total_matrix_parameters": 40894464,
+  "quantized_matrix_fraction": 0.41025641025641024,
+  "source_matrix_bytes_fp32": 67108864,
+  "theoretical_packed_matrix_bytes_w2_scale_fp16": 4206592,
+  "theoretical_reduction_vs_fp32": 0.93731689453125,
+  "theoretical_reduction_vs_fp16": 0.8746337890625,
+  "theoretical_whole_matrix_bytes_mixed_fp16_w2": 52441088,
+  "theoretical_whole_matrix_reduction_vs_fp16": 0.3588241185897436,
+  "tensors": [
+    {
+      "tensor": "ff1.weight",
+      "shape": [
+        4096,
+        2048
+      ],
+      "parameters": 8388608,
+      "zero_fraction": 0.4502371549606323,
+      "cosine": 0.9013416422629504,
+      "relative_l2": 0.43313123403079157,
+      "scale_min": 0.020323692517726998,
+      "scale_max": 0.047408769576154856
+    },
+    {
+      "tensor": "ff2.weight",
+      "shape": [
+        2048,
+        4096
+      ],
+      "parameters": 8388608,
+      "zero_fraction": 0.47502708435058594,
+      "cosine": 0.8877406351195805,
+      "relative_l2": 0.4603698394539923,
+      "scale_min": 0.02238554681633799,
+      "scale_max": 0.05359501412244347
+    }
+  ]
+}
