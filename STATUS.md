@@ -23,6 +23,16 @@ Measured ledger. Every claim here has a command that reproduces it.
 > speaker-change/turn-end regressed to 0.040/0.234. Full evidence and limits:
 > [`AUDIO_PERCEPTION.md`](AUDIO_PERCEPTION.md).
 >
+> 2026-08-29 ternary controller gate: a custom packed {-1,0,+1} Metal kernel
+> was benchmarked as four synchronized batch-one causal layers at the live
+> 10 ms-hop invocation pattern. At the representative 256-wide/262K-parameter
+> size, three 2,000-frame trials measured **0.330 ms FP16 vs 0.337 ms ternary**
+> (**0.98x**, not a speedup); width 512/1024 were 0.97x/0.77x. Although packing
+> removes 87% of weight storage, it saves less than 0.5 MiB at the target size.
+> Ternary QAT/kernel work is therefore deferred. This is a compute result, not
+> an acoustic-quality result; the separate pre-Whisper controller should be
+> developed and gated in FP16 first.
+>
 > Runtime identity correction: CLI, live, spoken demo, desktop GUI, and the
 > node profile now default to `jaegeromni-41m-medium`; `gemma-native` is the
 > explicit rollback. The post-Whisper perception node remains opt-in. When it

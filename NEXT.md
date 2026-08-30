@@ -12,6 +12,15 @@ requires event-level false alarms/minute and detection-delay gates, then a
 prefix-consistent streaming encoder; more framewise linear-head epochs are
 closed.
 
+For the separate pre-Whisper neural acoustic controller, start with an FP16
+causal baseline that consumes microphone PCM plus the exact playback reference
+and emits enhanced PCM plus typed speech/self/external/music/noise/overlap/turn
+state. Do not spend the next window on ternary QAT: the packed Metal go/no-go
+benchmark delivered 0.98x FP16 speed at the representative 262K-parameter
+shape despite 87% smaller weights. Keep Silero and Speex as authoritative
+fallbacks until the new node independently passes waveform AEC, near-end
+survival, false-opens/minute, endpoint-delay, and 10 ms compute gates.
+
 The always-on companion control path is now implemented behind
 `--interaction-mode companion`: Gemma emits a fail-closed RESPOND/LISTEN
 decision from native audio, follow-up state is judged at speech start, and

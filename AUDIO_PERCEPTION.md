@@ -24,6 +24,32 @@ survival, false-open rate, endpoint delay, and compute latency. Classification
 heads alone cannot replace AEC because AEC must produce a cleaned waveform, not
 merely label the echo.
 
+## Ternary go/no-go
+
+Ternary weights are deferred for the first controller. A synchronized,
+batch-one Metal benchmark measured the exact dispatch pattern of four causal
+layers invoked once per 10 ms audio hop. Across three 2,000-frame trials on the
+M1 Max, the representative 256-wide/262K-parameter controller took **0.330 ms**
+in FP16 and **0.337 ms** with a custom packed {-1,0,+1} W2A16 kernel: **0.98x**
+the FP16 speed, below the predeclared 1.5x development gate. At width 512 it
+was 0.97x and at 1024 it fell to 0.77x. Merely storing ternary values and using
+FP16 matmul also provides no ternary compute benefit.
+
+Packing does reduce these dense weights by 87%, but the representative model
+shrinks only from 512 KiB to about 66 KiB. That is not worth a custom QAT and
+kernel path while endpoint and echo quality remain open. Build and validate the
+controller in FP16 first; use supported quantization only after profiling the
+trained topology. This benchmark is a kernel result, not an acoustic-quality
+claim, and can be rerun if the topology or MLX kernels materially change:
+
+```bash
+./.venv/bin/python research/ternary_controller_bench.py \
+  --widths 128 256 512 1024 --layers 4 --iterations 2000 --repeats 3
+```
+
+The saved measurements are in
+`research/results/ternary-controller-m1max-20260829.json`.
+
 This is deliberately one neural node because all outputs consume the same
 causal adapter states. It does not contain an STT decoder and never hands text
 from Whisper to Gemma.

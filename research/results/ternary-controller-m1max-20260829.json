@@ -1,0 +1,212 @@
+{
+  "kind": "jaeger_ternary_controller_kernel_benchmark",
+  "quality_claim": false,
+  "workload": "batch-one causal frame; one invocation per 10 ms hop",
+  "machine": "macOS-26.6.2-arm64-arm-64bit",
+  "chip": "Apple M1 Max",
+  "mlx_version": "0.32.1",
+  "iterations": 2000,
+  "warmup": 200,
+  "repeats": 3,
+  "decision": {
+    "representative_width": 256,
+    "minimum_speedup": 1.5,
+    "observed_speedup": 0.9775676677790136,
+    "outcome": "defer_ternary_use_fp16_or_supported_quantization",
+    "scope": "kernel viability only; no acoustic-quality claim"
+  },
+  "results": [
+    {
+      "width": 128,
+      "layers": 4,
+      "parameters": 65536,
+      "fp16_weight_bytes": 131072,
+      "packed_ternary_weight_bytes": 17408,
+      "packed_weight_reduction": 0.8671875,
+      "packed_max_abs_error_vs_fp16_ternary": 0.0,
+      "fp16": {
+        "median_ms_across_trials": 0.32054150000000003,
+        "p95_ms_across_trials": 0.430542,
+        "trial_medians_ms": [
+          0.326375,
+          0.32054150000000003,
+          0.32012549999999995
+        ]
+      },
+      "ternary_emulated_fp16_matmul": {
+        "median_ms_across_trials": 0.324542,
+        "p95_ms_across_trials": 0.466375,
+        "trial_medians_ms": [
+          0.3389165,
+          0.324542,
+          0.3213125
+        ],
+        "speedup_vs_fp16_median": 0.9876733982042387
+      },
+      "mlx_affine_w2a16": {
+        "median_ms_across_trials": 0.36006249999999995,
+        "p95_ms_across_trials": 0.489292,
+        "trial_medians_ms": [
+          0.374916,
+          0.358146,
+          0.36006249999999995
+        ],
+        "speedup_vs_fp16_median": 0.8902385002603717
+      },
+      "packed_ternary_w2a16_custom_metal": {
+        "median_ms_across_trials": 0.32566649999999997,
+        "p95_ms_across_trials": 0.454708,
+        "trial_medians_ms": [
+          0.32566649999999997,
+          0.3161665,
+          0.32995850000000004
+        ],
+        "speedup_vs_fp16_median": 0.9842630420998171
+      }
+    },
+    {
+      "width": 256,
+      "layers": 4,
+      "parameters": 262144,
+      "fp16_weight_bytes": 524288,
+      "packed_ternary_weight_bytes": 67584,
+      "packed_weight_reduction": 0.87109375,
+      "packed_max_abs_error_vs_fp16_ternary": 0.0,
+      "fp16": {
+        "median_ms_across_trials": 0.3295625,
+        "p95_ms_across_trials": 0.464208,
+        "trial_medians_ms": [
+          0.3295625,
+          0.324083,
+          0.333917
+        ]
+      },
+      "ternary_emulated_fp16_matmul": {
+        "median_ms_across_trials": 0.33277049999999997,
+        "p95_ms_across_trials": 0.470833,
+        "trial_medians_ms": [
+          0.33277049999999997,
+          0.3228955,
+          0.333875
+        ],
+        "speedup_vs_fp16_median": 0.9903597223912577
+      },
+      "mlx_affine_w2a16": {
+        "median_ms_across_trials": 0.33625,
+        "p95_ms_across_trials": 0.467708,
+        "trial_medians_ms": [
+          0.338125,
+          0.33522949999999996,
+          0.33625
+        ],
+        "speedup_vs_fp16_median": 0.9801115241635687
+      },
+      "packed_ternary_w2a16_custom_metal": {
+        "median_ms_across_trials": 0.337125,
+        "p95_ms_across_trials": 0.461541,
+        "trial_medians_ms": [
+          0.339,
+          0.324854,
+          0.337125
+        ],
+        "speedup_vs_fp16_median": 0.9775676677790136
+      }
+    },
+    {
+      "width": 512,
+      "layers": 4,
+      "parameters": 1048576,
+      "fp16_weight_bytes": 2097152,
+      "packed_ternary_weight_bytes": 266240,
+      "packed_weight_reduction": 0.873046875,
+      "packed_max_abs_error_vs_fp16_ternary": 0.0,
+      "fp16": {
+        "median_ms_across_trials": 0.3229165,
+        "p95_ms_across_trials": 0.43875,
+        "trial_medians_ms": [
+          0.3229165,
+          0.321542,
+          0.3233955
+        ]
+      },
+      "ternary_emulated_fp16_matmul": {
+        "median_ms_across_trials": 0.325646,
+        "p95_ms_across_trials": 0.450208,
+        "trial_medians_ms": [
+          0.33206250000000004,
+          0.3254165,
+          0.325646
+        ],
+        "speedup_vs_fp16_median": 0.9916181989031034
+      },
+      "mlx_affine_w2a16": {
+        "median_ms_across_trials": 0.320875,
+        "p95_ms_across_trials": 0.433458,
+        "trial_medians_ms": [
+          0.332979,
+          0.320875,
+          0.3200625
+        ],
+        "speedup_vs_fp16_median": 1.0063622906116088
+      },
+      "packed_ternary_w2a16_custom_metal": {
+        "median_ms_across_trials": 0.334521,
+        "p95_ms_across_trials": 0.463958,
+        "trial_medians_ms": [
+          0.339292,
+          0.334521,
+          0.331354
+        ],
+        "speedup_vs_fp16_median": 0.9653101001132963
+      }
+    },
+    {
+      "width": 1024,
+      "layers": 4,
+      "parameters": 4194304,
+      "fp16_weight_bytes": 8388608,
+      "packed_ternary_weight_bytes": 1056768,
+      "packed_weight_reduction": 0.8740234375,
+      "packed_max_abs_error_vs_fp16_ternary": 0.0001220703125,
+      "fp16": {
+        "median_ms_across_trials": 0.34552099999999997,
+        "p95_ms_across_trials": 0.468958,
+        "trial_medians_ms": [
+          0.34552099999999997,
+          0.339375,
+          0.35602049999999996
+        ]
+      },
+      "ternary_emulated_fp16_matmul": {
+        "median_ms_across_trials": 0.33864550000000004,
+        "p95_ms_across_trials": 0.464042,
+        "trial_medians_ms": [
+          0.338333,
+          0.33864550000000004,
+          0.3525625
+        ],
+        "speedup_vs_fp16_median": 1.0203029421622314
+      },
+      "mlx_affine_w2a16": {
+        "median_ms_across_trials": 0.33825,
+        "p95_ms_across_trials": 0.460125,
+        "trial_medians_ms": [
+          0.33825,
+          0.32960449999999997,
+          0.3653335
+        ],
+        "speedup_vs_fp16_median": 1.0214959349593495
+      },
+      "packed_ternary_w2a16_custom_metal": {
+        "median_ms_across_trials": 0.4504585,
+        "p95_ms_across_trials": 0.658,
+        "trial_medians_ms": [
+          0.467771,
+          0.44566649999999997,
+          0.4504585
+        ],
+        "speedup_vs_fp16_median": 0.7670429129431456
+      }
+    }
+  ]
+}
