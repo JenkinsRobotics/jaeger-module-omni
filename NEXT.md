@@ -67,19 +67,30 @@ the same recipe, not about the perception split).
    converse with zero perception cost. If the 93h ear wins any gate, keep
    the loser packaged, dead, per registry policy.
 
-### Lane 2 — one duplex policy, one conversational front
+### Lane 2 — the conversational front (duplex tiers stay selectable)
 
-After the in-flight duplex-selector/observer GUI work lands: converge the
-three duplex-mode implementations (live.py inline strings, the GUI's
-DuplexModePolicy, the converse ladder) into one policy object and add the
-quasi tier to the GUI surface. Then decide the final conversational spine —
-current recommendation: the converse ladder becomes the conversation
-engine, the agentic runtime mounts on it through the same session-adapter
-pattern `live --agentic` uses, and the native-tower path remains the
-vision-interleave and AEC bench. Companion admission's red gate (4/12
-recall) gets attacked with the imported addressing stack (additive QbE wake
-+ text-wake + directed head + follow-up window) against the COMPANION.md
-categories — not by weakening the parser.
+Ruling (user, 2026-09-03): the duplex tiers are a FEATURE, not duplication
+to remove. Half, quasi, and full stay user-selectable modes, with barge-in
+enable/disable as an independent choice — like a person choosing how to
+hold a conversation. Do not consolidate the three existing duplex
+implementations (live.py, the GUI's DuplexModePolicy, the converse ladder)
+now; each is verified on its own surface, and a tidiness refactor risks
+measured behavior for zero user-visible gain. Revisit only if the
+duplicated policies ever produce an actual divergence bug. The possible
+future evolution — one always-full-duplex engine where the agent itself
+throttles capture/barge to IMITATE the lower tiers — is noted and
+deliberately deferred.
+
+What this lane still does: expose the quasi tier as a selectable option on
+the GUI surface once the in-flight duplex-selector/observer work lands
+(adding a mode choice, not removing one); decide the final conversational
+spine — current recommendation: the converse ladder becomes the
+conversation engine, the agentic runtime mounts on it through the same
+session-adapter pattern `live --agentic` uses, and the native-tower path
+remains the vision-interleave and AEC bench. Companion admission's red gate
+(4/12 recall) gets attacked with the imported addressing stack (additive
+QbE wake + text-wake + directed head + follow-up window) against the
+COMPANION.md categories — not by weakening the parser.
 
 ### Lane 3 — standing red gates (unchanged, still required for "locked")
 
