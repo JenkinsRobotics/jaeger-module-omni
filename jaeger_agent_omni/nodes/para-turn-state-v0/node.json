@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "kind": "jaeger_audio_node",
+  "runtime": "turn_state_envelope_v0",
+  "id": "para-turn-state-v0",
+  "slot": "turn_state",
+  "enabled_by_default": true,
+  "consumes": [
+    "pcm_f32_16khz_mono_30ms"
+  ],
+  "produces": [
+    "turn_state_stream_33hz"
+  ],
+  "status": "v0_handcoded_baseline",
+  "implementation": "runtime.py:build",
+  "lineage": "voice-family-handcoded-v0",
+  "config": {
+    "gate_rms": 0.02,
+    "hangover_ms": 500,
+    "min_speech_ms": 300
+  },
+  "notes": "energy envelope; eot_pressure ramps 0->1 across the hangover. The trained head predicts end-of-turn from prosody instead of waiting out silence."
+}

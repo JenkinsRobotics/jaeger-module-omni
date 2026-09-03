@@ -14,8 +14,13 @@ class NodeRegistryTests(unittest.TestCase):
     def test_real_registry_is_flat_complete_and_loadable(self):
         root = Path(__file__).resolve().parents[1] / "nodes"
         packages = discover(root)
-        self.assertEqual(len(packages), 14)
+        self.assertEqual(len(packages), 27)
         self.assertIn("gemmaomni-41m-medium-final4000", packages)
+        # Gemma Omni V2 converse graph, imported from VoiceLLM-Playground.
+        self.assertIn("stock-whisper-medium-stream-bargein-93h", packages)
+        self.assertIn("para-speaker-ecapa-v1", packages)
+        self.assertIn("audio-duplex-io-v0", packages)
+        self.assertIn("fusion-context-v0", packages)
         self.assertIn("jaegeromni-41m-causal-balanced", packages)
         self.assertIn("jaegeromni-41m-audio-perception", packages)
         self.assertIn("kokoro-tts", packages)
@@ -32,6 +37,10 @@ class NodeRegistryTests(unittest.TestCase):
         shadow = select_profile(root, "neural-acoustic-controller-shadow")
         self.assertIn("neural-acoustic-controller", shadow)
         self.assertIn("jaegeromni-41m-medium", shadow)
+        graph = select_profile(root, "agent-graph-v0")
+        self.assertIn("stock-whisper-medium-stream-bargein-93h", graph)
+        self.assertIn("tts-kokoro-v0", graph)
+        self.assertNotIn("semantic-whisper-v0", graph)
 
     def test_gates_are_separate_from_neural_nodes(self):
         root = Path(__file__).resolve().parents[2]

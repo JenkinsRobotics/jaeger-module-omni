@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "jaeger_neural_node",
+  "runtime": "para_perception_heads_v1",
+  "id": "para-perception-heads-v1",
+  "slot": "para_perception_nn",
+  "enabled_by_default": true,
+  "consumes": [
+    "utterance_pcm_f32_16khz",
+    "self_speech_flag_25hz"
+  ],
+  "produces": [
+    "directed_p",
+    "turn_end_p",
+    "overlap_p",
+    "speaker_change_frames"
+  ],
+  "status": "trained_mounted_semantics_pending_eval",
+  "implementation": "runtime.py:build",
+  "lineage": "stream-bargein-93h adapter trunk (81% barge F1 lineage)",
+  "notes": "Five trained per-frame heads on the semantic trunk; wraps the already-built transcriber (no second model). `directed` gates unenrolled addressing in converse. Head SEMANTICS inherit the forge's training distribution \u2014 per-head eval vs the cascade yardsticks is the promotion gate for deeper use."
+}

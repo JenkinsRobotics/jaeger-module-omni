@@ -19,3 +19,12 @@ pyyaml>=6
 croniter>=2
 requests>=2.31
 msgspec>=0.18
+
+# Gemma Omni V2 converse graph (imported from VoiceLLM-Playground).
+# ECAPA speaker/wake embeddings, VAD, Speex AEC for the quasi/full duplex
+# tiers, GGUF cascade + vision handler, and the whisper.cpp text fallback.
+speechbrain==1.1.0
+webrtcvad-wheels==2.0.14
+pyaec==1.0.1
+llama_cpp_python==0.3.34
+pywhispercpp==1.5.0

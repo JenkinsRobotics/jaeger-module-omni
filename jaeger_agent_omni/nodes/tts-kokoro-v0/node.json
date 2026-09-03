@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "kind": "jaeger_agent_node",
+  "runtime": "tts_kokoro_v0",
+  "id": "tts-kokoro-v0",
+  "slot": "speech_output",
+  "enabled_by_default": true,
+  "consumes": [
+    "reply_text"
+  ],
+  "produces": [
+    "pcm_f32_24khz_chunks"
+  ],
+  "status": "v0_ported_verified",
+  "implementation": "runtime.py:build",
+  "lineage": "cascade-family-verified",
+  "notes": "the trained end state replaces this with the omni decoder."
+}

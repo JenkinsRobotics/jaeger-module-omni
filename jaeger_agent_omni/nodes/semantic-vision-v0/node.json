@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "kind": "jaeger_agent_node",
+  "runtime": "semantic_vision_v0",
+  "id": "semantic-vision-v0",
+  "slot": "semantic_perception",
+  "enabled_by_default": true,
+  "consumes": [
+    "image_data_uri"
+  ],
+  "produces": [
+    "gemma_chat_content"
+  ],
+  "status": "v0_ported_verified",
+  "implementation": "runtime.py:build",
+  "lineage": "cascade-family-verified",
+  "notes": "series vision channel (mmproj). Probe-verified in the cascade; the trained joint projector replaces it at this seam."
+}

@@ -10,6 +10,38 @@ Measured ledger. Every claim here has a command that reproduces it.
 > It is generated from exact checkpoint SHAs and supersedes stale latency or
 > promotion language in the historical sections below.
 >
+> 2026-09-03 Gemma Omni V2 imported — the full pipeline, verified: the
+> VoiceLLM-Playground converse graph (playground commit `9f1103b`, its 27/27
+> campaign state) now runs from this repository. Thirteen node folders moved
+> byte-identical under the shared manifest contract (ECAPA speaker/wake,
+> perception heads, fusion, duplex device, vision, text input, Kokoro, and
+> the trained `stock-whisper-medium-stream-bargein-93h` semantic channel with
+> its weights), four engine core modules landed flat in `core/`, and
+> `python -m jaeger_agent_omni.converse` carries the half|quasi|full duplex
+> ladder, QbE wake, one-model HEARD/REPLY replies, and commit-and-trim.
+> Verified here, not assumed: `--selftest` **17/17**; the scripted campaign
+> (`tests/converse_sim.py`, real models, fake audio device) **27/27**
+> (half 12/12, quasi 6/6, barge-continue 4/4, full 5/5); the node registry
+> validates 27 nodes across 12 profiles; all 46 package tests pass. See
+> [`CONVERSE.md`](CONVERSE.md).
+>
+> Same date, the "new gemma ear is better than our current ear" recall was
+> put to a matched test and does NOT hold on recognition accuracy: on the
+> locked devclean64 manifest with identical normalize+wer scoring, the
+> current default ear (`jaegeromni-41m-medium`) reproduces its recorded
+> **4.82%** WER exactly, while the imported `stream-bargein-93h` ear measures
+> **5.65%** as converse wires it (uninstructed) and **5.76%** with its
+> keypoint's transcription instruction. The keypoint's 3.136% came from a
+> different 128-clip population and does not transfer to this one. What the
+> imported ear does hold: it is the only channel carrying the trained
+> perception heads (directed gating, overlap/barge), and the converse engine
+> it powers is ahead on behavior and latency (one-model replies at ~0.9 s
+> per turn, TTFT 0.40–0.47 s, raw-audio transcribe median 0.60 s).
+> Evidence: `research/candidate_evals/*-20260903-devclean64.json`, harness
+> `research/converse_ear_wer.py`. The obvious follow-up — cross-mounting the
+> current ear's adapter at the V2 node's one-seam boundary without losing
+> the heads — is training/eval work, deliberately not part of this import.
+>
 > 2026-08-29 release-depth benchmark: the repository now owns one tiered,
 > durable gate (`python -m jaeger_agent_omni.benchmark`) spanning CPU
 > contracts, the transcript ban, the complete package tests, source parity,

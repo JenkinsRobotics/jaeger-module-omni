@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "kind": "jaeger_agent_node",
+  "runtime": "llm_gemma_v0",
+  "id": "llm-gemma-v0",
+  "slot": "language_core",
+  "enabled_by_default": true,
+  "consumes": [
+    "gemma_chat_content",
+    "system_prompt"
+  ],
+  "produces": [
+    "reply_text"
+  ],
+  "status": "v0_ported_verified",
+  "implementation": "runtime.py:build",
+  "lineage": "cascade-family-verified",
+  "notes": "rolling 8-exchange log is the only memory; replaced wholesale when the trained trunk carries conversation natively."
+}

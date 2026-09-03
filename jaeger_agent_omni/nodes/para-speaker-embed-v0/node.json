@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "kind": "jaeger_audio_node",
+  "runtime": "fingerprint_centroid_v0",
+  "id": "para-speaker-embed-v0",
+  "slot": "speaker_embedding",
+  "enabled_by_default": true,
+  "consumes": [
+    "pcm_f32_16khz_mono_30ms"
+  ],
+  "produces": [
+    "speaker_stream_1p6hz"
+  ],
+  "status": "v0_handcoded_baseline",
+  "implementation": "runtime.py:build",
+  "lineage": "voice-family-handcoded-v0",
+  "config": {
+    "window_s": 1.2,
+    "cadence_s": 0.6,
+    "new_speaker_dist": 1.0,
+    "max_speakers": 4
+  },
+  "notes": "v2 pitch-first fingerprint, benchmarked in the drift-anchor work; same-gender voices are its stated ceiling \u2014 the trained contrastive embedding replaces fingerprint() only."
+}

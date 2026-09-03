@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "kind": "jaeger_agent_node",
+  "runtime": "audio_duplex_io_v0",
+  "id": "audio-duplex-io-v0",
+  "slot": "audio_device",
+  "enabled_by_default": true,
+  "consumes": [
+    "pcm_s16le_48khz_mono"
+  ],
+  "produces": [
+    "pcm_f32_16khz_mono_30ms",
+    "barge_events"
+  ],
+  "status": "v0_ported_verified",
+  "implementation": "runtime.py:build",
+  "lineage": "cascade-family-verified",
+  "notes": "48 kHz AEC duplex; verified live + sim campaign 2026-09-01."
+}

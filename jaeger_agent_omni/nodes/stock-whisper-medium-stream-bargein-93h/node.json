@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "kind": "jaeger_audio_node",
+  "runtime": "stock_whisper_gemma_streaming",
+  "id": "stock-whisper-medium-stream-bargein-93h",
+  "slot": "audio_perception",
+  "enabled_by_default": true,
+  "consumes": [
+    "pcm_s16le_16khz_mono",
+    "self_speech_flag_25hz"
+  ],
+  "produces": [
+    "gemma_audio_embeddings_2560",
+    "perception_events_25hz"
+  ],
+  "status": "streaming_bargein_validated_lockbox_pending",
+  "implementation": "runtime.py:build",
+  "encoder": {
+    "id": "openai/whisper-medium",
+    "revision": "abdf7c39ab9d0397620ccaea8974cc764cd0953e",
+    "path": "weights/encoder",
+    "weights_sha256": "62f73550fa6db24b0c6f6c5962bd0dae80fa644e93cde9cd9c3792971b47fd28",
+    "boundary": "stock_whisper_encoder_50hz",
+    "output_dim": 1024,
+    "decoder_runtime": false
+  },
+  "adapter": {
+    "path": "weights/adapter.npz",
+    "sha256": "e749ab4a7a4125619a79127930a5136c5f9191587585831c2e2cdf20498f34bd",
+    "architecture": "streaming_causal_v1",
+    "parameters": 40925699,
+    "pool_step": 2,
+    "attention": "causal",
+    "lineage": "qwen_free",
+    "supersedes": "stock-whisper-medium-cleanroom-ctx93h-step2000"
+  },
+  "backbone": {
+    "family": "gemma-4-e4b",
+    "runtime_variant": "gemma-4-E4B-it-4bit-mlx",
+    "frozen": true
+  },
+  "capabilities": {
+    "streaming": true,
+    "causal_attention": true,
+    "self_voice_aware": true,
+    "perception_heads": [
+      "speaker_change",
+      "overlap",
+      "turn_end"
+    ]
+  },
+  "training": {
+    "trunk_hours": 93,
+    "trunk_clips": 42498,
+    "trunk_speakers": 744,
+    "trunk_checkpoint_selection": "scheduled_step_2000_not_eval_selected",
+    "heads_mixes": 3875,
+    "heads_trainable_params": 10243,
+    "heads_trunk_frozen": true
+  },
+  "evaluation": {
+    "matched_clips": 128,
+    "matched_reference_words": 2041,
+    "instructed_wer": 0.03136,
+    "empty_prompt_wer": 0.04606,
+    "bridge_empty_prompt_wer": 0.07594,
+    "minicpm_native_matched_wer": 0.01903,
+    "bargein_overlap_best_f1": 0.81,
+    "bargein_human_interrupts_agent_recall": 0.847,
+    "bargein_human_human_recall": 0.755,
+    "bargein_false_alarm": 0.0151,
+    "bargein_threshold": 1.0,
+    "speaker_change_f1": 0.374,
+    "turn_end_f1": 0.438,
+    "lockbox_test_other": null,
+    "lockbox_test_clean": null,
+    "room_meeting": null,
+    "five_minute_duplex": null
+  },
+  "latency": {
+    "measured_on": "24 dev-clean clips / 178.1 s audio, MPS",
+    "encode_median_ms": 72.0,
+    "adapt_median_ms": 5.5,
+    "total_median_ms": 77.5,
+    "rtf": 0.0115,
+    "streaming_chunk_ms": 320,
+    "streaming_per_chunk_median_ms": 54.4,
+    "streaming_tail_ms": 79.1
+  },
+  "known_limitations": [
+    "speaker_change and turn_end heads are weak (F1 0.37 / 0.44) - not production ready",
+    "all WER measured on dev-clean; no held-out lockbox number yet",
+    "causal attention recomputes over the full prefix per chunk (O(n^2) in turn length)"
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "kind": "jaeger_agent_node",
+  "runtime": "text_input_v0",
+  "id": "text-input-v0",
+  "slot": "text_input",
+  "enabled_by_default": true,
+  "consumes": [
+    "typed_text"
+  ],
+  "produces": [
+    "user_turns"
+  ],
+  "status": "v0_ported_verified",
+  "implementation": "runtime.py:build",
+  "lineage": "cascade-family-verified",
+  "notes": "typing IS addressing; full duplex covers typed interruptions."
+}

@@ -11,7 +11,8 @@ from pathlib import Path
 from typing import Any
 
 
-SUPPORTED_NODE_KINDS = frozenset({"jaeger_audio_node", "jaeger_neural_node"})
+SUPPORTED_NODE_KINDS = frozenset({"jaeger_audio_node", "jaeger_neural_node",
+                                  "jaeger_agent_node"})
 SUPPORTED_GATE_KINDS = frozenset({"jaeger_neural_gate", "jaeger_signal_gate"})
 
 

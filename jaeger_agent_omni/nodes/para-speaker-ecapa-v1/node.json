@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "kind": "jaeger_neural_node",
+  "runtime": "para_speaker_ecapa_v1",
+  "id": "para-speaker-ecapa-v1",
+  "slot": "speaker_embedding_nn",
+  "enabled_by_default": true,
+  "consumes": [
+    "utterance_pcm_f32_16khz"
+  ],
+  "produces": [
+    "speaker_id_turn",
+    "wake_events_learned"
+  ],
+  "status": "trained_pretrained_mounted",
+  "implementation": "runtime.py:build",
+  "lineage": "ecapa-voxceleb via forge core SpeakerEmbedder/Registry",
+  "notes": "The NN replacing the hand fingerprint for identity, and the LEARNED embedding space for one-shot QbE wake. Calibration from the forge: within 0.51 / between 0.17 / threshold 0.30. Frame-rate prosody stays on para-speaker-embed-v0; the adapter's trained perception heads (turn/self-voice, 81% F1) are the next mount."
+}

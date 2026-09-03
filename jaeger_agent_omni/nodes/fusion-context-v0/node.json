@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "jaeger_audio_node",
+  "runtime": "context_record_v0",
+  "id": "fusion-context-v0",
+  "slot": "fusion",
+  "enabled_by_default": true,
+  "consumes": [
+    "transcript_text",
+    "speaker_stream_1p6hz",
+    "turn_state_stream_33hz",
+    "wake_events"
+  ],
+  "produces": [
+    "fused_context_record",
+    "context_line_text"
+  ],
+  "status": "v0_handcoded_baseline",
+  "implementation": "runtime.py:build",
+  "lineage": "voice-family-handcoded-v0",
+  "notes": "the convergence point. v0 emits the [context:] line and a JSONL record; the SEAM: these records become dedicated context tokens through a separately trained projection, so Gemma attends to the channels independently."
+}

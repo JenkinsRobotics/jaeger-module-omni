@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "kind": "jaeger_audio_node",
+  "runtime": "qbe_template_match_v0",
+  "id": "para-wake-spotter-v0",
+  "slot": "wake_spotting",
+  "enabled_by_default": true,
+  "consumes": [
+    "pcm_f32_16khz_mono_30ms"
+  ],
+  "produces": [
+    "wake_events"
+  ],
+  "status": "v0_handcoded_baseline",
+  "implementation": "runtime.py:build",
+  "lineage": "voice-family-handcoded-v0",
+  "config": {
+    "window_s": 1.0,
+    "cadence_s": 0.3,
+    "match_dist": 0.55,
+    "refractory_s": 2.0
+  },
+  "notes": "ONE-SHOT by construction: enroll stores an embedding template, spotting is distance matching \u2014 no STT in the loop. v0 ceiling stated honestly: the hand features carry voice+prosody more than phrase content, so it is speaker-biased; the trained phrase embedding fixes that."
+}

@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "jaeger_audio_node",
+  "runtime": "pywhispercpp_utterance_v0",
+  "id": "semantic-whisper-v0",
+  "slot": "audio_perception",
+  "enabled_by_default": true,
+  "consumes": [
+    "utterance_pcm_f32_16khz"
+  ],
+  "produces": [
+    "transcript_text"
+  ],
+  "status": "text_fallback_only",
+  "implementation": "runtime.py:build",
+  "lineage": "voice-family-handcoded-v0",
+  "config": {
+    "model": "large-v3-turbo",
+    "language": "en"
+  },
+  "notes": "FALLBACK ONLY (--semantic text). The omni semantic channel is stock-whisper-medium-stream-bargein-93h \u2014 encoder \u2192 trained adapter \u2192 Gemma, no text seam."
+}
