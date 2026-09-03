@@ -1,5 +1,96 @@
 # Next steps — current plan
 
+## Pipeline lockdown — what we have and what we refine (2026-09-03)
+
+Everything below this section remains the standing plan except where a lane
+explicitly supersedes it. Import record: [`STATUS.md`](STATUS.md),
+[`CONVERSE.md`](CONVERSE.md).
+
+### What we have (measured)
+
+Two Gemma-4 E4B conversational lineages in one repository:
+
+1. **Native-tower path** (`live.py`, the GUI, `omni.py`): plain voice 12/12
+   at 575 ms; agentic 12/12 at 2421 ms over 94 Omni-safe tools; Silero VAD
+   green; 17.8 ms barge cancellation; physical five-minute capture integrity
+   green. Red: companion admission (4/12 named recall), AEC p95 tail
+   (602/843 ms vs the 300 ms gate), agentic full corpus (28/162).
+2. **Trained-adapter converse path** (imported Gemma Omni V2,
+   `python -m jaeger_agent_omni.converse`): campaign 27/27 across the
+   half/quasi/full duplex ladder with barge stop|continue, wake/hold,
+   one-model HEARD/REPLY at ~0.9 s per turn (TTFT 0.40–0.47 s),
+   commit-and-trim; text+vision+audio in, text+audio out.
+
+Ears at the series seam, matched devclean64, identical scorer:
+`jaegeromni-41m-medium` **4.82%** (cases12 12/12 at 560 ms, 3.97% on the
+51,311-word test-clean lockbox, AMI 32.99%) versus the imported
+`stock-whisper-medium-stream-bargein-93h` **5.65%** as wired / 5.76%
+instructed (streaming causal, 0.60 s median transcribe, carries the only
+trained directed/overlap heads — overlap F1 0.81).
+`jaegeromni-41m-causal-balanced` stays packaged as the duplex experiment
+variant (24/24 at 574 ms, AMI 28.23%).
+
+Perception, two generations side by side:
+- **Parallel on raw audio** (the architecture we are locking): v0
+  turn-state / speaker-embed / wake-spotter on 30 ms frames, trained ECAPA
+  (wake similarity 0.993, speaker separation 0.51/0.17, self-voice cosine
+  0.91), CampPlus live labels, Silero gate.
+- **Chained on the adapter trunk** (transitional, to be retired): the V2
+  directed/overlap heads riding the 93h adapter; the 41M audio-perception
+  shadow node (scene 0.952 F1, events 0.088/0.254 — policy-banned).
+
+Output: Kokoro is the production mouth on both lineages; the hidden-state
+talker stays experimental. Harnesses: converse selftest 17/17, the
+converse_sim campaign, the tiered release benchmark, the locked WER gates
+plus the new twin `research/converse_ear_wer.py`, and
+`training/compare_candidate.py`.
+
+### Lane 1 — update the 41M omni to the parallel idea, then the ear bakeoff
+
+User-directed 2026-09-03; this supersedes the "no more adapter training"
+rule below for THIS architectural change only (that rule was about squeezing
+the same recipe, not about the perception split).
+
+1. Train the Phase-1 parallel perception encoder (shared contrastive
+   speaker+wake on raw log-mel, whitepaper §Phase 1). Promotion gates:
+   event-level false-alarms/minute, detection delay, wake recall,
+   same-gender separation — and overlap/directed parity with the trunk
+   heads (F1 ≥ 0.81) before any trunk head is retired.
+2. Bring the proven 41M quality into the clean series seam: port or retrain
+   `jaegeromni-41m-medium` into the streaming-causal, heads-free form
+   factor at the converse adapter boundary (one function seam, per the
+   yardstick rule).
+3. Judge with the matched framework only: devclean64 + cases12 + ami64 (+
+   lockbox at the end) through `compare_candidate.py`, using the committed
+   twin harnesses. Expected outcome (stated bet): the whisper-adapter 41M
+   still wins accuracy — and with perception parallel, it drops into
+   converse with zero perception cost. If the 93h ear wins any gate, keep
+   the loser packaged, dead, per registry policy.
+
+### Lane 2 — one duplex policy, one conversational front
+
+After the in-flight duplex-selector/observer GUI work lands: converge the
+three duplex-mode implementations (live.py inline strings, the GUI's
+DuplexModePolicy, the converse ladder) into one policy object and add the
+quasi tier to the GUI surface. Then decide the final conversational spine —
+current recommendation: the converse ladder becomes the conversation
+engine, the agentic runtime mounts on it through the same session-adapter
+pattern `live --agentic` uses, and the native-tower path remains the
+vision-interleave and AEC bench. Companion admission's red gate (4/12
+recall) gets attacked with the imported addressing stack (additive QbE wake
++ text-wake + directed head + follow-up window) against the COMPANION.md
+categories — not by weakening the parser.
+
+### Lane 3 — standing red gates (unchanged, still required for "locked")
+
+AEC 300 ms tail (contiguous mode rerun next), agentic full-corpus
+capability-reveal seam (28/162), and the one physical five-minute release
+run with tools, barge, roll, and zero drops. Closed and staying closed:
+ternary packaging, packed QKV, hidden-talker promotion, and same-recipe
+41M continuations.
+
+---
+
 The new release-depth benchmark supersedes the earlier inference that source
 parity plus cases12 meant broad agent parity. Source/code parity is exact and
 simple native-audio questions remain 12/12, but the full 81+81 corpus is only
