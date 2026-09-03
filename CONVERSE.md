@@ -57,6 +57,50 @@ and 21 GB of `checkpoints/` (training is deferred), and the untrained
   heads. Evidence in `research/candidate_evals/*-20260903-devclean64.json`;
   harness `research/converse_ear_wer.py`.
 
+## Ear and pipeline scorecard (2026-09-03)
+
+Every WER cell below is the SAME locked devclean64 manifest (64 clips, 955
+reference words) and the SAME normalize+wer scorer; only the adapter and the
+seam/decode policy vary. "Own seam" = jaeger's budget-12 free-running session
+(`stock_whisper_gemma.py wer`); "converse seam" = the imported node's
+production `transcribe()` (`research/converse_ear_wer.py`). AMI64 and cases12
+are the recorded gates cited from `research/candidate_evals/` and node
+manifests. "—" = not measured, never inferred.
+
+| Ear (adapter) | Architecture | Seam / decode | devclean64 | AMI64 | cases12 | Latency |
+|---|---|---|---|---|---|---|
+| `jaegeromni-41m-medium` (default) | context_v2, bidirectional | own | **4.82%** | 32.99% | 12/12 | 560 ms median answer |
+| `jaegeromni-41m-causal-balanced` | streaming_causal_v1 | own | 5.03% | **28.23%** | 12/12 (24/24 @ 574 ms A/B) | — |
+| `jaegeromni-41m-causal-balanced` | streaming_causal_v1 | converse, cross-mounted | 6.07% | — | — | 0.66 s median transcribe |
+| `stream-bargein-93h` (imported) | streaming_causal_v1 | converse, as wired | 5.65% | — | — | 0.60 s median transcribe |
+| `stream-bargein-93h` (imported) | streaming_causal_v1 | converse, instructed | 5.76% | — | — | 0.60 s median transcribe |
+| `gemmaomni-41m-medium-final4000` | (imported 2026-08-28) | own | 6.81% | 22.88% | — | — |
+
+Pipelines (behavioral, measured on their own gates — not WER-comparable
+across rows):
+
+| Pipeline | Gate | Result | Turn latency |
+|---|---|---|---|
+| Converse ladder (93h ear, one-model HEARD/REPLY) | converse_sim campaign | **27/27** | ~0.9 s, TTFT 0.40–0.47 s |
+| Native-tower plain voice (41m-medium ear) | frozen-ear cases12 | 12/12 | 575 ms |
+| Native-tower agentic (94 Omni-safe tools) | agentic cases12 | 12/12 | 2421 ms |
+| MiniCPM-o comparison | [`PARITY_SCORECARD.md`](PARITY_SCORECARD.md) | see scorecard | — |
+
+What the 2026-09-03 bakeoff established:
+
+1. The user's bet holds: `jaegeromni-41m-medium` remains the accuracy
+   leader on clean speech at 4.82% — no imported or cross-mounted ear beats
+   it. `causal-balanced` remains the hard-audio (AMI) leader.
+2. A naive weight mount across seams LOSES quality: causal-balanced drops
+   5.03% → 6.07% when its weights run under converse's decode policy, despite
+   byte-identical encoders and the same declared architecture. The seam swap
+   is decode-policy-coupled — Lane 1's "port or retrain" is real work, not
+   file plumbing (`evaluation_mode: cross_mounted_streaming_adapter`
+   evidence row committed).
+3. Best streaming ear at the converse seam today is the imported 93h at
+   5.65% — it keeps the converse pipeline until the ported 41M beats it
+   there, on this same manifest.
+
 ## Relation to the existing surfaces
 
 `live.py` / the Full DuplexDemo App drive Gemma's NATIVE audio tower

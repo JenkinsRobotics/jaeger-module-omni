@@ -67,6 +67,16 @@ the same recipe, not about the perception split).
    converse with zero perception cost. If the 93h ear wins any gate, keep
    the loser packaged, dead, per registry policy.
 
+First bakeoff data point (2026-09-03, evidence in
+`research/candidate_evals/causal-balanced-at-converse-seam-*.json`): naive
+cross-mounting `jaegeromni-41m-causal-balanced` (already streaming_causal_v1,
+byte-identical encoder) at the converse seam measures 6.07% devclean64 versus
+5.03% at its own seam and 5.65% for the resident 93h ear — the seam is
+decode-policy-coupled, so step 2's port must carry or adapt the decode policy
+(token budget, loop blockers, prompt convention), or briefly retrain at the
+seam. The bet direction held: nothing beat 41m-medium's 4.82%. Scorecard
+table: [`CONVERSE.md`](CONVERSE.md).
+
 ### Lane 2 — the conversational front (duplex tiers stay selectable)
 
 Ruling (user, 2026-09-03): the duplex tiers are a FEATURE, not duplication

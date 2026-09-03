@@ -54,6 +54,11 @@ def main() -> int:
         "--instructed", action="store_true",
         help="add the transcription instruction, the keypoint's recorded "
              "protocol; without it the ear runs exactly as converse wires it")
+    ap.add_argument(
+        "--adapter", type=Path, default=None,
+        help="cross-mount a different streaming_causal_v1 adapter npz at the "
+             "converse seam (encoder and Gemma stay the node's own). Metadata "
+             "keys are filtered; only dotted parameter keys are loaded.")
     ap.add_argument("--output", type=Path, required=True)
     args = ap.parse_args()
 
@@ -64,6 +69,18 @@ def main() -> int:
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     ear = module.build()
+    if args.adapter:
+        with np.load(args.adapter, allow_pickle=False) as z:
+            arrays = {k: z[k] for k in z.files}
+        arch = bytes(arrays.get("arch", b"")).decode(errors="replace")
+        if "streaming_causal" not in arch:
+            raise SystemExit(f"--adapter is {arch or 'unknown'}, not "
+                             "streaming_causal_v1; the seam is causal-only "
+                             "(bidirectional adapters need streaming training)")
+        from streaming_adapter import build_streaming_adapter
+        params = {k: v for k, v in arrays.items() if "." in k}
+        ear.adapter = build_streaming_adapter(
+            int(arrays["hidden"][0]), arrays=params, causal=True)
     if args.instructed:
         # Same prompt override as the playground's eval/matched_eval.py.
         import mlx_audio_streaming as mas
@@ -118,13 +135,16 @@ def main() -> int:
     print(f"CORPUS WER {score * 100:.2f}% over {len(rows)} held-out clips, "
           f"{total_words} reference words; "
           f"median transcribe {sorted(latencies)[len(latencies) // 2]:.2f}s")
-    adapter = args.node / "weights/adapter.npz"
+    adapter = args.adapter or (args.node / "weights/adapter.npz")
+    mode = ("node_transcribe_instructed" if args.instructed
+            else "node_production_transcribe")
+    if args.adapter:
+        mode = "cross_mounted_streaming_adapter"
     args.output.write_text(json.dumps({
         "adapter": str(adapter), "split": "devclean",
         "adapter_sha256": sha256(adapter),
         "encoder": "openai/whisper-medium (node-local snapshot)",
-        "evaluation_mode": ("node_transcribe_instructed" if args.instructed
-                            else "node_production_transcribe"),
+        "evaluation_mode": mode,
         "teacher_forced": False,
         "input_handoff": "raw_waveform_no_transcript",
         "id_file": str(args.manifest),
