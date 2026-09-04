@@ -348,8 +348,12 @@ def stream_split(audio_16k, keep_s: float = STREAM_KEEP_S):
 def load_trained_semantic():
     """The POINT of this folder: audio -> whisper ENCODER -> trained adapter
     -> Gemma. No text seam, no whisper decoder. The v0 text path exists only
-    as an explicitly-labeled fallback."""
-    p = HERE / "nodes/gemmaomni-v2-stream-bargein-93h/runtime.py"
+    as an explicitly-labeled fallback.
+
+    Consolidated 2026-09-03 onto jaegeromni-41m-converse (the repository's
+    causal-balanced 41M at this seam, prompt-aligned: 5.03% vs 5.65%
+    devclean64). gemmaomni-v2-stream-bargein-93h remains packaged, disabled."""
+    p = HERE / "nodes/jaegeromni-41m-converse/runtime.py"
     spec = importlib.util.spec_from_file_location("nn_semantic", p)
     m = importlib.util.module_from_spec(spec)
     sys.modules["nn_semantic"] = m

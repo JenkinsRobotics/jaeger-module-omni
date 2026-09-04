@@ -42,6 +42,19 @@ Measured ledger. Every claim here has a command that reproduces it.
 > current ear's adapter at the V2 node's one-seam boundary without losing
 > the heads — is training/eval work, deliberately not part of this import.
 >
+> Same date, later: consolidation onto the repository's own model DONE at
+> the converse seam. The naive cross-mount penalty proved to be prompt
+> coupling, not decode coupling: with its training-time transcript prompt,
+> `jaegeromni-41m-causal-balanced` measures **5.03%** devclean64 at the
+> converse seam (own-seam number reproduced exactly) versus 5.65% for the
+> imported ear. It is packaged as the immutable node
+> `jaegeromni-41m-converse` (byte-identical tensors, metadata cleaned,
+> prompt baked in, untrained directed head suppressed fail-safe) and now
+> IS the converse semantic channel: the packaged node reproduces 5.03%
+> through its own build path and the full campaign holds **27/27** on the
+> new ear. `gemmaomni-v2-stream-bargein-93h` is retired to
+> packaged-disabled. Registry: 28 nodes / 12 profiles valid.
+>
 > 2026-08-29 release-depth benchmark: the repository now owns one tiered,
 > durable gate (`python -m jaeger_agent_omni.benchmark`) spanning CPU
 > contracts, the transcript ban, the complete package tests, source parity,

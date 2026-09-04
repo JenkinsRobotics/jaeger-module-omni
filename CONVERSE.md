@@ -69,10 +69,11 @@ manifests. "—" = not measured, never inferred.
 
 | Ear (adapter) | Architecture | Seam / decode | devclean64 | AMI64 | cases12 | Latency |
 |---|---|---|---|---|---|---|
-| `jaegeromni-41m-medium` (default) | context_v2, bidirectional | own | **4.82%** | 32.99% | 12/12 | 560 ms median answer |
+| `jaegeromni-41m-medium` (native default) | context_v2, bidirectional | own | **4.82%** | 32.99% | 12/12 | 560 ms median answer |
 | `jaegeromni-41m-causal-balanced` | streaming_causal_v1 | own | 5.03% | **28.23%** | 12/12 (24/24 @ 574 ms A/B) | — |
-| `jaegeromni-41m-causal-balanced` | streaming_causal_v1 | converse, cross-mounted | 6.07% | — | — | 0.66 s median transcribe |
-| `gemmaomni-v2-stream-bargein-93h` | streaming_causal_v1 | converse, as wired | 5.65% | — | — | 0.60 s median transcribe |
+| **`jaegeromni-41m-converse` (converse default)** | streaming_causal_v1, prompt-aligned | converse, packaged node | **5.03%** | — | — | 0.61 s median transcribe |
+| `jaegeromni-41m-causal-balanced` | streaming_causal_v1 | converse, naive cross-mount (no prompt) | 6.07% | — | — | 0.66 s median transcribe |
+| `gemmaomni-v2-stream-bargein-93h` (retired to disabled) | streaming_causal_v1 | converse, as originally wired | 5.65% | — | — | 0.60 s median transcribe |
 | `gemmaomni-v2-stream-bargein-93h` | streaming_causal_v1 | converse, instructed | 5.76% | — | — | 0.60 s median transcribe |
 | `gemmaomni-41m-medium-final4000` | (imported 2026-08-28) | own | 6.81% | 22.88% | — | — |
 
@@ -86,20 +87,23 @@ across rows):
 | Native-tower agentic (94 Omni-safe tools) | agentic cases12 | 12/12 | 2421 ms |
 | MiniCPM-o comparison | [`PARITY_SCORECARD.md`](PARITY_SCORECARD.md) | see scorecard | — |
 
-What the 2026-09-03 bakeoff established:
+What the 2026-09-03 bakeoff and consolidation established:
 
 1. The user's bet holds: `jaegeromni-41m-medium` remains the accuracy
    leader on clean speech at 4.82% — no imported or cross-mounted ear beats
    it. `causal-balanced` remains the hard-audio (AMI) leader.
-2. A naive weight mount across seams LOSES quality: causal-balanced drops
-   5.03% → 6.07% when its weights run under converse's decode policy, despite
-   byte-identical encoders and the same declared architecture. The seam swap
-   is decode-policy-coupled — Lane 1's "port or retrain" is real work, not
-   file plumbing (`evaluation_mode: cross_mounted_streaming_adapter`
-   evidence row committed).
-3. Best streaming ear at the converse seam today is the imported 93h at
-   5.65% — it keeps the converse pipeline until the ported 41M beats it
-   there, on this same manifest.
+2. The naive cross-mount penalty (5.03% → 6.07%) was the PROMPT, not the
+   decode: wrapping the audio turn in the adapter's training-time
+   `TRANSCRIPT_SYSTEM` recovers the own-seam number exactly. Per-row
+   diagnosis showed 10 diffuse near-tie edits, no truncation or loops.
+3. **Consolidation step 2 (done): `jaegeromni-41m-converse` — the
+   repository's causal-balanced 41M, prompt-aligned, packaged as an
+   immutable node — now IS the converse semantic channel.** Gates: node
+   reproduces 5.03% through its own build path, and the full campaign
+   holds 27/27 on the new ear. The imported
+   `gemmaomni-v2-stream-bargein-93h` is retired to packaged-disabled. The
+   checkpoint has no trained directed head, so the node suppresses that
+   head and admission fails safe to the post-generation text-wake decision.
 
 ## Relation to the existing surfaces
 

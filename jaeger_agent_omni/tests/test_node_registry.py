@@ -14,7 +14,7 @@ class NodeRegistryTests(unittest.TestCase):
     def test_real_registry_is_flat_complete_and_loadable(self):
         root = Path(__file__).resolve().parents[1] / "nodes"
         packages = discover(root)
-        self.assertEqual(len(packages), 27)
+        self.assertEqual(len(packages), 28)
         self.assertIn("gemmaomni-41m-medium-final4000", packages)
         # Gemma Omni V2 converse graph, imported from VoiceLLM-Playground.
         self.assertIn("gemmaomni-v2-stream-bargein-93h", packages)
@@ -38,7 +38,8 @@ class NodeRegistryTests(unittest.TestCase):
         self.assertIn("neural-acoustic-controller", shadow)
         self.assertIn("jaegeromni-41m-medium", shadow)
         graph = select_profile(root, "agent-graph-v0")
-        self.assertIn("gemmaomni-v2-stream-bargein-93h", graph)
+        self.assertIn("jaegeromni-41m-converse", graph)
+        self.assertNotIn("gemmaomni-v2-stream-bargein-93h", graph)
         self.assertIn("tts-kokoro-v0", graph)
         self.assertNotIn("semantic-whisper-v0", graph)
 

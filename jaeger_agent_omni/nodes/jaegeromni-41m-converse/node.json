@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "kind": "jaeger_audio_node",
+  "runtime": "stock_whisper_gemma_streaming",
+  "id": "jaegeromni-41m-converse",
+  "slot": "audio_perception",
+  "enabled_by_default": true,
+  "consumes": [
+    "pcm_s16le_16khz_mono",
+    "self_speech_flag_25hz"
+  ],
+  "produces": [
+    "gemma_audio_embeddings_2560",
+    "perception_events_25hz"
+  ],
+  "status": "causal_balanced_at_converse_seam_5p03_devclean64_campaign_27of27",
+  "implementation": "runtime.py:build",
+  "encoder": {
+    "id": "openai/whisper-medium",
+    "revision": "abdf7c39ab9d0397620ccaea8974cc764cd0953e",
+    "path": "weights/encoder",
+    "weights_sha256": "62f73550fa6db24b0c6f6c5962bd0dae80fa644e93cde9cd9c3792971b47fd28",
+    "boundary": "stock_whisper_encoder_50hz",
+    "output_dim": 1024,
+    "decoder_runtime": false
+  },
+  "adapter": {
+    "path": "weights/adapter.npz",
+    "sha256": "dc087d7edf7990033ca8e994bed8f8196b56587c23b3bea8f0a1db8cb560f39e",
+    "architecture": "streaming_causal_v1",
+    "pool_step": 2,
+    "attention": "causal",
+    "lineage": "qwen_free",
+    "source_node": "jaegeromni-41m-causal-balanced",
+    "source_adapter_sha256": "e4ea88b9c99e2b4d5ef8613d881848c1e9c444785c4821cacf31de2ac504c819",
+    "transform": "metadata keys dropped for the streaming loader; every parameter tensor byte-identical to the source",
+    "trained_heads": [
+      "overlap",
+      "speaker_change",
+      "speaker_id",
+      "turn_end"
+    ],
+    "untrained_heads_suppressed": [
+      "directed"
+    ]
+  },
+  "backbone": {
+    "family": "gemma-4-e4b",
+    "runtime_variant": "gemma-4-E4B-it-4bit-mlx",
+    "frozen": true
+  },
+  "prompt": {
+    "transcript_system": "Repeat the spoken words exactly. Output only what was said, with no commentary or explanation.",
+    "why": "training-time prompt; measured +1.04 devclean64 points without it at this seam (2026-09-03)"
+  },
+  "evidence": {
+    "devclean64_wer": 0.0503,
+    "harness": "research/converse_ear_wer.py --adapter ... --system ...",
+    "record": "research/candidate_evals/causal-balanced-at-converse-seam-sysprompt-20260903-devclean64.json",
+    "campaign": "tests/converse_sim.py 2026-09-03: 27/27 \u2014 half 12/12, quasi 6/6, barge-continue 4/4, full 5/5",
+    "node_reproduction": "research/candidate_evals/jaegeromni-41m-converse-20260903-devclean64.json \u2014 5.03%, 0.61 s median, via runtime.py:build"
+  }
+}
