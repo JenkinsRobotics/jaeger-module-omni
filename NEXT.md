@@ -45,6 +45,36 @@ converse_sim campaign, the tiered release benchmark, the locked WER gates
 plus the new twin `research/converse_ear_wer.py`, and
 `training/compare_candidate.py`.
 
+### Operating model (user, 2026-09-04) — quasi-duplex default, tier-matched ear
+
+The payoff of parallelizing perception: the transcription ear no longer
+carries speaker/overlap/turn, so it is free to be the BEST ear per tier
+instead of the one with heads.
+
+- **Half + quasi (turn-based, endpoint-then-reply)** run on
+  `jaegeromni-41m-medium` (4.82%, bidirectional) — legal because the whole
+  utterance exists at endpoint. Perception comes from the parallel NNs:
+  ECAPA (speaker/wake/self-voice, live), para-turn-state (endpoint, live).
+- **Full (live forming preview)** is the ONLY tier that needs the causal ear
+  (`jaegeromni-41m-converse`, 5.03%), and only for the pre-endpoint preview.
+
+Default operating mode is **quasi-duplex** (open mic + AEC + barge, agent
+decides) — the point of an end-to-end omni agent. Build order for simplicity:
+**half → quasi (default) → full**. Quasi-by-default is reachable NOW with the
+best ear + existing parallel NNs; no GPU window needed to ship it.
+
+The one perception gap for robust quasi barge is a **parallel overlap/barge
+NN** — today barge runs on the energy BargeMonitor + ECAPA self-voice (passed
+the campaign); a trained overlap NN (Lane-1 Phase-1) upgrades it. speaker ID
+is already ECAPA; turn is already para-turn-state-v0.
+
+This revises the consolidation: converse currently defaults the causal ear
+(5.03%) for every tier; the tier-matched plan puts `41m-medium` (4.82%) on
+the turn-based tiers and reserves causal for full's preview. The causal
+streaming-port GPU job (Lane-1b) therefore matters only to unlock/upgrade
+full-duplex, not to ship the quasi default. Next concrete build: tier-matched
+ear routing, starting with half-duplex on `41m-medium`.
+
 ### Lane 1 — update the 41M omni to the parallel idea, then the ear bakeoff
 
 User-directed 2026-09-03; this supersedes the "no more adapter training"
