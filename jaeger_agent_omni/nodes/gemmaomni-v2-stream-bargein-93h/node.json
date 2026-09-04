@@ -2,7 +2,7 @@
   "schema_version": 1,
   "kind": "jaeger_audio_node",
   "runtime": "stock_whisper_gemma_streaming",
-  "id": "stock-whisper-medium-stream-bargein-93h",
+  "id": "gemmaomni-v2-stream-bargein-93h",
   "slot": "audio_perception",
   "enabled_by_default": true,
   "consumes": [
@@ -91,5 +91,7 @@
     "speaker_change and turn_end heads are weak (F1 0.37 / 0.44) - not production ready",
     "all WER measured on dev-clean; no held-out lockbox number yet",
     "causal attention recomputes over the full prefix per chunk (O(n^2) in turn length)"
-  ]
+  ],
+  "upstream_id": "stock-whisper-medium-stream-bargein-93h",
+  "upstream": "VoiceLLM-Playground 'Omni Model/gemma omni v2' commit 9f1103b"
 }

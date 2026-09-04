@@ -32,7 +32,7 @@ sys.path.insert(0, str(REPO / "training"))
 DEFAULT_MANIFEST = (Path.home() / "models/jaeger-training-data"
                     / "stock-whisper-medium-eval-v1/devclean/manifest.jsonl")
 DEFAULT_NODE = (REPO / "jaeger_agent_omni/nodes"
-                / "stock-whisper-medium-stream-bargein-93h")
+                / "gemmaomni-v2-stream-bargein-93h")
 
 
 def sha256(path: Path) -> str:

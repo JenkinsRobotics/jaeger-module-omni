@@ -51,7 +51,7 @@ and 21 GB of `checkpoints/` (training is deferred), and the untrained
   one-model replies ~0.9 s/turn, TTFT 0.40–0.47 s.
 - Matched WER, both ears, identical locked devclean64 manifest and identical
   scorer: current default `jaegeromni-41m-medium` **4.82%** (reproduces its
-  recorded number); imported `stream-bargein-93h` **5.65%** as wired /
+  recorded number); imported `gemmaomni-v2` ear **5.65%** as wired /
   **5.76%** instructed. The current ear stays the better transcript model on
   clean audio; the imported ear is the one carrying the trained perception
   heads. Evidence in `research/candidate_evals/*-20260903-devclean64.json`;
@@ -72,8 +72,8 @@ manifests. "—" = not measured, never inferred.
 | `jaegeromni-41m-medium` (default) | context_v2, bidirectional | own | **4.82%** | 32.99% | 12/12 | 560 ms median answer |
 | `jaegeromni-41m-causal-balanced` | streaming_causal_v1 | own | 5.03% | **28.23%** | 12/12 (24/24 @ 574 ms A/B) | — |
 | `jaegeromni-41m-causal-balanced` | streaming_causal_v1 | converse, cross-mounted | 6.07% | — | — | 0.66 s median transcribe |
-| `stream-bargein-93h` (imported) | streaming_causal_v1 | converse, as wired | 5.65% | — | — | 0.60 s median transcribe |
-| `stream-bargein-93h` (imported) | streaming_causal_v1 | converse, instructed | 5.76% | — | — | 0.60 s median transcribe |
+| `gemmaomni-v2-stream-bargein-93h` | streaming_causal_v1 | converse, as wired | 5.65% | — | — | 0.60 s median transcribe |
+| `gemmaomni-v2-stream-bargein-93h` | streaming_causal_v1 | converse, instructed | 5.76% | — | — | 0.60 s median transcribe |
 | `gemmaomni-41m-medium-final4000` | (imported 2026-08-28) | own | 6.81% | 22.88% | — | — |
 
 Pipelines (behavioral, measured on their own gates — not WER-comparable

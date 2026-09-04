@@ -349,7 +349,7 @@ def load_trained_semantic():
     """The POINT of this folder: audio -> whisper ENCODER -> trained adapter
     -> Gemma. No text seam, no whisper decoder. The v0 text path exists only
     as an explicitly-labeled fallback."""
-    p = HERE / "nodes/stock-whisper-medium-stream-bargein-93h/runtime.py"
+    p = HERE / "nodes/gemmaomni-v2-stream-bargein-93h/runtime.py"
     spec = importlib.util.spec_from_file_location("nn_semantic", p)
     m = importlib.util.module_from_spec(spec)
     sys.modules["nn_semantic"] = m

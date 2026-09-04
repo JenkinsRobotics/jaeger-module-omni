@@ -18,5 +18,5 @@
     "model": "large-v3-turbo",
     "language": "en"
   },
-  "notes": "FALLBACK ONLY (--semantic text). The omni semantic channel is stock-whisper-medium-stream-bargein-93h \u2014 encoder \u2192 trained adapter \u2192 Gemma, no text seam."
+  "notes": "FALLBACK ONLY (--semantic text). The omni semantic channel is gemmaomni-v2-stream-bargein-93h \u2014 encoder \u2192 trained adapter \u2192 Gemma, no text seam."
 }

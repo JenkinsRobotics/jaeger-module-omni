@@ -15,7 +15,7 @@ Measured ledger. Every claim here has a command that reproduces it.
 > campaign state) now runs from this repository. Thirteen node folders moved
 > byte-identical under the shared manifest contract (ECAPA speaker/wake,
 > perception heads, fusion, duplex device, vision, text input, Kokoro, and
-> the trained `stock-whisper-medium-stream-bargein-93h` semantic channel with
+> the trained `gemmaomni-v2-stream-bargein-93h` semantic channel with
 > its weights), four engine core modules landed flat in `core/`, and
 > `python -m jaeger_agent_omni.converse` carries the half|quasi|full duplex
 > ladder, QbE wake, one-model HEARD/REPLY replies, and commit-and-trim.
@@ -29,7 +29,7 @@ Measured ledger. Every claim here has a command that reproduces it.
 > put to a matched test and does NOT hold on recognition accuracy: on the
 > locked devclean64 manifest with identical normalize+wer scoring, the
 > current default ear (`jaegeromni-41m-medium`) reproduces its recorded
-> **4.82%** WER exactly, while the imported `stream-bargein-93h` ear measures
+> **4.82%** WER exactly, while the imported `gemmaomni-v2` ear measures
 > **5.65%** as converse wires it (uninstructed) and **5.76%** with its
 > keypoint's transcription instruction. The keypoint's 3.136% came from a
 > different 128-clip population and does not transfer to this one. What the

@@ -17,6 +17,6 @@
   ],
   "status": "trained_mounted_semantics_pending_eval",
   "implementation": "runtime.py:build",
-  "lineage": "stream-bargein-93h adapter trunk (81% barge F1 lineage)",
+  "lineage": "gemmaomni-v2-stream-bargein-93h adapter trunk (81% barge F1 lineage)",
   "notes": "Five trained per-frame heads on the semantic trunk; wraps the already-built transcriber (no second model). `directed` gates unenrolled addressing in converse. Head SEMANTICS inherit the forge's training distribution \u2014 per-head eval vs the cascade yardsticks is the promotion gate for deeper use."
 }

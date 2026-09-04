@@ -24,7 +24,7 @@ Two Gemma-4 E4B conversational lineages in one repository:
 Ears at the series seam, matched devclean64, identical scorer:
 `jaegeromni-41m-medium` **4.82%** (cases12 12/12 at 560 ms, 3.97% on the
 51,311-word test-clean lockbox, AMI 32.99%) versus the imported
-`stock-whisper-medium-stream-bargein-93h` **5.65%** as wired / 5.76%
+`gemmaomni-v2-stream-bargein-93h` **5.65%** as wired / 5.76%
 instructed (streaming causal, 0.60 s median transcribe, carries the only
 trained directed/overlap heads — overlap F1 0.81).
 `jaegeromni-41m-causal-balanced` stays packaged as the duplex experiment
