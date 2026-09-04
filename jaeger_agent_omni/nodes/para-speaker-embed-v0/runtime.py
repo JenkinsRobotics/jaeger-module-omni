@@ -115,6 +115,22 @@ class SpeakerNode:
         self.n_updates += 1
         return self.out
 
+    def context(self, out=None):
+        """The 'context' half of perception->LLM: a short awareness line for
+        Gemma's prompt naming who is speaking, gated on confidence so a weak
+        guess never spends a context token. Returns None when there is
+        nothing worth telling the model. Formatting logic lives in the node
+        that owns the signal, per the node contract."""
+        o = out if out is not None else self.out
+        spk = int(o.get("speaker", 0))
+        if spk < 1 or float(o.get("conf", 0.0)) < 0.5:
+            return None
+        seen = self.counts[spk - 1] if spk - 1 < len(self.counts) else 0
+        who = f"speaker S{spk}"
+        if seen > 4:
+            who += ", who has spoken before"
+        return f"the speaker is {who}"
+
     def stats(self):
         return {"updates": self.n_updates, "speakers": len(self.centroids),
                 "avg_ms": round(self.t_ms / max(1, self.n_updates), 2)}

@@ -18,6 +18,7 @@ from __future__ import annotations
 import argparse
 import importlib.util
 import json
+import os
 import queue
 import sys
 import threading
@@ -150,6 +151,10 @@ def selftest() -> int:
         b = spk.process(fr, t)
     ok(a["speaker"] == 1 and b["speaker"] == 2,
        "parallel speaker channel separates two voices")
+    ok(spk.context({"speaker": 1, "conf": 1.0}) is not None
+       and spk.context({"speaker": 0, "conf": 0.0}) is None,
+       "speaker channel emits confidence-gated Gemma context (not ingested "
+       "raw: text the model reads)")
 
     turn = load_node("para-turn-state-v0")
     ended = []
@@ -266,6 +271,33 @@ NN_SYSTEM = ("You are a helpful voice assistant. The user's message arrives "
              "HEARD: <verbatim transcription of the speech>\n"
              "REPLY: <your answer in one or two short conversational "
              "sentences>")
+
+# Perception -> Gemma, the 'context' route: the parallel NNs steer the loop by
+# hardcoded logic (wake admits, turn-state endpoints, self-voice drops) and,
+# when they have an awareness fact worth the LLM knowing, contribute a short
+# text line the model reads for that turn. Off with OMNI_CONTEXT=0 for A/B.
+CONTEXT_TO_LLM = os.environ.get("OMNI_CONTEXT", "1") != "0"
+
+
+def perception_context(*nodes_and_outputs):
+    """Assemble the enabled perception nodes' context() contributions into one
+    injectable line. Each pair is (node, its_output); a node without context()
+    or with nothing to say is skipped. Assembly only — the per-signal logic
+    lives in each node folder."""
+    if not CONTEXT_TO_LLM:
+        return None
+    bits = []
+    for node, out in nodes_and_outputs:
+        fn = getattr(node, "context", None)
+        if fn is None:
+            continue
+        try:
+            line = fn(out)
+        except Exception:
+            line = None
+        if line:
+            bits.append(line)
+    return "; ".join(bits) if bits else None
 
 
 def parse_heard_reply(raw: str) -> tuple[str, str]:
@@ -648,8 +680,10 @@ def converse(mode: str, barge: str, with_vision: bool,
                     print(f"  [overheard · directed_p="
                           f"{hp.get('directed_p')}]", flush=True)
                     return
+        ctx = perception_context((spk, s_out))
+        sys_prompt = f"{NN_SYSTEM}\n\n[context: {ctx}]" if ctx else NN_SYSTEM
         raw, met = nn.respond(np.asarray(audio, np.float32).reshape(-1),
-                              system=NN_SYSTEM, history=nn_hist,
+                              system=sys_prompt, history=nn_hist,
                               max_tokens=140)
         heard, reply = parse_heard_reply(raw)
         if not heard.strip():
