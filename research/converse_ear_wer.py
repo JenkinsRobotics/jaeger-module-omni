@@ -59,6 +59,10 @@ def main() -> int:
         help="cross-mount a different streaming_causal_v1 adapter npz at the "
              "converse seam (encoder and Gemma stay the node's own). Metadata "
              "keys are filtered; only dotted parameter keys are loaded.")
+    ap.add_argument(
+        "--system", default=None,
+        help="wrap the audio turn in this system prompt (e.g. the adapter's "
+             "training-time TRANSCRIPT_SYSTEM) instead of a bare audio turn")
     ap.add_argument("--output", type=Path, required=True)
     args = ap.parse_args()
 
@@ -81,15 +85,23 @@ def main() -> int:
         params = {k: v for k, v in arrays.items() if "." in k}
         ear.adapter = build_streaming_adapter(
             int(arrays["hidden"][0]), arrays=params, causal=True)
-    if args.instructed:
-        # Same prompt override as the playground's eval/matched_eval.py.
+    if args.instructed and args.system:
+        raise SystemExit("--instructed and --system are alternative prompts")
+    if args.instructed or args.system:
         import mlx_audio_streaming as mas
-        instruction = ("\n\nTranscribe the audio exactly. Reply with the "
-                       "transcript text only — no preamble, no corrections, "
-                       "no commentary.")
+        if args.system:
+            # The adapter's own training-time system prompt, jaeger-style.
+            messages = [{"role": "system", "content": args.system},
+                        {"role": "user", "content": mas.AUDIO_MARKER}]
+        else:
+            # Same prompt override as the playground's eval/matched_eval.py.
+            instruction = ("\n\nTranscribe the audio exactly. Reply with the "
+                           "transcript text only — no preamble, no "
+                           "corrections, no commentary.")
+            messages = [{"role": "user",
+                         "content": mas.AUDIO_MARKER + instruction}]
         rendered = ear.tokenizer.apply_chat_template(
-            [{"role": "user", "content": mas.AUDIO_MARKER + instruction}],
-            tokenize=False, add_generation_prompt=True)
+            messages, tokenize=False, add_generation_prompt=True)
         prefix, suffix = rendered.split(mas.AUDIO_MARKER, 1)
         ear.prefix_ids = ear.tokenizer.encode(prefix, add_special_tokens=False)
         ear.suffix_ids = ear.tokenizer.encode(suffix, add_special_tokens=False)
