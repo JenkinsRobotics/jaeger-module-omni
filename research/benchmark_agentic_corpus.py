@@ -356,6 +356,7 @@ def main() -> int:
                 "lane": lane, "id": case.id, "session": session_key,
                 "prompt_ground_truth_not_fed": case.prompt,
                 "audio": str(wav), "tags": list(case.tags),
+                "audio_sha256": hashlib.sha256(wav.read_bytes()).hexdigest(),
                 "tools_called": tools, "skills_viewed": skills,
                 "answer": answer, "error": error,
                 "latency_ms": latency_ms,
@@ -396,6 +397,9 @@ def main() -> int:
         "discovery_hint": args.discovery_hint,
         "system_sha256": hashlib.sha256(preparation.system.encode()).hexdigest(),
         "code_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        "case_sources_sha256": {
+            name: hashlib.sha256((ROOT / "jaeger_agent_omni/core/agentic/bench" / name).read_bytes()).hexdigest()
+            for name in ("cases.py", "cases_b.py")},
         "command": [sys.executable, *sys.argv],
         "suite": args.suite,
         "front_end": meta["model_id"],
