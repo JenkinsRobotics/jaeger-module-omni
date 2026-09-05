@@ -1,0 +1,79 @@
+{
+  "command": [
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+    "jaeger_agent_omni/tests/converse_sim.py",
+    "--session",
+    "quasi",
+    "--output",
+    "research/candidate_evals/tier-quasi-20260904.json"
+  ],
+  "session": "quasi",
+  "mode": "quasi",
+  "barge": "stop",
+  "node": "jaegeromni-41m-medium",
+  "adapter_sha256": "a7f96bfb889866f75df7b838f84aae368a56ab10f6469e766511d700e32fe13a",
+  "converse_sha256": "7b7d6cce9ff022e74db1917b4452c118b90e56ae9c3e5714da7ea0eb0a97faa1",
+  "perception_context": true,
+  "passed": 6,
+  "total": 6,
+  "checks": [
+    {
+      "name": "wake -> reply",
+      "passed": true
+    },
+    {
+      "name": "reply begins",
+      "passed": true
+    },
+    {
+      "name": "barge cuts playback",
+      "passed": true
+    },
+    {
+      "name": "barge speech answered",
+      "passed": true
+    },
+    {
+      "name": "farewell reply first",
+      "passed": true
+    },
+    {
+      "name": "close AFTER farewell",
+      "passed": true
+    }
+  ],
+  "log": [
+    "[converse] speaker+wake embeddings: ECAPA (trained NN)",
+    "[converse] semantic channel: jaegeromni-41m-medium (encoder\u2192adapter\u2192Gemma, no text seam)\u2026",
+    "loading Kokoro\u2026",
+    "WARNING: Defaulting repo_id to hexgrad/Kokoro-82M. Pass repo_id='hexgrad/Kokoro-82M' to suppress this warning.",
+    "[converse] quasi duplex \u00b7 barge=stop \u00b7 say 'hey computer \u2026' or type (Enter). Ctrl-C to quit.",
+    "  [context: speaker=S1 conf=100% pitch=118Hz]  Hey computer, what is two plus two?   [nn 0.81s ttft 0.27s]",
+    "  \u23f5 agent: It's four.",
+    "  [SIM] PASS  wake -> reply",
+    "  [context: speaker=S1 conf=100% pitch=123Hz incomplete]  what is a sun made of   [nn 0.94s ttft 0.32s]",
+    "  [holding \u2014 finish your thought]",
+    "  [context: speaker=S1 conf=100% pitch=116Hz]  and why does it shine so very brightly up in the sky every single day   [nn 1.44s ttft 0.39s]",
+    "  \u23f5 merged: what is a sun made of and why does it shine so very brightly up in the sky every single day",
+    "  \u23f5 agent: The sun is a giant ball of hot plasma, mostly hydrogen and helium. It shines because it undergoes nuclear fusion, converting mass into massive amounts of energy.",
+    "  [SIM] PASS  reply begins",
+    "  [context: speaker=S1 conf=100% pitch=127Hz]  please i have a different question for you right now please just listen to me   [nn 1.34s ttft 0.43s]",
+    "  \u23f5 agent: Sure, I'm ready. What's on your mind?",
+    "  \u2702 barged",
+    "  [SIM] PASS  barge cuts playback  \u00b7 after 2 attempt(s)",
+    "  [context: speaker=S1 conf=100% pitch=175Hz]  Sir, sir, please I have a different question for you right now, please just listen to me.   [nn 1.49s ttft 0.47s]",
+    "  \u23f5 agent: Sure, I'm ready. What's on your mind?",
+    "  [SIM] PASS  barge speech answered",
+    "  [context: speaker=S1 conf=100% pitch=267Hz]  what is sun made of and why does it shine so very brightly up in the sky every single day   [nn 1.91s ttft 0.50s]",
+    "  \u23f5 agent: The sun is a giant ball of hot plasma, mostly hydrogen and helium. It shines because it undergoes nuclear fusion, converting mass into massive amounts of energy.",
+    "  [SIM] PASS  farewell reply first",
+    "  [context: speaker=S1 conf=100% pitch=120Hz]  for question right now please just listen to me i have a different question for you right now please please just listen   [nn 1.68s ttft 0.57s]",
+    "  \u23f5 agent: Sure, I'm ready. What's on your mind?",
+    "  \u2702 barged",
+    "  [context: speaker=S1 conf=100% pitch=120Hz]  computer thank you good bye   [nn 1.03s ttft 0.56s]",
+    "  \u23f5 agent: You're welcome. Goodbye!",
+    "  [conversation closed]",
+    "  [SIM] PASS  close AFTER farewell",
+    "bye"
+  ]
+}

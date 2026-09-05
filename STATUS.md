@@ -2,18 +2,16 @@
 
 Measured ledger. Every claim here has a command that reproduces it.
 
-2026-09-04, CPU-only tier-routing candidate: half/quasi select the unchanged
-`jaegeromni-41m-medium`; full retains `jaegeromni-41m-converse`. The medium
-node now exposes the converse interface without converting weights. The
-context-adapter loader filters checkpoint metadata out of its parameter
-tree. Registry: 28 nodes / 13 profiles. CPU checks: converse **18/18**,
-package suite **51 tests**, module checks **31/31**, native selfcheck and
-demo check pass. Evidence:
-`research/candidate_evals/tier-matched-cpu-20260904.json` and
-`tier-matched-identity-20260904.json`. Real-model campaign and WER remain
-**unrun** for this candidate under the "no GPU" instruction; historical
-27/27 and 4.82% must not be attributed to the new route yet. No GPU training
-started. Existing GUI/selector/observer changes were left untouched.
+2026-09-04 tier routing verified with real models: **27/27 campaign**.
+Half/quasi select unchanged `jaegeromni-41m-medium`; full retains causal
+`jaegeromni-41m-converse`. Matched devclean64 (955 words): medium/causal
+transcription **4.82/5.03%** (46/48 edits); medium/causal HEARD from the
+one-generation reply **5.03/5.45%** (48/52 edits). HEARD tests use fresh
+history with no speaker context. Runtime and checkpoint identity are retained
+in `research/candidate_evals/tier-matched-gpu-20260904.json` and its linked
+reports. CPU checks: 18/18 converse selftests, 51 package tests at the routing
+commit, 31/31 module checks, native selfcheck and demo check. Registry:
+28 nodes / 13 profiles. User's GUI/selector/observer changes remain untouched.
 
 > Current selection and comparison: [`PIPELINES.md`](PIPELINES.md). Sections
 > below the current 50M results are retained experiment history, not additional

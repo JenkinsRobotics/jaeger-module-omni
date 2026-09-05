@@ -1,0 +1,83 @@
+{
+  "command": [
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+    "jaeger_agent_omni/tests/converse_sim.py",
+    "--session",
+    "full",
+    "--output",
+    "research/candidate_evals/tier-full-20260904.json"
+  ],
+  "session": "full",
+  "mode": "full",
+  "barge": "stop",
+  "node": "jaegeromni-41m-converse",
+  "adapter_sha256": "dc087d7edf7990033ca8e994bed8f8196b56587c23b3bea8f0a1db8cb560f39e",
+  "converse_sha256": "7b7d6cce9ff022e74db1917b4452c118b90e56ae9c3e5714da7ea0eb0a97faa1",
+  "perception_context": true,
+  "passed": 5,
+  "total": 5,
+  "checks": [
+    {
+      "name": "wake -> reply",
+      "passed": true
+    },
+    {
+      "name": "forming preview while listening",
+      "passed": true
+    },
+    {
+      "name": "long monologue answered",
+      "passed": true
+    },
+    {
+      "name": "farewell reply first",
+      "passed": true
+    },
+    {
+      "name": "close AFTER farewell",
+      "passed": true
+    }
+  ],
+  "log": [
+    "[converse] speaker+wake embeddings: ECAPA (trained NN)",
+    "[converse] semantic channel: jaegeromni-41m-converse (encoder\u2192adapter\u2192Gemma, no text seam)\u2026",
+    "[converse] perception heads: TRAINED (directed / turn_end / overlap / speaker_change on the trunk)",
+    "loading Kokoro\u2026",
+    "WARNING: Defaulting repo_id to hexgrad/Kokoro-82M. Pass repo_id='hexgrad/Kokoro-82M' to suppress this warning.",
+    "[converse] full duplex \u00b7 barge=stop \u00b7 say 'hey computer \u2026' or type (Enter). Ctrl-C to quit.",
+    "  [context: speaker=S1 conf=100% pitch=118Hz]  Hey computer, what is two plus two?   [nn 0.74s ttft 0.26s]",
+    "  \u23f5 agent: It's four.",
+    "  [SIM] PASS  wake -> reply",
+    "  \u22ef forming: Hey computer, I really need your help planning a",
+    "  [SIM] PASS  forming preview while listening",
+    "  \u22ef forming: mputer, I really need your help planning a very big surprise birthday.",
+    "  \u22ef forming: elp planning a very big surprise birthday party for my younger sister.",
+    "  \u22ef forming: se birthday party for my younger sister soon. She is turning 30 years.",
+    "  \u22ef forming: ister soon. She is turning 30 years old this month and she truly loves",
+    "  [context: speaker=S1 conf=100% pitch=122Hz]  Hey computer, I really need your help planning a very big surprise birthday party for my younger sister soon. She is turning thirty years old this month and she truly loves smooth jazz music   [nn 1.93s ttft 0.41s]",
+    "  \u23f5 agent: I can help you plan the perfect party! Do you have a theme or budget in mind?",
+    "  [SIM] PASS  long monologue answered",
+    "  \u2702 barged",
+    "  \u22ef forming: it will be about twenty different guests coming",
+    "  \u22ef forming: will be about twenty different guests coming over and the total budget",
+    "  \u22ef forming: t guests coming over and the total budget is around five hundred whole",
+    "  \u22ef forming:  total budget is around five hundred whole dollars a few of the guests",
+    "  [context: speaker=S1 conf=100% pitch=123Hz]  It will be about twenty different guests coming over and the total budget is around five hundred whole dollars. A few of the guests are strict vegetarians.   [nn 1.81s ttft 0.45s]",
+    "  \u23f5 agent: That sounds manageable! We can focus on a nice spread that caters to everyone while keeping within budget.",
+    "  \u2702 barged",
+    "  \u22ef forming: all young children along so given up",
+    "  \u22ef forming: all young children along so given absolutely all of that information",
+    "  [context: speaker=S1 conf=100% pitch=114Hz]  all young children along so given absolutely all of that information   [nn 1.17s ttft 0.40s]",
+    "  \u23f5 agent: I think we have enough to start planning the details for her big day!",
+    "  \u2702 barged",
+    "  [context: speaker=S1 conf=100% pitch=102Hz]  Do you suggest ideas altogether?   [nn 1.22s ttft 0.47s]",
+    "  \u23f5 agent: I can put together a few initial ideas for you to review. How does that sound?",
+    "  [SIM] PASS  farewell reply first",
+    "  \u2702 barged",
+    "  [context: speaker=S1 conf=100% pitch=112Hz]  Hey future thank you goodbye   [nn 0.94s ttft 0.53s]",
+    "  \u23f5 agent: You're welcome!",
+    "  [conversation closed]",
+    "  [SIM] PASS  close AFTER farewell",
+    "bye"
+  ]
+}

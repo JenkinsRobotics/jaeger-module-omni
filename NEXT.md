@@ -1,13 +1,12 @@
 # Next steps — current plan
 
-2026-09-04 routing update: the half/quasi medium entry point and full-tier
-causal selection are implemented with CPU checks. This is a candidate,
-not a new 27/27 or WER claim. Finish step 1 with serialized real-model
-half → quasi → barge-continue → full campaign runs and matched
-transcription-only + HEARD/REPLY WER before starting overlap training.
-Clarification is pending whether step 1's "no GPU" permits inference;
-no GPU inference or training was launched. Commands and evidence limits:
-[`CONVERSE.md`](CONVERSE.md#tier-routing-candidate--2026-09-04-cpu-verified-only).
+2026-09-04 routing verified: **27/27** campaign. Half/quasi use unchanged
+medium weights: transcription **4.82% vs causal 5.03%**; HEARD/REPLY
+**5.03% vs causal 5.45%**, same devclean64/scorer. User explicitly authorized
+GPU inference, training and trials. The independent raw-audio overlap trial
+is next; its checkpoint/threshold are selected on validation, with separate
+Libri speakers and AMI participant-session groups held out for test.
+Evidence: `research/candidate_evals/tier-matched-gpu-20260904.json`.
 
 ## Pipeline lockdown — what we have and what we refine (2026-09-03)
 

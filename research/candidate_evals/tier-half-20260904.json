@@ -1,0 +1,109 @@
+{
+  "command": [
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+    "jaeger_agent_omni/tests/converse_sim.py",
+    "--session",
+    "half",
+    "--output",
+    "research/candidate_evals/tier-half-20260904.json"
+  ],
+  "session": "half",
+  "mode": "half",
+  "barge": "stop",
+  "node": "jaegeromni-41m-medium",
+  "adapter_sha256": "a7f96bfb889866f75df7b838f84aae368a56ab10f6469e766511d700e32fe13a",
+  "converse_sha256": "7b7d6cce9ff022e74db1917b4452c118b90e56ae9c3e5714da7ea0eb0a97faa1",
+  "perception_context": true,
+  "passed": 12,
+  "total": 12,
+  "checks": [
+    {
+      "name": "wake -> reply",
+      "passed": true
+    },
+    {
+      "name": "follow-up, no wake",
+      "passed": true
+    },
+    {
+      "name": "incomplete -> holding",
+      "passed": true
+    },
+    {
+      "name": "continuation merged",
+      "passed": true
+    },
+    {
+      "name": "merged thought answered",
+      "passed": true
+    },
+    {
+      "name": "incomplete -> holding (2)",
+      "passed": true
+    },
+    {
+      "name": "hold expires -> answers",
+      "passed": true
+    },
+    {
+      "name": "expiry reply",
+      "passed": true
+    },
+    {
+      "name": "typed turn replies",
+      "passed": true
+    },
+    {
+      "name": "ONE memory across voice+text",
+      "passed": true
+    },
+    {
+      "name": "farewell reply first",
+      "passed": true
+    },
+    {
+      "name": "close AFTER farewell",
+      "passed": true
+    }
+  ],
+  "log": [
+    "[converse] speaker+wake embeddings: ECAPA (trained NN)",
+    "[converse] semantic channel: jaegeromni-41m-medium (encoder\u2192adapter\u2192Gemma, no text seam)\u2026",
+    "loading Kokoro\u2026",
+    "WARNING: Defaulting repo_id to hexgrad/Kokoro-82M. Pass repo_id='hexgrad/Kokoro-82M' to suppress this warning.",
+    "[converse] half duplex \u00b7 barge=stop \u00b7 say 'hey computer \u2026' or type (Enter). Ctrl-C to quit.",
+    "  [context: speaker=S1 conf=100% pitch=121Hz]  Hey computer, what is two plus two?   [nn 0.85s ttft 0.31s]",
+    "  \u23f5 agent: It's four.",
+    "  [SIM] PASS  wake -> reply",
+    "  [context: speaker=S1 conf=100% pitch=123Hz]  and what about three plus three   [nn 0.74s ttft 0.31s]",
+    "  \u23f5 agent: That equals six.",
+    "  [SIM] PASS  follow-up, no wake",
+    "  [context: speaker=S1 conf=100% pitch=138Hz incomplete]  please help me the capital of   [nn 0.83s ttft 0.34s]",
+    "  [holding \u2014 finish your thought]",
+    "  [SIM] PASS  incomplete -> holding",
+    "  [context: speaker=S1 conf=100% pitch=133Hz]  friends   [nn 0.67s ttft 0.32s]",
+    "  \u23f5 merged: please help me the capital of friends",
+    "  [SIM] PASS  continuation merged",
+    "  \u23f5 agent: I think you might mean the capital of France. That city is Paris.",
+    "  [SIM] PASS  merged thought answered  \u00b7   \u23f5 agent: I think you might mean the capital of France. That city is Paris.",
+    "  [context: speaker=S1 conf=100% pitch=110Hz incomplete]  my favorite animal is the   [nn 0.84s ttft 0.36s]",
+    "  [holding \u2014 finish your thought]",
+    "  [SIM] PASS  incomplete -> holding (2)",
+    "  [hold expired \u2014 answering]",
+    "  [SIM] PASS  hold expires -> answers",
+    "  \u23f5 agent: [Sighing] You seem to have trailed off. What is your favorite animal?",
+    "  [SIM] PASS  expiry reply",
+    "  you (typed): Remember this: my name is Jonathan.",
+    "  \u23f5 agent: I remember that your name is Jonathan.",
+    "  [SIM] PASS  typed turn replies",
+    "  [context: speaker=S1 conf=100% pitch=113Hz]  Hey computer, what is my name   [nn 0.89s ttft 0.42s]",
+    "  \u23f5 agent: Your name is Jonathan.",
+    "  [SIM] PASS  ONE memory across voice+text  \u00b7   \u23f5 agent: Your name is Jonathan.",
+    "  [SIM] PASS  farewell reply first",
+    "  [context: speaker=S1 conf=100% pitch=108Hz]  hey computer thank you good bye   [nn 0.83s ttft 0.46s]",
+    "  \u23f5 agent: Goodbye.",
+    "  [conversation closed]",
+    "  [SIM] PASS  close AFTER farewell",
+    "bye"
+  ]
+}

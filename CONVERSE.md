@@ -5,46 +5,46 @@ its 27/27 campaign state (playground commit `9f1103b`). This is the full
 pipeline — real trained weights, real node graph, real duplex ladder — not a
 facade: text, vision, and audio in; text and audio out.
 
-## Tier routing candidate — 2026-09-04, CPU-verified only
+## Tier routing verified — 2026-09-04
 
-Half/quasi now select the existing `jaegeromni-41m-medium` pairing through
+Half/quasi now select the unchanged `jaegeromni-41m-medium` pairing through
 its `build_converse()` entry point. Full retains `jaegeromni-41m-converse`
 for previews and replies. Bare `--converse` selects quasi; explicit tiers
-and `--barge stop|continue` remain available. No checkpoint was changed or
-new node created. The registry contains 28 nodes and 13 profiles:
+and `--barge stop|continue` remain available. Registry: 28 nodes / 13 profiles;
 `agent-graph-v0` describes half/quasi, `agent-graph-full-v0` describes full.
-Turn-based tiers use parallel speaker/wake/turn processing without mounting
-adapter heads; the full tier retains its transitional head path.
 
-**Not yet promoted:** the prior 27/27 and 4.82% figures below are historical
-measurements, not measurements of this new routing. GPU inference has not
-run under the step-1 "no GPU" instruction. CPU evidence is retained in
-`research/candidate_evals/tier-matched-cpu-20260904.json`.
+Real-model campaign: **27/27** (half 12/12, quasi 6/6, barge-continue 4/4,
+full 5/5), with successful process exits. The initial quasi wrapper failed
+because its shell file was edited during execution; a clean-exit rerun is
+retained separately. Existing barge scenarios allow retries; the clean quasi
+run cut on attempt 3. This proves the campaign gate, not first-attempt reliability.
 
-Next, run half first, then the other three campaign sessions, serially:
+Same locked devclean64 manifest, 955 words, identical scorer:
+
+| Ear | Transcription only | HEARD from one-generation reply |
+|---|---|---|
+| medium (half/quasi) | **46 edits, 4.82%** | **48 edits, 5.03%** |
+| causal (full) | 48 edits, 5.03% | 52 edits, 5.45% |
+
+HEARD tests use fresh history and no speaker context per clip. The 4.82%
+transcription score must not be attributed to the conversational reply prompt.
+Summary, reproducing commands, comparisons, and per-session evidence:
+`research/candidate_evals/tier-matched-gpu-20260904.json`.
 
 ```sh
 .venv/bin/python jaeger_agent_omni/tests/converse_sim.py --session half \
   --output research/candidate_evals/tier-half-20260904.json
-# Repeat with --session quasi, barge-continue, full and distinct output names.
+# Repeat with quasi, barge-continue, full and distinct output names.
 .venv/bin/python research/converse_ear_wer.py --tier half -n 64 \
   --output research/candidate_evals/tier-half-20260904-devclean64.json
 .venv/bin/python research/converse_ear_wer.py --tier half --heard-reply -n 64 \
   --output research/candidate_evals/tier-half-heard-20260904-devclean64.json
-# Repeat both WER protocols with --tier full for a matched causal control.
+# Repeat both WER protocols with --tier full for the matched causal control.
 ```
 
-`--tier` uses converse's actual loader. `--heard-reply` scores HEARD from
-the production reply prompt using the same manifest/scorer, with fresh
-history and no speaker context per clip. Report this separately from
-transcription-only WER: 4.82% is not an established HEARD/REPLY score.
-Campaign `--output` saves checks, selected node, context setting, and logs;
-WER saves manifest/scorer hashes and per-clip outputs.
-
-Before the later context/vision gates, account for two existing code facts:
-`OMNI_CONTEXT` currently defaults **on** (the plan asks for proof before
-defaulting it on), and image turns still load the GGUF Gemma twin while
-sharing `nn_hist`. Neither behavior was changed in this routing step.
+Open follow-ups: speaker-context value (`OMNI_CONTEXT` currently defaults on),
+image submission (projector loads but no input sets the image), and image/text
+history retention at the rolling boundary. These require their own measured gates.
 
 ## What runs
 

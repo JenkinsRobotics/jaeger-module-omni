@@ -1,0 +1,96 @@
+{
+  "campaign": {
+    "half": {
+      "passed": 12,
+      "total": 12,
+      "node": "jaegeromni-41m-medium",
+      "evidence": "research/candidate_evals/tier-half-20260904.json"
+    },
+    "quasi": {
+      "passed": 6,
+      "total": 6,
+      "node": "jaegeromni-41m-medium",
+      "evidence": "research/candidate_evals/tier-quasi-clean-exit-20260904.json"
+    },
+    "barge-continue": {
+      "passed": 4,
+      "total": 4,
+      "node": "jaegeromni-41m-medium",
+      "evidence": "research/candidate_evals/tier-barge-continue-20260904.json"
+    },
+    "full": {
+      "passed": 5,
+      "total": 5,
+      "node": "jaegeromni-41m-converse",
+      "evidence": "research/candidate_evals/tier-full-20260904.json"
+    }
+  },
+  "passed": 27,
+  "total": 27,
+  "wer": {
+    "transcription": {
+      "half": {
+        "node": "jaegeromni-41m-medium",
+        "wer": 0.048167539267015703,
+        "edits": 46,
+        "reference_words": 955,
+        "median_transcribe_s": 0.6179010000014387
+      },
+      "full": {
+        "node": "jaegeromni-41m-converse",
+        "wer": 0.050261780104712044,
+        "edits": 48,
+        "reference_words": 955,
+        "median_transcribe_s": 0.6210187079996103
+      }
+    },
+    "heard_reply": {
+      "half": {
+        "node": "jaegeromni-41m-medium",
+        "wer": 0.050261780104712044,
+        "edits": 48,
+        "reference_words": 955,
+        "median_transcribe_s": 0.9746801670007699
+      },
+      "full": {
+        "node": "jaegeromni-41m-converse",
+        "wer": 0.05445026178010471,
+        "edits": 52,
+        "reference_words": 955,
+        "median_transcribe_s": 0.9358967919979477
+      }
+    }
+  },
+  "comparisons": [
+    {
+      "command": [
+        ".venv/bin/python",
+        "training/compare_candidate.py",
+        "tier-full-20260904",
+        "tier-half-20260904",
+        "--gates",
+        "devclean64",
+        "--skip-cases12"
+      ],
+      "exit_code": 0,
+      "stdout": "gate                  baseline       candidate      delta\ndevclean64               48 edits      46 edits      -2\nSELECTED GATES PASS: no regression; improved devclean64 -2 edits\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        ".venv/bin/python",
+        "training/compare_candidate.py",
+        "tier-full-heard-20260904",
+        "tier-half-heard-20260904",
+        "--gates",
+        "devclean64",
+        "--skip-cases12"
+      ],
+      "exit_code": 0,
+      "stdout": "gate                  baseline       candidate      delta\ndevclean64               52 edits      48 edits      -4\nSELECTED GATES PASS: no regression; improved devclean64 -4 edits\n",
+      "stderr": ""
+    }
+  ],
+  "scope": "fresh-history WER; half/quasi share one loader; full retains causal ear",
+  "initial_quasi_wrapper_failure": "Initial session checks passed but shell wrapper was edited during execution; clean-exit rerun retained separately."
+}

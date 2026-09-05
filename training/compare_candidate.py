@@ -20,6 +20,18 @@ def load(root: Path, label: str, gate: str) -> dict:
     return json.loads(path.read_text())
 
 
+def validate_population(before: dict, after: dict, gate: str) -> None:
+    if int(before["reference_words"]) != int(after["reference_words"]):
+        raise ValueError(f"{gate}: reference-word population changed")
+    if "rows" in before and "rows" in after:
+        population = lambda report: [(r["id"], r["reference"]) for r in report["rows"]]
+        if population(before) != population(after):
+            raise ValueError(f"{gate}: ordered IDs/references changed")
+    for key in ("manifest_sha256", "scorer_sha256"):
+        if key in before and key in after and before[key] != after[key]:
+            raise ValueError(f"{gate}: {key} changed")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("baseline")
@@ -27,11 +39,13 @@ def main() -> int:
     parser.add_argument("--root", type=Path,
                         default=Path("research/candidate_evals"))
     parser.add_argument("--include-lockbox", action="store_true")
+    parser.add_argument("--gates", nargs="+", choices=WER_GATES,
+                        help="explicit subset diagnostic; default remains ALL quality gates")
     parser.add_argument("--skip-cases12", action="store_true",
                         help="select only from corpus gates")
     args = parser.parse_args()
 
-    gates = list(WER_GATES)
+    gates = args.gates or list(WER_GATES)
     if args.include_lockbox:
         gates.append("testclean2603")
     regressions = []
@@ -40,8 +54,7 @@ def main() -> int:
     for gate in gates:
         before = load(args.root, args.baseline, gate)
         after = load(args.root, args.candidate, gate)
-        if int(before["reference_words"]) != int(after["reference_words"]):
-            raise ValueError(f"{gate}: reference-word population changed")
+        validate_population(before, after, gate)
         old, new = int(before["edits"]), int(after["edits"])
         delta = new - old
         print(f"{gate:<21} {old:5d} edits   {new:5d} edits   {delta:+5d}")
@@ -69,7 +82,8 @@ def main() -> int:
     if not improvements:
         print("REJECT: no independent quality gate improved")
         return 1
-    print("QUALITY GATES PASS: no regression; improved "
+    print(("SELECTED GATES PASS" if args.gates else "QUALITY GATES PASS")
+          + ": no regression; improved "
           + "; ".join(improvements))
     return 0
 
