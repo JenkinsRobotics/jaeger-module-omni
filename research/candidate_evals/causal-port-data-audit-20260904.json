@@ -1,0 +1,100 @@
+{
+  "mode": "dry-run-no-gpu",
+  "resume": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/jaeger_agent_omni/nodes/jaegeromni-41m-medium/weights/adapter.npz",
+  "resume_sha256": "a7f96bfb889866f75df7b838f84aae368a56ab10f6469e766511d700e32fe13a",
+  "architecture": "cleanroom_context_v2",
+  "encoder": "openai/whisper-medium",
+  "training_rows": 45725,
+  "feature_widths": {
+    "1024": 45725
+  },
+  "sampling_mass": {
+    "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-clean360-v1/clean360": 0.5,
+    "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-expanded-v1/ami5_train": 0.25,
+    "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-room-aug-v1/room_aug": 0.25
+  },
+  "sources": [
+    {
+      "cache": "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-clean360-v1",
+      "split": "clean360",
+      "weight": 0.5,
+      "rows": 27911,
+      "manifest": "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-clean360-v1/clean360/manifest.jsonl",
+      "manifest_sha256": "69b03eba3c1b70030a27d3b80a152a2b3b8761717149041621b0b93c806df484",
+      "allow_acoustic_variants": true,
+      "acoustic_variant_extra_rows_total": 0
+    },
+    {
+      "cache": "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-expanded-v1",
+      "split": "ami5_train",
+      "weight": 0.25,
+      "rows": 3249,
+      "manifest": "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-expanded-v1/ami5_train/manifest.jsonl",
+      "manifest_sha256": "67f21e4e04ca2ceb10b3d834f3a4f22004951dbb6a2fbee7915caa4cafba44bd",
+      "allow_acoustic_variants": true
+    },
+    {
+      "cache": "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-room-aug-v1",
+      "split": "room_aug",
+      "weight": 0.25,
+      "rows": 14565,
+      "manifest": "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-room-aug-v1/room_aug/manifest.jsonl",
+      "manifest_sha256": "c8bbee1fed67acc9db98bc59f590ecc1c26dd41f96ead4f27af54941099bc1e5",
+      "allow_acoustic_variants": true
+    }
+  ],
+  "holdouts": [
+    {
+      "cache": "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-eval-v1",
+      "split": "devclean",
+      "weight": 1.0,
+      "rows": 59,
+      "manifest": "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-eval-v1/devclean/manifest.jsonl",
+      "manifest_sha256": "359bacbb982a881618a16fa3b13f18b556b715bf8f13517edf5135c5a5746259",
+      "speaker_overlap": 0,
+      "speakers": 1
+    },
+    {
+      "cache": "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-expanded-v1",
+      "split": "ami5_train_validation",
+      "weight": 1.0,
+      "rows": 750,
+      "manifest": "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-expanded-v1/ami5_train_validation/manifest.jsonl",
+      "manifest_sha256": "2ccc2e395fbcfd5ef083163337cd4ed1bb09504401ecfbf15d17e3bd4b276849",
+      "speaker_overlap": 0,
+      "speakers": 3
+    }
+  ],
+  "steps": 500,
+  "learning_rate": 5e-06,
+  "text_teacher_weight": 0.5,
+  "anchor_weight": 0.05,
+  "accumulate": 1,
+  "allow_acoustic_variants": true,
+  "causal_port": true,
+  "command": [
+    ".venv/bin/python",
+    "training/cleanroom_context_ce.py",
+    "--resume",
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/jaeger_agent_omni/nodes/jaegeromni-41m-medium/weights/adapter.npz",
+    "--output",
+    "artifacts/stock-whisper-gemma-medium-causal-port-v1.npz",
+    "--causal",
+    "--steps",
+    "500",
+    "--accumulate",
+    "1",
+    "--allow-acoustic-variants",
+    "--dry-run",
+    "--train-source",
+    "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-clean360-v1::clean360::0.5",
+    "--train-source",
+    "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-expanded-v1::ami5_train::0.25",
+    "--train-source",
+    "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-room-aug-v1::room_aug::0.25",
+    "--holdout-source",
+    "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-eval-v1::devclean::1.0",
+    "--holdout-source",
+    "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-expanded-v1::ami5_train_validation::1.0"
+  ]
+}

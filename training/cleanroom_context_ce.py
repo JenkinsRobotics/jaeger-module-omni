@@ -52,7 +52,7 @@ def _sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
-def _build_adapter(values: dict[str, np.ndarray]):
+def _build_adapter(values: dict[str, np.ndarray], *, causal: bool = False):
     import mlx.core as mx
     import mlx.nn as nn
     from mlx.utils import tree_unflatten
@@ -82,8 +82,12 @@ def _build_adapter(values: dict[str, np.ndarray]):
             else:
                 pooled = mx.mean(projected, axis=0, keepdims=True)
             context = pooled[None, :]
+            mask = None
+            if causal:
+                n = context.shape[1]
+                mask = mx.where(mx.tril(mx.ones((n, n))) > 0, 0.0, -1e9)
             context = self.ln_a(
-                context + self.attn(context, context, context))
+                context + self.attn(context, context, context, mask=mask))
             context = self.ln_f(
                 context + self.ff2(nn.gelu(self.ff1(context))))
             output = self.out(context[0])
@@ -130,6 +134,13 @@ def _checkpoint_values(adapter, base, args, step, sources, holdouts):
         "holdout_sources_json": np.array(json.dumps(holdouts, sort_keys=True)),
         "transcript_objective": np.array(TRANSCRIPT_SYSTEM),
     })
+    if getattr(args, "causal", False):
+        # Heads-free causal port: never mislabel these weights as bidirectional
+        # or as the legacy causal architecture with attached perception heads.
+        values["arch"] = np.frombuffer(b"context_causal_v1", dtype=np.uint8)
+        values["adapter_arch"] = np.array("cleanroom_context_causal_v1")
+        values["causal"] = np.array([1], dtype=np.int32)
+        values["stage"] = np.array("causal_port_human_ce_text_kl_bidir_anchor")
     return values
 
 
@@ -164,6 +175,7 @@ def command_train(args) -> None:
         "text_teacher_weight": args.text_teacher_weight,
         "anchor_weight": args.anchor_weight, "accumulate": args.accumulate,
         "allow_acoustic_variants": args.allow_acoustic_variants,
+        "causal_port": args.causal,
     }
     print(json.dumps(audit, indent=2), flush=True)
     if args.dry_run:
@@ -186,7 +198,7 @@ def command_train(args) -> None:
     backbone, tokenizer = load(str(args.model), lazy=False)
     backbone.freeze()
     backbone.eval()
-    adapter = _build_adapter(base)
+    adapter = _build_adapter(base, causal=args.causal)
     if args.train_branch == "out":
         adapter.freeze()
         adapter.out.unfreeze()
@@ -377,6 +389,9 @@ def build_parser():
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--model", type=Path, default=DEFAULT_GEMMA)
     parser.add_argument("--steps", type=int, default=1000)
+    parser.add_argument("--causal", action="store_true",
+                        help="train a NEW heads-free causal port against the "
+                             "frozen bidirectional anchor; encoder stays frozen")
     parser.add_argument("--learning-rate", type=float, default=5e-6)
     parser.add_argument("--train-branch", choices=("all", "out"),
                         default="all")

@@ -94,14 +94,19 @@ def main() -> int:
         with np.load(args.adapter, allow_pickle=False) as z:
             arrays = {k: z[k] for k in z.files}
         arch = bytes(arrays.get("arch", b"")).decode(errors="replace")
-        if "streaming_causal" not in arch:
+        if "streaming_causal" not in arch and arch != "context_causal_v1":
             raise SystemExit(f"--adapter is {arch or 'unknown'}, not "
                              "streaming_causal_v1; the seam is causal-only "
                              "(bidirectional adapters need streaming training)")
-        from streaming_adapter import build_streaming_adapter
         params = {k: v for k, v in arrays.items() if "." in k}
-        ear.adapter = build_streaming_adapter(
-            int(arrays["hidden"][0]), arrays=params, causal=True)
+        if arch == "context_causal_v1":
+            from gemmaomni_adapter import build_context_adapter
+            ear.adapter = build_context_adapter(
+                int(arrays["hidden"][0]), arrays=params, causal=True)
+        else:
+            from streaming_adapter import build_streaming_adapter
+            ear.adapter = build_streaming_adapter(
+                int(arrays["hidden"][0]), arrays=params, causal=True)
     if args.instructed and args.system:
         raise SystemExit("--instructed and --system are alternative prompts")
     if args.instructed or args.system:
@@ -186,7 +191,7 @@ def main() -> int:
         "manifest_sha256": sha256(args.manifest.expanduser()),
         "scorer_sha256": sha256(REPO / "training/evaluate.py"),
         "system": converse.NN_SYSTEM if args.heard_reply else args.system,
-        "adapter": str(adapter), "split": "devclean",
+        "adapter": str(adapter), "split": args.manifest.parent.name,
         "adapter_sha256": sha256(adapter),
         "encoder": "openai/whisper-medium (node-local snapshot)",
         "evaluation_mode": mode,

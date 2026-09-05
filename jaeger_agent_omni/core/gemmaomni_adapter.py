@@ -399,7 +399,8 @@ def load_adapter_arrays(path: Path) -> dict[str, np.ndarray]:
 
 
 def build_context_adapter(hidden: int = 2048, seed: int = 0,
-                          arrays: dict[str, np.ndarray] | None = None):
+                          arrays: dict[str, np.ndarray] | None = None,
+                          *, causal: bool = False):
     """v2 adapter: CONTEXT-MIXING, ~41M params at hidden=2048.
 
     The v1 MLP translates every pooled frame in isolation, but phonetic
@@ -440,7 +441,11 @@ def build_context_adapter(hidden: int = 2048, seed: int = 0,
             else:
                 h = mx.mean(h[:usable].reshape(-1, POOL, hidden), axis=1)
             x = h[None, :]                                  # (1, T', h)
-            x = self.ln_a(x + self.attn(x, x, x))
+            mask = None
+            if causal:
+                n = x.shape[1]
+                mask = mx.where(mx.tril(mx.ones((n, n))) > 0, 0.0, -1e9)
+            x = self.ln_a(x + self.attn(x, x, x, mask=mask))
             x = self.ln_f(x + self.ff2(nn.gelu(self.ff1(x))))
             return self.out(x[0])
 
@@ -506,6 +511,8 @@ def load_any_adapter(path: Path):
         # Packaged checkpoints also carry provenance/architecture metadata.
         # Only named parameters belong in the module tree; keep the NPZ intact.
         params = {k: v for k, v in arrays.items() if "." in k}
+        if arch_tag == "context_causal_v1":
+            return build_context_adapter(hidden, arrays=params, causal=True), arch_tag
         return build_context_adapter(hidden, arrays=params), "context_v2"
     return build_mlx_adapter(
         {k: arrays[k] for k in

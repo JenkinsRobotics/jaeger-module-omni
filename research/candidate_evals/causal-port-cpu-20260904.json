@@ -1,0 +1,14 @@
+{
+  "command": [
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+    "research/causal_port_check.py",
+    "--output",
+    "research/candidate_evals/causal-port-cpu-20260904.json"
+  ],
+  "device": "cpu",
+  "training_runtime_max_difference": 0.0,
+  "causal_prefix_max_drift": 3.5762786865234375e-07,
+  "bidir_control_drift": 0.21093744039535522,
+  "passed": true,
+  "scope": "adapter only; Whisper still re-encodes growing prefixes"
+}
