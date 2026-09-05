@@ -11,7 +11,10 @@ which stays selected. All three new nodes are packaged-disabled. Speaker
 context now has measured value only with turn-local identity plus labeled
 history (19/24 vs 11/24 across development/held-out ECAPA queries), but raises
 medium fresh-turn HEARD WER 5.03% → 5.55%; it stays opt-in, default off.
-Next are real image/text/audio turns and the standing release gates.
+Image→text→audio shared-memory turns now pass 4/4, and the final default-off
+campaign is 27/27. The opt-in context runtime passes 12/12 structural checks
+but also speaks a speaker annotation once. Full agentic corpus A/B and the
+physical five-minute acoustic replay are running next.
 Overlap needs stronger acoustic representations and event
 reliability before promotion; repeating these scratch-TCN recipes is unwarranted.
 Evidence: `research/candidate_evals/tier-matched-gpu-20260904.json`.
@@ -56,7 +59,7 @@ Perception, two generations side by side:
   shadow node (scene 0.952 F1, events 0.088/0.254 — policy-banned).
 
 Output: Kokoro is the production mouth on both lineages; the hidden-state
-talker stays experimental. Harnesses: converse selftest 17/17, the
+talker stays experimental. Harnesses: converse selftest 18/18, the
 converse_sim campaign, the tiered release benchmark, the locked WER gates
 plus the new twin `research/converse_ear_wer.py`, and
 `training/compare_candidate.py`.
@@ -84,12 +87,10 @@ NN** — today barge runs on the energy BargeMonitor + ECAPA self-voice (passed
 the campaign); a trained overlap NN (Lane-1 Phase-1) upgrades it. speaker ID
 is already ECAPA; turn is already para-turn-state-v0.
 
-This revises the consolidation: converse currently defaults the causal ear
-(5.03%) for every tier; the tier-matched plan puts `41m-medium` (4.82%) on
-the turn-based tiers and reserves causal for full's preview. The causal
+Tier matching is implemented and verified: `41m-medium` (4.82%) serves
+the turn-based tiers and the current causal ear serves full's preview. The causal
 streaming-port GPU job (Lane-1b) therefore matters only to unlock/upgrade
-full-duplex, not to ship the quasi default. Next concrete build: tier-matched
-ear routing, starting with half-duplex on `41m-medium`.
+full-duplex, not to ship the quasi default. The causal-port trials failed their matched gates; the current full ear remains selected.
 
 ### Lane 1 — update the 41M omni to the parallel idea, then the ear bakeoff
 

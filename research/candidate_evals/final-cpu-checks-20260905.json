@@ -1,0 +1,63 @@
+{
+  "date": "2026-09-05",
+  "kind": "observed_cpu_verification",
+  "git_head": "350bc023c27967646da855a6ca6334557687ca7a",
+  "checks": [
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "jaeger_agent_omni.converse",
+        "--selftest"
+      ],
+      "exit_code": 0,
+      "result": "18/18"
+    },
+    {
+      "command": [
+        ".venv/bin/python",
+        "research/check_all.py"
+      ],
+      "exit_code": 0,
+      "result": "31/31 in 8.4s"
+    },
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "jaeger_agent_omni.omni",
+        "--selfcheck"
+      ],
+      "exit_code": 0,
+      "result": "passed"
+    },
+    {
+      "command": [
+        ".venv/bin/python",
+        "demo.py",
+        "--check"
+      ],
+      "exit_code": 0,
+      "result": "passed"
+    },
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "jaeger_agent_omni/tests"
+      ],
+      "exit_code": 0,
+      "result": "62 passed, 6 subtests passed in 3.18s"
+    }
+  ],
+  "limitations": [
+    "Workspace includes pre-existing user GUI/duplex/observer edits; these were included in tests and left unstaged."
+  ],
+  "source_sha256": {
+    "jaeger_agent_omni/converse.py": "f66064e0a355ddb99d851de2261662c8aadb46cebf9fa2d348bd381a26600068",
+    "jaeger_agent_omni/tests/converse_sim.py": "6abd6725c9113aa819b39e9515395ecfc0e4508b0e7b7e6925f3f0b5c6b1105a",
+    "research/check_all.py": "275537f2800a03f7fa01f58a522eda93721c5a7ea293a43fe426d4609dab505e"
+  }
+}

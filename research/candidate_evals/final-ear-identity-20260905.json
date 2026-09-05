@@ -1,0 +1,94 @@
+{
+  "kind": "immutable_ear_identity_audit",
+  "date": "2026-09-05",
+  "git_head": "350bc023c27967646da855a6ca6334557687ca7a",
+  "identical_medium_encoder": true,
+  "production_adapters_unchanged": true,
+  "rows": [
+    {
+      "node": "jaegeromni-41m-medium",
+      "files": {
+        "weights/adapter.npz": {
+          "sha256": "a7f96bfb889866f75df7b838f84aae368a56ab10f6469e766511d700e32fe13a",
+          "bytes": 163671418,
+          "is_symlink": false,
+          "hash_seconds": 0.09025150000161375
+        },
+        "weights/encoder/model.safetensors": {
+          "sha256": "62f73550fa6db24b0c6f6c5962bd0dae80fa644e93cde9cd9c3792971b47fd28",
+          "bytes": 3055544304,
+          "is_symlink": false,
+          "hash_seconds": 1.607709915999294
+        }
+      }
+    },
+    {
+      "node": "jaegeromni-41m-converse",
+      "files": {
+        "weights/adapter.npz": {
+          "sha256": "dc087d7edf7990033ca8e994bed8f8196b56587c23b3bea8f0a1db8cb560f39e",
+          "bytes": 163743673,
+          "is_symlink": false,
+          "hash_seconds": 0.09264204099963536
+        },
+        "weights/encoder/model.safetensors": {
+          "sha256": "62f73550fa6db24b0c6f6c5962bd0dae80fa644e93cde9cd9c3792971b47fd28",
+          "bytes": 3055544304,
+          "is_symlink": false,
+          "hash_seconds": 1.684411000002001
+        }
+      }
+    },
+    {
+      "node": "jaegeromni-41m-medium-causal-mask-v1",
+      "files": {
+        "weights/adapter.npz": {
+          "sha256": "6f943705066a134f1036c5c4f00e9d4a87796c77aadd6c2168dacb8764050f03",
+          "bytes": 163671725,
+          "is_symlink": false,
+          "hash_seconds": 0.08993995899800211
+        },
+        "weights/encoder/model.safetensors": {
+          "sha256": "62f73550fa6db24b0c6f6c5962bd0dae80fa644e93cde9cd9c3792971b47fd28",
+          "bytes": 3055544304,
+          "is_symlink": false,
+          "hash_seconds": 1.6521177909999096
+        }
+      }
+    },
+    {
+      "node": "jaegeromni-41m-medium-causal-port250-v1",
+      "files": {
+        "weights/adapter.npz": {
+          "sha256": "285e4cdfc4a4622910391296d201223bcca2f8f8883cddfaa96b3884b11e952b",
+          "bytes": 163682481,
+          "is_symlink": false,
+          "hash_seconds": 0.08669362499858835
+        },
+        "weights/encoder/model.safetensors": {
+          "sha256": "62f73550fa6db24b0c6f6c5962bd0dae80fa644e93cde9cd9c3792971b47fd28",
+          "bytes": 3055544304,
+          "is_symlink": false,
+          "hash_seconds": 1.6268052910018014
+        }
+      }
+    },
+    {
+      "node": "jaegeromni-41m-medium-causal-port500-v1",
+      "files": {
+        "weights/adapter.npz": {
+          "sha256": "ba337db65f26629a43a98c63e8b82f7663b1b3586e904ef261ffa932b338ba64",
+          "bytes": 163682481,
+          "is_symlink": false,
+          "hash_seconds": 0.0855102089990396
+        },
+        "weights/encoder/model.safetensors": {
+          "sha256": "62f73550fa6db24b0c6f6c5962bd0dae80fa644e93cde9cd9c3792971b47fd28",
+          "bytes": 3055544304,
+          "is_symlink": false,
+          "hash_seconds": 1.583945833001053
+        }
+      }
+    }
+  ]
+}
