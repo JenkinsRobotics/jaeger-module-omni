@@ -1,0 +1,1059 @@
+{
+  "command": [
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+    "research/converse_ear_wer.py",
+    "--node",
+    "jaeger_agent_omni/nodes/jaegeromni-41m-medium-causal-port500-v1",
+    "--manifest",
+    "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-expanded-v1/ami5_train_validation/manifest.jsonl",
+    "-n",
+    "64",
+    "--output",
+    "research/candidate_evals/medium-causal-500-20260904-ami64.json"
+  ],
+  "node": "jaegeromni-41m-medium-causal-port500-v1",
+  "tier": null,
+  "manifest_sha256": "2ccc2e395fbcfd5ef083163337cd4ed1bb09504401ecfbf15d17e3bd4b276849",
+  "scorer_sha256": "339bd69040ee922bb3c89168d1b079060e33ac358a0e30faed283aae6221169e",
+  "system": null,
+  "adapter": "jaeger_agent_omni/nodes/jaegeromni-41m-medium-causal-port500-v1/weights/adapter.npz",
+  "split": "ami5_train_validation",
+  "adapter_sha256": "ba337db65f26629a43a98c63e8b82f7663b1b3586e904ef261ffa932b338ba64",
+  "encoder": "openai/whisper-medium (node-local snapshot)",
+  "evaluation_mode": "node_production_transcribe",
+  "teacher_forced": false,
+  "input_handoff": "raw_waveform_no_transcript",
+  "id_file": "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-expanded-v1/ami5_train_validation/manifest.jsonl",
+  "source_prefix": null,
+  "n": 64,
+  "wer": 0.2838038632986627,
+  "edits": 191,
+  "reference_words": 673,
+  "median_transcribe_s": 0.4393963340007758,
+  "rows": [
+    {
+      "id": "f34b8a1a146f",
+      "reference": "where about just in appleton tower",
+      "hypothesis": "or about just in afterton tail",
+      "wer": 0.5,
+      "metrics": {
+        "audio_s": 1.44,
+        "audio_tokens": 72,
+        "generated_tokens": 7,
+        "front_end_s": 0.15452150000055553,
+        "prepare_s": 0.1872637919987028,
+        "ttft_s": 0.21091320800042013,
+        "generation_s": 0.372551750002458,
+        "total_s": 0.5605578340000648
+      }
+    },
+    {
+      "id": "081fdf58f057",
+      "reference": "but why don't we just write it as a new x. m. l. file",
+      "hypothesis": "well why don't we just write it down and you at home file",
+      "wer": 0.5,
+      "metrics": {
+        "audio_s": 3.11,
+        "audio_tokens": 156,
+        "generated_tokens": 15,
+        "front_end_s": 0.04840741700172657,
+        "prepare_s": 0.052391707999049686,
+        "ttft_s": 0.1980030419981631,
+        "generation_s": 0.5205914580001263,
+        "total_s": 0.5730117080020136
+      }
+    },
+    {
+      "id": "eccc3b9c2ac6",
+      "reference": "but i don't think it will be very hard",
+      "hypothesis": "but i don't think it will be very",
+      "wer": 0.1111111111111111,
+      "metrics": {
+        "audio_s": 1.69,
+        "audio_tokens": 85,
+        "generated_tokens": 10,
+        "front_end_s": 0.03607449999981327,
+        "prepare_s": 0.038998042000457644,
+        "ttft_s": 0.14745387500079232,
+        "generation_s": 0.36044945899993763,
+        "total_s": 0.3994739589979872
+      }
+    },
+    {
+      "id": "87e6e7f7ed4e",
+      "reference": "it's not t. f. i. d. f. it's just inverse document frequency",
+      "hypothesis": "it's not t f i d f just in the most document frequency",
+      "wer": 0.3333333333333333,
+      "metrics": {
+        "audio_s": 4.57,
+        "audio_tokens": 229,
+        "generated_tokens": 15,
+        "front_end_s": 0.057090375001280336,
+        "prepare_s": 0.061731958001473686,
+        "ttft_s": 0.20870220900178538,
+        "generation_s": 0.5295983750002051,
+        "total_s": 0.5913544159993762
+      }
+    },
+    {
+      "id": "382e0c76e7fe",
+      "reference": "like um yeah for each word or whatever but across the whole lot is what i mean by highest level",
+      "hypothesis": "like um yeah for each word or whatever but across the whole lot is what i mean by highest level",
+      "wer": 0.0,
+      "metrics": {
+        "audio_s": 7.0,
+        "audio_tokens": 350,
+        "generated_tokens": 20,
+        "front_end_s": 0.06837070799883804,
+        "prepare_s": 0.07455937499980791,
+        "ttft_s": 0.2624798329998157,
+        "generation_s": 0.7031586669982062,
+        "total_s": 0.777742041998863
+      }
+    },
+    {
+      "id": "0d2032e1d0f8",
+      "reference": "and then averaging it over the utterances",
+      "hypothesis": "and then averaging it over the autumn",
+      "wer": 0.14285714285714285,
+      "metrics": {
+        "audio_s": 2.11,
+        "audio_tokens": 106,
+        "generated_tokens": 7,
+        "front_end_s": 0.04009483299887506,
+        "prepare_s": 0.04321795799842221,
+        "ttft_s": 0.14872204100174713,
+        "generation_s": 0.29910683300113305,
+        "total_s": 0.3423448749999807
+      }
+    },
+    {
+      "id": "fe9f43f5b209",
+      "reference": "it's like that's one the papers i read",
+      "hypothesis": "it's like that one the papers i read",
+      "wer": 0.125,
+      "metrics": {
+        "audio_s": 2.04,
+        "audio_tokens": 102,
+        "generated_tokens": 10,
+        "front_end_s": 0.03831675000037649,
+        "prepare_s": 0.041523708001477644,
+        "ttft_s": 0.14749520899931667,
+        "generation_s": 0.35891108400028315,
+        "total_s": 0.40045491700220737
+      }
+    },
+    {
+      "id": "0f77c0823da4",
+      "reference": "that would be really useful",
+      "hypothesis": "but it'll be ready yes",
+      "wer": 0.8,
+      "metrics": {
+        "audio_s": 1.1,
+        "audio_tokens": 55,
+        "generated_tokens": 7,
+        "front_end_s": 0.030845334000332514,
+        "prepare_s": 0.033328417001030175,
+        "ttft_s": 0.11903229199742782,
+        "generation_s": 0.26580333299716585,
+        "total_s": 0.29915524999887566
+      }
+    },
+    {
+      "id": "5d396828e56e",
+      "reference": "um well i'll be there from twelve",
+      "hypothesis": "um well i'll be there from twelve",
+      "wer": 0.0,
+      "metrics": {
+        "audio_s": 3.31,
+        "audio_tokens": 166,
+        "generated_tokens": 9,
+        "front_end_s": 0.04518020800242084,
+        "prepare_s": 0.04933675000211224,
+        "ttft_s": 0.18041012500179932,
+        "generation_s": 0.3743983330023184,
+        "total_s": 0.42375545800314285
+      }
+    },
+    {
+      "id": "3bf8949767cc",
+      "reference": "i would've thought that um i think all the collections and things implement serializable already",
+      "hypothesis": "i would have thought that i think all the collections and things implement serializable already",
+      "wer": 0.2,
+      "metrics": {
+        "audio_s": 7.24,
+        "audio_tokens": 362,
+        "generated_tokens": 16,
+        "front_end_s": 0.06862137500138488,
+        "prepare_s": 0.0747439580009086,
+        "ttft_s": 0.26247245899867266,
+        "generation_s": 0.6152865839976585,
+        "total_s": 0.6900536249995639
+      }
+    },
+    {
+      "id": "6d4f85bf5849",
+      "reference": "i don't think it's really that much of a problem because if it's too big what we can do is just well all the off line stuff doesn't really matter",
+      "hypothesis": "i don't think it's really that much of a problem because if it's too big what we can do is just well all the offline stuff doesn't really matter",
+      "wer": 0.06666666666666667,
+      "metrics": {
+        "audio_s": 7.33,
+        "audio_tokens": 367,
+        "generated_tokens": 37,
+        "front_end_s": 0.06848912500208826,
+        "prepare_s": 0.07484270900022238,
+        "ttft_s": 0.26353104199733934,
+        "generation_s": 1.0771246669974062,
+        "total_s": 1.1519925840002543
+      }
+    },
+    {
+      "id": "462176bf88cb",
+      "reference": "i i dry read it the last time",
+      "hypothesis": "I don't think I read it last time so",
+      "wer": 0.625,
+      "metrics": {
+        "audio_s": 2.54,
+        "audio_tokens": 127,
+        "generated_tokens": 11,
+        "front_end_s": 0.04052662499816506,
+        "prepare_s": 0.043422458998975344,
+        "ttft_s": 0.1441632079986448,
+        "generation_s": 0.37753283299753093,
+        "total_s": 0.4209774169976299
+      }
+    },
+    {
+      "id": "3817d4e313b3",
+      "reference": "uh i'll be in um the appleton tower anyway",
+      "hypothesis": "i'll be in the afterton town anyway",
+      "wer": 0.4444444444444444,
+      "metrics": {
+        "audio_s": 3.31,
+        "audio_tokens": 166,
+        "generated_tokens": 10,
+        "front_end_s": 0.04032616699987557,
+        "prepare_s": 0.04450512499897741,
+        "ttft_s": 0.18126262499936274,
+        "generation_s": 0.39397762499720557,
+        "total_s": 0.43850495899823727
+      }
+    },
+    {
+      "id": "0708e2cb034b",
+      "reference": "might be wordnet",
+      "hypothesis": "it might be wordnet",
+      "wer": 0.3333333333333333,
+      "metrics": {
+        "audio_s": 1.17,
+        "audio_tokens": 59,
+        "generated_tokens": 5,
+        "front_end_s": 0.03279054200174869,
+        "prepare_s": 0.03551070899993647,
+        "ttft_s": 0.11953833400184521,
+        "generation_s": 0.22633837499961373,
+        "total_s": 0.26187149999896064
+      }
+    },
+    {
+      "id": "bf404427b6c9",
+      "reference": "'cause that'd be really useful is if we had a big directory",
+      "hypothesis": "so i'll be really useful as if we had a big idea",
+      "wer": 0.3333333333333333,
+      "metrics": {
+        "audio_s": 3.59,
+        "audio_tokens": 180,
+        "generated_tokens": 14,
+        "front_end_s": 0.046545125002012355,
+        "prepare_s": 0.05073354100022698,
+        "ttft_s": 0.18039750000025379,
+        "generation_s": 0.4868219170020893,
+        "total_s": 0.5375782500013884
+      }
+    },
+    {
+      "id": "11db5233ea73",
+      "reference": "'cause i'm off all friday",
+      "hypothesis": "somewhere for friday",
+      "wer": 0.8,
+      "metrics": {
+        "audio_s": 1.12,
+        "audio_tokens": 56,
+        "generated_tokens": 4,
+        "front_end_s": 0.031135749999521067,
+        "prepare_s": 0.03364191600121558,
+        "ttft_s": 0.1190867920013261,
+        "generation_s": 0.20243945800029906,
+        "total_s": 0.23610366600041743
+      }
+    },
+    {
+      "id": "d5e5f2abc292",
+      "reference": "are you free after this",
+      "hypothesis": "hey free of this",
+      "wer": 0.6,
+      "metrics": {
+        "audio_s": 1.23,
+        "audio_tokens": 62,
+        "generated_tokens": 4,
+        "front_end_s": 0.03055937500175787,
+        "prepare_s": 0.033198832999914885,
+        "ttft_s": 0.11485679100223933,
+        "generation_s": 0.20039916600217111,
+        "total_s": 0.23362079100115807
+      }
+    },
+    {
+      "id": "cb964e5bdb64",
+      "reference": "i mean it's impossible",
+      "hypothesis": "I am sorry, but I cannot fulfill this request.",
+      "wer": 2.0,
+      "metrics": {
+        "audio_s": 0.87,
+        "audio_tokens": 44,
+        "generated_tokens": 11,
+        "front_end_s": 0.031541834003292024,
+        "prepare_s": 0.03399866700056009,
+        "ttft_s": 0.11871524999878602,
+        "generation_s": 0.35367116600173176,
+        "total_s": 0.3876910000035423
+      }
+    },
+    {
+      "id": "316a2abb5d57",
+      "reference": "and as long as your algorithm respects that then we can just",
+      "hypothesis": "as long as your algorithm respects that then we can",
+      "wer": 0.16666666666666666,
+      "metrics": {
+        "audio_s": 3.51,
+        "audio_tokens": 176,
+        "generated_tokens": 10,
+        "front_end_s": 0.0481732500011276,
+        "prepare_s": 0.05242304200146464,
+        "ttft_s": 0.17847125000116648,
+        "generation_s": 0.3939342090015998,
+        "total_s": 0.44637929200325743
+      }
+    },
+    {
+      "id": "db49cb1d34bf",
+      "reference": "it doesn't matter 'cause all the calculation's done off line",
+      "hypothesis": "but it doesn't matter because all the calculations done offline",
+      "wer": 0.5,
+      "metrics": {
+        "audio_s": 2.87,
+        "audio_tokens": 144,
+        "generated_tokens": 12,
+        "front_end_s": 0.044179749998875195,
+        "prepare_s": 0.0482168750022538,
+        "ttft_s": 0.17760870900019654,
+        "generation_s": 0.435104959000455,
+        "total_s": 0.48334483399958117
+      }
+    },
+    {
+      "id": "882ca282ec3f",
+      "reference": "yeah that's the other th",
+      "hypothesis": "yeah asil",
+      "wer": 0.8,
+      "metrics": {
+        "audio_s": 1.07,
+        "audio_tokens": 54,
+        "generated_tokens": 3,
+        "front_end_s": 0.03142270800162805,
+        "prepare_s": 0.033916249998583226,
+        "ttft_s": 0.11890091699751792,
+        "generation_s": 0.17543954199936707,
+        "total_s": 0.20937429200057522
+      }
+    },
+    {
+      "id": "7ae47b448b23",
+      "reference": "that's easy",
+      "hypothesis": "my",
+      "wer": 1.0,
+      "metrics": {
+        "audio_s": 0.59,
+        "audio_tokens": 30,
+        "generated_tokens": 1,
+        "front_end_s": 0.029573542000434827,
+        "prepare_s": 0.03181224999934784,
+        "ttft_s": 0.11654550000093877,
+        "generation_s": 0.13569887499761535,
+        "total_s": 0.16753024999707122
+      }
+    },
+    {
+      "id": "45fdb8b1d78f",
+      "reference": "but the actual stuff it's doing will be on line",
+      "hypothesis": "but the actual stuff is doing it be on",
+      "wer": 0.3,
+      "metrics": {
+        "audio_s": 1.9,
+        "audio_tokens": 95,
+        "generated_tokens": 9,
+        "front_end_s": 0.035197042001527734,
+        "prepare_s": 0.03841995800030418,
+        "ttft_s": 0.1473509159986861,
+        "generation_s": 0.33978299999944284,
+        "total_s": 0.3782394170011685
+      }
+    },
+    {
+      "id": "f8d821e4e6d7",
+      "reference": "and like the utterances come off of here maybe",
+      "hypothesis": "and like the utterances come off of here maybe",
+      "wer": 0.0,
+      "metrics": {
+        "audio_s": 2.35,
+        "audio_tokens": 118,
+        "generated_tokens": 9,
+        "front_end_s": 0.039711999997962266,
+        "prepare_s": 0.04284041699793306,
+        "ttft_s": 0.14952879100019345,
+        "generation_s": 0.3441286660017795,
+        "total_s": 0.38699199999973644
+      }
+    },
+    {
+      "id": "742d0a3dd93b",
+      "reference": "well all you really wanna do is look into getting some sub set of the icsi corpus off the dice machines",
+      "hypothesis": "well what you really want to do is look into getting some subset of the exe corpus off the dice machines",
+      "wer": 0.2857142857142857,
+      "metrics": {
+        "audio_s": 6.21,
+        "audio_tokens": 311,
+        "generated_tokens": 21,
+        "front_end_s": 0.06353712500276743,
+        "prepare_s": 0.0691537500024424,
+        "ttft_s": 0.23801291699783178,
+        "generation_s": 0.69733124999766,
+        "total_s": 0.7665099170008034
+      }
+    },
+    {
+      "id": "42b25d1c4ddd",
+      "reference": "but um",
+      "hypothesis": "but",
+      "wer": 0.5,
+      "metrics": {
+        "audio_s": 0.65,
+        "audio_tokens": 33,
+        "generated_tokens": 1,
+        "front_end_s": 0.029454708001139807,
+        "prepare_s": 0.03246995799781871,
+        "ttft_s": 0.11747620800088043,
+        "generation_s": 0.13676312499956111,
+        "total_s": 0.1692652919991815
+      }
+    },
+    {
+      "id": "0cb94f082f25",
+      "reference": "i think we probably want to store sorry",
+      "hypothesis": "i think we probably want to start",
+      "wer": 0.25,
+      "metrics": {
+        "audio_s": 3.1799375,
+        "audio_tokens": 159,
+        "generated_tokens": 7,
+        "front_end_s": 0.04354999999850406,
+        "prepare_s": 0.04747562499687774,
+        "ttft_s": 0.17339158400136512,
+        "generation_s": 0.32545541700164904,
+        "total_s": 0.3729579169994395
+      }
+    },
+    {
+      "id": "cf1e0a329d5d",
+      "reference": "yeah",
+      "hypothesis": "yeah",
+      "wer": 0.0,
+      "metrics": {
+        "audio_s": 0.96,
+        "audio_tokens": 48,
+        "generated_tokens": 1,
+        "front_end_s": 0.03112683400104288,
+        "prepare_s": 0.03361083400159259,
+        "ttft_s": 0.11899170900142053,
+        "generation_s": 0.13794970900198678,
+        "total_s": 0.1715813340015302
+      }
+    },
+    {
+      "id": "9a49d64c3881",
+      "reference": "um yeah",
+      "hypothesis": "i'm yeah",
+      "wer": 0.5,
+      "metrics": {
+        "audio_s": 1.79,
+        "audio_tokens": 90,
+        "generated_tokens": 4,
+        "front_end_s": 0.035086625000985805,
+        "prepare_s": 0.0380338329996448,
+        "ttft_s": 0.14672529199742712,
+        "generation_s": 0.23048141699837288,
+        "total_s": 0.2685352080006851
+      }
+    },
+    {
+      "id": "a6acc051c018",
+      "reference": "i mean i don't see why that's really a big problem",
+      "hypothesis": "i think i see why that's really a big problem",
+      "wer": 0.18181818181818182,
+      "metrics": {
+        "audio_s": 4.66,
+        "audio_tokens": 233,
+        "generated_tokens": 12,
+        "front_end_s": 0.05517116600094596,
+        "prepare_s": 0.05998050000198418,
+        "ttft_s": 0.2049903750012163,
+        "generation_s": 0.46576966700013145,
+        "total_s": 0.5257977500004927
+      }
+    },
+    {
+      "id": "b0a0c23fb798",
+      "reference": "and like just being able to scroll through it or something like that",
+      "hypothesis": "and like just being out to scroll through it or something like that",
+      "wer": 0.07692307692307693,
+      "metrics": {
+        "audio_s": 2.98,
+        "audio_tokens": 149,
+        "generated_tokens": 13,
+        "front_end_s": 0.043786541998997563,
+        "prepare_s": 0.047781041997950524,
+        "ttft_s": 0.1785273329987831,
+        "generation_s": 0.4585692909968202,
+        "total_s": 0.5063739999968675
+      }
+    },
+    {
+      "id": "427a229d01c8",
+      "reference": "um well that's the t are you using t. f. i. d. f. for the information density",
+      "hypothesis": "um well that's it i eaten tea fidef for the information density",
+      "wer": 0.5882352941176471,
+      "metrics": {
+        "audio_s": 6.07,
+        "audio_tokens": 304,
+        "generated_tokens": 17,
+        "front_end_s": 0.06529333400249016,
+        "prepare_s": 0.07091245900301146,
+        "ttft_s": 0.2351469579989498,
+        "generation_s": 0.6063168330001645,
+        "total_s": 0.6772532500035595
+      }
+    },
+    {
+      "id": "4ea5c9695d4d",
+      "reference": "well mostly skimming yeah",
+      "hypothesis": "while mostly skimming",
+      "wer": 0.5,
+      "metrics": {
+        "audio_s": 1.28,
+        "audio_tokens": 64,
+        "generated_tokens": 3,
+        "front_end_s": 0.03253449999829172,
+        "prepare_s": 0.0352912499984086,
+        "ttft_s": 0.14563058299972909,
+        "generation_s": 0.21024083299926133,
+        "total_s": 0.24555941599828657
+      }
+    },
+    {
+      "id": "e29020556a1e",
+      "reference": "so just like unp there's bound to be like a media wave object or something like that",
+      "hypothesis": "so just like i'm there bound to be like a media wave object or something like that",
+      "wer": 0.11764705882352941,
+      "metrics": {
+        "audio_s": 4.84,
+        "audio_tokens": 242,
+        "generated_tokens": 19,
+        "front_end_s": 0.05597745900013251,
+        "prepare_s": 0.060638167000433896,
+        "ttft_s": 0.21176308400026755,
+        "generation_s": 0.6244605840001896,
+        "total_s": 0.6851468339991698
+      }
+    },
+    {
+      "id": "1de998b65070",
+      "reference": "so anything that has less than say nought point five importance gets assigned to zero",
+      "hypothesis": "so anything that has the less than say naught point five importance gets assigned to z",
+      "wer": 0.2,
+      "metrics": {
+        "audio_s": 5.22,
+        "audio_tokens": 261,
+        "generated_tokens": 16,
+        "front_end_s": 0.059121624999534106,
+        "prepare_s": 0.06428695899739978,
+        "ttft_s": 0.23267041600047378,
+        "generation_s": 0.5825284999991709,
+        "total_s": 0.6468413339971448
+      }
+    },
+    {
+      "id": "902c17814d07",
+      "reference": "why does it need to be classified into like different segments",
+      "hypothesis": "why does it need to be classified into like different segments",
+      "wer": 0.0,
+      "metrics": {
+        "audio_s": 3.33,
+        "audio_tokens": 167,
+        "generated_tokens": 11,
+        "front_end_s": 0.044840250000561355,
+        "prepare_s": 0.04904141700171749,
+        "ttft_s": 0.1805307079994236,
+        "generation_s": 0.4180114999981015,
+        "total_s": 0.4670765000009851
+      }
+    },
+    {
+      "id": "c7d495d0ee0c",
+      "reference": "i mean i would have thought they'd make it able to",
+      "hypothesis": "and I thought that they'd make it able",
+      "wer": 0.5454545454545454,
+      "metrics": {
+        "audio_s": 1.79,
+        "audio_tokens": 90,
+        "generated_tokens": 10,
+        "front_end_s": 0.030263958000432467,
+        "prepare_s": 0.03332854199834401,
+        "ttft_s": 0.14692766700318316,
+        "generation_s": 0.3607383340022352,
+        "total_s": 0.3940859169997566
+      }
+    },
+    {
+      "id": "4a0f14e8fb1d",
+      "reference": "i'm just building a dictionary",
+      "hypothesis": "I'm just building a dictionary.",
+      "wer": 0.0,
+      "metrics": {
+        "audio_s": 1.44,
+        "audio_tokens": 72,
+        "generated_tokens": 8,
+        "front_end_s": 0.028888041000755038,
+        "prepare_s": 0.03163575000144192,
+        "ttft_s": 0.14507079200120643,
+        "generation_s": 0.31316249999872525,
+        "total_s": 0.3448210829992604
+      }
+    },
+    {
+      "id": "20e176c7a002",
+      "reference": "'cause if we're looking at the whole lot of meetings we'll consider each meeting a document in sort of terms of this algorithm",
+      "hypothesis": "so if we're looking at the whole lot of meetings we'll consider each meeting a document in sort of terms of this algebra",
+      "wer": 0.08695652173913043,
+      "metrics": {
+        "audio_s": 6.66,
+        "audio_tokens": 333,
+        "generated_tokens": 27,
+        "front_end_s": 0.06674654100061161,
+        "prepare_s": 0.07284879099825048,
+        "ttft_s": 0.262203333000798,
+        "generation_s": 0.8539887080005428,
+        "total_s": 0.9268645830015885
+      }
+    },
+    {
+      "id": "55b9a40b067c",
+      "reference": "so it will make more sense and if you get just extract words",
+      "hypothesis": "so it will make more sense and you just extract",
+      "wer": 0.23076923076923078,
+      "metrics": {
+        "audio_s": 2.61,
+        "audio_tokens": 131,
+        "generated_tokens": 10,
+        "front_end_s": 0.04154766699866741,
+        "prepare_s": 0.04554587500024354,
+        "ttft_s": 0.1789656670007389,
+        "generation_s": 0.39378366700111656,
+        "total_s": 0.43935079199945903
+      }
+    },
+    {
+      "id": "e44727b31caa",
+      "reference": "is that it",
+      "hypothesis": "sigh",
+      "wer": 1.0,
+      "metrics": {
+        "audio_s": 0.71,
+        "audio_tokens": 36,
+        "generated_tokens": 1,
+        "front_end_s": 0.029573250001703855,
+        "prepare_s": 0.03186370800176519,
+        "ttft_s": 0.11758937500053435,
+        "generation_s": 0.13642483399962657,
+        "total_s": 0.168310000000929
+      }
+    },
+    {
+      "id": "a2057c1fd948",
+      "reference": "it would be useful to know how everyone's gonna store their things though",
+      "hypothesis": "it would be useful to know how everyone's going to store their things",
+      "wer": 0.23076923076923078,
+      "metrics": {
+        "audio_s": 4.6,
+        "audio_tokens": 230,
+        "generated_tokens": 15,
+        "front_end_s": 0.055417874998966,
+        "prepare_s": 0.060013833000994055,
+        "ttft_s": 0.21091004199843155,
+        "generation_s": 0.537195166998572,
+        "total_s": 0.5972301670008164
+      }
+    },
+    {
+      "id": "d4643f5849b1",
+      "reference": "and we can just summarise based on that",
+      "hypothesis": "and just summarizes based on",
+      "wer": 0.5,
+      "metrics": {
+        "audio_s": 1.67,
+        "audio_tokens": 84,
+        "generated_tokens": 5,
+        "front_end_s": 0.03495712500080117,
+        "prepare_s": 0.037833332997252,
+        "ttft_s": 0.14647791699826485,
+        "generation_s": 0.25340733399934834,
+        "total_s": 0.29128166699956637
+      }
+    },
+    {
+      "id": "86348972ed42",
+      "reference": "might be funny to see what is summarised the whole corpus as anyway",
+      "hypothesis": "might be funny to see what it summarizes the whole corpus has anyway",
+      "wer": 0.23076923076923078,
+      "metrics": {
+        "audio_s": 7.52,
+        "audio_tokens": 376,
+        "generated_tokens": 13,
+        "front_end_s": 0.069615790998796,
+        "prepare_s": 0.07570924999890849,
+        "ttft_s": 0.2645226669992553,
+        "generation_s": 0.5532608749999781,
+        "total_s": 0.6289952080005605
+      }
+    },
+    {
+      "id": "c9c3b0d19004",
+      "reference": "but it won't be very um processor intensive or memory intensive i don't think",
+      "hypothesis": "but it won't be very processor intensive or memory intensive i think",
+      "wer": 0.14285714285714285,
+      "metrics": {
+        "audio_s": 4.93,
+        "audio_tokens": 247,
+        "generated_tokens": 14,
+        "front_end_s": 0.05651666700214264,
+        "prepare_s": 0.061181417000625515,
+        "ttft_s": 0.21068916600052034,
+        "generation_s": 0.5145180409999739,
+        "total_s": 0.5757213750002848
+      }
+    },
+    {
+      "id": "d6f9e61f0ea3",
+      "reference": "we can just change the code",
+      "hypothesis": "being just changed the",
+      "wer": 0.6666666666666666,
+      "metrics": {
+        "audio_s": 1.1,
+        "audio_tokens": 55,
+        "generated_tokens": 4,
+        "front_end_s": 0.025922249998984626,
+        "prepare_s": 0.028361707998556085,
+        "ttft_s": 0.11991233400112833,
+        "generation_s": 0.20541720899927896,
+        "total_s": 0.23381579199849511
+      }
+    },
+    {
+      "id": "5ac4fc454ad9",
+      "reference": "is how much do we get",
+      "hypothesis": "because how much do we",
+      "wer": 0.3333333333333333,
+      "metrics": {
+        "audio_s": 1.46,
+        "audio_tokens": 73,
+        "generated_tokens": 5,
+        "front_end_s": 0.033772916001908015,
+        "prepare_s": 0.03648420800163876,
+        "ttft_s": 0.1455729169974802,
+        "generation_s": 0.25255195799763897,
+        "total_s": 0.28905666599894175
+      }
+    },
+    {
+      "id": "00a47cf957cf",
+      "reference": "and all we can do is just process a bit at a time",
+      "hypothesis": "and all we can do is just process it better time",
+      "wer": 0.3076923076923077,
+      "metrics": {
+        "audio_s": 3.22,
+        "audio_tokens": 161,
+        "generated_tokens": 11,
+        "front_end_s": 0.04456791700067697,
+        "prepare_s": 0.04838762500003213,
+        "ttft_s": 0.17922529200222925,
+        "generation_s": 0.41640266700051143,
+        "total_s": 0.4648124170016672
+      }
+    },
+    {
+      "id": "6c36b41571ac",
+      "reference": "like so i can use my home machine",
+      "hypothesis": "like so I need to my home machine",
+      "wer": 0.25,
+      "metrics": {
+        "audio_s": 1.77,
+        "audio_tokens": 89,
+        "generated_tokens": 8,
+        "front_end_s": 0.03548095899895998,
+        "prepare_s": 0.038464124998426996,
+        "ttft_s": 0.1469259580007929,
+        "generation_s": 0.31781020800190163,
+        "total_s": 0.3562932919994637
+      }
+    },
+    {
+      "id": "d6fd455d9205",
+      "reference": "i mean it has to go through the gateway",
+      "hypothesis": "i mean he has to go through the gate",
+      "wer": 0.2222222222222222,
+      "metrics": {
+        "audio_s": 1.52,
+        "audio_tokens": 76,
+        "generated_tokens": 9,
+        "front_end_s": 0.03358141699936823,
+        "prepare_s": 0.03628583400131902,
+        "ttft_s": 0.14564799999789102,
+        "generation_s": 0.3381479579984443,
+        "total_s": 0.3744596249998722
+      }
+    },
+    {
+      "id": "719370045f2c",
+      "reference": "we'll have to buffer it",
+      "hypothesis": "we'll have to bother",
+      "wer": 0.4,
+      "metrics": {
+        "audio_s": 0.91,
+        "audio_tokens": 46,
+        "generated_tokens": 6,
+        "front_end_s": 0.02987612499782699,
+        "prepare_s": 0.03233216700027697,
+        "ttft_s": 0.11838483300016378,
+        "generation_s": 0.2439408749996801,
+        "total_s": 0.2762933339981828
+      }
+    },
+    {
+      "id": "e04b3be31980",
+      "reference": "and then if you wanted the next level up",
+      "hypothesis": "and then if you want it the next level up",
+      "wer": 0.2222222222222222,
+      "metrics": {
+        "audio_s": 3.14,
+        "audio_tokens": 157,
+        "generated_tokens": 10,
+        "front_end_s": 0.04321866700047394,
+        "prepare_s": 0.04706533300122828,
+        "ttft_s": 0.18186241700095707,
+        "generation_s": 0.39693904199884855,
+        "total_s": 0.44402516699847183
+      }
+    },
+    {
+      "id": "ea8b50225a3e",
+      "reference": "'cause i could just say at um going over s. c. p. one night and just leave it going all night if i had to",
+      "hypothesis": "because i could just say it and going over c p one night and just leave it going all night if i had",
+      "wer": 0.2,
+      "metrics": {
+        "audio_s": 5.57,
+        "audio_tokens": 279,
+        "generated_tokens": 23,
+        "front_end_s": 0.061133666000387166,
+        "prepare_s": 0.06652658299935865,
+        "ttft_s": 0.23112604100242606,
+        "generation_s": 0.733649541001796,
+        "total_s": 0.8002017910002905
+      }
+    },
+    {
+      "id": "4e4f99285a7f",
+      "reference": "oh no no i was thinking of sshing just into some machine and then just scping it from there",
+      "hypothesis": "oh no i was thinking you assailing just into some machine and then just assailing it from",
+      "wer": 0.2631578947368421,
+      "metrics": {
+        "audio_s": 5.91,
+        "audio_tokens": 296,
+        "generated_tokens": 19,
+        "front_end_s": 0.06348145900119562,
+        "prepare_s": 0.06890920899968478,
+        "ttft_s": 0.23420899999837275,
+        "generation_s": 0.6498286249989178,
+        "total_s": 0.7187609590000648
+      }
+    },
+    {
+      "id": "2d7410b22945",
+      "reference": "yeah but it seems like a bit silly to be parsing it over and over again kinda thing",
+      "hypothesis": "yeah it seems like a bit silly to be passing it over and over again kind of",
+      "wer": 0.2222222222222222,
+      "metrics": {
+        "audio_s": 4.87,
+        "audio_tokens": 244,
+        "generated_tokens": 17,
+        "front_end_s": 0.055677584001387004,
+        "prepare_s": 0.06040370900154812,
+        "ttft_s": 0.21214816700012307,
+        "generation_s": 0.5819672090001404,
+        "total_s": 0.6424010840019037
+      }
+    },
+    {
+      "id": "db124f0b7224",
+      "reference": "uh i don't know i thought were you gonna use that in the end",
+      "hypothesis": "oh i don't know if so vegan is at my",
+      "wer": 0.7857142857142857,
+      "metrics": {
+        "audio_s": 2.85,
+        "audio_tokens": 143,
+        "generated_tokens": 12,
+        "front_end_s": 0.04244266699970467,
+        "prepare_s": 0.04639854199922411,
+        "ttft_s": 0.17807154200272635,
+        "generation_s": 0.4366193750029197,
+        "total_s": 0.48303841700180783
+      }
+    },
+    {
+      "id": "d27eea080e27",
+      "reference": "well if we're gonna dump the part of it into a database anyway",
+      "hypothesis": "or we're going to dump the part of into a database anyway",
+      "wer": 0.38461538461538464,
+      "metrics": {
+        "audio_s": 3.46,
+        "audio_tokens": 173,
+        "generated_tokens": 14,
+        "front_end_s": 0.04559937499652733,
+        "prepare_s": 0.04984041699935915,
+        "ttft_s": 0.18113358300252003,
+        "generation_s": 0.4803836669998418,
+        "total_s": 0.5302462089966866
+      }
+    },
+    {
+      "id": "7fc41b21ed0e",
+      "reference": "and like each time you want a higher level you just need to go up the tree",
+      "hypothesis": "and like each time you want a higher level you just need to go up the tree",
+      "wer": 0.0,
+      "metrics": {
+        "audio_s": 4.23,
+        "audio_tokens": 212,
+        "generated_tokens": 17,
+        "front_end_s": 0.054398332998971455,
+        "prepare_s": 0.05894600000101491,
+        "ttft_s": 0.20761412499996368,
+        "generation_s": 0.5750118340001791,
+        "total_s": 0.6339787500000966
+      }
+    },
+    {
+      "id": "d922cee9c4ed",
+      "reference": "then we don't even have to worry that much about the underlying x. m. l. representation",
+      "hypothesis": "so we don't even have to worry that much about the underlying xml representations",
+      "wer": 0.3125,
+      "metrics": {
+        "audio_s": 4.92,
+        "audio_tokens": 246,
+        "generated_tokens": 16,
+        "front_end_s": 0.05663533400002052,
+        "prepare_s": 0.06137533400033135,
+        "ttft_s": 0.212328499997966,
+        "generation_s": 0.5597103330001119,
+        "total_s": 0.6211126670023077
+      }
+    },
+    {
+      "id": "261a3148f48f",
+      "reference": "and then just i can change that to work on whatever",
+      "hypothesis": "and then just i can change that to work on whatever",
+      "wer": 0.0,
+      "metrics": {
+        "audio_s": 3.54,
+        "audio_tokens": 177,
+        "generated_tokens": 11,
+        "front_end_s": 0.046015959000214934,
+        "prepare_s": 0.0502367500012042,
+        "ttft_s": 0.18178616699879058,
+        "generation_s": 0.4187458750020596,
+        "total_s": 0.46900400000231457
+      }
+    },
+    {
+      "id": "b8c3b2b0a648",
+      "reference": "file representation of it",
+      "hypothesis": "file representation",
+      "wer": 0.5,
+      "metrics": {
+        "audio_s": 1.25,
+        "audio_tokens": 63,
+        "generated_tokens": 2,
+        "front_end_s": 0.03161529099816107,
+        "prepare_s": 0.03420504099995014,
+        "ttft_s": 0.11429458400016301,
+        "generation_s": 0.15194083399910596,
+        "total_s": 0.18617074999929173
+      }
+    },
+    {
+      "id": "24af030ddc76",
+      "reference": "it doesn't need ordered no",
+      "hypothesis": "doesn't need worried",
+      "wer": 0.6,
+      "metrics": {
+        "audio_s": 1.22,
+        "audio_tokens": 61,
+        "generated_tokens": 5,
+        "front_end_s": 0.031536374997813255,
+        "prepare_s": 0.03412937499888358,
+        "ttft_s": 0.11902449999979581,
+        "generation_s": 0.22369249999974272,
+        "total_s": 0.25784220899731736
+      }
+    },
+    {
+      "id": "e692d4cf6258",
+      "reference": "well like the ideas we're calculating are information density all off line first for every utterance in the whole corpus right",
+      "hypothesis": "well like the ideas were calculating our information density all offline first for every utterance in the whole corpus right",
+      "wer": 0.19047619047619047,
+      "metrics": {
+        "audio_s": 8.06,
+        "audio_tokens": 403,
+        "generated_tokens": 20,
+        "front_end_s": 0.08179762500003562,
+        "prepare_s": 0.08874929200101178,
+        "ttft_s": 0.2897210000010091,
+        "generation_s": 0.7309704590006731,
+        "total_s": 0.819752667001012
+      }
+    },
+    {
+      "id": "2cdc61c5be36",
+      "reference": "it's awful",
+      "hypothesis": "it's all right",
+      "wer": 1.0,
+      "metrics": {
+        "audio_s": 0.7,
+        "audio_tokens": 35,
+        "generated_tokens": 5,
+        "front_end_s": 0.029618750002555316,
+        "prepare_s": 0.03197245900082635,
+        "ttft_s": 0.1174890839974978,
+        "generation_s": 0.22273129200038966,
+        "total_s": 0.2547235420024663
+      }
+    }
+  ]
+}

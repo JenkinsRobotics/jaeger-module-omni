@@ -1,0 +1,127 @@
+{
+  "scorer": "training/evaluate.py",
+  "population_validator": "training.compare_candidate.validate_population",
+  "comparisons": [
+    {
+      "trial": "mask",
+      "passed": false,
+      "checks": [
+        {
+          "gate": "devclean64",
+          "baseline": "tier-full-20260904-devclean64.json",
+          "candidate": "medium-causal-mask-20260904-devclean64.json",
+          "baseline_edits": 48,
+          "candidate_edits": 50,
+          "delta": 2,
+          "population_verified": true
+        },
+        {
+          "gate": "ami64",
+          "baseline": "medium-causal-full-20260904-ami64.json",
+          "candidate": "medium-causal-mask-20260904-ami64.json",
+          "baseline_edits": 190,
+          "candidate_edits": 226,
+          "delta": 36,
+          "population_verified": true
+        }
+      ]
+    },
+    {
+      "trial": "250",
+      "passed": false,
+      "checks": [
+        {
+          "gate": "devclean64",
+          "baseline": "tier-full-20260904-devclean64.json",
+          "candidate": "medium-causal-250-20260904-devclean64.json",
+          "baseline_edits": 48,
+          "candidate_edits": 71,
+          "delta": 23,
+          "population_verified": true
+        },
+        {
+          "gate": "ami64",
+          "baseline": "medium-causal-full-20260904-ami64.json",
+          "candidate": "medium-causal-250-20260904-ami64.json",
+          "baseline_edits": 190,
+          "candidate_edits": 196,
+          "delta": 6,
+          "population_verified": true
+        }
+      ]
+    },
+    {
+      "trial": "500",
+      "passed": false,
+      "checks": [
+        {
+          "gate": "devclean64",
+          "baseline": "tier-full-20260904-devclean64.json",
+          "candidate": "medium-causal-500-20260904-devclean64.json",
+          "baseline_edits": 48,
+          "candidate_edits": 73,
+          "delta": 25,
+          "population_verified": true
+        },
+        {
+          "gate": "ami64",
+          "baseline": "medium-causal-full-20260904-ami64.json",
+          "candidate": "medium-causal-500-20260904-ami64.json",
+          "baseline_edits": 190,
+          "candidate_edits": 191,
+          "delta": 1,
+          "population_verified": true
+        }
+      ]
+    }
+  ],
+  "selected_full_ear": "jaegeromni-41m-converse",
+  "policy_changed": false,
+  "commands": [
+    {
+      "command": [
+        ".venv/bin/python",
+        "training/compare_candidate.py",
+        "medium-causal-full-20260904",
+        "medium-causal-mask-20260904",
+        "--gates",
+        "devclean64",
+        "ami64",
+        "--skip-cases12"
+      ],
+      "exit_code": 1,
+      "stdout": "gate                  baseline       candidate      delta\ndevclean64               48 edits      50 edits      +2\nami64                   190 edits     226 edits     +36\nREJECT: devclean64 +2 edits; ami64 +36 edits\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        ".venv/bin/python",
+        "training/compare_candidate.py",
+        "medium-causal-full-20260904",
+        "medium-causal-250-20260904",
+        "--gates",
+        "devclean64",
+        "ami64",
+        "--skip-cases12"
+      ],
+      "exit_code": 1,
+      "stdout": "gate                  baseline       candidate      delta\ndevclean64               48 edits      71 edits     +23\nami64                   190 edits     196 edits      +6\nREJECT: devclean64 +23 edits; ami64 +6 edits\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        ".venv/bin/python",
+        "training/compare_candidate.py",
+        "medium-causal-full-20260904",
+        "medium-causal-500-20260904",
+        "--gates",
+        "devclean64",
+        "ami64",
+        "--skip-cases12"
+      ],
+      "exit_code": 1,
+      "stdout": "gate                  baseline       candidate      delta\ndevclean64               48 edits      73 edits     +25\nami64                   190 edits     191 edits      +1\nREJECT: devclean64 +25 edits; ami64 +1 edits\n",
+      "stderr": ""
+    }
+  ]
+}

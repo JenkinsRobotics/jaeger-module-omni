@@ -5,8 +5,11 @@ medium weights: transcription **4.82% vs causal 5.03%**; HEARD/REPLY
 **5.03% vs causal 5.45%**, same devclean64/scorer. User explicitly authorized
 GPU inference, training and trials. Two independent raw-audio overlap trials
 are rejected (best test F1 0.633 synthetic / 0.728 AMI, frequent false events).
-The heads-free medium causal port is now being tested; the existing full ear
-stays selected. Overlap needs stronger acoustic representations and event
+The heads-free medium causal port also failed: mask-only and 250/500-step
+variants all regress devclean64 and AMI64 against the existing full ear,
+which stays selected. All three new nodes are packaged-disabled. Next are
+speaker-sensitive context evaluation and real image/text/audio turns.
+Overlap needs stronger acoustic representations and event
 reliability before promotion; repeating these scratch-TCN recipes is unwarranted.
 Evidence: `research/candidate_evals/tier-matched-gpu-20260904.json`.
 

@@ -2,6 +2,21 @@
 
 Measured ledger. Every claim here has a command that reproduces it.
 
+2026-09-04 heads-free causal port **rejected**. Same frozen medium encoder,
+40,915,456 adapter parameters, and Gemma; a causal mask plus 500 steps of
+human CE / text KL / bidirectional output anchoring. Matched converse-seam
+devclean64 / AMI64 WER: current full ear **5.03 / 28.23%**, mask-only control
+**5.24 / 33.58%**, step 250 **7.43 / 29.12%**, step 500 **7.64 / 28.38%**.
+Every new variant regresses both gates against the existing full ear. They
+are separate immutable nodes, disabled in all 13 profiles; registry now has
+31 nodes. Training finished without a collapse abort (11.3 GB peak Metal),
+and original medium weights are unchanged. No same-recipe continuation.
+Commands, population validation and comparator output:
+`research/candidate_evals/medium-causal-quality-comparison-20260904.json`;
+training trace and hashes: `medium-causal-port-training-20260904.json`.
+The unchanged medium ear measures 33.28% AMI at this converse decoding seam;
+its historical 32.99% belongs to the native-session route.
+
 2026-09-04 parallel raw-audio overlap trials remain **rejected**. Speaker and
 AMI participant-group disjoint splits: 4,712 train / 1,645 validation / 789 test.
 A causal log-mel TCN (128-wide, five blocks, eight epochs) reaches test F1
