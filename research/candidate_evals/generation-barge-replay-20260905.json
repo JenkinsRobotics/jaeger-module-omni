@@ -1,0 +1,917 @@
+{
+  "kind": "generation_barge_cpu_replay",
+  "passed": true,
+  "command": [
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+    "research/generation_barge_replay.py",
+    "--capture",
+    "research/candidate_evals/physical-acoustic-20260905.audio/raw_mic.wav",
+    "--actor",
+    "/tmp/jaeger-physical-actor/10c6e9ab72832f8081f0.wav",
+    "--output",
+    "research/candidate_evals/generation-barge-replay-20260905.json"
+  ],
+  "reports": {
+    "captured_pre_actor_5s": {
+      "blocks": 50,
+      "legacy_energy_active_blocks": 50,
+      "neural_speech_active_blocks": 0,
+      "first_neural_active_block_end_s": null,
+      "timings": {
+        "node": "silero-vad",
+        "input": "raw_pcm",
+        "frames": 166,
+        "threshold": 0.3,
+        "confirm_frames": 3,
+        "last_probability": 0.05105787515640259,
+        "update_ms_p95": 0.36898980142723303,
+        "update_ms_max": 0.6018749991199002
+      },
+      "rows": [
+        {
+          "start_s": 0.0,
+          "rms": 0.06543925404548645,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 0.1,
+          "rms": 0.07513733208179474,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 0.2,
+          "rms": 0.05404842272400856,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 0.3,
+          "rms": 0.05525526776909828,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 0.4,
+          "rms": 0.068708136677742,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 0.5,
+          "rms": 0.07786288857460022,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 0.6,
+          "rms": 0.04582177847623825,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 0.7,
+          "rms": 0.04911303520202637,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 0.8,
+          "rms": 0.06953021138906479,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 0.9,
+          "rms": 0.06955260783433914,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 1.0,
+          "rms": 0.05589542165398598,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 1.1,
+          "rms": 0.04343343526124954,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 1.2,
+          "rms": 0.06113966181874275,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 1.3,
+          "rms": 0.08323141187429428,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 1.4,
+          "rms": 0.06459444016218185,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 1.5,
+          "rms": 0.04220537096261978,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 1.6,
+          "rms": 0.061223868280649185,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 1.7,
+          "rms": 0.0708954781293869,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 1.8,
+          "rms": 0.05930113419890404,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 1.9,
+          "rms": 0.057663433253765106,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 2.0,
+          "rms": 0.04869451746344566,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 2.1,
+          "rms": 0.08128473162651062,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 2.2,
+          "rms": 0.0670003592967987,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 2.3,
+          "rms": 0.05192718282341957,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 2.4,
+          "rms": 0.049744848161935806,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 2.5,
+          "rms": 0.08073169738054276,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 2.6,
+          "rms": 0.06923400610685349,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 2.7,
+          "rms": 0.0511680468916893,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 2.8,
+          "rms": 0.046136364340782166,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 2.9,
+          "rms": 0.06437376886606216,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 3.0,
+          "rms": 0.07068034261465073,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 3.1,
+          "rms": 0.05414383485913277,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 3.2,
+          "rms": 0.039486363530159,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 3.3,
+          "rms": 0.060671642422676086,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 3.4,
+          "rms": 0.07340692728757858,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 3.5,
+          "rms": 0.0660603940486908,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 3.6,
+          "rms": 0.04124732315540314,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 3.7,
+          "rms": 0.06326434761285782,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 3.8,
+          "rms": 0.07740908116102219,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 3.9,
+          "rms": 0.061363495886325836,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 4.0,
+          "rms": 0.04825679212808609,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 4.1,
+          "rms": 0.0496685653924942,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 4.2,
+          "rms": 0.062064312398433685,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 4.3,
+          "rms": 0.050687290728092194,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 4.4,
+          "rms": 0.05349669232964516,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 4.5,
+          "rms": 0.05135247856378555,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 4.6,
+          "rms": 0.07522942870855331,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 4.7,
+          "rms": 0.060470953583717346,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 4.8,
+          "rms": 0.05891033634543419,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 4.9,
+          "rms": 0.04398031532764435,
+          "legacy_energy": true,
+          "neural_speech": false
+        }
+      ]
+    },
+    "seed11_broadband_noise": {
+      "blocks": 50,
+      "legacy_energy_active_blocks": 50,
+      "neural_speech_active_blocks": 0,
+      "first_neural_active_block_end_s": null,
+      "timings": {
+        "node": "silero-vad",
+        "input": "raw_pcm",
+        "frames": 166,
+        "threshold": 0.3,
+        "confirm_frames": 3,
+        "last_probability": 0.00671011209487915,
+        "update_ms_p95": 0.3982496986282058,
+        "update_ms_max": 0.4717499978141859
+      },
+      "rows": [
+        {
+          "start_s": 0.0,
+          "rms": 0.06991361826658249,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 0.1,
+          "rms": 0.07093872129917145,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 0.2,
+          "rms": 0.0685584619641304,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 0.3,
+          "rms": 0.07225526869297028,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 0.4,
+          "rms": 0.07077941298484802,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 0.5,
+          "rms": 0.0691894143819809,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 0.6,
+          "rms": 0.06975001841783524,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 0.7,
+          "rms": 0.06918847560882568,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 0.8,
+          "rms": 0.07078436017036438,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 0.9,
+          "rms": 0.0688621997833252,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 1.0,
+          "rms": 0.07066762447357178,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 1.1,
+          "rms": 0.06900632381439209,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 1.2,
+          "rms": 0.06892136484384537,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 1.3,
+          "rms": 0.07044916599988937,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 1.4,
+          "rms": 0.06921947747468948,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 1.5,
+          "rms": 0.06950332224369049,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 1.6,
+          "rms": 0.07012641429901123,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 1.7,
+          "rms": 0.06950482726097107,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 1.8,
+          "rms": 0.0699811652302742,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 1.9,
+          "rms": 0.07021932303905487,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 2.0,
+          "rms": 0.07046224176883698,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 2.1,
+          "rms": 0.07087460905313492,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 2.2,
+          "rms": 0.06971120089292526,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 2.3,
+          "rms": 0.06939969211816788,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 2.4,
+          "rms": 0.07057785987854004,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 2.5,
+          "rms": 0.07049111276865005,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 2.6,
+          "rms": 0.06897293031215668,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 2.7,
+          "rms": 0.07033754885196686,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 2.8,
+          "rms": 0.07091718167066574,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 2.9,
+          "rms": 0.07006891071796417,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 3.0,
+          "rms": 0.06963931024074554,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 3.1,
+          "rms": 0.06952618807554245,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 3.2,
+          "rms": 0.06930806487798691,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 3.3,
+          "rms": 0.070908322930336,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 3.4,
+          "rms": 0.06967706233263016,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 3.5,
+          "rms": 0.07066119462251663,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 3.6,
+          "rms": 0.06994792073965073,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 3.7,
+          "rms": 0.0686507299542427,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 3.8,
+          "rms": 0.0706351175904274,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 3.9,
+          "rms": 0.07294914126396179,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 4.0,
+          "rms": 0.06962848454713821,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 4.1,
+          "rms": 0.0685880035161972,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 4.2,
+          "rms": 0.07100183516740799,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 4.3,
+          "rms": 0.06932039558887482,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 4.4,
+          "rms": 0.0688442811369896,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 4.5,
+          "rms": 0.06932615488767624,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 4.6,
+          "rms": 0.07221077382564545,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 4.7,
+          "rms": 0.06969515234231949,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 4.8,
+          "rms": 0.07044970989227295,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 4.9,
+          "rms": 0.06986052542924881,
+          "legacy_energy": true,
+          "neural_speech": false
+        }
+      ]
+    },
+    "clean_actor": {
+      "blocks": 39,
+      "legacy_energy_active_blocks": 26,
+      "neural_speech_active_blocks": 29,
+      "first_neural_active_block_end_s": 0.5,
+      "timings": {
+        "node": "silero-vad",
+        "input": "raw_pcm",
+        "frames": 128,
+        "threshold": 0.3,
+        "confirm_frames": 3,
+        "last_probability": 0.0331595242023468,
+        "update_ms_p95": 0.38596669692196894,
+        "update_ms_max": 0.471791994641535
+      },
+      "rows": [
+        {
+          "start_s": 0.0,
+          "rms": 1.7691205357550643e-05,
+          "legacy_energy": false,
+          "neural_speech": false
+        },
+        {
+          "start_s": 0.1,
+          "rms": 2.0479548766161315e-05,
+          "legacy_energy": false,
+          "neural_speech": false
+        },
+        {
+          "start_s": 0.2,
+          "rms": 0.0003592413559090346,
+          "legacy_energy": false,
+          "neural_speech": false
+        },
+        {
+          "start_s": 0.3,
+          "rms": 0.1494898647069931,
+          "legacy_energy": true,
+          "neural_speech": false
+        },
+        {
+          "start_s": 0.4,
+          "rms": 0.1365148276090622,
+          "legacy_energy": true,
+          "neural_speech": true
+        },
+        {
+          "start_s": 0.5,
+          "rms": 0.11635413020849228,
+          "legacy_energy": true,
+          "neural_speech": true
+        },
+        {
+          "start_s": 0.6,
+          "rms": 0.11309882253408432,
+          "legacy_energy": true,
+          "neural_speech": true
+        },
+        {
+          "start_s": 0.7,
+          "rms": 0.13872621953487396,
+          "legacy_energy": true,
+          "neural_speech": true
+        },
+        {
+          "start_s": 0.8,
+          "rms": 0.06526685506105423,
+          "legacy_energy": true,
+          "neural_speech": true
+        },
+        {
+          "start_s": 0.9,
+          "rms": 0.12676559388637543,
+          "legacy_energy": true,
+          "neural_speech": true
+        },
+        {
+          "start_s": 1.0,
+          "rms": 0.10396537184715271,
+          "legacy_energy": true,
+          "neural_speech": true
+        },
+        {
+          "start_s": 1.1,
+          "rms": 0.09754879027605057,
+          "legacy_energy": true,
+          "neural_speech": true
+        },
+        {
+          "start_s": 1.2,
+          "rms": 0.03628025949001312,
+          "legacy_energy": true,
+          "neural_speech": true
+        },
+        {
+          "start_s": 1.3,
+          "rms": 0.10846242308616638,
+          "legacy_energy": true,
+          "neural_speech": true
+        },
+        {
+          "start_s": 1.4,
+          "rms": 0.08869680762290955,
+          "legacy_energy": true,
+          "neural_speech": true
+        },
+        {
+          "start_s": 1.5,
+          "rms": 0.06295883655548096,
+          "legacy_energy": true,
+          "neural_speech": true
+        },
+        {
+          "start_s": 1.6,
+          "rms": 0.1230129823088646,
+          "legacy_energy": true,
+          "neural_speech": true
+        },
+        {
+          "start_s": 1.7,
+          "rms": 0.03260821849107742,
+          "legacy_energy": true,
+          "neural_speech": true
+        },
+        {
+          "start_s": 1.8,
+          "rms": 0.005598591640591621,
+          "legacy_energy": false,
+          "neural_speech": true
+        },
+        {
+          "start_s": 1.9,
+          "rms": 3.6727320548379794e-05,
+          "legacy_energy": false,
+          "neural_speech": true
+        },
+        {
+          "start_s": 2.0,
+          "rms": 3.718565494637005e-05,
+          "legacy_energy": false,
+          "neural_speech": true
+        },
+        {
+          "start_s": 2.1,
+          "rms": 0.030774470418691635,
+          "legacy_energy": true,
+          "neural_speech": true
+        },
+        {
+          "start_s": 2.2,
+          "rms": 0.15299199521541595,
+          "legacy_energy": true,
+          "neural_speech": true
+        },
+        {
+          "start_s": 2.3,
+          "rms": 0.07316210865974426,
+          "legacy_energy": true,
+          "neural_speech": true
+        },
+        {
+          "start_s": 2.4,
+          "rms": 0.10936643928289413,
+          "legacy_energy": true,
+          "neural_speech": true
+        },
+        {
+          "start_s": 2.5,
+          "rms": 0.0634944811463356,
+          "legacy_energy": true,
+          "neural_speech": true
+        },
+        {
+          "start_s": 2.6,
+          "rms": 0.12970897555351257,
+          "legacy_energy": true,
+          "neural_speech": true
+        },
+        {
+          "start_s": 2.7,
+          "rms": 0.014271516352891922,
+          "legacy_energy": true,
+          "neural_speech": true
+        },
+        {
+          "start_s": 2.8,
+          "rms": 0.10557379573583603,
+          "legacy_energy": true,
+          "neural_speech": true
+        },
+        {
+          "start_s": 2.9,
+          "rms": 0.07733664661645889,
+          "legacy_energy": true,
+          "neural_speech": true
+        },
+        {
+          "start_s": 3.0,
+          "rms": 0.037314239889383316,
+          "legacy_energy": true,
+          "neural_speech": true
+        },
+        {
+          "start_s": 3.1,
+          "rms": 0.02147466316819191,
+          "legacy_energy": true,
+          "neural_speech": true
+        },
+        {
+          "start_s": 3.2,
+          "rms": 0.000996966497041285,
+          "legacy_energy": false,
+          "neural_speech": true
+        },
+        {
+          "start_s": 3.3,
+          "rms": 3.353530337335542e-05,
+          "legacy_energy": false,
+          "neural_speech": false
+        },
+        {
+          "start_s": 3.4,
+          "rms": 3.524818748701364e-05,
+          "legacy_energy": false,
+          "neural_speech": false
+        },
+        {
+          "start_s": 3.5,
+          "rms": 3.516979995765723e-05,
+          "legacy_energy": false,
+          "neural_speech": false
+        },
+        {
+          "start_s": 3.6,
+          "rms": 3.0033939765417017e-05,
+          "legacy_energy": false,
+          "neural_speech": false
+        },
+        {
+          "start_s": 3.7,
+          "rms": 1.999676169361919e-05,
+          "legacy_energy": false,
+          "neural_speech": false
+        },
+        {
+          "start_s": 3.8,
+          "rms": 1.3187652257329319e-05,
+          "legacy_energy": false,
+          "neural_speech": false
+        }
+      ]
+    }
+  },
+  "source_sha256": {
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/generation_barge_replay.py": "66eb669012eb1d2f9adde636e67fa0b45855ccb2a822f55d4943a9c1be0d6052",
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/jaeger_agent_omni/core/runtime/neural_vad.py": "c06a6b4b6ea872962f0423f68d2fe6229074f6f889ee36b99ce738041aa71291"
+  },
+  "audio_sha256": {
+    "research/candidate_evals/physical-acoustic-20260905.audio/raw_mic.wav": "b6922298e9b057cbfc5b9b7f1c5695e6d901af5b87d471e971b594726d16da5e",
+    "/tmp/jaeger-physical-actor/10c6e9ab72832f8081f0.wav": "f1f1767656fd7f168c74efe4718a553dbbd741b2e4dddc61f3aeb976d5e3ab6d"
+  },
+  "limitations": [
+    "Pre-actor recording can contain uncontrolled room sounds.",
+    "The first detection is measured from clip start, not annotated speech onset.",
+    "Speech detection is not speaker overlap detection or an AEC-tail fix."
+  ]
+}

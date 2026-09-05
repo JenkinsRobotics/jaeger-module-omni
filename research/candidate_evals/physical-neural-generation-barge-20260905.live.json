@@ -1,0 +1,563 @@
+{
+  "artifacts": {
+    "meeting_minutes": null,
+    "recording_dir": "research/candidate_evals/physical-neural-generation-barge-20260905.audio"
+  },
+  "configuration": {
+    "aec": true,
+    "aec_reference_mode": "contiguous",
+    "aec_requested": true,
+    "agentic": true,
+    "barge_policy": "stop",
+    "cooldown_s": 4.0,
+    "duplex_mode": "full",
+    "interaction_mode": "companion",
+    "max_context": 4500,
+    "observer_mode": false,
+    "seconds": 300.0,
+    "silence_ms": 510.0,
+    "speakers": 0,
+    "speed": 1.0,
+    "threshold": 0.012,
+    "vad": "neural",
+    "vad_close": 0.125,
+    "vad_open": 0.3,
+    "voice": "af_heart"
+  },
+  "errors": [],
+  "finished_at": "2026-09-05T08:15:12.836879+00:00",
+  "host": {
+    "hostname": "Mac-Studio-3.localdomain",
+    "pid": 59040,
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.11.9"
+  },
+  "interactions": [
+    {
+      "action": "stop",
+      "evidence": {
+        "clean_rms": 0.09906008839607239,
+        "raw_reference_correlation": 0.40274395901152027,
+        "raw_rms": 0.09967491030693054,
+        "residual_reference_correlation": 0.42225821853659806
+      },
+      "kind": "speech_during_agent_output",
+      "monotonic_s": 34588.848118666,
+      "sequence": 1,
+      "stage": "playback"
+    },
+    {
+      "action": "stop",
+      "evidence": {
+        "clean_rms": 0.12790146470069885,
+        "raw_reference_correlation": 0.0,
+        "raw_rms": 0.12790146470069885,
+        "residual_reference_correlation": 0.0
+      },
+      "kind": "speech_during_agent_output",
+      "monotonic_s": 34606.84534875,
+      "sequence": 2,
+      "stage": "generation"
+    },
+    {
+      "action": "stop",
+      "evidence": {
+        "clean_rms": 0.14153710007667542,
+        "raw_reference_correlation": 0.23766206608542062,
+        "raw_rms": 0.1416495144367218,
+        "residual_reference_correlation": 0.2802473034397085
+      },
+      "kind": "speech_during_agent_output",
+      "monotonic_s": 34649.948494541,
+      "sequence": 3,
+      "stage": "playback"
+    },
+    {
+      "action": "stop",
+      "evidence": {
+        "clean_rms": 0.22438298165798187,
+        "raw_reference_correlation": 0.0,
+        "raw_rms": 0.22438298165798187,
+        "residual_reference_correlation": 0.0
+      },
+      "kind": "speech_during_agent_output",
+      "monotonic_s": 34730.146275125,
+      "sequence": 4,
+      "stage": "generation"
+    },
+    {
+      "action": "stop",
+      "evidence": {
+        "clean_rms": 0.11406136304140091,
+        "raw_reference_correlation": 0.4358772496197327,
+        "raw_rms": 0.1166386753320694,
+        "residual_reference_correlation": 0.419309994352741
+      },
+      "kind": "speech_during_agent_output",
+      "monotonic_s": 34773.00997925,
+      "sequence": 5,
+      "stage": "playback"
+    }
+  ],
+  "kind": "jaeger_duplex_run",
+  "metrics": {
+    "aec": {
+      "alignment_corrections": 0,
+      "attenuation_db": 0.06570509734600972,
+      "available": true,
+      "estimated_drift_ppm": -475.21943257310926,
+      "estimated_lag_ms": -1.1875,
+      "raw_reference_correlation_last": 0.0,
+      "reference_mode": "contiguous",
+      "reference_overflow_seconds": 0.0,
+      "reference_underflow_seconds": 0.0,
+      "residual_reference_correlation_last": 0.0,
+      "seconds_cancelled": 10.3
+    },
+    "agentic": {
+      "enabled": true,
+      "last_halt_reason": null,
+      "last_iterations": 1,
+      "tool_calls": 0,
+      "tool_names": []
+    },
+    "audio_chunks": 14,
+    "barge_events": 5,
+    "barge_stops": 3,
+    "companion": {
+      "decisions": [
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34573.011375791,
+          "raw": "thought\nThe user is providing an updated list of tool schemas. I need to acknowledge this information and ensure I am ready to use the available tools, but since no immediate action or query is present, I should wait for the next turn.\n\nThe current input is just a metadata update. No audio or conversational content requires a response yet.\n\nDecision: LISTEN (or wait for the next turn).DECISION: LISTEN\nREASON: metadata update",
+          "reason": "metadata update",
+          "response": "",
+          "speaker": null,
+          "valid": true
+        },
+        {
+          "action": "respond",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34587.901948875,
+          "raw": "DECISION: RESPOND\nRESPONSE: It is 10:30 AM.",
+          "reason": "",
+          "response": "It is 10:30 AM.",
+          "speaker": null,
+          "valid": true
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": true,
+          "monotonic_s": 34590.765366583,
+          "raw": "DECISION: LISTEN\nREASON: incomplete",
+          "reason": "incomplete",
+          "response": "",
+          "speaker": null,
+          "valid": true
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34606.924228375,
+          "raw": "[halted: interrupted]",
+          "reason": "malformed_control",
+          "response": "",
+          "speaker": null,
+          "valid": false
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34609.179712458,
+          "raw": "DECISION: LISTEN\nREASON: not_addressed",
+          "reason": "not_addressed",
+          "response": "",
+          "speaker": null,
+          "valid": true
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34629.574220291,
+          "raw": "DECISION: LISTEN\nREASON: not_addressed",
+          "reason": "not_addressed",
+          "response": "",
+          "speaker": null,
+          "valid": true
+        },
+        {
+          "action": "respond",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34648.896582458,
+          "raw": "DECISION: RESPOND\nRESPONSE: A rainbow forms when sunlight shines through water droplets in the air.",
+          "reason": "",
+          "response": "A rainbow forms when sunlight shines through water droplets in the air.",
+          "speaker": null,
+          "valid": true
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": true,
+          "monotonic_s": 34657.892574833,
+          "raw": "DECISION: LISTEN\nREASON: incomplete",
+          "reason": "incomplete",
+          "response": "",
+          "speaker": null,
+          "valid": true
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34678.296235416,
+          "raw": "DECISION: LISTEN\nREASON: not_addressed",
+          "reason": "not_addressed",
+          "response": "",
+          "speaker": null,
+          "valid": true
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34701.336929,
+          "raw": "DECISION: LISTEN\nREASON: non_speech",
+          "reason": "non_speech",
+          "response": "",
+          "speaker": null,
+          "valid": true
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34711.672592083,
+          "raw": "DECISION: LISTEN\nREASON: non_speech",
+          "reason": "non_speech",
+          "response": "",
+          "speaker": null,
+          "valid": true
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34730.199352666,
+          "raw": "[halted: interrupted]",
+          "reason": "malformed_control",
+          "response": "",
+          "speaker": null,
+          "valid": false
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34732.132365333,
+          "raw": "DECISION: LISTEN\nREASON: non_speech",
+          "reason": "non_speech",
+          "response": "",
+          "speaker": null,
+          "valid": true
+        },
+        {
+          "action": "respond",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34772.078147416,
+          "raw": "DECISION: RESPOND\nRESPONSE: It is 10:30 AM.",
+          "reason": "",
+          "response": "It is 10:30 AM.",
+          "speaker": null,
+          "valid": true
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": true,
+          "monotonic_s": 34774.992968916,
+          "raw": "DECISION: LISTEN\nREASON: non_speech",
+          "reason": "non_speech",
+          "response": "",
+          "speaker": null,
+          "valid": true
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34790.55175725,
+          "raw": "DECISION: LISTEN\nREASON: non_speech",
+          "reason": "non_speech",
+          "response": "",
+          "speaker": null,
+          "valid": true
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34810.858513166,
+          "raw": "DECISION: LISTEN\nREASON: non_speech",
+          "reason": "non_speech",
+          "response": "",
+          "speaker": null,
+          "valid": true
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34820.914461416,
+          "raw": "DECISION: LISTEN\nREASON: non_speech",
+          "reason": "non_speech",
+          "response": "",
+          "speaker": null,
+          "valid": true
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34821.590098791,
+          "raw": "DECISION: LISTEN\nREASON: non_speech",
+          "reason": "non_speech",
+          "response": "",
+          "speaker": null,
+          "valid": true
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34842.561373791,
+          "raw": "DECISION: LISTEN",
+          "reason": "unspecified",
+          "response": "",
+          "speaker": null,
+          "valid": true
+        }
+      ],
+      "enabled": true,
+      "listen": 17,
+      "respond": 3
+    },
+    "completed_replies": 3,
+    "context_rolls": 2,
+    "dropped_seconds": 0.0,
+    "end_to_audio": {
+      "max_ms": 1070.8153330051573,
+      "median_ms": 892.9298750008456,
+      "n": 3,
+      "p95_ms": 1070.8153330051573
+    },
+    "endpoint_events": [
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end"
+    ],
+    "fed_seconds": 299.8,
+    "final_cache_tokens": 1628,
+    "generation_barge_vad": {
+      "confirm_frames": 3,
+      "frames": 10000,
+      "input": "raw_pcm",
+      "last_probability": 0.00011530518531799316,
+      "node": "silero-vad",
+      "threshold": 0.3,
+      "update_ms_max": 21.27466700039804,
+      "update_ms_p95": 2.401095494860783
+    },
+    "half_duplex_muted_seconds": 0.0,
+    "interrupt_rewind_failures": 2,
+    "interrupts": 2,
+    "memory": {
+      "mlx_active_mb": 4492.3,
+      "mlx_peak_mb": 5897.5,
+      "rss_peak_mb": 6855.0
+    },
+    "mic_queue_overflow_blocks": 0,
+    "mic_queue_overflow_seconds": 0.0,
+    "neural_perception_shadow": [
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      }
+    ],
+    "peak_loop_lag_ms": 172.80387500068173,
+    "synthesis": {
+      "max_ms": 542.1060420048889,
+      "median_ms": 321.1711670010118,
+      "n": 3,
+      "p95_ms": 542.1060420048889
+    },
+    "turns": 20,
+    "vad": {
+      "close_threshold": 0.125,
+      "frames": 9947,
+      "max": 0.9877543449401855,
+      "mean": 0.04991653637094115,
+      "mode": "neural",
+      "open_threshold": 0.3
+    },
+    "wall_seconds": 300.2179914590015
+  },
+  "model": {
+    "checkpoint": "a7f96bfb8898",
+    "id": "jaegeromni-41m-medium",
+    "name": "JaegerOmni 41M Medium"
+  },
+  "passed_runtime": true,
+  "phase": "physical-room",
+  "replies": [
+    "It is 10:30 AM.",
+    "A rainbow forms when sunlight shines through water droplets in the air.",
+    "It is 10:30 AM."
+  ],
+  "schema_version": 1,
+  "source": "Elgato XLR Dock",
+  "speaker_labels": [],
+  "started_at": "2026-09-05T08:10:09.336537+00:00"
+}

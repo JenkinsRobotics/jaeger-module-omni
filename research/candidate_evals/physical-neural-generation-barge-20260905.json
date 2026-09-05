@@ -1,0 +1,179 @@
+{
+  "command": [
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+    "research/physical_omni_trial.py",
+    "run",
+    "--input-device",
+    "1",
+    "--output-device",
+    "4",
+    "--seconds",
+    "300",
+    "--output",
+    "research/candidate_evals/physical-neural-generation-barge-20260905.json"
+  ],
+  "devices": {
+    "input": {
+      "name": "Elgato XLR Dock",
+      "index": 1,
+      "hostapi": 0,
+      "max_input_channels": 1,
+      "max_output_channels": 2,
+      "default_low_input_latency": 0.01,
+      "default_low_output_latency": 0.003416666666666667,
+      "default_high_input_latency": 0.1,
+      "default_high_output_latency": 0.01275,
+      "default_samplerate": 48000.0
+    },
+    "output": {
+      "name": "Mac Studio Speakers",
+      "index": 4,
+      "hostapi": 0,
+      "max_input_channels": 0,
+      "max_output_channels": 2,
+      "default_low_input_latency": 0.01,
+      "default_low_output_latency": 0.0079375,
+      "default_high_input_latency": 0.1,
+      "default_high_output_latency": 0.017270833333333332,
+      "default_samplerate": 48000.0
+    }
+  },
+  "kind": "physical_acoustic_replay_not_human_conversation",
+  "actor_injected_into_model": false,
+  "native_report": "research/candidate_evals/physical-neural-generation-barge-20260905.live.json",
+  "log": "research/candidate_evals/physical-neural-generation-barge-20260905.log",
+  "events": [
+    {
+      "scheduled_s": 6,
+      "actual_s": 6.011623790996964,
+      "text": "Jaeger, what is seven times eight? Use your calculator.",
+      "audio": "/tmp/jaeger-physical-actor/10c6e9ab72832f8081f0.wav",
+      "sha256": "f1f1767656fd7f168c74efe4718a553dbbd741b2e4dddc61f3aeb976d5e3ab6d"
+    },
+    {
+      "scheduled_s": 26,
+      "actual_s": 26.014307666002424,
+      "text": "Jaeger, what time is it? Use your clock.",
+      "audio": "/tmp/jaeger-physical-actor/fe4aabb611418d91eb95.wav",
+      "sha256": "1d4cf5d73f6877d8f60d018f20f7fd7cc4ec803ff2f3919148ab6dca0ae08f8c"
+    },
+    {
+      "scheduled_s": 46,
+      "actual_s": 46.01134312499926,
+      "text": "Jaeger, calculate one hundred and forty four divided by twelve.",
+      "audio": "/tmp/jaeger-physical-actor/d84509313a07d2cea490.wav",
+      "sha256": "4a61ceb7dfda01e3f3e3fd2e1be5b76bc56ae29eec9ca59828b61dd79acaf3d4"
+    },
+    {
+      "scheduled_s": 66,
+      "actual_s": 66.00955204099591,
+      "text": "Alex, please put the groceries in the kitchen. I am talking to Alex.",
+      "audio": "/tmp/jaeger-physical-actor/15d178dee7df1a2e664c.wav",
+      "sha256": "1f4bf9be6860ab07450a886ae8d6337bb1b793bb49356e660d38dbca4248b222"
+    },
+    {
+      "scheduled_s": 86,
+      "actual_s": 86.01236216600228,
+      "text": "Jaeger, explain how a rainbow forms in six sentences.",
+      "audio": "/tmp/jaeger-physical-actor/cd87a01187f40735d539.wav",
+      "sha256": "a9c6bad8fcb71301c9b22055749b53b1971829f8a71bb240cd61c687573afbfa"
+    },
+    {
+      "scheduled_s": 96,
+      "actual_s": 96.00634558300226,
+      "text": "Jaeger, stop. What is two plus two?",
+      "audio": "/tmp/jaeger-physical-actor/62c73993767de9dc5957.wav",
+      "sha256": "bc3ca3dc64c6bf15f8e815d5f672a5ad6447c01de8b34ffeab9376c0acbc1cf5"
+    },
+    {
+      "scheduled_s": 116,
+      "actual_s": 116.01317837499664,
+      "text": "Jaeger, calculate nineteen times twenty three.",
+      "audio": "/tmp/jaeger-physical-actor/56cf682d34a82473e252.wav",
+      "sha256": "fe024f00afda68414656702c873920f20f7fedcc672d35e68d71247160968352"
+    },
+    {
+      "scheduled_s": 136,
+      "actual_s": 136.0126961249989,
+      "text": "Jaeger, tell me a long story about a rabbit exploring a forest.",
+      "audio": "/tmp/jaeger-physical-actor/f43a9c23e0e1343060af.wav",
+      "sha256": "b3ade3539305c74243c16e031428c1d99eb239814b64f96b840ebaa00574de2f"
+    },
+    {
+      "scheduled_s": 149,
+      "actual_s": 149.0110295830018,
+      "text": "Jaeger, stop the story. What color is a clear daytime sky?",
+      "audio": "/tmp/jaeger-physical-actor/bf36fa448c0e66f2c337.wav",
+      "sha256": "9241ccfb51f53e680e565a655f7562ff9ef90ea4dadaaf7ca13966064f2773c9"
+    },
+    {
+      "scheduled_s": 169,
+      "actual_s": 169.00558454100246,
+      "text": "Sam, the package is at the front door. That message is for Sam.",
+      "audio": "/tmp/jaeger-physical-actor/25652e9ea38f77d67102.wav",
+      "sha256": "79c89e4ae99c7a81a76a4e462aaa415cc3ace2208c5d53aed46ecef508af3bd1"
+    },
+    {
+      "scheduled_s": 189,
+      "actual_s": 189.01140424999903,
+      "text": "Jaeger, what time is it now?",
+      "audio": "/tmp/jaeger-physical-actor/0a6dc679e2c9f2419f04.wav",
+      "sha256": "2a93d183c449567c750ccc2bf76c109219ece71e48303f90cc1473732f5ed3eb"
+    },
+    {
+      "scheduled_s": 209,
+      "actual_s": 209.00915204099874,
+      "text": "Jaeger, calculate three hundred and twenty divided by eight.",
+      "audio": "/tmp/jaeger-physical-actor/3732c1a662664467d81e.wav",
+      "sha256": "6a27fa46f977a5f4497f6010c22055f728f45d24700e50ccadccb59e2f1addfe"
+    },
+    {
+      "scheduled_s": 229,
+      "actual_s": 229.00750729099673,
+      "text": "Jaeger, explain how plants use sunlight.",
+      "audio": "/tmp/jaeger-physical-actor/c954ffe000abbbd2668e.wav",
+      "sha256": "bb01139ced16c746633f3dd37910e321e859d6eb41b9fd54ceae6848c3afdc80"
+    },
+    {
+      "scheduled_s": 249,
+      "actual_s": 249.00980391600024,
+      "text": "Jaeger, count slowly from one to twenty.",
+      "audio": "/tmp/jaeger-physical-actor/a8e18d0d07cf450155a6.wav",
+      "sha256": "97b8da53538cce8d241713452fc9a18f5af31584c00bb684fb959f28b2f03f30"
+    },
+    {
+      "scheduled_s": 259,
+      "actual_s": 259.0126810410002,
+      "text": "Jaeger, stop counting. What is ten minus three?",
+      "audio": "/tmp/jaeger-physical-actor/63b1439b3e1840088974.wav",
+      "sha256": "3a3b77b8e60bf854a504c17c65fa5bbe1e7aec32e4630b7c519c5d8668c96e96"
+    },
+    {
+      "scheduled_s": 279,
+      "actual_s": 279.0031711659976,
+      "text": "Jaeger, thank you. Goodbye.",
+      "audio": "/tmp/jaeger-physical-actor/35f9ddd09f4bd378f481.wav",
+      "sha256": "df2f6abac9dc35dc4770087b59daa3f103a9ca154b2d9cf724a88edc6ea1bba2"
+    }
+  ],
+  "actor_errors": [],
+  "child_exit_code": 0,
+  "physical_checks": {
+    "physical room": true,
+    "five minute capture": true,
+    "zero loop drops": true,
+    "zero mic overflow": true,
+    "neural VAD": true,
+    "full duplex": true,
+    "AEC exercised": true,
+    "turn and spoken reply": true,
+    "barge-in exercised": true,
+    "context rolled": true,
+    "companion both decisions": true,
+    "agent tools exercised": false,
+    "no runtime errors": true
+  },
+  "passed": false,
+  "detail": "failed: agent tools exercised",
+  "code_sha256": "c16789054bd581fb4d7391cb1a4b08780454bbc16b7114bd2bf8548114f1752c"
+}

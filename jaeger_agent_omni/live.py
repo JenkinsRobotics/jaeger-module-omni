@@ -269,6 +269,7 @@ def main() -> int:
     echo_floor = {"rms": 0.35}
     rec = {"raw": [], "fed": []}
     turn_facts = {"self_speech_overlap": False}
+    generation_speech = None
     speaker_recent = deque(maxlen=max(1, round(3 * RATE / BLOCK)))
     speaker_tags = []
     perception_turns: list[dict] = []
@@ -318,6 +319,7 @@ def main() -> int:
             run_errors.append(f"audio callback: {status}")
         raw = indata[:, 0] if indata.ndim > 1 else indata
         raw = raw.copy().astype("float32")
+        neural_speech = generation_speech.update(raw) if generation_speech is not None else None
         clean = aec.process(raw) if aec is not None else raw.copy()
         raw_rms = float(np.sqrt(np.mean(np.square(raw))))
         clean_rms = float(np.sqrt(np.mean(np.square(clean))))
@@ -356,8 +358,12 @@ def main() -> int:
                 is_barge = barge_detector.update(aec, clean_rms, len(raw))
             if is_barge:
                 notify_barge("playback")
-        elif generating.is_set() and clean_rms > a.threshold * 1.1:
-            # The listener continued before the first clause reached audio.
+        elif generating.is_set() and (
+                neural_speech if neural_speech is not None else
+                clean_rms > a.threshold * 1.1):
+            # A loud background is not a continuation. In neural mode this
+            # evidence comes from a separate raw-audio NN running while the
+            # endpoint/inference loop is occupied, before any playback exists.
             notify_barge("generation")
 
         level["rms"] = clean_rms
@@ -603,6 +609,12 @@ def main() -> int:
     vad_label = configure_endpoint(
         loop.endpoint, mode=a.vad, energy_threshold=a.threshold,
         open_threshold=a.vad_open, close_threshold=a.vad_close)
+    if a.vad == "neural" and a.duplex_mode != "half":
+        from jaeger_agent_omni.core.runtime.neural_vad import load_silero, SpeechPresence
+        engine, package = load_silero()
+        generation_speech = SpeechPresence(
+            engine.probability, frame_samples=int(package.manifest["frame_samples"]),
+            threshold=a.vad_open)
 
     def meter():
         while not stop.is_set():
@@ -823,6 +835,8 @@ def main() -> int:
             "peak_loop_lag_ms": stats.max_lag_s * 1000,
             "endpoint_events": list(stats.endpoint_events),
             "vad": loop.endpoint.probability_summary(),
+            "generation_barge_vad": (generation_speech.summary()
+                                     if generation_speech is not None else None),
             "end_to_audio": latency_summary(stage_ms["to_first_audio"]),
             "synthesis": latency_summary(stage_ms["synth"]),
             "aec": {

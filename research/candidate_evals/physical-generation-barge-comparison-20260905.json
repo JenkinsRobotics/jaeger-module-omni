@@ -1,0 +1,86 @@
+{
+  "kind": "physical_generation_barge_comparison",
+  "same_devices_and_actor_fixtures": true,
+  "rows": [
+    {
+      "artifact": "physical-acoustic-20260905.json",
+      "checks_passed": 9,
+      "checks_total": 13,
+      "physical_passed": false,
+      "capture_seconds": 299.9,
+      "drops_seconds": 0.0,
+      "mic_overflows": 0,
+      "turns": 34,
+      "spoken_replies": 0,
+      "interrupts": 32,
+      "barge_stages": {
+        "generation": 34
+      },
+      "context_rolls": 2,
+      "aec_seconds": 0.0,
+      "tool_calls": 0,
+      "end_to_audio": {
+        "max_ms": null,
+        "median_ms": null,
+        "n": 0,
+        "p95_ms": null
+      },
+      "generation_speech_gate": null
+    },
+    {
+      "artifact": "physical-neural-generation-barge-20260905.json",
+      "checks_passed": 12,
+      "checks_total": 13,
+      "physical_passed": false,
+      "capture_seconds": 299.8,
+      "drops_seconds": 0.0,
+      "mic_overflows": 0,
+      "turns": 20,
+      "spoken_replies": 3,
+      "interrupts": 2,
+      "barge_stages": {
+        "playback": 3,
+        "generation": 2
+      },
+      "context_rolls": 2,
+      "aec_seconds": 10.3,
+      "tool_calls": 0,
+      "end_to_audio": {
+        "max_ms": 1070.8153330051573,
+        "median_ms": 892.9298750008456,
+        "n": 3,
+        "p95_ms": 1070.8153330051573
+      },
+      "generation_speech_gate": {
+        "confirm_frames": 3,
+        "frames": 10000,
+        "input": "raw_pcm",
+        "last_probability": 0.00011530518531799316,
+        "node": "silero-vad",
+        "threshold": 0.3,
+        "update_ms_max": 21.27466700039804,
+        "update_ms_p95": 2.401095494860783
+      }
+    }
+  ],
+  "cpu_replay": "generation-barge-replay-20260905.json",
+  "cpu_checks": {
+    "pytest_passed": 65,
+    "subtests_passed": 14,
+    "seconds": 2.77,
+    "live_demo_exit": 0,
+    "native_selfcheck_exit": 0
+  },
+  "source_sha256": {
+    "jaeger_agent_omni/live.py": "6b0ced1b9e8c9b52681c5fee8b2d4d045c872076a3786f37cb940c48d80d4e0c",
+    "jaeger_agent_omni/core/runtime/neural_vad.py": "c06a6b4b6ea872962f0423f68d2fe6229074f6f889ee36b99ce738041aa71291"
+  },
+  "decision": "retain_independent_speech_gate_for_neural_mode_generation_barge",
+  "limitations": [
+    "Two real acoustic runs differ in uncontrolled room sound; they are not identical microphone waveforms.",
+    "All three new spoken replies experienced playback-stage interruption; speech quality and barge precision are not established.",
+    "The clock answers were not grounded in tool calls.",
+    "The physical gate still fails agent tools; this is not human conversation validation.",
+    "This speech gate does not meet or replace the separate overlap F1 or AEC tail requirements."
+  ]
+}

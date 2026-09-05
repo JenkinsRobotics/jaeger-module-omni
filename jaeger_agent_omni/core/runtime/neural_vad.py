@@ -12,6 +12,49 @@ REPO = Path(__file__).resolve().parents[3]
 GATE_ROOT = REPO / "gates" / "silero-vad"
 
 
+class SpeechPresence:
+    """Independent raw-waveform speech evidence while the main loop generates.
+
+    This detects speech, not overlap or addressed intent. Each instance owns
+    its probability engine; the endpoint's recurrent state is never shared
+    across the microphone callback and the inference loop.
+    """
+
+    def __init__(self, probability, *, frame_samples=480, threshold=0.30,
+                 confirm_frames=3):
+        import numpy as np
+        self.probability = probability
+        self.frame_samples = int(frame_samples)
+        self.threshold = float(threshold)
+        self.confirm_frames = int(confirm_frames)
+        self.pending = np.empty(0, dtype=np.float32)
+        self.consecutive = 0
+        self.frames = 0
+        self.last_probability = 0.0
+        self.update_ms = []
+
+    def update(self, audio):
+        import time
+        import numpy as np
+        started = time.perf_counter()
+        self.pending = np.concatenate((self.pending, np.asarray(audio, dtype=np.float32)))
+        while len(self.pending) >= self.frame_samples:
+            frame, self.pending = self.pending[:self.frame_samples], self.pending[self.frame_samples:]
+            self.last_probability = float(self.probability(frame))
+            self.consecutive = self.consecutive + 1 if self.last_probability >= self.threshold else 0
+            self.frames += 1
+        self.update_ms.append((time.perf_counter() - started) * 1000)
+        return self.consecutive >= self.confirm_frames
+
+    def summary(self):
+        import numpy as np
+        return {"node": "silero-vad", "input": "raw_pcm", "frames": self.frames,
+                "threshold": self.threshold, "confirm_frames": self.confirm_frames,
+                "last_probability": self.last_probability,
+                "update_ms_p95": float(np.percentile(self.update_ms, 95)) if self.update_ms else None,
+                "update_ms_max": max(self.update_ms, default=0.0)}
+
+
 def load_silero():
     """Verify and construct the immutable local Silero ONNX engine.
 
