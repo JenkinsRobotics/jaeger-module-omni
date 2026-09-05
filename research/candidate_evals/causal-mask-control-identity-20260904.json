@@ -1,0 +1,25 @@
+{
+  "kind": "causal_attention_mask_control",
+  "source_adapter_sha256": "a7f96bfb889866f75df7b838f84aae368a56ab10f6469e766511d700e32fe13a",
+  "adapter": "artifacts/medium-causal-mask-only-control.npz",
+  "adapter_sha256": "6f943705066a134f1036c5c4f00e9d4a87796c77aadd6c2168dacb8764050f03",
+  "parameters_changed": false,
+  "attention_changed": "bidirectional to causal",
+  "default_changed": false,
+  "verified_identical_parameter_tensors": 18,
+  "parameter_count": 40915456,
+  "reproduction": {
+    "source": "jaeger_agent_omni/nodes/jaegeromni-41m-medium/weights/adapter.npz",
+    "copy_all_arrays": true,
+    "replace_metadata": {
+      "arch": "uint8 bytes context_causal_v1",
+      "adapter_arch": "cleanroom_context_causal_v1",
+      "causal": [
+        1
+      ],
+      "stage": "mask_only_control_no_training"
+    },
+    "save": "numpy.savez",
+    "check": "np.array_equal on every dotted parameter key"
+  }
+}

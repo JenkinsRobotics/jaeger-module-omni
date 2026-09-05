@@ -1,0 +1,26 @@
+{
+  "nodes": [
+    {
+      "node": "jaegeromni-41m-medium-causal-mask-v1",
+      "adapter_sha256": "6f943705066a134f1036c5c4f00e9d4a87796c77aadd6c2168dacb8764050f03",
+      "encoder_weights_sha256": "62f73550fa6db24b0c6f6c5962bd0dae80fa644e93cde9cd9c3792971b47fd28",
+      "devclean64_wer": 0.05235602094240838
+    },
+    {
+      "node": "jaegeromni-41m-medium-causal-port250-v1",
+      "adapter_sha256": "285e4cdfc4a4622910391296d201223bcca2f8f8883cddfaa96b3884b11e952b",
+      "encoder_weights_sha256": "62f73550fa6db24b0c6f6c5962bd0dae80fa644e93cde9cd9c3792971b47fd28",
+      "devclean64_wer": 0.0743455497382199
+    },
+    {
+      "node": "jaegeromni-41m-medium-causal-port500-v1",
+      "adapter_sha256": "ba337db65f26629a43a98c63e8b82f7663b1b3586e904ef261ffa932b338ba64",
+      "encoder_weights_sha256": "62f73550fa6db24b0c6f6c5962bd0dae80fa644e93cde9cd9c3792971b47fd28",
+      "devclean64_wer": 0.07643979057591622
+    }
+  ],
+  "all_profiles_disabled": true,
+  "encoder_copy": "APFS copy-on-write clone, node-local files",
+  "node_count": 31,
+  "profile_count": 13
+}

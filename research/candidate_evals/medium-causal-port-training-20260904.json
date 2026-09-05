@@ -1,0 +1,352 @@
+{
+  "audit": {
+    "mode": "training",
+    "resume": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/jaeger_agent_omni/nodes/jaegeromni-41m-medium/weights/adapter.npz",
+    "resume_sha256": "a7f96bfb889866f75df7b838f84aae368a56ab10f6469e766511d700e32fe13a",
+    "architecture": "cleanroom_context_v2",
+    "encoder": "openai/whisper-medium",
+    "training_rows": 45725,
+    "feature_widths": {
+      "1024": 45725
+    },
+    "sampling_mass": {
+      "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-clean360-v1/clean360": 0.5,
+      "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-expanded-v1/ami5_train": 0.25,
+      "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-room-aug-v1/room_aug": 0.25
+    },
+    "sources": [
+      {
+        "cache": "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-clean360-v1",
+        "split": "clean360",
+        "weight": 0.5,
+        "rows": 27911,
+        "manifest": "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-clean360-v1/clean360/manifest.jsonl",
+        "manifest_sha256": "69b03eba3c1b70030a27d3b80a152a2b3b8761717149041621b0b93c806df484",
+        "allow_acoustic_variants": true,
+        "acoustic_variant_extra_rows_total": 0
+      },
+      {
+        "cache": "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-expanded-v1",
+        "split": "ami5_train",
+        "weight": 0.25,
+        "rows": 3249,
+        "manifest": "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-expanded-v1/ami5_train/manifest.jsonl",
+        "manifest_sha256": "67f21e4e04ca2ceb10b3d834f3a4f22004951dbb6a2fbee7915caa4cafba44bd",
+        "allow_acoustic_variants": true
+      },
+      {
+        "cache": "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-room-aug-v1",
+        "split": "room_aug",
+        "weight": 0.25,
+        "rows": 14565,
+        "manifest": "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-room-aug-v1/room_aug/manifest.jsonl",
+        "manifest_sha256": "c8bbee1fed67acc9db98bc59f590ecc1c26dd41f96ead4f27af54941099bc1e5",
+        "allow_acoustic_variants": true
+      }
+    ],
+    "holdouts": [
+      {
+        "cache": "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-eval-v1",
+        "split": "devclean",
+        "weight": 1.0,
+        "rows": 59,
+        "manifest": "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-eval-v1/devclean/manifest.jsonl",
+        "manifest_sha256": "359bacbb982a881618a16fa3b13f18b556b715bf8f13517edf5135c5a5746259",
+        "speaker_overlap": 0,
+        "speakers": 1
+      },
+      {
+        "cache": "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-expanded-v1",
+        "split": "ami5_train_validation",
+        "weight": 1.0,
+        "rows": 750,
+        "manifest": "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-expanded-v1/ami5_train_validation/manifest.jsonl",
+        "manifest_sha256": "2ccc2e395fbcfd5ef083163337cd4ed1bb09504401ecfbf15d17e3bd4b276849",
+        "speaker_overlap": 0,
+        "speakers": 3
+      }
+    ],
+    "steps": 500,
+    "learning_rate": 5e-06,
+    "text_teacher_weight": 0.5,
+    "anchor_weight": 0.05,
+    "accumulate": 1,
+    "allow_acoustic_variants": true,
+    "causal_port": true
+  },
+  "training_log": "training/runs/20260904-233342-cleanroom_context_ce.log",
+  "training_log_sha256": "1c15df553bb4f15d25bf8c29b8a29eec2fc140f6acc3db75f972fd75d5247c5d",
+  "trace": [
+    {
+      "step": 1,
+      "loss": 0.43384,
+      "recent": 0.43384,
+      "grad": 6.7908,
+      "seconds_per_step": 2.02,
+      "metal_gb": 4.8,
+      "cache_gb": 0.0,
+      "peak_gb": 8.9
+    },
+    {
+      "step": 25,
+      "loss": 3.1397,
+      "recent": 1.89868,
+      "grad": 41.422,
+      "seconds_per_step": 1.38,
+      "metal_gb": 4.8,
+      "cache_gb": 0.0,
+      "peak_gb": 11.3
+    },
+    {
+      "step": 50,
+      "loss": 1.91733,
+      "recent": 2.03991,
+      "grad": 25.3952,
+      "seconds_per_step": 1.28,
+      "metal_gb": 4.8,
+      "cache_gb": 0.0,
+      "peak_gb": 11.3
+    },
+    {
+      "step": 75,
+      "loss": 0.165,
+      "recent": 1.18391,
+      "grad": 3.343,
+      "seconds_per_step": 1.33,
+      "metal_gb": 4.8,
+      "cache_gb": 0.0,
+      "peak_gb": 11.3
+    },
+    {
+      "step": 100,
+      "loss": 0.21356,
+      "recent": 0.78004,
+      "grad": 4.4001,
+      "seconds_per_step": 1.37,
+      "metal_gb": 4.8,
+      "cache_gb": 0.0,
+      "peak_gb": 11.3
+    },
+    {
+      "step": 125,
+      "loss": 2.80962,
+      "recent": 1.40872,
+      "grad": 33.6507,
+      "seconds_per_step": 1.33,
+      "metal_gb": 4.8,
+      "cache_gb": 0.0,
+      "peak_gb": 11.3
+    },
+    {
+      "step": 150,
+      "loss": 0.36092,
+      "recent": 1.14796,
+      "grad": 6.5733,
+      "seconds_per_step": 1.35,
+      "metal_gb": 4.8,
+      "cache_gb": 0.0,
+      "peak_gb": 11.3
+    },
+    {
+      "step": 175,
+      "loss": 1.093,
+      "recent": 0.82618,
+      "grad": 95.6747,
+      "seconds_per_step": 1.36,
+      "metal_gb": 4.8,
+      "cache_gb": 0.0,
+      "peak_gb": 11.3
+    },
+    {
+      "step": 200,
+      "loss": 0.33495,
+      "recent": 1.65679,
+      "grad": 8.2491,
+      "seconds_per_step": 1.36,
+      "metal_gb": 4.8,
+      "cache_gb": 0.0,
+      "peak_gb": 11.3
+    },
+    {
+      "step": 225,
+      "loss": 0.11181,
+      "recent": 0.59602,
+      "grad": 2.1701,
+      "seconds_per_step": 1.37,
+      "metal_gb": 4.8,
+      "cache_gb": 0.0,
+      "peak_gb": 11.3
+    },
+    {
+      "step": 250,
+      "loss": 7.55771,
+      "recent": 1.66108,
+      "grad": 39.6136,
+      "seconds_per_step": 1.35,
+      "metal_gb": 4.8,
+      "cache_gb": 0.0,
+      "peak_gb": 11.3
+    },
+    {
+      "step": 275,
+      "loss": 0.17752,
+      "recent": 1.0064,
+      "grad": 2.6023,
+      "seconds_per_step": 1.36,
+      "metal_gb": 4.8,
+      "cache_gb": 0.0,
+      "peak_gb": 11.3
+    },
+    {
+      "step": 300,
+      "loss": 0.73573,
+      "recent": 0.70787,
+      "grad": 6.4196,
+      "seconds_per_step": 1.37,
+      "metal_gb": 4.8,
+      "cache_gb": 0.0,
+      "peak_gb": 11.3
+    },
+    {
+      "step": 325,
+      "loss": 0.21933,
+      "recent": 0.73891,
+      "grad": 27.2375,
+      "seconds_per_step": 1.38,
+      "metal_gb": 4.8,
+      "cache_gb": 0.0,
+      "peak_gb": 11.3
+    },
+    {
+      "step": 350,
+      "loss": 0.58141,
+      "recent": 0.88689,
+      "grad": 6.059,
+      "seconds_per_step": 1.38,
+      "metal_gb": 4.8,
+      "cache_gb": 0.0,
+      "peak_gb": 11.3
+    },
+    {
+      "step": 375,
+      "loss": 4.85353,
+      "recent": 1.29821,
+      "grad": 51.0724,
+      "seconds_per_step": 1.38,
+      "metal_gb": 4.8,
+      "cache_gb": 0.0,
+      "peak_gb": 11.3
+    },
+    {
+      "step": 400,
+      "loss": 0.05485,
+      "recent": 0.75609,
+      "grad": 0.3812,
+      "seconds_per_step": 1.37,
+      "metal_gb": 4.8,
+      "cache_gb": 0.0,
+      "peak_gb": 11.3
+    },
+    {
+      "step": 425,
+      "loss": 3.08221,
+      "recent": 0.83197,
+      "grad": 16.089,
+      "seconds_per_step": 1.36,
+      "metal_gb": 4.8,
+      "cache_gb": 0.0,
+      "peak_gb": 11.3
+    },
+    {
+      "step": 450,
+      "loss": 0.27255,
+      "recent": 0.80997,
+      "grad": 6.4475,
+      "seconds_per_step": 1.36,
+      "metal_gb": 4.8,
+      "cache_gb": 0.0,
+      "peak_gb": 11.3
+    },
+    {
+      "step": 475,
+      "loss": 1.02569,
+      "recent": 0.72456,
+      "grad": 8.5106,
+      "seconds_per_step": 1.36,
+      "metal_gb": 4.9,
+      "cache_gb": 0.0,
+      "peak_gb": 11.3
+    },
+    {
+      "step": 500,
+      "loss": 0.24329,
+      "recent": 1.33677,
+      "grad": 22.4553,
+      "seconds_per_step": 1.35,
+      "metal_gb": 4.8,
+      "cache_gb": 0.0,
+      "peak_gb": 11.3
+    }
+  ],
+  "checkpoints": [
+    {
+      "path": "artifacts/stock-whisper-gemma-medium-causal-port-v1.step000250.npz",
+      "sha256": "285e4cdfc4a4622910391296d201223bcca2f8f8883cddfaa96b3884b11e952b",
+      "arch": "context_causal_v1",
+      "parameters": 40915456,
+      "finite": true
+    },
+    {
+      "path": "artifacts/stock-whisper-gemma-medium-causal-port-v1.npz",
+      "sha256": "ba337db65f26629a43a98c63e8b82f7663b1b3586e904ef261ffa932b338ba64",
+      "arch": "context_causal_v1",
+      "parameters": 40915456,
+      "finite": true
+    }
+  ],
+  "exit_code": 0,
+  "source_unchanged": true,
+  "geometry": [
+    {
+      "step": 0,
+      "recall10": 0.5325,
+      "frame_diversity": 0.5189
+    },
+    {
+      "step": 250,
+      "recall10": 0.5065,
+      "frame_diversity": 0.5521
+    },
+    {
+      "step": 500,
+      "recall10": 0.4935,
+      "frame_diversity": 0.5489
+    }
+  ],
+  "trainer_sha256": "5908d3796a09411b0f0de68762f7af3cef5cebca8e9192a07b5978f12edd70c8",
+  "production_selection_changed": false,
+  "command": [
+    "training/run_gpu.sh",
+    "training/cleanroom_context_ce.py",
+    "--resume",
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/jaeger_agent_omni/nodes/jaegeromni-41m-medium/weights/adapter.npz",
+    "--output",
+    "artifacts/stock-whisper-gemma-medium-causal-port-v1.npz",
+    "--causal",
+    "--steps",
+    "500",
+    "--accumulate",
+    "1",
+    "--train-source",
+    "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-clean360-v1::clean360::0.5",
+    "--train-source",
+    "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-expanded-v1::ami5_train::0.25",
+    "--train-source",
+    "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-room-aug-v1::room_aug::0.25",
+    "--holdout-source",
+    "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-eval-v1::devclean::1",
+    "--holdout-source",
+    "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-expanded-v1::ami5_train_validation::1",
+    "--allow-acoustic-variants"
+  ]
+}

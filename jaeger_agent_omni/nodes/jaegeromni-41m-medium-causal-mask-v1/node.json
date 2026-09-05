@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "kind": "jaeger_audio_node",
+  "id": "jaegeromni-41m-medium-causal-mask-v1",
+  "runtime": "converse_context_causal_v1",
+  "slot": "audio_perception",
+  "enabled_by_default": false,
+  "consumes": [
+    "pcm_f32_16khz_mono"
+  ],
+  "produces": [
+    "gemma_audio_embeddings_2560"
+  ],
+  "status": "disabled_clean_speech_regression",
+  "implementation": "runtime.py:build",
+  "encoder": {
+    "id": "openai/whisper-medium",
+    "revision": "abdf7c39ab9d0397620ccaea8974cc764cd0953e",
+    "path": "weights/encoder",
+    "weights_sha256": "62f73550fa6db24b0c6f6c5962bd0dae80fa644e93cde9cd9c3792971b47fd28",
+    "boundary": "stock_whisper_encoder_50hz",
+    "output_dim": 1024,
+    "decoder_runtime": false
+  },
+  "adapter": {
+    "path": "weights/adapter.npz",
+    "sha256": "6f943705066a134f1036c5c4f00e9d4a87796c77aadd6c2168dacb8764050f03",
+    "architecture": "context_causal_v1",
+    "attention": "causal",
+    "pool_step": 2,
+    "parameters": 40915456,
+    "lineage": "qwen_free",
+    "trained_heads": []
+  },
+  "backbone": {
+    "family": "gemma-4-e4b",
+    "runtime_variant": "gemma-4-E4B-it-4bit-mlx",
+    "frozen": true
+  },
+  "training": {
+    "source_node": "jaegeromni-41m-medium",
+    "source_adapter_sha256": "a7f96bfb889866f75df7b838f84aae368a56ab10f6469e766511d700e32fe13a",
+    "steps": 0,
+    "record": "research/candidate_evals/medium-causal-port-training-20260904.json",
+    "mask_only": true
+  },
+  "evaluation": {
+    "devclean64_wer": 0.05235602094240838,
+    "record": "research/candidate_evals/medium-causal-mask-20260904-devclean64.json",
+    "full_tier_control_wer": 0.050261780104712044,
+    "promoted": false
+  },
+  "streaming_scope": "Causal adapter only; frozen Whisper re-encodes growing waveform prefixes."
+}
