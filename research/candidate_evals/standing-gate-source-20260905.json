@@ -1,0 +1,13 @@
+{
+  "date": "2026-09-05",
+  "kind": "standing_gate_source_identity",
+  "git_head": "1c773c6a443eca53a757c5043c56edc4c3848c3f",
+  "files": {
+    "research/benchmark_agentic_corpus.py": "6f0d22024bfadf8108408569a6b7406bc2cd7c684fd7b8e0e83f1ac13f9a5d87",
+    "jaeger_agent_omni/core/agentic/omni_runtime.py": "ea7a060afcd16dceca8645cffd55a8fb02c63593a35b0b9c2faf8d029637f346",
+    "jaeger_agent_omni/core/agentic/loop/jaeger_agent.py": "c5c9d2376c1b4cdbb16415dc81e7ba29f28b8efa20c5a41673385957eadae541",
+    "jaeger_agent_omni/live.py": "a1dad4a28406dd099687d31a36de9ef7aef8781ac8f4bd780f03a2d924b178c6",
+    "research/physical_omni_trial.py": "c16789054bd581fb4d7391cb1a4b08780454bbc16b7114bd2bf8548114f1752c"
+  },
+  "note": "Captured during baseline before any continuation or physical runtime fix. User callback edits in omni_runtime.py are included and preserved."
+}
