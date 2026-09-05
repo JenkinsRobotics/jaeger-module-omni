@@ -133,6 +133,15 @@ def _expected_tools(case: BenchCase) -> tuple[list[str], list[str]]:
     return expected, adaptations
 
 
+def native_turn(session, meta, audio, *, max_tokens):
+    """Keep native history within a case session; caller owns session resets."""
+    session.open_turn()
+    for start in range(0, len(audio), 1600):
+        session.feed_audio(audio[start:start+1600])
+    session.end_of_turn()
+    return session.respond(max_tokens=max_tokens, eos_ids=meta["eos"])
+
+
 def _tool_hit(name: str, observed: list[str]) -> bool:
     return name in observed or bool(
         UMBRELLA_EQUIVALENTS.get(name, set()).intersection(observed))
@@ -245,7 +254,7 @@ def main() -> int:
     from jaeger_agent_omni.core.agentic.omni_runtime import (
         OmniAgentRuntime, prepare_agentic_system,
     )
-    from jaeger_agent_omni.omni import MODEL, SYSTEM, build, one_turn
+    from jaeger_agent_omni.omni import MODEL, SYSTEM, build
     from jaeger_agent_omni.core.agentic._vendor.jaeger_os.core.safety.permissions import (
         PermissionPolicy, use_policy,
     )
@@ -317,7 +326,7 @@ def main() -> int:
             started = time.monotonic()
             try:
                 with case_deadline(args.case_timeout_s):
-                    answer, _ = one_turn(
+                    answer = native_turn(
                         session, meta, read_wav(wav), max_tokens=args.max_tokens)
             except CaseDeadline as exc:
                 answer = ""
@@ -374,6 +383,7 @@ def main() -> int:
         "kind": "jaeger_agentic_native_audio_corpus",
         "evaluation": "free_running_synthetic_audio_native",
         "teacher_forced": False,
+        "native_history_retained_within_case_session": True,
         "text_or_transcript_fed_to_model": False,
         "fixture_voice": args.voice,
         "discovery_hint": args.discovery_hint,
