@@ -2,6 +2,17 @@
 
 Measured ledger. Every claim here has a command that reproduces it.
 
+2026-09-05 current default campaign: **27/27**, speaker context off, with
+interruptions synchronized to actual playback (quasi cut on second attempt).
+Real vision→typed→voice shared-memory test: **4/4**, with `/image PATH`
+intake and an in-place history rolling fix. This uses the existing Gemma GGUF
+vision twin and MLX audio/text model sharing text history; simultaneous
+image/audio attention is not established. Simulator marker waits now exclude
+their own assertion output. Evidence: `final-default-campaign-20260905.json`
+and `converse-vision-verified-markers-20260905.json` in
+`research/candidate_evals/`. Current package pytest: **62 passed**, including
+6 subtests. Current registry: **31 nodes / 13 profiles**.
+
 2026-09-05 speaker-sensitive context: the old current-speaker system annotation
 adds no value (6/12 with and without it); copying those labels into history
 alone is worse (4/12 with ECAPA). Binding identity to the current audio turn,

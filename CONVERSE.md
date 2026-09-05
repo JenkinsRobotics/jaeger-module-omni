@@ -42,9 +42,21 @@ Summary, reproducing commands, comparisons, and per-session evidence:
 # Repeat both WER protocols with --tier full for the matched causal control.
 ```
 
-Open follow-ups: speaker-context value (`OMNI_CONTEXT` currently defaults on),
-image submission (projector loads but no input sets the image), and image/text
-history retention at the rolling boundary. These require their own measured gates.
+2026-09-05 follow-ups: speaker context now stays **off by default**. The
+opt-in `OMNI_CONTEXT=1` binds identity to the current audio turn and retains
+labels in history. It improves speaker-sensitive recall with ECAPA from
+11/24 to 19/24 across development and held-out lexical scenarios, but raises
+medium fresh-turn HEARD WER from 5.03% to 5.55%. See
+`research/candidate_evals/converse-context-comparison-20260905.json`.
+
+Image intake and shared text memory are exercised with real models: **4/4**
+in `research/candidate_evals/converse-vision-verified-markers-20260905.json`.
+Run with `--vision`, enter `/image /absolute/path/picture.png`, then type an
+image question. The image answer can inform subsequent typed and audio turns.
+The existing Gemma GGUF vision twin handles image input; audio/text use the
+MLX brain with the shared text history. This does not prove simultaneous
+audio+image attention or preservation of image vectors across turns.
+Trimming history now preserves the shared list instead of disconnecting it.
 
 ## What runs
 

@@ -1,0 +1,58 @@
+{
+  "command": [
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+    "jaeger_agent_omni/tests/converse_sim.py",
+    "--session",
+    "vision",
+    "--output",
+    "research/candidate_evals/converse-vision-verified-markers-20260905.json"
+  ],
+  "session": "vision",
+  "mode": "half",
+  "barge": "stop",
+  "node": "jaegeromni-41m-medium",
+  "adapter_sha256": "a7f96bfb889866f75df7b838f84aae368a56ab10f6469e766511d700e32fe13a",
+  "converse_sha256": "f66064e0a355ddb99d851de2261662c8aadb46cebf9fa2d348bd381a26600068",
+  "perception_context": false,
+  "passed": 4,
+  "total": 4,
+  "checks": [
+    {
+      "name": "local image admitted",
+      "passed": true
+    },
+    {
+      "name": "image plus text understood",
+      "passed": true
+    },
+    {
+      "name": "image memory reaches typed turn",
+      "passed": true
+    },
+    {
+      "name": "image memory reaches voice turn",
+      "passed": true
+    }
+  ],
+  "log": [
+    "[converse] speaker+wake embeddings: ECAPA (trained NN)",
+    "[converse] semantic channel: jaegeromni-41m-medium (encoder\u2192adapter\u2192Gemma, no text seam)\u2026",
+    "loading vision projector mmproj-gemma-4-E4B-it-BF16.gguf\u2026",
+    "loading Kokoro\u2026",
+    "WARNING: Defaulting repo_id to hexgrad/Kokoro-82M. Pass repo_id='hexgrad/Kokoro-82M' to suppress this warning.",
+    "[converse] half duplex \u00b7 barge=stop \u00b7 say 'hey computer \u2026' or type (Enter). Ctrl-C to quit.",
+    "  [image queued; type a question]",
+    "  [SIM] PASS  local image admitted",
+    "  you (typed): Name the shape and its color in this image.",
+    "loading gemma-4-E4B-it-Q4_K_M.gguf\u2026",
+    "  \u23f5 agent: The shape is a circle, and its color is blue.",
+    "  [SIM] PASS  image plus text understood  \u00b7   \u23f5 agent: The shape is a circle, and its color is blue.",
+    "  you (typed): What color was the shape in the image I showed you?",
+    "  \u23f5 agent: The shape was blue.",
+    "  [SIM] PASS  image memory reaches typed turn  \u00b7   \u23f5 agent: The shape was blue.",
+    "  [context: speaker=S1 conf=100% pitch=115Hz]  Hey computer, what shape was in the image I showed you?   [nn 1.20s ttft 0.33s]",
+    "  \u23f5 agent: It was a circle.",
+    "  [SIM] PASS  image memory reaches voice turn  \u00b7   \u23f5 agent: It was a circle.",
+    "bye"
+  ]
+}

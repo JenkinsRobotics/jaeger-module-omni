@@ -52,7 +52,8 @@ class BrainGemma:
         self.history.append({"role": "user", "content": user_text})
         self.history.append({"role": "assistant", "content": reply})
         if len(self.history) > self.MAX_MESSAGES:
-            self.history = self.history[-self.MAX_MESSAGES:]
+            # Converse shares this exact list with its audio/text brain.
+            del self.history[:-self.MAX_MESSAGES]
 
     def clear(self) -> None:
         self.history.clear()

@@ -795,6 +795,19 @@ def converse(mode: str, barge: str, with_vision: bool,
         while True:
             typed = txt.poll()
             if typed:
+                if typed == "/image" or typed.startswith("/image "):
+                    if typed == "/image":
+                        print("  [use /image PATH, then type a question]", flush=True)
+                    elif not vis.ready:
+                        print("  [images unavailable; start with --vision]", flush=True)
+                    else:
+                        try:
+                            path = typed.split(maxsplit=1)[1].strip().strip("\"'")
+                            state["image"] = vis.image_uri(path)
+                            print("  [image queued; type a question]", flush=True)
+                        except (IndexError, OSError, ValueError) as exc:
+                            print(f"  [cannot open image: {exc}]", flush=True)
+                    continue
                 if state["speaking"] and io is not None and barge == "stop":
                     io.interrupt_playback()
                 if typed.strip() == "/quit":

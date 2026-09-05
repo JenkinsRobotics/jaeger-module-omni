@@ -163,7 +163,7 @@ def wait_for(marker, timeout=90.0):
     with TEE.cv:
         while True:
             for i in range(TEE.cursor, len(TEE.lines)):
-                if marker in TEE.lines[i]:
+                if marker in TEE.lines[i] and not TEE.lines[i].lstrip().startswith("[SIM]"):
                     TEE.cursor = i + 1
                     return TEE.lines[i]
             if time.time() >= end:
@@ -172,7 +172,8 @@ def wait_for(marker, timeout=90.0):
 
 def seen_since(marker, start_idx):
     with TEE.cv:
-        return any(marker in ln for ln in TEE.lines[start_idx:])
+        return any(marker in ln and not ln.lstrip().startswith("[SIM]")
+                   for ln in TEE.lines[start_idx:])
 
 # ── run_v2 under test, with node capture ──────────────────────────────────
 spec = importlib.util.spec_from_file_location("run_v2", V2 / "converse.py")
@@ -294,6 +295,19 @@ def sc_dismissal(mode):
     step("close AFTER farewell", wait_for("[conversation closed]", 90))
     playback_done(mode)
 
+def playback_started(mode, timeout=30.0):
+    """Start interruptions at actual nonzero audio, not a pre-TTS text marker."""
+    end = time.monotonic()+timeout
+    while time.monotonic() < end:
+        active = (time.time() < HALF["until"] if mode == "half" else
+                  _Stream.inst is not None and _Stream.inst.playing_flag)
+        if active:
+            print("  [SIM] actual playback observed", flush=True)
+            return True
+        time.sleep(.01)
+    return False
+
+
 def sc_barge(mode):
     # A user who is not heard REPEATS louder — realistic, and it also
     # defeats the pure-Python fake-device GIL-scheduling flake (real
@@ -309,10 +323,12 @@ def sc_barge(mode):
         time.sleep(0.3)
         MIC.say(user("What is the sun made of, and why does it shine so very "
                      "brightly up in the sky every single day?"))
+        reply = wait_for("⏵ agent:", 150)
+        playing = bool(reply and playback_started(mode))
         if attempt == 0:
-            step("reply begins", wait_for("⏵ agent:", 150))
-        else:
-            wait_for("⏵ agent:", 150)
+            step("reply begins", playing)
+        if not playing:
+            continue
         MIC.say(bz)
         if wait_for("✂ barged", 12):
             fired = True
@@ -326,13 +342,16 @@ def sc_barge_continue(mode):
     time.sleep(0.3)                          # in-window follow-up (woken)
     MIC.say(user("What is the sun made of, and why does it shine so "
                  "brightly in the sky every day?"))
-    step("reply begins", wait_for("⏵ agent:", 150))
+    reply = wait_for("⏵ agent:", 150)
+    playing = bool(reply and playback_started(mode))
+    step("reply begins", playing)
     mark = len(TEE.lines)
     ov = user("I am talking right over you now, please just acknowledge me.")
-    MIC.say(np.concatenate([ov, np.zeros(1600, np.float32), ov]))
+    if playing:
+        MIC.say(np.concatenate([ov, np.zeros(1600, np.float32), ov]))
     playback_done(mode)
-    step("playback NOT cut (continue)", not seen_since("✂ barged", mark))
-    step("overtalk heard and answered", wait_for("⏵ agent:", 120))
+    step("playback NOT cut (continue)", playing and not seen_since("✂ barged", mark))
+    step("overtalk heard and answered", playing and wait_for("⏵ agent:", 120))
     playback_done(mode)
 
 def sc_self_echo(mode):
@@ -398,6 +417,30 @@ def sc_streaming(mode):
     step("long monologue answered", wait_for("⏵ agent:", 150))
     playback_done(mode)
 
+def sc_vision_memory(mode):
+    from PIL import Image, ImageDraw
+    picture = CACHE / "vision-blue-circle.png"
+    canvas = Image.new("RGB", (512, 512), "white")
+    ImageDraw.Draw(canvas).ellipse((90, 90, 422, 422), fill="blue")
+    canvas.save(picture)
+    NODES["text-input-v0"].submit(f"/image {picture}")
+    queued = wait_for("[image queued", 30)
+    step("local image admitted", queued)
+    NODES["text-input-v0"].submit("Name the shape and its color in this image.")
+    r = wait_for("⏵ agent:", 180)
+    step("image plus text understood", r and "blue" in r.lower()
+         and "circle" in r.lower(), extra=r or "")
+    playback_done(mode)
+    NODES["text-input-v0"].submit("What color was the shape in the image I showed you?")
+    r = wait_for("⏵ agent:", 120)
+    step("image memory reaches typed turn", r and "blue" in r.lower(), extra=r or "")
+    playback_done(mode)
+    MIC.say(user("Hey computer, what shape was in the image I showed you?"))
+    r = wait_for("⏵ agent:", 120)
+    step("image memory reaches voice turn", r and "circle" in r.lower(), extra=r or "")
+    playback_done(mode)
+
+
 SESSIONS = {
     "half":           ("half",  "stop",     [sc_wake, sc_followup,
                                              sc_hold_merge, sc_hold_expiry,
@@ -408,18 +451,28 @@ SESSIONS = {
     "bargemin":       ("quasi", "stop",     [sc_wake, sc_barge]),
     "full":           ("full",  "stop",     [sc_wake, sc_streaming,
                                              sc_dismissal]),
+    "vision":         ("half", "stop", [sc_vision_memory]),
 }
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--session", required=True, choices=sorted(SESSIONS))
     ap.add_argument("--output", type=Path, help="write reproducible campaign evidence JSON")
+    ap.add_argument("--full-ear", help="research override: an immutable node for the full-tier trial only")
     args = ap.parse_args()
     mode, barge, steps = SESSIONS[args.session]
+    if args.full_ear:
+        if mode != "full" or Path(args.full_ear).name != args.full_ear:
+            ap.error("--full-ear requires a local node ID and --session full")
+        from jaeger_agent_omni.node_registry import load_package
+        package = load_package(V2 / "nodes" / args.full_ear)
+        if package.manifest.get("adapter", {}).get("attention") != "causal":
+            ap.error("--full-ear requires a declared causal adapter")
+        rv.semantic_node_id = lambda _mode: args.full_ear
     signal.alarm(1500)                        # hard whole-session deadline
     sys.stdout = TEE
     th = threading.Thread(
-        target=lambda: rv.converse(mode, barge, False, "nn", "nn"),
+        target=lambda: rv.converse(mode, barge, args.session == "vision", "nn", "nn"),
         daemon=True)
     th.start()
     if not wait_for("Ctrl-C to quit", 600):

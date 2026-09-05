@@ -1,0 +1,65 @@
+{
+  "kind": "default_converse_campaign",
+  "date": "2026-09-05",
+  "passed": 27,
+  "total": 27,
+  "perception_context": false,
+  "artifacts": [
+    "final-default-half-20260905.json",
+    "final-default-quasi-20260905.json",
+    "final-default-barge-continue-20260905.json",
+    "final-default-full-20260905.json"
+  ],
+  "commands": [
+    [
+      "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+      "jaeger_agent_omni/tests/converse_sim.py",
+      "--session",
+      "half",
+      "--output",
+      "research/candidate_evals/final-default-half-20260905.json"
+    ],
+    [
+      "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+      "jaeger_agent_omni/tests/converse_sim.py",
+      "--session",
+      "quasi",
+      "--output",
+      "research/candidate_evals/final-default-quasi-20260905.json"
+    ],
+    [
+      "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+      "jaeger_agent_omni/tests/converse_sim.py",
+      "--session",
+      "barge-continue",
+      "--output",
+      "research/candidate_evals/final-default-barge-continue-20260905.json"
+    ],
+    [
+      "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+      "jaeger_agent_omni/tests/converse_sim.py",
+      "--session",
+      "full",
+      "--output",
+      "research/candidate_evals/final-default-full-20260905.json"
+    ]
+  ],
+  "artifact_sha256": {
+    "final-default-half-20260905.json": "0ebe3eaa42cb49ba0ff41a9243ca9477c19b909eb1a185c743634214536065ae",
+    "final-default-quasi-20260905.json": "04e24b018c102c459e1b0ea07d78a0665fb9030f445e2ac512d32b1c55c00d4c",
+    "final-default-barge-continue-20260905.json": "daf198857b0a59c55d2332deb50e43ec1d451aa89e314726770b842154463954",
+    "final-default-full-20260905.json": "7a3ca290916626811a6b0c3aa4b5f62f654c0fb31678b937f9f404cd458beee0"
+  },
+  "process_exit_codes": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "limitations": [
+    "Synthetic acoustic fixtures and simulated device; not a physical-room gate.",
+    "Quasi barge cut succeeded on the second allowed attempt.",
+    "Interruption scenarios now wait for actual nonzero playback before injecting actor audio.",
+    "Simulator assertions cannot satisfy runtime marker waits."
+  ]
+}

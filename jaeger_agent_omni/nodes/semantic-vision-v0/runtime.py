@@ -7,6 +7,7 @@ STT_MODEL = "large-v3-turbo"
 KOKORO_VOICE = "af_heart"
 KOKORO_LANG = "a"
 from pathlib import Path
+import base64
 LMSTUDIO = Path.home() / ".lmstudio/models/lmstudio-community"
 LLM_MODEL_PATH = LMSTUDIO / "gemma-4-E4B-it-GGUF/gemma-4-E4B-it-Q4_K_M.gguf"
 MMPROJ = LMSTUDIO / "gemma-4-E4B-it-GGUF/mmproj-gemma-4-E4B-it-BF16.gguf"
@@ -37,6 +38,20 @@ class VisionMmproj:
         else:
             say(f"no vision projector at {MMPROJ} — text and audio only")
         return self.handler
+
+    @staticmethod
+    def image_uri(path):
+        """Validate a local image and encode it for the existing vision handler."""
+        from PIL import Image
+
+        source = Path(path).expanduser().resolve()
+        with Image.open(source) as img:
+            mime = Image.MIME.get(img.format)
+            img.verify()
+        if mime not in ("image/png", "image/jpeg", "image/webp"):
+            raise ValueError("use a PNG, JPEG, or WebP image")
+        encoded = base64.b64encode(source.read_bytes()).decode("ascii")
+        return f"data:{mime};base64,{encoded}"
 
     @staticmethod
     def content(user_text: str, image_uri):

@@ -1,0 +1,61 @@
+{
+  "command": [
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+    "jaeger_agent_omni/tests/converse_sim.py",
+    "--session",
+    "barge-continue",
+    "--output",
+    "research/candidate_evals/final-default-barge-continue-20260905.json"
+  ],
+  "session": "barge-continue",
+  "mode": "quasi",
+  "barge": "continue",
+  "node": "jaegeromni-41m-medium",
+  "adapter_sha256": "a7f96bfb889866f75df7b838f84aae368a56ab10f6469e766511d700e32fe13a",
+  "converse_sha256": "f66064e0a355ddb99d851de2261662c8aadb46cebf9fa2d348bd381a26600068",
+  "perception_context": false,
+  "passed": 4,
+  "total": 4,
+  "checks": [
+    {
+      "name": "wake -> reply",
+      "passed": true
+    },
+    {
+      "name": "reply begins",
+      "passed": true
+    },
+    {
+      "name": "playback NOT cut (continue)",
+      "passed": true
+    },
+    {
+      "name": "overtalk heard and answered",
+      "passed": true
+    }
+  ],
+  "log": [
+    "[converse] speaker+wake embeddings: ECAPA (trained NN)",
+    "[converse] semantic channel: jaegeromni-41m-medium (encoder\u2192adapter\u2192Gemma, no text seam)\u2026",
+    "loading Kokoro\u2026",
+    "WARNING: Defaulting repo_id to hexgrad/Kokoro-82M. Pass repo_id='hexgrad/Kokoro-82M' to suppress this warning.",
+    "[converse] quasi duplex \u00b7 barge=continue \u00b7 say 'hey computer \u2026' or type (Enter). Ctrl-C to quit.",
+    "  [context: speaker=S1 conf=100% pitch=118Hz]  Hey computer, what is two plus two?   [nn 0.73s ttft 0.24s]",
+    "  \u23f5 agent: Two plus two equals four.",
+    "  [SIM] PASS  wake -> reply",
+    "  [context: speaker=S1 conf=100% pitch=136Hz incomplete]  what is a sun made of   [nn 0.78s ttft 0.24s]",
+    "  [holding \u2014 finish your thought]",
+    "  [context: speaker=S1 conf=100% pitch=122Hz]  and why does shine so brightly in the sky every day   [nn 1.20s ttft 0.29s]",
+    "  \u23f5 merged: what is a sun made of and why does shine so brightly in the sky every day",
+    "  \u23f5 agent: The sun is a giant ball of hot plasma, mostly hydrogen and helium. It shines brightly because it generates immense heat through nuclear fusion in its core.",
+    "  [SIM] actual playback observed",
+    "  [SIM] PASS  reply begins",
+    "  [SIM] PASS  playback NOT cut (continue)",
+    "  [context: speaker=S1 conf=100% pitch=209Hz]  I am talking right over you now, please just acknowledge me.   [nn 1.08s ttft 0.36s]",
+    "  \u23f5 agent: I hear you. What would you like me to acknowledge?",
+    "  [SIM] PASS  overtalk heard and answered",
+    "  [context: speaker=S1 conf=100% pitch=202Hz]  I am talking right over you now, please just acknowledge me   [nn 0.96s ttft 0.38s]",
+    "  \u23f5 agent: I acknowledge that you are talking.",
+    "bye"
+  ]
+}
