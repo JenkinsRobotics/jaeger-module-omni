@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import argparse
 import contextlib
+from dataclasses import replace
 import hashlib
 import json
 import re
@@ -261,6 +262,8 @@ def main() -> int:
                         default=Path("/tmp/jaeger-agentic-audio-corpus"))
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--prepare-only", action="store_true")
+    parser.add_argument("--discovery-hint", action="store_true",
+                        help="research A/B: expose toolset descriptions and require capability discovery before declining")
     parser.add_argument("--max-tokens", type=int, default=96)
     parser.add_argument("--case-timeout-s", type=float, default=45.0,
                         help="hard per-row deadline; zero disables")
@@ -276,6 +279,16 @@ def main() -> int:
         return 0
 
     preparation = prepare_agentic_system(SYSTEM)
+    if args.discovery_hint:
+        from jaeger_agent_omni.core.agentic.omni_runtime import toolset_scoping
+        catalog = json.dumps(toolset_scoping.all_toolsets(), sort_keys=True)
+        preparation = replace(preparation, system=preparation.system + (
+            "\nBefore saying an action is unavailable, inspect this capability "
+            "catalog and call load_tools for the relevant toolset. Then execute "
+            "the requested action using the returned schemas. Never claim an "
+            "action succeeded without a successful tool result. Keep the final "
+            "spoken response concise; this does not limit tool use.\n"
+            f"CAPABILITY CATALOG: {catalog}"))
     session, meta = build(args.model, args.front_end, system=preparation.system)
     session.warmup()
     native_respond, native_cancel = session.respond, session.cancel
@@ -363,6 +376,10 @@ def main() -> int:
         "teacher_forced": False,
         "text_or_transcript_fed_to_model": False,
         "fixture_voice": args.voice,
+        "discovery_hint": args.discovery_hint,
+        "system_sha256": hashlib.sha256(preparation.system.encode()).hexdigest(),
+        "code_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        "command": [sys.executable, *sys.argv],
         "suite": args.suite,
         "front_end": meta["model_id"],
         "checkpoint": meta["checkpoint"],

@@ -1,0 +1,46 @@
+{
+  "command": [
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+    "research/physical_omni_trial.py",
+    "calibrate",
+    "--input-device",
+    "1",
+    "--output-device",
+    "4",
+    "--output",
+    "research/candidate_evals/physical-coupling-repro-20260904.json"
+  ],
+  "kind": "physical_speaker_microphone_coupling",
+  "direct_injection": false,
+  "input_device": {
+    "name": "Elgato XLR Dock",
+    "index": 1,
+    "hostapi": 0,
+    "max_input_channels": 1,
+    "max_output_channels": 2,
+    "default_low_input_latency": 0.01,
+    "default_low_output_latency": 0.003416666666666667,
+    "default_high_input_latency": 0.1,
+    "default_high_output_latency": 0.01275,
+    "default_samplerate": 48000.0
+  },
+  "output_device": {
+    "name": "Mac Studio Speakers",
+    "index": 4,
+    "hostapi": 0,
+    "max_input_channels": 0,
+    "max_output_channels": 2,
+    "default_low_input_latency": 0.01,
+    "default_low_output_latency": 0.0079375,
+    "default_high_input_latency": 0.1,
+    "default_high_output_latency": 0.017270833333333332,
+    "default_samplerate": 48000.0
+  },
+  "played_seconds": 3.85,
+  "captured_seconds": 6.058666666666666,
+  "ambient_rms": 0.07939466089010239,
+  "captured_rms": 0.13432955741882324,
+  "peak_normalized_correlation": -0.17618565261363983,
+  "best_offset_s": 1.139875,
+  "code_sha256": "c16789054bd581fb4d7391cb1a4b08780454bbc16b7114bd2bf8548114f1752c"
+}
