@@ -1,0 +1,58 @@
+{
+  "kind": "omni_consolidation_measured_review",
+  "date": "2026-09-05",
+  "release_ready": false,
+  "selection": {
+    "default_mode": "quasi",
+    "half_quasi_ear": "jaegeromni-41m-medium",
+    "full_ear": "jaegeromni-41m-converse",
+    "speaker_context_default": false
+  },
+  "green_checks": {
+    "converse_campaign": "27/27",
+    "converse_selftest": "18/18",
+    "package_tests": 65,
+    "package_subtests": 14,
+    "module_checks": "31/31",
+    "vision_mixed_turns": "4/4",
+    "native_agentic_cases12": "12/12"
+  },
+  "physical_retest": {
+    "checks": "12/13",
+    "fed_seconds": 299.8,
+    "dropped_seconds": 0,
+    "mic_overflows": 0,
+    "spoken_replies": 3,
+    "tool_calls": 0
+  },
+  "standing_release_deficits": [
+    "AEC onset-delay p95 601.9 ms exceeds 300 ms.",
+    "Native agentic full corpus remains below full-pass and routing thresholds.",
+    "Physical acoustic replay still fails required agent tool use and is not a human-conversation validation."
+  ],
+  "unqualified_candidates": [
+    "Two independent overlap TCNs remain below F1 0.81 and event reliability bars.",
+    "Three heads-free causal variants regress both matched WER gates.",
+    "Speaker-context default, tool-discovery prompt, and initial-schema-order pilot are not promoted."
+  ],
+  "artifacts_sha256": {
+    "final-default-campaign-20260905.json": "ae69064bf672c8ff25090b796bf51ed08b2c9501b6e7177f1de1155aba9b0dae",
+    "final-cpu-checks-20260905.json": "f3e8d93c474034171d8335a00ee459cbc703376c70b5286775ec0d0df87e26c8",
+    "final-ear-identity-20260905.json": "e918f4f07131b8b7971b72121d5f9f625338541891b8001777cdf024ab18eb44",
+    "tier-matched-gpu-20260904.json": "98de109d1eb0c47e49bdb6bdf2c82e1d8ed1b999d17ebcb7eac8650fca009e34",
+    "parallel-overlap-trial-20260904.json": "5cc7a6acc36b033f50b97c9f9943da6bb702994da87fa2893c15ce814aab1f78",
+    "parallel-overlap-trial2-20260904.json": "20f780fbc9f5e6555487cd7faad5e097784dd758574d0d2abec296a50a5baf73",
+    "medium-causal-quality-comparison-20260904.json": "71e9f82c6c39a91864d9e8579321ba100fe4aff98fb11c23998f487a67cb73ce",
+    "converse-context-comparison-20260905.json": "d25312baead6c7623d4f421b1eb2e035e74ceedcb2f8f192bec9ae86f4e8c79d",
+    "converse-vision-verified-markers-20260905.json": "795b5cd65f88a715013bb8bade7d9ece8b8f07d215f2b03d479f87cabd34f6cf",
+    "aec-contiguous-20260904.json": "1b4d30272c2d79b83796d4f8c031577aac70f0b7e28b40aa74fe40ccdeca9c24",
+    "aec-policy-trials-20260904.json": "6fae39cf29cee811f8e192b9bd2e5746ca4cf4e81aba03badeb7da2412a5bcc3",
+    "agentic-discovery-comparison-20260905.json": "e3e6343b92e52d4e582ebfe53917836c3a79e752603130fba9d5fe7bca322a73",
+    "agentic-continuation-comparison-20260905.json": "77070b47eb5dcc1b6665e04e5867151f92a90e7c26e6903fa961dde23f953d56",
+    "agentic-bootstrap-comparison-20260905.json": "c8560eb17a1302da690c543734e3beada1f2b351b1d4dc6eab45ed8165aa390e",
+    "physical-generation-barge-comparison-20260905.json": "a18524423ce0df15d283176eb4a94c102a2c425c29cac1d4deea59f21017b577"
+  },
+  "review": "docs/OMNI_CONSOLIDATION_REVIEW_20260905.md",
+  "weights_committed": false,
+  "user_gui_selector_observer_edits_preserved": true
+}

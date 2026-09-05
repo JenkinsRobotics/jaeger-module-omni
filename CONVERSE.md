@@ -58,6 +58,12 @@ MLX brain with the shared text history. This does not prove simultaneous
 audio+image attention or preservation of image vectors across turns.
 Trimming history now preserves the shared list instead of disconnecting it.
 
+Latest cross-pipeline review:
+[`OMNI_CONSOLIDATION_REVIEW_20260905.md`](docs/OMNI_CONSOLIDATION_REVIEW_20260905.md).
+The native `live.py` speech-guard improvement and physical results are separate
+from this 27/27 conversation campaign; native agentic room interaction remains
+unqualified.
+
 ## What runs
 
 ```

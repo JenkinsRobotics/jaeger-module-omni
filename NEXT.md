@@ -1,23 +1,30 @@
 # Next steps — current plan
 
-2026-09-04 routing verified: **27/27** campaign. Half/quasi use unchanged
-medium weights: transcription **4.82% vs causal 5.03%**; HEARD/REPLY
-**5.03% vs causal 5.45%**, same devclean64/scorer. User explicitly authorized
-GPU inference, training and trials. Two independent raw-audio overlap trials
-are rejected (best test F1 0.633 synthetic / 0.728 AMI, frequent false events).
-The heads-free medium causal port also failed: mask-only and 250/500-step
-variants all regress devclean64 and AMI64 against the existing full ear,
-which stays selected. All three new nodes are packaged-disabled. Speaker
-context now has measured value only with turn-local identity plus labeled
-history (19/24 vs 11/24 across development/held-out ECAPA queries), but raises
-medium fresh-turn HEARD WER 5.03% → 5.55%; it stays opt-in, default off.
-Image→text→audio shared-memory turns now pass 4/4, and the final default-off
-campaign is 27/27. The opt-in context runtime passes 12/12 structural checks
-but also speaks a speaker annotation once. Full agentic corpus A/B and the
-physical five-minute acoustic replay are running next.
-Overlap needs stronger acoustic representations and event
-reliability before promotion; repeating these scratch-TCN recipes is unwarranted.
-Evidence: `research/candidate_evals/tier-matched-gpu-20260904.json`.
+2026-09-05 tested selection: **quasi default**, medium on half/quasi, current
+causal ear on full. Final conversation campaign **27/27**, selftest **18/18**,
+package tests **65**, module checks **31/31**, vision/text/voice memory **4/4**.
+The selected adapters and all shared Whisper-medium encoder bytes are unchanged.
+No weights were committed; 31 immutable nodes / 13 profiles are registered.
+
+The ordered work queue has now been exercised, including two parallel-overlap
+training recipes, the heads-free causal port, speaker-context controls, mixed
+vision turns, three full native agentic corpus runs, and two physical five-minute
+runs. **The release gates are not all green.** Keep the failed training variants
+disabled and context opt-in/off by default. Native tool results now return to
+Gemma, and a separate raw-audio Silero instance prevents background RMS from
+continually cancelling generation. The physical retest improves **9/13→12/13**
+checks, but still makes zero tool calls and suffers playback interruptions.
+
+Next work must address the measured deficits: a stronger independent overlap
+model that qualifies on F1 AND event reliability, the AEC tail (601.9 ms p95),
+and native action fulfillment (31/162 original scorer; 35/162 after a separate
+paired spoken-integer diagnostic). The discovery prompt and an initial-schema
+ordering pilot did not resolve action fulfillment. No same-recipe 41M or scratch
+TCN continuation is supported by these results. Preserve the current full ear
+until a distinct causal method beats both matched WER gates.
+
+Full results, limits and evidence pointers:
+[`docs/OMNI_CONSOLIDATION_REVIEW_20260905.md`](docs/OMNI_CONSOLIDATION_REVIEW_20260905.md).
 
 ## Pipeline lockdown — what we have and what we refine (2026-09-03)
 

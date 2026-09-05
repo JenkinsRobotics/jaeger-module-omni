@@ -398,3 +398,20 @@ whole duplex ladder and BEATS it on the two things the architecture promised —
 no text seam on the way in, one model on the way out — at a fraction of the
 latency. It stays behind on exactly one axis, recognition accuracy off the
 training distribution, which is the training work order, not a wiring gap.
+
+
+## Addendum 2026-09-05 — measured consolidation
+
+Tier-matched routing is implemented: medium for half/quasi, current causal for
+full, quasi default, 27/27 conversation checks. Speaker context remains opt-in
+because the measured recall gain carries a transcription tradeoff. Real
+image→typed→voice shared-memory turns pass 4/4 through the existing vision twin.
+
+Two raw-audio overlap TCN trials and three variants of a heads-free medium
+causal port failed their qualification gates and were not promoted. An existing
+Silero NN now independently guards generation-time barge in native neural-VAD
+mode; it is speech detection, not an overlap-head replacement. The physical
+retest passes 12/13 mechanical checks but fails agent tool use. AEC tail and
+native agentic action fulfillment remain red. Results, counterexamples, hashes
+and reproducing commands are collected in the
+[consolidation review](OMNI_CONSOLIDATION_REVIEW_20260905.md).

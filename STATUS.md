@@ -1,6 +1,24 @@
-# Jaeger Agent Omni — what works, 2026-08-22
+# Jaeger Agent Omni — measured state, 2026-09-05
 
 Measured ledger. Every claim here has a command that reproduces it.
+
+2026-09-05 physical acoustic replay: first run captured **299.9 s**, no drops
+or mic overflows, but all 34 generation attempts were cut (32 halted plus two
+partial control prefixes). The fixed RMS pre-output barge rule fired even on
+all 50 pre-actor background blocks. A separate instance of the existing
+Silero speech NN on raw PCM rejects all 50, also rejects a loud synthetic
+noise probe, and detects the clean actor. Neural mode now uses confirmed
+speech for generation-time barge; playback AEC logic is unchanged.
+
+Same-device/actor physical retest: **299.8 s**, no drops/overflows, **3 spoken
+replies**, generation-stage barges **34 → 2**, two context rolls, AEC exercised
+for **10.3 s**. Live speech-gate processing p95 **2.40 ms per 100 ms block**
+(CPU replay p95 <0.4 ms). Physical checks improve **9/13 → 12/13** but still
+fail agent tools: **0 tool calls**. All three spoken replies were interrupted
+in playback; clock answers were ungrounded. This is acoustic replay, not a
+human-conversation pass, overlap-F1 promotion, or AEC-tail fix. Evidence:
+`research/candidate_evals/physical-generation-barge-comparison-20260905.json`.
+CPU package tests after the change: **65 passed**, 14 subtests.
 
 2026-09-05 native tool-continuation fix: Gemma now receives deterministic
 calculator/clock/recall results instead of the runtime ending the turn early.
@@ -35,8 +53,8 @@ vision twin and MLX audio/text model sharing text history; simultaneous
 image/audio attention is not established. Simulator marker waits now exclude
 their own assertion output. Evidence: `final-default-campaign-20260905.json`
 and `converse-vision-verified-markers-20260905.json` in
-`research/candidate_evals/`. Current package pytest: **62 passed**, including
-6 subtests. Current registry: **31 nodes / 13 profiles**.
+`research/candidate_evals/`. Current package pytest: **65 passed**, including
+14 subtests. Current registry: **31 nodes / 13 profiles**.
 
 2026-09-05 speaker-sensitive context: the old current-speaker system annotation
 adds no value (6/12 with and without it); copying those labels into history
