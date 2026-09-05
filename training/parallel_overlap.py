@@ -62,12 +62,12 @@ def logmel(audio):
 
 class OverlapNet(nn.Module):
     """Small causal TCN; per-frame normalization cannot leak future audio."""
-    def __init__(self, width=128):
+    def __init__(self, width=128, depth=5):
         super().__init__()
         self.input = nn.Linear(80, width)
-        self.norms = nn.ModuleList([nn.LayerNorm(width) for _ in range(5)])
+        self.norms = nn.ModuleList([nn.LayerNorm(width) for _ in range(depth)])
         self.convs = nn.ModuleList([nn.Conv1d(width, width, 3, dilation=2**i)
-                                   for i in range(5)])
+                                   for i in range(depth)])
         self.output = nn.Linear(width, 1)
 
     def forward(self, x):
@@ -191,7 +191,7 @@ def train(args):
     torch.set_num_threads(2); torch.manual_seed(args.seed)
     device = torch.device(args.device)
     data = load_rows(args.cache)
-    model = OverlapNet(args.width).to(device)
+    model = OverlapNet(args.width, args.depth).to(device)
     optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=1e-4)
     rng = np.random.default_rng(args.seed)
     history, best, selected = [], -1, None
@@ -206,26 +206,47 @@ def train(args):
             x = np.zeros((len(batch), longest, 80), np.float32)
             y = np.zeros((len(batch), longest), np.float32); mask = y.copy()
             for i, (_, feature, label) in enumerate(batch):
-                x[i, :len(label)] = feature; y[i, :len(label)] = label
+                # Gain changes do not change factual overlap labels. Prevent
+                # the detector from identifying a corpus by recording level.
+                x[i, :len(label)] = feature + rng.uniform(-1.0, 1.0)
+                y[i, :len(label)] = label
                 mask[i, :len(label)] = 1
             logits = model(torch.from_numpy(x).to(device))
             valid = torch.from_numpy(mask).to(device)
             loss = F.binary_cross_entropy_with_logits(
                 logits, torch.from_numpy(y).to(device), reduction="none")
             loss = (loss*valid).sum()/valid.sum()
+            if args.temporal_weight:
+                probability = torch.sigmoid(logits)
+                target = torch.from_numpy(y).to(device)
+                pair_mask = valid[:, 1:]*valid[:, :-1]
+                transition = F.smooth_l1_loss(
+                    probability[:, 1:]-probability[:, :-1],
+                    target[:, 1:]-target[:, :-1], reduction="none")
+                loss = loss + args.temporal_weight*(transition*pair_mask).sum()/pair_mask.sum()
             optimizer.zero_grad(); loss.backward()
             nn.utils.clip_grad_norm_(model.parameters(), 1.0); optimizer.step()
             losses.append(loss.item())
         val = predict(model, data["validation"], device)
-        scores = [metrics(val, float(t)) for t in np.linspace(.1, .9, 33)]
-        score = max(scores, key=lambda s: s["f1"])
+        scores = []
+        for t in np.linspace(.1, .9, 33):
+            score = metrics(val, float(t))
+            if args.macro_selection:
+                per_corpus = [metrics([v for v, r in zip(val, data["validation"])
+                                      if r[0]["corpus"] == corpus], float(t))["f1"]
+                              for corpus in ("bargein_train", "ami_overlap")]
+                score["macro_corpus_f1"] = float(np.mean(per_corpus))
+            scores.append(score)
+        criterion = "macro_corpus_f1" if args.macro_selection else "f1"
+        score = max(scores, key=lambda s: s[criterion])
         record = {"epoch": epoch, "train_loss": float(np.mean(losses)),
                   "validation": score, "elapsed_s": time.monotonic()-start}
         history.append(record)
         print(json.dumps(record), flush=True)
-        if score["f1"] > best:
-            best = score["f1"]; selected = record
+        if score[criterion] > best:
+            best = score[criterion]; selected = record
             torch.save({"model": model.cpu().state_dict(), "width": args.width,
+                        "depth": args.depth,
                         "architecture": "raw_logmel_causal_tcn_v1",
                         "threshold": score["threshold"]}, args.checkpoint)
             model.to(device)
@@ -246,6 +267,8 @@ def train(args):
               "parameters": sum(p.numel() for p in model.parameters()),
               "manifest_sha256": digest(args.cache/"manifest.jsonl"),
               "code_sha256": digest(__file__), "device": str(device),
+              "augmentation": "per-clip log-power shift +/-1 (gain +/-10 dB)",
+              "delay_definition": "onset frame difference at 40 ms; excludes feature buffering and inference",
               "gates": {"f1_min": .81, "event_recall_min": .9,
                         "false_alarms_per_minute_max": 1.0, "delay_p95_ms_max": 300},
               "runtime_policy_changed": False}
@@ -264,6 +287,9 @@ def main():
     p.add_argument("--epochs", type=int, default=8)
     p.add_argument("--batch", type=int, default=16)
     p.add_argument("--width", type=int, default=128)
+    p.add_argument("--depth", type=int, default=5)
+    p.add_argument("--temporal-weight", type=float, default=0.0)
+    p.add_argument("--macro-selection", action="store_true")
     p.add_argument("--lr", type=float, default=3e-4)
     p.add_argument("--seed", type=int, default=7)
     p.add_argument("--device", choices=["cpu", "mps"], default="mps")

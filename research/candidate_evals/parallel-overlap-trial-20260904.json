@@ -1,0 +1,232 @@
+{
+  "command": [
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+    "training/parallel_overlap.py",
+    "train",
+    "--epochs",
+    "8",
+    "--checkpoint",
+    "artifacts/parallel-overlap-tcn-v1.pt",
+    "--output",
+    "research/candidate_evals/parallel-overlap-trial-20260904.json"
+  ],
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 0.4905965563604387,
+      "validation": {
+        "f1": 0.6747355644182417,
+        "tp": 58368,
+        "fp": 40748,
+        "fn": 15526,
+        "event_recall": 0.9129502572898799,
+        "events": 2332,
+        "detected_events": 2129,
+        "false_alarm_events": 6216,
+        "false_alarms_per_minute": 48.9253631097305,
+        "detection_delay_p95_ms": 343.99999999999636,
+        "seconds": 7623.04,
+        "threshold": 0.45000000000000007
+      },
+      "elapsed_s": 62.96609520800121
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.44373881806761534,
+      "validation": {
+        "f1": 0.6841524871049979,
+        "tp": 57698,
+        "fp": 37078,
+        "fn": 16196,
+        "event_recall": 0.9378216123499142,
+        "events": 2332,
+        "detected_events": 2187,
+        "false_alarm_events": 7623,
+        "false_alarms_per_minute": 59.99968516497355,
+        "detection_delay_p95_ms": 280.0,
+        "seconds": 7623.04,
+        "threshold": 0.225
+      },
+      "elapsed_s": 82.6929045830002
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.4189045865151842,
+      "validation": {
+        "f1": 0.7078885564651693,
+        "tp": 58324,
+        "fp": 32565,
+        "fn": 15570,
+        "event_recall": 0.9262435677530018,
+        "events": 2332,
+        "detected_events": 2160,
+        "false_alarm_events": 6518,
+        "false_alarms_per_minute": 51.302367559398874,
+        "detection_delay_p95_ms": 321.9999999999891,
+        "seconds": 7623.04,
+        "threshold": 0.25
+      },
+      "elapsed_s": 98.02856041700215
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.4012535004797628,
+      "validation": {
+        "f1": 0.7108047027143991,
+        "tp": 59129,
+        "fp": 33349,
+        "fn": 14765,
+        "event_recall": 0.9373927958833619,
+        "events": 2332,
+        "detected_events": 2186,
+        "false_alarm_events": 7379,
+        "false_alarms_per_minute": 58.07919150365208,
+        "detection_delay_p95_ms": 310.0,
+        "seconds": 7623.04,
+        "threshold": 0.17500000000000002
+      },
+      "elapsed_s": 112.16168487500181
+    },
+    {
+      "epoch": 5,
+      "train_loss": 0.3919122899992991,
+      "validation": {
+        "f1": 0.7149947396263648,
+        "tp": 60145,
+        "fp": 34200,
+        "fn": 13749,
+        "event_recall": 0.9180960548885078,
+        "events": 2332,
+        "detected_events": 2141,
+        "false_alarm_events": 6209,
+        "false_alarms_per_minute": 48.87026698010242,
+        "detection_delay_p95_ms": 360.0,
+        "seconds": 7623.04,
+        "threshold": 0.2
+      },
+      "elapsed_s": 126.37347258299997
+    },
+    {
+      "epoch": 6,
+      "train_loss": 0.3812753028788809,
+      "validation": {
+        "f1": 0.7210482573252462,
+        "tp": 61164,
+        "fp": 34595,
+        "fn": 12730,
+        "event_recall": 0.9292452830188679,
+        "events": 2332,
+        "detected_events": 2167,
+        "false_alarm_events": 6401,
+        "false_alarms_per_minute": 50.381475107043904,
+        "detection_delay_p95_ms": 320.0,
+        "seconds": 7623.04,
+        "threshold": 0.325
+      },
+      "elapsed_s": 138.34294770799897
+    },
+    {
+      "epoch": 7,
+      "train_loss": 0.3707583194566985,
+      "validation": {
+        "f1": 0.7165408208587926,
+        "tp": 59690,
+        "fp": 33022,
+        "fn": 14204,
+        "event_recall": 0.9262435677530018,
+        "events": 2332,
+        "detected_events": 2160,
+        "false_alarm_events": 6951,
+        "false_alarms_per_minute": 54.710456720678366,
+        "detection_delay_p95_ms": 360.0,
+        "seconds": 7623.04,
+        "threshold": 0.275
+      },
+      "elapsed_s": 150.82147541700033
+    },
+    {
+      "epoch": 8,
+      "train_loss": 0.3611998377715127,
+      "validation": {
+        "f1": 0.7151587207228629,
+        "tp": 60152,
+        "fp": 34174,
+        "fn": 13742,
+        "event_recall": 0.9215265866209262,
+        "events": 2332,
+        "detected_events": 2149,
+        "false_alarm_events": 6937,
+        "false_alarms_per_minute": 54.60026446142221,
+        "detection_delay_p95_ms": 320.0,
+        "seconds": 7623.04,
+        "threshold": 0.325
+      },
+      "elapsed_s": 162.37444004200006
+    }
+  ],
+  "selected": {
+    "epoch": 6,
+    "train_loss": 0.3812753028788809,
+    "validation": {
+      "f1": 0.7210482573252462,
+      "tp": 61164,
+      "fp": 34595,
+      "fn": 12730,
+      "event_recall": 0.9292452830188679,
+      "events": 2332,
+      "detected_events": 2167,
+      "false_alarm_events": 6401,
+      "false_alarms_per_minute": 50.381475107043904,
+      "detection_delay_p95_ms": 320.0,
+      "seconds": 7623.04,
+      "threshold": 0.325
+    },
+    "elapsed_s": 138.34294770799897
+  },
+  "test": {
+    "bargein_train": {
+      "f1": 0.5753283543651816,
+      "tp": 2234,
+      "fp": 1863,
+      "fn": 1435,
+      "event_recall": 0.810126582278481,
+      "events": 79,
+      "detected_events": 64,
+      "false_alarm_events": 688,
+      "false_alarms_per_minute": 31.577981089929928,
+      "detection_delay_p95_ms": 753.9999999999998,
+      "seconds": 1307.24,
+      "threshold": 0.325
+    },
+    "ami_overlap": {
+      "f1": 0.724714584338318,
+      "tp": 27042,
+      "fp": 14615,
+      "fn": 5929,
+      "event_recall": 0.9373737373737374,
+      "events": 990,
+      "detected_events": 928,
+      "false_alarm_events": 2526,
+      "false_alarms_per_minute": 52.96559822189916,
+      "detection_delay_p95_ms": 280.0,
+      "seconds": 2861.48,
+      "threshold": 0.325
+    }
+  },
+  "promotion_pass": false,
+  "checkpoint": "artifacts/parallel-overlap-tcn-v1.pt",
+  "checkpoint_sha256": "7745f97fee65432f4b0c8670f01507cdac2e97e3fd15caef2a2c748a3b2cbbb2",
+  "parameters": 258177,
+  "manifest_sha256": "c45036b48c8b568ca9a1c424a940d96a4b36ab3e4ba1b3078502d05891a4e23a",
+  "code_sha256": "cbd9d8b5b03731bd20331d09ecc6e1e5cba10e0ef275ee63eefa5733585c9ca8",
+  "device": "mps",
+  "augmentation": "per-clip log-power shift +/-1 (gain +/-10 dB)",
+  "delay_definition": "onset frame difference at 40 ms; excludes feature buffering and inference",
+  "gates": {
+    "f1_min": 0.81,
+    "event_recall_min": 0.9,
+    "false_alarms_per_minute_max": 1.0,
+    "delay_p95_ms_max": 300
+  },
+  "runtime_policy_changed": false
+}

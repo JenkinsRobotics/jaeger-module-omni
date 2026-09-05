@@ -52,6 +52,22 @@ def _sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def _validate_saved_checkpoint(path, *, causal=False, base=None):
+    if not causal:
+        return validate_checkpoint(path)
+    with np.load(path, allow_pickle=False) as archive:
+        values = {key: archive[key] for key in archive.files}
+    if (bytes(values["arch"]) != b"context_causal_v1" or
+            str(values["adapter_arch"]) != "cleanroom_context_causal_v1" or
+            int(np.asarray(values["causal"]).item()) != 1):
+        raise ValueError("causal port checkpoint metadata mismatch")
+    expected = {key: value.shape for key, value in base.items() if "." in key}
+    actual = {key: value.shape for key, value in values.items() if "." in key}
+    if actual != expected or not all(np.isfinite(values[key]).all() for key in actual):
+        raise ValueError("causal port checkpoint parameters mismatch or nonfinite")
+    return values
+
+
 def _build_adapter(values: dict[str, np.ndarray], *, causal: bool = False):
     import mlx.core as mx
     import mlx.nn as nn
@@ -369,12 +385,12 @@ def command_train(args) -> None:
                 f"{args.output.stem}.step{step:06d}{args.output.suffix}")
             atomic_save(path, _checkpoint_values(
                 alignment.adapter, base, args, step, sources, holdouts))
-            validate_checkpoint(path)
+            _validate_saved_checkpoint(path, causal=args.causal, base=base)
             print(f"checkpoint {path}", flush=True)
 
     atomic_save(args.output, _checkpoint_values(
         alignment.adapter, base, args, args.steps, sources, holdouts))
-    validate_checkpoint(args.output)
+    _validate_saved_checkpoint(args.output, causal=args.causal, base=base)
     print(f"saved {args.output}; first10={np.mean(losses[:10]):.5f} "
           f"last10={np.mean(losses[-10:]):.5f}", flush=True)
 

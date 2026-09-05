@@ -48,6 +48,9 @@ DEFAULT_OUTPUT = REPO / "artifacts/stock-whisper-gemma-context1536.npz"
 LEXICAL_ALPHABET = " abcdefghijklmnopqrstuvwxyz'0123456789"
 LEXICAL_SIZE = len(LEXICAL_ALPHABET) + 1  # CTC blank is zero.
 GPU_JOB_PATTERNS = (
+    r"converse_context_eval\.py",
+    r"benchmark_agentic_corpus\.py",
+    r"physical_omni_trial\.py",
     r"parallel_overlap\.py\s+train",
     r"training/cleanroom_context_ce\.py",
     r"converse_sim\.py",

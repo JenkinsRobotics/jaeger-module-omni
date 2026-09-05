@@ -21,19 +21,26 @@ def main():
     mx.set_default_device(mx.cpu)
     from mlx.utils import tree_flatten
     from gemmaomni_adapter import build_context_adapter, load_any_adapter
-    from training.cleanroom_context_ce import _build_adapter
+    from training.cleanroom_context_ce import _build_adapter, _validate_saved_checkpoint
 
     mx.random.seed(7)
     bidirectional = build_context_adapter(hidden=8)
     values = {name: np.asarray(v) for name, v in tree_flatten(bidirectional.parameters())}
     values.update(input_dim=np.array(1024), hidden=np.array([8]), pool_step=np.array(2),
                   arch=np.frombuffer(b"context_causal_v1", dtype=np.uint8),
-                  adapter_arch=np.array("cleanroom_context_causal_v1"))
+                  adapter_arch=np.array("cleanroom_context_causal_v1"), causal=np.array([1]))
     trainer = _build_adapter(values, causal=True)
     x = mx.array(np.random.default_rng(7).normal(size=(80, 1024)).astype(np.float32))
     with tempfile.TemporaryDirectory() as tmp:
         checkpoint = Path(tmp) / "port.npz"
         np.savez(checkpoint, **values)
+        _validate_saved_checkpoint(checkpoint, causal=True, base=values)
+        try:
+            _validate_saved_checkpoint(checkpoint, causal=True, base={})
+        except ValueError:
+            pass
+        else:
+            raise AssertionError("checkpoint topology mismatch was accepted")
         runtime, architecture = load_any_adapter(checkpoint)
         outputs = [np.asarray(fn(x)) for fn in (trainer, runtime)]
         prefix = np.asarray(runtime(x[:40]))
