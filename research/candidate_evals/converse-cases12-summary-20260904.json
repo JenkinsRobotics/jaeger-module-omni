@@ -1,0 +1,70 @@
+{
+  "scope": "keyword factual grader; does not certify naturalness or language consistency",
+  "rows": [
+    {
+      "node": "jaegeromni-41m-converse",
+      "correct": 12,
+      "total": 12,
+      "median_ms": 616.6112505015917,
+      "report": "research/candidate_evals/jaegeromni-41m-converse-converse-20260904-cases12.json",
+      "non_ascii_letter_answers": [
+        {
+          "case": "q03",
+          "answer": "The capital of \u092b\u094d\u0930\u093e\u0902\u0938 is Paris."
+        }
+      ]
+    },
+    {
+      "node": "jaegeromni-41m-medium-causal-mask-v1",
+      "correct": 12,
+      "total": 12,
+      "median_ms": 615.9750834995066,
+      "report": "research/candidate_evals/jaegeromni-41m-medium-causal-mask-v1-converse-20260904-cases12.json",
+      "non_ascii_letter_answers": [
+        {
+          "case": "q03",
+          "answer": "The capital of \u092b\u094d\u0930\u093e\u0902\u0938 is Paris."
+        }
+      ]
+    },
+    {
+      "node": "jaegeromni-41m-medium-causal-port250-v1",
+      "correct": 12,
+      "total": 12,
+      "median_ms": 614.1755624994403,
+      "report": "research/candidate_evals/jaegeromni-41m-medium-causal-port250-v1-converse-20260904-cases12.json",
+      "non_ascii_letter_answers": [
+        {
+          "case": "q03",
+          "answer": "The capital of \u092b\u094d\u0930\u093e\u0902\u0938 is Paris."
+        }
+      ]
+    },
+    {
+      "node": "jaegeromni-41m-medium-causal-port500-v1",
+      "correct": 12,
+      "total": 12,
+      "median_ms": 613.4399789989402,
+      "report": "research/candidate_evals/jaegeromni-41m-medium-causal-port500-v1-converse-20260904-cases12.json",
+      "non_ascii_letter_answers": [
+        {
+          "case": "q03",
+          "answer": "The capital of \u092b\u094d\u0930\u093e\u0902\u0938 is Paris."
+        }
+      ]
+    },
+    {
+      "node": "jaegeromni-41m-medium",
+      "correct": 12,
+      "total": 12,
+      "median_ms": 615.779666499293,
+      "report": "research/candidate_evals/jaegeromni-41m-medium-converse-20260904-cases12.json",
+      "non_ascii_letter_answers": [
+        {
+          "case": "q03",
+          "answer": "The capital of \u092b\u094d\u0930\u093e\u0902\u0938 is Paris."
+        }
+      ]
+    }
+  ]
+}

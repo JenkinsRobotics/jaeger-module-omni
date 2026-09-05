@@ -1,0 +1,249 @@
+{
+  "command": [
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+    "research/converse_answer_eval.py",
+    "--node",
+    "jaeger_agent_omni/nodes/jaegeromni-41m-medium-causal-port250-v1",
+    "--output",
+    "research/candidate_evals/jaegeromni-41m-medium-causal-port250-v1-converse-20260904-cases12.json"
+  ],
+  "node": "jaegeromni-41m-medium-causal-port250-v1",
+  "correct": 12,
+  "total": 12,
+  "n": 12,
+  "rows": [
+    {
+      "case": "q00",
+      "heard": "what is two plus two",
+      "answer": "It's four.",
+      "ok": true,
+      "raw": "HEARD:what is two plus two\nREPLY: It's four.",
+      "latency_ms": 714.1309590006131,
+      "metrics": {
+        "audio_s": 1.175,
+        "audio_tokens": 59,
+        "generated_tokens": 14,
+        "front_end_s": 0.14737441599936574,
+        "prepare_s": 0.1816697499998554,
+        "ttft_s": 0.2306814170005964,
+        "generation_s": 0.5309995420029736,
+        "total_s": 0.7133942079999542
+      },
+      "audio_sha256": "3dc1417fefb7336eb2eb7ea9c1b51bbfcc56b43800e2b948ea241ba79b18ff80"
+    },
+    {
+      "case": "q01",
+      "heard": "what color is the sky",
+      "answer": "It's blue.",
+      "ok": true,
+      "raw": "HEARD:what color is the sky\nREPLY: It's blue.",
+      "latency_ms": 512.6031250001688,
+      "metrics": {
+        "audio_s": 1.3491875,
+        "audio_tokens": 68,
+        "generated_tokens": 14,
+        "front_end_s": 0.03521625000212225,
+        "prepare_s": 0.038105791001726175,
+        "ttft_s": 0.17398670799957472,
+        "generation_s": 0.47380516699922737,
+        "total_s": 0.5119402500022261
+      },
+      "audio_sha256": "8e660b63c56c7dd1e919314d79a2e90a55035fa3319989644937050e3c5b2b80"
+    },
+    {
+      "case": "q02",
+      "heard": "How many days in a week?",
+      "answer": "There are seven days in a typical week.",
+      "ok": true,
+      "raw": "HEARD:How many days in a week?\nREPLY: There are seven days in a typical week.",
+      "latency_ms": 643.9596250020259,
+      "metrics": {
+        "audio_s": 1.4131875,
+        "audio_tokens": 71,
+        "generated_tokens": 20,
+        "front_end_s": 0.03379020899956231,
+        "prepare_s": 0.036555292001139605,
+        "ttft_s": 0.1758870419980667,
+        "generation_s": 0.6049692919987137,
+        "total_s": 0.6415465840000252
+      },
+      "audio_sha256": "ced0d7df802c780b62002ac50cbfc6a7af55d0692acd96b5bb000d9951117741"
+    },
+    {
+      "case": "q03",
+      "heard": "what is the capital of france",
+      "answer": "The capital of \u092b\u094d\u0930\u093e\u0902\u0938 is Paris.",
+      "ok": true,
+      "raw": "HEARD:what is the capital of france\nREPLY: The capital of \u092b\u094d\u0930\u093e\u0902\u0938 is Paris.",
+      "latency_ms": 585.6371250010852,
+      "metrics": {
+        "audio_s": 1.6394375,
+        "audio_tokens": 82,
+        "generated_tokens": 17,
+        "front_end_s": 0.03552441699866904,
+        "prepare_s": 0.038621333998889895,
+        "ttft_s": 0.1797651249980845,
+        "generation_s": 0.5446328750003886,
+        "total_s": 0.5832750420013326
+      },
+      "audio_sha256": "94f5c76bb17632605e76e65afe02168abc6373c5141eaf9a7ab88d9615f7373e"
+    },
+    {
+      "case": "q04",
+      "heard": "what is ten minus three",
+      "answer": "It's seven.",
+      "ok": true,
+      "raw": "HEARD:what is ten minus three\nREPLY: It's seven.",
+      "latency_ms": 515.0280839989136,
+      "metrics": {
+        "audio_s": 1.3375625,
+        "audio_tokens": 67,
+        "generated_tokens": 14,
+        "front_end_s": 0.03325687500182539,
+        "prepare_s": 0.036005000001750886,
+        "ttft_s": 0.1761724169991794,
+        "generation_s": 0.47673733400006313,
+        "total_s": 0.512762834001478
+      },
+      "audio_sha256": "bc1cffb9d199093d5404bfa90d05ccd2face9bfd0480365f7aba024097a34394"
+    },
+    {
+      "case": "q05",
+      "heard": "How many legs does a spider have?",
+      "answer": "Spiders have eight legs.",
+      "ok": true,
+      "raw": "HEARD:How many legs does a spider have?\nREPLY: Spiders have eight legs.",
+      "latency_ms": 605.4707500006771,
+      "metrics": {
+        "audio_s": 1.877625,
+        "audio_tokens": 94,
+        "generated_tokens": 18,
+        "front_end_s": 0.0346737910003867,
+        "prepare_s": 0.03766833299960126,
+        "ttft_s": 0.1795802080014255,
+        "generation_s": 0.5666841250022117,
+        "total_s": 0.6043738330008637
+      },
+      "audio_sha256": "8526228177489e96a185e78b676bc4a342edf3d1af72f29f2071a52dcf79a1d0"
+    },
+    {
+      "case": "q06",
+      "heard": "what is the largest planet",
+      "answer": "The largest planet in our solar system is Jupiter.",
+      "ok": true,
+      "raw": "HEARD:what is the largest planet\nREPLY: The largest planet in our solar system is Jupiter.",
+      "latency_ms": 622.8803749982035,
+      "metrics": {
+        "audio_s": 1.4304375,
+        "audio_tokens": 72,
+        "generated_tokens": 19,
+        "front_end_s": 0.034176458000729326,
+        "prepare_s": 0.03687762499976088,
+        "ttft_s": 0.17594341600124608,
+        "generation_s": 0.5838534159993287,
+        "total_s": 0.620752666000044
+      },
+      "audio_sha256": "405d42d156d4ee983d5a85d2d686a4ede9547e62a37d3e9ce670c9228e3b89f2"
+    },
+    {
+      "case": "q07",
+      "heard": "what is five times five?",
+      "answer": "Five times five is twenty-five.",
+      "ok": true,
+      "raw": "HEARD:what is five times five?\nREPLY: Five times five is twenty-five.",
+      "latency_ms": 597.0427079992078,
+      "metrics": {
+        "audio_s": 1.4304375,
+        "audio_tokens": 72,
+        "generated_tokens": 18,
+        "front_end_s": 0.02901370799736469,
+        "prepare_s": 0.0317909579971456,
+        "ttft_s": 0.17645674999948824,
+        "generation_s": 0.5627708329993766,
+        "total_s": 0.5945823749971169
+      },
+      "audio_sha256": "5b051646274ca608d955b3fb00bba5c2bc7a855fe5a2688899bee8e26fe13018"
+    },
+    {
+      "case": "q08",
+      "heard": "what season comes after summer",
+      "answer": "Autumn comes after summer.",
+      "ok": true,
+      "raw": "HEARD:what season comes after summer\nREPLY: Autumn comes after summer.",
+      "latency_ms": 516.2069590005558,
+      "metrics": {
+        "audio_s": 1.6975,
+        "audio_tokens": 85,
+        "generated_tokens": 14,
+        "front_end_s": 0.034746542001812486,
+        "prepare_s": 0.0376111250006943,
+        "ttft_s": 0.17683191700052703,
+        "generation_s": 0.4776471670011233,
+        "total_s": 0.5152793340021162
+      },
+      "audio_sha256": "1439cf73384e2ef30ad9c5136a293653a54f207331d586fbaca57584c015ffe8"
+    },
+    {
+      "case": "q09",
+      "heard": "how many hours in a day?",
+      "answer": "There are 24 hours in a single day.",
+      "ok": true,
+      "raw": "HEARD:how many hours in a day?\nREPLY: There are 24 hours in a single day.",
+      "latency_ms": 684.7342919973016,
+      "metrics": {
+        "audio_s": 1.4131875,
+        "audio_tokens": 71,
+        "generated_tokens": 22,
+        "front_end_s": 0.028750416997354478,
+        "prepare_s": 0.03152616700026556,
+        "ttft_s": 0.17817187499895226,
+        "generation_s": 0.6509196250008245,
+        "total_s": 0.6824699169992527
+      },
+      "audio_sha256": "045e87b20e997dd897dde7743c2d0a5001a93d5a3e49627466b21849ac9dfba2"
+    },
+    {
+      "case": "q10",
+      "heard": "what is the freezing point of water",
+      "answer": "The freezing point is 0 degrees Celsius or 32 degrees Fahrenheit.",
+      "ok": true,
+      "raw": "HEARD:what is the freezing point of water\nREPLY: The freezing point is 0 degrees Celsius or 32 degrees Fahrenheit.",
+      "latency_ms": 778.0667920014821,
+      "metrics": {
+        "audio_s": 1.67425,
+        "audio_tokens": 84,
+        "generated_tokens": 26,
+        "front_end_s": 0.035451665997243254,
+        "prepare_s": 0.03834770799949183,
+        "ttft_s": 0.1780812920005701,
+        "generation_s": 0.7378347089979798,
+        "total_s": 0.7762043749971781
+      },
+      "audio_sha256": "ed797eb4ecaa6de20676deeb45d32ac1d84c9da6fd7df42cdd7e076a14a29d0b"
+    },
+    {
+      "case": "q11",
+      "heard": "Who wrote Romeo and Juliet?",
+      "answer": "Shakespeare wrote Romeo and hopefully, you're doing well.",
+      "ok": true,
+      "raw": "HEARD:Who wrote Romeo and Juliet?\nREPLY: Shakespeare wrote Romeo and hopefully, you're doing well.",
+      "latency_ms": 691.3008340015949,
+      "metrics": {
+        "audio_s": 1.5975625,
+        "audio_tokens": 80,
+        "generated_tokens": 22,
+        "front_end_s": 0.036668332999397535,
+        "prepare_s": 0.03919937499813386,
+        "ttft_s": 0.17759608300184482,
+        "generation_s": 0.6502057500001683,
+        "total_s": 0.6894240419969719
+      },
+      "audio_sha256": "1d0231249d1941cd97f1d215012753776da0b4714f3f36c24edbd24a31d29442"
+    }
+  ],
+  "median_ms": 614.1755624994403,
+  "scorer_sha256": "a507b15f2559e91de9e260f4856acd2deb49237094553dd154f95c82a6e70a61",
+  "cases_sha256": "bf90a38a567470a92855cb7a586a3242f303e8940692b1ad370e8fff03b4f573",
+  "adapter_sha256": "285e4cdfc4a4622910391296d201223bcca2f8f8883cddfaa96b3884b11e952b",
+  "evaluation_mode": "converse_heard_reply_fresh_history_no_context"
+}

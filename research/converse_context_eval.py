@@ -27,6 +27,13 @@ SCENARIOS = [
      "What is my travel destination?", {1: "boston", 2: "denver"}),
     ("pet", [(1, "My pet is a rabbit."), (2, "My pet is a turtle.")],
      "What kind of pet do I have?", {1: "rabbit", 2: "turtle"}),
+    ("instrument", [(2, "My favorite instrument is the trumpet."),
+                    (1, "My favorite instrument is the violin.")],
+     "What is my favorite instrument?", {1: "violin", 2: "trumpet"}),
+    ("drink", [(1, "My favorite drink is coffee."), (2, "My favorite drink is lemonade.")],
+     "What is my favorite drink?", {1: "coffee", 2: "lemonade"}),
+    ("month", [(2, "My birthday is in October."), (1, "My birthday is in April.")],
+     "What month is my birthday?", {1: "april", 2: "october"}),
 ]
 
 
@@ -86,6 +93,8 @@ def main():
                     row = {"arm": arm, "scenario": name, "speaker": sid,
                            "target_speaker": target, "turn": index,
                            "perception_label": label, "context": ctx,
+                           "audio_sha256": hashlib.sha256(waveform.tobytes()).hexdigest(),
+                           "audio_samples": int(waveform.size),
                            "source": words, "heard": heard, "reply": reply,
                            "elapsed_s": time.monotonic()-started, "metrics": stats}
                     if index == len(facts):
@@ -96,12 +105,15 @@ def main():
                         print(json.dumps(row), flush=True)
                     rows.append(row)
     summary = {arm: {"passed": sum(r["passed"] for r in rows
-                                   if r["arm"] == arm and "passed" in r), "total": 6}
+                                   if r["arm"] == arm and "passed" in r),
+                    "total": len(SCENARIOS)*2}
                for arm in ("off", "current_only", "current_and_history")}
     report = {"command": [sys.executable, *sys.argv], "summary": summary, "rows": rows,
               "speaker_labels": args.speaker_labels,
-              "scope": "12 synthetic two-voice fixtures; oracle utilization or real ECAPA turn labels as selected",
+              "scope": "24 synthetic two-voice fixtures; oracle utilization or real ECAPA turn labels as selected",
               "node": converse.semantic_node_id("half"),
+              "adapter_sha256": hashlib.sha256((converse.HERE / "nodes" /
+                  converse.semantic_node_id("half") / "weights/adapter.npz").read_bytes()).hexdigest(),
               "code_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
               "runtime_changed": False}
     args.output.parent.mkdir(parents=True, exist_ok=True)
