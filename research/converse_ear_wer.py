@@ -54,6 +54,8 @@ def main() -> int:
     ap.add_argument("--heard-reply", action="store_true",
                     help="score HEARD from the production one-generation reply "
                          "prompt; fresh history and no speaker context per clip")
+    ap.add_argument("--speaker-context", action="store_true",
+                    help="HEARD/REPLY A/B with a fixed S1 label using the production context schema")
     ap.add_argument("--manifest", type=Path, default=DEFAULT_MANIFEST)
     ap.add_argument("-n", "--examples", type=int, default=64)
     ap.add_argument(
@@ -74,6 +76,8 @@ def main() -> int:
 
     if args.heard_reply and (args.instructed or args.system):
         ap.error("--heard-reply uses the production reply prompt")
+    if args.speaker_context and not args.heard_reply:
+        ap.error("--speaker-context requires --heard-reply")
     from jaeger_agent_omni import converse
     if args.tier:
         args.node = REPO / "jaeger_agent_omni/nodes" / converse.semantic_node_id(args.tier)
@@ -147,8 +151,11 @@ def main() -> int:
         started = time.monotonic()
         audio = np.asarray(waveform, np.float32)
         if args.heard_reply:
-            raw, _stats = ear.respond(audio, system=converse.NN_SYSTEM,
-                                      history=[], max_tokens=140)
+            reply_args = dict(system=converse.NN_SYSTEM, history=[], max_tokens=140)
+            if args.speaker_context:
+                context = "the speaker is speaker S1"
+                reply_args.update(system=converse.contextual_nn_system(context), user_context=context)
+            raw, _stats = ear.respond(audio, **reply_args)
             hypothesis, _reply = converse.parse_heard_reply(raw)
         else:
             hypothesis, _stats = ear.transcribe(audio)
@@ -183,14 +190,17 @@ def main() -> int:
     if args.adapter:
         mode = "cross_mounted_streaming_adapter"
     if args.heard_reply:
-        mode = "converse_heard_reply_fresh_history_no_perception_context"
+        mode = ("converse_heard_reply_fresh_history_fixed_speaker_context" if args.speaker_context
+                else "converse_heard_reply_fresh_history_no_perception_context")
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps({
         "command": [sys.executable, *sys.argv],
         "node": args.node.name, "tier": args.tier,
         "manifest_sha256": sha256(args.manifest.expanduser()),
         "scorer_sha256": sha256(REPO / "training/evaluate.py"),
-        "system": converse.NN_SYSTEM if args.heard_reply else args.system,
+        "system": (converse.contextual_nn_system("S1" if args.speaker_context else None)
+                   if args.heard_reply else args.system),
+        "speaker_context": "fixed S1; identity inference not evaluated" if args.speaker_context else None,
         "adapter": str(adapter), "split": args.manifest.parent.name,
         "adapter_sha256": sha256(adapter),
         "encoder": "openai/whisper-medium (node-local snapshot)",

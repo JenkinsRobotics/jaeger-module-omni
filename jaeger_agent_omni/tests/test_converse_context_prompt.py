@@ -8,6 +8,15 @@ from jaeger_agent_omni.core.mlx_audio_streaming import AUDIO_MARKER, MlxGemmaAud
 
 
 class ConverseContextPromptTests(unittest.TestCase):
+    def test_runtime_context_schema_preserves_bare_prompt_and_spoken_words(self):
+        from jaeger_agent_omni import converse
+        label = "the speaker is speaker S2"
+        self.assertEqual(converse.contextual_nn_system(None), converse.NN_SYSTEM)
+        self.assertEqual(converse.contextual_user_text("my pet is a turtle", None), "my pet is a turtle")
+        self.assertNotIn(label, converse.contextual_nn_system(label))
+        self.assertEqual(converse.contextual_user_text("my pet is a turtle", label),
+                         "[context: the speaker is speaker S2]\nmy pet is a turtle")
+
     def test_context_belongs_only_to_current_audio_turn_and_prompt_state_restores(self):
         history = [{"role": "user", "content": "prior words"},
                    {"role": "assistant", "content": "prior answer"}]

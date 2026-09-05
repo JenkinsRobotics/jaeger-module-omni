@@ -35,6 +35,20 @@ SCENARIOS = [
     ("month", [(2, "My birthday is in October."), (1, "My birthday is in April.")],
      "What month is my birthday?", {1: "april", 2: "october"}),
 ]
+HOLDOUT_SCENARIOS = [
+    ("hobby", [(1, "My hobby is cycling."), (2, "My hobby is knitting.")],
+     "What is my hobby?", {1: "cycling", 2: "knitting"}),
+    ("sport", [(2, "My favorite sport is golf."), (1, "My favorite sport is tennis.")],
+     "What is my favorite sport?", {1: "tennis", 2: "golf"}),
+    ("snack", [(1, "My favorite snack is pretzels."), (2, "My favorite snack is yogurt.")],
+     "What is my favorite snack?", {1: "pretzels", 2: "yogurt"}),
+    ("city", [(2, "I live in Seattle."), (1, "I live in Austin.")],
+     "What city do I live in?", {1: "austin", 2: "seattle"}),
+    ("color", [(1, "My favorite color is purple."), (2, "My favorite color is orange.")],
+     "What is my favorite color?", {1: "purple", 2: "orange"}),
+    ("season", [(2, "My favorite season is autumn."), (1, "My favorite season is winter.")],
+     "What is my favorite season?", {1: "winter", 2: "autumn"}),
+]
 
 
 def main():
@@ -43,7 +57,9 @@ def main():
     p.add_argument("--speaker-labels", choices=("oracle", "ecapa"), default="oracle")
     p.add_argument("--turn-context", action="store_true",
                    help="research trial: place current identity on the audio user turn, with explicit binding rules")
+    p.add_argument("--scenario-set", choices=("development", "holdout"), default="development")
     args = p.parse_args()
+    scenarios = SCENARIOS if args.scenario_set == "development" else HOLDOUT_SCENARIOS
     from training.context_distill import refuse_gpu_contention
     refuse_gpu_contention()
     from kokoro import KPipeline
@@ -71,7 +87,7 @@ def main():
         ecapa.load()
     rows = []
     for arm in ("off", "current_only", "current_and_history"):
-        for name, facts, question, expected in SCENARIOS:
+        for name, facts, question, expected in scenarios:
             for target in (1, 2):
                 history = []
                 if ecapa:
@@ -83,10 +99,7 @@ def main():
                     system = converse.NN_SYSTEM
                     if arm != "off" and ctx:
                         if args.turn_context:
-                            system += ("\nEach user turn may identify its speaker in a context label. "
-                                       "Keep each speaker's facts separate. I and my refer to the "
-                                       "speaker labeled on the current user turn. HEARD must contain "
-                                       "only the current audio's words, never a prior turn's words.")
+                            system = converse.contextual_nn_system(ctx)
                         else:
                             system += f"\n\n[context: {ctx}]"
                     started = time.monotonic()
@@ -96,7 +109,7 @@ def main():
                     heard, reply = converse.parse_heard_reply(raw)
                     history_words = heard
                     if arm == "current_and_history" and ctx:
-                        history_words = f"[context: {ctx}]\n{heard}"
+                        history_words = converse.contextual_user_text(heard, ctx)
                     history.extend([{"role": "user", "content": history_words},
                                     {"role": "assistant", "content": reply}])
                     row = {"arm": arm, "scenario": name, "speaker": sid,
@@ -115,11 +128,12 @@ def main():
                     rows.append(row)
     summary = {arm: {"passed": sum(r["passed"] for r in rows
                                    if r["arm"] == arm and "passed" in r),
-                    "total": len(SCENARIOS)*2}
+                    "total": len(scenarios)*2}
                for arm in ("off", "current_only", "current_and_history")}
     report = {"command": [sys.executable, *sys.argv], "summary": summary, "rows": rows,
               "speaker_labels": args.speaker_labels,
               "turn_context": args.turn_context,
+              "scenario_set": args.scenario_set,
               "scope": "24 synthetic two-voice fixtures; oracle utilization or real ECAPA turn labels as selected",
               "node": converse.semantic_node_id("half"),
               "adapter_sha256": hashlib.sha256((converse.HERE / "nodes" /

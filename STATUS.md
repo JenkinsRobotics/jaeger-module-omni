@@ -2,6 +2,21 @@
 
 Measured ledger. Every claim here has a command that reproduces it.
 
+2026-09-05 speaker-sensitive context: the old current-speaker system annotation
+adds no value (6/12 with and without it); copying those labels into history
+alone is worse (4/12 with ECAPA). Binding identity to the current audio turn,
+retaining the same labels in history, and adding a general speaker-binding
+instruction improves recall with actual ECAPA labels: development **10/12 vs
+6/12**, new held-out lexical scenarios **9/12 vs 5/12**. No brain or adapter
+training was involved. This is a two-synthetic-voice pilot, not room validation.
+
+Context remains **off by default**, opt-in via `OMNI_CONTEXT=1`: despite the
+speaker-memory gain (19/24 vs 11/24), fresh-turn medium HEARD devclean64 WER
+regresses from **48/955 edits (5.03%) to 53/955 (5.55%)**. Full-ear HEARD is
+52/955 without and 51/955 with context. Original transcription-only scores
+are separate. Paired populations, the shared scorer, and all raw arm results:
+`research/candidate_evals/converse-context-comparison-20260905.json`.
+
 2026-09-04 heads-free causal port **rejected**. Same frozen medium encoder,
 40,915,456 adapter parameters, and Gemma; a causal mask plus 500 steps of
 human CE / text KL / bidirectional output anchoring. Matched converse-seam

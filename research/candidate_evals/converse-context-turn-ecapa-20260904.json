@@ -1,0 +1,3130 @@
+{
+  "command": [
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+    "research/converse_context_eval.py",
+    "--speaker-labels",
+    "ecapa",
+    "--turn-context",
+    "--output",
+    "research/candidate_evals/converse-context-turn-ecapa-20260904.json"
+  ],
+  "summary": {
+    "off": {
+      "passed": 6,
+      "total": 12
+    },
+    "current_only": {
+      "passed": 4,
+      "total": 12
+    },
+    "current_and_history": {
+      "passed": 10,
+      "total": 12
+    }
+  },
+  "rows": [
+    {
+      "arm": "off",
+      "scenario": "fruit",
+      "speaker": 1,
+      "target_speaker": 1,
+      "turn": 0,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "fe0b8d200623ec5cf1f0d2d59459bf80186bbc5e869fca7f0f16009192dcdfeb",
+      "audio_samples": 38800,
+      "source": "My favorite fruit is mango.",
+      "heard": "my favorite fruit is mango",
+      "reply": "I like mango too.",
+      "elapsed_s": 1.3569266670019715,
+      "metrics": {
+        "audio_s": 2.425,
+        "audio_tokens": 122,
+        "generated_tokens": 14,
+        "front_end_s": 0.21417045799898915,
+        "prepare_s": 0.3141815000017232,
+        "ttft_s": 0.7295285420004802,
+        "generation_s": 1.0393904170014139,
+        "total_s": 1.3557097080010863
+      }
+    },
+    {
+      "arm": "off",
+      "scenario": "fruit",
+      "speaker": 2,
+      "target_speaker": 1,
+      "turn": 1,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "5d6cd71d4ecac9cd49f9cf5e1a573bb9e8dcb4b2b8e29b9114830d23aebec160",
+      "audio_samples": 42800,
+      "source": "My favorite fruit is peach.",
+      "heard": "my favorite fruit is peach",
+      "reply": "I like peaches too.",
+      "elapsed_s": 0.6083071659995767,
+      "metrics": {
+        "audio_s": 2.675,
+        "audio_tokens": 134,
+        "generated_tokens": 14,
+        "front_end_s": 0.04721433400118258,
+        "prepare_s": 0.051125917001627386,
+        "ttft_s": 0.24951845800023875,
+        "generation_s": 0.5561306250019697,
+        "total_s": 0.6073048340003879
+      }
+    },
+    {
+      "arm": "off",
+      "scenario": "fruit",
+      "speaker": 1,
+      "target_speaker": 1,
+      "turn": 2,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "82dc2e635be947e1dfc0e53ee05ac1d87c285851f85501d430618137ee194d08",
+      "audio_samples": 35200,
+      "source": "What is my favorite fruit?",
+      "heard": "what is my favorite fruit",
+      "reply": "I think it's peach.",
+      "elapsed_s": 0.6344523340012529,
+      "metrics": {
+        "audio_s": 2.2,
+        "audio_tokens": 110,
+        "generated_tokens": 16,
+        "front_end_s": 0.042218957998557016,
+        "prepare_s": 0.045352290999289835,
+        "ttft_s": 0.23541479100094875,
+        "generation_s": 0.5881542500028445,
+        "total_s": 0.6335377499999595
+      },
+      "expected": "mango",
+      "passed": false
+    },
+    {
+      "arm": "off",
+      "scenario": "fruit",
+      "speaker": 1,
+      "target_speaker": 2,
+      "turn": 0,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "fe0b8d200623ec5cf1f0d2d59459bf80186bbc5e869fca7f0f16009192dcdfeb",
+      "audio_samples": 38800,
+      "source": "My favorite fruit is mango.",
+      "heard": "my favorite fruit is mango",
+      "reply": "I like mango too.",
+      "elapsed_s": 0.5536896669982525,
+      "metrics": {
+        "audio_s": 2.425,
+        "audio_tokens": 122,
+        "generated_tokens": 14,
+        "front_end_s": 0.03525233400068828,
+        "prepare_s": 0.0383906669994758,
+        "ttft_s": 0.20597087499845657,
+        "generation_s": 0.5146370000002207,
+        "total_s": 0.5530656250011816
+      }
+    },
+    {
+      "arm": "off",
+      "scenario": "fruit",
+      "speaker": 2,
+      "target_speaker": 2,
+      "turn": 1,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "5d6cd71d4ecac9cd49f9cf5e1a573bb9e8dcb4b2b8e29b9114830d23aebec160",
+      "audio_samples": 42800,
+      "source": "My favorite fruit is peach.",
+      "heard": "my favorite fruit is peach",
+      "reply": "I like peaches too.",
+      "elapsed_s": 0.5658259580013691,
+      "metrics": {
+        "audio_s": 2.675,
+        "audio_tokens": 134,
+        "generated_tokens": 14,
+        "front_end_s": 0.03764937500091037,
+        "prepare_s": 0.0415715419985645,
+        "ttft_s": 0.21483666700078174,
+        "generation_s": 0.5234681250003632,
+        "total_s": 0.5650810420011112
+      }
+    },
+    {
+      "arm": "off",
+      "scenario": "fruit",
+      "speaker": 2,
+      "target_speaker": 2,
+      "turn": 2,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "1288cbdcd0b7619444bc1a1b5fe85c9eb04fd38d127e146029974f7e1caf9988",
+      "audio_samples": 37200,
+      "source": "What is my favorite fruit?",
+      "heard": "what is my favorite fruit",
+      "reply": "I think it's peach.",
+      "elapsed_s": 0.6665010409997194,
+      "metrics": {
+        "audio_s": 2.325,
+        "audio_tokens": 117,
+        "generated_tokens": 16,
+        "front_end_s": 0.04184633300246787,
+        "prepare_s": 0.04501579200223205,
+        "ttft_s": 0.269386250001844,
+        "generation_s": 0.6204792090029514,
+        "total_s": 0.6655415420027566
+      },
+      "expected": "peach",
+      "passed": true
+    },
+    {
+      "arm": "off",
+      "scenario": "destination",
+      "speaker": 2,
+      "target_speaker": 1,
+      "turn": 0,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "1e28600fa750872966f6226b3a22678a45e60b9a2295e4b9fca2cbe3538e5277",
+      "audio_samples": 52000,
+      "source": "My travel destination is Denver.",
+      "heard": "my travel destination is denver",
+      "reply": "ok i see",
+      "elapsed_s": 0.5546918750005716,
+      "metrics": {
+        "audio_s": 3.25,
+        "audio_tokens": 163,
+        "generated_tokens": 13,
+        "front_end_s": 0.04641937500127824,
+        "prepare_s": 0.050537792001705384,
+        "ttft_s": 0.20835620800062316,
+        "generation_s": 0.5034788330012816,
+        "total_s": 0.554071083002782
+      }
+    },
+    {
+      "arm": "off",
+      "scenario": "destination",
+      "speaker": 1,
+      "target_speaker": 1,
+      "turn": 1,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "b704a9b855c08d735689264ede025e0cd2e89ba9187b62c587badc45efa9788a",
+      "audio_samples": 47200,
+      "source": "My travel destination is Boston.",
+      "heard": "my travel destination is boston",
+      "reply": "ok i see",
+      "elapsed_s": 0.5419856250009616,
+      "metrics": {
+        "audio_s": 2.95,
+        "audio_tokens": 148,
+        "generated_tokens": 12,
+        "front_end_s": 0.04585824999958277,
+        "prepare_s": 0.04977054199844133,
+        "ttft_s": 0.23492554100084817,
+        "generation_s": 0.49129229100071825,
+        "total_s": 0.5411029579991009
+      }
+    },
+    {
+      "arm": "off",
+      "scenario": "destination",
+      "speaker": 1,
+      "target_speaker": 1,
+      "turn": 2,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "0300ee7e245c3ce736df1b985581c59d3c811c3694d3312a2cf5fe3bb5ec2058",
+      "audio_samples": 42800,
+      "source": "What is my travel destination?",
+      "heard": "what is my travel destination",
+      "reply": "Your travel destination is Boston.",
+      "elapsed_s": 0.6032195420011703,
+      "metrics": {
+        "audio_s": 2.675,
+        "audio_tokens": 134,
+        "generated_tokens": 15,
+        "front_end_s": 0.036809458000789164,
+        "prepare_s": 0.04071829199892818,
+        "ttft_s": 0.23098525000023074,
+        "generation_s": 0.5615182080000523,
+        "total_s": 0.6022661249990051
+      },
+      "expected": "boston",
+      "passed": true
+    },
+    {
+      "arm": "off",
+      "scenario": "destination",
+      "speaker": 2,
+      "target_speaker": 2,
+      "turn": 0,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "1e28600fa750872966f6226b3a22678a45e60b9a2295e4b9fca2cbe3538e5277",
+      "audio_samples": 52000,
+      "source": "My travel destination is Denver.",
+      "heard": "my travel destination is denver",
+      "reply": "ok i see",
+      "elapsed_s": 0.540243957999337,
+      "metrics": {
+        "audio_s": 3.25,
+        "audio_tokens": 163,
+        "generated_tokens": 13,
+        "front_end_s": 0.039878832998510916,
+        "prepare_s": 0.043961750001471955,
+        "ttft_s": 0.21156862499992712,
+        "generation_s": 0.4956269579997752,
+        "total_s": 0.539629833001527
+      }
+    },
+    {
+      "arm": "off",
+      "scenario": "destination",
+      "speaker": 1,
+      "target_speaker": 2,
+      "turn": 1,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "b704a9b855c08d735689264ede025e0cd2e89ba9187b62c587badc45efa9788a",
+      "audio_samples": 47200,
+      "source": "My travel destination is Boston.",
+      "heard": "my travel destination is boston",
+      "reply": "ok i see",
+      "elapsed_s": 0.5421892499980459,
+      "metrics": {
+        "audio_s": 2.95,
+        "audio_tokens": 148,
+        "generated_tokens": 12,
+        "front_end_s": 0.03844124999886844,
+        "prepare_s": 0.04246454199892469,
+        "ttft_s": 0.2348935830013943,
+        "generation_s": 0.4989887500014447,
+        "total_s": 0.5414867500003311
+      }
+    },
+    {
+      "arm": "off",
+      "scenario": "destination",
+      "speaker": 2,
+      "target_speaker": 2,
+      "turn": 2,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "1519cde1d2fabaf08188904359af136c1eb7cd5e7a4171242c7fd7510ca79eaa",
+      "audio_samples": 44000,
+      "source": "What is my travel destination?",
+      "heard": "what is my travel destination",
+      "reply": "Your travel destination is Boston.",
+      "elapsed_s": 0.6214135840018571,
+      "metrics": {
+        "audio_s": 2.75,
+        "audio_tokens": 138,
+        "generated_tokens": 15,
+        "front_end_s": 0.044689125003060326,
+        "prepare_s": 0.04865266600245377,
+        "ttft_s": 0.24008675000004587,
+        "generation_s": 0.571912750001502,
+        "total_s": 0.6206058330026281
+      },
+      "expected": "denver",
+      "passed": false
+    },
+    {
+      "arm": "off",
+      "scenario": "pet",
+      "speaker": 1,
+      "target_speaker": 1,
+      "turn": 0,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "246734d2282eba2c51e2fbbdd76d3470244cf122168fa2b2d5d0b22e4aac7dda",
+      "audio_samples": 31600,
+      "source": "My pet is a rabbit.",
+      "heard": "my pet is a rabbit",
+      "reply": "that's nice",
+      "elapsed_s": 0.5047850839982857,
+      "metrics": {
+        "audio_s": 1.975,
+        "audio_tokens": 99,
+        "generated_tokens": 13,
+        "front_end_s": 0.039333417000307236,
+        "prepare_s": 0.04238929200073471,
+        "ttft_s": 0.17907808300151373,
+        "generation_s": 0.46179033299995353,
+        "total_s": 0.5042178750009043
+      }
+    },
+    {
+      "arm": "off",
+      "scenario": "pet",
+      "speaker": 2,
+      "target_speaker": 1,
+      "turn": 1,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "e825316b2e9e0ce33fa26cd463635d50982a220cf65841c4a7cdb413c61f1b4f",
+      "audio_samples": 37200,
+      "source": "My pet is a turtle.",
+      "heard": "my pet is a turtle",
+      "reply": "that's nice",
+      "elapsed_s": 0.5358371670008637,
+      "metrics": {
+        "audio_s": 2.325,
+        "audio_tokens": 117,
+        "generated_tokens": 13,
+        "front_end_s": 0.035057334000157425,
+        "prepare_s": 0.03809220899711363,
+        "ttft_s": 0.2114704579980753,
+        "generation_s": 0.49688049999895156,
+        "total_s": 0.5350116669978888
+      }
+    },
+    {
+      "arm": "off",
+      "scenario": "pet",
+      "speaker": 1,
+      "target_speaker": 1,
+      "turn": 2,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "fd23ae5e9dac3832b357b27db8d18f917549a559c2bf44ec4e483ba963178de0",
+      "audio_samples": 35200,
+      "source": "What kind of pet do I have?",
+      "heard": "what kind of pet do i have",
+      "reply": "you have a turtle",
+      "elapsed_s": 0.603660625001794,
+      "metrics": {
+        "audio_s": 2.2,
+        "audio_tokens": 110,
+        "generated_tokens": 15,
+        "front_end_s": 0.03359945799820707,
+        "prepare_s": 0.03663133300142363,
+        "ttft_s": 0.2355697080020036,
+        "generation_s": 0.5661694580012409,
+        "total_s": 0.6028395829998772
+      },
+      "expected": "rabbit",
+      "passed": false
+    },
+    {
+      "arm": "off",
+      "scenario": "pet",
+      "speaker": 1,
+      "target_speaker": 2,
+      "turn": 0,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "246734d2282eba2c51e2fbbdd76d3470244cf122168fa2b2d5d0b22e4aac7dda",
+      "audio_samples": 31600,
+      "source": "My pet is a rabbit.",
+      "heard": "my pet is a rabbit",
+      "reply": "that's nice",
+      "elapsed_s": 0.5052072500002396,
+      "metrics": {
+        "audio_s": 1.975,
+        "audio_tokens": 99,
+        "generated_tokens": 13,
+        "front_end_s": 0.033853875000204425,
+        "prepare_s": 0.0369255420009722,
+        "ttft_s": 0.1826496670000779,
+        "generation_s": 0.4676805420021992,
+        "total_s": 0.504636459001631
+      }
+    },
+    {
+      "arm": "off",
+      "scenario": "pet",
+      "speaker": 2,
+      "target_speaker": 2,
+      "turn": 1,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "e825316b2e9e0ce33fa26cd463635d50982a220cf65841c4a7cdb413c61f1b4f",
+      "audio_samples": 37200,
+      "source": "My pet is a turtle.",
+      "heard": "my pet is a turtle",
+      "reply": "that's nice",
+      "elapsed_s": 0.530820957999822,
+      "metrics": {
+        "audio_s": 2.325,
+        "audio_tokens": 117,
+        "generated_tokens": 13,
+        "front_end_s": 0.03588854199915659,
+        "prepare_s": 0.038968249999015825,
+        "ttft_s": 0.206869708999875,
+        "generation_s": 0.4910864589983248,
+        "total_s": 0.5300910419973661
+      }
+    },
+    {
+      "arm": "off",
+      "scenario": "pet",
+      "speaker": 2,
+      "target_speaker": 2,
+      "turn": 2,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "f46bff290718eec74a3e74e77ad2fe031ede56368c0cb0cddfce601f935d3531",
+      "audio_samples": 38800,
+      "source": "What kind of pet do I have?",
+      "heard": "what kind of pets do i have",
+      "reply": "you have a turtle",
+      "elapsed_s": 0.6053979579992301,
+      "metrics": {
+        "audio_s": 2.425,
+        "audio_tokens": 122,
+        "generated_tokens": 15,
+        "front_end_s": 0.03501658299865085,
+        "prepare_s": 0.03819629200006602,
+        "ttft_s": 0.23633895899911295,
+        "generation_s": 0.5663212089966692,
+        "total_s": 0.6045549169975857
+      },
+      "expected": "turtle",
+      "passed": true
+    },
+    {
+      "arm": "off",
+      "scenario": "instrument",
+      "speaker": 2,
+      "target_speaker": 1,
+      "turn": 0,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "b22fc3ca4eb2c05652187b88da851a52336a7313901e09bf5a94406eb5d031bc",
+      "audio_samples": 54000,
+      "source": "My favorite instrument is the trumpet.",
+      "heard": "my favourite instrument is the trumpet",
+      "reply": "I see.",
+      "elapsed_s": 0.5442510419998143,
+      "metrics": {
+        "audio_s": 3.375,
+        "audio_tokens": 169,
+        "generated_tokens": 13,
+        "front_end_s": 0.04832854200139991,
+        "prepare_s": 0.05248520899840514,
+        "ttft_s": 0.20830704199761385,
+        "generation_s": 0.4911562919987773,
+        "total_s": 0.5436810840001272
+      }
+    },
+    {
+      "arm": "off",
+      "scenario": "instrument",
+      "speaker": 1,
+      "target_speaker": 1,
+      "turn": 1,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "d7e71db5d1f5ca017021c6f9b06ed21bebce99df0cb60b0f961c8eefd4c5b094",
+      "audio_samples": 47600,
+      "source": "My favorite instrument is the violin.",
+      "heard": "my favourite instrument is the trumpet",
+      "reply": "I see.",
+      "elapsed_s": 0.5575682910020987,
+      "metrics": {
+        "audio_s": 2.975,
+        "audio_tokens": 149,
+        "generated_tokens": 13,
+        "front_end_s": 0.04372175000025891,
+        "prepare_s": 0.04765120800220757,
+        "ttft_s": 0.22730945799776237,
+        "generation_s": 0.509154249997664,
+        "total_s": 0.5568311249990074
+      }
+    },
+    {
+      "arm": "off",
+      "scenario": "instrument",
+      "speaker": 1,
+      "target_speaker": 1,
+      "turn": 2,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "b33abe59139f71fff27cfe9a543fb4d678b1e929b39b77a3750fcfb4e7901542",
+      "audio_samples": 38800,
+      "source": "What is my favorite instrument?",
+      "heard": "what is my favorite instrument",
+      "reply": "I don't know, but you said it was the trumpet.",
+      "elapsed_s": 0.7682148749991029,
+      "metrics": {
+        "audio_s": 2.425,
+        "audio_tokens": 122,
+        "generated_tokens": 23,
+        "front_end_s": 0.034995250000065425,
+        "prepare_s": 0.03805554200152983,
+        "ttft_s": 0.2298567500001809,
+        "generation_s": 0.7293336670009012,
+        "total_s": 0.767411250002624
+      },
+      "expected": "violin",
+      "passed": false
+    },
+    {
+      "arm": "off",
+      "scenario": "instrument",
+      "speaker": 2,
+      "target_speaker": 2,
+      "turn": 0,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "b22fc3ca4eb2c05652187b88da851a52336a7313901e09bf5a94406eb5d031bc",
+      "audio_samples": 54000,
+      "source": "My favorite instrument is the trumpet.",
+      "heard": "my favourite instrument is the trumpet",
+      "reply": "I see.",
+      "elapsed_s": 0.532304666001437,
+      "metrics": {
+        "audio_s": 3.375,
+        "audio_tokens": 169,
+        "generated_tokens": 13,
+        "front_end_s": 0.04031958300038241,
+        "prepare_s": 0.0443803329981165,
+        "ttft_s": 0.20667458399839234,
+        "generation_s": 0.48734316699847113,
+        "total_s": 0.5317441249972035
+      }
+    },
+    {
+      "arm": "off",
+      "scenario": "instrument",
+      "speaker": 1,
+      "target_speaker": 2,
+      "turn": 1,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "d7e71db5d1f5ca017021c6f9b06ed21bebce99df0cb60b0f961c8eefd4c5b094",
+      "audio_samples": 47600,
+      "source": "My favorite instrument is the violin.",
+      "heard": "my favourite instrument is the trumpet",
+      "reply": "I see.",
+      "elapsed_s": 0.55574612500277,
+      "metrics": {
+        "audio_s": 2.975,
+        "audio_tokens": 149,
+        "generated_tokens": 13,
+        "front_end_s": 0.03832400000101188,
+        "prepare_s": 0.042320625001593726,
+        "ttft_s": 0.230329250000068,
+        "generation_s": 0.5127221250004368,
+        "total_s": 0.555064834003133
+      }
+    },
+    {
+      "arm": "off",
+      "scenario": "instrument",
+      "speaker": 2,
+      "target_speaker": 2,
+      "turn": 2,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "a6c74f42c8da0f21ac2deb7ed5fec9b83feedc0b76b491e9e82bda09d03021be",
+      "audio_samples": 42400,
+      "source": "What is my favorite instrument?",
+      "heard": "what is my favourite instrument",
+      "reply": "it's the trumpet",
+      "elapsed_s": 0.5822709169988229,
+      "metrics": {
+        "audio_s": 2.65,
+        "audio_tokens": 133,
+        "generated_tokens": 14,
+        "front_end_s": 0.04247679099717061,
+        "prepare_s": 0.04631637499915087,
+        "ttft_s": 0.23116466699866578,
+        "generation_s": 0.5351505830003589,
+        "total_s": 0.5814892909984337
+      },
+      "expected": "trumpet",
+      "passed": true
+    },
+    {
+      "arm": "off",
+      "scenario": "drink",
+      "speaker": 1,
+      "target_speaker": 1,
+      "turn": 0,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "77a7eff279cc07c869edc551c314ca2b1c483ba51dfef3db6e18b100708eec3b",
+      "audio_samples": 39200,
+      "source": "My favorite drink is coffee.",
+      "heard": "my favorite drink is coffee",
+      "reply": "I like coffee too.",
+      "elapsed_s": 0.5478657500025292,
+      "metrics": {
+        "audio_s": 2.45,
+        "audio_tokens": 123,
+        "generated_tokens": 14,
+        "front_end_s": 0.04050587500023539,
+        "prepare_s": 0.04349262499817996,
+        "ttft_s": 0.20201362499938114,
+        "generation_s": 0.503804540996498,
+        "total_s": 0.5473175829974934
+      }
+    },
+    {
+      "arm": "off",
+      "scenario": "drink",
+      "speaker": 2,
+      "target_speaker": 1,
+      "turn": 1,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "8348410dc719bf7bea7280dd05444e1486e41254ccea78129654499ff5b47f1e",
+      "audio_samples": 49600,
+      "source": "My favorite drink is lemonade.",
+      "heard": "my favorite drink is lemonade",
+      "reply": "I like lemonade too.",
+      "elapsed_s": 0.5843228329977137,
+      "metrics": {
+        "audio_s": 3.1,
+        "audio_tokens": 155,
+        "generated_tokens": 14,
+        "front_end_s": 0.04575687499891501,
+        "prepare_s": 0.04948437499842839,
+        "ttft_s": 0.22907329100053175,
+        "generation_s": 0.5340626249999332,
+        "total_s": 0.5835730839971802
+      }
+    },
+    {
+      "arm": "off",
+      "scenario": "drink",
+      "speaker": 1,
+      "target_speaker": 1,
+      "turn": 2,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "6da9dc6b9cdfed2051d9a53265689fae9298900374e4626a0e83e65969aef5d2",
+      "audio_samples": 34800,
+      "source": "What is my favorite drink?",
+      "heard": "what is my favorite drink",
+      "reply": "your favorite drink is lemonade",
+      "elapsed_s": 0.5790804169992043,
+      "metrics": {
+        "audio_s": 2.175,
+        "audio_tokens": 109,
+        "generated_tokens": 14,
+        "front_end_s": 0.03895225000087521,
+        "prepare_s": 0.041911625001375796,
+        "ttft_s": 0.23375420799857238,
+        "generation_s": 0.536322249998193,
+        "total_s": 0.5782555000005232
+      },
+      "expected": "coffee",
+      "passed": false
+    },
+    {
+      "arm": "off",
+      "scenario": "drink",
+      "speaker": 1,
+      "target_speaker": 2,
+      "turn": 0,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "77a7eff279cc07c869edc551c314ca2b1c483ba51dfef3db6e18b100708eec3b",
+      "audio_samples": 39200,
+      "source": "My favorite drink is coffee.",
+      "heard": "my favorite drink is coffee",
+      "reply": "I like coffee too.",
+      "elapsed_s": 0.5442446249981003,
+      "metrics": {
+        "audio_s": 2.45,
+        "audio_tokens": 123,
+        "generated_tokens": 14,
+        "front_end_s": 0.03462125000078231,
+        "prepare_s": 0.03771470799983945,
+        "ttft_s": 0.2052765830012504,
+        "generation_s": 0.5059517500012589,
+        "total_s": 0.5436913750017993
+      }
+    },
+    {
+      "arm": "off",
+      "scenario": "drink",
+      "speaker": 2,
+      "target_speaker": 2,
+      "turn": 1,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "8348410dc719bf7bea7280dd05444e1486e41254ccea78129654499ff5b47f1e",
+      "audio_samples": 49600,
+      "source": "My favorite drink is lemonade.",
+      "heard": "my favorite drink is lemonade",
+      "reply": "I like lemonade too.",
+      "elapsed_s": 0.5729879999998957,
+      "metrics": {
+        "audio_s": 3.1,
+        "audio_tokens": 155,
+        "generated_tokens": 14,
+        "front_end_s": 0.03863383299903944,
+        "prepare_s": 0.042410791997099295,
+        "ttft_s": 0.22814295900025172,
+        "generation_s": 0.5298565000011877,
+        "total_s": 0.572288583000045
+      }
+    },
+    {
+      "arm": "off",
+      "scenario": "drink",
+      "speaker": 2,
+      "target_speaker": 2,
+      "turn": 2,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "6762f1dffa557ffb27b347a8dede0c386ea91732dff5c0040dabf3c1b79975e1",
+      "audio_samples": 37200,
+      "source": "What is my favorite drink?",
+      "heard": "what is my favorite drink",
+      "reply": "I don't know, but you like lemonade.",
+      "elapsed_s": 0.7010612919984851,
+      "metrics": {
+        "audio_s": 2.325,
+        "audio_tokens": 117,
+        "generated_tokens": 20,
+        "front_end_s": 0.034993207998923026,
+        "prepare_s": 0.0379504159973294,
+        "ttft_s": 0.2293127499979164,
+        "generation_s": 0.662245041999995,
+        "total_s": 0.700224457999866
+      },
+      "expected": "lemonade",
+      "passed": true
+    },
+    {
+      "arm": "off",
+      "scenario": "month",
+      "speaker": 2,
+      "target_speaker": 1,
+      "turn": 0,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "c95af3c3055efb0d74a4d33388fec93b0befed2acc13755a694e3827e0b87718",
+      "audio_samples": 48400,
+      "source": "My birthday is in October.",
+      "heard": "my birthday is in october",
+      "reply": "okay",
+      "elapsed_s": 0.4715859169991745,
+      "metrics": {
+        "audio_s": 3.025,
+        "audio_tokens": 152,
+        "generated_tokens": 10,
+        "front_end_s": 0.04427995799778728,
+        "prepare_s": 0.048195457999099744,
+        "ttft_s": 0.20605895799963037,
+        "generation_s": 0.4228094579993922,
+        "total_s": 0.47102966599777574
+      }
+    },
+    {
+      "arm": "off",
+      "scenario": "month",
+      "speaker": 1,
+      "target_speaker": 1,
+      "turn": 1,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "f93fd4f594a80a3f956f1bdb8f19b7e58321b662a5ab27335340521b28475fab",
+      "audio_samples": 38400,
+      "source": "My birthday is in April.",
+      "heard": "my birthday is in october",
+      "reply": "okay",
+      "elapsed_s": 0.4708316249998461,
+      "metrics": {
+        "audio_s": 2.4,
+        "audio_tokens": 120,
+        "generated_tokens": 10,
+        "front_end_s": 0.04698024999743211,
+        "prepare_s": 0.0500822079993668,
+        "ttft_s": 0.2038894999968761,
+        "generation_s": 0.41994241700012935,
+        "total_s": 0.4700494999997318
+      }
+    },
+    {
+      "arm": "off",
+      "scenario": "month",
+      "speaker": 1,
+      "target_speaker": 1,
+      "turn": 2,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "fac2fc2349942db836140b4c7eecb02a57281e0d1a9f905f4d2c6672e5291daf",
+      "audio_samples": 38400,
+      "source": "What month is my birthday?",
+      "heard": "what month is my birthday",
+      "reply": "It's in October.",
+      "elapsed_s": 0.5672085000005609,
+      "metrics": {
+        "audio_s": 2.4,
+        "audio_tokens": 120,
+        "generated_tokens": 15,
+        "front_end_s": 0.03511541599800694,
+        "prepare_s": 0.03815062499779742,
+        "ttft_s": 0.20450483300010092,
+        "generation_s": 0.5282210000004852,
+        "total_s": 0.5663932079987717
+      },
+      "expected": "april",
+      "passed": false
+    },
+    {
+      "arm": "off",
+      "scenario": "month",
+      "speaker": 2,
+      "target_speaker": 2,
+      "turn": 0,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "c95af3c3055efb0d74a4d33388fec93b0befed2acc13755a694e3827e0b87718",
+      "audio_samples": 48400,
+      "source": "My birthday is in October.",
+      "heard": "my birthday is in october",
+      "reply": "okay",
+      "elapsed_s": 0.46362000000226544,
+      "metrics": {
+        "audio_s": 3.025,
+        "audio_tokens": 152,
+        "generated_tokens": 10,
+        "front_end_s": 0.038836666997667635,
+        "prepare_s": 0.04281583400006639,
+        "ttft_s": 0.2040492499982065,
+        "generation_s": 0.4201842919974297,
+        "total_s": 0.46303358399745775
+      }
+    },
+    {
+      "arm": "off",
+      "scenario": "month",
+      "speaker": 1,
+      "target_speaker": 2,
+      "turn": 1,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "f93fd4f594a80a3f956f1bdb8f19b7e58321b662a5ab27335340521b28475fab",
+      "audio_samples": 38400,
+      "source": "My birthday is in April.",
+      "heard": "my birthday is in october",
+      "reply": "okay",
+      "elapsed_s": 0.45950599999923725,
+      "metrics": {
+        "audio_s": 2.4,
+        "audio_tokens": 120,
+        "generated_tokens": 10,
+        "front_end_s": 0.03463741599989589,
+        "prepare_s": 0.037705041002482176,
+        "ttft_s": 0.2056047089972708,
+        "generation_s": 0.42109816700030933,
+        "total_s": 0.4588337080022029
+      }
+    },
+    {
+      "arm": "off",
+      "scenario": "month",
+      "speaker": 2,
+      "target_speaker": 2,
+      "turn": 2,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "9eabaf7c65743f56e00e0c364f903c884289b772b20d11c1de14314b1ef1589c",
+      "audio_samples": 42800,
+      "source": "What month is my birthday?",
+      "heard": "what month is my birthday",
+      "reply": "It's in October.",
+      "elapsed_s": 0.5987761670003238,
+      "metrics": {
+        "audio_s": 2.675,
+        "audio_tokens": 134,
+        "generated_tokens": 15,
+        "front_end_s": 0.03677070800040383,
+        "prepare_s": 0.04058837499906076,
+        "ttft_s": 0.23157791599805932,
+        "generation_s": 0.5573102499984088,
+        "total_s": 0.5979198749992065
+      },
+      "expected": "october",
+      "passed": true
+    },
+    {
+      "arm": "current_only",
+      "scenario": "fruit",
+      "speaker": 1,
+      "target_speaker": 1,
+      "turn": 0,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "fe0b8d200623ec5cf1f0d2d59459bf80186bbc5e869fca7f0f16009192dcdfeb",
+      "audio_samples": 38800,
+      "source": "My favorite fruit is mango.",
+      "heard": "my favorite fruit is mango",
+      "reply": "",
+      "elapsed_s": 0.49407679100113455,
+      "metrics": {
+        "audio_s": 2.425,
+        "audio_tokens": 122,
+        "generated_tokens": 9,
+        "front_end_s": 0.034734707998723025,
+        "prepare_s": 0.03778437499931897,
+        "ttft_s": 0.2583455829990271,
+        "generation_s": 0.4554682079979102,
+        "total_s": 0.4932753329994739
+      }
+    },
+    {
+      "arm": "current_only",
+      "scenario": "fruit",
+      "speaker": 2,
+      "target_speaker": 1,
+      "turn": 1,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "5d6cd71d4ecac9cd49f9cf5e1a573bb9e8dcb4b2b8e29b9114830d23aebec160",
+      "audio_samples": 42800,
+      "source": "My favorite fruit is peach.",
+      "heard": "my favorite fruit is peach",
+      "reply": "",
+      "elapsed_s": 0.5055654999996477,
+      "metrics": {
+        "audio_s": 2.675,
+        "audio_tokens": 134,
+        "generated_tokens": 9,
+        "front_end_s": 0.036718250001285924,
+        "prepare_s": 0.040590167001937516,
+        "ttft_s": 0.26529670799936866,
+        "generation_s": 0.4641507919986907,
+        "total_s": 0.5047644170008425
+      }
+    },
+    {
+      "arm": "current_only",
+      "scenario": "fruit",
+      "speaker": 1,
+      "target_speaker": 1,
+      "turn": 2,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "82dc2e635be947e1dfc0e53ee05ac1d87c285851f85501d430618137ee194d08",
+      "audio_samples": 35200,
+      "source": "What is my favorite fruit?",
+      "heard": "what is my favorite fruit",
+      "reply": "It sounds like you've changed your mind!",
+      "elapsed_s": 0.7190460420024465,
+      "metrics": {
+        "audio_s": 2.2,
+        "audio_tokens": 110,
+        "generated_tokens": 19,
+        "front_end_s": 0.033645584000623785,
+        "prepare_s": 0.03664491699964856,
+        "ttft_s": 0.26649862499834853,
+        "generation_s": 0.6815213749978284,
+        "total_s": 0.7181899589995737
+      },
+      "expected": "mango",
+      "passed": false
+    },
+    {
+      "arm": "current_only",
+      "scenario": "fruit",
+      "speaker": 1,
+      "target_speaker": 2,
+      "turn": 0,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "fe0b8d200623ec5cf1f0d2d59459bf80186bbc5e869fca7f0f16009192dcdfeb",
+      "audio_samples": 38800,
+      "source": "My favorite fruit is mango.",
+      "heard": "my favorite fruit is mango",
+      "reply": "",
+      "elapsed_s": 0.49307087499983027,
+      "metrics": {
+        "audio_s": 2.425,
+        "audio_tokens": 122,
+        "generated_tokens": 9,
+        "front_end_s": 0.03460908299894072,
+        "prepare_s": 0.037785874999826774,
+        "ttft_s": 0.2585263330001908,
+        "generation_s": 0.45459658300023875,
+        "total_s": 0.49240604099759366
+      }
+    },
+    {
+      "arm": "current_only",
+      "scenario": "fruit",
+      "speaker": 2,
+      "target_speaker": 2,
+      "turn": 1,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "5d6cd71d4ecac9cd49f9cf5e1a573bb9e8dcb4b2b8e29b9114830d23aebec160",
+      "audio_samples": 42800,
+      "source": "My favorite fruit is peach.",
+      "heard": "my favorite fruit is peach",
+      "reply": "",
+      "elapsed_s": 0.5023288750016945,
+      "metrics": {
+        "audio_s": 2.675,
+        "audio_tokens": 134,
+        "generated_tokens": 9,
+        "front_end_s": 0.03679783299958217,
+        "prepare_s": 0.04061408299821778,
+        "ttft_s": 0.26582779200180084,
+        "generation_s": 0.46094566700048745,
+        "total_s": 0.5015816669983906
+      }
+    },
+    {
+      "arm": "current_only",
+      "scenario": "fruit",
+      "speaker": 2,
+      "target_speaker": 2,
+      "turn": 2,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "1288cbdcd0b7619444bc1a1b5fe85c9eb04fd38d127e146029974f7e1caf9988",
+      "audio_samples": 37200,
+      "source": "What is my favorite fruit?",
+      "heard": "what is my favorite fruit",
+      "reply": "It sounds like you like peaches.",
+      "elapsed_s": 0.6515962920020684,
+      "metrics": {
+        "audio_s": 2.325,
+        "audio_tokens": 117,
+        "generated_tokens": 16,
+        "front_end_s": 0.03461933300059172,
+        "prepare_s": 0.03739170800326974,
+        "ttft_s": 0.2668717080014176,
+        "generation_s": 0.61321562500234,
+        "total_s": 0.650636125003075
+      },
+      "expected": "peach",
+      "passed": true
+    },
+    {
+      "arm": "current_only",
+      "scenario": "destination",
+      "speaker": 2,
+      "target_speaker": 1,
+      "turn": 0,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "1e28600fa750872966f6226b3a22678a45e60b9a2295e4b9fca2cbe3538e5277",
+      "audio_samples": 52000,
+      "source": "My travel destination is Denver.",
+      "heard": "my travel destination is denver",
+      "reply": "",
+      "elapsed_s": 0.5245875000000524,
+      "metrics": {
+        "audio_s": 3.25,
+        "audio_tokens": 163,
+        "generated_tokens": 10,
+        "front_end_s": 0.03941204100192408,
+        "prepare_s": 0.04344166599912569,
+        "ttft_s": 0.2621791249985108,
+        "generation_s": 0.4804339580005035,
+        "total_s": 0.5238982910013874
+      }
+    },
+    {
+      "arm": "current_only",
+      "scenario": "destination",
+      "speaker": 1,
+      "target_speaker": 1,
+      "turn": 1,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "b704a9b855c08d735689264ede025e0cd2e89ba9187b62c587badc45efa9788a",
+      "audio_samples": 47200,
+      "source": "My travel destination is Boston.",
+      "heard": "my travel destination is boston",
+      "reply": "",
+      "elapsed_s": 0.49999266600207193,
+      "metrics": {
+        "audio_s": 2.95,
+        "audio_tokens": 148,
+        "generated_tokens": 9,
+        "front_end_s": 0.03849120900122216,
+        "prepare_s": 0.042554708998068236,
+        "ttft_s": 0.25968762499906006,
+        "generation_s": 0.4566145829994639,
+        "total_s": 0.49919012499958626
+      }
+    },
+    {
+      "arm": "current_only",
+      "scenario": "destination",
+      "speaker": 1,
+      "target_speaker": 1,
+      "turn": 2,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "0300ee7e245c3ce736df1b985581c59d3c811c3694d3312a2cf5fe3bb5ec2058",
+      "audio_samples": 42800,
+      "source": "What is my travel destination?",
+      "heard": "what is my travel destination",
+      "reply": "Your travel destination is Boston.",
+      "elapsed_s": 0.6610102089980501,
+      "metrics": {
+        "audio_s": 2.675,
+        "audio_tokens": 134,
+        "generated_tokens": 15,
+        "front_end_s": 0.03707033300088369,
+        "prepare_s": 0.040902207998442464,
+        "ttft_s": 0.28814212499855785,
+        "generation_s": 0.6192328750003071,
+        "total_s": 0.6601569580016076
+      },
+      "expected": "boston",
+      "passed": true
+    },
+    {
+      "arm": "current_only",
+      "scenario": "destination",
+      "speaker": 2,
+      "target_speaker": 2,
+      "turn": 0,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "1e28600fa750872966f6226b3a22678a45e60b9a2295e4b9fca2cbe3538e5277",
+      "audio_samples": 52000,
+      "source": "My travel destination is Denver.",
+      "heard": "my travel destination is denver",
+      "reply": "",
+      "elapsed_s": 0.5236829589994159,
+      "metrics": {
+        "audio_s": 3.25,
+        "audio_tokens": 163,
+        "generated_tokens": 10,
+        "front_end_s": 0.039800916998501634,
+        "prepare_s": 0.04376645799857215,
+        "ttft_s": 0.2610826669988455,
+        "generation_s": 0.4792282080015866,
+        "total_s": 0.5230162080006266
+      }
+    },
+    {
+      "arm": "current_only",
+      "scenario": "destination",
+      "speaker": 1,
+      "target_speaker": 2,
+      "turn": 1,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "b704a9b855c08d735689264ede025e0cd2e89ba9187b62c587badc45efa9788a",
+      "audio_samples": 47200,
+      "source": "My travel destination is Boston.",
+      "heard": "my travel destination is boston",
+      "reply": "",
+      "elapsed_s": 0.5006764589998056,
+      "metrics": {
+        "audio_s": 2.95,
+        "audio_tokens": 148,
+        "generated_tokens": 9,
+        "front_end_s": 0.03834225000173319,
+        "prepare_s": 0.04228504200000316,
+        "ttft_s": 0.26223204099733266,
+        "generation_s": 0.45755191599891987,
+        "total_s": 0.49986975000138045
+      }
+    },
+    {
+      "arm": "current_only",
+      "scenario": "destination",
+      "speaker": 2,
+      "target_speaker": 2,
+      "turn": 2,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "1519cde1d2fabaf08188904359af136c1eb7cd5e7a4171242c7fd7510ca79eaa",
+      "audio_samples": 44000,
+      "source": "What is my travel destination?",
+      "heard": "what is my travel destination",
+      "reply": "Your travel destination is Boston.",
+      "elapsed_s": 0.6619963329976599,
+      "metrics": {
+        "audio_s": 2.75,
+        "audio_tokens": 138,
+        "generated_tokens": 15,
+        "front_end_s": 0.037197541001660284,
+        "prepare_s": 0.0411037080011738,
+        "ttft_s": 0.28916108300109045,
+        "generation_s": 0.6199495410000964,
+        "total_s": 0.6610886660018878
+      },
+      "expected": "denver",
+      "passed": false
+    },
+    {
+      "arm": "current_only",
+      "scenario": "pet",
+      "speaker": 1,
+      "target_speaker": 1,
+      "turn": 0,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "246734d2282eba2c51e2fbbdd76d3470244cf122168fa2b2d5d0b22e4aac7dda",
+      "audio_samples": 31600,
+      "source": "My pet is a rabbit.",
+      "heard": "my pet is a rabbit",
+      "reply": "",
+      "elapsed_s": 0.4720015000020794,
+      "metrics": {
+        "audio_s": 1.975,
+        "audio_tokens": 99,
+        "generated_tokens": 9,
+        "front_end_s": 0.03298174999872572,
+        "prepare_s": 0.036035917000845075,
+        "ttft_s": 0.2403912500012666,
+        "generation_s": 0.43527854200146976,
+        "total_s": 0.47134474999984377
+      }
+    },
+    {
+      "arm": "current_only",
+      "scenario": "pet",
+      "speaker": 2,
+      "target_speaker": 1,
+      "turn": 1,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "e825316b2e9e0ce33fa26cd463635d50982a220cf65841c4a7cdb413c61f1b4f",
+      "audio_samples": 37200,
+      "source": "My pet is a turtle.",
+      "heard": "my pet is a rabbit",
+      "reply": "",
+      "elapsed_s": 0.4959391250013141,
+      "metrics": {
+        "audio_s": 2.325,
+        "audio_tokens": 117,
+        "generated_tokens": 9,
+        "front_end_s": 0.034784583000146085,
+        "prepare_s": 0.03782558300008532,
+        "ttft_s": 0.26166100000045844,
+        "generation_s": 0.4573217079996539,
+        "total_s": 0.4951827079967188
+      }
+    },
+    {
+      "arm": "current_only",
+      "scenario": "pet",
+      "speaker": 1,
+      "target_speaker": 1,
+      "turn": 2,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "fd23ae5e9dac3832b357b27db8d18f917549a559c2bf44ec4e483ba963178de0",
+      "audio_samples": 35200,
+      "source": "What kind of pet do I have?",
+      "heard": "what kind of pet do i have",
+      "reply": "You have a rabbit.",
+      "elapsed_s": 0.6507102499999746,
+      "metrics": {
+        "audio_s": 2.2,
+        "audio_tokens": 110,
+        "generated_tokens": 16,
+        "front_end_s": 0.033563542001502356,
+        "prepare_s": 0.036650542002462316,
+        "ttft_s": 0.26357691700104624,
+        "generation_s": 0.6131460840006184,
+        "total_s": 0.6498254590005672
+      },
+      "expected": "rabbit",
+      "passed": true
+    },
+    {
+      "arm": "current_only",
+      "scenario": "pet",
+      "speaker": 1,
+      "target_speaker": 2,
+      "turn": 0,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "246734d2282eba2c51e2fbbdd76d3470244cf122168fa2b2d5d0b22e4aac7dda",
+      "audio_samples": 31600,
+      "source": "My pet is a rabbit.",
+      "heard": "my pet is a rabbit",
+      "reply": "",
+      "elapsed_s": 0.47154137499819626,
+      "metrics": {
+        "audio_s": 1.975,
+        "audio_tokens": 99,
+        "generated_tokens": 9,
+        "front_end_s": 0.033472791001258884,
+        "prepare_s": 0.03657683300116332,
+        "ttft_s": 0.23970070799987298,
+        "generation_s": 0.43428245799805154,
+        "total_s": 0.47089320799932466
+      }
+    },
+    {
+      "arm": "current_only",
+      "scenario": "pet",
+      "speaker": 2,
+      "target_speaker": 2,
+      "turn": 1,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "e825316b2e9e0ce33fa26cd463635d50982a220cf65841c4a7cdb413c61f1b4f",
+      "audio_samples": 37200,
+      "source": "My pet is a turtle.",
+      "heard": "my pet is a rabbit",
+      "reply": "",
+      "elapsed_s": 0.49525466700288234,
+      "metrics": {
+        "audio_s": 2.325,
+        "audio_tokens": 117,
+        "generated_tokens": 9,
+        "front_end_s": 0.03489983399776975,
+        "prepare_s": 0.03803041699939058,
+        "ttft_s": 0.2609382500013453,
+        "generation_s": 0.4564424170021084,
+        "total_s": 0.49449783399904845
+      }
+    },
+    {
+      "arm": "current_only",
+      "scenario": "pet",
+      "speaker": 2,
+      "target_speaker": 2,
+      "turn": 2,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "f46bff290718eec74a3e74e77ad2fe031ede56368c0cb0cddfce601f935d3531",
+      "audio_samples": 38800,
+      "source": "What kind of pet do I have?",
+      "heard": "what kind of pets do i have",
+      "reply": "You have a rabbit.",
+      "elapsed_s": 0.6744949589992757,
+      "metrics": {
+        "audio_s": 2.425,
+        "audio_tokens": 122,
+        "generated_tokens": 16,
+        "front_end_s": 0.03467916699810303,
+        "prepare_s": 0.03788966700085439,
+        "ttft_s": 0.28524558400022215,
+        "generation_s": 0.6356955840019509,
+        "total_s": 0.6736316669994267
+      },
+      "expected": "turtle",
+      "passed": false
+    },
+    {
+      "arm": "current_only",
+      "scenario": "instrument",
+      "speaker": 2,
+      "target_speaker": 1,
+      "turn": 0,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "b22fc3ca4eb2c05652187b88da851a52336a7313901e09bf5a94406eb5d031bc",
+      "audio_samples": 54000,
+      "source": "My favorite instrument is the trumpet.",
+      "heard": "my favourite instrument is the trumpet",
+      "reply": "",
+      "elapsed_s": 0.529038083001069,
+      "metrics": {
+        "audio_s": 3.375,
+        "audio_tokens": 169,
+        "generated_tokens": 10,
+        "front_end_s": 0.04008895900187781,
+        "prepare_s": 0.044120959002611926,
+        "ttft_s": 0.2660509170018486,
+        "generation_s": 0.48423299999922165,
+        "total_s": 0.5283820000004198
+      }
+    },
+    {
+      "arm": "current_only",
+      "scenario": "instrument",
+      "speaker": 1,
+      "target_speaker": 1,
+      "turn": 1,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "d7e71db5d1f5ca017021c6f9b06ed21bebce99df0cb60b0f961c8eefd4c5b094",
+      "audio_samples": 47600,
+      "source": "My favorite instrument is the violin.",
+      "heard": "my favourite instrument is the violin",
+      "reply": "",
+      "elapsed_s": 0.5186048750001646,
+      "metrics": {
+        "audio_s": 2.975,
+        "audio_tokens": 149,
+        "generated_tokens": 10,
+        "front_end_s": 0.03811062499880791,
+        "prepare_s": 0.0420382089978375,
+        "ttft_s": 0.25841958399905707,
+        "generation_s": 0.47573216700038756,
+        "total_s": 0.5177960420005547
+      }
+    },
+    {
+      "arm": "current_only",
+      "scenario": "instrument",
+      "speaker": 1,
+      "target_speaker": 1,
+      "turn": 2,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "b33abe59139f71fff27cfe9a543fb4d678b1e929b39b77a3750fcfb4e7901542",
+      "audio_samples": 38800,
+      "source": "What is my favorite instrument?",
+      "heard": "what is my favourite instrument",
+      "reply": "It sounds like you've changed your mind!",
+      "elapsed_s": 0.7440874999992957,
+      "metrics": {
+        "audio_s": 2.425,
+        "audio_tokens": 122,
+        "generated_tokens": 19,
+        "front_end_s": 0.034731750001810724,
+        "prepare_s": 0.037843082998733735,
+        "ttft_s": 0.29111712500161957,
+        "generation_s": 0.7052843750025204,
+        "total_s": 0.743151458002103
+      },
+      "expected": "violin",
+      "passed": false
+    },
+    {
+      "arm": "current_only",
+      "scenario": "instrument",
+      "speaker": 2,
+      "target_speaker": 2,
+      "turn": 0,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "b22fc3ca4eb2c05652187b88da851a52336a7313901e09bf5a94406eb5d031bc",
+      "audio_samples": 54000,
+      "source": "My favorite instrument is the trumpet.",
+      "heard": "my favourite instrument is the trumpet",
+      "reply": "",
+      "elapsed_s": 0.5281575000008161,
+      "metrics": {
+        "audio_s": 3.375,
+        "audio_tokens": 169,
+        "generated_tokens": 10,
+        "front_end_s": 0.040065666998998495,
+        "prepare_s": 0.04414879199975985,
+        "ttft_s": 0.2658364579983754,
+        "generation_s": 0.4833212919984362,
+        "total_s": 0.5274944589982624
+      }
+    },
+    {
+      "arm": "current_only",
+      "scenario": "instrument",
+      "speaker": 1,
+      "target_speaker": 2,
+      "turn": 1,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "d7e71db5d1f5ca017021c6f9b06ed21bebce99df0cb60b0f961c8eefd4c5b094",
+      "audio_samples": 47600,
+      "source": "My favorite instrument is the violin.",
+      "heard": "my favourite instrument is the violin",
+      "reply": "",
+      "elapsed_s": 0.5242149999976391,
+      "metrics": {
+        "audio_s": 2.975,
+        "audio_tokens": 149,
+        "generated_tokens": 10,
+        "front_end_s": 0.038226665998081444,
+        "prepare_s": 0.0422056249990419,
+        "ttft_s": 0.26139420800245716,
+        "generation_s": 0.4811958330028574,
+        "total_s": 0.5234265409999352
+      }
+    },
+    {
+      "arm": "current_only",
+      "scenario": "instrument",
+      "speaker": 2,
+      "target_speaker": 2,
+      "turn": 2,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "a6c74f42c8da0f21ac2deb7ed5fec9b83feedc0b76b491e9e82bda09d03021be",
+      "audio_samples": 42400,
+      "source": "What is my favorite instrument?",
+      "heard": "what is my favourite instrument",
+      "reply": "It sounds like you've changed your mind!",
+      "elapsed_s": 0.7428610419992765,
+      "metrics": {
+        "audio_s": 2.65,
+        "audio_tokens": 133,
+        "generated_tokens": 19,
+        "front_end_s": 0.03672141700008069,
+        "prepare_s": 0.040691416998015484,
+        "ttft_s": 0.287609833998431,
+        "generation_s": 0.7012964589994226,
+        "total_s": 0.7420125419994292
+      },
+      "expected": "trumpet",
+      "passed": false
+    },
+    {
+      "arm": "current_only",
+      "scenario": "drink",
+      "speaker": 1,
+      "target_speaker": 1,
+      "turn": 0,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "77a7eff279cc07c869edc551c314ca2b1c483ba51dfef3db6e18b100708eec3b",
+      "audio_samples": 39200,
+      "source": "My favorite drink is coffee.",
+      "heard": "my favorite drink is coffee",
+      "reply": "",
+      "elapsed_s": 0.4924699999974109,
+      "metrics": {
+        "audio_s": 2.45,
+        "audio_tokens": 123,
+        "generated_tokens": 9,
+        "front_end_s": 0.034662042002310045,
+        "prepare_s": 0.03753770800176426,
+        "ttft_s": 0.2588082080001186,
+        "generation_s": 0.45426483299888787,
+        "total_s": 0.49182500000097207
+      }
+    },
+    {
+      "arm": "current_only",
+      "scenario": "drink",
+      "speaker": 2,
+      "target_speaker": 1,
+      "turn": 1,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "8348410dc719bf7bea7280dd05444e1486e41254ccea78129654499ff5b47f1e",
+      "audio_samples": 49600,
+      "source": "My favorite drink is lemonade.",
+      "heard": "my favorite drink is lemonade",
+      "reply": "",
+      "elapsed_s": 0.5272413329985284,
+      "metrics": {
+        "audio_s": 3.1,
+        "audio_tokens": 155,
+        "generated_tokens": 9,
+        "front_end_s": 0.03817195800002082,
+        "prepare_s": 0.041990665999037446,
+        "ttft_s": 0.28742295800111606,
+        "generation_s": 0.4844238750010845,
+        "total_s": 0.5264385000009497
+      }
+    },
+    {
+      "arm": "current_only",
+      "scenario": "drink",
+      "speaker": 1,
+      "target_speaker": 1,
+      "turn": 2,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "6da9dc6b9cdfed2051d9a53265689fae9298900374e4626a0e83e65969aef5d2",
+      "audio_samples": 34800,
+      "source": "What is my favorite drink?",
+      "heard": "what is my favorite drink",
+      "reply": "It sounds like you enjoy lemonade.",
+      "elapsed_s": 0.6537620839990268,
+      "metrics": {
+        "audio_s": 2.175,
+        "audio_tokens": 109,
+        "generated_tokens": 16,
+        "front_end_s": 0.033526582999911625,
+        "prepare_s": 0.03651566699772957,
+        "ttft_s": 0.26756679200116196,
+        "generation_s": 0.6163306669986923,
+        "total_s": 0.6528852919982455
+      },
+      "expected": "coffee",
+      "passed": false
+    },
+    {
+      "arm": "current_only",
+      "scenario": "drink",
+      "speaker": 1,
+      "target_speaker": 2,
+      "turn": 0,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "77a7eff279cc07c869edc551c314ca2b1c483ba51dfef3db6e18b100708eec3b",
+      "audio_samples": 39200,
+      "source": "My favorite drink is coffee.",
+      "heard": "my favorite drink is coffee",
+      "reply": "",
+      "elapsed_s": 0.4960155410008156,
+      "metrics": {
+        "audio_s": 2.45,
+        "audio_tokens": 123,
+        "generated_tokens": 9,
+        "front_end_s": 0.034448750000592554,
+        "prepare_s": 0.03751537499920232,
+        "ttft_s": 0.2627483329997631,
+        "generation_s": 0.45785950000208686,
+        "total_s": 0.4954011670015461
+      }
+    },
+    {
+      "arm": "current_only",
+      "scenario": "drink",
+      "speaker": 2,
+      "target_speaker": 2,
+      "turn": 1,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "8348410dc719bf7bea7280dd05444e1486e41254ccea78129654499ff5b47f1e",
+      "audio_samples": 49600,
+      "source": "My favorite drink is lemonade.",
+      "heard": "my favorite drink is lemonade",
+      "reply": "",
+      "elapsed_s": 0.5295310830006201,
+      "metrics": {
+        "audio_s": 3.1,
+        "audio_tokens": 155,
+        "generated_tokens": 9,
+        "front_end_s": 0.03837795900108176,
+        "prepare_s": 0.04220891699878848,
+        "ttft_s": 0.2899591249988589,
+        "generation_s": 0.4865421249996871,
+        "total_s": 0.5287842920006369
+      }
+    },
+    {
+      "arm": "current_only",
+      "scenario": "drink",
+      "speaker": 2,
+      "target_speaker": 2,
+      "turn": 2,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "6762f1dffa557ffb27b347a8dede0c386ea91732dff5c0040dabf3c1b79975e1",
+      "audio_samples": 37200,
+      "source": "What is my favorite drink?",
+      "heard": "what is my favorite drink",
+      "reply": "It sounds like you prefer lemonade.",
+      "elapsed_s": 0.6507047500017507,
+      "metrics": {
+        "audio_s": 2.325,
+        "audio_tokens": 117,
+        "generated_tokens": 16,
+        "front_end_s": 0.03475149999940186,
+        "prepare_s": 0.037816249998286366,
+        "ttft_s": 0.262460750000173,
+        "generation_s": 0.6119370000014897,
+        "total_s": 0.6497747499997786
+      },
+      "expected": "lemonade",
+      "passed": true
+    },
+    {
+      "arm": "current_only",
+      "scenario": "month",
+      "speaker": 2,
+      "target_speaker": 1,
+      "turn": 0,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "c95af3c3055efb0d74a4d33388fec93b0befed2acc13755a694e3827e0b87718",
+      "audio_samples": 48400,
+      "source": "My birthday is in October.",
+      "heard": "my birthday is in october",
+      "reply": "",
+      "elapsed_s": 0.503920167000615,
+      "metrics": {
+        "audio_s": 3.025,
+        "audio_tokens": 152,
+        "generated_tokens": 9,
+        "front_end_s": 0.03851504200065392,
+        "prepare_s": 0.0425047499993525,
+        "ttft_s": 0.26558462500179303,
+        "generation_s": 0.46072950000234414,
+        "total_s": 0.5032734580017859
+      }
+    },
+    {
+      "arm": "current_only",
+      "scenario": "month",
+      "speaker": 1,
+      "target_speaker": 1,
+      "turn": 1,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "f93fd4f594a80a3f956f1bdb8f19b7e58321b662a5ab27335340521b28475fab",
+      "audio_samples": 38400,
+      "source": "My birthday is in April.",
+      "heard": "my birthday is in april",
+      "reply": "HEARD:my birthday is in april",
+      "elapsed_s": 0.4105835839982319,
+      "metrics": {
+        "audio_s": 2.4,
+        "audio_tokens": 120,
+        "generated_tokens": 5,
+        "front_end_s": 0.03447391699955915,
+        "prepare_s": 0.03747737500088988,
+        "ttft_s": 0.2615864999970654,
+        "generation_s": 0.372326749999047,
+        "total_s": 0.4098244170018006
+      }
+    },
+    {
+      "arm": "current_only",
+      "scenario": "month",
+      "speaker": 1,
+      "target_speaker": 1,
+      "turn": 2,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "fac2fc2349942db836140b4c7eecb02a57281e0d1a9f905f4d2c6672e5291daf",
+      "audio_samples": 38400,
+      "source": "What month is my birthday?",
+      "heard": "what month is my birthday",
+      "reply": "HEARD:what month is my birthday",
+      "elapsed_s": 0.44364095899800304,
+      "metrics": {
+        "audio_s": 2.4,
+        "audio_tokens": 120,
+        "generated_tokens": 5,
+        "front_end_s": 0.034874250002758345,
+        "prepare_s": 0.037989667001966154,
+        "ttft_s": 0.2932057079997321,
+        "generation_s": 0.4046424999978626,
+        "total_s": 0.4426791250007227
+      },
+      "expected": "april",
+      "passed": false
+    },
+    {
+      "arm": "current_only",
+      "scenario": "month",
+      "speaker": 2,
+      "target_speaker": 2,
+      "turn": 0,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "c95af3c3055efb0d74a4d33388fec93b0befed2acc13755a694e3827e0b87718",
+      "audio_samples": 48400,
+      "source": "My birthday is in October.",
+      "heard": "my birthday is in october",
+      "reply": "",
+      "elapsed_s": 0.506021207998856,
+      "metrics": {
+        "audio_s": 3.025,
+        "audio_tokens": 152,
+        "generated_tokens": 9,
+        "front_end_s": 0.03791987499789684,
+        "prepare_s": 0.04193374999886146,
+        "ttft_s": 0.26576516699788044,
+        "generation_s": 0.46341245899748174,
+        "total_s": 0.5053903749976598
+      }
+    },
+    {
+      "arm": "current_only",
+      "scenario": "month",
+      "speaker": 1,
+      "target_speaker": 2,
+      "turn": 1,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "f93fd4f594a80a3f956f1bdb8f19b7e58321b662a5ab27335340521b28475fab",
+      "audio_samples": 38400,
+      "source": "My birthday is in April.",
+      "heard": "my birthday is in april",
+      "reply": "HEARD:my birthday is in april",
+      "elapsed_s": 0.41128650000246125,
+      "metrics": {
+        "audio_s": 2.4,
+        "audio_tokens": 120,
+        "generated_tokens": 5,
+        "front_end_s": 0.035104082999168895,
+        "prepare_s": 0.03822924999985844,
+        "ttft_s": 0.2612774589979381,
+        "generation_s": 0.37229991699859966,
+        "total_s": 0.4105512499991164
+      }
+    },
+    {
+      "arm": "current_only",
+      "scenario": "month",
+      "speaker": 2,
+      "target_speaker": 2,
+      "turn": 2,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "9eabaf7c65743f56e00e0c364f903c884289b772b20d11c1de14314b1ef1589c",
+      "audio_samples": 42800,
+      "source": "What month is my birthday?",
+      "heard": "what month is my birthday",
+      "reply": "HEARD:what month is my birthday",
+      "elapsed_s": 0.4435203749999346,
+      "metrics": {
+        "audio_s": 2.675,
+        "audio_tokens": 134,
+        "generated_tokens": 5,
+        "front_end_s": 0.03690450000067358,
+        "prepare_s": 0.04070662500089384,
+        "ttft_s": 0.2903454999977839,
+        "generation_s": 0.4018935419990157,
+        "total_s": 0.442625167001097
+      },
+      "expected": "october",
+      "passed": false
+    },
+    {
+      "arm": "current_and_history",
+      "scenario": "fruit",
+      "speaker": 1,
+      "target_speaker": 1,
+      "turn": 0,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "fe0b8d200623ec5cf1f0d2d59459bf80186bbc5e869fca7f0f16009192dcdfeb",
+      "audio_samples": 38800,
+      "source": "My favorite fruit is mango.",
+      "heard": "my favorite fruit is mango",
+      "reply": "",
+      "elapsed_s": 0.4949077919991396,
+      "metrics": {
+        "audio_s": 2.425,
+        "audio_tokens": 122,
+        "generated_tokens": 9,
+        "front_end_s": 0.03511254099794314,
+        "prepare_s": 0.03798912499769358,
+        "ttft_s": 0.2594289580010809,
+        "generation_s": 0.4562266670000099,
+        "total_s": 0.494239124996966
+      }
+    },
+    {
+      "arm": "current_and_history",
+      "scenario": "fruit",
+      "speaker": 2,
+      "target_speaker": 1,
+      "turn": 1,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "5d6cd71d4ecac9cd49f9cf5e1a573bb9e8dcb4b2b8e29b9114830d23aebec160",
+      "audio_samples": 42800,
+      "source": "My favorite fruit is peach.",
+      "heard": "my favorite fruit is peach",
+      "reply": "",
+      "elapsed_s": 0.5278202089975821,
+      "metrics": {
+        "audio_s": 2.675,
+        "audio_tokens": 134,
+        "generated_tokens": 9,
+        "front_end_s": 0.036734290999447694,
+        "prepare_s": 0.04059070799848996,
+        "ttft_s": 0.28746633300033864,
+        "generation_s": 0.4864229580016399,
+        "total_s": 0.5270414160004293
+      }
+    },
+    {
+      "arm": "current_and_history",
+      "scenario": "fruit",
+      "speaker": 1,
+      "target_speaker": 1,
+      "turn": 2,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "82dc2e635be947e1dfc0e53ee05ac1d87c285851f85501d430618137ee194d08",
+      "audio_samples": 35200,
+      "source": "What is my favorite fruit?",
+      "heard": "what is my favorite fruit",
+      "reply": "Your favorite fruit is mango.",
+      "elapsed_s": 0.6544150419977086,
+      "metrics": {
+        "audio_s": 2.2,
+        "audio_tokens": 110,
+        "generated_tokens": 15,
+        "front_end_s": 0.033552959001099225,
+        "prepare_s": 0.036743833999935305,
+        "ttft_s": 0.2897049160019378,
+        "generation_s": 0.6166857080024783,
+        "total_s": 0.6534527920011897
+      },
+      "expected": "mango",
+      "passed": true
+    },
+    {
+      "arm": "current_and_history",
+      "scenario": "fruit",
+      "speaker": 1,
+      "target_speaker": 2,
+      "turn": 0,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "fe0b8d200623ec5cf1f0d2d59459bf80186bbc5e869fca7f0f16009192dcdfeb",
+      "audio_samples": 38800,
+      "source": "My favorite fruit is mango.",
+      "heard": "my favorite fruit is mango",
+      "reply": "",
+      "elapsed_s": 0.49503391699909116,
+      "metrics": {
+        "audio_s": 2.425,
+        "audio_tokens": 122,
+        "generated_tokens": 9,
+        "front_end_s": 0.03535470799761242,
+        "prepare_s": 0.038589790998230455,
+        "ttft_s": 0.26017254200269235,
+        "generation_s": 0.4557417920004809,
+        "total_s": 0.49435583299782593
+      }
+    },
+    {
+      "arm": "current_and_history",
+      "scenario": "fruit",
+      "speaker": 2,
+      "target_speaker": 2,
+      "turn": 1,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "5d6cd71d4ecac9cd49f9cf5e1a573bb9e8dcb4b2b8e29b9114830d23aebec160",
+      "audio_samples": 42800,
+      "source": "My favorite fruit is peach.",
+      "heard": "my favorite fruit is peach",
+      "reply": "",
+      "elapsed_s": 0.5271530829995754,
+      "metrics": {
+        "audio_s": 2.675,
+        "audio_tokens": 134,
+        "generated_tokens": 9,
+        "front_end_s": 0.03779670899893972,
+        "prepare_s": 0.04165308400115464,
+        "ttft_s": 0.28819579199989676,
+        "generation_s": 0.48470566700052586,
+        "total_s": 0.5263882920007745
+      }
+    },
+    {
+      "arm": "current_and_history",
+      "scenario": "fruit",
+      "speaker": 2,
+      "target_speaker": 2,
+      "turn": 2,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "1288cbdcd0b7619444bc1a1b5fe85c9eb04fd38d127e146029974f7e1caf9988",
+      "audio_samples": 37200,
+      "source": "What is my favorite fruit?",
+      "heard": "what is my favorite fruit",
+      "reply": "It sounds like you like peaches.",
+      "elapsed_s": 0.6785386659976211,
+      "metrics": {
+        "audio_s": 2.325,
+        "audio_tokens": 117,
+        "generated_tokens": 16,
+        "front_end_s": 0.03566279100050451,
+        "prepare_s": 0.038700999997672625,
+        "ttft_s": 0.290199915998528,
+        "generation_s": 0.6389113330005785,
+        "total_s": 0.6776388329999463
+      },
+      "expected": "peach",
+      "passed": true
+    },
+    {
+      "arm": "current_and_history",
+      "scenario": "destination",
+      "speaker": 2,
+      "target_speaker": 1,
+      "turn": 0,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "1e28600fa750872966f6226b3a22678a45e60b9a2295e4b9fca2cbe3538e5277",
+      "audio_samples": 52000,
+      "source": "My travel destination is Denver.",
+      "heard": "my travel destination is denver",
+      "reply": "",
+      "elapsed_s": 0.5303827079987968,
+      "metrics": {
+        "audio_s": 3.25,
+        "audio_tokens": 163,
+        "generated_tokens": 10,
+        "front_end_s": 0.03985183300028439,
+        "prepare_s": 0.04412137500185054,
+        "ttft_s": 0.26756174999900395,
+        "generation_s": 0.4855900830007158,
+        "total_s": 0.5297327500011306
+      }
+    },
+    {
+      "arm": "current_and_history",
+      "scenario": "destination",
+      "speaker": 1,
+      "target_speaker": 1,
+      "turn": 1,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "b704a9b855c08d735689264ede025e0cd2e89ba9187b62c587badc45efa9788a",
+      "audio_samples": 47200,
+      "source": "My travel destination is Boston.",
+      "heard": "my travel destination is boston",
+      "reply": "",
+      "elapsed_s": 0.5294048330033547,
+      "metrics": {
+        "audio_s": 2.95,
+        "audio_tokens": 148,
+        "generated_tokens": 9,
+        "front_end_s": 0.038256333999015624,
+        "prepare_s": 0.042207791997498134,
+        "ttft_s": 0.29019362499821,
+        "generation_s": 0.4863917920010863,
+        "total_s": 0.5286212089995388
+      }
+    },
+    {
+      "arm": "current_and_history",
+      "scenario": "destination",
+      "speaker": 1,
+      "target_speaker": 1,
+      "turn": 2,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "0300ee7e245c3ce736df1b985581c59d3c811c3694d3312a2cf5fe3bb5ec2058",
+      "audio_samples": 42800,
+      "source": "What is my travel destination?",
+      "heard": "what is my travel destination",
+      "reply": "Your travel destination is Boston.",
+      "elapsed_s": 0.6623381249992235,
+      "metrics": {
+        "audio_s": 2.675,
+        "audio_tokens": 134,
+        "generated_tokens": 15,
+        "front_end_s": 0.03667833300278289,
+        "prepare_s": 0.04057833300248603,
+        "ttft_s": 0.2912595000016154,
+        "generation_s": 0.6207805410012952,
+        "total_s": 0.66138254100224
+      },
+      "expected": "boston",
+      "passed": true
+    },
+    {
+      "arm": "current_and_history",
+      "scenario": "destination",
+      "speaker": 2,
+      "target_speaker": 2,
+      "turn": 0,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "1e28600fa750872966f6226b3a22678a45e60b9a2295e4b9fca2cbe3538e5277",
+      "audio_samples": 52000,
+      "source": "My travel destination is Denver.",
+      "heard": "my travel destination is denver",
+      "reply": "",
+      "elapsed_s": 0.5361413749997155,
+      "metrics": {
+        "audio_s": 3.25,
+        "audio_tokens": 163,
+        "generated_tokens": 10,
+        "front_end_s": 0.03950033300134237,
+        "prepare_s": 0.04350812499978929,
+        "ttft_s": 0.26337641699865344,
+        "generation_s": 0.49194962499677786,
+        "total_s": 0.5354825829999754
+      }
+    },
+    {
+      "arm": "current_and_history",
+      "scenario": "destination",
+      "speaker": 1,
+      "target_speaker": 2,
+      "turn": 1,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "b704a9b855c08d735689264ede025e0cd2e89ba9187b62c587badc45efa9788a",
+      "audio_samples": 47200,
+      "source": "My travel destination is Boston.",
+      "heard": "my travel destination is boston",
+      "reply": "",
+      "elapsed_s": 0.5317873749991122,
+      "metrics": {
+        "audio_s": 2.95,
+        "audio_tokens": 148,
+        "generated_tokens": 9,
+        "front_end_s": 0.038714709000487346,
+        "prepare_s": 0.04272641699935775,
+        "ttft_s": 0.28952195799865876,
+        "generation_s": 0.48824545800016494,
+        "total_s": 0.5310098750014731
+      }
+    },
+    {
+      "arm": "current_and_history",
+      "scenario": "destination",
+      "speaker": 2,
+      "target_speaker": 2,
+      "turn": 2,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "1519cde1d2fabaf08188904359af136c1eb7cd5e7a4171242c7fd7510ca79eaa",
+      "audio_samples": 44000,
+      "source": "What is my travel destination?",
+      "heard": "what is my travel destination",
+      "reply": "Your travel destination is Denver.",
+      "elapsed_s": 0.6615341659999103,
+      "metrics": {
+        "audio_s": 2.75,
+        "audio_tokens": 138,
+        "generated_tokens": 15,
+        "front_end_s": 0.03903183400325361,
+        "prepare_s": 0.04301533400212065,
+        "ttft_s": 0.288838874999783,
+        "generation_s": 0.6175632499980566,
+        "total_s": 0.6606040420010686
+      },
+      "expected": "denver",
+      "passed": true
+    },
+    {
+      "arm": "current_and_history",
+      "scenario": "pet",
+      "speaker": 1,
+      "target_speaker": 1,
+      "turn": 0,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "246734d2282eba2c51e2fbbdd76d3470244cf122168fa2b2d5d0b22e4aac7dda",
+      "audio_samples": 31600,
+      "source": "My pet is a rabbit.",
+      "heard": "my pet is a rabbit",
+      "reply": "",
+      "elapsed_s": 0.4809458750023623,
+      "metrics": {
+        "audio_s": 1.975,
+        "audio_tokens": 99,
+        "generated_tokens": 9,
+        "front_end_s": 0.03272037499846192,
+        "prepare_s": 0.035623332998511614,
+        "ttft_s": 0.23884045800150489,
+        "generation_s": 0.44466095800089533,
+        "total_s": 0.4803055000011227
+      }
+    },
+    {
+      "arm": "current_and_history",
+      "scenario": "pet",
+      "speaker": 2,
+      "target_speaker": 1,
+      "turn": 1,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "e825316b2e9e0ce33fa26cd463635d50982a220cf65841c4a7cdb413c61f1b4f",
+      "audio_samples": 37200,
+      "source": "My pet is a turtle.",
+      "heard": "my pet is a turtle",
+      "reply": "",
+      "elapsed_s": 0.5381338750012219,
+      "metrics": {
+        "audio_s": 2.325,
+        "audio_tokens": 117,
+        "generated_tokens": 9,
+        "front_end_s": 0.0447737499998766,
+        "prepare_s": 0.048447291999764275,
+        "ttft_s": 0.2907874170014111,
+        "generation_s": 0.48843179200048326,
+        "total_s": 0.5369253749995551
+      }
+    },
+    {
+      "arm": "current_and_history",
+      "scenario": "pet",
+      "speaker": 1,
+      "target_speaker": 1,
+      "turn": 2,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "fd23ae5e9dac3832b357b27db8d18f917549a559c2bf44ec4e483ba963178de0",
+      "audio_samples": 35200,
+      "source": "What kind of pet do I have?",
+      "heard": "what kind of pet do i have",
+      "reply": "You have a rabbit.",
+      "elapsed_s": 0.6776219999992463,
+      "metrics": {
+        "audio_s": 2.2,
+        "audio_tokens": 110,
+        "generated_tokens": 16,
+        "front_end_s": 0.03346149999924819,
+        "prepare_s": 0.03648654100106796,
+        "ttft_s": 0.29080708399851574,
+        "generation_s": 0.6401997499997378,
+        "total_s": 0.6767087910011469
+      },
+      "expected": "rabbit",
+      "passed": true
+    },
+    {
+      "arm": "current_and_history",
+      "scenario": "pet",
+      "speaker": 1,
+      "target_speaker": 2,
+      "turn": 0,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "246734d2282eba2c51e2fbbdd76d3470244cf122168fa2b2d5d0b22e4aac7dda",
+      "audio_samples": 31600,
+      "source": "My pet is a rabbit.",
+      "heard": "my pet is a rabbit",
+      "reply": "",
+      "elapsed_s": 0.48777399999744375,
+      "metrics": {
+        "audio_s": 1.975,
+        "audio_tokens": 99,
+        "generated_tokens": 9,
+        "front_end_s": 0.032891374998143874,
+        "prepare_s": 0.035873457996785874,
+        "ttft_s": 0.23799045800114982,
+        "generation_s": 0.45121245799964527,
+        "total_s": 0.48710791599660297
+      }
+    },
+    {
+      "arm": "current_and_history",
+      "scenario": "pet",
+      "speaker": 2,
+      "target_speaker": 2,
+      "turn": 1,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "e825316b2e9e0ce33fa26cd463635d50982a220cf65841c4a7cdb413c61f1b4f",
+      "audio_samples": 37200,
+      "source": "My pet is a turtle.",
+      "heard": "my pet is a turtle",
+      "reply": "",
+      "elapsed_s": 0.5815753329989093,
+      "metrics": {
+        "audio_s": 2.325,
+        "audio_tokens": 117,
+        "generated_tokens": 9,
+        "front_end_s": 0.052043208001123276,
+        "prepare_s": 0.055511667000246234,
+        "ttft_s": 0.2960118330011028,
+        "generation_s": 0.5245376669990947,
+        "total_s": 0.5801015420001931
+      }
+    },
+    {
+      "arm": "current_and_history",
+      "scenario": "pet",
+      "speaker": 2,
+      "target_speaker": 2,
+      "turn": 2,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "f46bff290718eec74a3e74e77ad2fe031ede56368c0cb0cddfce601f935d3531",
+      "audio_samples": 38800,
+      "source": "What kind of pet do I have?",
+      "heard": "what kind of pets do i have",
+      "reply": "You have a turtle.",
+      "elapsed_s": 0.7898580830005812,
+      "metrics": {
+        "audio_s": 2.425,
+        "audio_tokens": 122,
+        "generated_tokens": 16,
+        "front_end_s": 0.05128562499885447,
+        "prepare_s": 0.05533195899988641,
+        "ttft_s": 0.3224204580001242,
+        "generation_s": 0.7327221670020663,
+        "total_s": 0.7880965840013232
+      },
+      "expected": "turtle",
+      "passed": true
+    },
+    {
+      "arm": "current_and_history",
+      "scenario": "instrument",
+      "speaker": 2,
+      "target_speaker": 1,
+      "turn": 0,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "b22fc3ca4eb2c05652187b88da851a52336a7313901e09bf5a94406eb5d031bc",
+      "audio_samples": 54000,
+      "source": "My favorite instrument is the trumpet.",
+      "heard": "my favourite instrument is the trumpet",
+      "reply": "",
+      "elapsed_s": 0.6149398749985266,
+      "metrics": {
+        "audio_s": 3.375,
+        "audio_tokens": 169,
+        "generated_tokens": 10,
+        "front_end_s": 0.05992608299857238,
+        "prepare_s": 0.06447699999989709,
+        "ttft_s": 0.29555133300164016,
+        "generation_s": 0.549127000002045,
+        "total_s": 0.6138590420014225
+      }
+    },
+    {
+      "arm": "current_and_history",
+      "scenario": "instrument",
+      "speaker": 1,
+      "target_speaker": 1,
+      "turn": 1,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "d7e71db5d1f5ca017021c6f9b06ed21bebce99df0cb60b0f961c8eefd4c5b094",
+      "audio_samples": 47600,
+      "source": "My favorite instrument is the violin.",
+      "heard": "my favourite instrument is the violin",
+      "reply": "",
+      "elapsed_s": 0.6015431660016475,
+      "metrics": {
+        "audio_s": 2.975,
+        "audio_tokens": 149,
+        "generated_tokens": 10,
+        "front_end_s": 0.05898258299930603,
+        "prepare_s": 0.0641299999988405,
+        "ttft_s": 0.3137944999980391,
+        "generation_s": 0.5360694999981206,
+        "total_s": 0.6002804999989166
+      }
+    },
+    {
+      "arm": "current_and_history",
+      "scenario": "instrument",
+      "speaker": 1,
+      "target_speaker": 1,
+      "turn": 2,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "b33abe59139f71fff27cfe9a543fb4d678b1e929b39b77a3750fcfb4e7901542",
+      "audio_samples": 38800,
+      "source": "What is my favorite instrument?",
+      "heard": "what is my favourite instrument",
+      "reply": "It sounds like you're asking about your favorite instrument.",
+      "elapsed_s": 0.8347825000018929,
+      "metrics": {
+        "audio_s": 2.425,
+        "audio_tokens": 122,
+        "generated_tokens": 21,
+        "front_end_s": 0.03463883299991721,
+        "prepare_s": 0.037486165998416254,
+        "ttft_s": 0.2959868340003595,
+        "generation_s": 0.7959606669974164,
+        "total_s": 0.8335107079983572
+      },
+      "expected": "violin",
+      "passed": false
+    },
+    {
+      "arm": "current_and_history",
+      "scenario": "instrument",
+      "speaker": 2,
+      "target_speaker": 2,
+      "turn": 0,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "b22fc3ca4eb2c05652187b88da851a52336a7313901e09bf5a94406eb5d031bc",
+      "audio_samples": 54000,
+      "source": "My favorite instrument is the trumpet.",
+      "heard": "my favourite instrument is the trumpet",
+      "reply": "",
+      "elapsed_s": 0.5975875840013032,
+      "metrics": {
+        "audio_s": 3.375,
+        "audio_tokens": 169,
+        "generated_tokens": 10,
+        "front_end_s": 0.05284491600104957,
+        "prepare_s": 0.05736704100127099,
+        "ttft_s": 0.2844141250025132,
+        "generation_s": 0.5392048749999958,
+        "total_s": 0.5966126659986912
+      }
+    },
+    {
+      "arm": "current_and_history",
+      "scenario": "instrument",
+      "speaker": 1,
+      "target_speaker": 2,
+      "turn": 1,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "d7e71db5d1f5ca017021c6f9b06ed21bebce99df0cb60b0f961c8eefd4c5b094",
+      "audio_samples": 47600,
+      "source": "My favorite instrument is the violin.",
+      "heard": "my favourite instrument is the violin",
+      "reply": "",
+      "elapsed_s": 0.6369034159979492,
+      "metrics": {
+        "audio_s": 2.975,
+        "audio_tokens": 149,
+        "generated_tokens": 10,
+        "front_end_s": 0.056304999998246785,
+        "prepare_s": 0.060947999998461455,
+        "ttft_s": 0.3202433749975171,
+        "generation_s": 0.5743239580006048,
+        "total_s": 0.635314750001271
+      }
+    },
+    {
+      "arm": "current_and_history",
+      "scenario": "instrument",
+      "speaker": 2,
+      "target_speaker": 2,
+      "turn": 2,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "a6c74f42c8da0f21ac2deb7ed5fec9b83feedc0b76b491e9e82bda09d03021be",
+      "audio_samples": 42400,
+      "source": "What is my favorite instrument?",
+      "heard": "what is my favourite instrument",
+      "reply": "Your favourite instrument is the trumpet.",
+      "elapsed_s": 0.7934834170009708,
+      "metrics": {
+        "audio_s": 2.65,
+        "audio_tokens": 133,
+        "generated_tokens": 16,
+        "front_end_s": 0.052543624999088934,
+        "prepare_s": 0.05723070899693994,
+        "ttft_s": 0.3236279580014525,
+        "generation_s": 0.7340153750010359,
+        "total_s": 0.7912858339986997
+      },
+      "expected": "trumpet",
+      "passed": true
+    },
+    {
+      "arm": "current_and_history",
+      "scenario": "drink",
+      "speaker": 1,
+      "target_speaker": 1,
+      "turn": 0,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "77a7eff279cc07c869edc551c314ca2b1c483ba51dfef3db6e18b100708eec3b",
+      "audio_samples": 39200,
+      "source": "My favorite drink is coffee.",
+      "heard": "my favorite drink is coffee",
+      "reply": "",
+      "elapsed_s": 0.5780669579980895,
+      "metrics": {
+        "audio_s": 2.45,
+        "audio_tokens": 123,
+        "generated_tokens": 9,
+        "front_end_s": 0.04827895899870782,
+        "prepare_s": 0.051664167000126326,
+        "ttft_s": 0.29277975000150036,
+        "generation_s": 0.5247984580018965,
+        "total_s": 0.5765206670002954
+      }
+    },
+    {
+      "arm": "current_and_history",
+      "scenario": "drink",
+      "speaker": 2,
+      "target_speaker": 1,
+      "turn": 1,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "8348410dc719bf7bea7280dd05444e1486e41254ccea78129654499ff5b47f1e",
+      "audio_samples": 49600,
+      "source": "My favorite drink is lemonade.",
+      "heard": "my favorite drink is lemonade",
+      "reply": "",
+      "elapsed_s": 0.6156335000014224,
+      "metrics": {
+        "audio_s": 3.1,
+        "audio_tokens": 155,
+        "generated_tokens": 9,
+        "front_end_s": 0.057032333999814,
+        "prepare_s": 0.061453834001440555,
+        "ttft_s": 0.32083466699987184,
+        "generation_s": 0.552804417002335,
+        "total_s": 0.6143064170028083
+      }
+    },
+    {
+      "arm": "current_and_history",
+      "scenario": "drink",
+      "speaker": 1,
+      "target_speaker": 1,
+      "turn": 2,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "6da9dc6b9cdfed2051d9a53265689fae9298900374e4626a0e83e65969aef5d2",
+      "audio_samples": 34800,
+      "source": "What is my favorite drink?",
+      "heard": "what is my favorite drink",
+      "reply": "Your favorite drink is coffee.",
+      "elapsed_s": 0.7041412920007133,
+      "metrics": {
+        "audio_s": 2.175,
+        "audio_tokens": 109,
+        "generated_tokens": 15,
+        "front_end_s": 0.04443737499968847,
+        "prepare_s": 0.04806920799819636,
+        "ttft_s": 0.3220528750025551,
+        "generation_s": 0.6546657920007419,
+        "total_s": 0.7027735419978853
+      },
+      "expected": "coffee",
+      "passed": true
+    },
+    {
+      "arm": "current_and_history",
+      "scenario": "drink",
+      "speaker": 1,
+      "target_speaker": 2,
+      "turn": 0,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "77a7eff279cc07c869edc551c314ca2b1c483ba51dfef3db6e18b100708eec3b",
+      "audio_samples": 39200,
+      "source": "My favorite drink is coffee.",
+      "heard": "my favorite drink is coffee",
+      "reply": "",
+      "elapsed_s": 0.4925823749981646,
+      "metrics": {
+        "audio_s": 2.45,
+        "audio_tokens": 123,
+        "generated_tokens": 9,
+        "front_end_s": 0.03450441599852638,
+        "prepare_s": 0.03729866600042442,
+        "ttft_s": 0.26056400000015856,
+        "generation_s": 0.45462920799764106,
+        "total_s": 0.4919474579983216
+      }
+    },
+    {
+      "arm": "current_and_history",
+      "scenario": "drink",
+      "speaker": 2,
+      "target_speaker": 2,
+      "turn": 1,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "8348410dc719bf7bea7280dd05444e1486e41254ccea78129654499ff5b47f1e",
+      "audio_samples": 49600,
+      "source": "My favorite drink is lemonade.",
+      "heard": "my favorite drink is lemonade",
+      "reply": "",
+      "elapsed_s": 0.5275991670023359,
+      "metrics": {
+        "audio_s": 3.1,
+        "audio_tokens": 155,
+        "generated_tokens": 9,
+        "front_end_s": 0.0384126249991823,
+        "prepare_s": 0.042303333000745624,
+        "ttft_s": 0.28895162499975413,
+        "generation_s": 0.4844885829988925,
+        "total_s": 0.5268190829992818
+      }
+    },
+    {
+      "arm": "current_and_history",
+      "scenario": "drink",
+      "speaker": 2,
+      "target_speaker": 2,
+      "turn": 2,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "6762f1dffa557ffb27b347a8dede0c386ea91732dff5c0040dabf3c1b79975e1",
+      "audio_samples": 37200,
+      "source": "What is my favorite drink?",
+      "heard": "what is my favorite drink",
+      "reply": "It sounds like you're asking about your favorite drink.",
+      "elapsed_s": 0.7899833340015903,
+      "metrics": {
+        "audio_s": 2.325,
+        "audio_tokens": 117,
+        "generated_tokens": 21,
+        "front_end_s": 0.034417082999425475,
+        "prepare_s": 0.03745291700033704,
+        "ttft_s": 0.29171366700029466,
+        "generation_s": 0.7516400839995185,
+        "total_s": 0.7891145419998793
+      },
+      "expected": "lemonade",
+      "passed": false
+    },
+    {
+      "arm": "current_and_history",
+      "scenario": "month",
+      "speaker": 2,
+      "target_speaker": 1,
+      "turn": 0,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "c95af3c3055efb0d74a4d33388fec93b0befed2acc13755a694e3827e0b87718",
+      "audio_samples": 48400,
+      "source": "My birthday is in October.",
+      "heard": "my birthday is in october",
+      "reply": "",
+      "elapsed_s": 0.5048669999996491,
+      "metrics": {
+        "audio_s": 3.025,
+        "audio_tokens": 152,
+        "generated_tokens": 9,
+        "front_end_s": 0.03884458399988944,
+        "prepare_s": 0.04283370900157024,
+        "ttft_s": 0.265284832999896,
+        "generation_s": 0.4613465410002391,
+        "total_s": 0.5042130000001634
+      }
+    },
+    {
+      "arm": "current_and_history",
+      "scenario": "month",
+      "speaker": 1,
+      "target_speaker": 1,
+      "turn": 1,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "f93fd4f594a80a3f956f1bdb8f19b7e58321b662a5ab27335340521b28475fab",
+      "audio_samples": 38400,
+      "source": "My birthday is in April.",
+      "heard": "my birthday is in april",
+      "reply": "",
+      "elapsed_s": 0.49743462500191526,
+      "metrics": {
+        "audio_s": 2.4,
+        "audio_tokens": 120,
+        "generated_tokens": 9,
+        "front_end_s": 0.034809041000698926,
+        "prepare_s": 0.03780108299906715,
+        "ttft_s": 0.26205225000012433,
+        "generation_s": 0.4588400829998136,
+        "total_s": 0.49666195800091373
+      }
+    },
+    {
+      "arm": "current_and_history",
+      "scenario": "month",
+      "speaker": 1,
+      "target_speaker": 1,
+      "turn": 2,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "fac2fc2349942db836140b4c7eecb02a57281e0d1a9f905f4d2c6672e5291daf",
+      "audio_samples": 38400,
+      "source": "What month is my birthday?",
+      "heard": "what month is my birthday",
+      "reply": "It's in April.",
+      "elapsed_s": 0.6638437919973512,
+      "metrics": {
+        "audio_s": 2.4,
+        "audio_tokens": 120,
+        "generated_tokens": 15,
+        "front_end_s": 0.034753083000396146,
+        "prepare_s": 0.03767945799700101,
+        "ttft_s": 0.29826512500221725,
+        "generation_s": 0.6251928330020746,
+        "total_s": 0.6629015830003482
+      },
+      "expected": "april",
+      "passed": true
+    },
+    {
+      "arm": "current_and_history",
+      "scenario": "month",
+      "speaker": 2,
+      "target_speaker": 2,
+      "turn": 0,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "c95af3c3055efb0d74a4d33388fec93b0befed2acc13755a694e3827e0b87718",
+      "audio_samples": 48400,
+      "source": "My birthday is in October.",
+      "heard": "my birthday is in october",
+      "reply": "",
+      "elapsed_s": 0.5034654579976632,
+      "metrics": {
+        "audio_s": 3.025,
+        "audio_tokens": 152,
+        "generated_tokens": 9,
+        "front_end_s": 0.0380268340013572,
+        "prepare_s": 0.04203995900024893,
+        "ttft_s": 0.26373112500004936,
+        "generation_s": 0.46075283300160663,
+        "total_s": 0.5028214170015417
+      }
+    },
+    {
+      "arm": "current_and_history",
+      "scenario": "month",
+      "speaker": 1,
+      "target_speaker": 2,
+      "turn": 1,
+      "perception_label": {
+        "speaker": 2,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S2",
+      "audio_sha256": "f93fd4f594a80a3f956f1bdb8f19b7e58321b662a5ab27335340521b28475fab",
+      "audio_samples": 38400,
+      "source": "My birthday is in April.",
+      "heard": "my birthday is in april",
+      "reply": "",
+      "elapsed_s": 0.49696625000069616,
+      "metrics": {
+        "audio_s": 2.4,
+        "audio_tokens": 120,
+        "generated_tokens": 9,
+        "front_end_s": 0.034600292001414346,
+        "prepare_s": 0.037620750001224224,
+        "ttft_s": 0.2625128340005176,
+        "generation_s": 0.45857504200102994,
+        "total_s": 0.49622041700058617
+      }
+    },
+    {
+      "arm": "current_and_history",
+      "scenario": "month",
+      "speaker": 2,
+      "target_speaker": 2,
+      "turn": 2,
+      "perception_label": {
+        "speaker": 1,
+        "conf": 1.0
+      },
+      "context": "the speaker is speaker S1",
+      "audio_sha256": "9eabaf7c65743f56e00e0c364f903c884289b772b20d11c1de14314b1ef1589c",
+      "audio_samples": 42800,
+      "source": "What month is my birthday?",
+      "heard": "what month is my birthday",
+      "reply": "It's in October.",
+      "elapsed_s": 0.6635545839999395,
+      "metrics": {
+        "audio_s": 2.675,
+        "audio_tokens": 134,
+        "generated_tokens": 15,
+        "front_end_s": 0.036649792000389425,
+        "prepare_s": 0.04053987500083167,
+        "ttft_s": 0.2933502079977188,
+        "generation_s": 0.6221300830002292,
+        "total_s": 0.6626924170013808
+      },
+      "expected": "october",
+      "passed": true
+    }
+  ],
+  "speaker_labels": "ecapa",
+  "turn_context": true,
+  "scope": "24 synthetic two-voice fixtures; oracle utilization or real ECAPA turn labels as selected",
+  "node": "jaegeromni-41m-medium",
+  "adapter_sha256": "a7f96bfb889866f75df7b838f84aae368a56ab10f6469e766511d700e32fe13a",
+  "code_sha256": "5aac4a25b8bf6dbe8dad955eb67e365e6666e0c21c77b00e1f3ce1851db892db",
+  "runtime_changed": false
+}

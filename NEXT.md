@@ -7,8 +7,11 @@ GPU inference, training and trials. Two independent raw-audio overlap trials
 are rejected (best test F1 0.633 synthetic / 0.728 AMI, frequent false events).
 The heads-free medium causal port also failed: mask-only and 250/500-step
 variants all regress devclean64 and AMI64 against the existing full ear,
-which stays selected. All three new nodes are packaged-disabled. Next are
-speaker-sensitive context evaluation and real image/text/audio turns.
+which stays selected. All three new nodes are packaged-disabled. Speaker
+context now has measured value only with turn-local identity plus labeled
+history (19/24 vs 11/24 across development/held-out ECAPA queries), but raises
+medium fresh-turn HEARD WER 5.03% → 5.55%; it stays opt-in, default off.
+Next are real image/text/audio turns and the standing release gates.
 Overlap needs stronger acoustic representations and event
 reliability before promotion; repeating these scratch-TCN recipes is unwarranted.
 Evidence: `research/candidate_evals/tier-matched-gpu-20260904.json`.

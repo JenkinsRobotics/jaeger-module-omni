@@ -1,0 +1,193 @@
+{
+  "kind": "paired_speaker_context_pilot",
+  "scorer": "training/evaluate.py",
+  "scorer_sha256": "339bd69040ee922bb3c89168d1b079060e33ac358a0e30faed283aae6221169e",
+  "records": [
+    {
+      "evidence": "research/candidate_evals/converse-context-ecapa-20260904.json",
+      "speaker_labels": "ecapa",
+      "turn_context": false,
+      "arms": {
+        "off": {
+          "passed": 6,
+          "total": 12,
+          "heard_edits": 10,
+          "reference_words": 188,
+          "heard_wer": 0.05319148936170213,
+          "median_generation_s": 0.5542752709989145
+        },
+        "current_only": {
+          "passed": 6,
+          "total": 12,
+          "heard_edits": 17,
+          "reference_words": 188,
+          "heard_wer": 0.09042553191489362,
+          "median_generation_s": 0.558902874998239
+        },
+        "current_and_history": {
+          "passed": 4,
+          "total": 12,
+          "heard_edits": 17,
+          "reference_words": 188,
+          "heard_wer": 0.09042553191489362,
+          "median_generation_s": 0.5632416669996019
+        }
+      }
+    },
+    {
+      "evidence": "research/candidate_evals/converse-context-oracle-20260904.json",
+      "speaker_labels": "oracle",
+      "turn_context": false,
+      "arms": {
+        "off": {
+          "passed": 6,
+          "total": 12,
+          "heard_edits": 10,
+          "reference_words": 188,
+          "heard_wer": 0.05319148936170213,
+          "median_generation_s": 0.5661006250029459
+        },
+        "current_only": {
+          "passed": 6,
+          "total": 12,
+          "heard_edits": 19,
+          "reference_words": 188,
+          "heard_wer": 0.10106382978723404,
+          "median_generation_s": 0.5641619170000922
+        },
+        "current_and_history": {
+          "passed": 5,
+          "total": 12,
+          "heard_edits": 17,
+          "reference_words": 188,
+          "heard_wer": 0.09042553191489362,
+          "median_generation_s": 0.5643492290000722
+        }
+      }
+    },
+    {
+      "evidence": "research/candidate_evals/converse-context-turn-ecapa-20260904.json",
+      "speaker_labels": "ecapa",
+      "turn_context": true,
+      "arms": {
+        "off": {
+          "passed": 6,
+          "total": 12,
+          "heard_edits": 10,
+          "reference_words": 188,
+          "heard_wer": 0.05319148936170213,
+          "median_generation_s": 0.5566572080024343
+        },
+        "current_only": {
+          "passed": 4,
+          "total": 12,
+          "heard_edits": 9,
+          "reference_words": 188,
+          "heard_wer": 0.047872340425531915,
+          "median_generation_s": 0.5123130414995103
+        },
+        "current_and_history": {
+          "passed": 10,
+          "total": 12,
+          "heard_edits": 7,
+          "reference_words": 188,
+          "heard_wer": 0.03723404255319149,
+          "median_generation_s": 0.5798211454984994
+        }
+      }
+    },
+    {
+      "evidence": "research/candidate_evals/converse-context-turn-oracle-20260904.json",
+      "speaker_labels": "oracle",
+      "turn_context": true,
+      "arms": {
+        "off": {
+          "passed": 6,
+          "total": 12,
+          "heard_edits": 10,
+          "reference_words": 188,
+          "heard_wer": 0.05319148936170213,
+          "median_generation_s": 0.5572027079997497
+        },
+        "current_only": {
+          "passed": 5,
+          "total": 12,
+          "heard_edits": 13,
+          "reference_words": 188,
+          "heard_wer": 0.06914893617021277,
+          "median_generation_s": 0.5247989375002362
+        },
+        "current_and_history": {
+          "passed": 10,
+          "total": 12,
+          "heard_edits": 7,
+          "reference_words": 188,
+          "heard_wer": 0.03723404255319149,
+          "median_generation_s": 0.5337714160014002
+        }
+      }
+    },
+    {
+      "evidence": "research/candidate_evals/converse-context-turn-ecapa-holdout-20260905.json",
+      "speaker_labels": "ecapa",
+      "turn_context": true,
+      "scenario_set": "holdout",
+      "arms": {
+        "off": {
+          "passed": 5,
+          "total": 12,
+          "heard_edits": 18,
+          "reference_words": 172,
+          "heard_wer": 0.10465116279069768,
+          "median_generation_s": 0.5636663534987747
+        },
+        "current_only": {
+          "passed": 5,
+          "total": 12,
+          "heard_edits": 18,
+          "reference_words": 172,
+          "heard_wer": 0.10465116279069768,
+          "median_generation_s": 0.5051012709991483
+        },
+        "current_and_history": {
+          "passed": 9,
+          "total": 12,
+          "heard_edits": 18,
+          "reference_words": 172,
+          "heard_wer": 0.10465116279069768,
+          "median_generation_s": 0.5035847085000569
+        }
+      }
+    }
+  ],
+  "scope": "Six development and six held-out lexical scenarios, two synthetic male voices. Live-room generalization not established.",
+  "fresh_turn_devclean64": [
+    {
+      "tier": "half",
+      "off": "research/candidate_evals/tier-half-heard-20260904-devclean64.json",
+      "on": "research/candidate_evals/tier-half-context-heard-20260905-devclean64.json",
+      "off_edits": 48,
+      "on_edits": 53,
+      "off_wer": 0.050261780104712044,
+      "on_wer": 0.05549738219895288,
+      "reference_words": 955,
+      "population_verified": true
+    },
+    {
+      "tier": "full",
+      "off": "research/candidate_evals/tier-full-heard-20260904-devclean64.json",
+      "on": "research/candidate_evals/tier-full-context-heard-20260905-devclean64.json",
+      "off_edits": 52,
+      "on_edits": 51,
+      "off_wer": 0.05445026178010471,
+      "on_wer": 0.05340314136125655,
+      "reference_words": 955,
+      "population_verified": true
+    }
+  ],
+  "decision": {
+    "default_context": false,
+    "opt_in": "OMNI_CONTEXT=1",
+    "reason": "speaker recall improves 11/24 to 19/24 across development/heldout ECAPA scenarios, but medium fresh-turn HEARD regresses 48 to 53 edits; no default promotion"
+  }
+}

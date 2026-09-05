@@ -1,0 +1,1124 @@
+{
+  "command": [
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+    "research/converse_ear_wer.py",
+    "--tier",
+    "half",
+    "--heard-reply",
+    "--speaker-context",
+    "-n",
+    "64",
+    "--output",
+    "research/candidate_evals/tier-half-context-heard-20260905-devclean64.json"
+  ],
+  "node": "jaegeromni-41m-medium",
+  "tier": "half",
+  "manifest_sha256": "359bacbb982a881618a16fa3b13f18b556b715bf8f13517edf5135c5a5746259",
+  "scorer_sha256": "339bd69040ee922bb3c89168d1b079060e33ac358a0e30faed283aae6221169e",
+  "system": "You are a helpful voice assistant. The user's message arrives as speech. Reply with EXACTLY two lines:\nHEARD: <verbatim transcription of the speech>\nREPLY: <your answer in one or two short conversational sentences>\nEach user turn may identify its speaker in a context label. Keep each speaker's facts separate. I and my refer to the speaker labeled on the current user turn. HEARD must contain only the current audio's words, never a prior turn's words.",
+  "speaker_context": "fixed S1; identity inference not evaluated",
+  "adapter": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/jaeger_agent_omni/nodes/jaegeromni-41m-medium/weights/adapter.npz",
+  "split": "devclean",
+  "adapter_sha256": "a7f96bfb889866f75df7b838f84aae368a56ab10f6469e766511d700e32fe13a",
+  "encoder": "openai/whisper-medium (node-local snapshot)",
+  "evaluation_mode": "converse_heard_reply_fresh_history_fixed_speaker_context",
+  "teacher_forced": false,
+  "input_handoff": "raw_waveform_no_transcript",
+  "id_file": "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-eval-v1/devclean/manifest.jsonl",
+  "source_prefix": null,
+  "n": 64,
+  "wer": 0.05549738219895288,
+  "edits": 53,
+  "reference_words": 955,
+  "median_transcribe_s": 0.7927680409993627,
+  "rows": [
+    {
+      "id": "1272-128104-0000",
+      "reference": "MISTER QUILTER IS THE APOSTLE OF THE MIDDLE CLASSES AND WE ARE GLAD TO WELCOME HIS GOSPEL",
+      "hypothesis": "mister quilter is the apostle of the middle classes and we are glad to welcome his gospel",
+      "wer": 0.0,
+      "metrics": {
+        "audio_s": 5.855,
+        "audio_tokens": 293,
+        "generated_tokens": 22,
+        "front_end_s": 0.1969920829978946,
+        "prepare_s": 0.26248829099858995,
+        "ttft_s": 0.44801716700021643,
+        "generation_s": 0.9345282920003228,
+        "total_s": 1.1978070829973149
+      },
+      "raw_reply": "HEARD:mister quilter is the apostle of the middle classes and we are glad to welcome his gospel\nREPLY:"
+    },
+    {
+      "id": "1272-128104-0001",
+      "reference": "NOR IS MISTER QUILTER'S MANNER LESS INTERESTING THAN HIS MATTER",
+      "hypothesis": "nor is mister quilter's manner less interesting than his matter",
+      "wer": 0.0,
+      "metrics": {
+        "audio_s": 4.815,
+        "audio_tokens": 241,
+        "generated_tokens": 17,
+        "front_end_s": 0.06005099999674712,
+        "prepare_s": 0.06480533399735577,
+        "ttft_s": 0.299635750001471,
+        "generation_s": 0.6765296250014217,
+        "total_s": 0.7413652089999232
+      },
+      "raw_reply": "HEARD:nor is mister quilter's manner less interesting than his matter\nREPLY:"
+    },
+    {
+      "id": "1272-128104-0002",
+      "reference": "HE TELLS US THAT AT THIS FESTIVE SEASON OF THE YEAR WITH CHRISTMAS AND ROAST BEEF LOOMING BEFORE US SIMILES DRAWN FROM EATING AND ITS RESULTS OCCUR MOST READILY TO THE MIND",
+      "hypothesis": "he tells us that at this festive season of the year with christmas and roast beef looming before us similes drawn from eating and its results occur most readily to the mind",
+      "wer": 0.0,
+      "metrics": {
+        "audio_s": 12.485,
+        "audio_tokens": 625,
+        "generated_tokens": 37,
+        "front_end_s": 0.11241233299733722,
+        "prepare_s": 0.12227362499834271,
+        "ttft_s": 0.4780830000017886,
+        "generation_s": 1.3274034580026637,
+        "total_s": 1.4498078329997952
+      },
+      "raw_reply": "HEARD:he tells us that at this festive season of the year with christmas and roast beef looming before us similes drawn from eating and its results occur most readily to the mind\nREPLY:"
+    },
+    {
+      "id": "1272-128104-0003",
+      "reference": "HE HAS GRAVE DOUBTS WHETHER SIR FREDERICK LEIGHTON'S WORK IS REALLY GREEK AFTER ALL AND CAN DISCOVER IN IT BUT LITTLE OF ROCKY ITHACA",
+      "hypothesis": "he has grave doubts whether sir frederick latin's work is really greek after all and can discover in it but little of rocky ithaca",
+      "wer": 0.041666666666666664,
+      "metrics": {
+        "audio_s": 9.9,
+        "audio_tokens": 495,
+        "generated_tokens": 33,
+        "front_end_s": 0.10498970800108509,
+        "prepare_s": 0.120129499999166,
+        "ttft_s": 0.40814258299724315,
+        "generation_s": 1.1566779579989088,
+        "total_s": 1.2768554159993073
+      },
+      "raw_reply": "HEARD:he has grave doubts whether sir frederick latin's work is really greek after all and can discover in it but little of rocky ithaca\nREPLY:"
+    },
+    {
+      "id": "1272-128104-0005",
+      "reference": "IT IS OBVIOUSLY UNNECESSARY FOR US TO POINT OUT HOW LUMINOUS THESE CRITICISMS ARE HOW DELICATE IN EXPRESSION",
+      "hypothesis": "it is obviously unnecessary for us to point out how luminous these criticisms are how delicate in expression",
+      "wer": 0.0,
+      "metrics": {
+        "audio_s": 9.01,
+        "audio_tokens": 451,
+        "generated_tokens": 22,
+        "front_end_s": 0.09905516599974362,
+        "prepare_s": 0.11370879099922604,
+        "ttft_s": 0.40235137499985285,
+        "generation_s": 0.9005183750014112,
+        "total_s": 1.0142792080005165
+      },
+      "raw_reply": "HEARD:it is obviously unnecessary for us to point out how luminous these criticisms are how delicate in expression\nREPLY:"
+    },
+    {
+      "id": "1272-128104-0006",
+      "reference": "ON THE GENERAL PRINCIPLES OF ART MISTER QUILTER WRITES WITH EQUAL LUCIDITY",
+      "hypothesis": "on the general principles of art mister quilter writes with equal lucidity",
+      "wer": 0.0,
+      "metrics": {
+        "audio_s": 5.64,
+        "audio_tokens": 282,
+        "generated_tokens": 19,
+        "front_end_s": 0.06203554199964856,
+        "prepare_s": 0.06724312499864027,
+        "ttft_s": 0.32002129100146703,
+        "generation_s": 0.7448672500031535,
+        "total_s": 0.8121796670020558
+      },
+      "raw_reply": "HEARD:on the general principles of art mister quilter writes with equal lucidity\nREPLY:"
+    },
+    {
+      "id": "1272-128104-0007",
+      "reference": "PAINTING HE TELLS US IS OF A DIFFERENT QUALITY TO MATHEMATICS AND FINISH IN ART IS ADDING MORE FACT",
+      "hypothesis": "painting he tells us is of a different quality to mathematics and finish in art is adding more fact",
+      "wer": 0.0,
+      "metrics": {
+        "audio_s": 9.24,
+        "audio_tokens": 462,
+        "generated_tokens": 23,
+        "front_end_s": 0.08781091600030777,
+        "prepare_s": 0.09533704099885654,
+        "ttft_s": 0.404648374998942,
+        "generation_s": 0.9264523329984513,
+        "total_s": 1.0218217080000613
+      },
+      "raw_reply": "HEARD:painting he tells us is of a different quality to mathematics and finish in art is adding more fact\nREPLY:"
+    },
+    {
+      "id": "1272-128104-0008",
+      "reference": "AS FOR ETCHINGS THEY ARE OF TWO KINDS BRITISH AND FOREIGN",
+      "hypothesis": "as for etchings there are of two kinds british and foreign",
+      "wer": 0.09090909090909091,
+      "metrics": {
+        "audio_s": 5.12,
+        "audio_tokens": 256,
+        "generated_tokens": 16,
+        "front_end_s": 0.057899625000572996,
+        "prepare_s": 0.06191025000225636,
+        "ttft_s": 0.3190919999979087,
+        "generation_s": 0.6746057499985909,
+        "total_s": 0.7365456670013373
+      },
+      "raw_reply": "HEARD:as for etchings there are of two kinds british and foreign\nREPLY:"
+    },
+    {
+      "id": "1272-128104-0009",
+      "reference": "HE LAMENTS MOST BITTERLY THE DIVORCE THAT HAS BEEN MADE BETWEEN DECORATIVE ART AND WHAT WE USUALLY CALL PICTURES MAKES THE CUSTOMARY APPEAL TO THE LAST JUDGMENT AND REMINDS US THAT IN THE GREAT DAYS OF ART MICHAEL ANGELO WAS THE FURNISHING UPHOLSTERER",
+      "hypothesis": "he laments most bitterly the divorce that has been made between decorative art and what we usually call pictures makes a customary appeal to the last judgment and reminds us that in the great days of art michelangelo was the furnishing aposter",
+      "wer": 0.09302325581395349,
+      "metrics": {
+        "audio_s": 18.29,
+        "audio_tokens": 915,
+        "generated_tokens": 50,
+        "front_end_s": 0.1525098749989411,
+        "prepare_s": 0.16457491599794594,
+        "ttft_s": 0.6205376249999972,
+        "generation_s": 1.77894308300165,
+        "total_s": 1.9435801660001744
+      },
+      "raw_reply": "HEARD:he laments most bitterly the divorce that has been made between decorative art and what we usually call pictures makes a customary appeal to the last judgment and reminds us that in the great days of art michelangelo was the furnishing aposter\nREPLY:"
+    },
+    {
+      "id": "1272-128104-0010",
+      "reference": "NEAR THE FIRE AND THE ORNAMENTS FRED BROUGHT HOME FROM INDIA ON THE MANTEL BOARD",
+      "hypothesis": "near the fire and the ornaments fred brought home from india on the mantel board",
+      "wer": 0.0,
+      "metrics": {
+        "audio_s": 5.6,
+        "audio_tokens": 280,
+        "generated_tokens": 19,
+        "front_end_s": 0.07301962500059744,
+        "prepare_s": 0.08613150000019232,
+        "ttft_s": 0.3347952920012176,
+        "generation_s": 0.7570852499993634,
+        "total_s": 0.8432612079996034
+      },
+      "raw_reply": "HEARD:near the fire and the ornaments fred brought home from india on the mantel board\nREPLY:"
+    },
+    {
+      "id": "1272-128104-0011",
+      "reference": "IN FACT HE IS QUITE SEVERE ON MISTER RUSKIN FOR NOT RECOGNISING THAT A PICTURE SHOULD DENOTE THE FRAILTY OF MAN AND REMARKS WITH PLEASING COURTESY AND FELICITOUS GRACE THAT MANY PHASES OF FEELING",
+      "hypothesis": "in fact he is quite severe on mister ruskin for not recognizing that a picture should denote the frailty of man and remarks with pleasing courtesy and philosophic grace that many phases of feeling",
+      "wer": 0.058823529411764705,
+      "metrics": {
+        "audio_s": 15.115,
+        "audio_tokens": 756,
+        "generated_tokens": 41,
+        "front_end_s": 0.12477383300210931,
+        "prepare_s": 0.1343044999994163,
+        "ttft_s": 0.5209432920019026,
+        "generation_s": 1.4718878749990836,
+        "total_s": 1.6062206659989897
+      },
+      "raw_reply": "HEARD:in fact he is quite severe on mister ruskin for not recognizing that a picture should denote the frailty of man and remarks with pleasing courtesy and philosophic grace that many phases of feeling\nREPLY:"
+    },
+    {
+      "id": "1272-128104-0012",
+      "reference": "ONLY UNFORTUNATELY HIS OWN WORK NEVER DOES GET GOOD",
+      "hypothesis": "only unfortunately his own work never does get good",
+      "wer": 0.0,
+      "metrics": {
+        "audio_s": 5.38,
+        "audio_tokens": 269,
+        "generated_tokens": 13,
+        "front_end_s": 0.07178683299935074,
+        "prepare_s": 0.0851913330006937,
+        "ttft_s": 0.3189723329996923,
+        "generation_s": 0.6087334580006427,
+        "total_s": 0.6939660410025681
+      },
+      "raw_reply": "HEARD:only unfortunately his own work never does get good\nREPLY:"
+    },
+    {
+      "id": "1272-128104-0013",
+      "reference": "MISTER QUILTER HAS MISSED HIS CHANCE FOR HE HAS FAILED EVEN TO MAKE HIMSELF THE TUPPER OF PAINTING",
+      "hypothesis": "mister culter has missed his chance for he has failed even to make himself the topper of painting",
+      "wer": 0.1111111111111111,
+      "metrics": {
+        "audio_s": 7.1,
+        "audio_tokens": 355,
+        "generated_tokens": 23,
+        "front_end_s": 0.06956254200122203,
+        "prepare_s": 0.07554658400113112,
+        "ttft_s": 0.34941104099925724,
+        "generation_s": 0.8622160000013537,
+        "total_s": 0.937788459003059
+      },
+      "raw_reply": "HEARD:mister culter has missed his chance for he has failed even to make himself the topper of painting\nREPLY:"
+    },
+    {
+      "id": "1272-128104-0014",
+      "reference": "BY HARRY QUILTER M A",
+      "hypothesis": "by harry quilter m a",
+      "wer": 0.0,
+      "metrics": {
+        "audio_s": 2.245,
+        "audio_tokens": 113,
+        "generated_tokens": 11,
+        "front_end_s": 0.04123083400190808,
+        "prepare_s": 0.04435137499967823,
+        "ttft_s": 0.23647737499777577,
+        "generation_s": 0.4776680420000048,
+        "total_s": 0.5220396670010814
+      },
+      "raw_reply": "HEARD:by harry quilter m a\nREPLY:"
+    },
+    {
+      "id": "1272-135031-0000",
+      "reference": "BECAUSE YOU WERE SLEEPING INSTEAD OF CONQUERING THE LOVELY ROSE PRINCESS HAS BECOME A FIDDLE WITHOUT A BOW WHILE POOR SHAGGY SITS THERE A COOING DOVE",
+      "hypothesis": "because you were sleeping instead of conquering the lovely rose princess has become a fiddle without a bow poor shaggy sits there a cooing dove",
+      "wer": 0.038461538461538464,
+      "metrics": {
+        "audio_s": 10.885,
+        "audio_tokens": 545,
+        "generated_tokens": 31,
+        "front_end_s": 0.10226991699892096,
+        "prepare_s": 0.1105667089977942,
+        "ttft_s": 0.43974195899863844,
+        "generation_s": 1.1444292499982112,
+        "total_s": 1.2550253749977855
+      },
+      "raw_reply": "HEARD:because you were sleeping instead of conquering the lovely rose princess has become a fiddle without a bow poor shaggy sits there a cooing dove\nREPLY:"
+    },
+    {
+      "id": "1272-135031-0001",
+      "reference": "HE HAS GONE AND GONE FOR GOOD ANSWERED POLYCHROME WHO HAD MANAGED TO SQUEEZE INTO THE ROOM BESIDE THE DRAGON AND HAD WITNESSED THE OCCURRENCES WITH MUCH INTEREST",
+      "hypothesis": "he has gone and gone for good answered pollychrome who had managed to squeeze into the room beside the dragon and had witnessed the occurrences with much interest",
+      "wer": 0.03571428571428571,
+      "metrics": {
+        "audio_s": 11.13,
+        "audio_tokens": 557,
+        "generated_tokens": 34,
+        "front_end_s": 0.10287945799791487,
+        "prepare_s": 0.11792604099900927,
+        "ttft_s": 0.43908324999938486,
+        "generation_s": 1.2147172089971718,
+        "total_s": 1.332684999997582
+      },
+      "raw_reply": "HEARD:he has gone and gone for good answered pollychrome who had managed to squeeze into the room beside the dragon and had witnessed the occurrences with much interest\nREPLY:"
+    },
+    {
+      "id": "1272-135031-0002",
+      "reference": "I HAVE REMAINED A PRISONER ONLY BECAUSE I WISHED TO BE ONE AND WITH THIS HE STEPPED FORWARD AND BURST THE STOUT CHAINS AS EASILY AS IF THEY HAD BEEN THREADS",
+      "hypothesis": "i have remained a prisoner only because i wished to be one and with this he stepped forward and burst the stout chains as easily as if they had been threads",
+      "wer": 0.0,
+      "metrics": {
+        "audio_s": 11.475,
+        "audio_tokens": 574,
+        "generated_tokens": 35,
+        "front_end_s": 0.13637304199801292,
+        "prepare_s": 0.15155454200066742,
+        "ttft_s": 0.4622226670035161,
+        "generation_s": 1.261906875002751,
+        "total_s": 1.4135050000004412
+      },
+      "raw_reply": "HEARD:i have remained a prisoner only because i wished to be one and with this he stepped forward and burst the stout chains as easily as if they had been threads\nREPLY:"
+    },
+    {
+      "id": "1272-135031-0003",
+      "reference": "THE LITTLE GIRL HAD BEEN ASLEEP BUT SHE HEARD THE RAPS AND OPENED THE DOOR",
+      "hypothesis": "the little girl had been asleep but she heard the raps and opened the door",
+      "wer": 0.0,
+      "metrics": {
+        "audio_s": 4.755,
+        "audio_tokens": 238,
+        "generated_tokens": 20,
+        "front_end_s": 0.0670157080021454,
+        "prepare_s": 0.0797359169991978,
+        "ttft_s": 0.29160862500066287,
+        "generation_s": 0.7344779170016409,
+        "total_s": 0.8142631670016272
+      },
+      "raw_reply": "HEARD:the little girl had been asleep but she heard the raps and opened the door\nREPLY:"
+    },
+    {
+      "id": "1272-135031-0004",
+      "reference": "THE KING HAS FLED IN DISGRACE AND YOUR FRIENDS ARE ASKING FOR YOU",
+      "hypothesis": "the king is fled in disgrace and your friends are asking for you",
+      "wer": 0.07692307692307693,
+      "metrics": {
+        "audio_s": 4.225,
+        "audio_tokens": 212,
+        "generated_tokens": 17,
+        "front_end_s": 0.05446129200208816,
+        "prepare_s": 0.05896329200186301,
+        "ttft_s": 0.2896514999993087,
+        "generation_s": 0.6661383749997185,
+        "total_s": 0.7251255420014786
+      },
+      "raw_reply": "HEARD:the king is fled in disgrace and your friends are asking for you\nREPLY:"
+    },
+    {
+      "id": "1272-135031-0005",
+      "reference": "I BEGGED RUGGEDO LONG AGO TO SEND HIM AWAY BUT HE WOULD NOT DO SO",
+      "hypothesis": "i begged ruggedo long ago to send him away but he would not do so",
+      "wer": 0.0,
+      "metrics": {
+        "audio_s": 4.625,
+        "audio_tokens": 232,
+        "generated_tokens": 20,
+        "front_end_s": 0.05580529099825071,
+        "prepare_s": 0.06032575000062934,
+        "ttft_s": 0.29014837499926216,
+        "generation_s": 0.7324687500004075,
+        "total_s": 0.7928163329997915
+      },
+      "raw_reply": "HEARD:i begged ruggedo long ago to send him away but he would not do so\nREPLY:"
+    },
+    {
+      "id": "1272-135031-0006",
+      "reference": "I ALSO OFFERED TO HELP YOUR BROTHER TO ESCAPE BUT HE WOULD NOT GO",
+      "hypothesis": "i also offered to help your brother to escape but he would not go",
+      "wer": 0.0,
+      "metrics": {
+        "audio_s": 4.09,
+        "audio_tokens": 205,
+        "generated_tokens": 18,
+        "front_end_s": 0.05230216699783341,
+        "prepare_s": 0.056644457999937003,
+        "ttft_s": 0.2871671670000069,
+        "generation_s": 0.6830835420005315,
+        "total_s": 0.73975391699787
+      },
+      "raw_reply": "HEARD:i also offered to help your brother to escape but he would not go\nREPLY:"
+    },
+    {
+      "id": "1272-135031-0007",
+      "reference": "HE EATS AND SLEEPS VERY STEADILY REPLIED THE NEW KING",
+      "hypothesis": "he eats and sleeps very steadily replied the nooking",
+      "wer": 0.2,
+      "metrics": {
+        "audio_s": 4.055,
+        "audio_tokens": 203,
+        "generated_tokens": 14,
+        "front_end_s": 0.05148825000287616,
+        "prepare_s": 0.0557987080028397,
+        "ttft_s": 0.28913954199742875,
+        "generation_s": 0.5979940419965715,
+        "total_s": 0.6538334169999871
+      },
+      "raw_reply": "HEARD:he eats and sleeps very steadily replied the nooking\nREPLY:"
+    },
+    {
+      "id": "1272-135031-0008",
+      "reference": "I HOPE HE DOESN'T WORK TOO HARD SAID SHAGGY",
+      "hypothesis": "i hope he doesn't work too hard said shaggy",
+      "wer": 0.0,
+      "metrics": {
+        "audio_s": 3.67,
+        "audio_tokens": 184,
+        "generated_tokens": 16,
+        "front_end_s": 0.04554429199924925,
+        "prepare_s": 0.04970208300073864,
+        "ttft_s": 0.28912033300002804,
+        "generation_s": 0.6410755830002017,
+        "total_s": 0.6908013749998645
+      },
+      "raw_reply": "HEARD:i hope he doesn't work too hard said shaggy\nREPLY:"
+    },
+    {
+      "id": "1272-135031-0009",
+      "reference": "HE DOESN'T WORK AT ALL",
+      "hypothesis": "he doesn't work at all",
+      "wer": 0.0,
+      "metrics": {
+        "audio_s": 1.91,
+        "audio_tokens": 96,
+        "generated_tokens": 11,
+        "front_end_s": 0.035945292001997586,
+        "prepare_s": 0.03889616699962062,
+        "ttft_s": 0.2350529160030419,
+        "generation_s": 0.47086654099985026,
+        "total_s": 0.5097864999988815
+      },
+      "raw_reply": "HEARD:he doesn't work at all\nREPLY:"
+    },
+    {
+      "id": "1272-135031-0010",
+      "reference": "IN FACT THERE IS NOTHING HE CAN DO IN THESE DOMINIONS AS WELL AS OUR NOMES WHOSE NUMBERS ARE SO GREAT THAT IT WORRIES US TO KEEP THEM ALL BUSY",
+      "hypothesis": "in fact there's nothing he can do in these dominions as well as our gnomes whose numbers are so great that it worries us to keep them all busy",
+      "wer": 0.1,
+      "metrics": {
+        "audio_s": 8.995,
+        "audio_tokens": 450,
+        "generated_tokens": 36,
+        "front_end_s": 0.0866991250004503,
+        "prepare_s": 0.09407225000177277,
+        "ttft_s": 0.40434449999884237,
+        "generation_s": 1.2197579169987876,
+        "total_s": 1.313855333999527
+      },
+      "raw_reply": "HEARD:in fact there's nothing he can do in these dominions as well as our gnomes whose numbers are so great that it worries us to keep them all busy\nREPLY:"
+    },
+    {
+      "id": "1272-135031-0011",
+      "reference": "NOT EXACTLY RETURNED KALIKO",
+      "hypothesis": "not exactly we've turned calico",
+      "wer": 0.75,
+      "metrics": {
+        "audio_s": 3.18,
+        "audio_tokens": 159,
+        "generated_tokens": 12,
+        "front_end_s": 0.054847584000526695,
+        "prepare_s": 0.06665145900115022,
+        "ttft_s": 0.2612353330005135,
+        "generation_s": 0.5266578330010816,
+        "total_s": 0.5933595419992344
+      },
+      "raw_reply": "HEARD:not exactly we've turned calico\nREPLY:"
+    },
+    {
+      "id": "1272-135031-0012",
+      "reference": "WHERE IS MY BROTHER NOW",
+      "hypothesis": "where is my brother now",
+      "wer": 0.0,
+      "metrics": {
+        "audio_s": 2.04,
+        "audio_tokens": 102,
+        "generated_tokens": 9,
+        "front_end_s": 0.03951941699779127,
+        "prepare_s": 0.04244487499818206,
+        "ttft_s": 0.23520524999912595,
+        "generation_s": 0.43271483299758984,
+        "total_s": 0.47518624999793246
+      },
+      "raw_reply": "HEARD:where is my brother now\nREPLY:"
+    },
+    {
+      "id": "1272-135031-0013",
+      "reference": "INQUIRED SHAGGY IN THE METAL FOREST",
+      "hypothesis": "inquired shaggy in the middle forest",
+      "wer": 0.16666666666666666,
+      "metrics": {
+        "audio_s": 3.7,
+        "audio_tokens": 185,
+        "generated_tokens": 11,
+        "front_end_s": 0.046807375001662876,
+        "prepare_s": 0.05093449999912991,
+        "ttft_s": 0.2882738749976852,
+        "generation_s": 0.5281901669986837,
+        "total_s": 0.5791474580000795
+      },
+      "raw_reply": "HEARD:inquired shaggy in the middle forest\nREPLY:"
+    },
+    {
+      "id": "1272-135031-0014",
+      "reference": "WHERE IS THAT",
+      "hypothesis": "where is that",
+      "wer": 0.0,
+      "metrics": {
+        "audio_s": 1.74,
+        "audio_tokens": 87,
+        "generated_tokens": 7,
+        "front_end_s": 0.036870416999590816,
+        "prepare_s": 0.039818999997805804,
+        "ttft_s": 0.23279770799854305,
+        "generation_s": 0.385743957998784,
+        "total_s": 0.42558612499851733
+      },
+      "raw_reply": "HEARD:where is that\nREPLY:"
+    },
+    {
+      "id": "1272-135031-0015",
+      "reference": "THE METAL FOREST IS IN THE GREAT DOMED CAVERN THE LARGEST IN ALL OUR DOMINIONS REPLIED KALIKO",
+      "hypothesis": "the middle forest is in the great domed cavern the largest in all our dominions replied callico",
+      "wer": 0.11764705882352941,
+      "metrics": {
+        "audio_s": 7.375,
+        "audio_tokens": 369,
+        "generated_tokens": 23,
+        "front_end_s": 0.0703142080019461,
+        "prepare_s": 0.07641500000318047,
+        "ttft_s": 0.3501678749998973,
+        "generation_s": 0.874224666000373,
+        "total_s": 0.9506660410006589
+      },
+      "raw_reply": "HEARD:the middle forest is in the great domed cavern the largest in all our dominions replied callico\nREPLY:"
+    },
+    {
+      "id": "1272-135031-0016",
+      "reference": "KALIKO HESITATED",
+      "hypothesis": "camargo hesitated",
+      "wer": 0.5,
+      "metrics": {
+        "audio_s": 2.28,
+        "audio_tokens": 114,
+        "generated_tokens": 7,
+        "front_end_s": 0.04118266699879314,
+        "prepare_s": 0.044262625000556,
+        "ttft_s": 0.23730987499948242,
+        "generation_s": 0.3855819579985109,
+        "total_s": 0.4298658749976312
+      },
+      "raw_reply": "HEARD:camargo hesitated\nREPLY:"
+    },
+    {
+      "id": "1272-135031-0017",
+      "reference": "HOWEVER IF WE LOOK SHARP WE MAY BE ABLE TO DISCOVER ONE OF THESE SECRET WAYS",
+      "hypothesis": "however if we look sharp we may be able to discover one of these secret ways",
+      "wer": 0.0,
+      "metrics": {
+        "audio_s": 6.86,
+        "audio_tokens": 343,
+        "generated_tokens": 20,
+        "front_end_s": 0.06811374999961117,
+        "prepare_s": 0.07398495800225646,
+        "ttft_s": 0.3493989170019631,
+        "generation_s": 0.7967410000019299,
+        "total_s": 0.8707505830025184
+      },
+      "raw_reply": "HEARD:however if we look sharp we may be able to discover one of these secret ways\nREPLY:"
+    },
+    {
+      "id": "1272-135031-0018",
+      "reference": "OH NO I'M QUITE SURE HE DIDN'T",
+      "hypothesis": "oh no i'm quite sure he didn't",
+      "wer": 0.0,
+      "metrics": {
+        "audio_s": 2.4449375,
+        "audio_tokens": 123,
+        "generated_tokens": 15,
+        "front_end_s": 0.04004812499988475,
+        "prepare_s": 0.0431648750018212,
+        "ttft_s": 0.2582228329993086,
+        "generation_s": 0.5876941659989825,
+        "total_s": 0.630880332999368
+      },
+      "raw_reply": "HEARD:oh no i'm quite sure he didn't\nREPLY:"
+    },
+    {
+      "id": "1272-135031-0019",
+      "reference": "THAT'S FUNNY REMARKED BETSY THOUGHTFULLY",
+      "hypothesis": "that's funny remarked to bed sea thoughtfully",
+      "wer": 0.6,
+      "metrics": {
+        "audio_s": 3.525,
+        "audio_tokens": 177,
+        "generated_tokens": 13,
+        "front_end_s": 0.04673299999922165,
+        "prepare_s": 0.05084270799852675,
+        "ttft_s": 0.261996833000012,
+        "generation_s": 0.5453865410017897,
+        "total_s": 0.5962660830009554
+      },
+      "raw_reply": "HEARD:that's funny remarked to bed sea thoughtfully\nREPLY:"
+    },
+    {
+      "id": "1272-135031-0020",
+      "reference": "I DON'T BELIEVE ANN KNEW ANY MAGIC OR SHE'D HAVE WORKED IT BEFORE",
+      "hypothesis": "i don't believe i knew any magic or see it have worked it before",
+      "wer": 0.23076923076923078,
+      "metrics": {
+        "audio_s": 4.65,
+        "audio_tokens": 233,
+        "generated_tokens": 20,
+        "front_end_s": 0.05584808300045552,
+        "prepare_s": 0.06030083299992839,
+        "ttft_s": 0.2906954579993908,
+        "generation_s": 0.7318866659988998,
+        "total_s": 0.7922098329981964
+      },
+      "raw_reply": "HEARD:i don't believe i knew any magic or see it have worked it before\nREPLY:"
+    },
+    {
+      "id": "1272-135031-0021",
+      "reference": "I DO NOT KNOW CONFESSED SHAGGY",
+      "hypothesis": "i do not know confessed shaggy",
+      "wer": 0.0,
+      "metrics": {
+        "audio_s": 2.595,
+        "audio_tokens": 130,
+        "generated_tokens": 11,
+        "front_end_s": 0.04212254199956078,
+        "prepare_s": 0.04600116700021317,
+        "ttft_s": 0.26103812500150525,
+        "generation_s": 0.5025086250025197,
+        "total_s": 0.548532458000409
+      },
+      "raw_reply": "HEARD:i do not know confessed shaggy\nREPLY:"
+    },
+    {
+      "id": "1272-135031-0022",
+      "reference": "TRUE AGREED KALIKO",
+      "hypothesis": "true a green calico",
+      "wer": 1.0,
+      "metrics": {
+        "audio_s": 2.695,
+        "audio_tokens": 135,
+        "generated_tokens": 9,
+        "front_end_s": 0.04198608300066553,
+        "prepare_s": 0.045859041001676815,
+        "ttft_s": 0.2606877079997503,
+        "generation_s": 0.4587940410019655,
+        "total_s": 0.5046752910020587
+      },
+      "raw_reply": "HEARD:true a green calico\nREPLY:"
+    },
+    {
+      "id": "1272-135031-0023",
+      "reference": "KALIKO WENT TO THE BIG GONG AND POUNDED ON IT JUST AS RUGGEDO USED TO DO BUT NO ONE ANSWERED THE SUMMONS",
+      "hypothesis": "gallico went to the big gong and pounded on it just as vergato used to do but no one answered the summons",
+      "wer": 0.09090909090909091,
+      "metrics": {
+        "audio_s": 7.52,
+        "audio_tokens": 376,
+        "generated_tokens": 28,
+        "front_end_s": 0.06980237500101794,
+        "prepare_s": 0.07584841700008838,
+        "ttft_s": 0.3797640419979871,
+        "generation_s": 1.0057037089973164,
+        "total_s": 1.081577708999248
+      },
+      "raw_reply": "HEARD:gallico went to the big gong and pounded on it just as vergato used to do but no one answered the summons\nREPLY:"
+    },
+    {
+      "id": "1272-135031-0024",
+      "reference": "HAVING RETURNED TO THE ROYAL CAVERN KALIKO FIRST POUNDED THE GONG AND THEN SAT IN THE THRONE WEARING RUGGEDO'S DISCARDED RUBY CROWN AND HOLDING IN HIS HAND THE SCEPTRE WHICH RUGGEDO HAD SO OFTEN THROWN AT HIS HEAD",
+      "hypothesis": "having returned to the royal cavern calico first pounded the gong and then sat on the throne wearing rugedo's discarded ruby crown and holding in his hand the scepter which rugedo had so often thrown at his head",
+      "wer": 0.13157894736842105,
+      "metrics": {
+        "audio_s": 14.47,
+        "audio_tokens": 724,
+        "generated_tokens": 48,
+        "front_end_s": 0.12273062500025844,
+        "prepare_s": 0.1322810829988157,
+        "ttft_s": 0.5257087080026395,
+        "generation_s": 1.6400452500020037,
+        "total_s": 1.772367875000782
+      },
+      "raw_reply": "HEARD:having returned to the royal cavern calico first pounded the gong and then sat on the throne wearing rugedo's discarded ruby crown and holding in his hand the scepter which rugedo had so often thrown at his head\nREPLY:"
+    },
+    {
+      "id": "1272-141231-0000",
+      "reference": "A MAN SAID TO THE UNIVERSE SIR I EXIST",
+      "hypothesis": "a man said to the universe sir i exist",
+      "wer": 0.0,
+      "metrics": {
+        "audio_s": 4.65,
+        "audio_tokens": 233,
+        "generated_tokens": 13,
+        "front_end_s": 0.061908625000796746,
+        "prepare_s": 0.07464320800136193,
+        "ttft_s": 0.2904624580005475,
+        "generation_s": 0.5796554579974327,
+        "total_s": 0.6543492499986314
+      },
+      "raw_reply": "HEARD:a man said to the universe sir i exist\nREPLY:"
+    },
+    {
+      "id": "1272-141231-0001",
+      "reference": "SWEAT COVERED BRION'S BODY TRICKLING INTO THE TIGHT LOINCLOTH THAT WAS THE ONLY GARMENT HE WORE",
+      "hypothesis": "sweat covered brean's body trickling into the tight loincloth that was the only garment he wore",
+      "wer": 0.0625,
+      "metrics": {
+        "audio_s": 6.535,
+        "audio_tokens": 327,
+        "generated_tokens": 25,
+        "front_end_s": 0.06548349999866332,
+        "prepare_s": 0.07146933299736702,
+        "ttft_s": 0.34576445799757494,
+        "generation_s": 0.8992164579976816,
+        "total_s": 0.9707415829980164
+      },
+      "raw_reply": "HEARD:sweat covered brean's body trickling into the tight loincloth that was the only garment he wore\nREPLY:"
+    },
+    {
+      "id": "1272-141231-0002",
+      "reference": "THE CUT ON HIS CHEST STILL DRIPPING BLOOD THE ACHE OF HIS OVERSTRAINED EYES EVEN THE SOARING ARENA AROUND HIM WITH THE THOUSANDS OF SPECTATORS WERE TRIVIALITIES NOT WORTH THINKING ABOUT",
+      "hypothesis": "the cut on his chest still dripping blood the ache of his overstrained eyes even the soaring arena around him with the thousands of spectators or trivialities not worth thinking about",
+      "wer": 0.03225806451612903,
+      "metrics": {
+        "audio_s": 13.335,
+        "audio_tokens": 667,
+        "generated_tokens": 38,
+        "front_end_s": 0.11424800000168034,
+        "prepare_s": 0.12312716599990381,
+        "ttft_s": 0.4958235420017445,
+        "generation_s": 1.3639300419999927,
+        "total_s": 1.4870853329994134
+      },
+      "raw_reply": "HEARD:the cut on his chest still dripping blood the ache of his overstrained eyes even the soaring arena around him with the thousands of spectators or trivialities not worth thinking about\nREPLY:"
+    },
+    {
+      "id": "1272-141231-0003",
+      "reference": "HIS INSTANT OF PANIC WAS FOLLOWED BY A SMALL SHARP BLOW HIGH ON HIS CHEST",
+      "hypothesis": "his instinct of panic was followed by a small sharp blow high on his chest",
+      "wer": 0.06666666666666667,
+      "metrics": {
+        "audio_s": 5.42,
+        "audio_tokens": 271,
+        "generated_tokens": 19,
+        "front_end_s": 0.07091041700186906,
+        "prepare_s": 0.08407283400083543,
+        "ttft_s": 0.3187334579997696,
+        "generation_s": 0.7401559169993561,
+        "total_s": 0.8242728340010217
+      },
+      "raw_reply": "HEARD:his instinct of panic was followed by a small sharp blow high on his chest\nREPLY:"
+    },
+    {
+      "id": "1272-141231-0004",
+      "reference": "ONE MINUTE A VOICE SAID AND THE TIME BUZZER SOUNDED",
+      "hypothesis": "one minute a voice said and the time buzzer sounded",
+      "wer": 0.0,
+      "metrics": {
+        "audio_s": 5.09,
+        "audio_tokens": 255,
+        "generated_tokens": 14,
+        "front_end_s": 0.056273165999300545,
+        "prepare_s": 0.06009875000017928,
+        "ttft_s": 0.31808845900013694,
+        "generation_s": 0.6302365839983395,
+        "total_s": 0.6903617499992833
+      },
+      "raw_reply": "HEARD:one minute a voice said and the time buzzer sounded\nREPLY:"
+    },
+    {
+      "id": "1272-141231-0005",
+      "reference": "A MINUTE IS NOT A VERY LARGE MEASURE OF TIME AND HIS BODY NEEDED EVERY FRACTION OF IT",
+      "hypothesis": "a minute is not a very large measure of time and his body needed every fraction of it",
+      "wer": 0.0,
+      "metrics": {
+        "audio_s": 5.81,
+        "audio_tokens": 291,
+        "generated_tokens": 22,
+        "front_end_s": 0.06333220800297568,
+        "prepare_s": 0.06867737500215298,
+        "ttft_s": 0.32030837499769405,
+        "generation_s": 0.8101189169974532,
+        "total_s": 0.8788255830004346
+      },
+      "raw_reply": "HEARD:a minute is not a very large measure of time and his body needed every fraction of it\nREPLY:"
+    },
+    {
+      "id": "1272-141231-0006",
+      "reference": "THE BUZZER'S WHIRR TRIGGERED HIS MUSCLES INTO COMPLETE RELAXATION",
+      "hypothesis": "the buzzer as were triggered his muscles into complete relaxation",
+      "wer": 0.3333333333333333,
+      "metrics": {
+        "audio_s": 4.93,
+        "audio_tokens": 247,
+        "generated_tokens": 14,
+        "front_end_s": 0.055346084001939744,
+        "prepare_s": 0.0600164589995984,
+        "ttft_s": 0.3186725829982606,
+        "generation_s": 0.6305849579985079,
+        "total_s": 0.6906273749991669
+      },
+      "raw_reply": "HEARD:the buzzer as were triggered his muscles into complete relaxation\nREPLY:"
+    },
+    {
+      "id": "1272-141231-0007",
+      "reference": "ONLY HIS HEART AND LUNGS WORKED ON AT A STRONG MEASURED RATE",
+      "hypothesis": "only his heart and lungs worked on at a strong measured rate",
+      "wer": 0.0,
+      "metrics": {
+        "audio_s": 4.735,
+        "audio_tokens": 237,
+        "generated_tokens": 16,
+        "front_end_s": 0.05660508300206857,
+        "prepare_s": 0.06116120800288627,
+        "ttft_s": 0.2916326669983391,
+        "generation_s": 0.64754529199854,
+        "total_s": 0.7087340830003086
+      },
+      "raw_reply": "HEARD:only his heart and lungs worked on at a strong measured rate\nREPLY:"
+    },
+    {
+      "id": "1272-141231-0008",
+      "reference": "HE WAS IN REVERIE SLIDING ALONG THE BORDERS OF CONSCIOUSNESS",
+      "hypothesis": "he was in reverie sliding along the borders of consciousness",
+      "wer": 0.0,
+      "metrics": {
+        "audio_s": 4.595,
+        "audio_tokens": 230,
+        "generated_tokens": 15,
+        "front_end_s": 0.056467915997927776,
+        "prepare_s": 0.06101529100124026,
+        "ttft_s": 0.29202587499821675,
+        "generation_s": 0.6253792499992414,
+        "total_s": 0.6864240830000199
+      },
+      "raw_reply": "HEARD:he was in reverie sliding along the borders of consciousness\nREPLY:"
+    },
+    {
+      "id": "1272-141231-0009",
+      "reference": "THE CONTESTANTS IN THE TWENTIES NEEDED UNDISTURBED REST THEREFORE NIGHTS IN THE DORMITORIES WERE AS QUIET AS DEATH",
+      "hypothesis": "the contestants in the twenties needed undisturbed rest therefore knights in the dormitories were as quiet as death",
+      "wer": 0.05555555555555555,
+      "metrics": {
+        "audio_s": 8.62,
+        "audio_tokens": 431,
+        "generated_tokens": 23,
+        "front_end_s": 0.08302104200265603,
+        "prepare_s": 0.09021329200186301,
+        "ttft_s": 0.38183583299905877,
+        "generation_s": 0.90074624999761,
+        "total_s": 0.990988292000111
+      },
+      "raw_reply": "HEARD:the contestants in the twenties needed undisturbed rest therefore knights in the dormitories were as quiet as death\nREPLY:"
+    },
+    {
+      "id": "1272-141231-0010",
+      "reference": "PARTICULARLY SO ON THIS LAST NIGHT WHEN ONLY TWO OF THE LITTLE CUBICLES WERE OCCUPIED THE THOUSANDS OF OTHERS STANDING WITH DARK EMPTY DOORS",
+      "hypothesis": "particularly so on this last night when only two of the little cubicles were occupied the thousands of others standing with dark empty doors",
+      "wer": 0.0,
+      "metrics": {
+        "audio_s": 10.76,
+        "audio_tokens": 538,
+        "generated_tokens": 29,
+        "front_end_s": 0.10036316699915915,
+        "prepare_s": 0.10836695900070481,
+        "ttft_s": 0.43832770899825846,
+        "generation_s": 1.098702458999469,
+        "total_s": 1.2071005840007274
+      },
+      "raw_reply": "HEARD:particularly so on this last night when only two of the little cubicles were occupied the thousands of others standing with dark empty doors\nREPLY:"
+    },
+    {
+      "id": "1272-141231-0011",
+      "reference": "THE OTHER VOICE SNAPPED WITH A HARSH URGENCY CLEARLY USED TO COMMAND",
+      "hypothesis": "the other voice snapped with a harsh urgency clearly used to command",
+      "wer": 0.0,
+      "metrics": {
+        "audio_s": 5.015,
+        "audio_tokens": 251,
+        "generated_tokens": 16,
+        "front_end_s": 0.06803608299742336,
+        "prepare_s": 0.08063891699930537,
+        "ttft_s": 0.3185297499985609,
+        "generation_s": 0.6721993329992983,
+        "total_s": 0.7528830829978688
+      },
+      "raw_reply": "HEARD:the other voice snapped with a harsh urgency clearly used to command\nREPLY:"
+    },
+    {
+      "id": "1272-141231-0012",
+      "reference": "I'M HERE BECAUSE THE MATTER IS OF UTMOST IMPORTANCE AND BRANDD IS THE ONE I MUST SEE NOW STAND ASIDE",
+      "hypothesis": "i'm here because the matter is of utmost importance and brand is the one i must see now stand aside",
+      "wer": 0.05,
+      "metrics": {
+        "audio_s": 7.74,
+        "audio_tokens": 387,
+        "generated_tokens": 26,
+        "front_end_s": 0.07782512500125449,
+        "prepare_s": 0.08469387500008452,
+        "ttft_s": 0.37576041699867346,
+        "generation_s": 0.9538755419998779,
+        "total_s": 1.0386053750007704
+      },
+      "raw_reply": "HEARD:i'm here because the matter is of utmost importance and brand is the one i must see now stand aside\nREPLY:"
+    },
+    {
+      "id": "1272-141231-0013",
+      "reference": "THE TWENTIES",
+      "hypothesis": "the twenties",
+      "wer": 0.0,
+      "metrics": {
+        "audio_s": 1.6399375,
+        "audio_tokens": 82,
+        "generated_tokens": 6,
+        "front_end_s": 0.035595875000581145,
+        "prepare_s": 0.038411459001508774,
+        "ttft_s": 0.23568212499958463,
+        "generation_s": 0.36500654200062854,
+        "total_s": 0.4034394170012092
+      },
+      "raw_reply": "HEARD:the twenties\nREPLY:"
+    },
+    {
+      "id": "1272-141231-0014",
+      "reference": "HE MUST HAVE DRAWN HIS GUN BECAUSE THE INTRUDER SAID QUICKLY PUT THAT AWAY YOU'RE BEING A FOOL OUT",
+      "hypothesis": "he must have drawn his gun because the intruder said quickly but that away you're being a fool out",
+      "wer": 0.05263157894736842,
+      "metrics": {
+        "audio_s": 7.305,
+        "audio_tokens": 366,
+        "generated_tokens": 25,
+        "front_end_s": 0.07007720799811068,
+        "prepare_s": 0.07615808300033677,
+        "ttft_s": 0.3561465410020901,
+        "generation_s": 0.9165663749990927,
+        "total_s": 0.9927538749980158
+      },
+      "raw_reply": "HEARD:he must have drawn his gun because the intruder said quickly but that away you're being a fool out\nREPLY:"
+    },
+    {
+      "id": "1272-141231-0015",
+      "reference": "THERE WAS SILENCE THEN AND STILL WONDERING BRION WAS ONCE MORE ASLEEP",
+      "hypothesis": "there was silence then and still wondering brean was once more asleep",
+      "wer": 0.08333333333333333,
+      "metrics": {
+        "audio_s": 5.68,
+        "audio_tokens": 284,
+        "generated_tokens": 17,
+        "front_end_s": 0.061698792000242975,
+        "prepare_s": 0.06701379200239899,
+        "ttft_s": 0.32042299999739043,
+        "generation_s": 0.698305416997755,
+        "total_s": 0.7653454589999455
+      },
+      "raw_reply": "HEARD:there was silence then and still wondering brean was once more asleep\nREPLY:"
+    },
+    {
+      "id": "1272-141231-0016",
+      "reference": "TEN SECONDS",
+      "hypothesis": "ten seconds",
+      "wer": 0.0,
+      "metrics": {
+        "audio_s": 1.85,
+        "audio_tokens": 93,
+        "generated_tokens": 6,
+        "front_end_s": 0.03552720800144016,
+        "prepare_s": 0.03846691700164229,
+        "ttft_s": 0.2314648749998014,
+        "generation_s": 0.3602967920014635,
+        "total_s": 0.39878412500183913
+      },
+      "raw_reply": "HEARD:ten seconds\nREPLY:"
+    },
+    {
+      "id": "1272-141231-0017",
+      "reference": "HE ASKED THE HANDLER WHO WAS KNEADING HIS ACHING MUSCLES",
+      "hypothesis": "he asked the handler who was kneading his aching muscles",
+      "wer": 0.0,
+      "metrics": {
+        "audio_s": 3.735,
+        "audio_tokens": 187,
+        "generated_tokens": 14,
+        "front_end_s": 0.04712087500229245,
+        "prepare_s": 0.0513385410013143,
+        "ttft_s": 0.28825441599838086,
+        "generation_s": 0.5978802499994345,
+        "total_s": 0.649245125001471
+      },
+      "raw_reply": "HEARD:he asked the handler who was kneading his aching muscles\nREPLY:"
+    },
+    {
+      "id": "1272-141231-0018",
+      "reference": "A RED HAIRED MOUNTAIN OF A MAN WITH AN APPARENTLY INEXHAUSTIBLE STORE OF ENERGY",
+      "hypothesis": "a red haired mountain of a man with an apparently inexhaustible store of energy",
+      "wer": 0.0,
+      "metrics": {
+        "audio_s": 6.0,
+        "audio_tokens": 300,
+        "generated_tokens": 20,
+        "front_end_s": 0.06320383400088758,
+        "prepare_s": 0.06862775000263355,
+        "ttft_s": 0.323227416996815,
+        "generation_s": 0.7687045419988863,
+        "total_s": 0.8373614590018406
+      },
+      "raw_reply": "HEARD:a red haired mountain of a man with an apparently inexhaustible store of energy\nREPLY:"
+    },
+    {
+      "id": "1272-141231-0019",
+      "reference": "THERE COULD BE LITTLE ART IN THIS LAST AND FINAL ROUND OF FENCING",
+      "hypothesis": "there could be a little art in this last and final round of fencing",
+      "wer": 0.07692307692307693,
+      "metrics": {
+        "audio_s": 4.7,
+        "audio_tokens": 235,
+        "generated_tokens": 18,
+        "front_end_s": 0.055712624998704996,
+        "prepare_s": 0.060363874999893596,
+        "ttft_s": 0.2906095420003112,
+        "generation_s": 0.6892681250028545,
+        "total_s": 0.7496581250015879
+      },
+      "raw_reply": "HEARD:there could be a little art in this last and final round of fencing\nREPLY:"
+    },
+    {
+      "id": "1272-141231-0020",
+      "reference": "JUST THRUST AND PARRY AND VICTORY TO THE STRONGER",
+      "hypothesis": "just thrust and parry and victory to the stronger",
+      "wer": 0.0,
+      "metrics": {
+        "audio_s": 4.32,
+        "audio_tokens": 216,
+        "generated_tokens": 14,
+        "front_end_s": 0.05485904200031655,
+        "prepare_s": 0.05938683400017908,
+        "ttft_s": 0.2919348750001518,
+        "generation_s": 0.6014811669992923,
+        "total_s": 0.6608910840004683
+      },
+      "raw_reply": "HEARD:just thrust and parry and victory to the stronger\nREPLY:"
+    },
+    {
+      "id": "1272-141231-0021",
+      "reference": "EVERY MAN WHO ENTERED THE TWENTIES HAD HIS OWN TRAINING TRICKS",
+      "hypothesis": "every man who entered the twenties had his own training tricks",
+      "wer": 0.0,
+      "metrics": {
+        "audio_s": 4.65,
+        "audio_tokens": 233,
+        "generated_tokens": 15,
+        "front_end_s": 0.050658583000767976,
+        "prepare_s": 0.05534891700153821,
+        "ttft_s": 0.29367570799877285,
+        "generation_s": 0.6252102500002366,
+        "total_s": 0.6805850420023489
+      },
+      "raw_reply": "HEARD:every man who entered the twenties had his own training tricks\nREPLY:"
+    },
+    {
+      "id": "1272-141231-0022",
+      "reference": "THERE APPEARED TO BE AN IMMEDIATE ASSOCIATION WITH THE DEATH TRAUMA AS IF THE TWO WERE INEXTRICABLY LINKED INTO ONE",
+      "hypothesis": "there appeared to be an immediate association between the death trauma as if the two were inextricably linked into one",
+      "wer": 0.05,
+      "metrics": {
+        "audio_s": 8.35,
+        "audio_tokens": 418,
+        "generated_tokens": 24,
+        "front_end_s": 0.08270483299929765,
+        "prepare_s": 0.08960945799844922,
+        "ttft_s": 0.3864294169979985,
+        "generation_s": 0.9275100839986408,
+        "total_s": 1.0171655419981107
+      },
+      "raw_reply": "HEARD:there appeared to be an immediate association between the death trauma as if the two were inextricably linked into one\nREPLY:"
+    },
+    {
+      "id": "1272-141231-0023",
+      "reference": "THE STRENGTH THAT ENABLES SOMEONE IN A TRANCE TO HOLD HIS BODY STIFF AND UNSUPPORTED EXCEPT AT TWO POINTS THE HEAD AND HEELS",
+      "hypothesis": "the strength that enables someone in a trance to hold his body stiff and unsupported except at two points the head and heels",
+      "wer": 0.0,
+      "metrics": {
+        "audio_s": 8.66,
+        "audio_tokens": 433,
+        "generated_tokens": 27,
+        "front_end_s": 0.08600283299892908,
+        "prepare_s": 0.09293529099886655,
+        "ttft_s": 0.3817512089990487,
+        "generation_s": 0.9909796669999196,
+        "total_s": 1.0839445829988108
+      },
+      "raw_reply": "HEARD:the strength that enables someone in a trance to hold his body stiff and unsupported except at two points the head and heels\nREPLY:"
+    },
+    {
+      "id": "1272-141231-0024",
+      "reference": "THIS IS PHYSICALLY IMPOSSIBLE WHEN CONSCIOUS",
+      "hypothesis": "this is physically impossible when conscious",
+      "wer": 0.0,
+      "metrics": {
+        "audio_s": 3.64,
+        "audio_tokens": 182,
+        "generated_tokens": 10,
+        "front_end_s": 0.046545416000299156,
+        "prepare_s": 0.050715332999971,
+        "ttft_s": 0.2895748749979248,
+        "generation_s": 0.5109750419978809,
+        "total_s": 0.5617424579977524
+      },
+      "raw_reply": "HEARD:this is physically impossible when conscious\nREPLY:"
+    }
+  ]
+}
