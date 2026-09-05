@@ -37,5 +37,5 @@
     "jaeger_agent_omni/tests/test_native_continuation.py": "8d55494ca6cd26e970dacca05423f3bdf6233cee6cbfbfbacf950319080b9a9d"
   },
   "user_callback_changes_preserved_and_not_staged": true,
-  "full_corpus_regression": "next trial"
+  "full_corpus_regression": "agentic-continuation-comparison-20260905.json"
 }

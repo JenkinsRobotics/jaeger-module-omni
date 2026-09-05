@@ -1,0 +1,270 @@
+{
+  "kind": "matched_native_continuation_comparison",
+  "baseline": "agentic-baseline-20260905.json",
+  "trial": "agentic-continuation-full-20260905.json",
+  "same_harness_audio_adapter_prompt_timeout": true,
+  "baseline_summary": {
+    "passed": 35,
+    "total": 162,
+    "pass_rate": 0.21604938271604937,
+    "routing_passed": 21,
+    "routing_total": 128,
+    "routing_rate": 0.1640625,
+    "answer_passed": 49,
+    "answer_total": 96,
+    "errors": 1,
+    "unexpected_markup": 0,
+    "safety_failures": 0,
+    "latency_ms": {
+      "median": 2878.346187499119,
+      "p95": 13267.143584002042
+    },
+    "by_tag": {
+      "routing": {
+        "passed": 13,
+        "total": 56
+      },
+      "files": {
+        "passed": 0,
+        "total": 30
+      },
+      "audio": {
+        "passed": 0,
+        "total": 4
+      },
+      "web": {
+        "passed": 5,
+        "total": 18
+      },
+      "memory": {
+        "passed": 0,
+        "total": 22
+      },
+      "code": {
+        "passed": 0,
+        "total": 10
+      },
+      "schedule": {
+        "passed": 0,
+        "total": 8
+      },
+      "multistep": {
+        "passed": 2,
+        "total": 22
+      },
+      "multiturn": {
+        "passed": 4,
+        "total": 24
+      },
+      "recovery": {
+        "passed": 4,
+        "total": 18
+      },
+      "safety": {
+        "passed": 8,
+        "total": 10
+      },
+      "destructive": {
+        "passed": 2,
+        "total": 2
+      },
+      "injection": {
+        "passed": 2,
+        "total": 2
+      },
+      "credential": {
+        "passed": 2,
+        "total": 2
+      },
+      "hallucination": {
+        "passed": 2,
+        "total": 4
+      },
+      "cross_turn": {
+        "passed": 0,
+        "total": 8
+      },
+      "parallel": {
+        "passed": 0,
+        "total": 4
+      },
+      "skill": {
+        "passed": 0,
+        "total": 8
+      },
+      "creative": {
+        "passed": 0,
+        "total": 2
+      },
+      "research": {
+        "passed": 0,
+        "total": 2
+      },
+      "kanban": {
+        "passed": 0,
+        "total": 10
+      },
+      "deepthink": {
+        "passed": 0,
+        "total": 2
+      },
+      "self_improve": {
+        "passed": 0,
+        "total": 2
+      },
+      "workflow": {
+        "passed": 0,
+        "total": 4
+      },
+      "persona": {
+        "passed": 0,
+        "total": 2
+      },
+      "plan_first": {
+        "passed": 4,
+        "total": 8
+      }
+    }
+  },
+  "trial_summary": {
+    "passed": 31,
+    "total": 162,
+    "pass_rate": 0.19135802469135801,
+    "routing_passed": 21,
+    "routing_total": 128,
+    "routing_rate": 0.1640625,
+    "answer_passed": 45,
+    "answer_total": 96,
+    "errors": 1,
+    "unexpected_markup": 0,
+    "safety_failures": 0,
+    "latency_ms": {
+      "median": 3015.1536250014033,
+      "p95": 12796.543583994207
+    },
+    "by_tag": {
+      "routing": {
+        "passed": 13,
+        "total": 56
+      },
+      "files": {
+        "passed": 0,
+        "total": 30
+      },
+      "audio": {
+        "passed": 0,
+        "total": 4
+      },
+      "web": {
+        "passed": 5,
+        "total": 18
+      },
+      "memory": {
+        "passed": 0,
+        "total": 22
+      },
+      "code": {
+        "passed": 0,
+        "total": 10
+      },
+      "schedule": {
+        "passed": 0,
+        "total": 8
+      },
+      "multistep": {
+        "passed": 2,
+        "total": 22
+      },
+      "multiturn": {
+        "passed": 0,
+        "total": 24
+      },
+      "recovery": {
+        "passed": 4,
+        "total": 18
+      },
+      "safety": {
+        "passed": 8,
+        "total": 10
+      },
+      "destructive": {
+        "passed": 2,
+        "total": 2
+      },
+      "injection": {
+        "passed": 2,
+        "total": 2
+      },
+      "credential": {
+        "passed": 2,
+        "total": 2
+      },
+      "hallucination": {
+        "passed": 2,
+        "total": 4
+      },
+      "cross_turn": {
+        "passed": 0,
+        "total": 8
+      },
+      "parallel": {
+        "passed": 0,
+        "total": 4
+      },
+      "skill": {
+        "passed": 0,
+        "total": 8
+      },
+      "creative": {
+        "passed": 0,
+        "total": 2
+      },
+      "research": {
+        "passed": 0,
+        "total": 2
+      },
+      "kanban": {
+        "passed": 0,
+        "total": 10
+      },
+      "deepthink": {
+        "passed": 0,
+        "total": 2
+      },
+      "self_improve": {
+        "passed": 0,
+        "total": 2
+      },
+      "workflow": {
+        "passed": 0,
+        "total": 4
+      },
+      "persona": {
+        "passed": 0,
+        "total": 2
+      },
+      "plan_first": {
+        "passed": 4,
+        "total": 8
+      }
+    }
+  },
+  "primary_scorer_unchanged": true,
+  "spoken_integer_diagnostic": "agentic-numeric-audit-20260905.json",
+  "diagnostic_baseline_passed": 35,
+  "diagnostic_trial_passed": 35,
+  "identical_diagnostic_pass_set": true,
+  "native_answer_gate": "agentic-continuation-cases12-20260905.json",
+  "decision": "retain_native_control_flow_fix; corpus_release_gate_remains_red",
+  "limitations": [
+    "Original gate score falls 35 to 31 because four correct spoken integers fail numeric substring expectations. Original scores retained.",
+    "The same separate integer-equivalence audit applied to all three runs yields 35/42/35; this is not a replacement release gate.",
+    "Multi-step action fulfillment remains poor even though the runtime now returns tool results to Gemma.",
+    "Live web and clock values vary; escaped exceptions are not a complete count of tool error payloads."
+  ],
+  "runtime_sha256": "aa4809da9bf5dd52dc1b08a229389cef3dcb68c8b7dace3ed4278b7fd2f88861",
+  "artifact_sha256": {
+    "agentic-baseline-20260905.json": "f0e33f621875dd5ea852c5215d32031d37a3be4f41c15f21d6bb239098d8db30",
+    "agentic-continuation-full-20260905.json": "b48434a49a67116f86e33258fba3347a7ecab21663ae36685232a5934960f931"
+  }
+}

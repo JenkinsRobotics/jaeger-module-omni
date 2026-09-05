@@ -2,6 +2,20 @@
 
 Measured ledger. Every claim here has a command that reproduces it.
 
+2026-09-05 native tool-continuation fix: Gemma now receives deterministic
+calculator/clock/recall results instead of the runtime ending the turn early.
+The inherited text multi-step detector cannot inspect an embedded audio turn.
+CPU regression and package tests pass; native cases12 stays **12/12**, no
+unexpected tools, median **2.26 s**. Full corpus remains red: primary score
+**31/162**, routing **21/128**, median **3.02 s**. Four previously passing
+calculator answers are now correct spoken integers rejected by the original
+numeric-string matcher. The same separate integer-equivalence diagnostic
+applied to baseline/discovery/fixed runs gives **35/42/35**, with identical
+baseline/fixed pass sets. Original gate scores are preserved. The runtime fix
+does not solve model refusals or multi-step action fulfillment. Evidence:
+`agentic-continuation-comparison-20260905.json` and `agentic-numeric-audit-20260905.json`
+in `research/candidate_evals/`.
+
 2026-09-05 full native agentic corpus, corrected session-isolated harness:
 baseline **35/162 (21.6%)**, routing **21/128 (16.4%)**; tool-discovery
 catalog hint **42/162 (25.9%)**, routing **27/128 (21.1%)**. Same 162 audio

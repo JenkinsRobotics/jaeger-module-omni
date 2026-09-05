@@ -118,3 +118,6 @@ research/results/deep-benchmark/**/artifacts/addressed-audio/
 jaeger_agent_omni/logs/
 jaeger_agent_omni/nodes/*/stats/
 jaeger_agent_omni/tests/simcache/
+
+# Physical acoustic trials retain long microphone/playback recordings locally.
+research/candidate_evals/*.audio/
