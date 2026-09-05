@@ -2,6 +2,17 @@
 
 Measured ledger. Every claim here has a command that reproduces it.
 
+2026-09-05 full native agentic corpus, corrected session-isolated harness:
+baseline **35/162 (21.6%)**, routing **21/128 (16.4%)**; tool-discovery
+catalog hint **42/162 (25.9%)**, routing **27/128 (21.1%)**. Same 162 audio
+fixtures, scorer, adapter and 20-second case deadline. Median measured turn
+latency rises **2.88 → 4.46 s**; nine cases gained, two lost, and an ordinary
+Paris question acquired an unwanted web call. Neither meets the 70% full /
+85% routing floors. Discovery stays research-only. Both runs have one case
+deadline; this exception count does not count every error object returned by
+tools. Comparison and raw reports: `agentic-discovery-comparison-20260905.json`
+in `research/candidate_evals/`.
+
 2026-09-05 current default campaign: **27/27**, speaker context off, with
 interruptions synchronized to actual playback (quasi cut on second attempt).
 Real vision→typed→voice shared-memory test: **4/4**, with `/image PATH`
