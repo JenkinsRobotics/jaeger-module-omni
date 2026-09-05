@@ -1,0 +1,22 @@
+{
+  "kind": "raw_audio_overlap_data",
+  "command": [
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+    "training/parallel_overlap.py",
+    "prepare",
+    "--output",
+    "research/candidate_evals/parallel-overlap-data-20260904.json"
+  ],
+  "input_manifests": {
+    "/Users/jonathanjenkins/models/jaeger-training-data/gemmaomni-cache-v1/bargein_train/manifest.jsonl": "b8d447c8af17445c96215a613cecf05e25178f7f03dc5435359d7a1f54cc3de3",
+    "/Users/jonathanjenkins/models/jaeger-training-data/gemmaomni-cache-v1/ami_overlap/manifest.jsonl": "a5f19dabf8667ff1c49ea665c6061a1f6268832c57ebc4a1369a66b1cfb8dc1b"
+  },
+  "manifest_sha256": "c45036b48c8b568ca9a1c424a940d96a4b36ab3e4ba1b3078502d05891a4e23a",
+  "split_policy": "Libri speaker and AMI participant-session-group disjoint",
+  "source_overlap": 0,
+  "counts": {
+    "train": 4712,
+    "validation": 1645,
+    "test": 789
+  }
+}

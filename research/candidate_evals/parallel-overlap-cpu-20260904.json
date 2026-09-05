@@ -1,0 +1,38 @@
+{
+  "checks": [
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "jaeger_agent_omni/tests/test_parallel_overlap.py",
+        "-q"
+      ],
+      "exit_code": 0,
+      "stdout": "...                                                                      [100%]\n3 passed in 1.40s\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "bash",
+        "-n",
+        "training/run_gpu.sh"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "training/run_gpu.sh",
+        "training/parallel_overlap.py",
+        "train",
+        "--help"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "REFUSING: a known GPU job is already active \u2014\n44051 00:29 ./.venv/bin/python -u research/converse_ear_wer.py --tier half -n 64 --output research/candidate_evals/tier-half-20260904-devcle\n"
+    }
+  ],
+  "contention_check": "refusal expected while matched WER job is active; no second GPU job launched"
+}
