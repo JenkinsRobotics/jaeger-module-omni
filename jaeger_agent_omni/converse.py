@@ -271,12 +271,26 @@ NN_SYSTEM = ("You are a helpful voice assistant. The user's message arrives "
              "HEARD: <verbatim transcription of the speech>\n"
              "REPLY: <your answer in one or two short conversational "
              "sentences>")
+CONTEXT_BINDING_RULES = (
+    "Each user turn may identify its speaker in a context label. "
+    "Keep each speaker's facts separate. I and my refer to the "
+    "speaker labeled on the current user turn. HEARD must contain "
+    "only the current audio's words, never a prior turn's words.")
+
+
+def contextual_nn_system(context):
+    return NN_SYSTEM + ("\n" + CONTEXT_BINDING_RULES if context else "")
+
+
+def contextual_user_text(words, context):
+    return f"[context: {context}]\n{words}" if context else words
 
 # Perception -> Gemma, the 'context' route: the parallel NNs steer the loop by
 # hardcoded logic (wake admits, turn-state endpoints, self-voice drops) and,
 # when they have an awareness fact worth the LLM knowing, contribute a short
-# text line the model reads for that turn. Off with OMNI_CONTEXT=0 for A/B.
-CONTEXT_TO_LLM = os.environ.get("OMNI_CONTEXT", "1") != "0"
+# text line the model reads for that turn. Turn-local binding improves speaker
+# memory but raises fresh-turn medium-ear WER; opt in with OMNI_CONTEXT=1.
+CONTEXT_TO_LLM = os.environ.get("OMNI_CONTEXT", "0") != "0"
 
 
 def perception_context(*nodes_and_outputs):
@@ -684,10 +698,10 @@ def converse(mode: str, barge: str, with_vision: bool,
                           f"{hp.get('directed_p')}]", flush=True)
                     return
         ctx = perception_context((spk, s_out))
-        sys_prompt = f"{NN_SYSTEM}\n\n[context: {ctx}]" if ctx else NN_SYSTEM
+        sys_prompt = contextual_nn_system(ctx)
         raw, met = nn.respond(np.asarray(audio, np.float32).reshape(-1),
                               system=sys_prompt, history=nn_hist,
-                              max_tokens=140)
+                              max_tokens=140, user_context=ctx)
         heard, reply = parse_heard_reply(raw)
         if not heard.strip():
             print("  [unintelligible — dropped]", flush=True)
@@ -719,7 +733,7 @@ def converse(mode: str, barge: str, with_vision: bool,
                              "deadline": time.time() + 8.0}
             print("  [holding — finish your thought]", flush=True)
             return
-        remember(heard or "[speech]", reply)
+        remember(contextual_user_text(heard or "[speech]", ctx), reply)
         print(f"  ⏵ agent: {reply}", flush=True)
         if not speak(reply):
             print("  ✂ barged", flush=True)
