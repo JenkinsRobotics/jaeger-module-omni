@@ -295,7 +295,10 @@ class OmniAgentRuntime:
             max_iterations=max_iterations,
             blocked_tools=OMNI_BLOCKED_TOOLS,
             tool_visibility=omni_tool_visible,
-            skip_final_tools={"calculate", "get_time", "recall"},
+            # Native user intent is opaque to the inherited text-based
+            # multi-step detector. Gemma must see each result to finish actions
+            # and emit the companion control envelope when one is required.
+            skip_final_tools=frozenset(),
         )
         self.session = session
         self._native_cancel = session.cancel

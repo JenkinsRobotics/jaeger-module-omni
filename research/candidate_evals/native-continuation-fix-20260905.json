@@ -1,0 +1,41 @@
+{
+  "kind": "native_tool_continuation_fix",
+  "production_prompt_changed": false,
+  "native_tool_shortcut_disabled": true,
+  "rationale": "The loop sees a native sentinel rather than user words, so text multi-step detection cannot authorize a one-tool early return. Return results to Gemma for remaining actions and any required companion envelope.",
+  "cpu_regression_before": {
+    "exit_code": 1,
+    "observed_calls": [
+      "calculate"
+    ],
+    "missing_calls": [
+      "write_file"
+    ]
+  },
+  "cpu_regression_after": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "jaeger_agent_omni/tests"
+    ],
+    "exit_code": 0,
+    "passed": 63,
+    "subtests_passed": 6,
+    "seconds": 3.11
+  },
+  "native_answer_gate": {
+    "artifact": "agentic-continuation-cases12-20260905.json",
+    "correct": 12,
+    "total": 12,
+    "median_ms": 2259.1750834981212,
+    "unexpected_tool_cases": []
+  },
+  "source_sha256": {
+    "jaeger_agent_omni/core/agentic/omni_runtime.py": "aa4809da9bf5dd52dc1b08a229389cef3dcb68c8b7dace3ed4278b7fd2f88861",
+    "jaeger_agent_omni/tests/test_native_continuation.py": "8d55494ca6cd26e970dacca05423f3bdf6233cee6cbfbfbacf950319080b9a9d"
+  },
+  "user_callback_changes_preserved_and_not_staged": true,
+  "full_corpus_regression": "next trial"
+}
