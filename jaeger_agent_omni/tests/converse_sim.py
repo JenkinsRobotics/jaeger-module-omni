@@ -12,6 +12,8 @@ clips cache to tests/simcache/ on first run. OMNI_SIM_DIAG=1 adds tracing.
 One session per process: --session half|quasi|barge-continue|full."""
 import argparse, faulthandler, importlib.util, os, re, signal, sys, threading, time, traceback, types  # noqa: E401
 import numpy as np
+import hashlib
+import json
 from pathlib import Path
 from scipy.signal import resample_poly
 
@@ -411,6 +413,7 @@ SESSIONS = {
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--session", required=True, choices=sorted(SESSIONS))
+    ap.add_argument("--output", type=Path, help="write reproducible campaign evidence JSON")
     args = ap.parse_args()
     mode, barge, steps = SESSIONS[args.session]
     signal.alarm(1500)                        # hard whole-session deadline
@@ -436,6 +439,20 @@ def main():
     th.join(30)
     sys.stdout = sys.__stdout__
     npass = sum(1 for _, ok in RESULTS if ok)
+    if args.output:
+        node_id = rv.semantic_node_id(mode)
+        manifest = json.loads((V2 / "nodes" / node_id / "node.json").read_text())
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        args.output.write_text(json.dumps({
+            "command": [sys.executable, *sys.argv],
+            "session": args.session, "mode": mode, "barge": barge,
+            "node": node_id, "adapter_sha256": manifest["adapter"]["sha256"],
+            "converse_sha256": hashlib.sha256((V2 / "converse.py").read_bytes()).hexdigest(),
+            "perception_context": rv.CONTEXT_TO_LLM,
+            "passed": npass, "total": len(RESULTS),
+            "checks": [{"name": name, "passed": ok} for name, ok in RESULTS],
+            "log": TEE.lines,
+        }, indent=2) + "\n")
     print(f"SIM-SESSION {args.session}: {npass}/{len(RESULTS)} PASS",
           flush=True)
     os._exit(0 if npass == len(RESULTS) else 1)

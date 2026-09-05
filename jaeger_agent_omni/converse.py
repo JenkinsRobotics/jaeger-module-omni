@@ -377,20 +377,21 @@ def stream_split(audio_16k, keep_s: float = STREAM_KEEP_S):
     return audio_16k[:-keep], audio_16k[-keep:]
 
 
-def load_trained_semantic():
-    """The POINT of this folder: audio -> whisper ENCODER -> trained adapter
-    -> Gemma. No text seam, no whisper decoder. The v0 text path exists only
-    as an explicitly-labeled fallback.
+def semantic_node_id(mode: str) -> str:
+    """Completed turns can use bidirectional attention; live previews cannot."""
+    return {"half": "jaegeromni-41m-medium",
+            "quasi": "jaegeromni-41m-medium",
+            "full": "jaegeromni-41m-converse"}[mode]
 
-    Consolidated 2026-09-03 onto jaegeromni-41m-converse (the repository's
-    causal-balanced 41M at this seam, prompt-aligned: 5.03% vs 5.65%
-    devclean64). gemmaomni-v2-stream-bargein-93h remains packaged, disabled."""
-    p = HERE / "nodes/jaegeromni-41m-converse/runtime.py"
+
+def load_trained_semantic(mode: str = "quasi"):
+    """Load one existing encoder/adapter pairing, with no weight conversion."""
+    p = HERE / "nodes" / semantic_node_id(mode) / "runtime.py"
     spec = importlib.util.spec_from_file_location("nn_semantic", p)
     m = importlib.util.module_from_spec(spec)
     sys.modules["nn_semantic"] = m
     spec.loader.exec_module(m)
-    return m.build()
+    return m.build() if mode == "full" else m.build_converse()
 
 
 def converse(mode: str, barge: str, with_vision: bool,
@@ -416,25 +417,27 @@ def converse(mode: str, barge: str, with_vision: bool,
         print(f"[converse] ECAPA unavailable ({exc}) — hand fingerprint "
               f"fallback", flush=True)
     if semantic == "nn":
-        print("[converse] semantic channel: TRAINED adapter path "
+        print(f"[converse] semantic channel: {semantic_node_id(mode)} "
               "(encoder→adapter→Gemma, no text seam)…", flush=True)
-        nn = load_trained_semantic()
+        nn = load_trained_semantic(mode)
         stt = None
-        try:
-            hspec = importlib.util.spec_from_file_location(
-                "node_heads",
-                HERE / "nodes/para-perception-heads-v1/runtime.py")
-            hm = importlib.util.module_from_spec(hspec)
-            sys.modules["node_heads"] = hm
-            hspec.loader.exec_module(hm)
-            heads = hm.build(transcriber=nn)
-            print("[converse] perception heads: TRAINED (directed / "
-                  "turn_end / overlap / speaker_change on the trunk)",
-                  flush=True)
-        except Exception as exc:
-            heads = None
-            print(f"[converse] perception heads unavailable: {exc}",
-                  flush=True)
+        heads = None
+        if mode == "full":
+            try:
+                hspec = importlib.util.spec_from_file_location(
+                    "node_heads",
+                    HERE / "nodes/para-perception-heads-v1/runtime.py")
+                hm = importlib.util.module_from_spec(hspec)
+                sys.modules["node_heads"] = hm
+                hspec.loader.exec_module(hm)
+                heads = hm.build(transcriber=nn)
+                print("[converse] perception heads: TRAINED (directed / "
+                      "turn_end / overlap / speaker_change on the trunk)",
+                      flush=True)
+            except Exception as exc:
+                heads = None
+                print(f"[converse] perception heads unavailable: {exc}",
+                      flush=True)
     else:
         print("[converse] semantic channel: TEXT FALLBACK (whisper decoder) "
               "— not the omni path", flush=True)
@@ -865,6 +868,7 @@ def main() -> int:
     ap.add_argument("--no-stt", action="store_true",
                     help="parallel channels only — no whisper load")
     ap.add_argument("--converse", choices=["half", "quasi", "full"],
+                    nargs="?", const="quasi",
                     help="run the agent on the node graph: half = mic "
                          "closed while speaking; quasi = open mic + AEC + "
                          "barge; full = quasi + streaming (live forming "

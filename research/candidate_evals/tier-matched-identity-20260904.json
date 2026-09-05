@@ -1,0 +1,28 @@
+{
+  "scope": "CPU checkpoint identity and registry; no model inference; encoder hashes read from manifests",
+  "nodes": 28,
+  "profiles": 13,
+  "checkpoints": [
+    {
+      "node": "jaegeromni-41m-medium",
+      "adapter_sha256": "a7f96bfb889866f75df7b838f84aae368a56ab10f6469e766511d700e32fe13a",
+      "sha_matches_manifest": true,
+      "architecture": "context_v2",
+      "parameter_count": 40915456,
+      "declared_encoder_sha256": "62f73550fa6db24b0c6f6c5962bd0dae80fa644e93cde9cd9c3792971b47fd28"
+    },
+    {
+      "node": "jaegeromni-41m-converse",
+      "adapter_sha256": "dc087d7edf7990033ca8e994bed8f8196b56587c23b3bea8f0a1db8cb560f39e",
+      "sha_matches_manifest": true,
+      "architecture": "streaming_causal_v1",
+      "parameter_count": 40933895,
+      "declared_encoder_sha256": "62f73550fa6db24b0c6f6c5962bd0dae80fa644e93cde9cd9c3792971b47fd28"
+    }
+  ],
+  "command": [
+    ".venv/bin/python",
+    "-c",
+    "import hashlib,json\nfrom pathlib import Path\nimport numpy as np\nfrom jaeger_agent_omni.node_registry import discover,validate_profiles\nroot=Path(\"jaeger_agent_omni/nodes\")\nrecords=[]\nfor node in (\"jaegeromni-41m-medium\",\"jaegeromni-41m-converse\"):\n manifest=json.loads((root/node/\"node.json\").read_text())\n path=root/node/manifest[\"adapter\"][\"path\"]\n sha=hashlib.sha256(path.read_bytes()).hexdigest()\n assert sha==manifest[\"adapter\"][\"sha256\"],node\n with np.load(path,allow_pickle=False) as z:\n  records.append({\"node\":node,\"adapter_sha256\":sha,\"sha_matches_manifest\":True,\"architecture\":bytes(z[\"arch\"]).decode(),\"parameter_count\":sum(z[k].size for k in z.files if \".\" in k),\"declared_encoder_sha256\":manifest[\"encoder\"][\"weights_sha256\"]})\nnodes=discover(root)\nprofiles=validate_profiles(root,nodes)\nresult={\"scope\":\"CPU checkpoint identity and registry; no model inference; encoder hashes read from manifests\", \"nodes\":len(nodes),\"profiles\":len(profiles[\"profiles\"]),\"checkpoints\":records}\nprint(json.dumps(result,indent=2))\n"
+  ]
+}

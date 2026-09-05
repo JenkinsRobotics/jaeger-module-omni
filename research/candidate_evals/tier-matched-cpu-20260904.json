@@ -1,0 +1,88 @@
+{
+  "scope": "CPU contracts only; campaign and WER not yet run",
+  "base_commit": "13da882d8e5c2dbbe8be2e5c67f7689394544ab8",
+  "converse_sha256": "7b7d6cce9ff022e74db1917b4452c118b90e56ae9c3e5714da7ea0eb0a97faa1",
+  "checks": [
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "jaeger_agent_omni.converse",
+        "--selftest"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 2.2737309589974757,
+      "stdout": "  PASS  parallel speaker channel separates two voices\n  PASS  speaker channel emits confidence-gated Gemma context (not ingested raw: text the model reads)\n  PASS  turn-state channel endpoints speech through silence\n  PASS  one utterance ends exactly once\n  PASS  one-shot enrollment persists \u2014 into scratch, never the real weights\n  PASS  the enrolled waveform is spotted \u2014 no STT involved\n  PASS  a different voice/cadence does not false-wake\n  PASS  fusion converges the channels into one record\n  PASS  text-wake fallback: two-token, address-position, no mid-sentence\n  PASS  dismissal closes; lookalikes don't\n  PASS  garble guard runs on graph evidence, short bursts exempt\n  PASS  text channel is a declared node with a clean contract\n  PASS  fusion carries wpm+energy so guards run on graph evidence\n  PASS  one generation carries transcript AND answer\n  PASS  format miss degrades to reply-only, never crashes\n  PASS  head pooling math: confident logits -> confident probabilities\n  PASS  stock artifact guard: density-gated, real speech survives (gap 3)\n  PASS  stream_split: long turn commits head, keeps 2s tail; short turn whole\n\n18/18 checks passed\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "unittest",
+        "jaeger_agent_omni.tests.test_node_registry"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 1.8294404170010239,
+      "stdout": "",
+      "stderr": "..\n----------------------------------------------------------------------\nRan 2 tests in 0.906s\n\nOK\n"
+    },
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "jaeger_agent_omni/tests/",
+        "-q"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 3.4676334590003535,
+      "stdout": "...................................................                   [100%]\n51 passed, 3 subtests passed in 2.90s\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        ".venv/bin/python",
+        "research/check_all.py"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 9.145186749999993,
+      "stdout": "performance_spec: 7 emotions, 4 deliveries\nperformance_spec: round-trip, spans, validation OK\noutputs: three-way routing, cancel-key binding, round-trip OK\ncapture: round-trip OK (manifest, wav, float32 fidelity)\ncapture: confidence gate rejects bad and unscored transcripts\nstreaming: 1s chunks, 50 frames each, 1500-frame cache = 30s context\nstreaming: 10 audio tokens/s -> 300 tokens at full context\nstreaming: buffering, boundaries, padding, eviction, budget OK\nprompt: template overhead 55 tokens, audio spliced at position 35\nprompt: split, splice, batch sharing, guards OK\nruntime.gemma_audio: 1.0s chunks -> 25 tokens, buffering + overlap accounting OK\nruntime.session: chunked prefill into one KV cache, wait/hidden split, cancellation OK\nruntime.duplex: interleave a/v, drop-don't-queue, barge-in OK (0 turns \u00b7 5 audio chunks \u00b7 3 frames (0 dropped) \u00b7 0 interrupts \u00b7 peak lag 0ms)\nruntime.duplex: hands-free turn detection OK (speech_start/probably_ended/speech_end); 30ms residual framing OK\nneural.base: registry contract, trim/pool/token math OK\nneural.audio    6.3M params  10 tok/s  1024 -> 2048\nminicpm ref    21.0M params  10 tok/s  1024 -> 4096\nneural.audio: shapes, token formula, trimming, ReLU, pool-order, embed_norm OK\nturn_end: 525K params, threshold 0.7, patience 2 = 200ms worst-case delay\nturn_end: shapes, hysteresis, reset, asymmetric loss, grads OK\nneural.gate: enroll, match, multi-take, length invariance OK\nneural.delta: 3.1K trainable of 9K total (33%)\nneural.delta: freeze split, norm pin, structure preservation OK\nneural.speech: tensor-only boundary, ID expansion, guards, checkpoint OK\napp: text transcribe 0ms + generate 46ms = 46ms\napp: omni encode 1ms + project 0ms + generate 47ms = 49ms\napp: streaming generate 51ms = 51ms  (+2ms overlapped, free)\napp: routing, timing split, capture policy, streaming prefill OK\nartifacts: adapter 12KB vs full checkpoint 38KB\nartifacts: export strips frozen, round-trip, card preserved OK\nstubs: encoder 34K, backbone 174K params\nstubs: rates, both entry points, embed/id equivalence, causality OK\nload_minicpm_projector: 21.0M params loaded OK\nload_minicpm: name mapping OK\noverfit_probe: collapse metric OK\npipeline: 16K trainable of 223K total (7%)\npipeline: overfit loss 5.054 -> 3.242 in 250 steps (uniform floor 4.852)\npipeline: capture->encoder->projector->backbone->loss->step OK\ndata: 7 sources across 4 tiers, 4 stage mixes\ndata: stage4 = {<Tier.LABELED_ASR: 1>: 400, <Tier.FAR_FIELD: 2>: 250, <Tier.OURS: 4>: 350}\ndata: mixes normalised, coverage, exact counts, licence flags OK\nconfig: warmup lr=0.0003 steps=20000 eff_batch=32 10 tok/s\nconfig: presets, round-trip, guards OK\ndistill: warmup=DistillWeights(hidden=0.0, kl=0.0, ce=1.0, temperature=2.0), distill=DistillWeights(hidden=1.0, kl=0.5, ce=0.5, temperature=2.0)\ndistill: cosine floor, monotonicity, detach, presets, guards OK\ndataset: 2 turns kept of 4 (confidence + length gates)\ndataset: prefix augmentation cut 18/40 clips, turn-end labels free\ndataset: stage targets, padding, ignore-index, determinism OK\nmake_corpus: 4 synthetic turns, real audio, gate-passing OK\nimport_audio: segmentation 2 segs, bounds + splitting + confidence OK\nevaluate: WER, normalisation, pooling OK\nencoder_cache: per-encoder isolation, round-trip, graceful miss OK\nfetch_dataset: 10 corpora (5 verified), adapters + normalisation OK\ntrain: schedule horizon 120 -> 360; rebuilt at step 120\ntrain: 120 steps 4.932 -> 4.717, agreement 0.00\ntrain: loop, clipping, schedule, freezing, checkpoint identity OK\n\n31/31 modules OK in 8.8s\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "jaeger_agent_omni.omni",
+        "--selfcheck"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.9879504999989877,
+      "stdout": "omni: no transcription step, no text injection, live path AST-audited, entry points OK\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        ".venv/bin/python",
+        "demo.py",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 3.788275083999906,
+      "stdout": "demo --check ok: three-column window, Jaeger model, audio-native runtime, observable agentic events, companion admission, half/full duplex, verified neural VAD, SpeexDSP AEC, clause streaming, and mic present\nMiniCPM reference detected: /Users/jonathanjenkins/GITHUB/VoiceLLM-Playground/Omni Model/Minicpm 4.5o /native/libomni_shim.dylib\n",
+      "stderr": "qt.qpa.fonts: Populating font family aliases took 144 ms. Replace uses of missing font family \"Sans Serif\" with one that exists to avoid this cost. \nThis plugin does not support propagateSizeHints()\n"
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.018122708002920263,
+      "stdout": "",
+      "stderr": ""
+    }
+  ]
+}

@@ -378,7 +378,42 @@
       ]
     },
     "agent-graph-v0": {
-      "description": "Gemma Omni V2 converse graph (imported from VoiceLLM-Playground, playground commit 9f1103b), semantic channel consolidated onto jaegeromni-41m-converse 2026-09-03 (5.03% vs 5.65% devclean64 at this seam). gemmaomni-v2-stream-bargein-93h stays packaged, disabled. Loaded directly by jaeger_agent_omni.converse; semantic-whisper-v0 is the --semantic text fallback.",
+      "description": "Converse half/quasi graph: endpointed jaegeromni-41m-medium with parallel speaker/wake/turn, no adapter perception heads. Full tier uses agent-graph-full-v0. semantic-whisper-v0 remains the explicit text fallback.",
+      "enabled": [
+        "audio-duplex-io-v0",
+        "fusion-context-v0",
+        "jaegeromni-41m-medium",
+        "llm-gemma-v0",
+        "para-speaker-ecapa-v1",
+        "para-speaker-embed-v0",
+        "para-turn-state-v0",
+        "para-wake-spotter-v0",
+        "semantic-vision-v0",
+        "text-input-v0",
+        "tts-kokoro-v0"
+      ],
+      "disabled": [
+        "campplus-speaker",
+        "gemma-4-e4b-cognition",
+        "gemma-minicpm-hidden-talker",
+        "gemmaomni-41m-medium-final4000",
+        "gemmaomni-v2-stream-bargein-93h",
+        "jaegeromni-41m-audio-perception",
+        "jaegeromni-41m-causal-balanced",
+        "jaegeromni-41m-converse",
+        "kokoro-tts",
+        "neural-acoustic-controller",
+        "para-perception-heads-v1",
+        "semantic-whisper-v0",
+        "stock-whisper-large-v3-turbo50m",
+        "stock-whisper-medium-cekl-blend50",
+        "stock-whisper-medium-cleanroom-ctx93h-step2000",
+        "whisper-large-v3-turbo-stt",
+        "whisper-medium-stt"
+      ]
+    },
+    "agent-graph-full-v0": {
+      "description": "Converse full tier: causal jaegeromni-41m-converse for live forming previews and replies. Retained trunk heads are transitional; parallel speaker/wake/turn remain independent.",
       "enabled": [
         "audio-duplex-io-v0",
         "fusion-context-v0",

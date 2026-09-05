@@ -47,7 +47,13 @@ def main() -> int:
     from evaluate import normalize, wer
 
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    ap.add_argument("--node", type=Path, default=DEFAULT_NODE)
+    route = ap.add_mutually_exclusive_group()
+    route.add_argument("--node", type=Path)
+    route.add_argument("--tier", choices=["half", "quasi", "full"],
+                       help="evaluate the actual converse tier's selected ear")
+    ap.add_argument("--heard-reply", action="store_true",
+                    help="score HEARD from the production one-generation reply "
+                         "prompt; fresh history and no speaker context per clip")
     ap.add_argument("--manifest", type=Path, default=DEFAULT_MANIFEST)
     ap.add_argument("-n", "--examples", type=int, default=64)
     ap.add_argument(
@@ -66,13 +72,24 @@ def main() -> int:
     ap.add_argument("--output", type=Path, required=True)
     args = ap.parse_args()
 
+    if args.heard_reply and (args.instructed or args.system):
+        ap.error("--heard-reply uses the production reply prompt")
+    from jaeger_agent_omni import converse
+    if args.tier:
+        args.node = REPO / "jaeger_agent_omni/nodes" / converse.semantic_node_id(args.tier)
+    else:
+        args.node = args.node or DEFAULT_NODE
+
     import soundfile as sf
 
-    spec = importlib.util.spec_from_file_location(
-        "converse_ear_node", args.node / "runtime.py")
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    ear = module.build()
+    if args.tier:
+        ear = converse.load_trained_semantic(args.tier)
+    else:
+        spec = importlib.util.spec_from_file_location(
+            "converse_ear_node", args.node / "runtime.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        ear = getattr(module, "build_converse", module.build)()
     if args.adapter:
         with np.load(args.adapter, allow_pickle=False) as z:
             arrays = {k: z[k] for k in z.files}
@@ -123,7 +140,13 @@ def main() -> int:
         if rate != 16000:
             raise ValueError(f"{row['id']}: expected 16 kHz, got {rate}")
         started = time.monotonic()
-        hypothesis, _stats = ear.transcribe(np.asarray(waveform, np.float32))
+        audio = np.asarray(waveform, np.float32)
+        if args.heard_reply:
+            raw, _stats = ear.respond(audio, system=converse.NN_SYSTEM,
+                                      history=[], max_tokens=140)
+            hypothesis, _reply = converse.parse_heard_reply(raw)
+        else:
+            hypothesis, _stats = ear.transcribe(audio)
         latencies.append(time.monotonic() - started)
         reference_words = normalize(row["text"])
         hypothesis_words = normalize(hypothesis)
@@ -135,6 +158,8 @@ def main() -> int:
             "id": row["id"], "reference": row["text"],
             "hypothesis": hypothesis,
             "wer": edits / max(1, len(reference_words)),
+            "metrics": _stats,
+            **({"raw_reply": raw} if args.heard_reply else {}),
         })
         if index <= 3:
             print(f"ref: {row['text']}")
@@ -152,7 +177,15 @@ def main() -> int:
             else "node_production_transcribe")
     if args.adapter:
         mode = "cross_mounted_streaming_adapter"
+    if args.heard_reply:
+        mode = "converse_heard_reply_fresh_history_no_perception_context"
+    args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps({
+        "command": [sys.executable, *sys.argv],
+        "node": args.node.name, "tier": args.tier,
+        "manifest_sha256": sha256(args.manifest.expanduser()),
+        "scorer_sha256": sha256(REPO / "training/evaluate.py"),
+        "system": converse.NN_SYSTEM if args.heard_reply else args.system,
         "adapter": str(adapter), "split": "devclean",
         "adapter_sha256": sha256(adapter),
         "encoder": "openai/whisper-medium (node-local snapshot)",

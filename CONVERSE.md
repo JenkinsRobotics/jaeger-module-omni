@@ -5,10 +5,51 @@ its 27/27 campaign state (playground commit `9f1103b`). This is the full
 pipeline — real trained weights, real node graph, real duplex ladder — not a
 facade: text, vision, and audio in; text and audio out.
 
+## Tier routing candidate — 2026-09-04, CPU-verified only
+
+Half/quasi now select the existing `jaegeromni-41m-medium` pairing through
+its `build_converse()` entry point. Full retains `jaegeromni-41m-converse`
+for previews and replies. Bare `--converse` selects quasi; explicit tiers
+and `--barge stop|continue` remain available. No checkpoint was changed or
+new node created. The registry contains 28 nodes and 13 profiles:
+`agent-graph-v0` describes half/quasi, `agent-graph-full-v0` describes full.
+Turn-based tiers use parallel speaker/wake/turn processing without mounting
+adapter heads; the full tier retains its transitional head path.
+
+**Not yet promoted:** the prior 27/27 and 4.82% figures below are historical
+measurements, not measurements of this new routing. GPU inference has not
+run under the step-1 "no GPU" instruction. CPU evidence is retained in
+`research/candidate_evals/tier-matched-cpu-20260904.json`.
+
+Next, run half first, then the other three campaign sessions, serially:
+
+```sh
+.venv/bin/python jaeger_agent_omni/tests/converse_sim.py --session half \
+  --output research/candidate_evals/tier-half-20260904.json
+# Repeat with --session quasi, barge-continue, full and distinct output names.
+.venv/bin/python research/converse_ear_wer.py --tier half -n 64 \
+  --output research/candidate_evals/tier-half-20260904-devclean64.json
+.venv/bin/python research/converse_ear_wer.py --tier half --heard-reply -n 64 \
+  --output research/candidate_evals/tier-half-heard-20260904-devclean64.json
+# Repeat both WER protocols with --tier full for a matched causal control.
+```
+
+`--tier` uses converse's actual loader. `--heard-reply` scores HEARD from
+the production reply prompt using the same manifest/scorer, with fresh
+history and no speaker context per clip. Report this separately from
+transcription-only WER: 4.82% is not an established HEARD/REPLY score.
+Campaign `--output` saves checks, selected node, context setting, and logs;
+WER saves manifest/scorer hashes and per-clip outputs.
+
+Before the later context/vision gates, account for two existing code facts:
+`OMNI_CONTEXT` currently defaults **on** (the plan asks for proof before
+defaulting it on), and image turns still load the GGUF Gemma twin while
+sharing `nn_hist`. Neither behavior was changed in this routing step.
+
 ## What runs
 
 ```
-.venv/bin/python -m jaeger_agent_omni.converse --selftest       # 17 hermetic checks, no models
+.venv/bin/python -m jaeger_agent_omni.converse --selftest       # 18 hermetic checks, no models
 .venv/bin/python -m jaeger_agent_omni.converse --converse half  # turn-based, mic closed while speaking
 .venv/bin/python -m jaeger_agent_omni.converse --converse quasi # open mic + Speex AEC + barge (--barge stop|continue)
 .venv/bin/python -m jaeger_agent_omni.converse --converse full  # + forming-transcript preview + commit-and-trim
@@ -16,7 +57,7 @@ facade: text, vision, and audio in; text and audio out.
 ```
 
 Semantic channel (default `--semantic nn`): stock whisper-medium encoder →
-trained 41M streaming context adapter → Gemma-4 E4B, no text seam on the way
+tier-selected 41M context adapter → Gemma-4 E4B, no text seam on the way
 in. Reply (default `--reply nn`): the SAME Gemma answers from audio
 embeddings in one `HEARD:`/`REPLY:` generation — one model, one memory.
 `--reply cascade` and `--vision` load the GGUF twin lazily. Typed turns and

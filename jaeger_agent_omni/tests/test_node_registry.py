@@ -38,10 +38,15 @@ class NodeRegistryTests(unittest.TestCase):
         self.assertIn("neural-acoustic-controller", shadow)
         self.assertIn("jaegeromni-41m-medium", shadow)
         graph = select_profile(root, "agent-graph-v0")
-        self.assertIn("jaegeromni-41m-converse", graph)
+        self.assertNotIn("jaegeromni-41m-converse", graph)
+        self.assertIn("jaegeromni-41m-medium", graph)
+        self.assertNotIn("para-perception-heads-v1", graph)
         self.assertNotIn("gemmaomni-v2-stream-bargein-93h", graph)
         self.assertIn("tts-kokoro-v0", graph)
         self.assertNotIn("semantic-whisper-v0", graph)
+        full = select_profile(root, "agent-graph-full-v0")
+        self.assertIn("jaegeromni-41m-converse", full)
+        self.assertNotIn("jaegeromni-41m-medium", full)
 
     def test_gates_are_separate_from_neural_nodes(self):
         root = Path(__file__).resolve().parents[2]

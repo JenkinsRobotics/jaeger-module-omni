@@ -2,6 +2,19 @@
 
 Measured ledger. Every claim here has a command that reproduces it.
 
+2026-09-04, CPU-only tier-routing candidate: half/quasi select the unchanged
+`jaegeromni-41m-medium`; full retains `jaegeromni-41m-converse`. The medium
+node now exposes the converse interface without converting weights. The
+context-adapter loader filters checkpoint metadata out of its parameter
+tree. Registry: 28 nodes / 13 profiles. CPU checks: converse **18/18**,
+package suite **51 tests**, module checks **31/31**, native selfcheck and
+demo check pass. Evidence:
+`research/candidate_evals/tier-matched-cpu-20260904.json` and
+`tier-matched-identity-20260904.json`. Real-model campaign and WER remain
+**unrun** for this candidate under the "no GPU" instruction; historical
+27/27 and 4.82% must not be attributed to the new route yet. No GPU training
+started. Existing GUI/selector/observer changes were left untouched.
+
 > Current selection and comparison: [`PIPELINES.md`](PIPELINES.md). Sections
 > below the current 50M results are retained experiment history, not additional
 > production choices.

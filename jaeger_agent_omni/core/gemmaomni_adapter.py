@@ -503,7 +503,10 @@ def load_any_adapter(path: Path):
                                        causal=True), "streaming_causal_v1"
     if "arch" in arrays:
         hidden = int(arrays["hidden"][0])
-        return build_context_adapter(hidden, arrays=arrays), "context_v2"
+        # Packaged checkpoints also carry provenance/architecture metadata.
+        # Only named parameters belong in the module tree; keep the NPZ intact.
+        params = {k: v for k, v in arrays.items() if "." in k}
+        return build_context_adapter(hidden, arrays=params), "context_v2"
     return build_mlx_adapter(
         {k: arrays[k] for k in
          ("ln_gamma", "ln_beta", "w1", "b1", "w2", "b2")}), "mlp_v1"

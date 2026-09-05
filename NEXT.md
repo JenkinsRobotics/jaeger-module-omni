@@ -1,5 +1,14 @@
 # Next steps — current plan
 
+2026-09-04 routing update: the half/quasi medium entry point and full-tier
+causal selection are implemented with CPU checks. This is a candidate,
+not a new 27/27 or WER claim. Finish step 1 with serialized real-model
+half → quasi → barge-continue → full campaign runs and matched
+transcription-only + HEARD/REPLY WER before starting overlap training.
+Clarification is pending whether step 1's "no GPU" permits inference;
+no GPU inference or training was launched. Commands and evidence limits:
+[`CONVERSE.md`](CONVERSE.md#tier-routing-candidate--2026-09-04-cpu-verified-only).
+
 ## Pipeline lockdown — what we have and what we refine (2026-09-03)
 
 Everything below this section remains the standing plan except where a lane
