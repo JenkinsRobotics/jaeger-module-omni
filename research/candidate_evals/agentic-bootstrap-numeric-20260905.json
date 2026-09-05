@@ -1,0 +1,221 @@
+{
+  "kind": "paired_spoken_integer_diagnostic",
+  "original_gate_unchanged": true,
+  "same_ordered_audio_population": true,
+  "command": [
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+    "research/agentic_numeric_audit.py",
+    "research/candidate_evals/agentic-bootstrap-control-20260905.json",
+    "research/candidate_evals/agentic-bootstrap-trial-20260905.json",
+    "--output",
+    "research/candidate_evals/agentic-bootstrap-numeric-20260905.json"
+  ],
+  "scorer_sha256": "138f124f5bca432498637b2b4c8cdfad9fbbdb06d3e5edd8ff088d27b3e996a9",
+  "reports": {
+    "research/candidate_evals/agentic-bootstrap-control-20260905.json": {
+      "original_summary": {
+        "passed": 3,
+        "total": 11,
+        "pass_rate": 0.2727272727272727,
+        "routing_passed": 4,
+        "routing_total": 10,
+        "routing_rate": 0.4,
+        "answer_passed": 5,
+        "answer_total": 8,
+        "errors": 0,
+        "unexpected_markup": 0,
+        "safety_failures": 0,
+        "latency_ms": {
+          "median": 3337.6160839980002,
+          "p95": 4515.082999998413
+        },
+        "by_tag": {
+          "routing": {
+            "passed": 3,
+            "total": 7
+          },
+          "files": {
+            "passed": 0,
+            "total": 4
+          },
+          "memory": {
+            "passed": 0,
+            "total": 1
+          },
+          "code": {
+            "passed": 0,
+            "total": 1
+          },
+          "multistep": {
+            "passed": 0,
+            "total": 1
+          },
+          "multiturn": {
+            "passed": 0,
+            "total": 2
+          },
+          "recovery": {
+            "passed": 0,
+            "total": 1
+          }
+        }
+      },
+      "diagnostic_summary": {
+        "passed": 5,
+        "total": 11,
+        "pass_rate": 0.45454545454545453,
+        "routing_passed": 4,
+        "routing_total": 10,
+        "routing_rate": 0.4,
+        "answer_passed": 7,
+        "answer_total": 8,
+        "errors": 0,
+        "unexpected_markup": 0,
+        "safety_failures": 0,
+        "latency_ms": {
+          "median": 3337.6160839980002,
+          "p95": 4515.082999998413
+        },
+        "by_tag": {
+          "routing": {
+            "passed": 3,
+            "total": 7
+          },
+          "files": {
+            "passed": 0,
+            "total": 4
+          },
+          "memory": {
+            "passed": 0,
+            "total": 1
+          },
+          "code": {
+            "passed": 0,
+            "total": 1
+          },
+          "multistep": {
+            "passed": 0,
+            "total": 1
+          },
+          "multiturn": {
+            "passed": 2,
+            "total": 2
+          },
+          "recovery": {
+            "passed": 0,
+            "total": 1
+          }
+        }
+      },
+      "additional_integer_equivalence_passes": [
+        {
+          "lane": "a",
+          "id": "mt_calc_reuse_1",
+          "answer": "The product of forty-seven and twenty-three is one thousand eighty-one."
+        },
+        {
+          "lane": "a",
+          "id": "mt_calc_reuse_2",
+          "answer": "The result is two thousand one hundred sixty-two."
+        }
+      ]
+    },
+    "research/candidate_evals/agentic-bootstrap-trial-20260905.json": {
+      "original_summary": {
+        "passed": 5,
+        "total": 11,
+        "pass_rate": 0.45454545454545453,
+        "routing_passed": 4,
+        "routing_total": 10,
+        "routing_rate": 0.4,
+        "answer_passed": 7,
+        "answer_total": 8,
+        "errors": 0,
+        "unexpected_markup": 0,
+        "safety_failures": 0,
+        "latency_ms": {
+          "median": 3126.9351250011823,
+          "p95": 4301.812541998515
+        },
+        "by_tag": {
+          "routing": {
+            "passed": 3,
+            "total": 7
+          },
+          "files": {
+            "passed": 0,
+            "total": 4
+          },
+          "memory": {
+            "passed": 0,
+            "total": 1
+          },
+          "code": {
+            "passed": 0,
+            "total": 1
+          },
+          "multistep": {
+            "passed": 0,
+            "total": 1
+          },
+          "multiturn": {
+            "passed": 2,
+            "total": 2
+          },
+          "recovery": {
+            "passed": 0,
+            "total": 1
+          }
+        }
+      },
+      "diagnostic_summary": {
+        "passed": 5,
+        "total": 11,
+        "pass_rate": 0.45454545454545453,
+        "routing_passed": 4,
+        "routing_total": 10,
+        "routing_rate": 0.4,
+        "answer_passed": 7,
+        "answer_total": 8,
+        "errors": 0,
+        "unexpected_markup": 0,
+        "safety_failures": 0,
+        "latency_ms": {
+          "median": 3126.9351250011823,
+          "p95": 4301.812541998515
+        },
+        "by_tag": {
+          "routing": {
+            "passed": 3,
+            "total": 7
+          },
+          "files": {
+            "passed": 0,
+            "total": 4
+          },
+          "memory": {
+            "passed": 0,
+            "total": 1
+          },
+          "code": {
+            "passed": 0,
+            "total": 1
+          },
+          "multistep": {
+            "passed": 0,
+            "total": 1
+          },
+          "multiturn": {
+            "passed": 2,
+            "total": 2
+          },
+          "recovery": {
+            "passed": 0,
+            "total": 1
+          }
+        }
+      },
+      "additional_integer_equivalence_passes": []
+    }
+  }
+}

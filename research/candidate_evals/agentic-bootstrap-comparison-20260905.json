@@ -1,0 +1,131 @@
+{
+  "kind": "matched_initial_schema_order_pilot",
+  "same_ordered_audio_scorer_runtime": true,
+  "baseline": "agentic-bootstrap-control-20260905.json",
+  "trial": "agentic-bootstrap-trial-20260905.json",
+  "initial_tools": {
+    "baseline": [
+      "get_time",
+      "calculate",
+      "load_tools",
+      "recall",
+      "memory",
+      "web_search",
+      "list_skills",
+      "use_skill"
+    ],
+    "trial": [
+      "get_time",
+      "calculate",
+      "load_tools",
+      "recall",
+      "memory",
+      "web_search",
+      "list_skills",
+      "use_skill",
+      "computer_do",
+      "computer_look"
+    ]
+  },
+  "baseline_summary": {
+    "passed": 3,
+    "total": 11,
+    "pass_rate": 0.2727272727272727,
+    "routing_passed": 4,
+    "routing_total": 10,
+    "routing_rate": 0.4,
+    "answer_passed": 5,
+    "answer_total": 8,
+    "errors": 0,
+    "unexpected_markup": 0,
+    "safety_failures": 0,
+    "latency_ms": {
+      "median": 3337.6160839980002,
+      "p95": 4515.082999998413
+    },
+    "by_tag": {
+      "routing": {
+        "passed": 3,
+        "total": 7
+      },
+      "files": {
+        "passed": 0,
+        "total": 4
+      },
+      "memory": {
+        "passed": 0,
+        "total": 1
+      },
+      "code": {
+        "passed": 0,
+        "total": 1
+      },
+      "multistep": {
+        "passed": 0,
+        "total": 1
+      },
+      "multiturn": {
+        "passed": 0,
+        "total": 2
+      },
+      "recovery": {
+        "passed": 0,
+        "total": 1
+      }
+    }
+  },
+  "trial_summary": {
+    "passed": 5,
+    "total": 11,
+    "pass_rate": 0.45454545454545453,
+    "routing_passed": 4,
+    "routing_total": 10,
+    "routing_rate": 0.4,
+    "answer_passed": 7,
+    "answer_total": 8,
+    "errors": 0,
+    "unexpected_markup": 0,
+    "safety_failures": 0,
+    "latency_ms": {
+      "median": 3126.9351250011823,
+      "p95": 4301.812541998515
+    },
+    "by_tag": {
+      "routing": {
+        "passed": 3,
+        "total": 7
+      },
+      "files": {
+        "passed": 0,
+        "total": 4
+      },
+      "memory": {
+        "passed": 0,
+        "total": 1
+      },
+      "code": {
+        "passed": 0,
+        "total": 1
+      },
+      "multistep": {
+        "passed": 0,
+        "total": 1
+      },
+      "multiturn": {
+        "passed": 2,
+        "total": 2
+      },
+      "recovery": {
+        "passed": 0,
+        "total": 1
+      }
+    }
+  },
+  "numeric_diagnostic": "agentic-bootstrap-numeric-20260905.json",
+  "diagnostic_passed": {
+    "baseline": 5,
+    "trial": 5
+  },
+  "decision": "research_only_no_action_fulfillment_gain",
+  "note": "Two improved original scores reflect digits rather than spelled numbers. Routing remains 4/10; file/code/memory action failures persist. Late schemas are present, but this pilot does not establish them as the cause of broad agentic failure."
+}

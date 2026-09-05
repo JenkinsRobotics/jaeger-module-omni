@@ -279,6 +279,8 @@ def main() -> int:
     parser.add_argument("--prepare-only", action="store_true")
     parser.add_argument("--discovery-hint", action="store_true",
                         help="research A/B: expose toolset descriptions and require capability discovery before declining")
+    parser.add_argument("--bootstrap-skills", action="store_true",
+                        help="research A/B: load initial skill tools before building the neural system prefix")
     parser.add_argument("--max-tokens", type=int, default=96)
     parser.add_argument("--case-timeout-s", type=float, default=45.0,
                         help="hard per-row deadline; zero disables")
@@ -293,6 +295,11 @@ def main() -> int:
         print(f"prepared {len(fixtures)} audio fixtures in {args.audio_cache}")
         return 0
 
+    workspace_context = tempfile.TemporaryDirectory(prefix="jaeger-deep-agent-")
+    if args.bootstrap_skills:
+        from jaeger_agent_omni.core.agentic.workspace import ensure_bound
+        from jaeger_agent_omni.core.agentic.runtime import _load_skills
+        _load_skills(ensure_bound(workspace_context.name))
     preparation = prepare_agentic_system(SYSTEM)
     if args.discovery_hint:
         from jaeger_agent_omni.core.agentic.omni_runtime import toolset_scoping
@@ -314,7 +321,7 @@ def main() -> int:
     active_session = None
     runtime = None
     policy = PermissionPolicy(confirmation=CorpusPermissionProvider())
-    with (tempfile.TemporaryDirectory(prefix="jaeger-deep-agent-") as workspace,
+    with (workspace_context as workspace,
           use_policy(policy)):
         for index, (lane, case, wav) in enumerate(fixtures):
             session_key = f"{lane}:{case.session or case.id}"
@@ -323,7 +330,8 @@ def main() -> int:
                 session.respond, session.cancel = native_respond, native_cancel
                 runtime = OmniAgentRuntime(
                     session, preparation, eos_ids=meta["eos"],
-                    max_tokens=args.max_tokens, workspace=workspace)
+                    max_tokens=args.max_tokens, workspace=workspace,
+                    load_skills=not args.bootstrap_skills)
                 session.respond = runtime.respond_native
                 session.cancel = runtime.interrupt
                 active_session = session_key
@@ -395,6 +403,8 @@ def main() -> int:
         "text_or_transcript_fed_to_model": False,
         "fixture_voice": args.voice,
         "discovery_hint": args.discovery_hint,
+        "bootstrap_skills": args.bootstrap_skills,
+        "initial_tools": [tool.name for tool in preparation.initial_tools],
         "system_sha256": hashlib.sha256(preparation.system.encode()).hexdigest(),
         "code_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         "case_sources_sha256": {

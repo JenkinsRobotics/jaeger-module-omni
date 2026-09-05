@@ -1,7 +1,7 @@
 {
   "date": "2026-09-05",
   "kind": "observed_cpu_verification",
-  "git_head": "350bc023c27967646da855a6ca6334557687ca7a",
+  "git_head": "d7e94463e367fd925961306f77154034fa0887fd",
   "checks": [
     {
       "command": [
@@ -19,7 +19,7 @@
         "research/check_all.py"
       ],
       "exit_code": 0,
-      "result": "31/31 in 8.4s"
+      "result": "31/31 in 7.9s"
     },
     {
       "command": [
@@ -49,7 +49,17 @@
         "jaeger_agent_omni/tests"
       ],
       "exit_code": 0,
-      "result": "62 passed, 6 subtests passed in 3.18s"
+      "result": "65 passed, 14 subtests passed in 2.91s"
+    },
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "jaeger_agent_omni.live",
+        "--demo"
+      ],
+      "exit_code": 0,
+      "result": "passed"
     }
   ],
   "limitations": [
@@ -58,6 +68,11 @@
   "source_sha256": {
     "jaeger_agent_omni/converse.py": "f66064e0a355ddb99d851de2261662c8aadb46cebf9fa2d348bd381a26600068",
     "jaeger_agent_omni/tests/converse_sim.py": "6abd6725c9113aa819b39e9515395ecfc0e4508b0e7b7e6925f3f0b5c6b1105a",
-    "research/check_all.py": "275537f2800a03f7fa01f58a522eda93721c5a7ea293a43fe426d4609dab505e"
-  }
+    "research/check_all.py": "275537f2800a03f7fa01f58a522eda93721c5a7ea293a43fe426d4609dab505e",
+    "jaeger_agent_omni/live.py": "6b0ced1b9e8c9b52681c5fee8b2d4d045c872076a3786f37cb940c48d80d4e0c",
+    "jaeger_agent_omni/core/runtime/neural_vad.py": "c06a6b4b6ea872962f0423f68d2fe6229074f6f889ee36b99ce738041aa71291",
+    "jaeger_agent_omni/core/agentic/omni_runtime.py": "aa4809da9bf5dd52dc1b08a229389cef3dcb68c8b7dace3ed4278b7fd2f88861",
+    "research/benchmark_agentic_corpus.py": "39ab83345d35f42b5d78cc66b011c764cccd36f9cb51c3f360b1af8c6419d779"
+  },
+  "no_weights_added_since_routing_commit": true
 }
