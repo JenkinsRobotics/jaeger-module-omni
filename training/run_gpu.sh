@@ -10,7 +10,7 @@ fi
 ENTRYPOINT=$1
 shift
 case "$ENTRYPOINT" in
-    training/parallel_overlap.py|training/cleanroom_context_ce.py|training/port_cleanroom_large.py|training/context_distill.py|training/context_ce.py|training/precompute_stock_encoder.py|training/stock_whisper_gemma.py|jaeger_agent_omni/nodes/neural-acoustic-controller/train.py|jaeger_agent_omni/tests/converse_sim.py|research/converse_ear_wer.py|research/converse_context_eval.py|research/benchmark_agentic_corpus.py|research/physical_omni_trial.py|research/transfer_probe.py|research/direct_whisper_wer.py|research/latency_breakdown.py|research/streaming_stability.py|research/causal_adapter_check.py)
+    training/parallel_overlap.py|training/cleanroom_context_ce.py|training/port_cleanroom_large.py|training/context_distill.py|training/context_ce.py|training/precompute_stock_encoder.py|training/stock_whisper_gemma.py|jaeger_agent_omni/nodes/neural-acoustic-controller/train.py|jaeger_agent_omni/tests/converse_sim.py|research/converse_ear_wer.py|research/converse_context_eval.py|research/converse_answer_eval.py|research/benchmark_agentic_corpus.py|research/physical_omni_trial.py|research/transfer_probe.py|research/direct_whisper_wer.py|research/latency_breakdown.py|research/streaming_stability.py|research/causal_adapter_check.py)
         ;;
     *)
         echo "REFUSING: unapproved GPU entrypoint $ENTRYPOINT" >&2
@@ -18,7 +18,7 @@ case "$ENTRYPOINT" in
         ;;
 esac
 
-GPU_PATTERN='converse_context_eval\.py|physical_omni_trial\.py|parallel_overlap\.py train|converse_sim\.py|converse_ear_wer\.py|training/train\.py|training/(cleanroom_context_ce|port_cleanroom_large|context_(distill|ce)|context_train)\.py|training/precompute_stock_encoder\.py|training/stock_whisper_gemma\.py (precompute|pretrain-ctc|distill|train|probe|geometry|wer|bench)|neural-acoustic-controller/train\.py|jaeger_agent_omni\.benchmark|research/(transfer_probe|direct_whisper_wer|latency_breakdown|streaming_stability|causal_adapter_check|benchmark_agentic_(omni|corpus)|duplex_check)\.py|eval/benchmark_suite\.py|cleanroom_(train|distill)\.py|compare_tracks\.py|train_audio_adapter\.py'
+GPU_PATTERN='converse_answer_eval\.py|converse_context_eval\.py|physical_omni_trial\.py|parallel_overlap\.py train|converse_sim\.py|converse_ear_wer\.py|training/train\.py|training/(cleanroom_context_ce|port_cleanroom_large|context_(distill|ce)|context_train)\.py|training/precompute_stock_encoder\.py|training/stock_whisper_gemma\.py (precompute|pretrain-ctc|distill|train|probe|geometry|wer|bench)|neural-acoustic-controller/train\.py|jaeger_agent_omni\.benchmark|research/(transfer_probe|direct_whisper_wer|latency_breakdown|streaming_stability|causal_adapter_check|benchmark_agentic_(omni|corpus)|duplex_check)\.py|eval/benchmark_suite\.py|cleanroom_(train|distill)\.py|compare_tracks\.py|train_audio_adapter\.py'
 CONFLICTS=()
 while IFS= read -r PID; do
     [[ -n "$PID" ]] || continue

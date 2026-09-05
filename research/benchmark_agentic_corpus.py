@@ -142,6 +142,12 @@ def native_turn(session, meta, audio, *, max_tokens):
     return session.respond(max_tokens=max_tokens, eos_ids=meta["eos"])
 
 
+def reset_case_session(session):
+    from jaeger_agent_omni.core.skill_registry import toolset_scoping
+    session.reset()
+    toolset_scoping.reset_toolsets()
+
+
 def _tool_hit(name: str, observed: list[str]) -> bool:
     return name in observed or bool(
         UMBRELLA_EQUIVALENTS.get(name, set()).intersection(observed))
@@ -313,7 +319,7 @@ def main() -> int:
         for index, (lane, case, wav) in enumerate(fixtures):
             session_key = f"{lane}:{case.session or case.id}"
             if session_key != active_session:
-                session.reset()
+                reset_case_session(session)
                 session.respond, session.cancel = native_respond, native_cancel
                 runtime = OmniAgentRuntime(
                     session, preparation, eos_ids=meta["eos"],
@@ -384,6 +390,7 @@ def main() -> int:
         "evaluation": "free_running_synthetic_audio_native",
         "teacher_forced": False,
         "native_history_retained_within_case_session": True,
+        "tool_visibility_reset_between_case_sessions": True,
         "text_or_transcript_fed_to_model": False,
         "fixture_voice": args.voice,
         "discovery_hint": args.discovery_hint,

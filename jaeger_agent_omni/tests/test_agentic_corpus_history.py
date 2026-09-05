@@ -3,10 +3,19 @@ from unittest.mock import Mock
 
 import numpy as np
 
-from research.benchmark_agentic_corpus import native_turn
+from research.benchmark_agentic_corpus import native_turn, reset_case_session
 
 
 class AgenticCorpusHistoryTests(unittest.TestCase):
+    def test_new_case_cannot_inherit_discovered_tool_visibility(self):
+        from jaeger_agent_omni.core.skill_registry import toolset_scoping
+        toolset_scoping.enable_toolset("files")
+        self.assertIn("files", toolset_scoping.active_toolset_names())
+        session = Mock()
+        reset_case_session(session)
+        self.assertNotIn("files", toolset_scoping.active_toolset_names())
+        session.reset.assert_called_once_with()
+
     def test_native_siblings_keep_cache_and_feed_only_audio(self):
         session = Mock()
         session.respond.return_value = "answer"
