@@ -27,6 +27,9 @@ regresses from **48/955 edits (5.03%) to 53/955 (5.55%)**. Full-ear HEARD is
 52/955 without and 51/955 with context. Original transcription-only scores
 are separate. Paired populations, the shared scorer, and all raw arm results:
 `research/candidate_evals/converse-context-comparison-20260905.json`.
+Opt-in runtime half campaign passes 12/12 structural checks, but one hold-expiry
+answer speaks its speaker annotation; this is an additional quality failure.
+Evidence: `research/candidate_evals/final-context-optin-half-20260905.json`.
 
 2026-09-04 heads-free causal port **rejected**. Same frozen medium encoder,
 40,915,456 adapter parameters, and Gemma; a causal mask plus 500 steps of
