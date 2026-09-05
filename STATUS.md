@@ -2,6 +2,23 @@
 
 Measured ledger. Every claim here has a command that reproduces it.
 
+2026-09-04 parallel raw-audio overlap trials remain **rejected**. Speaker and
+AMI participant-group disjoint splits: 4,712 train / 1,645 validation / 789 test.
+A causal log-mel TCN (128-wide, five blocks, eight epochs) reaches test F1
+0.575 synthetic / 0.725 AMI. A distinct 192-wide, six-block trial with temporal
+loss and macro-corpus validation selection reaches 0.633 / 0.728; event false
+alarms remain 20.93 / 45.77 per minute, onset p95 760 / 320 ms. Neither meets
+the 0.81 F1 bar or event reliability gates. No runtime policy changed.
+Commands, checkpoint hashes, epoch curves and held-out metrics:
+`research/candidate_evals/parallel-overlap-trial{,2}-20260904.json`.
+
+2026-09-04 contiguous AEC stress rerun: all 43 near-end events detected,
+zero false barges, p95 **601.9 ms** (300 ms gate still red). Replaying 36
+global threshold/confirmation combinations reproduced the baseline; no
+sub-300 ms candidate retained zero false barges. Production AEC unchanged.
+Evidence: `research/candidate_evals/aec-contiguous-20260904.json` and
+`research/candidate_evals/aec-policy-trials-20260904.json`.
+
 2026-09-04 tier routing verified with real models: **27/27 campaign**.
 Half/quasi select unchanged `jaegeromni-41m-medium`; full retains causal
 `jaegeromni-41m-converse`. Matched devclean64 (955 words): medium/causal
