@@ -480,7 +480,8 @@ class MlxGemmaAudioTranscriber:
 
     def respond(self, waveform: np.ndarray, system: str | None = None,
                 history: tuple | list = (),
-                max_tokens: int | None = None
+                max_tokens: int | None = None,
+                user_context: str | None = None,
                 ) -> tuple[str, dict[str, float | int]]:
         """DIRECT REPLY from audio embeddings — the same frozen Gemma that
         receives the adapter output ANSWERS it; understanding never passes
@@ -492,7 +493,9 @@ class MlxGemmaAudioTranscriber:
         contract already enforced there)."""
         msgs = ([{"role": "system", "content": system}] if system else [])
         msgs += list(history)
-        msgs += [{"role": "user", "content": AUDIO_MARKER}]
+        content = (f"[context: {user_context}]\n{AUDIO_MARKER}"
+                   if user_context else AUDIO_MARKER)
+        msgs += [{"role": "user", "content": content}]
         rendered = self.tokenizer.apply_chat_template(
             msgs, tokenize=False, add_generation_prompt=True)
         if AUDIO_MARKER not in rendered:

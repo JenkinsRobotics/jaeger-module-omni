@@ -41,6 +41,8 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--output", type=Path, required=True)
     p.add_argument("--speaker-labels", choices=("oracle", "ecapa"), default="oracle")
+    p.add_argument("--turn-context", action="store_true",
+                   help="research trial: place current identity on the audio user turn, with explicit binding rules")
     args = p.parse_args()
     from training.context_distill import refuse_gpu_contention
     refuse_gpu_contention()
@@ -80,10 +82,17 @@ def main():
                     ctx = speaker_node.context(label)
                     system = converse.NN_SYSTEM
                     if arm != "off" and ctx:
-                        system += f"\n\n[context: {ctx}]"
+                        if args.turn_context:
+                            system += ("\nEach user turn may identify its speaker in a context label. "
+                                       "Keep each speaker's facts separate. I and my refer to the "
+                                       "speaker labeled on the current user turn. HEARD must contain "
+                                       "only the current audio's words, never a prior turn's words.")
+                        else:
+                            system += f"\n\n[context: {ctx}]"
                     started = time.monotonic()
                     raw, stats = ear.respond(waveform, system=system,
-                                             history=history, max_tokens=140)
+                                             history=history, max_tokens=140,
+                                             user_context=ctx if args.turn_context and arm != "off" else None)
                     heard, reply = converse.parse_heard_reply(raw)
                     history_words = heard
                     if arm == "current_and_history" and ctx:
@@ -110,6 +119,7 @@ def main():
                for arm in ("off", "current_only", "current_and_history")}
     report = {"command": [sys.executable, *sys.argv], "summary": summary, "rows": rows,
               "speaker_labels": args.speaker_labels,
+              "turn_context": args.turn_context,
               "scope": "24 synthetic two-voice fixtures; oracle utilization or real ECAPA turn labels as selected",
               "node": converse.semantic_node_id("half"),
               "adapter_sha256": hashlib.sha256((converse.HERE / "nodes" /
