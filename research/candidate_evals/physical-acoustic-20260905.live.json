@@ -1,0 +1,1182 @@
+{
+  "artifacts": {
+    "meeting_minutes": null,
+    "recording_dir": "research/candidate_evals/physical-acoustic-20260905.audio"
+  },
+  "configuration": {
+    "aec": true,
+    "aec_reference_mode": "contiguous",
+    "aec_requested": true,
+    "agentic": true,
+    "barge_policy": "stop",
+    "cooldown_s": 4.0,
+    "duplex_mode": "full",
+    "interaction_mode": "companion",
+    "max_context": 4500,
+    "observer_mode": false,
+    "seconds": 300.0,
+    "silence_ms": 510.0,
+    "speakers": 0,
+    "speed": 1.0,
+    "threshold": 0.012,
+    "vad": "neural",
+    "vad_close": 0.125,
+    "vad_open": 0.3,
+    "voice": "af_heart"
+  },
+  "errors": [],
+  "finished_at": "2026-09-05T08:07:06.499996+00:00",
+  "host": {
+    "hostname": "Mac-Studio-3.localdomain",
+    "pid": 58365,
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.11.9"
+  },
+  "interactions": [
+    {
+      "action": "stop",
+      "evidence": {
+        "clean_rms": 0.04370254650712013,
+        "raw_reference_correlation": 0.0,
+        "raw_rms": 0.04370254650712013,
+        "residual_reference_correlation": 0.0
+      },
+      "kind": "speech_during_agent_output",
+      "monotonic_s": 34086.13754225,
+      "sequence": 1,
+      "stage": "generation"
+    },
+    {
+      "action": "stop",
+      "evidence": {
+        "clean_rms": 0.06937699764966965,
+        "raw_reference_correlation": 0.0,
+        "raw_rms": 0.06937699764966965,
+        "residual_reference_correlation": 0.0
+      },
+      "kind": "speech_during_agent_output",
+      "monotonic_s": 34093.538209666,
+      "sequence": 2,
+      "stage": "generation"
+    },
+    {
+      "action": "stop",
+      "evidence": {
+        "clean_rms": 0.05629179626703262,
+        "raw_reference_correlation": 0.0,
+        "raw_rms": 0.05629179626703262,
+        "residual_reference_correlation": 0.0
+      },
+      "kind": "speech_during_agent_output",
+      "monotonic_s": 34102.538732041,
+      "sequence": 3,
+      "stage": "generation"
+    },
+    {
+      "action": "stop",
+      "evidence": {
+        "clean_rms": 0.06906287372112274,
+        "raw_reference_correlation": 0.0,
+        "raw_rms": 0.06906287372112274,
+        "residual_reference_correlation": 0.0
+      },
+      "kind": "speech_during_agent_output",
+      "monotonic_s": 34109.137939416,
+      "sequence": 4,
+      "stage": "generation"
+    },
+    {
+      "action": "stop",
+      "evidence": {
+        "clean_rms": 0.05593135207891464,
+        "raw_reference_correlation": 0.0,
+        "raw_rms": 0.05593135207891464,
+        "residual_reference_correlation": 0.0
+      },
+      "kind": "speech_during_agent_output",
+      "monotonic_s": 34111.5379085,
+      "sequence": 5,
+      "stage": "generation"
+    },
+    {
+      "action": "stop",
+      "evidence": {
+        "clean_rms": 0.0546058751642704,
+        "raw_reference_correlation": 0.0,
+        "raw_rms": 0.0546058751642704,
+        "residual_reference_correlation": 0.0
+      },
+      "kind": "speech_during_agent_output",
+      "monotonic_s": 34113.638054083,
+      "sequence": 6,
+      "stage": "generation"
+    },
+    {
+      "action": "stop",
+      "evidence": {
+        "clean_rms": 0.07882008701562881,
+        "raw_reference_correlation": 0.0,
+        "raw_rms": 0.07882008701562881,
+        "residual_reference_correlation": 0.0
+      },
+      "kind": "speech_during_agent_output",
+      "monotonic_s": 34116.337865958,
+      "sequence": 7,
+      "stage": "generation"
+    },
+    {
+      "action": "stop",
+      "evidence": {
+        "clean_rms": 0.07250259071588516,
+        "raw_reference_correlation": 0.0,
+        "raw_rms": 0.07250259071588516,
+        "residual_reference_correlation": 0.0
+      },
+      "kind": "speech_during_agent_output",
+      "monotonic_s": 34123.837942166,
+      "sequence": 8,
+      "stage": "generation"
+    },
+    {
+      "action": "stop",
+      "evidence": {
+        "clean_rms": 0.054910749197006226,
+        "raw_reference_correlation": 0.0,
+        "raw_rms": 0.054910749197006226,
+        "residual_reference_correlation": 0.0
+      },
+      "kind": "speech_during_agent_output",
+      "monotonic_s": 34134.938141,
+      "sequence": 9,
+      "stage": "generation"
+    },
+    {
+      "action": "stop",
+      "evidence": {
+        "clean_rms": 0.06132063269615173,
+        "raw_reference_correlation": 0.0,
+        "raw_rms": 0.06132063269615173,
+        "residual_reference_correlation": 0.0
+      },
+      "kind": "speech_during_agent_output",
+      "monotonic_s": 34136.440041375,
+      "sequence": 10,
+      "stage": "generation"
+    },
+    {
+      "action": "stop",
+      "evidence": {
+        "clean_rms": 0.05019788816571236,
+        "raw_reference_correlation": 0.0,
+        "raw_rms": 0.05019788816571236,
+        "residual_reference_correlation": 0.0
+      },
+      "kind": "speech_during_agent_output",
+      "monotonic_s": 34143.038557083,
+      "sequence": 11,
+      "stage": "generation"
+    },
+    {
+      "action": "stop",
+      "evidence": {
+        "clean_rms": 0.055896319448947906,
+        "raw_reference_correlation": 0.0,
+        "raw_rms": 0.055896319448947906,
+        "residual_reference_correlation": 0.0
+      },
+      "kind": "speech_during_agent_output",
+      "monotonic_s": 34143.938256208,
+      "sequence": 12,
+      "stage": "generation"
+    },
+    {
+      "action": "stop",
+      "evidence": {
+        "clean_rms": 0.06435609608888626,
+        "raw_reference_correlation": 0.0,
+        "raw_rms": 0.06435609608888626,
+        "residual_reference_correlation": 0.0
+      },
+      "kind": "speech_during_agent_output",
+      "monotonic_s": 34152.538384791,
+      "sequence": 13,
+      "stage": "generation"
+    },
+    {
+      "action": "stop",
+      "evidence": {
+        "clean_rms": 0.05894444137811661,
+        "raw_reference_correlation": 0.0,
+        "raw_rms": 0.05894444137811661,
+        "residual_reference_correlation": 0.0
+      },
+      "kind": "speech_during_agent_output",
+      "monotonic_s": 34163.638290625,
+      "sequence": 14,
+      "stage": "generation"
+    },
+    {
+      "action": "stop",
+      "evidence": {
+        "clean_rms": 0.05910937860608101,
+        "raw_reference_correlation": 0.0,
+        "raw_rms": 0.05910937860608101,
+        "residual_reference_correlation": 0.0
+      },
+      "kind": "speech_during_agent_output",
+      "monotonic_s": 34172.238419333,
+      "sequence": 15,
+      "stage": "generation"
+    },
+    {
+      "action": "stop",
+      "evidence": {
+        "clean_rms": 0.04732722043991089,
+        "raw_reference_correlation": 0.0,
+        "raw_rms": 0.04732722043991089,
+        "residual_reference_correlation": 0.0
+      },
+      "kind": "speech_during_agent_output",
+      "monotonic_s": 34195.038808666,
+      "sequence": 16,
+      "stage": "generation"
+    },
+    {
+      "action": "stop",
+      "evidence": {
+        "clean_rms": 0.05200520530343056,
+        "raw_reference_correlation": 0.0,
+        "raw_rms": 0.05200520530343056,
+        "residual_reference_correlation": 0.0
+      },
+      "kind": "speech_during_agent_output",
+      "monotonic_s": 34215.039014583,
+      "sequence": 17,
+      "stage": "generation"
+    },
+    {
+      "action": "stop",
+      "evidence": {
+        "clean_rms": 0.07119767367839813,
+        "raw_reference_correlation": 0.0,
+        "raw_rms": 0.07119767367839813,
+        "residual_reference_correlation": 0.0
+      },
+      "kind": "speech_during_agent_output",
+      "monotonic_s": 34226.339115625,
+      "sequence": 18,
+      "stage": "generation"
+    },
+    {
+      "action": "stop",
+      "evidence": {
+        "clean_rms": 0.06275849044322968,
+        "raw_reference_correlation": 0.0,
+        "raw_rms": 0.06275849044322968,
+        "residual_reference_correlation": 0.0
+      },
+      "kind": "speech_during_agent_output",
+      "monotonic_s": 34228.339096291,
+      "sequence": 19,
+      "stage": "generation"
+    },
+    {
+      "action": "stop",
+      "evidence": {
+        "clean_rms": 0.04816810414195061,
+        "raw_reference_correlation": 0.0,
+        "raw_rms": 0.04816810414195061,
+        "residual_reference_correlation": 0.0
+      },
+      "kind": "speech_during_agent_output",
+      "monotonic_s": 34229.838886625,
+      "sequence": 20,
+      "stage": "generation"
+    },
+    {
+      "action": "stop",
+      "evidence": {
+        "clean_rms": 0.05954032763838768,
+        "raw_reference_correlation": 0.0,
+        "raw_rms": 0.05954032763838768,
+        "residual_reference_correlation": 0.0
+      },
+      "kind": "speech_during_agent_output",
+      "monotonic_s": 34234.239301833,
+      "sequence": 21,
+      "stage": "generation"
+    },
+    {
+      "action": "stop",
+      "evidence": {
+        "clean_rms": 0.08020243793725967,
+        "raw_reference_correlation": 0.0,
+        "raw_rms": 0.08020243793725967,
+        "residual_reference_correlation": 0.0
+      },
+      "kind": "speech_during_agent_output",
+      "monotonic_s": 34237.340198666,
+      "sequence": 22,
+      "stage": "generation"
+    },
+    {
+      "action": "stop",
+      "evidence": {
+        "clean_rms": 0.046048056334257126,
+        "raw_reference_correlation": 0.0,
+        "raw_rms": 0.046048056334257126,
+        "residual_reference_correlation": 0.0
+      },
+      "kind": "speech_during_agent_output",
+      "monotonic_s": 34238.03912025,
+      "sequence": 23,
+      "stage": "generation"
+    },
+    {
+      "action": "stop",
+      "evidence": {
+        "clean_rms": 0.043554745614528656,
+        "raw_reference_correlation": 0.0,
+        "raw_rms": 0.043554745614528656,
+        "residual_reference_correlation": 0.0
+      },
+      "kind": "speech_during_agent_output",
+      "monotonic_s": 34246.039252125,
+      "sequence": 24,
+      "stage": "generation"
+    },
+    {
+      "action": "stop",
+      "evidence": {
+        "clean_rms": 0.05237096548080444,
+        "raw_reference_correlation": 0.0,
+        "raw_rms": 0.05237096548080444,
+        "residual_reference_correlation": 0.0
+      },
+      "kind": "speech_during_agent_output",
+      "monotonic_s": 34246.939366583,
+      "sequence": 25,
+      "stage": "generation"
+    },
+    {
+      "action": "stop",
+      "evidence": {
+        "clean_rms": 0.20013836026191711,
+        "raw_reference_correlation": 0.0,
+        "raw_rms": 0.20013836026191711,
+        "residual_reference_correlation": 0.0
+      },
+      "kind": "speech_during_agent_output",
+      "monotonic_s": 34260.939335083,
+      "sequence": 26,
+      "stage": "generation"
+    },
+    {
+      "action": "stop",
+      "evidence": {
+        "clean_rms": 0.03974807634949684,
+        "raw_reference_correlation": 0.0,
+        "raw_rms": 0.03974807634949684,
+        "residual_reference_correlation": 0.0
+      },
+      "kind": "speech_during_agent_output",
+      "monotonic_s": 34263.44792425,
+      "sequence": 27,
+      "stage": "generation"
+    },
+    {
+      "action": "stop",
+      "evidence": {
+        "clean_rms": 0.12047954648733139,
+        "raw_reference_correlation": 0.0,
+        "raw_rms": 0.12047954648733139,
+        "residual_reference_correlation": 0.0
+      },
+      "kind": "speech_during_agent_output",
+      "monotonic_s": 34283.638476666,
+      "sequence": 28,
+      "stage": "generation"
+    },
+    {
+      "action": "stop",
+      "evidence": {
+        "clean_rms": 0.04977607727050781,
+        "raw_reference_correlation": 0.0,
+        "raw_rms": 0.04977607727050781,
+        "residual_reference_correlation": 0.0
+      },
+      "kind": "speech_during_agent_output",
+      "monotonic_s": 34285.645881291,
+      "sequence": 29,
+      "stage": "generation"
+    },
+    {
+      "action": "stop",
+      "evidence": {
+        "clean_rms": 0.049821220338344574,
+        "raw_reference_correlation": 0.0,
+        "raw_rms": 0.049821220338344574,
+        "residual_reference_correlation": 0.0
+      },
+      "kind": "speech_during_agent_output",
+      "monotonic_s": 34291.540423833,
+      "sequence": 30,
+      "stage": "generation"
+    },
+    {
+      "action": "stop",
+      "evidence": {
+        "clean_rms": 0.0323597677052021,
+        "raw_reference_correlation": 0.0,
+        "raw_rms": 0.0323597677052021,
+        "residual_reference_correlation": 0.0
+      },
+      "kind": "speech_during_agent_output",
+      "monotonic_s": 34304.142036375,
+      "sequence": 31,
+      "stage": "generation"
+    },
+    {
+      "action": "stop",
+      "evidence": {
+        "clean_rms": 0.02875704877078533,
+        "raw_reference_correlation": 0.0,
+        "raw_rms": 0.02875704877078533,
+        "residual_reference_correlation": 0.0
+      },
+      "kind": "speech_during_agent_output",
+      "monotonic_s": 34326.945562625,
+      "sequence": 32,
+      "stage": "generation"
+    },
+    {
+      "action": "stop",
+      "evidence": {
+        "clean_rms": 0.03193780407309532,
+        "raw_reference_correlation": 0.0,
+        "raw_rms": 0.03193780407309532,
+        "residual_reference_correlation": 0.0
+      },
+      "kind": "speech_during_agent_output",
+      "monotonic_s": 34334.939028708,
+      "sequence": 33,
+      "stage": "generation"
+    },
+    {
+      "action": "stop",
+      "evidence": {
+        "clean_rms": 0.02816479280591011,
+        "raw_reference_correlation": 0.0,
+        "raw_rms": 0.02816479280591011,
+        "residual_reference_correlation": 0.0
+      },
+      "kind": "speech_during_agent_output",
+      "monotonic_s": 34353.639361458,
+      "sequence": 34,
+      "stage": "generation"
+    }
+  ],
+  "kind": "jaeger_duplex_run",
+  "metrics": {
+    "aec": {
+      "alignment_corrections": 0,
+      "attenuation_db": 0.0,
+      "available": true,
+      "estimated_drift_ppm": 0.0,
+      "estimated_lag_ms": 0.0,
+      "raw_reference_correlation_last": 0.0,
+      "reference_mode": "contiguous",
+      "reference_overflow_seconds": 0.0,
+      "reference_underflow_seconds": 0.0,
+      "residual_reference_correlation_last": 0.0,
+      "seconds_cancelled": 0.0
+    },
+    "agentic": {
+      "enabled": true,
+      "last_halt_reason": "interrupted",
+      "last_iterations": 1,
+      "tool_calls": 0,
+      "tool_names": []
+    },
+    "audio_chunks": 8,
+    "barge_events": 34,
+    "barge_stops": 0,
+    "companion": {
+      "decisions": [
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34086.594623583,
+          "raw": "[halted: interrupted]",
+          "reason": "malformed_control",
+          "response": "",
+          "speaker": null,
+          "valid": false
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34093.583399458,
+          "raw": "[halted: interrupted]",
+          "reason": "malformed_control",
+          "response": "",
+          "speaker": null,
+          "valid": false
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34102.575713791,
+          "raw": "[halted: interrupted]",
+          "reason": "malformed_control",
+          "response": "",
+          "speaker": null,
+          "valid": false
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34109.192060041,
+          "raw": "[halted: interrupted]",
+          "reason": "malformed_control",
+          "response": "",
+          "speaker": null,
+          "valid": false
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34111.611759708,
+          "raw": "[halted: interrupted]",
+          "reason": "malformed_control",
+          "response": "",
+          "speaker": null,
+          "valid": false
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34113.692227041,
+          "raw": "[halted: interrupted]",
+          "reason": "malformed_control",
+          "response": "",
+          "speaker": null,
+          "valid": false
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34116.375499291,
+          "raw": "[halted: interrupted]",
+          "reason": "malformed_control",
+          "response": "",
+          "speaker": null,
+          "valid": false
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34123.871985291,
+          "raw": "[halted: interrupted]",
+          "reason": "malformed_control",
+          "response": "",
+          "speaker": null,
+          "valid": false
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34135.020644958,
+          "raw": "[halted: interrupted]",
+          "reason": "malformed_control",
+          "response": "",
+          "speaker": null,
+          "valid": false
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34136.520905041,
+          "raw": "[halted: interrupted]",
+          "reason": "malformed_control",
+          "response": "",
+          "speaker": null,
+          "valid": false
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34143.075644541,
+          "raw": "[halted: interrupted]",
+          "reason": "malformed_control",
+          "response": "",
+          "speaker": null,
+          "valid": false
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34143.985313083,
+          "raw": "[halted: interrupted]",
+          "reason": "malformed_control",
+          "response": "",
+          "speaker": null,
+          "valid": false
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34152.5593825,
+          "raw": "[halted: interrupted]",
+          "reason": "malformed_control",
+          "response": "",
+          "speaker": null,
+          "valid": false
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34163.724975208,
+          "raw": "[halted: interrupted]",
+          "reason": "malformed_control",
+          "response": "",
+          "speaker": null,
+          "valid": false
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34172.276244416,
+          "raw": "[halted: interrupted]",
+          "reason": "malformed_control",
+          "response": "",
+          "speaker": null,
+          "valid": false
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34195.089889541,
+          "raw": "[halted: interrupted]",
+          "reason": "malformed_control",
+          "response": "",
+          "speaker": null,
+          "valid": false
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34215.127523625,
+          "raw": "[halted: interrupted]",
+          "reason": "malformed_control",
+          "response": "",
+          "speaker": null,
+          "valid": false
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34226.411165583,
+          "raw": "[halted: interrupted]",
+          "reason": "malformed_control",
+          "response": "",
+          "speaker": null,
+          "valid": false
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34228.355345625,
+          "raw": "DECISION",
+          "reason": "malformed_control",
+          "response": "",
+          "speaker": null,
+          "valid": false
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34229.916086625,
+          "raw": "[halted: interrupted]",
+          "reason": "malformed_control",
+          "response": "",
+          "speaker": null,
+          "valid": false
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34234.315375125,
+          "raw": "[halted: interrupted]",
+          "reason": "malformed_control",
+          "response": "",
+          "speaker": null,
+          "valid": false
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34237.4231055,
+          "raw": "[halted: interrupted]",
+          "reason": "malformed_control",
+          "response": "",
+          "speaker": null,
+          "valid": false
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34238.100681833,
+          "raw": "[halted: interrupted]",
+          "reason": "malformed_control",
+          "response": "",
+          "speaker": null,
+          "valid": false
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34246.118920875,
+          "raw": "[halted: interrupted]",
+          "reason": "malformed_control",
+          "response": "",
+          "speaker": null,
+          "valid": false
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34246.953808583,
+          "raw": "DECISION",
+          "reason": "malformed_control",
+          "response": "",
+          "speaker": null,
+          "valid": false
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34261.010668416,
+          "raw": "[halted: interrupted]",
+          "reason": "malformed_control",
+          "response": "",
+          "speaker": null,
+          "valid": false
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34263.535204291,
+          "raw": "[halted: interrupted]",
+          "reason": "malformed_control",
+          "response": "",
+          "speaker": null,
+          "valid": false
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34283.6698215,
+          "raw": "[halted: interrupted]",
+          "reason": "malformed_control",
+          "response": "",
+          "speaker": null,
+          "valid": false
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34285.734283416,
+          "raw": "[halted: interrupted]",
+          "reason": "malformed_control",
+          "response": "",
+          "speaker": null,
+          "valid": false
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34291.623894791,
+          "raw": "[halted: interrupted]",
+          "reason": "malformed_control",
+          "response": "",
+          "speaker": null,
+          "valid": false
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34304.182824416,
+          "raw": "[halted: interrupted]",
+          "reason": "malformed_control",
+          "response": "",
+          "speaker": null,
+          "valid": false
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34327.051655083,
+          "raw": "[halted: interrupted]",
+          "reason": "malformed_control",
+          "response": "",
+          "speaker": null,
+          "valid": false
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34334.965399166,
+          "raw": "[halted: interrupted]",
+          "reason": "malformed_control",
+          "response": "",
+          "speaker": null,
+          "valid": false
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 34353.679357291,
+          "raw": "[halted: interrupted]",
+          "reason": "malformed_control",
+          "response": "",
+          "speaker": null,
+          "valid": false
+        }
+      ],
+      "enabled": true,
+      "listen": 34,
+      "respond": 0
+    },
+    "completed_replies": 0,
+    "context_rolls": 2,
+    "dropped_seconds": 0.0,
+    "end_to_audio": {
+      "max_ms": null,
+      "median_ms": null,
+      "n": 0,
+      "p95_ms": null
+    },
+    "endpoint_events": [
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end"
+    ],
+    "fed_seconds": 299.9,
+    "final_cache_tokens": 2457,
+    "half_duplex_muted_seconds": 0.0,
+    "interrupt_rewind_failures": 32,
+    "interrupts": 32,
+    "memory": {
+      "mlx_active_mb": 4519.6,
+      "mlx_peak_mb": 5873.3,
+      "rss_peak_mb": 6672.8
+    },
+    "mic_queue_overflow_blocks": 0,
+    "mic_queue_overflow_seconds": 0.0,
+    "neural_perception_shadow": [
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      }
+    ],
+    "peak_loop_lag_ms": 169.87862499809125,
+    "synthesis": {
+      "max_ms": null,
+      "median_ms": null,
+      "n": 0,
+      "p95_ms": null
+    },
+    "turns": 34,
+    "vad": {
+      "close_threshold": 0.125,
+      "frames": 9838,
+      "max": 0.959818959236145,
+      "mean": 0.09584619198164869,
+      "mode": "neural",
+      "open_threshold": 0.3
+    },
+    "wall_seconds": 300.1803168330007
+  },
+  "model": {
+    "checkpoint": "a7f96bfb8898",
+    "id": "jaegeromni-41m-medium",
+    "name": "JaegerOmni 41M Medium"
+  },
+  "passed_runtime": true,
+  "phase": "physical-room",
+  "replies": [],
+  "schema_version": 1,
+  "source": "Elgato XLR Dock",
+  "speaker_labels": [],
+  "started_at": "2026-09-05T08:02:02.740203+00:00"
+}
