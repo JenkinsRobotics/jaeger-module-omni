@@ -1,0 +1,147 @@
+<div id="jaeger-pc-lab">
+  <style>
+    #jaeger-pc-lab {color:var(--foreground);}
+    #jaeger-pc-lab .sensors {display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px;margin:20px 0;}
+    #jaeger-pc-lab .sensor {display:grid;gap:4px;}
+    #jaeger-pc-lab .sensor-value {font-variant-numeric:tabular-nums;}
+    #jaeger-pc-lab .sensor-dot {display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;}
+    #jaeger-pc-lab svg {display:block;width:100%;margin:16px 0;}
+    #jaeger-pc-lab svg text {fill:var(--foreground);font-size:12px;}
+    #jaeger-pc-lab output {display:block;margin:12px 0;overflow-wrap:anywhere;}
+    #jaeger-pc-lab .numbers {display:grid;gap:8px;}
+  </style>
+  <h2>Predictive coding lab · measured CPU experiments</h2>
+  <div class="viz-controls">
+    <label class="form-label">Experiment
+      <select class="form-select" data-control="demo">
+        <option value="sensory">1 · Explaining noisy senses</option>
+        <option value="world">2 · Learning a moving world</option>
+      </select>
+    </label>
+  </div>
+  <section data-panel="sensory">
+    <h3>Predictions settle toward sensory evidence</h3>
+    <div class="viz-controls">
+      <label class="form-label">Prior belief
+        <select class="form-select" data-control="prior">
+          <option value="neutral">Weak, neutral prior</option>
+          <option value="strong_wrong">Strong, incorrect prior</option>
+        </select>
+      </label>
+      <label class="form-label">Settling step <span data-label="sensory-step" class="tabular-nums">0 / 40</span>
+        <input class="form-range" data-control="sensory-step" type="range" min="0" max="40" value="0">
+      </label>
+    </div>
+    <output data-output="energy" aria-live="polite"></output>
+    <div class="viz-row text-small"><span>● Prediction</span><span>○ Noisy observation</span><span>Truth: evaluation only</span></div>
+    <div class="sensors" data-output="sensors"></div>
+    <div class="text-small">Fixed linear world model · four sensors missing · inference only</div>
+  </section>
+  <section data-panel="world" hidden>
+    <h3>Predicting 50 future steps without new observations</h3>
+    <div class="viz-controls">
+      <label class="form-label">Run seed <select class="form-select" data-control="seed"></select></label>
+      <label class="form-label">World
+        <select class="form-select" data-control="world">
+          <option value="test">Held-out trajectories</option>
+          <option value="shifted_test">Restoring force +50%</option>
+        </select>
+      </label>
+      <label class="form-label">Backprop control
+        <select class="form-select" data-control="budget">
+          <option value="backprop">Same update count</option>
+          <option value="backprop_matched_time">Same training time</option>
+        </select>
+      </label>
+      <label class="form-label">Future step <span data-label="world-step" class="tabular-nums">0 / 50</span>
+        <input class="form-range" data-control="world-step" type="range" min="0" max="50" value="0">
+      </label>
+    </div>
+    <svg data-output="motion" role="img" aria-label="Position of the real and predicted moving object, in dimensionless world units"></svg>
+    <output data-output="world-metrics" class="numbers tabular-nums" aria-live="polite"></output>
+    <div class="text-small">Synthetic oscillator · local PC training uses settling · deployed predictor uses one forward pass</div>
+  </section>
+  <script type="application/json" id="jaeger-pc-data">__MEASURED_DATA__</script>
+  <script>
+  (() => {
+    const root = document.getElementById('jaeger-pc-lab');
+    const data = JSON.parse(document.getElementById('jaeger-pc-data').textContent);
+    const control = key => root.querySelector(`[data-control="${key}"]`);
+    const output = key => root.querySelector(`[data-output="${key}"]`);
+    const label = key => root.querySelector(`[data-label="${key}"]`);
+    const fmt = x => Number(x).toFixed(4);
+    const ns = 'http://www.w3.org/2000/svg';
+    const node = (name, attrs, text) => {
+      const n = document.createElementNS(ns, name);
+      Object.entries(attrs).forEach(([k,v]) => n.setAttribute(k,v));
+      if (text !== undefined) n.textContent = text;
+      return n;
+    };
+    data.learning.forEach((run,i) => {
+      const option = document.createElement('option'); option.value = i;
+      option.textContent = run.seed; control('seed').append(option);
+    });
+    function sensory() {
+      const demo = data.sensory;
+      const trace = demo.traces[control('prior').value];
+      control('sensory-step').max = trace.length-1;
+      const k = Number(control('sensory-step').value), state = trace[k];
+      label('sensory-step').textContent = `${k} / ${trace.length-1}`;
+      const missing = demo.mask.map((m,i) => m ? null : (state.prediction[i]-demo.clean[i])**2).filter(v => v!==null);
+      output('energy').textContent = `Internal error energy: ${fmt(state.energy)} · Missing-sensor MSE: ${fmt(missing.reduce((a,b)=>a+b,0)/missing.length)}`;
+      output('sensors').replaceChildren();
+      state.prediction.forEach((v,i) => {
+        const cell = document.createElement('div'); cell.className = 'sensor';
+        const heading = document.createElement('span'); heading.textContent = `Sensor ${i+1}${demo.mask[i] ? '' : ' · missing'}`;
+        const predicted = document.createElement('span'); predicted.className = 'sensor-value';
+        const dot = document.createElement('span'); dot.className = 'sensor-dot'; dot.style.background = 'var(--viz-series-1)'; dot.setAttribute('aria-hidden','true');
+        predicted.append(dot,`${fmt(v)} predicted`);
+        const observed = document.createElement('span'); observed.className = 'sensor-value text-small';
+        observed.textContent = demo.observed[i] === null ? '○ Not observed' : `○ ${fmt(demo.observed[i])} observed`;
+        const truth = document.createElement('span'); truth.className = 'sensor-value text-small'; truth.textContent = `Truth ${fmt(demo.clean[i])}`;
+        cell.append(heading,predicted,observed,truth); output('sensors').append(cell);
+      });
+    }
+    function world() {
+      if (root.querySelector('[data-panel="world"]').hidden) return;
+      const run = data.learning[Number(control('seed').value)];
+      const split = control('world').value, bp = control('budget').value;
+      const pc = run.arms.local_pc, backprop = run.arms[bp];
+      const truth = split === 'test' ? run.test_example : run.shifted_example;
+      const series = [truth,pc[split].example_rollout,backprop[split].example_rollout];
+      const names = ['World','Local predictive coding','Backpropagation'];
+      const k = Number(control('world-step').value);
+      label('world-step').textContent = `${k} / ${truth.length-1}`;
+      const svg = output('motion'), width = svg.getBoundingClientRect().width;
+      svg.setAttribute('viewBox',`0 0 ${width} 305`); svg.replaceChildren();
+      const positions = series.flat().map(s=>s[0]);
+      const lo = Math.min(...positions), hi = Math.max(...positions), span = hi-lo || 1;
+      const xmin = lo-.05*span, xmax = hi+.05*span;
+      const scale = x => 18+(x-xmin)/(xmax-xmin)*(width-36);
+      series.forEach((values,i) => {
+        const y = 40+i*84, color = `var(--viz-series-${i+1})`;
+        svg.append(node('text',{x:18,y:y-18},`${names[i]} · x ${fmt(values[k][0])}`));
+        svg.append(node('line',{x1:18,x2:width-18,y1:y,y2:y,stroke:'var(--border)'}));
+        svg.append(node('circle',{cx:scale(values[k][0]),cy:y,r:8,fill:color}));
+        svg.append(node('text',{x:18,y:y+22},`Velocity ${fmt(values[k][1])}`));
+      });
+      svg.append(node('text',{x:18,y:293},`${fmt(xmin)} ← Position (world units) → ${fmt(xmax)}`));
+      output('world-metrics').replaceChildren();
+      [[pc,'Local PC'],[backprop,'Backprop']].forEach(([arm,name])=>{
+        const row = document.createElement('span');
+        row.textContent = `${name}: next-step MSE ${arm[split].one_step_mse.toExponential(2)} · 50-step rollout MSE ${fmt(arm[split].free_rollout_mse_50_steps)} · ${arm.updates} updates in ${arm.train_seconds.toFixed(2)} s`;
+        output('world-metrics').append(row);
+      });
+    }
+    control('demo').addEventListener('change',()=>{
+      root.querySelector('[data-panel="sensory"]').hidden = control('demo').value!=='sensory';
+      root.querySelector('[data-panel="world"]').hidden = control('demo').value!=='world';
+      sensory(); world();
+    });
+    ['prior','sensory-step'].forEach(k=>control(k).addEventListener('input',sensory));
+    ['seed','world','budget','world-step'].forEach(k=>control(k).addEventListener('input',world));
+    new ResizeObserver(world).observe(root);
+    sensory();
+  })();
+  </script>
+</div>

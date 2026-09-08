@@ -1,0 +1,34 @@
+{
+  "command": [
+    "/usr/local/bin/node",
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/predictive_coding/check_view.mjs",
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/artifacts/predictive-coding/browser-check/node_modules/playwright/index.mjs"
+  ],
+  "checks": [
+    {
+      "width": 360,
+      "colorScheme": "light",
+      "passed": true,
+      "page_errors": []
+    },
+    {
+      "width": 360,
+      "colorScheme": "dark",
+      "passed": true,
+      "page_errors": []
+    },
+    {
+      "width": 736,
+      "colorScheme": "light",
+      "passed": true,
+      "page_errors": []
+    },
+    {
+      "width": 736,
+      "colorScheme": "dark",
+      "passed": true,
+      "page_errors": []
+    }
+  ],
+  "html_sha256": "71cf44cd960a984456201ff83702667a927965efbc1233886d13fb4b1c57e799"
+}

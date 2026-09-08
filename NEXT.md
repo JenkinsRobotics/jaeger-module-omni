@@ -1,5 +1,14 @@
 # Next steps — current plan
 
+2026-09-07 user-directed side research: develop biologically inspired local
+learning and internal prediction models. The CPU-only
+[`predictive coding lab`](research/predictive_coding/README.md) now demonstrates
+sensory inference and actual local-error learning against matched backprop
+controls. Three toy-world seeds reach near-identical quality; no production
+benefit or biological equivalence is established. Next research step is a
+controlled causal-audio experiment on the disjoint overlap corpus. This research
+does not promote a node or change the release gates below.
+
 2026-09-05 tested selection: **quasi default**, medium on half/quasi, current
 causal ear on full. Final conversation campaign **27/27**, selftest **18/18**,
 package tests **65**, module checks **31/31**, vision/text/voice memory **4/4**.
