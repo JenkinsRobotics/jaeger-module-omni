@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """Run Jaeger's 81+81 agent corpus through Omni as native synthetic audio.
 
-Case text is used only by the external Kokoro fixture builder. Gemma receives
+By default case text is used only by the external Kokoro fixture builder. Gemma receives
 the resulting waveform through Whisper + the selected neural adapter; no case
 prompt or transcript is fed into its input path. All mutable tools are bound to
 a temporary workspace. The two legacy speech-tool expectations are adapted to
 Omni's automatic output router (`read_file` for read-aloud, no TTS call).
+The explicitly labeled --input-mode text arm supplies the same request as text.
 """
 
 from __future__ import annotations
@@ -142,6 +143,39 @@ def native_turn(session, meta, audio, *, max_tokens):
     return session.respond(max_tokens=max_tokens, eos_ids=meta["eos"])
 
 
+def native_text_control(session, meta, text, *, max_tokens):
+    """Explicit research control: replace only the audio span with user tokens.
+
+    Keep the same frozen Gemma, system, KV cache and agent loop. Never called
+    from a microphone path; this benchmark arm deliberately receives truth text.
+    """
+    session.open_turn()
+    prefix, suffix = session._prompt_parts()
+    tokens = session.tokenizer.encode(text, add_special_tokens=False)
+    session._prefill(prefix + tokens + suffix[:-1])
+    session._response_seed = int(suffix[-1])
+    session._turn_prefix_open = True
+    session._turn_closed = True
+    return session.respond(max_tokens=max_tokens, eos_ids=meta["eos"])
+
+
+def artifact_snapshot(workspace):
+    """Record actual small-file state in the disposable tool destinations."""
+    result = {}
+    root = Path(workspace)
+    for directory in (root / "skills", root / "workspace"):
+        if directory.exists():
+            for path in directory.rglob("*"):
+                if (path.is_file() and not path.is_symlink() and
+                        ".git" not in path.parts and path.stat().st_size <= 65536):
+                    content = path.read_bytes()
+                    result[str(path.relative_to(root))] = {
+                        "sha256": hashlib.sha256(content).hexdigest(),
+                        "content": content.decode("utf-8", errors="replace"),
+                    }
+    return result
+
+
 def reset_case_session(session):
     from jaeger_agent_omni.core.skill_registry import toolset_scoping
     session.reset()
@@ -271,6 +305,8 @@ def main() -> int:
     parser.add_argument("--ids", default="")
     parser.add_argument("--limit", type=int, default=0)
     parser.add_argument("--front-end", default="jaegeromni-41m-medium")
+    parser.add_argument("--input-mode", choices=("speech", "text"), default="speech",
+                        help="explicit matched text control; never a runtime transcript bridge")
     parser.add_argument("--model", default=MODEL)
     parser.add_argument("--voice", default="af_heart")
     parser.add_argument("--audio-cache", type=Path,
@@ -285,6 +321,9 @@ def main() -> int:
     parser.add_argument("--case-timeout-s", type=float, default=45.0,
                         help="hard per-row deadline; zero disables")
     args = parser.parse_args()
+    from research.agentic_outcomes import check_outcome
+    contract_path = ROOT / 'research/agentic_outcome_contract.json'
+    outcomes = json.loads(contract_path.read_text())['cases']
 
     selected = _selected(
         args.suite, [x for x in args.tags.split(",") if x],
@@ -337,11 +376,16 @@ def main() -> int:
                 active_session = session_key
             before = len(runtime.agent.messages)
             error = None
+            files_before = artifact_snapshot(workspace)
             started = time.monotonic()
             try:
                 with case_deadline(args.case_timeout_s):
-                    answer = native_turn(
-                        session, meta, read_wav(wav), max_tokens=args.max_tokens)
+                    if args.input_mode == "text":
+                        answer = native_text_control(session, meta, case.prompt,
+                                                     max_tokens=args.max_tokens)
+                    else:
+                        answer = native_turn(
+                            session, meta, read_wav(wav), max_tokens=args.max_tokens)
             except CaseDeadline as exc:
                 answer = ""
                 error = f"CaseDeadline: {exc}"
@@ -360,9 +404,12 @@ def main() -> int:
                     if isinstance(arguments, dict) and arguments.get("name"):
                         skills.append(str(arguments["name"]))
             scored = _score(case, tools, skills, answer, error)
+            files_after = artifact_snapshot(workspace)
             row = {
                 "lane": lane, "id": case.id, "session": session_key,
-                "prompt_ground_truth_not_fed": case.prompt,
+                "prompt_ground_truth_not_fed": case.prompt if args.input_mode == "speech" else None,
+                "prompt_fed_as_text": case.prompt if args.input_mode == "text" else None,
+                "input_mode": args.input_mode,
                 "audio": str(wav), "tags": list(case.tags),
                 "audio_sha256": hashlib.sha256(wav.read_bytes()).hexdigest(),
                 "tools_called": tools, "skills_viewed": skills,
@@ -370,8 +417,17 @@ def main() -> int:
                 "latency_ms": latency_ms,
                 "iterations": runtime.agent.last_iteration_count,
                 "halt_reason": runtime.agent.last_halt_reason,
+                "tool_calls": calls,
+                "tool_results": [m for m in messages if m.get("role") == "tool"],
+                "file_changes": {name: {"before": files_before.get(name),
+                                        "after": files_after.get(name)}
+                                 for name in sorted(set(files_before) | set(files_after))
+                                 if files_before.get(name) != files_after.get(name)},
                 **scored,
             }
+            contract = outcomes.get(f'{lane}:{case.id}')
+            row['outcome'] = (check_outcome(contract, files_before, files_after,
+                                            answer, error) if contract else None)
             rows.append(row)
             with progress_path.open("a", encoding="utf-8") as handle:
                 handle.write(json.dumps(row) + "\n")
@@ -384,6 +440,14 @@ def main() -> int:
                 active_session = None
 
     summary = summarize(rows)
+    outcome_rows = [r for r in rows if r['outcome'] is not None]
+    summary['verified_file_outcomes'] = {
+        'passed': sum(r['outcome']['pass'] for r in outcome_rows),
+        'total': len(outcome_rows),
+        'contract_sha256': hashlib.sha256(contract_path.read_bytes()).hexdigest(),
+        'scope': 'declared file tasks only; original corpus grading unchanged',
+        'fabricated_success_certified_absent': False,
+    }
     # Same advisory floor as Jaeger's legacy full suite, plus the stricter
     # routing floor. Raw values remain in the artifact even when the gate fails.
     gates = {
@@ -395,12 +459,13 @@ def main() -> int:
     }
     report = {
         "schema_version": 1,
-        "kind": "jaeger_agentic_native_audio_corpus",
-        "evaluation": "free_running_synthetic_audio_native",
+        "kind": "jaeger_agentic_native_audio_corpus" if args.input_mode == "speech" else "jaeger_agentic_text_control_corpus",
+        "evaluation": "free_running_synthetic_audio_native" if args.input_mode == "speech" else "free_running_truth_text_control",
         "teacher_forced": False,
         "native_history_retained_within_case_session": True,
         "tool_visibility_reset_between_case_sessions": True,
-        "text_or_transcript_fed_to_model": False,
+        "text_or_transcript_fed_to_model": args.input_mode == "text",
+        "input_mode": args.input_mode,
         "fixture_voice": args.voice,
         "discovery_hint": args.discovery_hint,
         "bootstrap_skills": args.bootstrap_skills,

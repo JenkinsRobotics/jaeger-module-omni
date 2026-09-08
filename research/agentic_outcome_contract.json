@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "scope": "12 existing file-task rows; not full demo acceptance or semantic success-claim certification",
+  "cases": {
+    "a:write_bench_txt": {
+      "file": "bench.txt",
+      "content": "hello from the benchmark",
+      "operation": "write"
+    },
+    "a:ms_calc_and_save": {
+      "file": "math.txt",
+      "content": "1093",
+      "operation": "write",
+      "numeric": true
+    },
+    "a:ms_write_append_read": {
+      "file": "todo.txt",
+      "lines": [
+        "buy milk",
+        "walk dog"
+      ],
+      "answer_contains": [
+        "buy milk",
+        "walk dog"
+      ],
+      "operation": "write"
+    },
+    "a:mt_file_round_1": {
+      "file": "level3_test.txt",
+      "content": "sea otters are mammals",
+      "operation": "write"
+    },
+    "a:mt_file_round_2": {
+      "file": "level3_test.txt",
+      "content": "sea otters are mammals",
+      "answer_contains": [
+        "sea otters are mammals"
+      ],
+      "operation": "read"
+    },
+    "a:mt_file_round_3": {
+      "file": "level3_test.txt",
+      "operation": "delete"
+    },
+    "b:write_bench_txt": {
+      "file": "probe.txt",
+      "content": "greetings from the test suite",
+      "operation": "write"
+    },
+    "b:ms_calc_and_save": {
+      "file": "sums.txt",
+      "content": "1807",
+      "operation": "write",
+      "numeric": true
+    },
+    "b:ms_write_append_read": {
+      "file": "grocery.txt",
+      "lines": [
+        "buy eggs",
+        "get bread"
+      ],
+      "answer_contains": [
+        "buy eggs",
+        "get bread"
+      ],
+      "operation": "write"
+    },
+    "b:mt_file_round_1": {
+      "file": "chain_note.txt",
+      "content": "penguins are birds",
+      "operation": "write"
+    },
+    "b:mt_file_round_2": {
+      "file": "chain_note.txt",
+      "content": "penguins are birds",
+      "answer_contains": [
+        "penguins are birds"
+      ],
+      "operation": "read"
+    },
+    "b:mt_file_round_3": {
+      "file": "chain_note.txt",
+      "operation": "delete"
+    }
+  }
+}
