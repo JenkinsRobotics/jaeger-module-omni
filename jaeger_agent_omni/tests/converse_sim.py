@@ -269,6 +269,15 @@ def sc_followup(mode):
          and not seen_since("unintelligible", mark))
     playback_done(mode)
 
+def sc_turn_echo_audit(mode):
+    """A speech detector must not turn its own answer into another request."""
+    before = len(TEE.lines)
+    sc_wake(mode)
+    time.sleep(3.0)
+    replies = [line for line in TEE.lines[before:] if line.lstrip().startswith('⏵ agent:')]
+    step('one reply for one user request', len(replies) == 1,
+         extra=f'{len(replies)} replies without a second user request')
+
 def sc_hold_merge(mode):
     time.sleep(0.5)
     MIC.say(user("Please tell me the capital of"))
@@ -496,6 +505,7 @@ def sc_vision_extended(mode):
 
 
 SESSIONS = {
+    "turn-audit":     ("quasi", "continue", [sc_turn_echo_audit]),
     "half":           ("half",  "stop",     [sc_wake, sc_followup,
                                              sc_hold_merge, sc_hold_expiry,
                                              sc_typed_memory, sc_dismissal]),
@@ -569,6 +579,8 @@ def main():
             "turn_runtime_sha256": hashlib.sha256((V2/'nodes'/TURN_NODE/'runtime.py').read_bytes()).hexdigest(),
             "converse_sha256": hashlib.sha256((V2 / "converse.py").read_bytes()).hexdigest(),
             "harness_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+            "audio_fixtures_sha256": {p.name: hashlib.sha256(p.read_bytes()).hexdigest()
+                                      for p in sorted(CACHE.glob('*.npy'))},
             "runtime_errors": runtime_errors, "runtime_stopped": not th.is_alive(),
             "gate_valid": not runtime_errors and not th.is_alive(),
             "visual_fixtures": {p.name: hashlib.sha256(p.read_bytes()).hexdigest()

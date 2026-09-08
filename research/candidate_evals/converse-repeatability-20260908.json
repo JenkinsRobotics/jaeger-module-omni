@@ -1,0 +1,42 @@
+{
+  "latest_runs": [
+    {
+      "mode": "half",
+      "artifact": "research/candidate_evals/converse-half-20260908.json",
+      "sha256": "756b56805d2305ead37ba114b69626078bb3205d361f704c20565c16193b7c01",
+      "passed": 12,
+      "total": 12,
+      "gate_valid": true
+    },
+    {
+      "mode": "quasi",
+      "artifact": "research/candidate_evals/converse-quasi-20260908.json",
+      "sha256": "7dd6f929f76eced2b432ec1e8fde592ed8a6c01537663fda6261628d106d8dee",
+      "passed": 6,
+      "total": 6,
+      "gate_valid": true
+    },
+    {
+      "mode": "barge-continue",
+      "artifact": "research/candidate_evals/converse-barge-continue-diagnostic-20260908.json",
+      "sha256": "89418f66cacb7b049af4152cbfc1767c8fb72ee7af1f9bed126a35220b094272",
+      "passed": 4,
+      "total": 4,
+      "gate_valid": true
+    },
+    {
+      "mode": "full",
+      "artifact": "research/candidate_evals/converse-full-20260908.json",
+      "sha256": "83e159dadedb264c296535064ab067f1d55c5b7f8048e622a875adae76a692ba",
+      "passed": 5,
+      "total": 5,
+      "gate_valid": true
+    }
+  ],
+  "passed": 27,
+  "total": 27,
+  "consecutive_campaign_pass": false,
+  "initial_failure": "research/candidate_evals/converse-barge-continue-20260908.json",
+  "diagnostic_repeat_changes": "OMNI_SIM_DIAG=1 adds frame RMS/state logging; production logic unchanged",
+  "interpretation": "All 27 checks passed across latest runs; one initial overtalk failure means repeatability is not established. Do not call this a clean consecutive campaign."
+}

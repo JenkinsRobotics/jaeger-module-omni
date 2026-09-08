@@ -1,0 +1,97 @@
+{
+  "command": [
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+    "jaeger_agent_omni/tests/converse_sim.py",
+    "--session",
+    "full",
+    "--turn-node",
+    "para-turn-state-neural-v1",
+    "--output",
+    "research/candidate_evals/converse-neural-turn-full-20260908.json"
+  ],
+  "session": "full",
+  "mode": "full",
+  "barge": "stop",
+  "node": "jaegeromni-41m-converse",
+  "adapter_sha256": "dc087d7edf7990033ca8e994bed8f8196b56587c23b3bea8f0a1db8cb560f39e",
+  "turn_node": "para-turn-state-neural-v1",
+  "turn_node_sha256": "8d30bbba82f3c07af25c5a8764eee0cc4f386ca5a1bf84d97cb682ee86d341b9",
+  "turn_runtime_sha256": "031dee417c09f04844246d08cdabac0793e82a1f0a8d426fcf10b3fd4e002c94",
+  "converse_sha256": "5cd0c07586e05acdcec8eba3dbae071d23ddac15e443249eec21ec094eaf49b6",
+  "harness_sha256": "f2e202326cbdb9cf44800e842336f4dcc77df32d840c70868269952ad4eb7533",
+  "runtime_errors": [],
+  "runtime_stopped": true,
+  "gate_valid": true,
+  "visual_fixtures": {},
+  "perception_context": false,
+  "passed": 5,
+  "total": 5,
+  "checks": [
+    {
+      "name": "wake -> reply",
+      "passed": true
+    },
+    {
+      "name": "forming preview while listening",
+      "passed": true
+    },
+    {
+      "name": "long monologue answered",
+      "passed": true
+    },
+    {
+      "name": "farewell reply first",
+      "passed": true
+    },
+    {
+      "name": "close AFTER farewell",
+      "passed": true
+    }
+  ],
+  "log": [
+    "[converse] speaker+wake embeddings: ECAPA (trained NN)",
+    "[converse] semantic channel: jaegeromni-41m-converse (encoder\u2192adapter\u2192Gemma, no text seam)\u2026",
+    "[converse] perception heads: TRAINED (directed / turn_end / overlap / speaker_change on the trunk)",
+    "loading Kokoro\u2026",
+    "WARNING: Defaulting repo_id to hexgrad/Kokoro-82M. Pass repo_id='hexgrad/Kokoro-82M' to suppress this warning.",
+    "[converse] full duplex \u00b7 barge=stop \u00b7 say 'hey computer \u2026' or type (Enter). Ctrl-C to quit.",
+    "  \u22ef forming: Hey computer, what is two plus two?",
+    "  [context: speaker=S1 conf=100% pitch=193Hz]  Hey computer, what is two plus two?   [nn 0.62s ttft 0.17s]",
+    "  \u23f5 agent: Two plus two equals four.",
+    "  [SIM] PASS  wake -> reply",
+    "  [context: speaker=S2 conf=100% pitch=193Hz]  You first to me   [nn 0.90s ttft 0.25s]",
+    "  \u23f5 agent: I'm sorry, I didn't quite catch that. Could you say it again?",
+    "  \u2702 barged",
+    "  \u22ef forming: Hey computer, I really need your help.",
+    "  [SIM] PASS  forming preview while listening",
+    "  \u22ef forming: Hey computer, I really need your help planning a very big surprise.",
+    "  \u22ef forming: d your help planning a very big surprise birthday party for my younger",
+    "  \u22ef forming: SURPRISE BIRTHDAY PARTY FOR MY YOUNGER SISTER SOON SHE IS TURNING THIR",
+    "  \u22ef forming: ounger sister soon. She is turning 30 years old this month and she tru",
+    "  \u22ef forming: turning 30 years old this month and she truly loves smooth jazz music.",
+    "  \u22ef forming: this month and she truly loves smooth jazz music, rich chocolate cake.",
+    "  \u25b8 committed: Hey computer, I really need your help planning a very big surprise birthday party for my younger sister soon. She is turning 30 years old this month and she truly loves smooth jazz music.",
+    "  \u22ef forming: let's chocolate cake old films there will be about twenty different",
+    "  \u22ef forming:  old films there will be about twenty different guests coming over and",
+    "  \u22ef forming: out twenty different guests coming over and the total budget is around",
+    "  \u22ef forming:  coming over and the total budget is around five hundred whole dollars",
+    "  \u22ef forming: s around five hundred whole dollars a few of the guests are strict veg",
+    "  \u22ef forming: ed whole dollars a few of the guests are strict vegetarians and two of",
+    "  \u25b8 committed: let's chocolate cake old films there will be about twenty different guests coming over and the total budget is around five hundred whole dollars a few of the guests are strict vegetarians",
+    "  \u22ef forming: and two of them are also bringing their small young children along",
+    "  \u22ef forming: are also bringing their small young children along so given absolutely",
+    "  \u22ef forming: small young children along so given absolutely all of that information",
+    "  \u22ef forming: n absolutely all of that information what single party theme would you",
+    "  \u22ef forming: ormation what single party theme would you suggest that ties it all to",
+    "  \u23f5 heard (streamed): Hey computer, I really need your help planning a very big surprise birthday party for my younger sister soon. She is turning 30 years old this month and she truly loves smooth jazz music. let's chocolate cake old films there will be about twenty different guests coming over and the total budget is around five hundred whole dollars a few of the guests are strict vegetarians and two of them are also bringing their small young children along so given absolutely all of that information what single party theme would you suggest that ties it all together",
+    "  \u23f5 agent: [enthusiastic] A sophisticated \"Mid-Century Jazz Night\" theme would perfectly tie together the smooth jazz, old films, and elegant atmosphere. You could incorporate vintage decor, classic movies playing softly in the background, and a menu that caters to all dietary needs.",
+    "  [SIM] PASS  long monologue answered",
+    "  \u22ef forming: Hey computer thank you good bye",
+    "  [context: speaker=S1 conf=100% pitch=107Hz]  Hey computer, thank you. Goodbye.   [nn 1.02s ttft 0.40s]",
+    "  \u23f5 agent: You're welcome! Have a wonderful time planning the party.",
+    "  [SIM] PASS  farewell reply first",
+    "  [conversation closed]",
+    "  [SIM] PASS  close AFTER farewell",
+    "bye"
+  ]
+}

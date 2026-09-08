@@ -1,0 +1,93 @@
+{
+  "command": [
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+    "jaeger_agent_omni/tests/converse_sim.py",
+    "--session",
+    "quasi",
+    "--turn-node",
+    "para-turn-state-neural-v1",
+    "--output",
+    "research/candidate_evals/converse-neural-turn-quasi-20260908.json"
+  ],
+  "session": "quasi",
+  "mode": "quasi",
+  "barge": "stop",
+  "node": "jaegeromni-41m-medium",
+  "adapter_sha256": "a7f96bfb889866f75df7b838f84aae368a56ab10f6469e766511d700e32fe13a",
+  "turn_node": "para-turn-state-neural-v1",
+  "turn_node_sha256": "8d30bbba82f3c07af25c5a8764eee0cc4f386ca5a1bf84d97cb682ee86d341b9",
+  "turn_runtime_sha256": "031dee417c09f04844246d08cdabac0793e82a1f0a8d426fcf10b3fd4e002c94",
+  "converse_sha256": "5cd0c07586e05acdcec8eba3dbae071d23ddac15e443249eec21ec094eaf49b6",
+  "harness_sha256": "f2e202326cbdb9cf44800e842336f4dcc77df32d840c70868269952ad4eb7533",
+  "runtime_errors": [],
+  "runtime_stopped": true,
+  "gate_valid": true,
+  "visual_fixtures": {},
+  "perception_context": false,
+  "passed": 6,
+  "total": 6,
+  "checks": [
+    {
+      "name": "wake -> reply",
+      "passed": true
+    },
+    {
+      "name": "reply begins",
+      "passed": true
+    },
+    {
+      "name": "barge cuts playback",
+      "passed": true
+    },
+    {
+      "name": "barge speech answered",
+      "passed": true
+    },
+    {
+      "name": "farewell reply first",
+      "passed": true
+    },
+    {
+      "name": "close AFTER farewell",
+      "passed": true
+    }
+  ],
+  "log": [
+    "[converse] speaker+wake embeddings: ECAPA (trained NN)",
+    "[converse] semantic channel: jaegeromni-41m-medium (encoder\u2192adapter\u2192Gemma, no text seam)\u2026",
+    "loading Kokoro\u2026",
+    "WARNING: Defaulting repo_id to hexgrad/Kokoro-82M. Pass repo_id='hexgrad/Kokoro-82M' to suppress this warning.",
+    "[converse] quasi duplex \u00b7 barge=stop \u00b7 say 'hey computer \u2026' or type (Enter). Ctrl-C to quit.",
+    "  [context: speaker=S1 conf=100% pitch=193Hz]  Hey computer, what is two plus two?   [nn 0.75s ttft 0.24s]",
+    "  \u23f5 agent: It's four.",
+    "  [SIM] PASS  wake -> reply",
+    "  [context: speaker=S2 conf=100% pitch=193Hz]  It's four   [nn 0.62s ttft 0.26s]",
+    "  \u23f5 agent: That's correct.",
+    "  [SIM] actual playback observed",
+    "  [SIM] PASS  reply begins",
+    "  [context: speaker=S1 conf=100% pitch=254Hz]  what is the sun made of and why does it shine so very brightly up in the sky every single day   [nn 1.81s ttft 0.38s]",
+    "  \u23f5 agent: The sun is a giant ball of hot plasma, primarily composed of hydrogen and helium. It shines because it undergoes nuclear fusion in its core, which generates immense heat and light.",
+    "  [context: speaker=S1 conf=100% pitch=142Hz]  I have a different question for you right now, please just listen to me.   [nn 1.33s ttft 0.41s]",
+    "  \u23f5 agent: Sure, I'm ready when you are. What's on your mind?",
+    "  \u2702 barged",
+    "  [context: speaker=S1 conf=100% pitch=175Hz]  Stop, stop, please. I have a different question for you right now. Please just listen to me.   [nn 1.46s ttft 0.42s]",
+    "  \u23f5 agent: I'm here to listen, so please go ahead and ask your question.",
+    "  \u2702 barged",
+    "  [context: speaker=S1 conf=100% pitch=271Hz]  what is the sun so very brightly up in the sky every single day   [nn 1.56s ttft 0.48s]",
+    "  \u23f5 agent: The sun shines so brightly because it is a massive ball of hot plasma undergoing nuclear fusion in its core, which generates tremendous energy.",
+    "  [SIM] actual playback observed",
+    "  [SIM] PASS  barge cuts playback  \u00b7 after 2 attempt(s)",
+    "  [SIM] PASS  barge speech answered",
+    "  \u2702 barged",
+    "  [context: speaker=S1 conf=100% pitch=161Hz]  PLEASE I HAVE A DIFFERENT QUESTION FOR YOU RIGHT NOW PLEASE JUST LISTEN TO ME   [nn 1.37s ttft 0.56s]",
+    "  \u23f5 agent: Sure, I'm ready. What is your question?",
+    "  [SIM] PASS  farewell reply first",
+    "  [context: speaker=S1 conf=100% pitch=116Hz]  Stop, stop please. I have a different question for you right now.   [nn 1.34s ttft 0.53s]",
+    "  \u23f5 agent: Okay, I'm listening. What is your new question?",
+    "  [context: speaker=S1 conf=100% pitch=108Hz]  Hey computer, thank you, goodbye.   [nn 1.08s ttft 0.57s]",
+    "  \u23f5 agent: You're welcome! Goodbye.",
+    "  [conversation closed]",
+    "  [SIM] PASS  close AFTER farewell",
+    "bye"
+  ]
+}
