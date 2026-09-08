@@ -1,0 +1,46 @@
+[
+  {
+    "command": [
+      "training/run_gpu.sh",
+      "research/benchmark_agentic_corpus.py",
+      "--suite",
+      "both",
+      "--ids",
+      "a:ms_write_run_fib,b:ms_write_run_fib",
+      "--input-mode",
+      "speech",
+      "--bootstrap-files",
+      "--max-tokens",
+      "96",
+      "--case-timeout-s",
+      "20",
+      "--out",
+      "research/candidate_evals/agentic-code-budget96-20260908.json"
+    ],
+    "seconds": 27.20495420898078,
+    "exit_code": 1,
+    "log": "artifacts/paired-omni/code-budget96.log"
+  },
+  {
+    "command": [
+      "training/run_gpu.sh",
+      "research/benchmark_agentic_corpus.py",
+      "--suite",
+      "both",
+      "--ids",
+      "a:ms_write_run_fib,b:ms_write_run_fib",
+      "--input-mode",
+      "speech",
+      "--bootstrap-files",
+      "--max-tokens",
+      "256",
+      "--case-timeout-s",
+      "20",
+      "--out",
+      "research/candidate_evals/agentic-code-budget256-20260908.json"
+    ],
+    "seconds": 28.53743237501476,
+    "exit_code": 1,
+    "log": "artifacts/paired-omni/code-budget256.log"
+  }
+]

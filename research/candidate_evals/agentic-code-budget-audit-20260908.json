@@ -1,0 +1,21 @@
+{
+  "created_at": "2026-09-08T07:48:44.040057+00:00",
+  "hypothesis": "The 96-token budget truncates a tool-looking write_file response in one code task; compare larger budget without changing tool parser or prompt.",
+  "ids": [
+    "a:ms_write_run_fib",
+    "b:ms_write_run_fib"
+  ],
+  "arms_max_tokens": [
+    96,
+    256
+  ],
+  "case_timeout_s": 20,
+  "bootstrap_files": true,
+  "completion_hint": false,
+  "fixture_version": "v1",
+  "input_mode": "speech",
+  "primary_outcome": "actual script file creation AND successful execution with the requested result, audited from tool results and final file state",
+  "secondary_outcome": "original scorer and visible unexecuted tool protocol",
+  "stop_rule": "one paired two-case trial, no post-hoc prompt or parser changes",
+  "production_changed": false
+}
