@@ -1,0 +1,181 @@
+{
+  "command": [
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+    "research/neural_turn_probe.py",
+    "--output",
+    "research/candidate_evals/neural-turn-gain-probe-20260908.json"
+  ],
+  "sources_sha256": {
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/neural_turn_probe.py": "895beb4f0dfe901a331d01fd056647a423d6dd7ce172627f9db950373735ec1f",
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/jaeger_agent_omni/tests/simcache/hey_computer_what_is_two_plus_two_.npy": "174e4924d7abb0ffb9a59fb2b3f06989fb3fa273183ac6f0be6fb829224c4a5b",
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/jaeger_agent_omni/core/runtime/endpoint.py": "5ba150098028c091bd91a2d6e126f2d4d6a193e1b4d49c62275b0a13a22aa8a0",
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/jaeger_agent_omni/nodes/para-turn-state-v0/node.json": "55936c7ed4b08f248f8237fc6fe2479a283ad1ad0b0eba206f37b0fa9db0416a",
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/jaeger_agent_omni/nodes/para-turn-state-v0/runtime.py": "efb34f6023627c00a1d13d3c834de912da287b131f9c90aab3b826dc1c0fb88a",
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/jaeger_agent_omni/nodes/para-turn-state-neural-v1/node.json": "8d30bbba82f3c07af25c5a8764eee0cc4f386ca5a1bf84d97cb682ee86d341b9",
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/jaeger_agent_omni/nodes/para-turn-state-neural-v1/runtime.py": "031dee417c09f04844246d08cdabac0793e82a1f0a8d426fcf10b3fd4e002c94"
+  },
+  "rows": [
+    {
+      "kind": "speech",
+      "rms": 0.002,
+      "node": "para-turn-state-v0",
+      "endpoints_seconds": [],
+      "expected_one_or_more": true,
+      "detected_as_expected": false,
+      "process_p95_ms": 0.007341650780290363
+    },
+    {
+      "kind": "speech",
+      "rms": 0.002,
+      "node": "para-turn-state-neural-v1",
+      "endpoints_seconds": [
+        2.97
+      ],
+      "expected_one_or_more": true,
+      "detected_as_expected": true,
+      "process_p95_ms": 0.1752083888277411
+    },
+    {
+      "kind": "speech",
+      "rms": 0.006,
+      "node": "para-turn-state-v0",
+      "endpoints_seconds": [],
+      "expected_one_or_more": true,
+      "detected_as_expected": false,
+      "process_p95_ms": 0.006291759200394154
+    },
+    {
+      "kind": "speech",
+      "rms": 0.006,
+      "node": "para-turn-state-neural-v1",
+      "endpoints_seconds": [
+        3.06
+      ],
+      "expected_one_or_more": true,
+      "detected_as_expected": true,
+      "process_p95_ms": 0.17216679407283658
+    },
+    {
+      "kind": "speech",
+      "rms": 0.02,
+      "node": "para-turn-state-v0",
+      "endpoints_seconds": [
+        2.46
+      ],
+      "expected_one_or_more": true,
+      "detected_as_expected": true,
+      "process_p95_ms": 0.007458019535988569
+    },
+    {
+      "kind": "speech",
+      "rms": 0.02,
+      "node": "para-turn-state-neural-v1",
+      "endpoints_seconds": [
+        3.0
+      ],
+      "expected_one_or_more": true,
+      "detected_as_expected": true,
+      "process_p95_ms": 0.13999196235090494
+    },
+    {
+      "kind": "speech",
+      "rms": 0.05,
+      "node": "para-turn-state-v0",
+      "endpoints_seconds": [
+        2.52
+      ],
+      "expected_one_or_more": true,
+      "detected_as_expected": true,
+      "process_p95_ms": 0.006516173016279936
+    },
+    {
+      "kind": "speech",
+      "rms": 0.05,
+      "node": "para-turn-state-neural-v1",
+      "endpoints_seconds": [
+        2.82
+      ],
+      "expected_one_or_more": true,
+      "detected_as_expected": true,
+      "process_p95_ms": 0.13917459873482585
+    },
+    {
+      "kind": "noise",
+      "rms": 0.002,
+      "node": "para-turn-state-v0",
+      "endpoints_seconds": [],
+      "expected_one_or_more": false,
+      "detected_as_expected": true,
+      "process_p95_ms": 0.0061578000895679
+    },
+    {
+      "kind": "noise",
+      "rms": 0.002,
+      "node": "para-turn-state-neural-v1",
+      "endpoints_seconds": [],
+      "expected_one_or_more": false,
+      "detected_as_expected": true,
+      "process_p95_ms": 0.13734182575717568
+    },
+    {
+      "kind": "noise",
+      "rms": 0.006,
+      "node": "para-turn-state-v0",
+      "endpoints_seconds": [],
+      "expected_one_or_more": false,
+      "detected_as_expected": true,
+      "process_p95_ms": 0.006241642404347658
+    },
+    {
+      "kind": "noise",
+      "rms": 0.006,
+      "node": "para-turn-state-neural-v1",
+      "endpoints_seconds": [],
+      "expected_one_or_more": false,
+      "detected_as_expected": true,
+      "process_p95_ms": 0.14112542849034068
+    },
+    {
+      "kind": "noise",
+      "rms": 0.02,
+      "node": "para-turn-state-v0",
+      "endpoints_seconds": [
+        3.21
+      ],
+      "expected_one_or_more": false,
+      "detected_as_expected": false,
+      "process_p95_ms": 0.005591614171862601
+    },
+    {
+      "kind": "noise",
+      "rms": 0.02,
+      "node": "para-turn-state-neural-v1",
+      "endpoints_seconds": [],
+      "expected_one_or_more": false,
+      "detected_as_expected": true,
+      "process_p95_ms": 0.13216641964390874
+    },
+    {
+      "kind": "noise",
+      "rms": 0.05,
+      "node": "para-turn-state-v0",
+      "endpoints_seconds": [
+        3.24
+      ],
+      "expected_one_or_more": false,
+      "detected_as_expected": false,
+      "process_p95_ms": 0.00590858981013298
+    },
+    {
+      "kind": "noise",
+      "rms": 0.05,
+      "node": "para-turn-state-neural-v1",
+      "endpoints_seconds": [],
+      "expected_one_or_more": false,
+      "detected_as_expected": true,
+      "process_p95_ms": 0.27584161143749936
+    }
+  ],
+  "scope": "one cached synthetic phrase at four gains plus seeded noise; no AEC, overlap or physical claims",
+  "production_changed": false
+}
