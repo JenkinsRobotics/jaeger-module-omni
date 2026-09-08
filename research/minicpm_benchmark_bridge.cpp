@@ -22,3 +22,13 @@ extern "C" const char * paired_c_audio_prompt(void * context) {
     prompt = o->audio_voice_clone_prompt + o->audio_assistant_prompt;
     return prompt.c_str();
 }
+
+extern "C" void paired_c_audio_decode_template(void * context, int enabled) {
+    auto * o = static_cast<omni_context *>(context);
+    // Python chat() enables use_tts_template for every audio message, even
+    // when generate_audio=False. Apply this only after normal audio prefill:
+    // native audio markers remain intact, while no vocoder needs to run.
+    o->raw_audio_embedding_prompt = enabled != 0;
+    o->raw_audio_generation_prompt =
+        "<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n<|tts_bos|>";
+}

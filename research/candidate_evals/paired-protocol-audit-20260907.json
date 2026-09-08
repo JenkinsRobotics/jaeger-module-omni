@@ -1,6 +1,6 @@
 {
-  "status": "reference_protocol_not_qualified",
-  "claim": "No head-to-head superiority result is accepted from these runs.",
+  "status": "reference_audio_template_qualified_for_text_only_task_comparison",
+  "claim": "Only the corrected qualified reports support the paired audio comparison. Earlier diagnostic runs remain nonqualifying.",
   "records": [
     {
       "path": "research/candidate_evals/paired-minicpm-20260907.json",
@@ -33,6 +33,19 @@
       "reason": "Audio task/template validation incomplete; unexpected SOA filename or reasoning output on ASR."
     }
   ],
-  "next_validation": "Move the task before audio in the user message; compare native TTS template on a declared smoke subset before rerunning the full manifest.",
-  "latency_limit": "Exploratory timings only; dedicated quiet repeat required."
+  "latency_limit": "Qualified pair measures complete text requests on the same M1 Max; physical/TTS latency and full system memory remain unmeasured.",
+  "root_cause": "Official MiniCPM chat enables use_tts_template whenever an audio array is present, independently of generate_audio. The original native helper omitted this template when speech synthesis was disabled.",
+  "qualification": {
+    "text_with_and_without_vocoder_identical_on_smoke": true,
+    "smoke_rows": 2,
+    "qualified_run": "research/candidate_evals/paired-minicpm-qualified-20260907.json",
+    "comparison": "research/candidate_evals/paired-omni-comparison-20260907.json",
+    "full_system_comparison_complete": false,
+    "speech_quality_evaluated": false
+  },
+  "official_source": {
+    "path": "/Users/jonathanjenkins/.cache/huggingface/hub/models--openbmb--MiniCPM-o-4_5/snapshots/503e754207c94da6bb26850b4469f367c9ea3582/modeling_minicpmo.py",
+    "sha256": "25359f891d1aa81de16b51a24a97b8c8262b83ce3920c36b92be441fde8e4282",
+    "location": "chat(), audio content branch sets use_tts_template = True"
+  }
 }

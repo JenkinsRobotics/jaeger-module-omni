@@ -1,0 +1,117 @@
+{
+  "schema": 1,
+  "model": "minicpm",
+  "identity": {
+    "model": "/Users/jonathanjenkins/models/MiniCPM-o-4_5-gguf/MiniCPM-o-4_5-Q8_0.gguf",
+    "model_sha256": "ae6af22ad3b7f1a7bf667922af84b9eb3e2199cc86f402702eaf9b054054788d",
+    "shim_sha256": "50ee50f5cbc2aedc1bf52c5c7ce0de302b81095061351686049f7475f7c6759c",
+    "voice_reference_used": false,
+    "bridge_source_sha256": "668e6f82162e1167cb07e4c6b4a6f61f8b159b9e1399f6221f52485d9320a2c9",
+    "bridge_sha256": "3a5b33c979e811462049e9950e8fc80788cc928c44f1d80d99c3da6debdc3d28",
+    "engine_header_sha256": "e957e0f45790d3783ebaeafdd74b72b9865f54f17be1a6a9d7985fc96cabfb26",
+    "engine_library_sha256": "1f5d0dd3d893197dc55322d8ffad3745ec80c530047aff8b4cd012c312b059f6",
+    "tts": false,
+    "template": "user",
+    "runtime": "local llama.cpp-omni ctypes shim"
+  },
+  "manifest_sha256": "5952a720334b255001a959d7f0991cef83fb9b489d1a6404765ec80263ba9101",
+  "code_sha256": "b97edf097f6f3850323053377aee4ef447f754bdddbd6a880769be89f60ef837",
+  "scorer_sha256": {
+    "training/evaluate.py": "339bd69040ee922bb3c89168d1b079060e33ac358a0e30faed283aae6221169e",
+    "research/grading.py": "a507b15f2559e91de9e260f4856acd2deb49237094553dd154f95c82a6e70a61"
+  },
+  "prompts": {
+    "asr": "Repeat the spoken words exactly. Output only what was said, with no commentary or explanation.",
+    "answer": "You are a helpful voice assistant. The user's message arrives as speech. Reply with EXACTLY two lines:\nHEARD: <verbatim transcription of the speech>\nREPLY: <your answer in one or two short conversational sentences>"
+  },
+  "max_tokens": {
+    "asr": 128,
+    "answer": 140
+  },
+  "command": [
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+    "research/paired_omni_benchmark.py",
+    "run",
+    "--model",
+    "minicpm",
+    "--minicpm-template",
+    "user",
+    "--corpus",
+    "devclean",
+    "--limit",
+    "2",
+    "--output",
+    "research/candidate_evals/paired-minicpm-user-smoke-20260907.json"
+  ],
+  "host": "macOS-26.6.2-arm64-arm-64bit",
+  "rss_peak_bytes": 10799267840,
+  "memory_scope": "process peak RSS, not total unified/device memory; no memory superiority claim",
+  "latency_scope": "fresh request setup and system prefill through complete text; includes TTS drain only for user-tts; excludes model load, warmup and physical endpointing",
+  "population": "existing development gates; AMI training-adjacent; no fresh lockbox",
+  "summary": {
+    "devclean": {
+      "n": 2,
+      "wer": 0.4444444444444444,
+      "reference_words": 27,
+      "edits": 12,
+      "errors": 0,
+      "request_ms_median": 1439.6709165011998,
+      "request_ms_p95": 1631.540153847891
+    }
+  },
+  "rows": [
+    {
+      "id": "devclean:1272-128104-0000",
+      "task": "asr",
+      "corpus": "devclean",
+      "source_audio": "/Users/jonathanjenkins/datasets/librispeech/LibriSpeech/dev-clean/1272/128104/1272-128104-0000.flac",
+      "reference": "MISTER QUILTER IS THE APOSTLE OF THE MIDDLE CLASSES AND WE ARE GLAD TO WELCOME HIS GOSPEL",
+      "source_id": "1272-128104-0000",
+      "speaker": "1272",
+      "audio": "/Users/jonathanjenkins/models/jaeger-training-data/paired-omni-v1/7c73636fc5fd48f28c22.wav",
+      "audio_sha256": "799f78ed4beb4de7ceae3a809262d4ce242394342ccd1d58cef7d49dbc2def46",
+      "seconds": 5.855,
+      "source_audio_sha256": "4e25e22555cd16e90edb0a3b49fdcf1fe652b2a1250ab643634db33895c75b41",
+      "raw": "Mr. Quilter is the apostle of the middle classes, and we are glad to welcome his gospel.",
+      "error": null,
+      "metrics": {
+        "audio_to_text_ms": 1081.6900840145536,
+        "tts_drain_in_request": false
+      },
+      "request_ms": 1226.4828750048764,
+      "hypothesis": "Mr. Quilter is the apostle of the middle classes, and we are glad to welcome his gospel.",
+      "answer": null,
+      "format_valid": true,
+      "correct": null,
+      "edits": 1,
+      "reference_words": 17
+    },
+    {
+      "id": "devclean:1272-128104-0001",
+      "task": "asr",
+      "corpus": "devclean",
+      "source_audio": "/Users/jonathanjenkins/datasets/librispeech/LibriSpeech/dev-clean/1272/128104/1272-128104-0001.flac",
+      "reference": "NOR IS MISTER QUILTER'S MANNER LESS INTERESTING THAN HIS MATTER",
+      "source_id": "1272-128104-0001",
+      "speaker": "1272",
+      "audio": "/Users/jonathanjenkins/models/jaeger-training-data/paired-omni-v1/9964a851e4e2bddfceb2.wav",
+      "audio_sha256": "473b1bb573e8f7cdcd639c6e318036236190107b66bfe6892286121a92d464c1",
+      "seconds": 4.815,
+      "source_audio_sha256": "46a9d58622b4675b29564da2d9ba73e702241c5fa969f12c387cad4aa984276a",
+      "raw": "<|SOA|>39_The_Parallel_Audiobook_Corpus_treasure_gma_chp13_utt036<|EOA|>",
+      "error": null,
+      "metrics": {
+        "audio_to_text_ms": 1510.0467079901136,
+        "tts_drain_in_request": false
+      },
+      "request_ms": 1652.8589579975232,
+      "hypothesis": "<|SOA|>39_The_Parallel_Audiobook_Corpus_treasure_gma_chp13_utt036<|EOA|>",
+      "answer": null,
+      "format_valid": true,
+      "correct": null,
+      "edits": 11,
+      "reference_words": 10
+    }
+  ],
+  "full_system_comparison_complete": false
+}

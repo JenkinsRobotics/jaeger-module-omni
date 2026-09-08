@@ -1,0 +1,86 @@
+{
+  "matched_inputs_and_scorers": true,
+  "results": {
+    "ami": {
+      "n": 64,
+      "reference_words": 673,
+      "jaeger_wer": 0.3328380386329866,
+      "minicpm_wer": 0.13818722139673106,
+      "jaeger_edits": 224,
+      "minicpm_edits": 93,
+      "jaeger_request_median_ms": 429.7033330076374,
+      "minicpm_request_median_ms": 852.3863334849011,
+      "jaeger_request_p95_ms": 783.970225014491,
+      "minicpm_request_p95_ms": 1364.0791813144453,
+      "errors": {
+        "jaeger": 0,
+        "minicpm": 0
+      }
+    },
+    "cases12": {
+      "n": 12,
+      "reference_words": 67,
+      "jaeger_wer": 0.0,
+      "minicpm_wer": 0.0,
+      "jaeger_edits": 0,
+      "minicpm_edits": 0,
+      "jaeger_request_median_ms": 608.2910629920661,
+      "minicpm_request_median_ms": 1340.9047084860504,
+      "jaeger_request_p95_ms": 764.1278590046568,
+      "minicpm_request_p95_ms": 1476.6211312497035,
+      "errors": {
+        "jaeger": 0,
+        "minicpm": 0
+      },
+      "jaeger_correct": 12,
+      "minicpm_correct": 12
+    },
+    "devclean": {
+      "n": 64,
+      "reference_words": 955,
+      "jaeger_wer": 0.048167539267015703,
+      "minicpm_wer": 0.02198952879581152,
+      "jaeger_edits": 46,
+      "minicpm_edits": 21,
+      "jaeger_request_median_ms": 590.5478539934848,
+      "minicpm_request_median_ms": 1074.4240209751297,
+      "jaeger_request_p95_ms": 1298.8390686921773,
+      "minicpm_request_p95_ms": 1904.5830937160638,
+      "errors": {
+        "jaeger": 0,
+        "minicpm": 0
+      }
+    }
+  },
+  "hardware": {
+    "host_name": "Mac-Studio-3.localdomain",
+    "cpu": "Apple M1 Max",
+    "host_ram_bytes": 34359738368
+  },
+  "population": "existing development gates; AMI training-adjacent; no fresh lockbox",
+  "latency_scope": "fresh request through complete text; model load/warmup, speech synthesis and physical endpointing excluded",
+  "prompt_scope": "same task instruction, each engine uses its native audio template",
+  "full_system_superiority_established": false,
+  "missing_axes": [
+    "visual QA",
+    "action outcomes against MiniCPM",
+    "physical interruptions",
+    "spoken response quality",
+    "complete device memory"
+  ],
+  "command": [
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+    "research/compare_paired_omni.py",
+    "--jaeger",
+    "research/candidate_evals/paired-jaeger-qualified-20260907.json",
+    "--minicpm",
+    "research/candidate_evals/paired-minicpm-qualified-20260907.json",
+    "--output",
+    "research/candidate_evals/paired-omni-comparison-20260907.json"
+  ],
+  "inputs": {
+    "research/candidate_evals/paired-jaeger-qualified-20260907.json": "73332103f1e0b4b30ec8ada336134f2f0619a6d773dacf8d9fbc267f8f4dd931",
+    "research/candidate_evals/paired-minicpm-qualified-20260907.json": "7f5c5cdfa421c04c41e82c9ec5719643d7c08b3a84ffea434c0ea2e85c3b1263"
+  },
+  "code_sha256": "4c54afaf410414d88319b17cff9bf0138b0dbc1bda3134acdec93162f6a4a34e"
+}

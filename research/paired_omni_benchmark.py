@@ -7,6 +7,7 @@ from __future__ import annotations
 import argparse
 import ctypes
 import hashlib
+import importlib.metadata
 import json
 import os
 import platform
@@ -101,6 +102,8 @@ class MiniCPM:
         self.bridge.paired_c_audio_instruction.restype = None
         self.bridge.paired_c_audio_prompt.argtypes = [v]
         self.bridge.paired_c_audio_prompt.restype = c
+        self.bridge.paired_c_audio_decode_template.argtypes = [v,i]
+        self.bridge.paired_c_audio_decode_template.restype = None
         for name, sig in [('omni_c_reset_context', [v]),
                           ('omni_c_append_system_prompt', [v,c]),
                           ('omni_c_configure_decode', [v,i,ctypes.c_float])]:
@@ -115,6 +118,7 @@ class MiniCPM:
                          'bridge_source_sha256': sha(source), 'bridge_sha256': sha(bridge),
                          'engine_header_sha256': sha(engine_header), 'engine_library_sha256': sha(engine_lib),
                          'tts': self.tts, 'template': template,
+                         'audio_generation_template': template in ('user-tts','user-tts-text'),
                          'runtime': 'local llama.cpp-omni ctypes shim'}
 
     def infer(self, row, system, max_tokens):
@@ -131,8 +135,12 @@ class MiniCPM:
         start = time.perf_counter()
         if not self.lib.omni_c_stream_prefill(self.ctx, row['audio'].encode(), 1):
             raise RuntimeError('MiniCPM audio prefill failed')
-        if not self.lib.omni_c_stream_decode(self.ctx, str(self.work).encode(), 0):
-            raise RuntimeError('MiniCPM decode failed')
+        self.bridge.paired_c_audio_decode_template(self.ctx, int(self.template == 'user-tts-text'))
+        try:
+            if not self.lib.omni_c_stream_decode(self.ctx, str(self.work).encode(), 0):
+                raise RuntimeError('MiniCPM decode failed')
+        finally:
+            self.bridge.paired_c_audio_decode_template(self.ctx, 0)
         buf, chunks = ctypes.create_string_buffer(65536), []
         while self.lib.omni_c_pop_text(self.ctx, buf, len(buf)):
             chunk = buf.value.decode(errors='replace')
@@ -156,7 +164,13 @@ class Jaeger:
         from jaeger_agent_omni import converse
         self.ear = converse.load_trained_semantic('quasi')
         node = ROOT/'jaeger_agent_omni/nodes/jaegeromni-41m-medium'
+        spec = json.loads((node/'node.json').read_text())
+        from jaeger_agent_omni.core.runtime.stock_whisper import DEFAULT_GEMMA
+        weights = sorted(Path(DEFAULT_GEMMA).glob('*.safetensors'))
         self.identity = {'node': node.name, 'adapter_sha256': sha(node/'weights/adapter.npz'),
+                         'encoder': spec['encoder'], 'node_manifest_sha256': sha(node/'node.json'),
+                         'backbone': str(DEFAULT_GEMMA),
+                         'backbone_weights_sha256': {p.name: sha(p) for p in weights},
                          'runtime': 'MLX production converse endpointed ear', 'tts': False}
 
     def infer(self, row, system, max_tokens):
@@ -204,6 +218,8 @@ def run(args):
     from training.context_distill import refuse_gpu_contention
     from jaeger_agent_omni.converse import NN_SYSTEM
     refuse_gpu_contention()
+    source_snapshot = {name: (ROOT/name).read_text() for name in
+                       ('research/paired_omni_benchmark.py','research/minicpm_benchmark_bridge.cpp')}
     manifest = json.loads(args.manifest.read_text())
     cases = [r for r in manifest['cases'] if args.corpus == 'all' or r['corpus'] == args.corpus]
     if args.limit:
@@ -240,10 +256,16 @@ def run(args):
     finally:
         model.close()
     report = {'schema': 1, 'model': args.model, 'identity': model.identity,
-              'manifest_sha256': sha(args.manifest), 'code_sha256': sha(__file__),
+              'manifest_sha256': sha(args.manifest),
+              'code_sha256': hashlib.sha256(source_snapshot['research/paired_omni_benchmark.py'].encode()).hexdigest(),
+              'source_snapshot': source_snapshot,
               'scorer_sha256': {n: sha(ROOT/n) for n in ('training/evaluate.py','research/grading.py')},
               'prompts': {'asr': ASR_SYSTEM,'answer':NN_SYSTEM}, 'max_tokens': {'asr':128,'answer':140},
               'command': [sys.executable,*sys.argv], 'host': platform.platform(),
+              'host_name': platform.node(),
+              'cpu': subprocess.check_output(['sysctl','-n','machdep.cpu.brand_string'],text=True).strip(),
+              'host_ram_bytes': int(subprocess.check_output(['sysctl','-n','hw.memsize'],text=True)),
+              'libraries': {n: importlib.metadata.version(n) for n in ('torch','transformers','mlx','mlx-lm')},
               'rss_peak_bytes': resource.getrusage(resource.RUSAGE_SELF).ru_maxrss,
               'memory_scope': 'process peak RSS, not total unified/device memory; no memory superiority claim',
               'latency_scope': ('fresh request setup and system prefill through complete text; '
@@ -259,8 +281,8 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('action',choices=['prepare','run'])
     p.add_argument('--model',choices=['jaeger','minicpm'],default='jaeger')
-    p.add_argument('--minicpm-template',choices=['system','user','user-tts'],default='system',
-                   help='explicit prompt validation probe; user-tts uses native speech generation')
+    p.add_argument('--minicpm-template',choices=['system','user','user-tts','user-tts-text'],default='user-tts-text',
+                   help='user-tts-text follows the official audio template with audio output disabled; other modes are explicit diagnostics')
     p.add_argument('--cache',type=Path,default=CACHE)
     p.add_argument('--manifest',type=Path,default=ROOT/'research/candidate_evals/paired-omni-fixtures-20260907.json')
     p.add_argument('--corpus',choices=['all','devclean','ami','cases12'],default='all')
