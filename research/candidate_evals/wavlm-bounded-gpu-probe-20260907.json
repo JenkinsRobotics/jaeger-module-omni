@@ -1,0 +1,54 @@
+{
+  "feature_mode": "bounded_past_1280ms_hop160ms",
+  "context_ms": 1280,
+  "hop_ms": 160,
+  "max_buffering_ms": 160,
+  "layers": [
+    4,
+    8,
+    12
+  ],
+  "pretrained": {
+    "model": "microsoft/wavlm-base-plus",
+    "revision": "4c66d4806a428f2e922ccfa1a962776e232d487b",
+    "usage": "frozen independent raw-audio perception feature experiment"
+  },
+  "weights_sha256": "3bb273a6ace99408b50cfc81afdbb7ef2de02da2eab0234e18db608ce692fe51",
+  "source_manifest_sha256": "c45036b48c8b568ca9a1c424a940d96a4b36ab3e4ba1b3078502d05891a4e23a",
+  "feature_code_sha256": "0020d1d06dda3074a94b0e209877c32d0cc4dc100fadf10285ffdfb048b31b2e",
+  "command": [
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+    "training/wavlm_streaming_features.py",
+    "cache",
+    "--limit",
+    "3",
+    "--output",
+    "research/candidate_evals/wavlm-bounded-gpu-probe-20260907.json"
+  ],
+  "output_manifest_sha256": "ad31aae097c6cfbfa73c75fbd3b89bffeac005c41f578d973d0a3d1cec9dcb49",
+  "rows": 3,
+  "batch": 32,
+  "device": "mps",
+  "new_cache_timing": [
+    {
+      "id": "bargein_train:mix_000000",
+      "windows": 66,
+      "seconds": 1.5823232499533333,
+      "audio_seconds": 10.545875
+    },
+    {
+      "id": "bargein_train:mix_000003",
+      "windows": 34,
+      "seconds": 0.19626912497915328,
+      "audio_seconds": 5.405
+    },
+    {
+      "id": "bargein_train:mix_000004",
+      "windows": 70,
+      "seconds": 0.5125803329865448,
+      "audio_seconds": 11.19175
+    }
+  ],
+  "timing_scope": "batched cache throughput, not live per-decision cost",
+  "runtime_policy_changed": false
+}

@@ -70,7 +70,7 @@ def cache(args):
     marker=args.cache/'provenance.json'
     if marker.exists():
         old=json.loads(marker.read_text())
-        if any(old[k]!=provenance[k] for k in ('weights_sha256','source_manifest_sha256','layers','feature_mode')):
+        if any(old[k]!=provenance[k] for k in ('weights_sha256','source_manifest_sha256','layers','feature_mode','code_sha256')):
             raise ValueError('cache identity mismatch; use a new cache directory')
     marker.write_text(json.dumps(provenance,indent=2)+'\n')
     for i,row in enumerate(original):
@@ -148,20 +148,52 @@ def train(args):
                         'threshold':selected['threshold'],'epoch':epoch},args.checkpoint)
     saved=torch.load(args.checkpoint,map_location=args.device,weights_only=True)
     model.load_state_dict(saved['model'])
-    test={c:metrics(predict(model,[r for r in data['test'] if r[0]['corpus']==c],args.device),saved['threshold'])
-          for c in ('bargein_train','ami_overlap')}
+    provenance=json.loads((args.cache/'provenance.json').read_text())
+    test={}; availability={}
+    for c in ('bargein_train','ami_overlap'):
+        selected_rows=[r for r in data['test'] if r[0]['corpus']==c]
+        predictions=predict(model,selected_rows,args.device)
+        test[c]=metrics(predictions,saved['threshold'])
+        if provenance['feature_mode'].startswith('bounded_'):
+            availability[c]=buffered_detection_delays(predictions,selected_rows,saved['threshold'])
     report={'command':[sys.executable,*sys.argv],'code_sha256':digest(__file__),
-            'cache_provenance':json.loads((args.cache/'provenance.json').read_text()),
+            'cache_provenance':provenance,
             'manifest_sha256':digest(args.cache/'manifest.jsonl'),
             'head_parameters':sum(p.numel() for p in model.parameters()),'history':history,
             'selected_epoch':saved['epoch'],'test':test,'checkpoint_sha256':digest(args.checkpoint),
+            'buffered_detection':availability,
             'frame_gate_pass':all(s['f1']>=.81 for s in test.values()),
-            'promotion_pass':False,'reason':'offline encoder uses future audio; causal bounded-context evaluation required',
+            'promotion_pass':False,
+            'reason':('offline encoder uses future audio; causal bounded-context evaluation required'
+                      if not availability else 'bounded encoder; actual compute and physical policy gates remain required'),
             'pretraining_overlap_audit':'supervised splits disjoint; pretraining identity overlap not audited',
             'runtime_policy_changed':False}
     args.output.parent.mkdir(parents=True,exist_ok=True)
     args.output.write_text(json.dumps(report,indent=2)+'\n')
     print(json.dumps({'test':test,'promotion_pass':False}),flush=True)
+
+
+def buffered_detection_delays(predictions, rows, threshold):
+    """Retain the original event matching, but charge actual feature availability.
+
+    These are still optimistic about compute and early-onset false alarms;
+    they cannot qualify live policy by themselves.
+    """
+    from training.parallel_overlap import intervals
+    delays=[]
+    for (prob,labels),(row,_,_) in zip(predictions,rows):
+        with np.load(row['archive']) as z: available=z['available_at']
+        truth=intervals(labels>=.5); used=set()
+        for start,end in intervals(prob>=threshold):
+            matches=[i for i,(a,b) in enumerate(truth)
+                     if i not in used and max(a,start)<min(b,end)]
+            if matches:
+                i=matches[0];used.add(i)
+                delays.append(max(0,float(available[start])-truth[i][0]*.04)*1000)
+    return {'detected_events':len(delays),
+            'p95_ms':float(np.percentile(delays,95)) if delays else None,
+            'includes_buffering':True,'includes_compute':False,
+            'event_matching':'unchanged legacy overlap intervals; early-onset alarms not separately penalized'}
 
 
 def main():

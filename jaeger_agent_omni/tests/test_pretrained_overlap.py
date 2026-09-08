@@ -1,7 +1,9 @@
 import unittest
+import tempfile
+from pathlib import Path
 import numpy as np
 import torch
-from training.pretrained_overlap import Head, extract
+from training.pretrained_overlap import Head, extract, buffered_detection_delays
 
 
 class PretrainedOverlapTests(unittest.TestCase):
@@ -25,3 +27,14 @@ class PretrainedOverlapTests(unittest.TestCase):
         result=extract(FixedEncoder(),np.zeros(16000,np.float32),25,'cpu')
         self.assertEqual(result.shape,(25,768))
         np.testing.assert_array_equal(result,np.full((25,768),8,dtype=np.float16))
+
+    def test_detection_is_charged_at_feature_availability(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path=Path(folder)/'window.npz'
+            np.savez(path,available_at=np.array([.16,.16,.16,.16]))
+            probability=np.array([.9,.9,0,0])
+            labels=np.array([1,1,0,0])
+            rows=[({'archive':str(path)},np.zeros((4,768)),labels)]
+            result=buffered_detection_delays([(probability,labels)],rows,.5)
+            self.assertAlmostEqual(result['p95_ms'],160)
+            self.assertFalse(result['includes_compute'])

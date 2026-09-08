@@ -1,0 +1,47 @@
+{
+  "training_artifact": "research/candidate_evals/wavlm-overlap-offline-20260907.json",
+  "training_artifact_sha256": "526aa3c889beac3259cb8152cac316f0b91a935eee12c20df6af3865dedcd868",
+  "training_completed": true,
+  "selected_epoch": 6,
+  "test": {
+    "bargein_train": {
+      "f1": 0.8729677597134197,
+      "tp": 3168,
+      "fp": 421,
+      "fn": 501,
+      "event_recall": 0.9113924050632911,
+      "events": 79,
+      "detected_events": 72,
+      "false_alarm_events": 98,
+      "false_alarms_per_minute": 4.49802637618188,
+      "detection_delay_p95_ms": 400.0,
+      "seconds": 1307.24,
+      "threshold": 0.375
+    },
+    "ami_overlap": {
+      "f1": 0.8365333616208762,
+      "tp": 27601,
+      "fp": 5417,
+      "fn": 5370,
+      "event_recall": 0.9232323232323232,
+      "events": 990,
+      "detected_events": 914,
+      "false_alarm_events": 689,
+      "false_alarms_per_minute": 14.44706934872863,
+      "detection_delay_p95_ms": 240.0,
+      "seconds": 2861.48,
+      "threshold": 0.375
+    }
+  },
+  "frame_gate_pass": true,
+  "promotion_pass": false,
+  "rejection_reasons": [
+    "Offline bidirectional encoder uses future audio",
+    "False alarms exceed one per minute on both corpora",
+    "Barge detection p95 exceeds 300 ms before buffering/compute"
+  ],
+  "wrapper_exit_code": 2,
+  "wrapper_incident": "A launcher edited while its shell was waiting produced an EOF parse error after Python completed and saved its report. Current launcher passes bash -n. Do not edit launchers during active jobs.",
+  "trainer_revision": "e9c5821c",
+  "cache_artifact": "research/candidate_evals/wavlm-features-offline-20260907.json"
+}

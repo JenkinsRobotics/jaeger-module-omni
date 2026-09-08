@@ -1,0 +1,70 @@
+{
+  "command": [
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+    "training/wavlm_streaming_features.py",
+    "probe",
+    "--output",
+    "research/candidate_evals/wavlm-bounded-cpu-probe-v1-20260907.json"
+  ],
+  "device": "cpu",
+  "torch_threads": 2,
+  "model": {
+    "model": "microsoft/wavlm-base-plus",
+    "revision": "4c66d4806a428f2e922ccfa1a962776e232d487b",
+    "usage": "frozen independent raw-audio perception feature experiment"
+  },
+  "code_sha256": "0020d1d06dda3074a94b0e209877c32d0cc4dc100fadf10285ffdfb048b31b2e",
+  "audio_sha256": "8e660b63c56c7dd1e919314d79a2e90a55035fa3319989644937050e3c5b2b80",
+  "context_ms": 1280,
+  "hop_ms": 160,
+  "max_buffering_ms": 160,
+  "compute_p95_ms": 50.36540838191286,
+  "timings": [
+    {
+      "first_frame": 0,
+      "available_at_s": 0.16,
+      "compute_ms": 46.86845897231251
+    },
+    {
+      "first_frame": 4,
+      "available_at_s": 0.32,
+      "compute_ms": 48.32745797466487
+    },
+    {
+      "first_frame": 8,
+      "available_at_s": 0.48,
+      "compute_ms": 45.787832990754396
+    },
+    {
+      "first_frame": 12,
+      "available_at_s": 0.64,
+      "compute_ms": 45.25674995966256
+    },
+    {
+      "first_frame": 16,
+      "available_at_s": 0.8,
+      "compute_ms": 45.39658298017457
+    },
+    {
+      "first_frame": 20,
+      "available_at_s": 0.96,
+      "compute_ms": 46.5069169877097
+    },
+    {
+      "first_frame": 24,
+      "available_at_s": 1.12,
+      "compute_ms": 48.27679198933765
+    },
+    {
+      "first_frame": 28,
+      "available_at_s": 1.28,
+      "compute_ms": 51.72404198674485
+    },
+    {
+      "first_frame": 32,
+      "available_at_s": 1.32,
+      "compute_ms": 45.9742090315558
+    }
+  ],
+  "scope": "compute probe, no detector accuracy or physical delay claim"
+}
