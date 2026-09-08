@@ -1,0 +1,52 @@
+{
+  "source_manifest_sha256": "c45036b48c8b568ca9a1c424a940d96a4b36ab3e4ba1b3078502d05891a4e23a",
+  "pretrained": {
+    "model": "microsoft/wavlm-base-plus",
+    "revision": "4c66d4806a428f2e922ccfa1a962776e232d487b",
+    "usage": "frozen independent raw-audio perception feature experiment"
+  },
+  "weights_sha256": "3bb273a6ace99408b50cfc81afdbb7ef2de02da2eab0234e18db608ce692fe51",
+  "layers": [
+    4,
+    8,
+    12
+  ],
+  "feature_mode": "offline_full_utterance_bidirectional",
+  "code_sha256": "dda206dc76d15d37b80670db415692f1ad2a739a456a171a1b79239d1c92ea0c",
+  "command": [
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+    "training/pretrained_overlap.py",
+    "cache",
+    "--limit",
+    "3",
+    "--output",
+    "research/candidate_evals/wavlm-feature-probe-20260907.json"
+  ],
+  "output_manifest_sha256": "4587efe615338f766345da22a8e6345eeb257a6653e095fcc157d7ff46ee4c76",
+  "rows": 3,
+  "encoder_parameters": 94381936,
+  "counts": {
+    "train": 3,
+    "validation": 0,
+    "test": 0
+  },
+  "new_cache_timing": [
+    {
+      "id": "bargein_train:mix_000000",
+      "seconds": 1.714092833979521,
+      "audio_seconds": 10.545875
+    },
+    {
+      "id": "bargein_train:mix_000003",
+      "seconds": 0.4298802499542944,
+      "audio_seconds": 5.405
+    },
+    {
+      "id": "bargein_train:mix_000004",
+      "seconds": 0.37250033399323,
+      "audio_seconds": 11.19175
+    }
+  ],
+  "streaming": false,
+  "runtime_policy_changed": false
+}
