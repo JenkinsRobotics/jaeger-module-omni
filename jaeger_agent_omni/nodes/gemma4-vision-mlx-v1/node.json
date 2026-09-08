@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "kind": "jaeger_neural_node",
+  "runtime": "gemma4_frozen_vision_mlx_v1",
+  "id": "gemma4-vision-mlx-v1",
+  "slot": "semantic_perception",
+  "enabled_by_default": false,
+  "consumes": [
+    "rgb_image"
+  ],
+  "produces": [
+    "gemma_image_embeddings_2560"
+  ],
+  "status": "experimental_pending_joint_cache_evaluation",
+  "implementation": "runtime.py:build",
+  "model": {
+    "path": "weights/vision.safetensors",
+    "sha256": "a4d506b226e935486fc260485ace7d8e68de21e045aaf66a75d479c97bc2df18"
+  },
+  "assets": [
+    {
+      "path": "vision_config.json",
+      "sha256": "dd60950c94b32a9cb766c48c9bed35f7fc5fd83ae3ad8b6efc40d20696b9763f"
+    }
+  ],
+  "source": {
+    "model": "/Users/jonathanjenkins/models/gemma-4-e4b-it-mlx-full",
+    "sidecar": "/Users/jonathanjenkins/models/gemma-4-e4b-it-mlx-full/optiq/optiq_vision.safetensors",
+    "sidecar_sha256": "1b6dad4f39975dc7c86e7a7d1d3ad4f89b5eb1f1bd5ca5307a7c07fcaa40bf82",
+    "processor": "/Users/jonathanjenkins/.cache/huggingface/hub/models--google--gemma-4-E4B-it/snapshots/ee0ef6023621cff504d758262d4e04895a5af4a2/processor_config.json",
+    "processor_sha256": "32bdf45d2ad4cc29a0822ddd157a182de76644f0419a6228d151495256e9813c",
+    "vision_tensors": 659
+  },
+  "brain_loaded": false,
+  "frozen": true,
+  "notes": "Only the pretrained vision tower/projector are loaded. Joint-cache injection is experimental and uses the unchanged MLX language brain."
+}

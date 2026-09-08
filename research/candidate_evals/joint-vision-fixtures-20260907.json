@@ -1,0 +1,80 @@
+{
+  "command": [
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+    "research/joint_vision_probe.py",
+    "prepare"
+  ],
+  "vision_node": "gemma4-vision-mlx-v1",
+  "node_sha256": "e4b5335322459002925f43e82053f7ab06e9e8065ec3d3c91bb53340f7f376e7",
+  "vision_runtime_sha256": "62d58fcd638b6e659fa333156094d11216719563d6d5d2c512f9e38d4f77ef0c",
+  "code_sha256": "1fba51966cad493f7bac407d27280d281c8d2cea79faa198c1e2ffed1e1a48ba",
+  "device": "cpu",
+  "language_model_loaded": false,
+  "boundaries": [
+    255999,
+    258882
+  ],
+  "rows": [
+    {
+      "shape": "triangle",
+      "color": "green",
+      "label": "cedar",
+      "image": "/Users/jonathanjenkins/models/jaeger-training-data/joint-vision-v1/triangle.png",
+      "image_sha256": "495654bb8fa23349cb731fdfb932393aea543bbb5aa0e95ac41fd048efd2e6b0",
+      "features": "/Users/jonathanjenkins/models/jaeger-training-data/joint-vision-v1/triangle.npy",
+      "features_sha256": "772e73ecdcd873233c9a29544d56e177e22dfd9cc0e8486d2d71cdd66ab9eb69",
+      "tokens": 256,
+      "vision_cpu_seconds": 20.982544791942928
+    },
+    {
+      "shape": "square",
+      "color": "orange",
+      "label": "harbor",
+      "image": "/Users/jonathanjenkins/models/jaeger-training-data/joint-vision-v1/square.png",
+      "image_sha256": "63e393ff6ebfa2925d272eaecbcc339ff80b4ee18aec10c9074a912194896af1",
+      "features": "/Users/jonathanjenkins/models/jaeger-training-data/joint-vision-v1/square.npy",
+      "features_sha256": "c794280856b986393b15f19a5f24d22f82c683fdbd496ef76df0d871d3782ce3",
+      "tokens": 256,
+      "vision_cpu_seconds": 18.261400041985326
+    },
+    {
+      "shape": "circle",
+      "color": "purple",
+      "label": "maple",
+      "image": "/Users/jonathanjenkins/models/jaeger-training-data/joint-vision-v1/circle.png",
+      "image_sha256": "15faaa449dd3a0ae0e4df34f66e9fe1238a5e865297cfb0d6e0f2033167668f7",
+      "features": "/Users/jonathanjenkins/models/jaeger-training-data/joint-vision-v1/circle.npy",
+      "features_sha256": "eee4af828d1dd95157e04aae0d0083d5cbea96bc7ae4a0e2cb6159f0933d5407",
+      "tokens": 256,
+      "vision_cpu_seconds": 18.38409666705411
+    },
+    {
+      "shape": "rectangle",
+      "color": "red",
+      "label": "river",
+      "image": "/Users/jonathanjenkins/models/jaeger-training-data/joint-vision-v1/rectangle.png",
+      "image_sha256": "8a5c06517b872291361926b78631494dc7438aedd170c40f247383282d6af337",
+      "features": "/Users/jonathanjenkins/models/jaeger-training-data/joint-vision-v1/rectangle.npy",
+      "features_sha256": "a1a440788cce6f6cde41a7400b0c6c94617eddd7ca3e21c30c0892f70977b0e0",
+      "tokens": 256,
+      "vision_cpu_seconds": 18.13992387498729
+    }
+  ],
+  "voice": {
+    "color": {
+      "audio": "/Users/jonathanjenkins/models/jaeger-training-data/joint-vision-v1/color.wav",
+      "sha256": "674dae90ecb2d97b8bc59568b5c16db3256df15e8effbbf7d3d07e31b0f43ce7",
+      "words_not_fed_as_text": "What color was the shape in the most recent image?"
+    },
+    "label": {
+      "audio": "/Users/jonathanjenkins/models/jaeger-training-data/joint-vision-v1/label.wav",
+      "sha256": "7dacc7e76b8f8c6810bc7c8dacf7de73514aa72dacaa16225d124181d4ab9354",
+      "words_not_fed_as_text": "What label did I give the most recent shape?"
+    },
+    "joint": {
+      "audio": "/Users/jonathanjenkins/models/jaeger-training-data/joint-vision-v1/joint.wav",
+      "sha256": "50919359f5985bd25fdfd88bb4e8774c2ffe9abe45e8633a7ede9f387072ec9a",
+      "words_not_fed_as_text": "What shape and color are shown in this image?"
+    }
+  }
+}
