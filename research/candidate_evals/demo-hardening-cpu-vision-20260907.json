@@ -1,0 +1,56 @@
+{
+  "recorded_at": "2026-09-08T06:56:51.634470+00:00",
+  "source_sha256": {
+    "jaeger_agent_omni/live.py": "6901c760832f11e9aa1fc482da38cda6d4fc65f330df049d74a7c6229ba9b953",
+    "jaeger_agent_omni/converse.py": "5cd0c07586e05acdcec8eba3dbae071d23ddac15e443249eec21ec094eaf49b6",
+    "jaeger_agent_omni/core/runtime/device_lifecycle.py": "de8a36aba9ebe5d69fd9dd0c922be5d8ee65f7e6086b872d4ccbf21f32a834de",
+    "research/joint_vision_probe.py": "7cdbab84ff88b954af439c849be50ac7cc8a1b983e488475e91ef49699f11329",
+    "research/demo_acceptance.py": "5b311d2f5f962ef92e31fc13bf1ff9a00bab83ada544fdef0377590a78cf55c6",
+    "research/benchmark_agentic_corpus.py": "0bec262e53a20cead6b83fde0d78def76bb754794682719185b7c4d27e4bec8e",
+    "training/run_gpu.sh": "8a3c6d0c2045fef370d247de319f793df115a81eb6425726f897c0b8076dd541",
+    "training/context_distill.py": "858da33f855ac4847a8bbdceac2367d1e33cff6ab5704d6c6df792c4ec53e4f7"
+  },
+  "checks": [
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "jaeger_agent_omni/tests",
+        "-q"
+      ],
+      "exit_code": 0,
+      "seconds": 3.4209063329617493,
+      "stdout": "..........................................................................................................                         [100%]\n106 passed, 14 subtests passed in 2.85s\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "jaeger_agent_omni.converse",
+        "--selftest"
+      ],
+      "exit_code": 0,
+      "seconds": 1.4894529589801095,
+      "stdout": "  PASS  parallel speaker channel separates two voices\n  PASS  speaker channel emits confidence-gated Gemma context (not ingested raw: text the model reads)\n  PASS  turn-state channel endpoints speech through silence\n  PASS  one utterance ends exactly once\n  PASS  one-shot enrollment persists \u2014 into scratch, never the real weights\n  PASS  the enrolled waveform is spotted \u2014 no STT involved\n  PASS  a different voice/cadence does not false-wake\n  PASS  fusion converges the channels into one record\n  PASS  text-wake fallback: two-token, address-position, no mid-sentence\n  PASS  dismissal closes; lookalikes don't\n  PASS  garble guard runs on graph evidence, short bursts exempt\n  PASS  text channel is a declared node with a clean contract\n  PASS  fusion carries wpm+energy so guards run on graph evidence\n  PASS  one generation carries transcript AND answer\n  PASS  format miss degrades to reply-only, never crashes\n  PASS  head pooling math: confident logits -> confident probabilities\n  PASS  stock artifact guard: density-gated, real speech survives (gap 3)\n  PASS  stream_split: long turn commits head, keeps 2s tail; short turn whole\n\n18/18 checks passed\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "jaeger_agent_omni.live",
+        "--demo"
+      ],
+      "exit_code": 0,
+      "seconds": 0.7788679999648593,
+      "stdout": "live: Kokoro, Speex AEC, clause streaming, native meeting minutes present\n",
+      "stderr": ""
+    }
+  ],
+  "passed": true,
+  "registry_nodes": 32,
+  "profiles": 13,
+  "scope": "CPU tests and wiring; no GPU or physical qualification"
+}
