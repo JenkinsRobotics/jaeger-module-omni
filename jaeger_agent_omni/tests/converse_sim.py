@@ -181,9 +181,10 @@ rv = importlib.util.module_from_spec(spec)
 sys.modules["run_v2"] = rv
 spec.loader.exec_module(rv)
 NODES = {}
+TURN_NODE = 'para-turn-state-v0'
 _orig_load = rv.load_node
 def _cap(nid):
-    n = _orig_load(nid)
+    n = _orig_load(TURN_NODE if nid == 'para-turn-state-v0' else nid)
     if nid == 'para-turn-state-v0' and os.environ.get('OMNI_SIM_DIAG'):
         original_process = n.process
         count = [0]
@@ -509,11 +510,15 @@ SESSIONS = {
 }
 
 def main():
+    global TURN_NODE
     ap = argparse.ArgumentParser()
     ap.add_argument("--session", required=True, choices=sorted(SESSIONS))
     ap.add_argument("--output", type=Path, help="write reproducible campaign evidence JSON")
     ap.add_argument("--full-ear", help="research override: an immutable node for the full-tier trial only")
+    ap.add_argument('--turn-node', choices=['para-turn-state-v0', 'para-turn-state-neural-v1'],
+                    default='para-turn-state-v0', help='explicit research endpoint override; no production selection change')
     args = ap.parse_args()
+    TURN_NODE = args.turn_node
     mode, barge, steps = SESSIONS[args.session]
     if args.full_ear:
         if mode != "full" or Path(args.full_ear).name != args.full_ear:
@@ -559,6 +564,9 @@ def main():
             "command": [sys.executable, *sys.argv],
             "session": args.session, "mode": mode, "barge": barge,
             "node": node_id, "adapter_sha256": manifest["adapter"]["sha256"],
+            "turn_node": TURN_NODE,
+            "turn_node_sha256": hashlib.sha256((V2/'nodes'/TURN_NODE/'node.json').read_bytes()).hexdigest(),
+            "turn_runtime_sha256": hashlib.sha256((V2/'nodes'/TURN_NODE/'runtime.py').read_bytes()).hexdigest(),
             "converse_sha256": hashlib.sha256((V2 / "converse.py").read_bytes()).hexdigest(),
             "harness_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
             "runtime_errors": runtime_errors, "runtime_stopped": not th.is_alive(),

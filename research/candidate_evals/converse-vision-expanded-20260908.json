@@ -1,0 +1,179 @@
+{
+  "command": [
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+    "jaeger_agent_omni/tests/converse_sim.py",
+    "--session",
+    "vision-expanded",
+    "--output",
+    "research/candidate_evals/converse-vision-expanded-20260908.json"
+  ],
+  "session": "vision-expanded",
+  "mode": "half",
+  "barge": "stop",
+  "node": "jaegeromni-41m-medium",
+  "adapter_sha256": "a7f96bfb889866f75df7b838f84aae368a56ab10f6469e766511d700e32fe13a",
+  "converse_sha256": "5cd0c07586e05acdcec8eba3dbae071d23ddac15e443249eec21ec094eaf49b6",
+  "harness_sha256": "4bfcacf41137bcf2301fc1dfeaf5438c7d874d0bb00e69b082d97f74b1029431",
+  "runtime_errors": [],
+  "runtime_stopped": true,
+  "gate_valid": true,
+  "visual_fixtures": {
+    "vision-blue-circle.png": "50a45d7b50ac3440d3496fb197f2ad57e1bf34e9a283dc35e9e64dcdc2174316",
+    "vision-expanded-green-triangle.png": "495654bb8fa23349cb731fdfb932393aea543bbb5aa0e95ac41fd048efd2e6b0",
+    "vision-expanded-orange-square.png": "63e393ff6ebfa2925d272eaecbcc339ff80b4ee18aec10c9074a912194896af1",
+    "vision-expanded-purple-circle.png": "15faaa449dd3a0ae0e4df34f66e9fe1238a5e865297cfb0d6e0f2033167668f7",
+    "vision-expanded-red-rectangle.png": "8a5c06517b872291361926b78631494dc7438aedd170c40f247383282d6af337"
+  },
+  "perception_context": false,
+  "passed": 19,
+  "total": 20,
+  "checks": [
+    {
+      "name": "triangle: image admitted",
+      "passed": true
+    },
+    {
+      "name": "triangle: visual answer",
+      "passed": true
+    },
+    {
+      "name": "triangle: spoken visual recall",
+      "passed": false
+    },
+    {
+      "name": "triangle: typed label update",
+      "passed": true
+    },
+    {
+      "name": "triangle: spoken correction recall",
+      "passed": true
+    },
+    {
+      "name": "square: image admitted",
+      "passed": true
+    },
+    {
+      "name": "square: visual answer",
+      "passed": true
+    },
+    {
+      "name": "square: spoken visual recall",
+      "passed": true
+    },
+    {
+      "name": "square: typed label update",
+      "passed": true
+    },
+    {
+      "name": "square: spoken correction recall",
+      "passed": true
+    },
+    {
+      "name": "circle: image admitted",
+      "passed": true
+    },
+    {
+      "name": "circle: visual answer",
+      "passed": true
+    },
+    {
+      "name": "circle: spoken visual recall",
+      "passed": true
+    },
+    {
+      "name": "circle: typed label update",
+      "passed": true
+    },
+    {
+      "name": "circle: spoken correction recall",
+      "passed": true
+    },
+    {
+      "name": "rectangle: image admitted",
+      "passed": true
+    },
+    {
+      "name": "rectangle: visual answer",
+      "passed": true
+    },
+    {
+      "name": "rectangle: spoken visual recall",
+      "passed": true
+    },
+    {
+      "name": "rectangle: typed label update",
+      "passed": true
+    },
+    {
+      "name": "rectangle: spoken correction recall",
+      "passed": true
+    }
+  ],
+  "log": [
+    "[converse] speaker+wake embeddings: ECAPA (trained NN)",
+    "[converse] semantic channel: jaegeromni-41m-medium (encoder\u2192adapter\u2192Gemma, no text seam)\u2026",
+    "loading vision projector mmproj-gemma-4-E4B-it-BF16.gguf\u2026",
+    "loading Kokoro\u2026",
+    "WARNING: Defaulting repo_id to hexgrad/Kokoro-82M. Pass repo_id='hexgrad/Kokoro-82M' to suppress this warning.",
+    "[converse] half duplex \u00b7 barge=stop \u00b7 say 'hey computer \u2026' or type (Enter). Ctrl-C to quit.",
+    "  [image queued; type a question]",
+    "  [SIM] PASS  triangle: image admitted",
+    "  you (typed): Name the shape and its color in this new image.",
+    "loading gemma-4-E4B-it-Q4_K_M.gguf\u2026",
+    "  \u23f5 agent: The shape is a triangle and its color is green.",
+    "  [SIM] PASS  triangle: visual answer  \u00b7   \u23f5 agent: The shape is a triangle and its color is green.",
+    "WARNING: Defaulting repo_id to hexgrad/Kokoro-82M. Pass repo_id='hexgrad/Kokoro-82M' to suppress this warning.",
+    "  [context: speaker=S1 conf=100% pitch=108Hz]  Hey computer, what color was the shape in the most recent image?   [nn 2.95s ttft 1.87s]",
+    "  \u23f5 agent: It was blue.",
+    "  [SIM] FAIL  triangle: spoken visual recall  \u00b7   \u23f5 agent: It was blue.",
+    "  you (typed): Use the label cedar for that shape from now on. What label will you use?",
+    "  \u23f5 agent: I will use the label cedar for that shape.",
+    "  [SIM] PASS  triangle: typed label update  \u00b7   \u23f5 agent: I will use the label cedar for that shape.",
+    "  [context: speaker=S1 conf=100% pitch=111Hz]  hey computer what label did i give the most recent shape   [nn 2.07s ttft 1.20s]",
+    "  \u23f5 agent: You called it cedar.",
+    "  [SIM] PASS  triangle: spoken correction recall  \u00b7   \u23f5 agent: You called it cedar.",
+    "  [image queued; type a question]",
+    "  [SIM] PASS  square: image admitted",
+    "  you (typed): Name the shape and its color in this new image.",
+    "  \u23f5 agent: The shape is a square and its color is orange.",
+    "  [SIM] PASS  square: visual answer  \u00b7   \u23f5 agent: The shape is a square and its color is orange.",
+    "  [context: speaker=S1 conf=100% pitch=106Hz]  hey computer what color was the shape in the most recent image   [nn 3.11s ttft 2.13s]",
+    "  \u23f5 agent: It was orange.",
+    "  [SIM] PASS  square: spoken visual recall  \u00b7   \u23f5 agent: It was orange.",
+    "  you (typed): Use the label harbor for that shape from now on. What label will you use?",
+    "  \u23f5 agent: I will use the label harbor for that shape.",
+    "  [SIM] PASS  square: typed label update  \u00b7   \u23f5 agent: I will use the label harbor for that shape.",
+    "  [context: speaker=S1 conf=100% pitch=110Hz]  hey computer what label did i give the most recent shape   [nn 2.01s ttft 1.37s]",
+    "  \u23f5 agent: You called it harbor.",
+    "  [SIM] PASS  square: spoken correction recall  \u00b7   \u23f5 agent: You called it harbor.",
+    "  [image queued; type a question]",
+    "  [SIM] PASS  circle: image admitted",
+    "  you (typed): Name the shape and its color in this new image.",
+    "  \u23f5 agent: The shape is a circle and its color is purple.",
+    "  [SIM] PASS  circle: visual answer  \u00b7   \u23f5 agent: The shape is a circle and its color is purple.",
+    "  [context: speaker=S1 conf=100% pitch=108Hz]  hey computer what color was the shape in the most recent image   [nn 2.90s ttft 2.22s]",
+    "  \u23f5 agent: It was purple.",
+    "  [SIM] PASS  circle: spoken visual recall  \u00b7   \u23f5 agent: It was purple.",
+    "  you (typed): Use the label maple for that shape from now on. What label will you use?",
+    "  \u23f5 agent: I will use the label maple for that shape.",
+    "  [SIM] PASS  circle: typed label update  \u00b7   \u23f5 agent: I will use the label maple for that shape.",
+    "  [context: speaker=S1 conf=100% pitch=110Hz]  hey computer what label did i give the most recent shape   [nn 2.15s ttft 1.32s]",
+    "  \u23f5 agent: You called it maple.",
+    "  [SIM] PASS  circle: spoken correction recall  \u00b7   \u23f5 agent: You called it maple.",
+    "  [image queued; type a question]",
+    "  [SIM] PASS  rectangle: image admitted",
+    "  you (typed): Name the shape and its color in this new image.",
+    "  \u23f5 agent: The shape is a rectangle and its color is red.",
+    "  [SIM] PASS  rectangle: visual answer  \u00b7   \u23f5 agent: The shape is a rectangle and its color is red.",
+    "  [context: speaker=S1 conf=100% pitch=106Hz]  hey computer what color was the shape in the most recent image   [nn 2.63s ttft 2.05s]",
+    "  \u23f5 agent: It was red.",
+    "  [SIM] PASS  rectangle: spoken visual recall  \u00b7   \u23f5 agent: It was red.",
+    "  you (typed): Use the label river for that shape from now on. What label will you use?",
+    "  \u23f5 agent: I will use the label river for that shape.",
+    "  [SIM] PASS  rectangle: typed label update  \u00b7   \u23f5 agent: I will use the label river for that shape.",
+    "  [context: speaker=S1 conf=100% pitch=110Hz]  hey computer what label did i give the most recent shape   [nn 1.35s ttft 0.54s]",
+    "  \u23f5 agent: You called it river.",
+    "  [SIM] PASS  rectangle: spoken correction recall  \u00b7   \u23f5 agent: You called it river.",
+    "bye"
+  ]
+}

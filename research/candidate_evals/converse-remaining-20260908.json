@@ -1,0 +1,42 @@
+{
+  "runs": [
+    {
+      "session": "full",
+      "command": [
+        "training/run_gpu.sh",
+        "jaeger_agent_omni/tests/converse_sim.py",
+        "--session",
+        "full",
+        "--output",
+        "research/candidate_evals/converse-full-20260908.json"
+      ],
+      "seconds": 71.94046391698066,
+      "exit_code": 0,
+      "artifact": "research/candidate_evals/converse-full-20260908.json",
+      "sha256": "83e159dadedb264c296535064ab067f1d55c5b7f8048e622a875adae76a692ba",
+      "passed": 5,
+      "total": 5,
+      "expected": 5,
+      "valid": true
+    },
+    {
+      "session": "vision-expanded",
+      "command": [
+        "training/run_gpu.sh",
+        "jaeger_agent_omni/tests/converse_sim.py",
+        "--session",
+        "vision-expanded",
+        "--output",
+        "research/candidate_evals/converse-vision-expanded-20260908.json"
+      ],
+      "seconds": 153.87909000000218,
+      "exit_code": 1,
+      "artifact": "research/candidate_evals/converse-vision-expanded-20260908.json",
+      "sha256": "6098baf014c5e88fa168d2eb6a35d9df4533957273bb65b7fe2a97110e3ef2e7",
+      "passed": 19,
+      "total": 20,
+      "expected": 20,
+      "valid": false
+    }
+  ]
+}

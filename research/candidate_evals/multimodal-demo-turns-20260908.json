@@ -1,0 +1,12 @@
+[
+  {
+    "image": "/Users/jonathanjenkins/models/jaeger-training-data/joint-vision-v1/triangle.png",
+    "audio": "/Users/jonathanjenkins/models/jaeger-training-data/joint-vision-v1/joint.wav"
+  },
+  {
+    "text": "Use the label cedar for that shape from now on. What label will you use?"
+  },
+  {
+    "audio": "/Users/jonathanjenkins/models/jaeger-training-data/joint-vision-v1/label.wav"
+  }
+]

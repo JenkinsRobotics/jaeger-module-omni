@@ -1,0 +1,88 @@
+{
+  "command": [
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+    "research/omni_multimodal_demo.py",
+    "--turns",
+    "research/candidate_evals/multimodal-demo-turns-20260908.json",
+    "--speak",
+    "--output",
+    "research/candidate_evals/multimodal-demo-20260908.json"
+  ],
+  "code_sha256": "11d74b927f8425127838c95596303d9328ea2cd38cbd20cc78fc4e094b8b18e3",
+  "helper_sha256": "7cdbab84ff88b954af439c849be50ac7cc8a1b983e488475e91ef49699f11329",
+  "turns_sha256": "0020a0ddead74a5a5a98cd0d26fe080aae69dbf4ccbe548e2da59d8364506362",
+  "brain": "/Users/jonathanjenkins/models/gemma-4-E4B-it-4bit-mlx",
+  "runtime_identity_sha256": {
+    "jaeger_agent_omni/nodes/jaegeromni-41m-medium/node.json": "88b4da2d39cb599302b3cf80e4bce23a9d3e21ae1eb7142f1e1b5e618c020b1a",
+    "jaeger_agent_omni/nodes/gemma4-vision-mlx-v1/node.json": "e4b5335322459002925f43e82053f7ab06e9e8065ec3d3c91bb53340f7f376e7",
+    "jaeger_agent_omni/nodes/gemma4-vision-mlx-v1/runtime.py": "62d58fcd638b6e659fa333156094d11216719563d6d5d2c512f9e38d4f77ef0c",
+    "jaeger_agent_omni/core/runtime/stock_whisper.py": "dc65977e72ccafcb5216d92ce397e8f3724474cf52e9320e78aa4c1d8a6aea9f"
+  },
+  "front_end": "jaegeromni-41m-medium",
+  "vision_node": "gemma4-vision-mlx-v1",
+  "brain_instances": 1,
+  "caption_or_transcript_bridge": false,
+  "load_and_warmup_seconds": 12.078078625025228,
+  "peak_mlx_memory_bytes": 5754587710,
+  "rows": [
+    {
+      "input": {
+        "image": "/Users/jonathanjenkins/models/jaeger-training-data/joint-vision-v1/triangle.png",
+        "audio": "/Users/jonathanjenkins/models/jaeger-training-data/joint-vision-v1/joint.wav"
+      },
+      "input_sha256": {
+        "image": "495654bb8fa23349cb731fdfb932393aea543bbb5aa0e95ac41fd048efd2e6b0",
+        "audio": "50919359f5985bd25fdfd88bb4e8774c2ffe9abe45e8633a7ede9f387072ec9a"
+      },
+      "answer": "it is a green triangle.",
+      "error": null,
+      "vision_ms": 917.217125010211,
+      "request_ms_including_vision": 2202.4032089975663,
+      "same_brain_instance": true,
+      "cache_tokens": 382,
+      "speech": {
+        "path": "research/candidate_evals/multimodal-demo-20260908.audio/reply-000.wav",
+        "sha256": "49ecee691abda77247f48036b7a92755c3a02d76dfe618d1908083d4a3e4cf47",
+        "synthesis_ms": 3112.9119590041228
+      }
+    },
+    {
+      "input": {
+        "text": "Use the label cedar for that shape from now on. What label will you use?"
+      },
+      "input_sha256": {},
+      "answer": "I will use the label cedar.",
+      "error": null,
+      "vision_ms": 0.0,
+      "request_ms_including_vision": 509.7033340134658,
+      "same_brain_instance": true,
+      "cache_tokens": 423,
+      "speech": {
+        "path": "research/candidate_evals/multimodal-demo-20260908.audio/reply-001.wav",
+        "sha256": "88033c234fb76cef1ddee9333a011c78b20de91c1e3ac0663798c2f84f1403d1",
+        "synthesis_ms": 293.2049579685554
+      }
+    },
+    {
+      "input": {
+        "audio": "/Users/jonathanjenkins/models/jaeger-training-data/joint-vision-v1/label.wav"
+      },
+      "input_sha256": {
+        "audio": "7dacc7e76b8f8c6810bc7c8dacf7de73514aa72dacaa16225d124181d4ab9354"
+      },
+      "answer": "you called it cedar.",
+      "error": null,
+      "vision_ms": 0.0,
+      "request_ms_including_vision": 564.1647090087645,
+      "same_brain_instance": true,
+      "cache_tokens": 522,
+      "speech": {
+        "path": "research/candidate_evals/multimodal-demo-20260908.audio/reply-002.wav",
+        "sha256": "af6f69fa6c01d922ca832a0ec9ea470da51dc427c8f3dbfb525a78cea5a2c847",
+        "synthesis_ms": 250.5259170429781
+      }
+    }
+  ],
+  "production_profile_changed": false,
+  "scope": "experimental causal-attention multimodal session; saved speech is not physical delivery"
+}
