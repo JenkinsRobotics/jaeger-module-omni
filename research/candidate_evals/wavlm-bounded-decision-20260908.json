@@ -1,0 +1,63 @@
+{
+  "training_artifact": "research/candidate_evals/wavlm-overlap-bounded-20260907.json",
+  "training_artifact_sha256": "4f61b31ccc8a28ccc62ee91dae9dc9afd722e8023ddf005eb7eac80d6432ad5c",
+  "training_completed": true,
+  "wrapper_exit_code": 0,
+  "selected_epoch": 4,
+  "test": {
+    "bargein_train": {
+      "f1": 0.8194117647058824,
+      "tp": 2786,
+      "fp": 345,
+      "fn": 883,
+      "event_recall": 0.8860759493670886,
+      "events": 79,
+      "detected_events": 70,
+      "false_alarm_events": 72,
+      "false_alarms_per_minute": 3.30467243964383,
+      "detection_delay_p95_ms": 640.0,
+      "seconds": 1307.24,
+      "threshold": 0.42500000000000004
+    },
+    "ami_overlap": {
+      "f1": 0.7980999035107251,
+      "tp": 26882,
+      "fp": 7512,
+      "fn": 6089,
+      "event_recall": 0.9545454545454546,
+      "events": 990,
+      "detected_events": 945,
+      "false_alarm_events": 1137,
+      "false_alarms_per_minute": 23.840809650949858,
+      "detection_delay_p95_ms": 320.0,
+      "seconds": 2861.48,
+      "threshold": 0.42500000000000004
+    }
+  },
+  "buffered_detection": {
+    "bargein_train": {
+      "detected_events": 70,
+      "p95_ms": 720.0001430511473,
+      "includes_buffering": true,
+      "includes_compute": false,
+      "event_matching": "unchanged legacy overlap intervals; early-onset alarms not separately penalized"
+    },
+    "ami_overlap": {
+      "detected_events": 945,
+      "p95_ms": 479.99998927116394,
+      "includes_buffering": true,
+      "includes_compute": false,
+      "event_matching": "unchanged legacy overlap intervals; early-onset alarms not separately penalized"
+    }
+  },
+  "frame_gate_pass": false,
+  "promotion_pass": false,
+  "rejection_reasons": [
+    "AMI frame F1 below .81",
+    "Barge event recall below .90",
+    "False events exceed one/minute on both corpora",
+    "Buffered p95 exceeds 300 ms on both corpora, before encoder compute"
+  ],
+  "production_changed": false,
+  "continuation_authorized_by_results": false
+}

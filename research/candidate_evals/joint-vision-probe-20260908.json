@@ -1,0 +1,376 @@
+{
+  "command": [
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+    "research/joint_vision_probe.py",
+    "run",
+    "--output",
+    "research/candidate_evals/joint-vision-probe-20260908.json"
+  ],
+  "source_snapshot": {
+    "research/joint_vision_probe.py": "7cdbab84ff88b954af439c849be50ac7cc8a1b983e488475e91ef49699f11329",
+    "jaeger_agent_omni/core/runtime/stock_whisper.py": "dc65977e72ccafcb5216d92ce397e8f3724474cf52e9320e78aa4c1d8a6aea9f"
+  },
+  "manifest_sha256": "29e298f855e72ffd98e30e5d92905c48bb6af6c354cfd987876b640829a7aac3",
+  "adapter_sha256": "a7f96bfb889866f75df7b838f84aae368a56ab10f6469e766511d700e32fe13a",
+  "brain": "/Users/jonathanjenkins/models/gemma-4-E4B-it-4bit-mlx",
+  "brain_instances": 1,
+  "passed": 20,
+  "total": 20,
+  "expected_total": 20,
+  "all_pass": true,
+  "rows": [
+    {
+      "shape": "triangle",
+      "kind": "image_text",
+      "text_fed": "Name the shape and its color in this image.",
+      "voice_fixture": null,
+      "image_fed": true,
+      "expected": [
+        "green",
+        "triangle"
+      ],
+      "answer": "It is a green triangle.",
+      "error": null,
+      "pass": true,
+      "request_ms": 1003.1383330351673,
+      "cache_before": 0,
+      "cache_after": 320,
+      "same_brain_instance": true
+    },
+    {
+      "shape": "triangle",
+      "kind": "spoken_color",
+      "text_fed": null,
+      "voice_fixture": "color",
+      "image_fed": false,
+      "expected": [
+        "green"
+      ],
+      "answer": "The shape was green.",
+      "error": null,
+      "pass": true,
+      "request_ms": 580.1448750426061,
+      "cache_before": 320,
+      "cache_after": 427,
+      "same_brain_instance": true
+    },
+    {
+      "shape": "triangle",
+      "kind": "typed_label",
+      "text_fed": "Use the label cedar for that shape from now on. What label will you use?",
+      "voice_fixture": null,
+      "image_fed": false,
+      "expected": [
+        "cedar"
+      ],
+      "answer": "I will use the label cedar.",
+      "error": null,
+      "pass": true,
+      "request_ms": 400.4224159871228,
+      "cache_before": 427,
+      "cache_after": 468,
+      "same_brain_instance": true
+    },
+    {
+      "shape": "triangle",
+      "kind": "spoken_label",
+      "text_fed": null,
+      "voice_fixture": "label",
+      "image_fed": false,
+      "expected": [
+        "cedar"
+      ],
+      "answer": "You labeled it cedar.",
+      "error": null,
+      "pass": true,
+      "request_ms": 543.126333039254,
+      "cache_before": 468,
+      "cache_after": 567,
+      "same_brain_instance": true
+    },
+    {
+      "shape": "triangle",
+      "kind": "image_audio",
+      "text_fed": null,
+      "voice_fixture": "joint",
+      "image_fed": true,
+      "expected": [
+        "green",
+        "triangle"
+      ],
+      "answer": "It is a green triangle.",
+      "error": null,
+      "pass": true,
+      "request_ms": 1148.3808339689858,
+      "cache_before": 567,
+      "cache_after": 920,
+      "same_brain_instance": true
+    },
+    {
+      "shape": "square",
+      "kind": "image_text",
+      "text_fed": "Name the shape and its color in this image.",
+      "voice_fixture": null,
+      "image_fed": true,
+      "expected": [
+        "orange",
+        "square"
+      ],
+      "answer": "It is an orange square.",
+      "error": null,
+      "pass": true,
+      "request_ms": 951.7246250179596,
+      "cache_before": 920,
+      "cache_after": 1211,
+      "same_brain_instance": true
+    },
+    {
+      "shape": "square",
+      "kind": "spoken_color",
+      "text_fed": null,
+      "voice_fixture": "color",
+      "image_fed": false,
+      "expected": [
+        "orange"
+      ],
+      "answer": "The shape was orange.",
+      "error": null,
+      "pass": true,
+      "request_ms": 565.1781659689732,
+      "cache_before": 1211,
+      "cache_after": 1318,
+      "same_brain_instance": true
+    },
+    {
+      "shape": "square",
+      "kind": "typed_label",
+      "text_fed": "Use the label harbor for that shape from now on. What label will you use?",
+      "voice_fixture": null,
+      "image_fed": false,
+      "expected": [
+        "harbor"
+      ],
+      "answer": "I will use the label harbor.",
+      "error": null,
+      "pass": true,
+      "request_ms": 415.17341596772894,
+      "cache_before": 1318,
+      "cache_after": 1359,
+      "same_brain_instance": true
+    },
+    {
+      "shape": "square",
+      "kind": "spoken_label",
+      "text_fed": null,
+      "voice_fixture": "label",
+      "image_fed": false,
+      "expected": [
+        "harbor"
+      ],
+      "answer": "You labeled it harbor.",
+      "error": null,
+      "pass": true,
+      "request_ms": 552.4046669597737,
+      "cache_before": 1359,
+      "cache_after": 1458,
+      "same_brain_instance": true
+    },
+    {
+      "shape": "square",
+      "kind": "image_audio",
+      "text_fed": null,
+      "voice_fixture": "joint",
+      "image_fed": true,
+      "expected": [
+        "orange",
+        "square"
+      ],
+      "answer": "It is an orange square.",
+      "error": null,
+      "pass": true,
+      "request_ms": 1147.900334035512,
+      "cache_before": 1458,
+      "cache_after": 1811,
+      "same_brain_instance": true
+    },
+    {
+      "shape": "circle",
+      "kind": "image_text",
+      "text_fed": "Name the shape and its color in this image.",
+      "voice_fixture": null,
+      "image_fed": true,
+      "expected": [
+        "purple",
+        "circle"
+      ],
+      "answer": "It is a purple circle.",
+      "error": null,
+      "pass": true,
+      "request_ms": 985.4894580203108,
+      "cache_before": 1811,
+      "cache_after": 2102,
+      "same_brain_instance": true
+    },
+    {
+      "shape": "circle",
+      "kind": "spoken_color",
+      "text_fed": null,
+      "voice_fixture": "color",
+      "image_fed": false,
+      "expected": [
+        "purple"
+      ],
+      "answer": "The shape was purple.",
+      "error": null,
+      "pass": true,
+      "request_ms": 581.9486670079641,
+      "cache_before": 2102,
+      "cache_after": 2209,
+      "same_brain_instance": true
+    },
+    {
+      "shape": "circle",
+      "kind": "typed_label",
+      "text_fed": "Use the label maple for that shape from now on. What label will you use?",
+      "voice_fixture": null,
+      "image_fed": false,
+      "expected": [
+        "maple"
+      ],
+      "answer": "I will use the label maple.",
+      "error": null,
+      "pass": true,
+      "request_ms": 422.22445900551975,
+      "cache_before": 2209,
+      "cache_after": 2250,
+      "same_brain_instance": true
+    },
+    {
+      "shape": "circle",
+      "kind": "spoken_label",
+      "text_fed": null,
+      "voice_fixture": "label",
+      "image_fed": false,
+      "expected": [
+        "maple"
+      ],
+      "answer": "You labeled it maple.",
+      "error": null,
+      "pass": true,
+      "request_ms": 556.814834009856,
+      "cache_before": 2250,
+      "cache_after": 2349,
+      "same_brain_instance": true
+    },
+    {
+      "shape": "circle",
+      "kind": "image_audio",
+      "text_fed": null,
+      "voice_fixture": "joint",
+      "image_fed": true,
+      "expected": [
+        "purple",
+        "circle"
+      ],
+      "answer": "It is a purple circle.",
+      "error": null,
+      "pass": true,
+      "request_ms": 1179.2139589670114,
+      "cache_before": 2349,
+      "cache_after": 2702,
+      "same_brain_instance": true
+    },
+    {
+      "shape": "rectangle",
+      "kind": "image_text",
+      "text_fed": "Name the shape and its color in this image.",
+      "voice_fixture": null,
+      "image_fed": true,
+      "expected": [
+        "red",
+        "rectangle"
+      ],
+      "answer": "It is a red rectangle.",
+      "error": null,
+      "pass": true,
+      "request_ms": 983.3367499522865,
+      "cache_before": 2702,
+      "cache_after": 2993,
+      "same_brain_instance": true
+    },
+    {
+      "shape": "rectangle",
+      "kind": "spoken_color",
+      "text_fed": null,
+      "voice_fixture": "color",
+      "image_fed": false,
+      "expected": [
+        "red"
+      ],
+      "answer": "The shape was red.",
+      "error": null,
+      "pass": true,
+      "request_ms": 593.9321670448408,
+      "cache_before": 2993,
+      "cache_after": 3100,
+      "same_brain_instance": true
+    },
+    {
+      "shape": "rectangle",
+      "kind": "typed_label",
+      "text_fed": "Use the label river for that shape from now on. What label will you use?",
+      "voice_fixture": null,
+      "image_fed": false,
+      "expected": [
+        "river"
+      ],
+      "answer": "I will use the label river.",
+      "error": null,
+      "pass": true,
+      "request_ms": 429.92079100804403,
+      "cache_before": 3100,
+      "cache_after": 3141,
+      "same_brain_instance": true
+    },
+    {
+      "shape": "rectangle",
+      "kind": "spoken_label",
+      "text_fed": null,
+      "voice_fixture": "label",
+      "image_fed": false,
+      "expected": [
+        "river"
+      ],
+      "answer": "You labeled it river.",
+      "error": null,
+      "pass": true,
+      "request_ms": 573.5750839812681,
+      "cache_before": 3141,
+      "cache_after": 3240,
+      "same_brain_instance": true
+    },
+    {
+      "shape": "rectangle",
+      "kind": "image_audio",
+      "text_fed": null,
+      "voice_fixture": "joint",
+      "image_fed": true,
+      "expected": [
+        "red",
+        "rectangle"
+      ],
+      "answer": "It is a red rectangle.",
+      "error": null,
+      "pass": true,
+      "request_ms": 1211.0232079867274,
+      "cache_before": 3240,
+      "cache_after": 3593,
+      "same_brain_instance": true
+    }
+  ],
+  "production_changed": false,
+  "scope": "synthetic shapes; frozen CPU-cached vision embeddings plus raw speech and text in one MLX cache",
+  "latency_scope": "excludes separately measured vision encoding and model loading",
+  "attention_scope": "causal language attention; no image-only bidirectional attention overlay",
+  "caption_or_transcript_bridge": false
+}

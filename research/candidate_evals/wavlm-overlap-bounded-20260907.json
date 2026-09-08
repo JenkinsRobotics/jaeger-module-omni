@@ -1,0 +1,402 @@
+{
+  "command": [
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+    "training/pretrained_overlap.py",
+    "train",
+    "--cache",
+    "/Users/jonathanjenkins/models/jaeger-training-data/overlap-wavlm-bounded-v1",
+    "--checkpoint",
+    "artifacts/overlap-wavlm-bounded-v1.pt",
+    "--output",
+    "research/candidate_evals/wavlm-overlap-bounded-20260907.json"
+  ],
+  "code_sha256": "56a4bdb89b63e1386203ef9a67d5c70a090babc98f32fc4e6deeaacb90f6a092",
+  "cache_provenance": {
+    "feature_mode": "bounded_past_1280ms_hop160ms",
+    "context_ms": 1280,
+    "hop_ms": 160,
+    "max_buffering_ms": 160,
+    "layers": [
+      4,
+      8,
+      12
+    ],
+    "pretrained": {
+      "model": "microsoft/wavlm-base-plus",
+      "revision": "4c66d4806a428f2e922ccfa1a962776e232d487b",
+      "usage": "frozen independent raw-audio perception feature experiment"
+    },
+    "weights_sha256": "3bb273a6ace99408b50cfc81afdbb7ef2de02da2eab0234e18db608ce692fe51",
+    "source_manifest_sha256": "c45036b48c8b568ca9a1c424a940d96a4b36ab3e4ba1b3078502d05891a4e23a",
+    "feature_code_sha256": "0020d1d06dda3074a94b0e209877c32d0cc4dc100fadf10285ffdfb048b31b2e"
+  },
+  "manifest_sha256": "f82e9492ae8ddae8a3c423e4696c3112f4c6858352d452d15b01206931bba13a",
+  "head_parameters": 199169,
+  "history": [
+    {
+      "epoch": 1,
+      "loss": 0.3351402172597788,
+      "validation": {
+        "threshold": 0.5750000000000001,
+        "macro_f1": 0.7747459980010948,
+        "by_corpus": {
+          "bargein_train": {
+            "f1": 0.7578221915920055,
+            "tp": 2749,
+            "fp": 520,
+            "fn": 1237,
+            "event_recall": 0.8962264150943396,
+            "events": 106,
+            "detected_events": 95,
+            "false_alarm_events": 110,
+            "false_alarms_per_minute": 4.341762492434808,
+            "detection_delay_p95_ms": 640.0,
+            "seconds": 1520.1200000000001,
+            "threshold": 0.5750000000000001
+          },
+          "ami_overlap": {
+            "f1": 0.7916698044101841,
+            "tp": 57820,
+            "fp": 18343,
+            "fn": 12088,
+            "event_recall": 0.9550763701707098,
+            "events": 2226,
+            "detected_events": 2126,
+            "false_alarm_events": 2974,
+            "false_alarms_per_minute": 29.238462899726688,
+            "detection_delay_p95_ms": 240.0,
+            "seconds": 6102.92,
+            "threshold": 0.5750000000000001
+          }
+        }
+      },
+      "elapsed_seconds": 76.33323824999388
+    },
+    {
+      "epoch": 2,
+      "loss": 0.27805281385021696,
+      "validation": {
+        "threshold": 0.4,
+        "macro_f1": 0.7873557853802438,
+        "by_corpus": {
+          "bargein_train": {
+            "f1": 0.778655050367547,
+            "tp": 2860,
+            "fp": 500,
+            "fn": 1126,
+            "event_recall": 0.8962264150943396,
+            "events": 106,
+            "detected_events": 95,
+            "false_alarm_events": 80,
+            "false_alarms_per_minute": 3.157645449043496,
+            "detection_delay_p95_ms": 600.0,
+            "seconds": 1520.1200000000001,
+            "threshold": 0.4
+          },
+          "ami_overlap": {
+            "f1": 0.7960565203929406,
+            "tp": 56563,
+            "fp": 15637,
+            "fn": 13345,
+            "event_recall": 0.9407008086253369,
+            "events": 2226,
+            "detected_events": 2094,
+            "false_alarm_events": 2469,
+            "false_alarms_per_minute": 24.273626395233755,
+            "detection_delay_p95_ms": 280.0,
+            "seconds": 6102.92,
+            "threshold": 0.4
+          }
+        }
+      },
+      "elapsed_seconds": 150.6045117499889
+    },
+    {
+      "epoch": 3,
+      "loss": 0.267433638491873,
+      "validation": {
+        "threshold": 0.42500000000000004,
+        "macro_f1": 0.7912883670991477,
+        "by_corpus": {
+          "bargein_train": {
+            "f1": 0.7846406121891227,
+            "tp": 2871,
+            "fp": 461,
+            "fn": 1115,
+            "event_recall": 0.9056603773584906,
+            "events": 106,
+            "detected_events": 96,
+            "false_alarm_events": 58,
+            "false_alarms_per_minute": 2.289292950556535,
+            "detection_delay_p95_ms": 610.0,
+            "seconds": 1520.1200000000001,
+            "threshold": 0.42500000000000004
+          },
+          "ami_overlap": {
+            "f1": 0.7979361220091727,
+            "tp": 57761,
+            "fp": 17107,
+            "fn": 12147,
+            "event_recall": 0.935759209344115,
+            "events": 2226,
+            "detected_events": 2083,
+            "false_alarm_events": 2141,
+            "false_alarms_per_minute": 21.04894050716706,
+            "detection_delay_p95_ms": 320.0,
+            "seconds": 6102.92,
+            "threshold": 0.42500000000000004
+          }
+        }
+      },
+      "elapsed_seconds": 224.21095187496394
+    },
+    {
+      "epoch": 4,
+      "loss": 0.25737688920255436,
+      "validation": {
+        "threshold": 0.42500000000000004,
+        "macro_f1": 0.7978602043597796,
+        "by_corpus": {
+          "bargein_train": {
+            "f1": 0.790722761596548,
+            "tp": 2932,
+            "fp": 498,
+            "fn": 1054,
+            "event_recall": 0.9056603773584906,
+            "events": 106,
+            "detected_events": 96,
+            "false_alarm_events": 87,
+            "false_alarms_per_minute": 3.433939425834802,
+            "detection_delay_p95_ms": 600.0,
+            "seconds": 1520.1200000000001,
+            "threshold": 0.42500000000000004
+          },
+          "ami_overlap": {
+            "f1": 0.8049976471230111,
+            "tp": 59018,
+            "fp": 17703,
+            "fn": 10890,
+            "event_recall": 0.9420485175202157,
+            "events": 2226,
+            "detected_events": 2097,
+            "false_alarm_events": 2362,
+            "false_alarms_per_minute": 23.221670937846145,
+            "detection_delay_p95_ms": 240.0,
+            "seconds": 6102.92,
+            "threshold": 0.42500000000000004
+          }
+        }
+      },
+      "elapsed_seconds": 299.5758497079951
+    },
+    {
+      "epoch": 5,
+      "loss": 0.2483012970473807,
+      "validation": {
+        "threshold": 0.5,
+        "macro_f1": 0.7964643384735556,
+        "by_corpus": {
+          "bargein_train": {
+            "f1": 0.7935909519321395,
+            "tp": 2947,
+            "fp": 494,
+            "fn": 1039,
+            "event_recall": 0.9056603773584906,
+            "events": 106,
+            "detected_events": 96,
+            "false_alarm_events": 77,
+            "false_alarms_per_minute": 3.039233744704365,
+            "detection_delay_p95_ms": 570.0,
+            "seconds": 1520.1200000000001,
+            "threshold": 0.5
+          },
+          "ami_overlap": {
+            "f1": 0.7993377250149717,
+            "tp": 56727,
+            "fp": 15300,
+            "fn": 13181,
+            "event_recall": 0.9393530997304582,
+            "events": 2226,
+            "detected_events": 2091,
+            "false_alarm_events": 2387,
+            "false_alarms_per_minute": 23.467454923217083,
+            "detection_delay_p95_ms": 280.0,
+            "seconds": 6102.92,
+            "threshold": 0.5
+          }
+        }
+      },
+      "elapsed_seconds": 375.5309752919711
+    },
+    {
+      "epoch": 6,
+      "loss": 0.2412764133033106,
+      "validation": {
+        "threshold": 0.4,
+        "macro_f1": 0.7953092021713477,
+        "by_corpus": {
+          "bargein_train": {
+            "f1": 0.7921422882930714,
+            "tp": 2984,
+            "fp": 564,
+            "fn": 1002,
+            "event_recall": 0.9245283018867925,
+            "events": 106,
+            "detected_events": 98,
+            "false_alarm_events": 109,
+            "false_alarms_per_minute": 4.302291924321763,
+            "detection_delay_p95_ms": 600.0,
+            "seconds": 1520.1200000000001,
+            "threshold": 0.4
+          },
+          "ami_overlap": {
+            "f1": 0.7984761160496239,
+            "tp": 57218,
+            "fp": 16192,
+            "fn": 12690,
+            "event_recall": 0.9420485175202157,
+            "events": 2226,
+            "detected_events": 2097,
+            "false_alarm_events": 2466,
+            "false_alarms_per_minute": 24.244132316989244,
+            "detection_delay_p95_ms": 200.0,
+            "seconds": 6102.92,
+            "threshold": 0.4
+          }
+        }
+      },
+      "elapsed_seconds": 451.2416027499712
+    },
+    {
+      "epoch": 7,
+      "loss": 0.22876713568881407,
+      "validation": {
+        "threshold": 0.475,
+        "macro_f1": 0.7932292541904322,
+        "by_corpus": {
+          "bargein_train": {
+            "f1": 0.7885152199920245,
+            "tp": 2966,
+            "fp": 571,
+            "fn": 1020,
+            "event_recall": 0.9150943396226415,
+            "events": 106,
+            "detected_events": 97,
+            "false_alarm_events": 81,
+            "false_alarms_per_minute": 3.19711601715654,
+            "detection_delay_p95_ms": 600.0,
+            "seconds": 1520.1200000000001,
+            "threshold": 0.475
+          },
+          "ami_overlap": {
+            "f1": 0.7979432883888401,
+            "tp": 57730,
+            "fp": 17059,
+            "fn": 12178,
+            "event_recall": 0.9263252470799641,
+            "events": 2226,
+            "detected_events": 2062,
+            "false_alarm_events": 2055,
+            "false_alarms_per_minute": 20.203443597491038,
+            "detection_delay_p95_ms": 320.0,
+            "seconds": 6102.92,
+            "threshold": 0.475
+          }
+        }
+      },
+      "elapsed_seconds": 527.2379883750109
+    },
+    {
+      "epoch": 8,
+      "loss": 0.21903462599394685,
+      "validation": {
+        "threshold": 0.375,
+        "macro_f1": 0.7969980097325369,
+        "by_corpus": {
+          "bargein_train": {
+            "f1": 0.7960369881109643,
+            "tp": 3013,
+            "fp": 571,
+            "fn": 973,
+            "event_recall": 0.9245283018867925,
+            "events": 106,
+            "detected_events": 98,
+            "false_alarm_events": 96,
+            "false_alarms_per_minute": 3.789174538852196,
+            "detection_delay_p95_ms": 565.9999999999997,
+            "seconds": 1520.1200000000001,
+            "threshold": 0.375
+          },
+          "ami_overlap": {
+            "f1": 0.7979590313541094,
+            "tp": 58802,
+            "fp": 18671,
+            "fn": 11106,
+            "event_recall": 0.9398023360287511,
+            "events": 2226,
+            "detected_events": 2092,
+            "false_alarm_events": 2308,
+            "false_alarms_per_minute": 22.690777529444922,
+            "detection_delay_p95_ms": 200.0,
+            "seconds": 6102.92,
+            "threshold": 0.375
+          }
+        }
+      },
+      "elapsed_seconds": 602.8361463329638
+    }
+  ],
+  "selected_epoch": 4,
+  "test": {
+    "bargein_train": {
+      "f1": 0.8194117647058824,
+      "tp": 2786,
+      "fp": 345,
+      "fn": 883,
+      "event_recall": 0.8860759493670886,
+      "events": 79,
+      "detected_events": 70,
+      "false_alarm_events": 72,
+      "false_alarms_per_minute": 3.30467243964383,
+      "detection_delay_p95_ms": 640.0,
+      "seconds": 1307.24,
+      "threshold": 0.42500000000000004
+    },
+    "ami_overlap": {
+      "f1": 0.7980999035107251,
+      "tp": 26882,
+      "fp": 7512,
+      "fn": 6089,
+      "event_recall": 0.9545454545454546,
+      "events": 990,
+      "detected_events": 945,
+      "false_alarm_events": 1137,
+      "false_alarms_per_minute": 23.840809650949858,
+      "detection_delay_p95_ms": 320.0,
+      "seconds": 2861.48,
+      "threshold": 0.42500000000000004
+    }
+  },
+  "checkpoint_sha256": "dd1acd312e8d3fdb99bf7294a75a2cc5745f9e1c7827469d5ada0370507cec86",
+  "buffered_detection": {
+    "bargein_train": {
+      "detected_events": 70,
+      "p95_ms": 720.0001430511473,
+      "includes_buffering": true,
+      "includes_compute": false,
+      "event_matching": "unchanged legacy overlap intervals; early-onset alarms not separately penalized"
+    },
+    "ami_overlap": {
+      "detected_events": 945,
+      "p95_ms": 479.99998927116394,
+      "includes_buffering": true,
+      "includes_compute": false,
+      "event_matching": "unchanged legacy overlap intervals; early-onset alarms not separately penalized"
+    }
+  },
+  "frame_gate_pass": false,
+  "promotion_pass": false,
+  "reason": "bounded encoder; actual compute and physical policy gates remain required",
+  "pretraining_overlap_audit": "supervised splits disjoint; pretraining identity overlap not audited",
+  "runtime_policy_changed": false
+}

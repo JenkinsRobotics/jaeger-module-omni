@@ -1,0 +1,1914 @@
+{
+  "command": [
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+    "research/overlap_event_policy.py",
+    "--cache",
+    "/Users/jonathanjenkins/models/jaeger-training-data/overlap-wavlm-bounded-v1",
+    "--checkpoint",
+    "artifacts/overlap-wavlm-bounded-v1.pt",
+    "--training-report",
+    "research/candidate_evals/wavlm-overlap-bounded-20260907.json",
+    "--output",
+    "research/candidate_evals/wavlm-bounded-alarm-policy-20260908.json"
+  ],
+  "code_sha256": "98fbde4621367e2f91d8cb02ad991bd4b2ddece063cb9c0ab63dc83412d76e84",
+  "training_report_sha256": "4f61b31ccc8a28ccc62ee91dae9dc9afd722e8023ddf005eb7eac80d6432ad5c",
+  "checkpoint_sha256": "dd1acd312e8d3fdb99bf7294a75a2cc5745f9e1c7827469d5ada0370507cec86",
+  "manifest_sha256": "f82e9492ae8ddae8a3c423e4696c3112f4c6858352d452d15b01206931bba13a",
+  "validation_grid": [
+    {
+      "threshold": 0.1,
+      "dwell_blocks": 1,
+      "release_blocks": 1,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.6583950370222134,
+          "events": 106,
+          "detected_events": 94,
+          "event_recall": 0.8867924528301887,
+          "false_events": 242,
+          "false_events_per_minute": 9.551877483356574,
+          "delay_p95_ms": 640.0001163482664,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.7409312955601529,
+          "events": 2226,
+          "detected_events": 1468,
+          "event_recall": 0.6594788858939802,
+          "false_events": 1356,
+          "false_events_per_minute": 13.33132336651967,
+          "delay_p95_ms": 240.00000000000006,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.1,
+      "dwell_blocks": 1,
+      "release_blocks": 2,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.6583950370222134,
+          "events": 106,
+          "detected_events": 93,
+          "event_recall": 0.8773584905660378,
+          "false_events": 222,
+          "false_events_per_minute": 8.7624661210957,
+          "delay_p95_ms": 640.0001220703123,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.7409312955601529,
+          "events": 2226,
+          "detected_events": 1372,
+          "event_recall": 0.6163522012578616,
+          "false_events": 1110,
+          "false_events_per_minute": 10.912808950469643,
+          "delay_p95_ms": 200.00022888183543,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.1,
+      "dwell_blocks": 2,
+      "release_blocks": 1,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.6583950370222134,
+          "events": 106,
+          "detected_events": 79,
+          "event_recall": 0.7452830188679245,
+          "false_events": 94,
+          "false_events_per_minute": 3.7102334026261072,
+          "delay_p95_ms": 804.000091552734,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.7409312955601529,
+          "events": 2226,
+          "detected_events": 1491,
+          "event_recall": 0.6698113207547169,
+          "false_events": 991,
+          "false_events_per_minute": 9.742877180103978,
+          "delay_p95_ms": 360.00032424926775,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.1,
+      "dwell_blocks": 2,
+      "release_blocks": 2,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.6583950370222134,
+          "events": 106,
+          "detected_events": 78,
+          "event_recall": 0.7358490566037735,
+          "false_events": 91,
+          "false_events_per_minute": 3.591821698286976,
+          "delay_p95_ms": 806.0000801086421,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.7409312955601529,
+          "events": 2226,
+          "detected_events": 1412,
+          "event_recall": 0.6343216531895777,
+          "false_events": 865,
+          "false_events_per_minute": 8.50412589383445,
+          "delay_p95_ms": 360.0000953674316,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.15000000000000002,
+      "dwell_blocks": 1,
+      "release_blocks": 1,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7143653181767525,
+          "events": 106,
+          "detected_events": 92,
+          "event_recall": 0.8679245283018868,
+          "false_events": 144,
+          "false_events_per_minute": 5.683761808278292,
+          "delay_p95_ms": 697.9999523162841,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.7633921245763239,
+          "events": 2226,
+          "detected_events": 1588,
+          "event_recall": 0.7133872416891285,
+          "false_events": 1300,
+          "false_events_per_minute": 12.78076723928877,
+          "delay_p95_ms": 240.00022888183548,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.15000000000000002,
+      "dwell_blocks": 1,
+      "release_blocks": 2,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7143653181767525,
+          "events": 106,
+          "detected_events": 92,
+          "event_recall": 0.8679245283018868,
+          "false_events": 126,
+          "false_events_per_minute": 4.9732915822435055,
+          "delay_p95_ms": 697.9999523162841,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.7633921245763239,
+          "events": 2226,
+          "detected_events": 1490,
+          "event_recall": 0.6693620844564241,
+          "false_events": 1054,
+          "false_events_per_minute": 10.362252823238741,
+          "delay_p95_ms": 240.00004768371585,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.15000000000000002,
+      "dwell_blocks": 2,
+      "release_blocks": 1,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7143653181767525,
+          "events": 106,
+          "detected_events": 76,
+          "event_recall": 0.7169811320754716,
+          "false_events": 64,
+          "false_events_per_minute": 2.5261163592347966,
+          "delay_p95_ms": 849.99990940094,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.7633921245763239,
+          "events": 2226,
+          "detected_events": 1571,
+          "event_recall": 0.7057502246181492,
+          "false_events": 976,
+          "false_events_per_minute": 9.595406788881414,
+          "delay_p95_ms": 400.00002861022966,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.15000000000000002,
+      "dwell_blocks": 2,
+      "release_blocks": 2,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7143653181767525,
+          "events": 106,
+          "detected_events": 76,
+          "event_recall": 0.7169811320754716,
+          "false_events": 59,
+          "false_events_per_minute": 2.328763518669578,
+          "delay_p95_ms": 849.99990940094,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.7633921245763239,
+          "events": 2226,
+          "detected_events": 1502,
+          "event_recall": 0.6747529200359389,
+          "false_events": 835,
+          "false_events_per_minute": 8.209185111389326,
+          "delay_p95_ms": 399.9999427795409,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.2,
+      "dwell_blocks": 1,
+      "release_blocks": 1,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7441145155566071,
+          "events": 106,
+          "detected_events": 90,
+          "event_recall": 0.8490566037735849,
+          "false_events": 93,
+          "false_events_per_minute": 3.6707628345130634,
+          "delay_p95_ms": 701.9999761581419,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.7784573125638287,
+          "events": 2226,
+          "detected_events": 1657,
+          "event_recall": 0.7443845462713388,
+          "false_events": 1296,
+          "false_events_per_minute": 12.741441801629419,
+          "delay_p95_ms": 319.99998259544356,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.2,
+      "dwell_blocks": 1,
+      "release_blocks": 2,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7441145155566071,
+          "events": 106,
+          "detected_events": 90,
+          "event_recall": 0.8490566037735849,
+          "false_events": 81,
+          "false_events_per_minute": 3.197116017156539,
+          "delay_p95_ms": 701.9999761581419,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.7784573125638287,
+          "events": 2226,
+          "detected_events": 1572,
+          "event_recall": 0.706199460916442,
+          "false_events": 1031,
+          "false_events_per_minute": 10.136131556697478,
+          "delay_p95_ms": 319.99986886978155,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.2,
+      "dwell_blocks": 2,
+      "release_blocks": 1,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7441145155566071,
+          "events": 106,
+          "detected_events": 75,
+          "event_recall": 0.7075471698113207,
+          "false_events": 49,
+          "false_events_per_minute": 1.934057837539141,
+          "delay_p95_ms": 879.9997549057005,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.7784573125638287,
+          "events": 2226,
+          "detected_events": 1621,
+          "event_recall": 0.7282120395327942,
+          "false_events": 959,
+          "false_events_per_minute": 9.428273678829177,
+          "delay_p95_ms": 479.99998927116394,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.2,
+      "dwell_blocks": 2,
+      "release_blocks": 2,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7441145155566071,
+          "events": 106,
+          "detected_events": 75,
+          "event_recall": 0.7075471698113207,
+          "false_events": 46,
+          "false_events_per_minute": 1.81564613320001,
+          "delay_p95_ms": 879.9997549057005,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.7784573125638287,
+          "events": 2226,
+          "detected_events": 1558,
+          "event_recall": 0.6999101527403414,
+          "false_events": 818,
+          "false_events_per_minute": 8.042052001337087,
+          "delay_p95_ms": 446.000161170954,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.25,
+      "dwell_blocks": 1,
+      "release_blocks": 1,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7646043874784323,
+          "events": 106,
+          "detected_events": 89,
+          "event_recall": 0.839622641509434,
+          "false_events": 72,
+          "false_events_per_minute": 2.841880904139146,
+          "delay_p95_ms": 703.999961853027,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.7893221923997134,
+          "events": 2226,
+          "detected_events": 1709,
+          "event_recall": 0.7677448337825696,
+          "false_events": 1308,
+          "false_events_per_minute": 12.85941811460747,
+          "delay_p95_ms": 360.0000534057617,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.25,
+      "dwell_blocks": 1,
+      "release_blocks": 2,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7646043874784323,
+          "events": 106,
+          "detected_events": 89,
+          "event_recall": 0.839622641509434,
+          "false_events": 62,
+          "false_events_per_minute": 2.447175223008709,
+          "delay_p95_ms": 703.999961853027,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.7893221923997134,
+          "events": 2226,
+          "detected_events": 1625,
+          "event_recall": 0.7300089847259659,
+          "false_events": 1030,
+          "false_events_per_minute": 10.12630019728264,
+          "delay_p95_ms": 320.00006866455095,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.25,
+      "dwell_blocks": 2,
+      "release_blocks": 1,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7646043874784323,
+          "events": 106,
+          "detected_events": 74,
+          "event_recall": 0.6981132075471698,
+          "false_events": 38,
+          "false_events_per_minute": 1.4998815882956604,
+          "delay_p95_ms": 879.9997649192808,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.7893221923997134,
+          "events": 2226,
+          "detected_events": 1664,
+          "event_recall": 0.7475292003593891,
+          "false_events": 935,
+          "false_events_per_minute": 9.192321052873076,
+          "delay_p95_ms": 553.9999332427942,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.25,
+      "dwell_blocks": 2,
+      "release_blocks": 2,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7646043874784323,
+          "events": 106,
+          "detected_events": 74,
+          "event_recall": 0.6981132075471698,
+          "false_events": 37,
+          "false_events_per_minute": 1.4604110201826166,
+          "delay_p95_ms": 879.9997649192808,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.7893221923997134,
+          "events": 2226,
+          "detected_events": 1600,
+          "event_recall": 0.7187780772686433,
+          "false_events": 784,
+          "false_events_per_minute": 7.707785781232611,
+          "delay_p95_ms": 519.9999618530269,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.30000000000000004,
+      "dwell_blocks": 1,
+      "release_blocks": 1,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7737579617834395,
+          "events": 106,
+          "detected_events": 88,
+          "event_recall": 0.8301886792452831,
+          "false_events": 65,
+          "false_events_per_minute": 2.56558692734784,
+          "delay_p95_ms": 705.9999475479121,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.7968840234012102,
+          "events": 2226,
+          "detected_events": 1756,
+          "event_recall": 0.788858939802336,
+          "false_events": 1334,
+          "false_events_per_minute": 13.115033459393246,
+          "delay_p95_ms": 440.00010013580317,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.30000000000000004,
+      "dwell_blocks": 1,
+      "release_blocks": 2,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7737579617834395,
+          "events": 106,
+          "detected_events": 88,
+          "event_recall": 0.8301886792452831,
+          "false_events": 53,
+          "false_events_per_minute": 2.0919401099913157,
+          "delay_p95_ms": 705.9999475479121,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.7968840234012102,
+          "events": 2226,
+          "detected_events": 1665,
+          "event_recall": 0.7479784366576819,
+          "false_events": 1024,
+          "false_events_per_minute": 10.067312040793615,
+          "delay_p95_ms": 431.999906539915,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.30000000000000004,
+      "dwell_blocks": 2,
+      "release_blocks": 1,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7737579617834395,
+          "events": 106,
+          "detected_events": 72,
+          "event_recall": 0.6792452830188679,
+          "false_events": 35,
+          "false_events_per_minute": 1.3814698839565294,
+          "delay_p95_ms": 879.9999852180481,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.7968840234012102,
+          "events": 2226,
+          "detected_events": 1688,
+          "event_recall": 0.7583108715184187,
+          "false_events": 950,
+          "false_events_per_minute": 9.339791444095638,
+          "delay_p95_ms": 639.9999856948853,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.30000000000000004,
+      "dwell_blocks": 2,
+      "release_blocks": 2,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7737579617834395,
+          "events": 106,
+          "detected_events": 72,
+          "event_recall": 0.6792452830188679,
+          "false_events": 32,
+          "false_events_per_minute": 1.2630581796173983,
+          "delay_p95_ms": 879.9999852180481,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.7968840234012102,
+          "events": 2226,
+          "detected_events": 1628,
+          "event_recall": 0.7313566936208445,
+          "false_events": 768,
+          "false_events_per_minute": 7.550484030595212,
+          "delay_p95_ms": 639.9999856948853,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.35,
+      "dwell_blocks": 1,
+      "release_blocks": 1,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7853403141361257,
+          "events": 106,
+          "detected_events": 87,
+          "event_recall": 0.8207547169811321,
+          "false_events": 50,
+          "false_events_per_minute": 1.9735284056521847,
+          "delay_p95_ms": 707.9999332427979,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.8012689515579688,
+          "events": 2226,
+          "detected_events": 1801,
+          "event_recall": 0.8090745732255166,
+          "false_events": 1329,
+          "false_events_per_minute": 13.065876662319058,
+          "delay_p95_ms": 479.99998927116394,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.35,
+      "dwell_blocks": 1,
+      "release_blocks": 2,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7853403141361257,
+          "events": 106,
+          "detected_events": 87,
+          "event_recall": 0.8207547169811321,
+          "false_events": 41,
+          "false_events_per_minute": 1.6182932926347915,
+          "delay_p95_ms": 707.9999332427979,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.8012689515579688,
+          "events": 2226,
+          "detected_events": 1709,
+          "event_recall": 0.7677448337825696,
+          "false_events": 984,
+          "false_events_per_minute": 9.674057664200115,
+          "delay_p95_ms": 479.99998927116394,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.35,
+      "dwell_blocks": 2,
+      "release_blocks": 1,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7853403141361257,
+          "events": 106,
+          "detected_events": 71,
+          "event_recall": 0.6698113207547169,
+          "false_events": 28,
+          "false_events_per_minute": 1.1051759071652234,
+          "delay_p95_ms": 879.9999952316284,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.8012689515579688,
+          "events": 2226,
+          "detected_events": 1717,
+          "event_recall": 0.7713387241689128,
+          "false_events": 942,
+          "false_events_per_minute": 9.26114056877694,
+          "delay_p95_ms": 799.9999947547913,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.35,
+      "dwell_blocks": 2,
+      "release_blocks": 2,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7853403141361257,
+          "events": 106,
+          "detected_events": 71,
+          "event_recall": 0.6698113207547169,
+          "false_events": 25,
+          "false_events_per_minute": 0.9867642028260923,
+          "delay_p95_ms": 879.9999952316284,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.8012689515579688,
+          "events": 2226,
+          "detected_events": 1650,
+          "event_recall": 0.7412398921832885,
+          "false_events": 745,
+          "false_events_per_minute": 7.324362764053949,
+          "delay_p95_ms": 759.9999798536302,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.4,
+      "dwell_blocks": 1,
+      "release_blocks": 1,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7899518973810796,
+          "events": 106,
+          "detected_events": 87,
+          "event_recall": 0.8207547169811321,
+          "false_events": 48,
+          "false_events_per_minute": 1.8945872694260972,
+          "delay_p95_ms": 707.9999332427979,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.8044491852328912,
+          "events": 2226,
+          "detected_events": 1837,
+          "event_recall": 0.8252470799640611,
+          "false_events": 1299,
+          "false_events_per_minute": 12.770935879873932,
+          "delay_p95_ms": 600.0001449584962,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.4,
+      "dwell_blocks": 1,
+      "release_blocks": 2,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7899518973810796,
+          "events": 106,
+          "detected_events": 87,
+          "event_recall": 0.8207547169811321,
+          "false_events": 37,
+          "false_events_per_minute": 1.4604110201826166,
+          "delay_p95_ms": 707.9999332427979,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.8044491852328912,
+          "events": 2226,
+          "detected_events": 1742,
+          "event_recall": 0.7825696316262354,
+          "false_events": 976,
+          "false_events_per_minute": 9.595406788881414,
+          "delay_p95_ms": 559.9999554157256,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.4,
+      "dwell_blocks": 2,
+      "release_blocks": 1,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7899518973810796,
+          "events": 106,
+          "detected_events": 71,
+          "event_recall": 0.6698113207547169,
+          "false_events": 27,
+          "false_events_per_minute": 1.0657053390521798,
+          "delay_p95_ms": 879.9999952316284,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.8044491852328912,
+          "events": 2226,
+          "detected_events": 1728,
+          "event_recall": 0.7762803234501348,
+          "false_events": 903,
+          "false_events_per_minute": 8.877717551598277,
+          "delay_p95_ms": 800.000011920929,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.4,
+      "dwell_blocks": 2,
+      "release_blocks": 2,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7899518973810796,
+          "events": 106,
+          "detected_events": 71,
+          "event_recall": 0.6698113207547169,
+          "false_events": 24,
+          "false_events_per_minute": 0.9472936347130486,
+          "delay_p95_ms": 879.9999952316284,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.8044491852328912,
+          "events": 2226,
+          "detected_events": 1665,
+          "event_recall": 0.7479784366576819,
+          "false_events": 721,
+          "false_events_per_minute": 7.088410138097848,
+          "delay_p95_ms": 800.000011920929,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.45000000000000007,
+      "dwell_blocks": 1,
+      "release_blocks": 1,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.789488017429194,
+          "events": 106,
+          "detected_events": 87,
+          "event_recall": 0.8207547169811321,
+          "false_events": 40,
+          "false_events_per_minute": 1.5788227245217477,
+          "delay_p95_ms": 707.9999332427979,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.8042586226017523,
+          "events": 2226,
+          "detected_events": 1868,
+          "event_recall": 0.839173405211141,
+          "false_events": 1300,
+          "false_events_per_minute": 12.78076723928877,
+          "delay_p95_ms": 639.9999856948853,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.45000000000000007,
+      "dwell_blocks": 1,
+      "release_blocks": 2,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.789488017429194,
+          "events": 106,
+          "detected_events": 87,
+          "event_recall": 0.8207547169811321,
+          "false_events": 29,
+          "false_events_per_minute": 1.144646475278267,
+          "delay_p95_ms": 707.9999332427979,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.8042586226017523,
+          "events": 2226,
+          "detected_events": 1788,
+          "event_recall": 0.8032345013477089,
+          "false_events": 950,
+          "false_events_per_minute": 9.339791444095638,
+          "delay_p95_ms": 639.9999856948853,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.45000000000000007,
+      "dwell_blocks": 2,
+      "release_blocks": 1,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.789488017429194,
+          "events": 106,
+          "detected_events": 71,
+          "event_recall": 0.6698113207547169,
+          "false_events": 26,
+          "false_events_per_minute": 1.026234770939136,
+          "delay_p95_ms": 879.9999952316284,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.8042586226017523,
+          "events": 2226,
+          "detected_events": 1737,
+          "event_recall": 0.7803234501347709,
+          "false_events": 877,
+          "false_events_per_minute": 8.622102206812501,
+          "delay_p95_ms": 800.000011920929,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.45000000000000007,
+      "dwell_blocks": 2,
+      "release_blocks": 2,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.789488017429194,
+          "events": 106,
+          "detected_events": 71,
+          "event_recall": 0.6698113207547169,
+          "false_events": 22,
+          "false_events_per_minute": 0.8683524984869613,
+          "delay_p95_ms": 879.9999952316284,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.8042586226017523,
+          "events": 2226,
+          "detected_events": 1687,
+          "event_recall": 0.7578616352201258,
+          "false_events": 682,
+          "false_events_per_minute": 6.704987120919185,
+          "delay_p95_ms": 800.000011920929,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.5,
+      "dwell_blocks": 1,
+      "release_blocks": 1,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7902330743618202,
+          "events": 106,
+          "detected_events": 87,
+          "event_recall": 0.8207547169811321,
+          "false_events": 39,
+          "false_events_per_minute": 1.539352156408704,
+          "delay_p95_ms": 707.9999332427979,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.7999111066505129,
+          "events": 2226,
+          "detected_events": 1890,
+          "event_recall": 0.8490566037735849,
+          "false_events": 1259,
+          "false_events_per_minute": 12.377681503280431,
+          "delay_p95_ms": 639.9999856948853,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.5,
+      "dwell_blocks": 1,
+      "release_blocks": 2,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7902330743618202,
+          "events": 106,
+          "detected_events": 87,
+          "event_recall": 0.8207547169811321,
+          "false_events": 26,
+          "false_events_per_minute": 1.026234770939136,
+          "delay_p95_ms": 707.9999332427979,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.7999111066505129,
+          "events": 2226,
+          "detected_events": 1825,
+          "event_recall": 0.8198562443845463,
+          "false_events": 898,
+          "false_events_per_minute": 8.828560754524089,
+          "delay_p95_ms": 639.9999856948853,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.5,
+      "dwell_blocks": 2,
+      "release_blocks": 1,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7902330743618202,
+          "events": 106,
+          "detected_events": 71,
+          "event_recall": 0.6698113207547169,
+          "false_events": 27,
+          "false_events_per_minute": 1.0657053390521798,
+          "delay_p95_ms": 879.9999952316284,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.7999111066505129,
+          "events": 2226,
+          "detected_events": 1727,
+          "event_recall": 0.7758310871518419,
+          "false_events": 850,
+          "false_events_per_minute": 8.356655502611888,
+          "delay_p95_ms": 840.0001277923581,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.5,
+      "dwell_blocks": 2,
+      "release_blocks": 2,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7902330743618202,
+          "events": 106,
+          "detected_events": 71,
+          "event_recall": 0.6698113207547169,
+          "false_events": 22,
+          "false_events_per_minute": 0.8683524984869613,
+          "delay_p95_ms": 879.9999952316284,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.7999111066505129,
+          "events": 2226,
+          "detected_events": 1684,
+          "event_recall": 0.756513926325247,
+          "false_events": 650,
+          "false_events_per_minute": 6.390383619644385,
+          "delay_p95_ms": 913.999899387356,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.55,
+      "dwell_blocks": 1,
+      "release_blocks": 1,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7889752650176678,
+          "events": 106,
+          "detected_events": 87,
+          "event_recall": 0.8207547169811321,
+          "false_events": 38,
+          "false_events_per_minute": 1.4998815882956604,
+          "delay_p95_ms": 707.9999332427979,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.7934231525813755,
+          "events": 2226,
+          "detected_events": 1886,
+          "event_recall": 0.8472596585804133,
+          "false_events": 1235,
+          "false_events_per_minute": 12.141728877324331,
+          "delay_p95_ms": 639.9999856948853,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.55,
+      "dwell_blocks": 1,
+      "release_blocks": 2,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7889752650176678,
+          "events": 106,
+          "detected_events": 87,
+          "event_recall": 0.8207547169811321,
+          "false_events": 24,
+          "false_events_per_minute": 0.9472936347130486,
+          "delay_p95_ms": 707.9999332427979,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.7934231525813755,
+          "events": 2226,
+          "detected_events": 1827,
+          "event_recall": 0.8207547169811321,
+          "false_events": 864,
+          "false_events_per_minute": 8.494294534419613,
+          "delay_p95_ms": 680.0000286102295,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.55,
+      "dwell_blocks": 2,
+      "release_blocks": 1,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7889752650176678,
+          "events": 106,
+          "detected_events": 70,
+          "event_recall": 0.660377358490566,
+          "false_events": 26,
+          "false_events_per_minute": 1.026234770939136,
+          "delay_p95_ms": 901.9999694824216,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.7934231525813755,
+          "events": 2226,
+          "detected_events": 1709,
+          "event_recall": 0.7677448337825696,
+          "false_events": 812,
+          "false_events_per_minute": 7.983063844848062,
+          "delay_p95_ms": 959.9999785423279,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.55,
+      "dwell_blocks": 2,
+      "release_blocks": 2,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7889752650176678,
+          "events": 106,
+          "detected_events": 70,
+          "event_recall": 0.660377358490566,
+          "false_events": 20,
+          "false_events_per_minute": 0.7894113622608738,
+          "delay_p95_ms": 901.9999694824216,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.7934231525813755,
+          "events": 2226,
+          "detected_events": 1672,
+          "event_recall": 0.7511230907457322,
+          "false_events": 605,
+          "false_events_per_minute": 5.9479724459766965,
+          "delay_p95_ms": 959.9999785423279,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.6,
+      "dwell_blocks": 1,
+      "release_blocks": 1,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7824460431654676,
+          "events": 106,
+          "detected_events": 87,
+          "event_recall": 0.8207547169811321,
+          "false_events": 36,
+          "false_events_per_minute": 1.420940452069573,
+          "delay_p95_ms": 748.0000820159912,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.783383337179783,
+          "events": 2226,
+          "detected_events": 1885,
+          "event_recall": 0.8468104222821204,
+          "false_events": 1231,
+          "false_events_per_minute": 12.10240343966498,
+          "delay_p95_ms": 679.9997940063473,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.6,
+      "dwell_blocks": 1,
+      "release_blocks": 2,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7824460431654676,
+          "events": 106,
+          "detected_events": 87,
+          "event_recall": 0.8207547169811321,
+          "false_events": 24,
+          "false_events_per_minute": 0.9472936347130486,
+          "delay_p95_ms": 748.0000820159912,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.783383337179783,
+          "events": 2226,
+          "detected_events": 1831,
+          "event_recall": 0.8225516621743036,
+          "false_events": 843,
+          "false_events_per_minute": 8.287835986708025,
+          "delay_p95_ms": 780.0000727176664,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.6,
+      "dwell_blocks": 2,
+      "release_blocks": 1,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7824460431654676,
+          "events": 106,
+          "detected_events": 70,
+          "event_recall": 0.660377358490566,
+          "false_events": 26,
+          "false_events_per_minute": 1.026234770939136,
+          "delay_p95_ms": 901.9999694824216,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.783383337179783,
+          "events": 2226,
+          "detected_events": 1693,
+          "event_recall": 0.7605570530098832,
+          "false_events": 771,
+          "false_events_per_minute": 7.5799781088397244,
+          "delay_p95_ms": 959.9999785423279,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.6,
+      "dwell_blocks": 2,
+      "release_blocks": 2,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7824460431654676,
+          "events": 106,
+          "detected_events": 70,
+          "event_recall": 0.660377358490566,
+          "false_events": 21,
+          "false_events_per_minute": 0.8288819303739176,
+          "delay_p95_ms": 901.9999694824216,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.783383337179783,
+          "events": 2226,
+          "detected_events": 1665,
+          "event_recall": 0.7479784366576819,
+          "false_events": 555,
+          "false_events_per_minute": 5.456404475234821,
+          "delay_p95_ms": 959.9999785423279,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.65,
+      "dwell_blocks": 1,
+      "release_blocks": 1,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7726011391850446,
+          "events": 106,
+          "detected_events": 86,
+          "event_recall": 0.8113207547169812,
+          "false_events": 38,
+          "false_events_per_minute": 1.4998815882956604,
+          "delay_p95_ms": 720.0001835823059,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.7678153575849539,
+          "events": 2226,
+          "detected_events": 1878,
+          "event_recall": 0.8436657681940701,
+          "false_events": 1176,
+          "false_events_per_minute": 11.561678671848918,
+          "delay_p95_ms": 800.000011920929,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.65,
+      "dwell_blocks": 1,
+      "release_blocks": 2,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7726011391850446,
+          "events": 106,
+          "detected_events": 86,
+          "event_recall": 0.8113207547169812,
+          "false_events": 23,
+          "false_events_per_minute": 0.907823066600005,
+          "delay_p95_ms": 720.0001835823059,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.7678153575849539,
+          "events": 2226,
+          "detected_events": 1836,
+          "event_recall": 0.8247978436657682,
+          "false_events": 783,
+          "false_events_per_minute": 7.697954421817775,
+          "delay_p95_ms": 800.000011920929,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.65,
+      "dwell_blocks": 2,
+      "release_blocks": 1,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7726011391850446,
+          "events": 106,
+          "detected_events": 69,
+          "event_recall": 0.6509433962264151,
+          "false_events": 27,
+          "false_events_per_minute": 1.0657053390521798,
+          "delay_p95_ms": 919.99995803833,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.7678153575849539,
+          "events": 2226,
+          "detected_events": 1664,
+          "event_recall": 0.7475292003593891,
+          "false_events": 738,
+          "false_events_per_minute": 7.2555432481500866,
+          "delay_p95_ms": 1040.0000145435333,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.65,
+      "dwell_blocks": 2,
+      "release_blocks": 2,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7726011391850446,
+          "events": 106,
+          "detected_events": 69,
+          "event_recall": 0.6509433962264151,
+          "false_events": 21,
+          "false_events_per_minute": 0.8288819303739176,
+          "delay_p95_ms": 919.99995803833,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.7678153575849539,
+          "events": 2226,
+          "detected_events": 1640,
+          "event_recall": 0.7367475292003594,
+          "false_events": 532,
+          "false_events_per_minute": 5.2302832086935584,
+          "delay_p95_ms": 1040.0000681877134,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.7000000000000001,
+      "dwell_blocks": 1,
+      "release_blocks": 1,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7616209773539928,
+          "events": 106,
+          "detected_events": 85,
+          "event_recall": 0.8018867924528302,
+          "false_events": 36,
+          "false_events_per_minute": 1.420940452069573,
+          "delay_p95_ms": 720.0001926422119,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.7463646485965466,
+          "events": 2226,
+          "detected_events": 1873,
+          "event_recall": 0.8414195867026055,
+          "false_events": 1134,
+          "false_events_per_minute": 11.148761576425741,
+          "delay_p95_ms": 800.000011920929,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.7000000000000001,
+      "dwell_blocks": 1,
+      "release_blocks": 2,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7616209773539928,
+          "events": 106,
+          "detected_events": 85,
+          "event_recall": 0.8018867924528302,
+          "false_events": 24,
+          "false_events_per_minute": 0.9472936347130486,
+          "delay_p95_ms": 720.0001926422119,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.7463646485965466,
+          "events": 2226,
+          "detected_events": 1834,
+          "event_recall": 0.8238993710691824,
+          "false_events": 768,
+          "false_events_per_minute": 7.550484030595212,
+          "delay_p95_ms": 800.000011920929,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.7000000000000001,
+      "dwell_blocks": 2,
+      "release_blocks": 1,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7616209773539928,
+          "events": 106,
+          "detected_events": 68,
+          "event_recall": 0.6415094339622641,
+          "false_events": 26,
+          "false_events_per_minute": 1.026234770939136,
+          "delay_p95_ms": 919.9999656677245,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.7463646485965466,
+          "events": 2226,
+          "detected_events": 1621,
+          "event_recall": 0.7282120395327942,
+          "false_events": 705,
+          "false_events_per_minute": 6.931108387460448,
+          "delay_p95_ms": 1119.999895095825,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.7000000000000001,
+      "dwell_blocks": 2,
+      "release_blocks": 2,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7616209773539928,
+          "events": 106,
+          "detected_events": 68,
+          "event_recall": 0.6415094339622641,
+          "false_events": 20,
+          "false_events_per_minute": 0.7894113622608738,
+          "delay_p95_ms": 919.9999656677245,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.7463646485965466,
+          "events": 2226,
+          "detected_events": 1599,
+          "event_recall": 0.7183288409703504,
+          "false_events": 502,
+          "false_events_per_minute": 4.9353424262484324,
+          "delay_p95_ms": 1120.0000047683716,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.75,
+      "dwell_blocks": 1,
+      "release_blocks": 1,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7485540334855403,
+          "events": 106,
+          "detected_events": 85,
+          "event_recall": 0.8018867924528302,
+          "false_events": 39,
+          "false_events_per_minute": 1.539352156408704,
+          "delay_p95_ms": 752.0000610351559,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.71876109720502,
+          "events": 2226,
+          "detected_events": 1838,
+          "event_recall": 0.825696316262354,
+          "false_events": 1121,
+          "false_events_per_minute": 11.020953904032854,
+          "delay_p95_ms": 880.0000410079955,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.75,
+      "dwell_blocks": 1,
+      "release_blocks": 2,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7485540334855403,
+          "events": 106,
+          "detected_events": 85,
+          "event_recall": 0.8018867924528302,
+          "false_events": 23,
+          "false_events_per_minute": 0.907823066600005,
+          "delay_p95_ms": 752.0000610351559,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.71876109720502,
+          "events": 2226,
+          "detected_events": 1804,
+          "event_recall": 0.8104222821203954,
+          "false_events": 730,
+          "false_events_per_minute": 7.176892372831386,
+          "delay_p95_ms": 920.0000360012054,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.75,
+      "dwell_blocks": 2,
+      "release_blocks": 1,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7485540334855403,
+          "events": 106,
+          "detected_events": 65,
+          "event_recall": 0.6132075471698113,
+          "false_events": 28,
+          "false_events_per_minute": 1.1051759071652234,
+          "delay_p95_ms": 920.0000495910641,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.71876109720502,
+          "events": 2226,
+          "detected_events": 1566,
+          "event_recall": 0.7035040431266847,
+          "false_events": 648,
+          "false_events_per_minute": 6.370720900814709,
+          "delay_p95_ms": 1120.0000298023226,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.75,
+      "dwell_blocks": 2,
+      "release_blocks": 2,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7485540334855403,
+          "events": 106,
+          "detected_events": 65,
+          "event_recall": 0.6132075471698113,
+          "false_events": 19,
+          "false_events_per_minute": 0.7499407941478302,
+          "delay_p95_ms": 920.0000495910641,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.71876109720502,
+          "events": 2226,
+          "detected_events": 1551,
+          "event_recall": 0.6967654986522911,
+          "false_events": 461,
+          "false_events_per_minute": 4.532256690240095,
+          "delay_p95_ms": 1120.0001621246338,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.8,
+      "dwell_blocks": 1,
+      "release_blocks": 1,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7286918513893225,
+          "events": 106,
+          "detected_events": 85,
+          "event_recall": 0.8018867924528302,
+          "false_events": 48,
+          "false_events_per_minute": 1.8945872694260972,
+          "delay_p95_ms": 752.0000610351559,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.6825056341470037,
+          "events": 2226,
+          "detected_events": 1780,
+          "event_recall": 0.7996406109613656,
+          "false_events": 1100,
+          "false_events_per_minute": 10.814495356321267,
+          "delay_p95_ms": 959.9999785423279,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.8,
+      "dwell_blocks": 1,
+      "release_blocks": 2,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7286918513893225,
+          "events": 106,
+          "detected_events": 85,
+          "event_recall": 0.8018867924528302,
+          "false_events": 24,
+          "false_events_per_minute": 0.9472936347130486,
+          "delay_p95_ms": 752.0000610351559,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.6825056341470037,
+          "events": 2226,
+          "detected_events": 1760,
+          "event_recall": 0.7906558849955077,
+          "false_events": 681,
+          "false_events_per_minute": 6.695155761504347,
+          "delay_p95_ms": 959.9999785423279,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.8,
+      "dwell_blocks": 2,
+      "release_blocks": 1,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7286918513893225,
+          "events": 106,
+          "detected_events": 63,
+          "event_recall": 0.5943396226415094,
+          "false_events": 28,
+          "false_events_per_minute": 1.1051759071652234,
+          "delay_p95_ms": 1067.9998989105222,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.6825056341470037,
+          "events": 2226,
+          "detected_events": 1471,
+          "event_recall": 0.660826594788859,
+          "false_events": 625,
+          "false_events_per_minute": 6.144599634273447,
+          "delay_p95_ms": 1279.9999713897705,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.8,
+      "dwell_blocks": 2,
+      "release_blocks": 2,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.7286918513893225,
+          "events": 106,
+          "detected_events": 63,
+          "event_recall": 0.5943396226415094,
+          "false_events": 15,
+          "false_events_per_minute": 0.5920585216956554,
+          "delay_p95_ms": 1067.9998989105222,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.6825056341470037,
+          "events": 2226,
+          "detected_events": 1460,
+          "event_recall": 0.655884995507637,
+          "false_events": 426,
+          "false_events_per_minute": 4.188159110720782,
+          "delay_p95_ms": 1279.9999713897705,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.85,
+      "dwell_blocks": 1,
+      "release_blocks": 1,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.6998554681226915,
+          "events": 106,
+          "detected_events": 84,
+          "event_recall": 0.7924528301886793,
+          "false_events": 58,
+          "false_events_per_minute": 2.289292950556534,
+          "delay_p95_ms": 760.0001487731934,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.6326219802394868,
+          "events": 2226,
+          "detected_events": 1707,
+          "event_recall": 0.7668463611859838,
+          "false_events": 1026,
+          "false_events_per_minute": 10.08697475962329,
+          "delay_p95_ms": 960.0001001358032,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.85,
+      "dwell_blocks": 1,
+      "release_blocks": 2,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.6998554681226915,
+          "events": 106,
+          "detected_events": 84,
+          "event_recall": 0.7924528301886793,
+          "false_events": 29,
+          "false_events_per_minute": 1.144646475278267,
+          "delay_p95_ms": 760.0001487731934,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.6326219802394868,
+          "events": 2226,
+          "detected_events": 1693,
+          "event_recall": 0.7605570530098832,
+          "false_events": 631,
+          "false_events_per_minute": 6.203587790762472,
+          "delay_p95_ms": 1039.9998664855957,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.85,
+      "dwell_blocks": 2,
+      "release_blocks": 1,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.6998554681226915,
+          "events": 106,
+          "detected_events": 62,
+          "event_recall": 0.5849056603773585,
+          "false_events": 34,
+          "false_events_per_minute": 1.3419993158434855,
+          "delay_p95_ms": 1156.0000295639034,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.6326219802394868,
+          "events": 2226,
+          "detected_events": 1345,
+          "event_recall": 0.6042228212039533,
+          "false_events": 568,
+          "false_events_per_minute": 5.584212147627708,
+          "delay_p95_ms": 1439.999942779541,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.85,
+      "dwell_blocks": 2,
+      "release_blocks": 2,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.6998554681226915,
+          "events": 106,
+          "detected_events": 62,
+          "event_recall": 0.5849056603773585,
+          "false_events": 17,
+          "false_events_per_minute": 0.6709996579217428,
+          "delay_p95_ms": 1156.0000295639034,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.6326219802394868,
+          "events": 2226,
+          "detected_events": 1336,
+          "event_recall": 0.6001796945193172,
+          "false_events": 386,
+          "false_events_per_minute": 3.794904734127281,
+          "delay_p95_ms": 1440.000057220459,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.9,
+      "dwell_blocks": 1,
+      "release_blocks": 1,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.6514821637916597,
+          "events": 106,
+          "detected_events": 79,
+          "event_recall": 0.7452830188679245,
+          "false_events": 64,
+          "false_events_per_minute": 2.5261163592347966,
+          "delay_p95_ms": 811.9998817443842,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.5621987280755053,
+          "events": 2226,
+          "detected_events": 1559,
+          "event_recall": 0.7003593890386344,
+          "false_events": 934,
+          "false_events_per_minute": 9.182489693458239,
+          "delay_p95_ms": 1164.000032424923,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.9,
+      "dwell_blocks": 1,
+      "release_blocks": 2,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.6514821637916597,
+          "events": 106,
+          "detected_events": 79,
+          "event_recall": 0.7452830188679245,
+          "false_events": 32,
+          "false_events_per_minute": 1.2630581796173983,
+          "delay_p95_ms": 811.9998817443842,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.5621987280755053,
+          "events": 2226,
+          "detected_events": 1551,
+          "event_recall": 0.6967654986522911,
+          "false_events": 539,
+          "false_events_per_minute": 5.299102724597421,
+          "delay_p95_ms": 1179.9999332427979,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.9,
+      "dwell_blocks": 2,
+      "release_blocks": 1,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.6514821637916597,
+          "events": 106,
+          "detected_events": 58,
+          "event_recall": 0.5471698113207547,
+          "false_events": 33,
+          "false_events_per_minute": 1.302528747730442,
+          "delay_p95_ms": 1206.0000529289246,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.5621987280755053,
+          "events": 2226,
+          "detected_events": 1169,
+          "event_recall": 0.5251572327044025,
+          "false_events": 469,
+          "false_events_per_minute": 4.6109075655587946,
+          "delay_p95_ms": 1559.999946594238,
+          "seconds": 6102.919999999983
+        }
+      }
+    },
+    {
+      "threshold": 0.9,
+      "dwell_blocks": 2,
+      "release_blocks": 2,
+      "scores": {
+        "bargein_train": {
+          "frame_f1": 0.6514821637916597,
+          "events": 106,
+          "detected_events": 58,
+          "event_recall": 0.5471698113207547,
+          "false_events": 14,
+          "false_events_per_minute": 0.5525879535826117,
+          "delay_p95_ms": 1206.0000529289246,
+          "seconds": 1520.1200000000006
+        },
+        "ami_overlap": {
+          "frame_f1": 0.5621987280755053,
+          "events": 2226,
+          "detected_events": 1164,
+          "event_recall": 0.522911051212938,
+          "false_events": 295,
+          "false_events_per_minute": 2.9002510273770667,
+          "delay_p95_ms": 1559.999956130981,
+          "seconds": 6102.919999999983
+        }
+      }
+    }
+  ],
+  "selected": {
+    "threshold": 0.5,
+    "dwell_blocks": 1,
+    "release_blocks": 1,
+    "scores": {
+      "bargein_train": {
+        "frame_f1": 0.7902330743618202,
+        "events": 106,
+        "detected_events": 87,
+        "event_recall": 0.8207547169811321,
+        "false_events": 39,
+        "false_events_per_minute": 1.539352156408704,
+        "delay_p95_ms": 707.9999332427979,
+        "seconds": 1520.1200000000006
+      },
+      "ami_overlap": {
+        "frame_f1": 0.7999111066505129,
+        "events": 2226,
+        "detected_events": 1890,
+        "event_recall": 0.8490566037735849,
+        "false_events": 1259,
+        "false_events_per_minute": 12.377681503280431,
+        "delay_p95_ms": 639.9999856948853,
+        "seconds": 6102.919999999983
+      }
+    }
+  },
+  "test": {
+    "bargein_train": {
+      "frame_f1": 0.8154609715746729,
+      "events": 79,
+      "detected_events": 66,
+      "event_recall": 0.8354430379746836,
+      "false_events": 41,
+      "false_events_per_minute": 1.8818273614638479,
+      "delay_p95_ms": 779.9999785423279,
+      "seconds": 1307.2399999999998
+    },
+    "ami_overlap": {
+      "frame_f1": 0.7853534561199836,
+      "events": 990,
+      "detected_events": 860,
+      "event_recall": 0.8686868686868687,
+      "false_events": 616,
+      "false_events_per_minute": 12.916392915554205,
+      "delay_p95_ms": 639.9999856948853,
+      "seconds": 2861.4799999999964
+    }
+  },
+  "offline_policy_gate_pass": false,
+  "promotion_pass": false,
+  "production_changed": false,
+  "scope": "CPU inference; onset must fall inside truth interval; buffering included, encoder compute excluded",
+  "limits": [
+    "synthetic barge and AMI development data, not physical playback",
+    "frame F1 is unchanged per-frame threshold score, separate from alarm policy",
+    "validation selection reuses checkpoint-selection validation population"
+  ]
+}
