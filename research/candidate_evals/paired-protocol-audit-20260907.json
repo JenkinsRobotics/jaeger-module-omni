@@ -1,0 +1,38 @@
+{
+  "status": "reference_protocol_not_qualified",
+  "claim": "No head-to-head superiority result is accepted from these runs.",
+  "records": [
+    {
+      "path": "research/candidate_evals/paired-minicpm-20260907.json",
+      "sha256": "072434decb4d23fec9564bebf2b5be3d8c0d4542ce2e30a0dfca76dfd84ecc75",
+      "qualifies_for_superiority": false,
+      "reason": "Audio task/template validation incomplete; unexpected SOA filename or reasoning output on ASR."
+    },
+    {
+      "path": "research/candidate_evals/paired-minicpm-answer-smoke-20260907.json",
+      "sha256": "f0cf2b28cb91cd5590c73f5174822108485f894bd435014668ae220f4b69abf9",
+      "qualifies_for_superiority": false,
+      "reason": "Audio task/template validation incomplete; unexpected SOA filename or reasoning output on ASR."
+    },
+    {
+      "path": "research/candidate_evals/paired-minicpm-chat-smoke-20260907.json",
+      "sha256": "bd3bdd1ce2e947a5dc44d25de72069555d10c9bdb1acd2e72ff31b8a711d20c2",
+      "qualifies_for_superiority": false,
+      "reason": "Audio task/template validation incomplete; unexpected SOA filename or reasoning output on ASR."
+    },
+    {
+      "path": "research/candidate_evals/paired-minicpm-prompt-smoke-20260907.json",
+      "sha256": "0d6d6328d36d703af2f6a0921a46d6b1f1bb34f1f47719bff3655cf866badf59",
+      "qualifies_for_superiority": false,
+      "reason": "Audio task/template validation incomplete; unexpected SOA filename or reasoning output on ASR."
+    },
+    {
+      "path": "research/candidate_evals/paired-minicpm-smoke-20260907.json",
+      "sha256": "2659a061718388bbd21c31538fd04cd38c8900d1267ee720dcfa8024fe454f68",
+      "qualifies_for_superiority": false,
+      "reason": "Audio task/template validation incomplete; unexpected SOA filename or reasoning output on ASR."
+    }
+  ],
+  "next_validation": "Move the task before audio in the user message; compare native TTS template on a declared smoke subset before rerunning the full manifest.",
+  "latency_limit": "Exploratory timings only; dedicated quiet repeat required."
+}

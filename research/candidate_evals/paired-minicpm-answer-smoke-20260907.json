@@ -1,0 +1,113 @@
+{
+  "schema": 1,
+  "model": "minicpm",
+  "identity": {
+    "model": "/Users/jonathanjenkins/models/MiniCPM-o-4_5-gguf/MiniCPM-o-4_5-Q8_0.gguf",
+    "model_sha256": "ae6af22ad3b7f1a7bf667922af84b9eb3e2199cc86f402702eaf9b054054788d",
+    "shim_sha256": "50ee50f5cbc2aedc1bf52c5c7ce0de302b81095061351686049f7475f7c6759c",
+    "voice_reference_used": false,
+    "bridge_source_sha256": "ced098fbd1c336bb06619926828d566c08c24c4b044fee39a3b1c53a4f14f30d",
+    "bridge_sha256": "f32b49ad24081a602e88fa2392bbb9cc346e3ccb8c30b9db30292a45d039a695",
+    "tts": false,
+    "runtime": "local llama.cpp-omni ctypes shim"
+  },
+  "manifest_sha256": "5952a720334b255001a959d7f0991cef83fb9b489d1a6404765ec80263ba9101",
+  "code_sha256": "7370fa9d3728a59a374bf1cc753ceb5c75eb7b1725075a746c8e4dfaa3f13c80",
+  "scorer_sha256": {
+    "training/evaluate.py": "339bd69040ee922bb3c89168d1b079060e33ac358a0e30faed283aae6221169e",
+    "research/grading.py": "a507b15f2559e91de9e260f4856acd2deb49237094553dd154f95c82a6e70a61"
+  },
+  "prompts": {
+    "asr": "Repeat the spoken words exactly. Output only what was said, with no commentary or explanation.",
+    "answer": "You are a helpful voice assistant. The user's message arrives as speech. Reply with EXACTLY two lines:\nHEARD: <verbatim transcription of the speech>\nREPLY: <your answer in one or two short conversational sentences>"
+  },
+  "max_tokens": {
+    "asr": 128,
+    "answer": 140
+  },
+  "command": [
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+    "research/paired_omni_benchmark.py",
+    "run",
+    "--model",
+    "minicpm",
+    "--corpus",
+    "cases12",
+    "--limit",
+    "2",
+    "--output",
+    "research/candidate_evals/paired-minicpm-answer-smoke-20260907.json"
+  ],
+  "host": "macOS-26.6.2-arm64-arm-64bit",
+  "rss_peak_bytes": 11171921920,
+  "memory_scope": "process peak RSS, not total unified/device memory; no memory superiority claim",
+  "latency_scope": "fresh request setup and system prefill through complete text; excludes model load, warmup, TTS and physical endpointing",
+  "population": "existing development gates; AMI training-adjacent; no fresh lockbox",
+  "summary": {
+    "cases12": {
+      "n": 2,
+      "wer": 0.0,
+      "reference_words": 10,
+      "edits": 0,
+      "errors": 0,
+      "request_ms_median": 1437.8427289775573,
+      "request_ms_p95": 1506.3786100537982,
+      "correct": 2
+    }
+  },
+  "rows": [
+    {
+      "id": "cases12:q00",
+      "task": "answer",
+      "corpus": "cases12",
+      "source_audio": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q00.wav",
+      "reference": "What is two plus two?",
+      "answers": [
+        "four"
+      ],
+      "audio": "/Users/jonathanjenkins/models/jaeger-training-data/paired-omni-v1/cdf8ac5ce10beab4fa4d.wav",
+      "audio_sha256": "5baaf20c0fadc58a87d6cc952a719489401008e0bc3671e3690200decbbe2b0d",
+      "seconds": 1.175,
+      "source_audio_sha256": "3dc1417fefb7336eb2eb7ea9c1b51bbfcc56b43800e2b948ea241ba79b18ff80",
+      "raw": "HEARD: What is two plus two?  \nREPLY: Two plus two is four. It's a basic math fact!",
+      "error": null,
+      "metrics": {
+        "audio_to_text_ms": 1142.56791601656
+      },
+      "request_ms": 1361.6917500039563,
+      "hypothesis": "What is two plus two?",
+      "answer": "Two plus two is four. It's a basic math fact!",
+      "format_valid": true,
+      "correct": true,
+      "edits": 0,
+      "reference_words": 5
+    },
+    {
+      "id": "cases12:q01",
+      "task": "answer",
+      "corpus": "cases12",
+      "source_audio": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/cases12/q01.wav",
+      "reference": "What color is the sky?",
+      "answers": [
+        "blue"
+      ],
+      "audio": "/Users/jonathanjenkins/models/jaeger-training-data/paired-omni-v1/b126b93da05002bfb40b.wav",
+      "audio_sha256": "45e38e9623f64b07eac87d6e12103f047e8dea587248866f659addd8c0313439",
+      "seconds": 1.3491875,
+      "source_audio_sha256": "8e660b63c56c7dd1e919314d79a2e90a55035fa3319989644937050e3c5b2b80",
+      "raw": "HEARD: What color is the sky?  \nREPLY: The sky is usually blue during the day, but it can change color at sunrise or sunset.",
+      "error": null,
+      "metrics": {
+        "audio_to_text_ms": 1295.6294580362737
+      },
+      "request_ms": 1513.9937079511583,
+      "hypothesis": "What color is the sky?",
+      "answer": "The sky is usually blue during the day, but it can change color at sunrise or sunset.",
+      "format_valid": true,
+      "correct": true,
+      "edits": 0,
+      "reference_words": 5
+    }
+  ],
+  "full_system_comparison_complete": false
+}

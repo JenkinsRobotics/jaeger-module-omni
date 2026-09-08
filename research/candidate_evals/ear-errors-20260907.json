@@ -1,0 +1,3074 @@
+{
+  "command": [
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+    "research/ear_error_audit.py",
+    "research/candidate_evals/paired-jaeger-20260907.json",
+    "--output",
+    "research/candidate_evals/ear-errors-20260907.json"
+  ],
+  "input_sha256": "ace215c3cceda6ffcefaf9158766decea01a3ce7ba46420de479f0eaea51d041",
+  "code_sha256": "36e2c9e545cae4a7ff679200ab375e20667f48d74ad3dc391b506b609196324e",
+  "slices": {
+    "ami": {
+      "rows": 64,
+      "words": 673,
+      "edit_types": {
+        "substitution": 123,
+        "deletion": 93,
+        "insertion": 8
+      },
+      "decode_cap_hits": 0,
+      "frequent_edits": [
+        {
+          "edit": [
+            "deletion",
+            "i",
+            ""
+          ],
+          "count": 8
+        },
+        {
+          "edit": [
+            "deletion",
+            "it",
+            ""
+          ],
+          "count": 4
+        },
+        {
+          "edit": [
+            "deletion",
+            "um",
+            ""
+          ],
+          "count": 4
+        },
+        {
+          "edit": [
+            "deletion",
+            "just",
+            ""
+          ],
+          "count": 3
+        },
+        {
+          "edit": [
+            "deletion",
+            "off",
+            ""
+          ],
+          "count": 3
+        },
+        {
+          "edit": [
+            "substitution",
+            "line",
+            "offline"
+          ],
+          "count": 3
+        },
+        {
+          "edit": [
+            "substitution",
+            "'cause",
+            "because"
+          ],
+          "count": 3
+        },
+        {
+          "edit": [
+            "deletion",
+            "that's",
+            ""
+          ],
+          "count": 3
+        },
+        {
+          "edit": [
+            "deletion",
+            "you",
+            ""
+          ],
+          "count": 3
+        },
+        {
+          "edit": [
+            "deletion",
+            "a",
+            ""
+          ],
+          "count": 2
+        },
+        {
+          "edit": [
+            "deletion",
+            "t",
+            ""
+          ],
+          "count": 2
+        },
+        {
+          "edit": [
+            "deletion",
+            "uh",
+            ""
+          ],
+          "count": 2
+        },
+        {
+          "edit": [
+            "deletion",
+            "are",
+            ""
+          ],
+          "count": 2
+        },
+        {
+          "edit": [
+            "deletion",
+            "the",
+            ""
+          ],
+          "count": 2
+        },
+        {
+          "edit": [
+            "deletion",
+            "well",
+            ""
+          ],
+          "count": 2
+        },
+        {
+          "edit": [
+            "insertion",
+            "",
+            "want"
+          ],
+          "count": 2
+        },
+        {
+          "edit": [
+            "deletion",
+            "but",
+            ""
+          ],
+          "count": 2
+        },
+        {
+          "edit": [
+            "insertion",
+            "",
+            "i"
+          ],
+          "count": 2
+        },
+        {
+          "edit": [
+            "substitution",
+            "mean",
+            "and"
+          ],
+          "count": 2
+        },
+        {
+          "edit": [
+            "deletion",
+            "don't",
+            ""
+          ],
+          "count": 2
+        }
+      ]
+    },
+    "devclean": {
+      "rows": 64,
+      "words": 955,
+      "edit_types": {
+        "substitution": 39,
+        "deletion": 4,
+        "insertion": 3
+      },
+      "decode_cap_hits": 0,
+      "frequent_edits": [
+        {
+          "edit": [
+            "substitution",
+            "kaliko",
+            "calico"
+          ],
+          "count": 3
+        },
+        {
+          "edit": [
+            "insertion",
+            "",
+            "a"
+          ],
+          "count": 2
+        },
+        {
+          "edit": [
+            "substitution",
+            "leighton's",
+            "latin's"
+          ],
+          "count": 1
+        },
+        {
+          "edit": [
+            "substitution",
+            "they",
+            "there"
+          ],
+          "count": 1
+        },
+        {
+          "edit": [
+            "substitution",
+            "the",
+            "a"
+          ],
+          "count": 1
+        },
+        {
+          "edit": [
+            "deletion",
+            "michael",
+            ""
+          ],
+          "count": 1
+        },
+        {
+          "edit": [
+            "substitution",
+            "angelo",
+            "michelangelo"
+          ],
+          "count": 1
+        },
+        {
+          "edit": [
+            "substitution",
+            "upholsterer",
+            "aposter"
+          ],
+          "count": 1
+        },
+        {
+          "edit": [
+            "substitution",
+            "recognising",
+            "recognizing"
+          ],
+          "count": 1
+        },
+        {
+          "edit": [
+            "substitution",
+            "felicitous",
+            "philosophic"
+          ],
+          "count": 1
+        },
+        {
+          "edit": [
+            "substitution",
+            "quilter",
+            "quildor"
+          ],
+          "count": 1
+        },
+        {
+          "edit": [
+            "deletion",
+            "while",
+            ""
+          ],
+          "count": 1
+        },
+        {
+          "edit": [
+            "substitution",
+            "polychrome",
+            "pollychrome"
+          ],
+          "count": 1
+        },
+        {
+          "edit": [
+            "deletion",
+            "has",
+            ""
+          ],
+          "count": 1
+        },
+        {
+          "edit": [
+            "substitution",
+            "fled",
+            "is"
+          ],
+          "count": 1
+        },
+        {
+          "edit": [
+            "substitution",
+            "in",
+            "flooded"
+          ],
+          "count": 1
+        },
+        {
+          "edit": [
+            "deletion",
+            "new",
+            ""
+          ],
+          "count": 1
+        },
+        {
+          "edit": [
+            "substitution",
+            "king",
+            "nooking"
+          ],
+          "count": 1
+        },
+        {
+          "edit": [
+            "substitution",
+            "nomes",
+            "gnomes"
+          ],
+          "count": 1
+        },
+        {
+          "edit": [
+            "insertion",
+            "",
+            "we've"
+          ],
+          "count": 1
+        }
+      ]
+    }
+  },
+  "rows": [
+    {
+      "id": "devclean:1272-128104-0000",
+      "corpus": "devclean",
+      "seconds": 5.855,
+      "reference": "MISTER QUILTER IS THE APOSTLE OF THE MIDDLE CLASSES AND WE ARE GLAD TO WELCOME HIS GOSPEL",
+      "hypothesis": "mister quilter is the apostle of the middle classes and we are glad to welcome his gospel",
+      "reference_words": 17,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-128104-0001",
+      "corpus": "devclean",
+      "seconds": 4.815,
+      "reference": "NOR IS MISTER QUILTER'S MANNER LESS INTERESTING THAN HIS MATTER",
+      "hypothesis": "nor is mister quilter's manner less interesting than his matter",
+      "reference_words": 10,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-128104-0002",
+      "corpus": "devclean",
+      "seconds": 12.485,
+      "reference": "HE TELLS US THAT AT THIS FESTIVE SEASON OF THE YEAR WITH CHRISTMAS AND ROAST BEEF LOOMING BEFORE US SIMILES DRAWN FROM EATING AND ITS RESULTS OCCUR MOST READILY TO THE MIND",
+      "hypothesis": "he tells us that at this festive season of the year with christmas and roast beef looming before us similes drawn from eating and its results occur most readily to the mind",
+      "reference_words": 32,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-128104-0003",
+      "corpus": "devclean",
+      "seconds": 9.9,
+      "reference": "HE HAS GRAVE DOUBTS WHETHER SIR FREDERICK LEIGHTON'S WORK IS REALLY GREEK AFTER ALL AND CAN DISCOVER IN IT BUT LITTLE OF ROCKY ITHACA",
+      "hypothesis": "he has grave doubts whether sir frederick latin's work is really greek after all and can discover in it but little of rocky ithaca",
+      "reference_words": 24,
+      "edits": [
+        [
+          "substitution",
+          "leighton's",
+          "latin's"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-128104-0005",
+      "corpus": "devclean",
+      "seconds": 9.01,
+      "reference": "IT IS OBVIOUSLY UNNECESSARY FOR US TO POINT OUT HOW LUMINOUS THESE CRITICISMS ARE HOW DELICATE IN EXPRESSION",
+      "hypothesis": "it is obviously unnecessary for us to point out how luminous these criticisms are how delicate in expression",
+      "reference_words": 18,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-128104-0006",
+      "corpus": "devclean",
+      "seconds": 5.64,
+      "reference": "ON THE GENERAL PRINCIPLES OF ART MISTER QUILTER WRITES WITH EQUAL LUCIDITY",
+      "hypothesis": "on the general principles of art mister quilter writes with equal lucidity",
+      "reference_words": 12,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-128104-0007",
+      "corpus": "devclean",
+      "seconds": 9.24,
+      "reference": "PAINTING HE TELLS US IS OF A DIFFERENT QUALITY TO MATHEMATICS AND FINISH IN ART IS ADDING MORE FACT",
+      "hypothesis": "painting he tells us is of a different quality to mathematics and finish in art is adding more fact",
+      "reference_words": 19,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-128104-0008",
+      "corpus": "devclean",
+      "seconds": 5.12,
+      "reference": "AS FOR ETCHINGS THEY ARE OF TWO KINDS BRITISH AND FOREIGN",
+      "hypothesis": "as for etchings there are of two kinds british and foreign",
+      "reference_words": 11,
+      "edits": [
+        [
+          "substitution",
+          "they",
+          "there"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-128104-0009",
+      "corpus": "devclean",
+      "seconds": 18.29,
+      "reference": "HE LAMENTS MOST BITTERLY THE DIVORCE THAT HAS BEEN MADE BETWEEN DECORATIVE ART AND WHAT WE USUALLY CALL PICTURES MAKES THE CUSTOMARY APPEAL TO THE LAST JUDGMENT AND REMINDS US THAT IN THE GREAT DAYS OF ART MICHAEL ANGELO WAS THE FURNISHING UPHOLSTERER",
+      "hypothesis": "he laments most bitterly the divorce that has been made between decorative art and what we usually call pictures makes a customary appeal to the last judgment and reminds us that in the great days of art michelangelo was the furnishing aposter",
+      "reference_words": 43,
+      "edits": [
+        [
+          "substitution",
+          "the",
+          "a"
+        ],
+        [
+          "deletion",
+          "michael",
+          ""
+        ],
+        [
+          "substitution",
+          "angelo",
+          "michelangelo"
+        ],
+        [
+          "substitution",
+          "upholsterer",
+          "aposter"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-128104-0010",
+      "corpus": "devclean",
+      "seconds": 5.6,
+      "reference": "NEAR THE FIRE AND THE ORNAMENTS FRED BROUGHT HOME FROM INDIA ON THE MANTEL BOARD",
+      "hypothesis": "near the fire and the ornaments fred brought home from india on the mantel board",
+      "reference_words": 15,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-128104-0011",
+      "corpus": "devclean",
+      "seconds": 15.115,
+      "reference": "IN FACT HE IS QUITE SEVERE ON MISTER RUSKIN FOR NOT RECOGNISING THAT A PICTURE SHOULD DENOTE THE FRAILTY OF MAN AND REMARKS WITH PLEASING COURTESY AND FELICITOUS GRACE THAT MANY PHASES OF FEELING",
+      "hypothesis": "in fact he is quite severe on mister ruskin for not recognizing that a picture should denote the frailty of man and remarks with pleasing courtesy and philosophic grace that many phases of feeling",
+      "reference_words": 34,
+      "edits": [
+        [
+          "substitution",
+          "recognising",
+          "recognizing"
+        ],
+        [
+          "substitution",
+          "felicitous",
+          "philosophic"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-128104-0012",
+      "corpus": "devclean",
+      "seconds": 5.38,
+      "reference": "ONLY UNFORTUNATELY HIS OWN WORK NEVER DOES GET GOOD",
+      "hypothesis": "only unfortunately his own work never does get good",
+      "reference_words": 9,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-128104-0013",
+      "corpus": "devclean",
+      "seconds": 7.1,
+      "reference": "MISTER QUILTER HAS MISSED HIS CHANCE FOR HE HAS FAILED EVEN TO MAKE HIMSELF THE TUPPER OF PAINTING",
+      "hypothesis": "mister quildor has missed his chance for he has failed even to make himself the tupper of painting",
+      "reference_words": 18,
+      "edits": [
+        [
+          "substitution",
+          "quilter",
+          "quildor"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-128104-0014",
+      "corpus": "devclean",
+      "seconds": 2.245,
+      "reference": "BY HARRY QUILTER M A",
+      "hypothesis": "by harry quilter m a",
+      "reference_words": 5,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-135031-0000",
+      "corpus": "devclean",
+      "seconds": 10.885,
+      "reference": "BECAUSE YOU WERE SLEEPING INSTEAD OF CONQUERING THE LOVELY ROSE PRINCESS HAS BECOME A FIDDLE WITHOUT A BOW WHILE POOR SHAGGY SITS THERE A COOING DOVE",
+      "hypothesis": "because you were sleeping instead of conquering the lovely rose princess has become a fiddle without a bow poor shaggy sits there a cooing dove",
+      "reference_words": 26,
+      "edits": [
+        [
+          "deletion",
+          "while",
+          ""
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-135031-0001",
+      "corpus": "devclean",
+      "seconds": 11.13,
+      "reference": "HE HAS GONE AND GONE FOR GOOD ANSWERED POLYCHROME WHO HAD MANAGED TO SQUEEZE INTO THE ROOM BESIDE THE DRAGON AND HAD WITNESSED THE OCCURRENCES WITH MUCH INTEREST",
+      "hypothesis": "he has gone and gone for good answered pollychrome who had managed to squeeze into the room beside the dragon and had witnessed the occurrences with much interest",
+      "reference_words": 28,
+      "edits": [
+        [
+          "substitution",
+          "polychrome",
+          "pollychrome"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-135031-0002",
+      "corpus": "devclean",
+      "seconds": 11.475,
+      "reference": "I HAVE REMAINED A PRISONER ONLY BECAUSE I WISHED TO BE ONE AND WITH THIS HE STEPPED FORWARD AND BURST THE STOUT CHAINS AS EASILY AS IF THEY HAD BEEN THREADS",
+      "hypothesis": "i have remained a prisoner only because i wished to be one and with this he stepped forward and burst the stout chains as easily as if they had been threads",
+      "reference_words": 31,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-135031-0003",
+      "corpus": "devclean",
+      "seconds": 4.755,
+      "reference": "THE LITTLE GIRL HAD BEEN ASLEEP BUT SHE HEARD THE RAPS AND OPENED THE DOOR",
+      "hypothesis": "the little girl had been asleep but she heard the raps and opened the door",
+      "reference_words": 15,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-135031-0004",
+      "corpus": "devclean",
+      "seconds": 4.225,
+      "reference": "THE KING HAS FLED IN DISGRACE AND YOUR FRIENDS ARE ASKING FOR YOU",
+      "hypothesis": "the king is flooded disgrace and your friends are asking for you",
+      "reference_words": 13,
+      "edits": [
+        [
+          "deletion",
+          "has",
+          ""
+        ],
+        [
+          "substitution",
+          "fled",
+          "is"
+        ],
+        [
+          "substitution",
+          "in",
+          "flooded"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-135031-0005",
+      "corpus": "devclean",
+      "seconds": 4.625,
+      "reference": "I BEGGED RUGGEDO LONG AGO TO SEND HIM AWAY BUT HE WOULD NOT DO SO",
+      "hypothesis": "i begged ruggedo long ago to send him away but he would not do so",
+      "reference_words": 15,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-135031-0006",
+      "corpus": "devclean",
+      "seconds": 4.09,
+      "reference": "I ALSO OFFERED TO HELP YOUR BROTHER TO ESCAPE BUT HE WOULD NOT GO",
+      "hypothesis": "i also offered to help your brother to escape but he would not go",
+      "reference_words": 14,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-135031-0007",
+      "corpus": "devclean",
+      "seconds": 4.055,
+      "reference": "HE EATS AND SLEEPS VERY STEADILY REPLIED THE NEW KING",
+      "hypothesis": "he eats and sleeps very steadily replied the nooking",
+      "reference_words": 10,
+      "edits": [
+        [
+          "deletion",
+          "new",
+          ""
+        ],
+        [
+          "substitution",
+          "king",
+          "nooking"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-135031-0008",
+      "corpus": "devclean",
+      "seconds": 3.67,
+      "reference": "I HOPE HE DOESN'T WORK TOO HARD SAID SHAGGY",
+      "hypothesis": "i hope he doesn't work too hard said shaggy",
+      "reference_words": 9,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-135031-0009",
+      "corpus": "devclean",
+      "seconds": 1.91,
+      "reference": "HE DOESN'T WORK AT ALL",
+      "hypothesis": "he doesn't work at all",
+      "reference_words": 5,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-135031-0010",
+      "corpus": "devclean",
+      "seconds": 8.995,
+      "reference": "IN FACT THERE IS NOTHING HE CAN DO IN THESE DOMINIONS AS WELL AS OUR NOMES WHOSE NUMBERS ARE SO GREAT THAT IT WORRIES US TO KEEP THEM ALL BUSY",
+      "hypothesis": "in fact there is nothing he can do in these dominions as well as our gnomes whose numbers are so great that it worries us to keep them all busy",
+      "reference_words": 30,
+      "edits": [
+        [
+          "substitution",
+          "nomes",
+          "gnomes"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-135031-0011",
+      "corpus": "devclean",
+      "seconds": 3.18,
+      "reference": "NOT EXACTLY RETURNED KALIKO",
+      "hypothesis": "not exactly we've turned calico",
+      "reference_words": 4,
+      "edits": [
+        [
+          "insertion",
+          "",
+          "we've"
+        ],
+        [
+          "substitution",
+          "returned",
+          "turned"
+        ],
+        [
+          "substitution",
+          "kaliko",
+          "calico"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-135031-0012",
+      "corpus": "devclean",
+      "seconds": 2.04,
+      "reference": "WHERE IS MY BROTHER NOW",
+      "hypothesis": "where is my brother now",
+      "reference_words": 5,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-135031-0013",
+      "corpus": "devclean",
+      "seconds": 3.7,
+      "reference": "INQUIRED SHAGGY IN THE METAL FOREST",
+      "hypothesis": "inquired shaggy in the metal forest",
+      "reference_words": 6,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-135031-0014",
+      "corpus": "devclean",
+      "seconds": 1.74,
+      "reference": "WHERE IS THAT",
+      "hypothesis": "where is that",
+      "reference_words": 3,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-135031-0015",
+      "corpus": "devclean",
+      "seconds": 7.375,
+      "reference": "THE METAL FOREST IS IN THE GREAT DOMED CAVERN THE LARGEST IN ALL OUR DOMINIONS REPLIED KALIKO",
+      "hypothesis": "the middle forest is in the great domed cavern the largest in all our dominions replied callico",
+      "reference_words": 17,
+      "edits": [
+        [
+          "substitution",
+          "metal",
+          "middle"
+        ],
+        [
+          "substitution",
+          "kaliko",
+          "callico"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-135031-0016",
+      "corpus": "devclean",
+      "seconds": 2.28,
+      "reference": "KALIKO HESITATED",
+      "hypothesis": "canlego hesitated",
+      "reference_words": 2,
+      "edits": [
+        [
+          "substitution",
+          "kaliko",
+          "canlego"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-135031-0017",
+      "corpus": "devclean",
+      "seconds": 6.86,
+      "reference": "HOWEVER IF WE LOOK SHARP WE MAY BE ABLE TO DISCOVER ONE OF THESE SECRET WAYS",
+      "hypothesis": "however if we look sharp we may be able to discover one of these secret ways",
+      "reference_words": 16,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-135031-0018",
+      "corpus": "devclean",
+      "seconds": 2.4449375,
+      "reference": "OH NO I'M QUITE SURE HE DIDN'T",
+      "hypothesis": "oh no i'm quite sure he didn't",
+      "reference_words": 7,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-135031-0019",
+      "corpus": "devclean",
+      "seconds": 3.525,
+      "reference": "THAT'S FUNNY REMARKED BETSY THOUGHTFULLY",
+      "hypothesis": "that's funny remarked bedsee thoughtfully",
+      "reference_words": 5,
+      "edits": [
+        [
+          "substitution",
+          "betsy",
+          "bedsee"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-135031-0020",
+      "corpus": "devclean",
+      "seconds": 4.65,
+      "reference": "I DON'T BELIEVE ANN KNEW ANY MAGIC OR SHE'D HAVE WORKED IT BEFORE",
+      "hypothesis": "i don't believe i knew any magic or see it worked it before",
+      "reference_words": 13,
+      "edits": [
+        [
+          "substitution",
+          "ann",
+          "i"
+        ],
+        [
+          "substitution",
+          "she'd",
+          "see"
+        ],
+        [
+          "substitution",
+          "have",
+          "it"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-135031-0021",
+      "corpus": "devclean",
+      "seconds": 2.595,
+      "reference": "I DO NOT KNOW CONFESSED SHAGGY",
+      "hypothesis": "i do not know confessed shaggy",
+      "reference_words": 6,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-135031-0022",
+      "corpus": "devclean",
+      "seconds": 2.695,
+      "reference": "TRUE AGREED KALIKO",
+      "hypothesis": "true a green calico",
+      "reference_words": 3,
+      "edits": [
+        [
+          "insertion",
+          "",
+          "a"
+        ],
+        [
+          "substitution",
+          "agreed",
+          "green"
+        ],
+        [
+          "substitution",
+          "kaliko",
+          "calico"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-135031-0023",
+      "corpus": "devclean",
+      "seconds": 7.52,
+      "reference": "KALIKO WENT TO THE BIG GONG AND POUNDED ON IT JUST AS RUGGEDO USED TO DO BUT NO ONE ANSWERED THE SUMMONS",
+      "hypothesis": "gallico went to the big gong and pounded on it just as vargo used to do but no one answered the summons",
+      "reference_words": 22,
+      "edits": [
+        [
+          "substitution",
+          "kaliko",
+          "gallico"
+        ],
+        [
+          "substitution",
+          "ruggedo",
+          "vargo"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-135031-0024",
+      "corpus": "devclean",
+      "seconds": 14.47,
+      "reference": "HAVING RETURNED TO THE ROYAL CAVERN KALIKO FIRST POUNDED THE GONG AND THEN SAT IN THE THRONE WEARING RUGGEDO'S DISCARDED RUBY CROWN AND HOLDING IN HIS HAND THE SCEPTRE WHICH RUGGEDO HAD SO OFTEN THROWN AT HIS HEAD",
+      "hypothesis": "having returned to the royal cavern calico first pounded the gong and then sat on the throne wearing rugado's discarded ruby crown and holding in his hand the scepter which rugado had so often thrown at his head",
+      "reference_words": 38,
+      "edits": [
+        [
+          "substitution",
+          "kaliko",
+          "calico"
+        ],
+        [
+          "substitution",
+          "in",
+          "on"
+        ],
+        [
+          "substitution",
+          "ruggedo's",
+          "rugado's"
+        ],
+        [
+          "substitution",
+          "sceptre",
+          "scepter"
+        ],
+        [
+          "substitution",
+          "ruggedo",
+          "rugado"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-141231-0000",
+      "corpus": "devclean",
+      "seconds": 4.65,
+      "reference": "A MAN SAID TO THE UNIVERSE SIR I EXIST",
+      "hypothesis": "a man said to the universe sir i exist",
+      "reference_words": 9,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-141231-0001",
+      "corpus": "devclean",
+      "seconds": 6.535,
+      "reference": "SWEAT COVERED BRION'S BODY TRICKLING INTO THE TIGHT LOINCLOTH THAT WAS THE ONLY GARMENT HE WORE",
+      "hypothesis": "sweat covered brean's body trickling into the tight loincloth that was the only garment he wore",
+      "reference_words": 16,
+      "edits": [
+        [
+          "substitution",
+          "brion's",
+          "brean's"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-141231-0002",
+      "corpus": "devclean",
+      "seconds": 13.335,
+      "reference": "THE CUT ON HIS CHEST STILL DRIPPING BLOOD THE ACHE OF HIS OVERSTRAINED EYES EVEN THE SOARING ARENA AROUND HIM WITH THE THOUSANDS OF SPECTATORS WERE TRIVIALITIES NOT WORTH THINKING ABOUT",
+      "hypothesis": "the cut on his chest still dripping blood the ache of his overstrained eyes even the soaring arena around him with the thousands of spectators or trivialities not worth thinking about",
+      "reference_words": 31,
+      "edits": [
+        [
+          "substitution",
+          "were",
+          "or"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-141231-0003",
+      "corpus": "devclean",
+      "seconds": 5.42,
+      "reference": "HIS INSTANT OF PANIC WAS FOLLOWED BY A SMALL SHARP BLOW HIGH ON HIS CHEST",
+      "hypothesis": "his instinct of panic was followed by a small sharp blow high on his chest",
+      "reference_words": 15,
+      "edits": [
+        [
+          "substitution",
+          "instant",
+          "instinct"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-141231-0004",
+      "corpus": "devclean",
+      "seconds": 5.09,
+      "reference": "ONE MINUTE A VOICE SAID AND THE TIME BUZZER SOUNDED",
+      "hypothesis": "one minute a voice said and the time buzzer sounded",
+      "reference_words": 10,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-141231-0005",
+      "corpus": "devclean",
+      "seconds": 5.81,
+      "reference": "A MINUTE IS NOT A VERY LARGE MEASURE OF TIME AND HIS BODY NEEDED EVERY FRACTION OF IT",
+      "hypothesis": "a minute is not a very large measure of time and his body needed every fraction of it",
+      "reference_words": 18,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-141231-0006",
+      "corpus": "devclean",
+      "seconds": 4.93,
+      "reference": "THE BUZZER'S WHIRR TRIGGERED HIS MUSCLES INTO COMPLETE RELAXATION",
+      "hypothesis": "the buzzer's were triggered his muscles into complete relaxation",
+      "reference_words": 9,
+      "edits": [
+        [
+          "substitution",
+          "whirr",
+          "were"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-141231-0007",
+      "corpus": "devclean",
+      "seconds": 4.735,
+      "reference": "ONLY HIS HEART AND LUNGS WORKED ON AT A STRONG MEASURED RATE",
+      "hypothesis": "only his heart and lungs worked on at a strong measured rate",
+      "reference_words": 12,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-141231-0008",
+      "corpus": "devclean",
+      "seconds": 4.595,
+      "reference": "HE WAS IN REVERIE SLIDING ALONG THE BORDERS OF CONSCIOUSNESS",
+      "hypothesis": "he was in reverie sliding along the borders of consciousness",
+      "reference_words": 10,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-141231-0009",
+      "corpus": "devclean",
+      "seconds": 8.62,
+      "reference": "THE CONTESTANTS IN THE TWENTIES NEEDED UNDISTURBED REST THEREFORE NIGHTS IN THE DORMITORIES WERE AS QUIET AS DEATH",
+      "hypothesis": "the contestants in the twenties needed undisturbed rest therefore nights in the dormitories were as quiet as death",
+      "reference_words": 18,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-141231-0010",
+      "corpus": "devclean",
+      "seconds": 10.76,
+      "reference": "PARTICULARLY SO ON THIS LAST NIGHT WHEN ONLY TWO OF THE LITTLE CUBICLES WERE OCCUPIED THE THOUSANDS OF OTHERS STANDING WITH DARK EMPTY DOORS",
+      "hypothesis": "particularly so on this last night when only two of the little cubicles were occupied the thousands of others standing with dark empty doors",
+      "reference_words": 24,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-141231-0011",
+      "corpus": "devclean",
+      "seconds": 5.015,
+      "reference": "THE OTHER VOICE SNAPPED WITH A HARSH URGENCY CLEARLY USED TO COMMAND",
+      "hypothesis": "the other voice snapped with a harsh urgency clearly used to command",
+      "reference_words": 12,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-141231-0012",
+      "corpus": "devclean",
+      "seconds": 7.74,
+      "reference": "I'M HERE BECAUSE THE MATTER IS OF UTMOST IMPORTANCE AND BRANDD IS THE ONE I MUST SEE NOW STAND ASIDE",
+      "hypothesis": "i'm here because the matter is of utmost importance and brand is the one i must see now stand aside",
+      "reference_words": 20,
+      "edits": [
+        [
+          "substitution",
+          "brandd",
+          "brand"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-141231-0013",
+      "corpus": "devclean",
+      "seconds": 1.6399375,
+      "reference": "THE TWENTIES",
+      "hypothesis": "the twenties",
+      "reference_words": 2,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-141231-0014",
+      "corpus": "devclean",
+      "seconds": 7.305,
+      "reference": "HE MUST HAVE DRAWN HIS GUN BECAUSE THE INTRUDER SAID QUICKLY PUT THAT AWAY YOU'RE BEING A FOOL OUT",
+      "hypothesis": "he must have drawn his gun because the intruder said quickly but that away you're being a fool out",
+      "reference_words": 19,
+      "edits": [
+        [
+          "substitution",
+          "put",
+          "but"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-141231-0015",
+      "corpus": "devclean",
+      "seconds": 5.68,
+      "reference": "THERE WAS SILENCE THEN AND STILL WONDERING BRION WAS ONCE MORE ASLEEP",
+      "hypothesis": "there was silence then and still wondering brean was once more asleep",
+      "reference_words": 12,
+      "edits": [
+        [
+          "substitution",
+          "brion",
+          "brean"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-141231-0016",
+      "corpus": "devclean",
+      "seconds": 1.85,
+      "reference": "TEN SECONDS",
+      "hypothesis": "ten seconds",
+      "reference_words": 2,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-141231-0017",
+      "corpus": "devclean",
+      "seconds": 3.735,
+      "reference": "HE ASKED THE HANDLER WHO WAS KNEADING HIS ACHING MUSCLES",
+      "hypothesis": "he asked the handler who was kneading his aching muscles",
+      "reference_words": 10,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-141231-0018",
+      "corpus": "devclean",
+      "seconds": 6.0,
+      "reference": "A RED HAIRED MOUNTAIN OF A MAN WITH AN APPARENTLY INEXHAUSTIBLE STORE OF ENERGY",
+      "hypothesis": "a red haired mountain of a man with an apparently inexhaustible store of energy",
+      "reference_words": 14,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-141231-0019",
+      "corpus": "devclean",
+      "seconds": 4.7,
+      "reference": "THERE COULD BE LITTLE ART IN THIS LAST AND FINAL ROUND OF FENCING",
+      "hypothesis": "there could be a little art in this last and final round of fencing",
+      "reference_words": 13,
+      "edits": [
+        [
+          "insertion",
+          "",
+          "a"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-141231-0020",
+      "corpus": "devclean",
+      "seconds": 4.32,
+      "reference": "JUST THRUST AND PARRY AND VICTORY TO THE STRONGER",
+      "hypothesis": "just thrust and parry and victory to the stronger",
+      "reference_words": 9,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-141231-0021",
+      "corpus": "devclean",
+      "seconds": 4.65,
+      "reference": "EVERY MAN WHO ENTERED THE TWENTIES HAD HIS OWN TRAINING TRICKS",
+      "hypothesis": "every man who entered the twenties had his own training tricks",
+      "reference_words": 11,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-141231-0022",
+      "corpus": "devclean",
+      "seconds": 8.35,
+      "reference": "THERE APPEARED TO BE AN IMMEDIATE ASSOCIATION WITH THE DEATH TRAUMA AS IF THE TWO WERE INEXTRICABLY LINKED INTO ONE",
+      "hypothesis": "there appeared to be an immediate association between the death trauma as if the two were inextricably linked into one",
+      "reference_words": 20,
+      "edits": [
+        [
+          "substitution",
+          "with",
+          "between"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-141231-0023",
+      "corpus": "devclean",
+      "seconds": 8.66,
+      "reference": "THE STRENGTH THAT ENABLES SOMEONE IN A TRANCE TO HOLD HIS BODY STIFF AND UNSUPPORTED EXCEPT AT TWO POINTS THE HEAD AND HEELS",
+      "hypothesis": "the strength that enables someone in a trance to hold his body stiff and unsupported except at two points the head and heels",
+      "reference_words": 23,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "devclean:1272-141231-0024",
+      "corpus": "devclean",
+      "seconds": 3.64,
+      "reference": "THIS IS PHYSICALLY IMPOSSIBLE WHEN CONSCIOUS",
+      "hypothesis": "this is physically impossible when conscious",
+      "reference_words": 6,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:f34b8a1a146f",
+      "corpus": "ami",
+      "seconds": 1.44,
+      "reference": "where about just in appleton tower",
+      "hypothesis": "or about Justinian's tenth tale",
+      "reference_words": 6,
+      "edits": [
+        [
+          "substitution",
+          "where",
+          "or"
+        ],
+        [
+          "deletion",
+          "just",
+          ""
+        ],
+        [
+          "substitution",
+          "in",
+          "justinian's"
+        ],
+        [
+          "substitution",
+          "appleton",
+          "tenth"
+        ],
+        [
+          "substitution",
+          "tower",
+          "tale"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:081fdf58f057",
+      "corpus": "ami",
+      "seconds": 3.11,
+      "reference": "but why don't we just write it as a new x. m. l. file",
+      "hypothesis": "well why don't you just write it in your email file",
+      "reference_words": 14,
+      "edits": [
+        [
+          "substitution",
+          "but",
+          "well"
+        ],
+        [
+          "substitution",
+          "we",
+          "you"
+        ],
+        [
+          "deletion",
+          "as",
+          ""
+        ],
+        [
+          "deletion",
+          "a",
+          ""
+        ],
+        [
+          "deletion",
+          "new",
+          ""
+        ],
+        [
+          "substitution",
+          "x",
+          "in"
+        ],
+        [
+          "substitution",
+          "m",
+          "your"
+        ],
+        [
+          "substitution",
+          "l",
+          "email"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:eccc3b9c2ac6",
+      "corpus": "ami",
+      "seconds": 1.69,
+      "reference": "but i don't think it will be very hard",
+      "hypothesis": "but i don't think he'll be very",
+      "reference_words": 9,
+      "edits": [
+        [
+          "deletion",
+          "it",
+          ""
+        ],
+        [
+          "substitution",
+          "will",
+          "he'll"
+        ],
+        [
+          "deletion",
+          "hard",
+          ""
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:87e6e7f7ed4e",
+      "corpus": "ami",
+      "seconds": 4.57,
+      "reference": "it's not t. f. i. d. f. it's just inverse document frequency",
+      "hypothesis": "it's not tief idef it's just inverse document frequency",
+      "reference_words": 12,
+      "edits": [
+        [
+          "deletion",
+          "t",
+          ""
+        ],
+        [
+          "deletion",
+          "f",
+          ""
+        ],
+        [
+          "deletion",
+          "i",
+          ""
+        ],
+        [
+          "substitution",
+          "d",
+          "tief"
+        ],
+        [
+          "substitution",
+          "f",
+          "idef"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:382e0c76e7fe",
+      "corpus": "ami",
+      "seconds": 7.0,
+      "reference": "like um yeah for each word or whatever but across the whole lot is what i mean by highest level",
+      "hypothesis": "like um yeah for each word or whatever but across the whole lot is what i mean by highest level",
+      "reference_words": 20,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:0d2032e1d0f8",
+      "corpus": "ami",
+      "seconds": 2.11,
+      "reference": "and then averaging it over the utterances",
+      "hypothesis": "and averaging it over the autumns",
+      "reference_words": 7,
+      "edits": [
+        [
+          "deletion",
+          "then",
+          ""
+        ],
+        [
+          "substitution",
+          "utterances",
+          "autumns"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:fe9f43f5b209",
+      "corpus": "ami",
+      "seconds": 2.04,
+      "reference": "it's like that's one the papers i read",
+      "hypothesis": "its like that one the papers i wrote",
+      "reference_words": 8,
+      "edits": [
+        [
+          "substitution",
+          "it's",
+          "its"
+        ],
+        [
+          "substitution",
+          "that's",
+          "that"
+        ],
+        [
+          "substitution",
+          "read",
+          "wrote"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:0f77c0823da4",
+      "corpus": "ami",
+      "seconds": 1.1,
+      "reference": "that would be really useful",
+      "hypothesis": "ah would be ready yes",
+      "reference_words": 5,
+      "edits": [
+        [
+          "substitution",
+          "that",
+          "ah"
+        ],
+        [
+          "substitution",
+          "really",
+          "ready"
+        ],
+        [
+          "substitution",
+          "useful",
+          "yes"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:5d396828e56e",
+      "corpus": "ami",
+      "seconds": 3.31,
+      "reference": "um well i'll be there from twelve",
+      "hypothesis": "well i'll be there from twelve",
+      "reference_words": 7,
+      "edits": [
+        [
+          "deletion",
+          "um",
+          ""
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:3bf8949767cc",
+      "corpus": "ami",
+      "seconds": 7.24,
+      "reference": "i would've thought that um i think all the collections and things implement serializable already",
+      "hypothesis": "i would have thought that i think all the collections and things implement serializable already",
+      "reference_words": 15,
+      "edits": [
+        [
+          "insertion",
+          "",
+          "would"
+        ],
+        [
+          "substitution",
+          "would've",
+          "have"
+        ],
+        [
+          "deletion",
+          "um",
+          ""
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:6d4f85bf5849",
+      "corpus": "ami",
+      "seconds": 7.33,
+      "reference": "i don't think it's really that much of a problem because if it's too big what we can do is just well all the off line stuff doesn't really matter",
+      "hypothesis": "I don't think it's really that much of a problem because if it's too big what we can do is just well the offline stuff doesn't really matter",
+      "reference_words": 30,
+      "edits": [
+        [
+          "deletion",
+          "all",
+          ""
+        ],
+        [
+          "deletion",
+          "off",
+          ""
+        ],
+        [
+          "substitution",
+          "line",
+          "offline"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:462176bf88cb",
+      "corpus": "ami",
+      "seconds": 2.54,
+      "reference": "i i dry read it the last time",
+      "hypothesis": "I don't remember what I said.",
+      "reference_words": 8,
+      "edits": [
+        [
+          "deletion",
+          "i",
+          ""
+        ],
+        [
+          "deletion",
+          "dry",
+          ""
+        ],
+        [
+          "substitution",
+          "read",
+          "don't"
+        ],
+        [
+          "substitution",
+          "it",
+          "remember"
+        ],
+        [
+          "substitution",
+          "the",
+          "what"
+        ],
+        [
+          "substitution",
+          "last",
+          "i"
+        ],
+        [
+          "substitution",
+          "time",
+          "said"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:3817d4e313b3",
+      "corpus": "ami",
+      "seconds": 3.31,
+      "reference": "uh i'll be in um the appleton tower anyway",
+      "hypothesis": "I'll be in the afterton town anyway",
+      "reference_words": 9,
+      "edits": [
+        [
+          "deletion",
+          "uh",
+          ""
+        ],
+        [
+          "deletion",
+          "um",
+          ""
+        ],
+        [
+          "substitution",
+          "appleton",
+          "afterton"
+        ],
+        [
+          "substitution",
+          "tower",
+          "town"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:0708e2cb034b",
+      "corpus": "ami",
+      "seconds": 1.17,
+      "reference": "might be wordnet",
+      "hypothesis": "might be wrong net",
+      "reference_words": 3,
+      "edits": [
+        [
+          "insertion",
+          "",
+          "wrong"
+        ],
+        [
+          "substitution",
+          "wordnet",
+          "net"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:bf404427b6c9",
+      "corpus": "ami",
+      "seconds": 3.59,
+      "reference": "'cause that'd be really useful is if we had a big directory",
+      "hypothesis": "because i'll be really useful as if we had a big idea",
+      "reference_words": 12,
+      "edits": [
+        [
+          "substitution",
+          "'cause",
+          "because"
+        ],
+        [
+          "substitution",
+          "that'd",
+          "i'll"
+        ],
+        [
+          "substitution",
+          "is",
+          "as"
+        ],
+        [
+          "substitution",
+          "directory",
+          "idea"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:11db5233ea73",
+      "corpus": "ami",
+      "seconds": 1.12,
+      "reference": "'cause i'm off all friday",
+      "hypothesis": "somewhere for fried",
+      "reference_words": 5,
+      "edits": [
+        [
+          "deletion",
+          "'cause",
+          ""
+        ],
+        [
+          "deletion",
+          "i'm",
+          ""
+        ],
+        [
+          "substitution",
+          "off",
+          "somewhere"
+        ],
+        [
+          "substitution",
+          "all",
+          "for"
+        ],
+        [
+          "substitution",
+          "friday",
+          "fried"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:d5e5f2abc292",
+      "corpus": "ami",
+      "seconds": 1.23,
+      "reference": "are you free after this",
+      "hypothesis": "a free of this",
+      "reference_words": 5,
+      "edits": [
+        [
+          "deletion",
+          "are",
+          ""
+        ],
+        [
+          "substitution",
+          "you",
+          "a"
+        ],
+        [
+          "substitution",
+          "after",
+          "of"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:cb964e5bdb64",
+      "corpus": "ami",
+      "seconds": 0.87,
+      "reference": "i mean it's impossible",
+      "hypothesis": "oh yes impossible",
+      "reference_words": 4,
+      "edits": [
+        [
+          "deletion",
+          "i",
+          ""
+        ],
+        [
+          "substitution",
+          "mean",
+          "oh"
+        ],
+        [
+          "substitution",
+          "it's",
+          "yes"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:316a2abb5d57",
+      "corpus": "ami",
+      "seconds": 3.51,
+      "reference": "and as long as your algorithm respects that then we can just",
+      "hypothesis": "as long as your algorithm respects that then we can",
+      "reference_words": 12,
+      "edits": [
+        [
+          "deletion",
+          "and",
+          ""
+        ],
+        [
+          "deletion",
+          "just",
+          ""
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:db49cb1d34bf",
+      "corpus": "ami",
+      "seconds": 2.87,
+      "reference": "it doesn't matter 'cause all the calculation's done off line",
+      "hypothesis": "but it doesn't matter because all the calculations done offline",
+      "reference_words": 10,
+      "edits": [
+        [
+          "insertion",
+          "",
+          "but"
+        ],
+        [
+          "substitution",
+          "'cause",
+          "because"
+        ],
+        [
+          "substitution",
+          "calculation's",
+          "calculations"
+        ],
+        [
+          "deletion",
+          "off",
+          ""
+        ],
+        [
+          "substitution",
+          "line",
+          "offline"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:882ca282ec3f",
+      "corpus": "ami",
+      "seconds": 1.07,
+      "reference": "yeah that's the other th",
+      "hypothesis": "yeah asil",
+      "reference_words": 5,
+      "edits": [
+        [
+          "deletion",
+          "that's",
+          ""
+        ],
+        [
+          "deletion",
+          "the",
+          ""
+        ],
+        [
+          "deletion",
+          "other",
+          ""
+        ],
+        [
+          "substitution",
+          "th",
+          "asil"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:7ae47b448b23",
+      "corpus": "ami",
+      "seconds": 0.59,
+      "reference": "that's easy",
+      "hypothesis": "machinery",
+      "reference_words": 2,
+      "edits": [
+        [
+          "deletion",
+          "that's",
+          ""
+        ],
+        [
+          "substitution",
+          "easy",
+          "machinery"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:45fdb8b1d78f",
+      "corpus": "ami",
+      "seconds": 1.9,
+      "reference": "but the actual stuff it's doing will be on line",
+      "hypothesis": "BUT THE ACTUAL STUFF IS DOING AWAY ON",
+      "reference_words": 10,
+      "edits": [
+        [
+          "substitution",
+          "it's",
+          "is"
+        ],
+        [
+          "deletion",
+          "will",
+          ""
+        ],
+        [
+          "substitution",
+          "be",
+          "away"
+        ],
+        [
+          "deletion",
+          "line",
+          ""
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:f8d821e4e6d7",
+      "corpus": "ami",
+      "seconds": 2.35,
+      "reference": "and like the utterances come off of here maybe",
+      "hypothesis": "and like the utterances come off of here maybe",
+      "reference_words": 9,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:742d0a3dd93b",
+      "corpus": "ami",
+      "seconds": 6.21,
+      "reference": "well all you really wanna do is look into getting some sub set of the icsi corpus off the dice machines",
+      "hypothesis": "what you really want to do is look into getting some subset of the exe corpus off the dice machines",
+      "reference_words": 21,
+      "edits": [
+        [
+          "deletion",
+          "well",
+          ""
+        ],
+        [
+          "substitution",
+          "all",
+          "what"
+        ],
+        [
+          "insertion",
+          "",
+          "want"
+        ],
+        [
+          "substitution",
+          "wanna",
+          "to"
+        ],
+        [
+          "deletion",
+          "sub",
+          ""
+        ],
+        [
+          "substitution",
+          "set",
+          "subset"
+        ],
+        [
+          "substitution",
+          "icsi",
+          "exe"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:42b25d1c4ddd",
+      "corpus": "ami",
+      "seconds": 0.65,
+      "reference": "but um",
+      "hypothesis": "bad",
+      "reference_words": 2,
+      "edits": [
+        [
+          "deletion",
+          "but",
+          ""
+        ],
+        [
+          "substitution",
+          "um",
+          "bad"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:0cb94f082f25",
+      "corpus": "ami",
+      "seconds": 3.1799375,
+      "reference": "i think we probably want to store sorry",
+      "hypothesis": "I think we probably want to stay home.",
+      "reference_words": 8,
+      "edits": [
+        [
+          "substitution",
+          "store",
+          "stay"
+        ],
+        [
+          "substitution",
+          "sorry",
+          "home"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:cf1e0a329d5d",
+      "corpus": "ami",
+      "seconds": 0.96,
+      "reference": "yeah",
+      "hypothesis": "yeah",
+      "reference_words": 1,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:9a49d64c3881",
+      "corpus": "ami",
+      "seconds": 1.79,
+      "reference": "um yeah",
+      "hypothesis": "I am here",
+      "reference_words": 2,
+      "edits": [
+        [
+          "insertion",
+          "",
+          "i"
+        ],
+        [
+          "substitution",
+          "um",
+          "am"
+        ],
+        [
+          "substitution",
+          "yeah",
+          "here"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:a6acc051c018",
+      "corpus": "ami",
+      "seconds": 4.66,
+      "reference": "i mean i don't see why that's really a big problem",
+      "hypothesis": "and i see why that's really a big problem",
+      "reference_words": 11,
+      "edits": [
+        [
+          "deletion",
+          "i",
+          ""
+        ],
+        [
+          "substitution",
+          "mean",
+          "and"
+        ],
+        [
+          "deletion",
+          "don't",
+          ""
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:b0a0c23fb798",
+      "corpus": "ami",
+      "seconds": 2.98,
+      "reference": "and like just being able to scroll through it or something like that",
+      "hypothesis": "and like just being able to scroll through it or something like that",
+      "reference_words": 13,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:427a229d01c8",
+      "corpus": "ami",
+      "seconds": 6.07,
+      "reference": "um well that's the t are you using t. f. i. d. f. for the information density",
+      "hypothesis": "um last i eaten tea fidef for the information density",
+      "reference_words": 17,
+      "edits": [
+        [
+          "deletion",
+          "well",
+          ""
+        ],
+        [
+          "deletion",
+          "that's",
+          ""
+        ],
+        [
+          "deletion",
+          "the",
+          ""
+        ],
+        [
+          "deletion",
+          "t",
+          ""
+        ],
+        [
+          "deletion",
+          "are",
+          ""
+        ],
+        [
+          "deletion",
+          "you",
+          ""
+        ],
+        [
+          "deletion",
+          "using",
+          ""
+        ],
+        [
+          "substitution",
+          "t",
+          "last"
+        ],
+        [
+          "substitution",
+          "f",
+          "i"
+        ],
+        [
+          "substitution",
+          "i",
+          "eaten"
+        ],
+        [
+          "substitution",
+          "d",
+          "tea"
+        ],
+        [
+          "substitution",
+          "f",
+          "fidef"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:4ea5c9695d4d",
+      "corpus": "ami",
+      "seconds": 1.28,
+      "reference": "well mostly skimming yeah",
+      "hypothesis": "while mostly skimming",
+      "reference_words": 4,
+      "edits": [
+        [
+          "substitution",
+          "well",
+          "while"
+        ],
+        [
+          "deletion",
+          "yeah",
+          ""
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:e29020556a1e",
+      "corpus": "ami",
+      "seconds": 4.84,
+      "reference": "so just like unp there's bound to be like a media wave object or something like that",
+      "hypothesis": "so just like i am there bound to be like a media wave object or something like that",
+      "reference_words": 17,
+      "edits": [
+        [
+          "insertion",
+          "",
+          "i"
+        ],
+        [
+          "substitution",
+          "unp",
+          "am"
+        ],
+        [
+          "substitution",
+          "there's",
+          "there"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:1de998b65070",
+      "corpus": "ami",
+      "seconds": 5.22,
+      "reference": "so anything that has less than say nought point five importance gets assigned to zero",
+      "hypothesis": "so anything that has less than say naught point five importance gets a sign to",
+      "reference_words": 15,
+      "edits": [
+        [
+          "substitution",
+          "nought",
+          "naught"
+        ],
+        [
+          "substitution",
+          "assigned",
+          "a"
+        ],
+        [
+          "substitution",
+          "to",
+          "sign"
+        ],
+        [
+          "substitution",
+          "zero",
+          "to"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:902c17814d07",
+      "corpus": "ami",
+      "seconds": 3.33,
+      "reference": "why does it need to be classified into like different segments",
+      "hypothesis": "why does it need to be classified into like different segments",
+      "reference_words": 11,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:c7d495d0ee0c",
+      "corpus": "ami",
+      "seconds": 1.79,
+      "reference": "i mean i would have thought they'd make it able to",
+      "hypothesis": "and I was thought they'd make it able",
+      "reference_words": 11,
+      "edits": [
+        [
+          "deletion",
+          "i",
+          ""
+        ],
+        [
+          "substitution",
+          "mean",
+          "and"
+        ],
+        [
+          "deletion",
+          "would",
+          ""
+        ],
+        [
+          "substitution",
+          "have",
+          "was"
+        ],
+        [
+          "deletion",
+          "to",
+          ""
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:4a0f14e8fb1d",
+      "corpus": "ami",
+      "seconds": 1.44,
+      "reference": "i'm just building a dictionary",
+      "hypothesis": "I'm just building a dictionary.",
+      "reference_words": 5,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:20e176c7a002",
+      "corpus": "ami",
+      "seconds": 6.66,
+      "reference": "'cause if we're looking at the whole lot of meetings we'll consider each meeting a document in sort of terms of this algorithm",
+      "hypothesis": "so if we're looking at the whole lot of meetings we'll consider each meeting a document in sort of terms of this algebra",
+      "reference_words": 23,
+      "edits": [
+        [
+          "substitution",
+          "'cause",
+          "so"
+        ],
+        [
+          "substitution",
+          "algorithm",
+          "algebra"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:55b9a40b067c",
+      "corpus": "ami",
+      "seconds": 2.61,
+      "reference": "so it will make more sense and if you get just extract words",
+      "hypothesis": "so it will make more sense and he just extracted",
+      "reference_words": 13,
+      "edits": [
+        [
+          "deletion",
+          "if",
+          ""
+        ],
+        [
+          "deletion",
+          "you",
+          ""
+        ],
+        [
+          "substitution",
+          "get",
+          "he"
+        ],
+        [
+          "deletion",
+          "extract",
+          ""
+        ],
+        [
+          "substitution",
+          "words",
+          "extracted"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:e44727b31caa",
+      "corpus": "ami",
+      "seconds": 0.71,
+      "reference": "is that it",
+      "hypothesis": "sigh",
+      "reference_words": 3,
+      "edits": [
+        [
+          "deletion",
+          "is",
+          ""
+        ],
+        [
+          "deletion",
+          "that",
+          ""
+        ],
+        [
+          "substitution",
+          "it",
+          "sigh"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:a2057c1fd948",
+      "corpus": "ami",
+      "seconds": 4.6,
+      "reference": "it would be useful to know how everyone's gonna store their things though",
+      "hypothesis": "it would be useful to know how everyone can store their things",
+      "reference_words": 13,
+      "edits": [
+        [
+          "substitution",
+          "everyone's",
+          "everyone"
+        ],
+        [
+          "substitution",
+          "gonna",
+          "can"
+        ],
+        [
+          "deletion",
+          "though",
+          ""
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:d4643f5849b1",
+      "corpus": "ami",
+      "seconds": 1.67,
+      "reference": "and we can just summarise based on that",
+      "hypothesis": "and so summarized his findings",
+      "reference_words": 8,
+      "edits": [
+        [
+          "deletion",
+          "we",
+          ""
+        ],
+        [
+          "deletion",
+          "can",
+          ""
+        ],
+        [
+          "deletion",
+          "just",
+          ""
+        ],
+        [
+          "substitution",
+          "summarise",
+          "so"
+        ],
+        [
+          "substitution",
+          "based",
+          "summarized"
+        ],
+        [
+          "substitution",
+          "on",
+          "his"
+        ],
+        [
+          "substitution",
+          "that",
+          "findings"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:86348972ed42",
+      "corpus": "ami",
+      "seconds": 7.52,
+      "reference": "might be funny to see what is summarised the whole corpus as anyway",
+      "hypothesis": "might be funny to see who summarizes the whole corpus has anyway",
+      "reference_words": 13,
+      "edits": [
+        [
+          "deletion",
+          "what",
+          ""
+        ],
+        [
+          "substitution",
+          "is",
+          "who"
+        ],
+        [
+          "substitution",
+          "summarised",
+          "summarizes"
+        ],
+        [
+          "substitution",
+          "as",
+          "has"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:c9c3b0d19004",
+      "corpus": "ami",
+      "seconds": 4.93,
+      "reference": "but it won't be very um processor intensive or memory intensive i don't think",
+      "hypothesis": "but it won't be very processor intensive or memory intensive i think",
+      "reference_words": 14,
+      "edits": [
+        [
+          "deletion",
+          "um",
+          ""
+        ],
+        [
+          "deletion",
+          "don't",
+          ""
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:d6f9e61f0ea3",
+      "corpus": "ami",
+      "seconds": 1.1,
+      "reference": "we can just change the code",
+      "hypothesis": "bing just changed the",
+      "reference_words": 6,
+      "edits": [
+        [
+          "deletion",
+          "we",
+          ""
+        ],
+        [
+          "substitution",
+          "can",
+          "bing"
+        ],
+        [
+          "substitution",
+          "change",
+          "changed"
+        ],
+        [
+          "deletion",
+          "code",
+          ""
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:5ac4fc454ad9",
+      "corpus": "ami",
+      "seconds": 1.46,
+      "reference": "is how much do we get",
+      "hypothesis": "because how much do we",
+      "reference_words": 6,
+      "edits": [
+        [
+          "substitution",
+          "is",
+          "because"
+        ],
+        [
+          "deletion",
+          "get",
+          ""
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:00a47cf957cf",
+      "corpus": "ami",
+      "seconds": 3.22,
+      "reference": "and all we can do is just process a bit at a time",
+      "hypothesis": "and all we can do is just process the bad time",
+      "reference_words": 13,
+      "edits": [
+        [
+          "deletion",
+          "a",
+          ""
+        ],
+        [
+          "deletion",
+          "bit",
+          ""
+        ],
+        [
+          "substitution",
+          "at",
+          "the"
+        ],
+        [
+          "substitution",
+          "a",
+          "bad"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:6c36b41571ac",
+      "corpus": "ami",
+      "seconds": 1.77,
+      "reference": "like so i can use my home machine",
+      "hypothesis": "like searching needs my home machine",
+      "reference_words": 8,
+      "edits": [
+        [
+          "deletion",
+          "so",
+          ""
+        ],
+        [
+          "deletion",
+          "i",
+          ""
+        ],
+        [
+          "substitution",
+          "can",
+          "searching"
+        ],
+        [
+          "substitution",
+          "use",
+          "needs"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:d6fd455d9205",
+      "corpus": "ami",
+      "seconds": 1.52,
+      "reference": "i mean it has to go through the gateway",
+      "hypothesis": "mine has to go through the gate",
+      "reference_words": 9,
+      "edits": [
+        [
+          "deletion",
+          "i",
+          ""
+        ],
+        [
+          "deletion",
+          "mean",
+          ""
+        ],
+        [
+          "substitution",
+          "it",
+          "mine"
+        ],
+        [
+          "substitution",
+          "gateway",
+          "gate"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:719370045f2c",
+      "corpus": "ami",
+      "seconds": 0.91,
+      "reference": "we'll have to buffer it",
+      "hypothesis": "will have to bother",
+      "reference_words": 5,
+      "edits": [
+        [
+          "substitution",
+          "we'll",
+          "will"
+        ],
+        [
+          "deletion",
+          "buffer",
+          ""
+        ],
+        [
+          "substitution",
+          "it",
+          "bother"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:e04b3be31980",
+      "corpus": "ami",
+      "seconds": 3.14,
+      "reference": "and then if you wanted the next level up",
+      "hypothesis": "and then if you want it the next level up",
+      "reference_words": 9,
+      "edits": [
+        [
+          "insertion",
+          "",
+          "want"
+        ],
+        [
+          "substitution",
+          "wanted",
+          "it"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:ea8b50225a3e",
+      "corpus": "ami",
+      "seconds": 5.57,
+      "reference": "'cause i could just say at um going over s. c. p. one night and just leave it going all night if i had to",
+      "hypothesis": "because i could just say it going over sea p one night and just leave it going all night if i had",
+      "reference_words": 25,
+      "edits": [
+        [
+          "substitution",
+          "'cause",
+          "because"
+        ],
+        [
+          "deletion",
+          "at",
+          ""
+        ],
+        [
+          "substitution",
+          "um",
+          "it"
+        ],
+        [
+          "deletion",
+          "s",
+          ""
+        ],
+        [
+          "substitution",
+          "c",
+          "sea"
+        ],
+        [
+          "deletion",
+          "to",
+          ""
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:4e4f99285a7f",
+      "corpus": "ami",
+      "seconds": 5.91,
+      "reference": "oh no no i was thinking of sshing just into some machine and then just scping it from there",
+      "hypothesis": "all I was thinking was that you're just into some machine and then just asleeping it from",
+      "reference_words": 19,
+      "edits": [
+        [
+          "deletion",
+          "oh",
+          ""
+        ],
+        [
+          "deletion",
+          "no",
+          ""
+        ],
+        [
+          "substitution",
+          "no",
+          "all"
+        ],
+        [
+          "insertion",
+          "",
+          "was"
+        ],
+        [
+          "substitution",
+          "of",
+          "that"
+        ],
+        [
+          "substitution",
+          "sshing",
+          "you're"
+        ],
+        [
+          "substitution",
+          "scping",
+          "asleeping"
+        ],
+        [
+          "deletion",
+          "there",
+          ""
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:2d7410b22945",
+      "corpus": "ami",
+      "seconds": 4.87,
+      "reference": "yeah but it seems like a bit silly to be parsing it over and over again kinda thing",
+      "hypothesis": "yeah it seems like a bit silly to be passing it over and over again kind of",
+      "reference_words": 18,
+      "edits": [
+        [
+          "deletion",
+          "but",
+          ""
+        ],
+        [
+          "substitution",
+          "parsing",
+          "passing"
+        ],
+        [
+          "substitution",
+          "kinda",
+          "kind"
+        ],
+        [
+          "substitution",
+          "thing",
+          "of"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:db124f0b7224",
+      "corpus": "ami",
+      "seconds": 2.85,
+      "reference": "uh i don't know i thought were you gonna use that in the end",
+      "hypothesis": "I don't know so veganist at night.",
+      "reference_words": 14,
+      "edits": [
+        [
+          "deletion",
+          "uh",
+          ""
+        ],
+        [
+          "deletion",
+          "i",
+          ""
+        ],
+        [
+          "deletion",
+          "thought",
+          ""
+        ],
+        [
+          "deletion",
+          "were",
+          ""
+        ],
+        [
+          "deletion",
+          "you",
+          ""
+        ],
+        [
+          "deletion",
+          "gonna",
+          ""
+        ],
+        [
+          "deletion",
+          "use",
+          ""
+        ],
+        [
+          "substitution",
+          "that",
+          "so"
+        ],
+        [
+          "substitution",
+          "in",
+          "veganist"
+        ],
+        [
+          "substitution",
+          "the",
+          "at"
+        ],
+        [
+          "substitution",
+          "end",
+          "night"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:d27eea080e27",
+      "corpus": "ami",
+      "seconds": 3.46,
+      "reference": "well if we're gonna dump the part of it into a database anyway",
+      "hypothesis": "or we're going to dump the part into a database anyway",
+      "reference_words": 13,
+      "edits": [
+        [
+          "substitution",
+          "well",
+          "or"
+        ],
+        [
+          "substitution",
+          "if",
+          "we're"
+        ],
+        [
+          "substitution",
+          "we're",
+          "going"
+        ],
+        [
+          "substitution",
+          "gonna",
+          "to"
+        ],
+        [
+          "deletion",
+          "of",
+          ""
+        ],
+        [
+          "deletion",
+          "it",
+          ""
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:7fc41b21ed0e",
+      "corpus": "ami",
+      "seconds": 4.23,
+      "reference": "and like each time you want a higher level you just need to go up the tree",
+      "hypothesis": "and like each time you want a higher level you just need to go up the tree",
+      "reference_words": 17,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:d922cee9c4ed",
+      "corpus": "ami",
+      "seconds": 4.92,
+      "reference": "then we don't even have to worry that much about the underlying x. m. l. representation",
+      "hypothesis": "So we don't even have to worry that much about the underlying XML representations.",
+      "reference_words": 16,
+      "edits": [
+        [
+          "substitution",
+          "then",
+          "so"
+        ],
+        [
+          "deletion",
+          "x",
+          ""
+        ],
+        [
+          "deletion",
+          "m",
+          ""
+        ],
+        [
+          "substitution",
+          "l",
+          "xml"
+        ],
+        [
+          "substitution",
+          "representation",
+          "representations"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:261a3148f48f",
+      "corpus": "ami",
+      "seconds": 3.54,
+      "reference": "and then just i can change that to work on whatever",
+      "hypothesis": "and then just i can change that to work on whatever",
+      "reference_words": 11,
+      "edits": [],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:b8c3b2b0a648",
+      "corpus": "ami",
+      "seconds": 1.25,
+      "reference": "file representation of it",
+      "hypothesis": "file representation",
+      "reference_words": 4,
+      "edits": [
+        [
+          "deletion",
+          "of",
+          ""
+        ],
+        [
+          "deletion",
+          "it",
+          ""
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:24af030ddc76",
+      "corpus": "ami",
+      "seconds": 1.22,
+      "reference": "it doesn't need ordered no",
+      "hypothesis": "doesn't need worried",
+      "reference_words": 5,
+      "edits": [
+        [
+          "deletion",
+          "it",
+          ""
+        ],
+        [
+          "deletion",
+          "ordered",
+          ""
+        ],
+        [
+          "substitution",
+          "no",
+          "worried"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:e692d4cf6258",
+      "corpus": "ami",
+      "seconds": 8.06,
+      "reference": "well like the ideas we're calculating are information density all off line first for every utterance in the whole corpus right",
+      "hypothesis": "well like the ideas were calculating our information density all offline first for every utterance in the whole corpus right",
+      "reference_words": 21,
+      "edits": [
+        [
+          "substitution",
+          "we're",
+          "were"
+        ],
+        [
+          "substitution",
+          "are",
+          "our"
+        ],
+        [
+          "deletion",
+          "off",
+          ""
+        ],
+        [
+          "substitution",
+          "line",
+          "offline"
+        ]
+      ],
+      "decode_cap_hit": false
+    },
+    {
+      "id": "ami:2cdc61c5be36",
+      "corpus": "ami",
+      "seconds": 0.7,
+      "reference": "it's awful",
+      "hypothesis": "silence",
+      "reference_words": 2,
+      "edits": [
+        [
+          "deletion",
+          "it's",
+          ""
+        ],
+        [
+          "substitution",
+          "awful",
+          "silence"
+        ]
+      ],
+      "decode_cap_hit": false
+    }
+  ],
+  "annotation_limits": "corpus provenance only; noise, overlap and proper-name labels require independent audio annotation",
+  "promotion_decision": "none; diagnostic, not a new held-out population"
+}
