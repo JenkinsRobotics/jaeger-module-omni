@@ -1,0 +1,64 @@
+{
+  "runs": [
+    {
+      "session": "half",
+      "command": [
+        "training/run_gpu.sh",
+        "jaeger_agent_omni/tests/converse_sim.py",
+        "--session",
+        "half",
+        "--output",
+        "research/candidate_evals/converse-half-20260908.json"
+      ],
+      "seconds": 81.28675754199503,
+      "exit_code": 0,
+      "artifact": "research/candidate_evals/converse-half-20260908.json",
+      "sha256": "756b56805d2305ead37ba114b69626078bb3205d361f704c20565c16193b7c01",
+      "passed": 12,
+      "total": 12,
+      "expected": 12,
+      "valid": true
+    },
+    {
+      "session": "quasi",
+      "command": [
+        "training/run_gpu.sh",
+        "jaeger_agent_omni/tests/converse_sim.py",
+        "--session",
+        "quasi",
+        "--output",
+        "research/candidate_evals/converse-quasi-20260908.json"
+      ],
+      "seconds": 77.53404829197098,
+      "exit_code": 0,
+      "artifact": "research/candidate_evals/converse-quasi-20260908.json",
+      "sha256": "7dd6f929f76eced2b432ec1e8fde592ed8a6c01537663fda6261628d106d8dee",
+      "passed": 6,
+      "total": 6,
+      "expected": 6,
+      "valid": true
+    },
+    {
+      "session": "barge-continue",
+      "command": [
+        "training/run_gpu.sh",
+        "jaeger_agent_omni/tests/converse_sim.py",
+        "--session",
+        "barge-continue",
+        "--output",
+        "research/candidate_evals/converse-barge-continue-20260908.json"
+      ],
+      "seconds": 166.46097891696263,
+      "exit_code": 1,
+      "artifact": "research/candidate_evals/converse-barge-continue-20260908.json",
+      "sha256": "e5889b28e90a459297fd2cc0e6aca872093103c106631036f8640649cd3ae9fb",
+      "passed": 3,
+      "total": 4,
+      "expected": 4,
+      "valid": false
+    }
+  ],
+  "all_pass": false,
+  "original_campaign_passed": 21,
+  "expected_original": 27
+}

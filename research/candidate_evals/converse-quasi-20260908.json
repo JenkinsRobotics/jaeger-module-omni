@@ -1,0 +1,88 @@
+{
+  "command": [
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+    "jaeger_agent_omni/tests/converse_sim.py",
+    "--session",
+    "quasi",
+    "--output",
+    "research/candidate_evals/converse-quasi-20260908.json"
+  ],
+  "session": "quasi",
+  "mode": "quasi",
+  "barge": "stop",
+  "node": "jaegeromni-41m-medium",
+  "adapter_sha256": "a7f96bfb889866f75df7b838f84aae368a56ab10f6469e766511d700e32fe13a",
+  "converse_sha256": "5cd0c07586e05acdcec8eba3dbae071d23ddac15e443249eec21ec094eaf49b6",
+  "harness_sha256": "f945a3c97ca6fad194228872bf71fc111f17334b5310f8e256875820c55de66d",
+  "runtime_errors": [],
+  "runtime_stopped": true,
+  "gate_valid": true,
+  "visual_fixtures": {},
+  "perception_context": false,
+  "passed": 6,
+  "total": 6,
+  "checks": [
+    {
+      "name": "wake -> reply",
+      "passed": true
+    },
+    {
+      "name": "reply begins",
+      "passed": true
+    },
+    {
+      "name": "barge cuts playback",
+      "passed": true
+    },
+    {
+      "name": "barge speech answered",
+      "passed": true
+    },
+    {
+      "name": "farewell reply first",
+      "passed": true
+    },
+    {
+      "name": "close AFTER farewell",
+      "passed": true
+    }
+  ],
+  "log": [
+    "[converse] speaker+wake embeddings: ECAPA (trained NN)",
+    "[converse] semantic channel: jaegeromni-41m-medium (encoder\u2192adapter\u2192Gemma, no text seam)\u2026",
+    "loading Kokoro\u2026",
+    "WARNING: Defaulting repo_id to hexgrad/Kokoro-82M. Pass repo_id='hexgrad/Kokoro-82M' to suppress this warning.",
+    "[converse] quasi duplex \u00b7 barge=stop \u00b7 say 'hey computer \u2026' or type (Enter). Ctrl-C to quit.",
+    "  [context: speaker=S1 conf=100% pitch=118Hz]  Hey computer, what is two plus two?   [nn 0.75s ttft 0.26s]",
+    "  \u23f5 agent: Two plus two equals four.",
+    "  [SIM] PASS  wake -> reply",
+    "  [context: speaker=S1 conf=100% pitch=135Hz incomplete]  what is the sun made of   [nn 0.81s ttft 0.26s]",
+    "  [holding \u2014 finish your thought]",
+    "  [context: speaker=S1 conf=100% pitch=126Hz]  And why does shine so very brightly up in the sky every single day?   [nn 1.19s ttft 0.30s]",
+    "  \u23f5 merged: what is the sun made of And why does shine so very brightly up in the sky every single day?",
+    "  \u23f5 agent: The sun is primarily made of hot gases like hydrogen and helium. It shines so brightly because it undergoes nuclear fusion, releasing massive amounts of energy.",
+    "  [SIM] actual playback observed",
+    "  [SIM] PASS  reply begins",
+    "  [context: speaker=S1 conf=100% pitch=161Hz]  Dad, I have a different question for you right now. Please just listen to me.   [nn 1.26s ttft 0.37s]",
+    "  \u23f5 agent: Sure, I'm ready. What's on your mind?",
+    "  [SIM] actual playback observed",
+    "  \u2702 barged",
+    "  [SIM] PASS  barge cuts playback  \u00b7 after 2 attempt(s)",
+    "  [context: speaker=S1 conf=100% pitch=140Hz]  Listen up, please. I have a different question for you right now. Please just listen to me.   [nn 1.35s ttft 0.43s]",
+    "  \u23f5 agent: Sure, I'm listening. What is your question?",
+    "  [SIM] PASS  barge speech answered",
+    "  [context: speaker=S1 conf=100% pitch=131Hz]  WHAT IS A SUN MADE SO VERY BRIGHTLY UP IN THE SKY EVERY SINGLE DAY   [nn 1.51s ttft 0.45s]",
+    "  \u23f5 agent: The sun is a giant ball of hot plasma, and it shines because it generates immense energy through nuclear fusion.",
+    "  \u2702 barged",
+    "  [context: speaker=S1 conf=100% pitch=114Hz]  I have a different question for you right now. Please just listen to me   [nn 1.30s ttft 0.51s]",
+    "  \u23f5 agent: Sure, I'm listening. What is your question?",
+    "  [SIM] PASS  farewell reply first",
+    "  [context: speaker=S1 conf=100% pitch=144Hz]  Let's stop. Please, I have a different ease. Just listen to me.   [nn 1.43s ttft 0.50s]",
+    "  \u23f5 agent: Sure, I'm here. What is it you wanted to talk about?",
+    "  [context: speaker=S1 conf=100% pitch=130Hz]  Hey computer, thank you. Goodbye.   [nn 1.12s ttft 0.55s]",
+    "  \u23f5 agent: You're welcome! Have a good day.",
+    "  [conversation closed]",
+    "  [SIM] PASS  close AFTER farewell",
+    "bye"
+  ]
+}

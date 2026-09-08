@@ -1,0 +1,62 @@
+{
+  "command": [
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+    "jaeger_agent_omni/tests/converse_sim.py",
+    "--session",
+    "barge-continue",
+    "--output",
+    "research/candidate_evals/converse-barge-continue-20260908.json"
+  ],
+  "session": "barge-continue",
+  "mode": "quasi",
+  "barge": "continue",
+  "node": "jaegeromni-41m-medium",
+  "adapter_sha256": "a7f96bfb889866f75df7b838f84aae368a56ab10f6469e766511d700e32fe13a",
+  "converse_sha256": "5cd0c07586e05acdcec8eba3dbae071d23ddac15e443249eec21ec094eaf49b6",
+  "harness_sha256": "f945a3c97ca6fad194228872bf71fc111f17334b5310f8e256875820c55de66d",
+  "runtime_errors": [],
+  "runtime_stopped": true,
+  "gate_valid": true,
+  "visual_fixtures": {},
+  "perception_context": false,
+  "passed": 3,
+  "total": 4,
+  "checks": [
+    {
+      "name": "wake -> reply",
+      "passed": true
+    },
+    {
+      "name": "reply begins",
+      "passed": true
+    },
+    {
+      "name": "playback NOT cut (continue)",
+      "passed": true
+    },
+    {
+      "name": "overtalk heard and answered",
+      "passed": false
+    }
+  ],
+  "log": [
+    "[converse] speaker+wake embeddings: ECAPA (trained NN)",
+    "[converse] semantic channel: jaegeromni-41m-medium (encoder\u2192adapter\u2192Gemma, no text seam)\u2026",
+    "loading Kokoro\u2026",
+    "WARNING: Defaulting repo_id to hexgrad/Kokoro-82M. Pass repo_id='hexgrad/Kokoro-82M' to suppress this warning.",
+    "[converse] quasi duplex \u00b7 barge=continue \u00b7 say 'hey computer \u2026' or type (Enter). Ctrl-C to quit.",
+    "  [context: speaker=S1 conf=100% pitch=118Hz]  Hey computer, what is two plus two?   [nn 0.73s ttft 0.22s]",
+    "  \u23f5 agent: Two plus two equals four.",
+    "  [SIM] PASS  wake -> reply",
+    "  [context: speaker=S1 conf=100% pitch=129Hz incomplete]  what is the sun made of   [nn 0.82s ttft 0.23s]",
+    "  [holding \u2014 finish your thought]",
+    "  [context: speaker=S1 conf=100% pitch=115Hz]  and why does it shine so brightly in the sky every day   [nn 1.10s ttft 0.27s]",
+    "  \u23f5 merged: what is the sun made of and why does it shine so brightly in the sky every day",
+    "  \u23f5 agent: The sun is primarily made of hot gases like hydrogen and helium. It shines brightly because it undergoes nuclear fusion, which releases massive amounts of energy.",
+    "  [SIM] actual playback observed",
+    "  [SIM] PASS  reply begins",
+    "  [SIM] PASS  playback NOT cut (continue)",
+    "  [SIM] FAIL  overtalk heard and answered",
+    "bye"
+  ]
+}

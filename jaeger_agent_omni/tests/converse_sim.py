@@ -184,6 +184,18 @@ NODES = {}
 _orig_load = rv.load_node
 def _cap(nid):
     n = _orig_load(nid)
+    if nid == 'para-turn-state-v0' and os.environ.get('OMNI_SIM_DIAG'):
+        original_process = n.process
+        count = [0]
+        def observed_process(frame, timestamp):
+            result = original_process(frame, timestamp)
+            count[0] += 1
+            if count[0] % 10 == 0 or result.get('turn_ended'):
+                print('[SIM] turn-state ' + json.dumps({
+                    'frame': count[0], 'rms': float(np.sqrt(np.mean(np.asarray(frame)**2))),
+                    'state': result}), flush=True)
+            return result
+        n.process = observed_process
     NODES[nid] = n
     return n
 rv.load_node = _cap
