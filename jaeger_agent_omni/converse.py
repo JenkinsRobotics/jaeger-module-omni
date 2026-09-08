@@ -576,6 +576,10 @@ def converse(mode: str, barge: str, with_vision: bool,
                 w.join(timeout=0.5)
                 finished = not stop["barged"]
         finally:
+            if io is not None and 'stop' in locals():
+                stop['x'] = True
+                if 'w' in locals():
+                    w.join(timeout=0.5)
             state["speaking"] = False
             state["speak_end"] = time.time()
             if ecapa is not None and played24:
@@ -790,9 +794,12 @@ def converse(mode: str, barge: str, with_vision: bool,
         frames_src = sd.InputStream(
             samplerate=16000, channels=1, dtype="float32", blocksize=480,
             callback=lambda ind, n, ti, st: q.put(ind[:, 0].copy()))
-        frames_src.start()
     try:
+        if frames_src is not None:
+            frames_src.start()
         while True:
+            if io is not None:
+                io.check_health()
             typed = txt.poll()
             if typed:
                 if typed == "/image" or typed.startswith("/image "):
@@ -872,7 +879,10 @@ def converse(mode: str, barge: str, with_vision: bool,
         print("\nbye", flush=True)
     finally:
         if frames_src is not None:
-            frames_src.stop()
+            try:
+                frames_src.stop()
+            finally:
+                frames_src.close()
         if io is not None:
             io.__exit__(None, None, None)
         stat_nodes = [("para-speaker-embed-v0", spk),

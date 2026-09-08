@@ -1,0 +1,38 @@
+{
+  "checks": [
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "jaeger_agent_omni.converse",
+        "--selftest"
+      ],
+      "exit_code": 0,
+      "seconds": 1.9922709169914015,
+      "stdout": "  PASS  parallel speaker channel separates two voices\n  PASS  speaker channel emits confidence-gated Gemma context (not ingested raw: text the model reads)\n  PASS  turn-state channel endpoints speech through silence\n  PASS  one utterance ends exactly once\n  PASS  one-shot enrollment persists \u2014 into scratch, never the real weights\n  PASS  the enrolled waveform is spotted \u2014 no STT involved\n  PASS  a different voice/cadence does not false-wake\n  PASS  fusion converges the channels into one record\n  PASS  text-wake fallback: two-token, address-position, no mid-sentence\n  PASS  dismissal closes; lookalikes don't\n  PASS  garble guard runs on graph evidence, short bursts exempt\n  PASS  text channel is a declared node with a clean contract\n  PASS  fusion carries wpm+energy so guards run on graph evidence\n  PASS  one generation carries transcript AND answer\n  PASS  format miss degrades to reply-only, never crashes\n  PASS  head pooling math: confident logits -> confident probabilities\n  PASS  stock artifact guard: density-gated, real speech survives (gap 3)\n  PASS  stream_split: long turn commits head, keeps 2s tail; short turn whole\n\n18/18 checks passed\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "jaeger_agent_omni/tests",
+        "-q"
+      ],
+      "exit_code": 0,
+      "seconds": 3.8466781669994816,
+      "stdout": ".......................................................... [ 72%]\n......................                                                   [100%]\n80 passed, 14 subtests passed in 3.14s\n",
+      "stderr": ""
+    }
+  ],
+  "source_sha256": {
+    "jaeger_agent_omni/converse.py": "575183dba270842087d072882e65554655efee1a8050e05da000863a7f3cf9f2",
+    "jaeger_agent_omni/nodes/audio-duplex-io-v0/runtime.py": "c99d811138649c5b11520f25f5ba0d8a5a42947867aa2afe77b2ab1b49387b78",
+    "jaeger_agent_omni/tests/converse_sim.py": "f945a3c97ca6fad194228872bf71fc111f17334b5310f8e256875820c55de66d",
+    "research/benchmark_agentic_corpus.py": "cf3514a7dbfd38d107c8320f94cebb7207be7128ec355329a9fcb7809c8cbb52",
+    "research/agentic_outcomes.py": "9e9e66aecd77732a24df328841e771656e6fe90f83385f3b6bc76c57c4210214"
+  },
+  "passed": true,
+  "gpu_campaign_pending": true
+}

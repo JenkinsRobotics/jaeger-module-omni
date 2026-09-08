@@ -274,6 +274,8 @@ def main() -> int:
     speaker_tags = []
     perception_turns: list[dict] = []
     run_errors: list[str] = []
+    capture_health = {'last_callback': None, 'failure': None, 'callbacks': 0}
+    roll_requested = threading.Event()
 
     from jaeger_agent_omni.core.runtime.interaction import InteractionPolicy
     interaction_policy = InteractionPolicy(a.barge_policy)
@@ -315,6 +317,17 @@ def main() -> int:
             barge_request.set()
 
     def on_block(indata, frames, t, status):
+        capture_health['last_callback'] = time.monotonic()
+        capture_health['callbacks'] += 1
+        if capture_health['failure'] is not None:
+            return
+        try:
+            process_block(indata, frames, t, status)
+        except Exception as exc:
+            capture_health['failure'] = f'{type(exc).__name__}: {exc}'
+            run_errors.append('audio callback failed: ' + capture_health['failure'])
+
+    def process_block(indata, frames, t, status):
         if status:
             run_errors.append(f"audio callback: {status}")
         raw = indata[:, 0] if indata.ndim > 1 else indata
@@ -381,6 +394,27 @@ def main() -> int:
             overflow["samples"] += len(clean)
 
     def source():
+        if capture_health['failure'] is not None:
+            raise RuntimeError('Audio capture failed: ' + capture_health['failure'])
+        last = capture_health['last_callback']
+        if last is not None and time.monotonic() - last > 2.0:
+            raise RuntimeError('Audio device stopped delivering frames for 2 seconds')
+        # This runs on the model owner thread, between encode/decode calls.
+        # The monitoring thread may request a roll but must never reset a
+        # cache while the model is using it.
+        if (roll_requested.is_set() and not speaking_out.is_set()
+                and not generating.is_set() and not loop.endpoint.speaking):
+            roll_requested.clear()
+            n = session.n_prefilled
+            if n > a.max_context:
+                summary = ' '.join(recent_replies[-2:])[:400]
+                session.reset()
+                session.open_turn()
+                if summary:
+                    session.feed_text(f' (ongoing conversation; my recent replies: {summary}) ')
+                soak['rolls'] += 1
+                print(f"\n  [soak] ROLLED context at {n} tok -> "
+                      f"{session.n_prefilled} (roll #{soak['rolls']})", flush=True)
         got = []
         while True:
             try:
@@ -433,6 +467,8 @@ def main() -> int:
     import queue as _q
     say_q: _q.Queue = _q.Queue()
     wav_q: _q.Queue = _q.Queue(maxsize=2)
+    from jaeger_agent_omni.core.runtime.speech_delivery import SpeechDelivery
+    delivery = SpeechDelivery()
 
     def _drain(q):
         while not q.empty():
@@ -446,15 +482,20 @@ def main() -> int:
             if not barge_request.wait(0.01):
                 continue
             barge_request.clear()
-            if speaking_out.is_set():
-                sd.stop()
-                speaking_out.clear()
+            with delivery.lock:
+                delivery.cancel_pending('barge')
+                was_playing = speaking_out.is_set()
+                if was_playing:
+                    sd.stop()
+                    speaking_out.clear()
                 _drain(say_q)
                 _drain(wav_q)
+            if was_playing:
                 barged["stops"] += 1
                 print("\n  (barge-in: residual speech — stopping)", flush=True)
 
-    threading.Thread(target=_barge_watcher, daemon=True).start()
+    barge_thread = threading.Thread(target=_barge_watcher, daemon=True)
+    barge_thread.start()
 
     def _synth_worker():
         """Stage 1 of the mouth: synthesise clause N+1 WHILE clause N is
@@ -466,13 +507,18 @@ def main() -> int:
             if sent is None:
                 wav_q.put(None)
                 break
+            reply_id, sent = sent
+            if not delivery.valid(reply_id):
+                continue
             try:
                 t0 = time.monotonic()
                 speak_kokoro(sent, "/tmp/_sent.wav", a.voice, a.speed)
                 stage_ms["synth"].append((time.monotonic() - t0) * 1000)
                 wav, sr = sf.read("/tmp/_sent.wav", dtype="float32")
-                wav_q.put((wav, sr))
+                if delivery.valid(reply_id):
+                    wav_q.put((reply_id, wav, sr))
             except Exception as exc:
+                delivery.fail(reply_id, exc)
                 run_errors.append(
                     f"speech synthesis: {type(exc).__name__}: {exc}")
 
@@ -484,24 +530,31 @@ def main() -> int:
             item = wav_q.get()
             if item is None:
                 break
-            wav, sr = item
+            reply_id, wav, sr = item
             try:
-                if aec is not None:
-                    if aec.reference_mode == "contiguous":
-                        aec.append_playback(wav, sr)
-                    else:
-                        aec.start_playback(wav, sr)
-                speaking_out.set()
-                if turn_t0["t"] is not None:
-                    stage_ms["to_first_audio"].append(
-                        (time.monotonic() - turn_t0["t"]) * 1000)
-                    print(f"\n          [latency: turn-end -> first audio "
-                          f"{stage_ms['to_first_audio'][-1]:.0f} ms]",
-                          flush=True)
-                    turn_t0["t"] = None
-                sd.play(wav, sr)
-                sd.wait()
+                with delivery.lock:
+                    if not delivery.valid(reply_id):
+                        continue
+                    if aec is not None:
+                        if aec.reference_mode == "contiguous":
+                            aec.append_playback(wav, sr)
+                        else:
+                            aec.start_playback(wav, sr)
+                    speaking_out.set()
+                    if turn_t0["t"] is not None:
+                        stage_ms["to_first_audio"].append(
+                            (time.monotonic() - turn_t0["t"]) * 1000)
+                        print(f"\n          [latency: turn-end -> first audio "
+                              f"{stage_ms['to_first_audio'][-1]:.0f} ms]",
+                              flush=True)
+                        turn_t0["t"] = None
+                    sd.play(wav, sr)
+                playback_status = sd.wait()
+                if playback_status:
+                    raise RuntimeError(f'Audio playback buffer failure: {playback_status}')
+                delivery.played(reply_id)
             except Exception as exc:
+                delivery.fail(reply_id, exc)
                 run_errors.append(
                     f"speech output: {type(exc).__name__}: {exc}")
             finally:
@@ -536,6 +589,10 @@ def main() -> int:
     _orig_respond = session.respond
 
     def _streaming_respond(**kw):
+        reply_id = delivery.begin()
+        def queue_clause(text):
+            if delivery.enqueue(reply_id):
+                say_q.put((reply_id, text))
         turn_t0["t"] = time.monotonic()
         barge_active.clear()
         barge_latched.clear()
@@ -562,13 +619,17 @@ def main() -> int:
                 chunks, consumed = _ready_chunks(text, consumed)
                 if not a.no_speak:
                     for chunk in chunks:
-                        say_q.put(chunk)
+                        queue_clause(chunk)
             if inner:
                 inner(tid, n)
 
         kw["on_token"] = on_token
         try:
             raw_out = _orig_respond(**kw)
+        except BaseException as exc:
+            delivery.fail(reply_id, exc)
+            delivery.close(reply_id)
+            raise
         finally:
             generating.clear()
         if companion is not None:
@@ -586,8 +647,9 @@ def main() -> int:
             "available": False, "controls_policy": False})()
         perception_turns.append(snapshot)
         tail = out[consumed:].split("<")[0].strip()
-        if not a.no_speak and len(tail.split()) >= 2:
-            say_q.put(tail)
+        if not a.no_speak and tail:
+            queue_clause(tail)
+        delivery.close(reply_id)
         return out
 
     if not a.no_speak or companion is not None:
@@ -691,19 +753,8 @@ def main() -> int:
                           f"{rate:.1f} ms/tok · lag {stats_lag():.0f} ms",
                           flush=True)
             soak["last"] = (total_n, pre_ms, now)
-            if n > a.max_context and not speaking_out.is_set():
-                # ROLL: reset, re-seed with the recent exchange as text.
-                summary = " ".join(recent_replies[-2:])[:400]
-                session.reset()
-                session.open_turn()
-                if summary:
-                    session.feed_text(
-                        f" (ongoing conversation; my recent replies: "
-                        f"{summary}) ")
-                soak["rolls"] += 1
-                print(f"\n  [soak] ROLLED context at {n} tok -> "
-                      f"{session.n_prefilled} (roll #{soak['rolls']})",
-                      flush=True)
+            if n > a.max_context:
+                roll_requested.set()
 
     def stats_lag():
         return loop.stats.max_lag_s * 1000
@@ -721,8 +772,9 @@ def main() -> int:
     mic_stream = sd.InputStream(samplerate=RATE, blocksize=BLOCK, channels=1,
                                 dtype="float32", device=a.device,
                                 callback=on_block)
-    mic_stream.start()
     try:
+        capture_health['last_callback'] = time.monotonic()
+        mic_stream.start()
         stats = loop.run(eos_ids=meta["eos"], max_seconds=a.seconds)
     except Exception as exc:                               # noqa: BLE001
         # A worker exception must still produce the report and recordings —
@@ -731,6 +783,7 @@ def main() -> int:
         stats = loop.stats
     finally:
         stop.set()
+        delivery.cancel_pending('shutdown')
     threading.Thread(target=sd.stop, daemon=True).start()
     speaking_out.clear()
     while not say_q.empty():
@@ -741,6 +794,11 @@ def main() -> int:
     say_q.put(None)
     synth_thread.join(timeout=5.0)
     player_thread.join(timeout=5.0)
+    barge_thread.join(timeout=0.5)
+    for worker_name, worker in (('synthesis', synth_thread), ('playback', player_thread),
+                                ('barge monitor', barge_thread)):
+        if worker.is_alive():
+            run_errors.append(f'{worker_name} worker did not stop before the shutdown deadline')
 
     minutes = None
     if a.meeting_minutes:
@@ -822,9 +880,11 @@ def main() -> int:
             # second never reached it at all.
             "mic_queue_overflow_blocks": overflow["blocks"],
             "mic_queue_overflow_seconds": overflow["samples"] / RATE,
+            "capture_health": dict(capture_health),
             "half_duplex_muted_seconds": half_muted["samples"] / RATE,
             "memory": memory_summary(),
             "turns": stats.turns, "completed_replies": heard["n"],
+            "speech_delivery": delivery.summary(),
             "interrupts": stats.interrupts,
             "barge_events": barged["events"],
             "barge_stops": barged["stops"],
@@ -878,6 +938,9 @@ def main() -> int:
                 "enabled": agentic_runtime is not None,
                 "tool_calls": len(agentic_calls),
                 "tool_names": agentic_calls,
+                "tool_results": ([m for m in agentic_runtime.agent.messages
+                                  if m.get('role') == 'tool']
+                                 if agentic_runtime is not None else []),
                 "last_iterations": (
                     agentic_runtime.agent.last_iteration_count
                     if agentic_runtime is not None else 0),
@@ -890,6 +953,10 @@ def main() -> int:
         interactions=interaction_policy.as_dicts(), errors=run_errors,
         artifacts={"recording_dir": a.record,
                    "meeting_minutes": a.meeting_minutes})
+    import hashlib
+    run_report['runtime_sha256'] = {
+        str(p.relative_to(Path(__file__).parent)): hashlib.sha256(p.read_bytes()).hexdigest()
+        for p in (Path(__file__), Path(__file__).parent/'core/runtime/speech_delivery.py')}
     saved_report = write_report(report_path, run_report)
     print(f"  report       {saved_report}")
     if aec is not None:

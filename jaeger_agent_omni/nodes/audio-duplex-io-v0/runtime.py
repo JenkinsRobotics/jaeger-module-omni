@@ -90,6 +90,11 @@ class AudioIO:
         self._last_status = 0.0
         self._playing = False
         self._barged = False
+        self._callback_error = None
+        self._last_callback = time.monotonic()
+        self.health = {"callbacks": 0, "status_events": 0,
+                       "input_overflows": 0, "output_underflows": 0,
+                       "bad_frame_sizes": 0}
         self._stream = sd.Stream(
             samplerate=STREAM_SR, channels=(1, 1), dtype="int16",
             blocksize=AEC_FRAME_SAMPLES * _DEC, callback=self._cb,
@@ -97,14 +102,39 @@ class AudioIO:
         )
 
     def _cb(self, indata, outdata, frames, _time_info, status) -> None:
+        self._last_callback = time.monotonic()
+        self.health['callbacks'] += 1
+        if self._callback_error is not None:
+            outdata.fill(0)
+            return
+        try:
+            self._process_callback(indata, outdata, frames, _time_info, status)
+        except Exception as exc:
+            # PortAudio otherwise swallows callback failures while the UI waits
+            # forever. Latch the error for the owning thread; silence output.
+            self._callback_error = f'{type(exc).__name__}: {exc}'
+            self._playing = False
+            outdata.fill(0)
+
+    def check_health(self) -> None:
+        if self._callback_error is not None:
+            raise RuntimeError('Audio callback failed: ' + self._callback_error)
+        if time.monotonic() - self._last_callback > 2.0:
+            raise RuntimeError('Audio device stopped delivering frames for 2 seconds')
+
+    def _process_callback(self, indata, outdata, frames, _time_info, status) -> None:
         if status:
+            self.health['status_events'] += 1
+            self.health['input_overflows'] += bool(getattr(status, 'input_overflow', False))
+            self.health['output_underflows'] += bool(getattr(status, 'output_underflow', False))
             now = time.monotonic()
             if now - self._last_status >= 1.0:      # throttle: startup bursts
                 self._last_status = now             # flooded the terminal
                 print(f"[audio] {status}", file=sys.stderr)
         if frames != AEC_FRAME_SAMPLES * _DEC:
+            self.health['bad_frame_sizes'] += 1
             outdata.fill(0)
-            return
+            raise RuntimeError(f'Unexpected audio callback size: {frames}')
         out = np.zeros(frames, dtype=np.int16)
         n_filled = 0
         cur = self._current_chunk        # LOCAL ref: interrupt_playback()
@@ -146,12 +176,14 @@ class AudioIO:
     def play_chunk(self, chunk_f32_24k: np.ndarray) -> None:
         """Native-quality path: Kokoro's 24 k floats upsample x2 to the 48 k
         device — nothing above 8 kHz is discarded anymore."""
+        self.check_health()
         up = resample_poly(np.asarray(chunk_f32_24k, dtype=np.float32),
                            up=STREAM_SR, down=TTS_NATIVE_SR)
         self._play_q.put(np.clip(up * 32767.0, -32768,
                                  32767).astype(np.int16))
 
     def is_playing(self) -> bool:
+        self.check_health()
         return self._playing
 
     def interrupt_playback(self) -> None:
@@ -168,11 +200,20 @@ class AudioIO:
             self.q.queue.clear()
 
     def __enter__(self) -> "AudioIO":
-        self._stream.start()
+        self._last_callback = time.monotonic()
+        try:
+            self._stream.start()
+        except Exception:
+            self._stream.close()
+            raise
         return self
 
     def __exit__(self, *_exc) -> None:
-        self._stream.stop()
+        try:
+            self.interrupt_playback()
+            self._stream.stop()
+        finally:
+            self._stream.close()
 
 
 class BargeMonitor:

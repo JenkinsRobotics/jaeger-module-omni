@@ -1,0 +1,37 @@
+{
+  "recorded_at": "2026-09-08T05:40:57.425487+00:00",
+  "checks": [
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "jaeger_agent_omni/tests",
+        "-q"
+      ],
+      "exit_code": 0,
+      "summary": "89 passed, 14 subtests passed in 3.86s"
+    },
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "jaeger_agent_omni.live",
+        "--demo"
+      ],
+      "exit_code": 0,
+      "summary": "live: Kokoro, Speex AEC, clause streaming, native meeting minutes present"
+    }
+  ],
+  "source_sha256": {
+    "jaeger_agent_omni/converse.py": "575183dba270842087d072882e65554655efee1a8050e05da000863a7f3cf9f2",
+    "jaeger_agent_omni/live.py": "d322da52c3e793eb4638aebb003ae73f98ced2f9296834b217118237e40c5f07",
+    "jaeger_agent_omni/nodes/audio-duplex-io-v0/runtime.py": "c99d811138649c5b11520f25f5ba0d8a5a42947867aa2afe77b2ab1b49387b78",
+    "jaeger_agent_omni/core/runtime/speech_delivery.py": "0ae007c4a90e3becdbad7e37a818c0f52119d64a9a45afcae1317aed743cfbb6",
+    "research/demo_acceptance.py": "557c92696ddf371469d09bd859c5723e875fb6602219296aa7f033060703e862",
+    "research/physical_omni_trial.py": "9ae78115255ebee38b8601b88abde0ded413cfcf765376166e06ae5ad27fcbc2",
+    "training/cleanroom_context_ce.py": "bfac15238979fc79dc3160bc841ecf6877aa81a56a345f1c7ca293527bd0cf41"
+  },
+  "passed": true,
+  "gpu_campaign_and_physical_validation_pending": true
+}
