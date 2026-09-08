@@ -1,0 +1,700 @@
+{
+  "schema_version": 1,
+  "kind": "jaeger_agentic_native_audio_corpus",
+  "evaluation": "free_running_synthetic_audio_native",
+  "teacher_forced": false,
+  "native_history_retained_within_case_session": true,
+  "tool_visibility_reset_between_case_sessions": true,
+  "text_or_transcript_fed_to_model": false,
+  "input_mode": "speech",
+  "fixture_voice": "af_heart",
+  "discovery_hint": false,
+  "bootstrap_files": false,
+  "bootstrap_skills": false,
+  "initial_tools": [
+    "get_time",
+    "calculate",
+    "load_tools",
+    "recall",
+    "memory",
+    "web_search",
+    "list_skills",
+    "use_skill"
+  ],
+  "system_sha256": "2b88ef3590f64d6241a7aa78379fc06da8f94109781a0c4dfe93c55fbaf678f8",
+  "code_sha256": "86c772e72c1563a9672cffd7fbfc97099c2e1b446dd6c8935028a64a56de3bcd",
+  "case_sources_sha256": {
+    "cases.py": "2e369a9d14d8f8611c7f9d08503fd16f050318b2b2d7da5dea07c3b8ced53577",
+    "cases_b.py": "3e9a3ca424775a9c305b22a8bf37ace81de9a1f951b97594e83341bc59d57a97"
+  },
+  "command": [
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+    "research/benchmark_agentic_corpus.py",
+    "--input-mode",
+    "speech",
+    "--ids",
+    "write_bench_txt,ms_calc_and_save,ms_write_append_read,mt_file_round_1",
+    "--case-timeout-s",
+    "20",
+    "--out",
+    "research/candidate_evals/agentic-speech-file-pilot-20260907.json"
+  ],
+  "suite": "both",
+  "front_end": "jaegeromni-41m-medium",
+  "checkpoint": "a7f96bfb8898",
+  "adapter_sha256": "a7f96bfb889866f75df7b838f84aae368a56ab10f6469e766511d700e32fe13a",
+  "case_timeout_s": 20.0,
+  "incremental_rows": "research/candidate_evals/agentic-speech-file-pilot-20260907.json.rows.jsonl",
+  "summary": {
+    "passed": 0,
+    "total": 12,
+    "pass_rate": 0.0,
+    "routing_passed": 0,
+    "routing_total": 12,
+    "routing_rate": 0.0,
+    "answer_passed": 2,
+    "answer_total": 6,
+    "errors": 0,
+    "unexpected_markup": 0,
+    "safety_failures": 0,
+    "latency_ms": {
+      "median": 2803.5713544813916,
+      "p95": 3481.6383339930326
+    },
+    "by_tag": {
+      "routing": {
+        "passed": 0,
+        "total": 2
+      },
+      "files": {
+        "passed": 0,
+        "total": 12
+      },
+      "multistep": {
+        "passed": 0,
+        "total": 4
+      },
+      "multiturn": {
+        "passed": 0,
+        "total": 6
+      }
+    },
+    "verified_file_outcomes": {
+      "passed": 0,
+      "total": 12,
+      "contract_sha256": "a5c3844431c9a262420c019a8ca49a3d3a770bd86335e4de92a1351de5841000",
+      "scope": "declared file tasks only; original corpus grading unchanged",
+      "fabricated_success_certified_absent": false
+    }
+  },
+  "gates": {
+    "full_pass_rate_at_least_70_percent": false,
+    "routing_rate_at_least_85_percent": false,
+    "no_dispatch_errors": true,
+    "no_visible_markup": true,
+    "no_safety_failures": true
+  },
+  "passed": false,
+  "rows": [
+    {
+      "lane": "a",
+      "id": "write_bench_txt",
+      "session": "a:write_bench_txt",
+      "prompt_ground_truth_not_fed": "make a file called bench.txt with the message hello from the benchmark",
+      "prompt_fed_as_text": null,
+      "input_mode": "speech",
+      "audio": "/tmp/jaeger-agentic-audio-corpus/a-write_bench_txt-e758dd5fc6b43a19.wav",
+      "tags": [
+        "routing",
+        "files"
+      ],
+      "audio_sha256": "2c489413586cd457a4c62f1f37f58394bd2e41f87f22833674974adb2a02bbf1",
+      "tools_called": [],
+      "skills_viewed": [],
+      "answer": "I cannot perform that action.",
+      "error": null,
+      "latency_ms": 2807.074000011198,
+      "iterations": 1,
+      "halt_reason": null,
+      "tool_calls": [],
+      "tool_results": [],
+      "file_changes": {},
+      "expected_tools_omni": [
+        "write_file"
+      ],
+      "architecture_adaptations": [],
+      "routing_ok": false,
+      "answer_ok": null,
+      "skill_ok": null,
+      "clean_output": true,
+      "no_hallucination": true,
+      "safety_ok": true,
+      "case_pass": false,
+      "outcome": {
+        "pass": false,
+        "checks": {
+          "no_error": true,
+          "one_file_exists": false,
+          "file_content": false
+        },
+        "observed_before": {},
+        "observed_after": {},
+        "success_claim_review_required": true
+      }
+    },
+    {
+      "lane": "a",
+      "id": "ms_calc_and_save",
+      "session": "a:ms_calc_and_save",
+      "prompt_ground_truth_not_fed": "Calculate 47 times 23 plus 12, then save the result to math.txt.",
+      "prompt_fed_as_text": null,
+      "input_mode": "speech",
+      "audio": "/tmp/jaeger-agentic-audio-corpus/a-ms_calc_and_save-730cca2277d0e8f4.wav",
+      "tags": [
+        "multistep",
+        "files"
+      ],
+      "audio_sha256": "822ef872ff4d360f625b9465eb4151d69c6ebf2aa76cc1623f8ed7b7a100386e",
+      "tools_called": [
+        "calculate"
+      ],
+      "skills_viewed": [],
+      "answer": "The result is 1093.",
+      "error": null,
+      "latency_ms": 3481.6383339930326,
+      "iterations": 2,
+      "halt_reason": null,
+      "tool_calls": [
+        {
+          "id": "drift_fb02b510",
+          "name": "calculate",
+          "arguments": {
+            "expression": "47*23+12"
+          }
+        }
+      ],
+      "tool_results": [
+        {
+          "role": "tool",
+          "tool_call_id": "drift_fb02b510",
+          "name": "calculate",
+          "content": "{\"expression\": \"47*23+12\", \"result\": 1093}"
+        }
+      ],
+      "file_changes": {},
+      "expected_tools_omni": [
+        "calculate",
+        "write_file"
+      ],
+      "architecture_adaptations": [],
+      "routing_ok": false,
+      "answer_ok": true,
+      "skill_ok": null,
+      "clean_output": true,
+      "no_hallucination": true,
+      "safety_ok": true,
+      "case_pass": false,
+      "outcome": {
+        "pass": false,
+        "checks": {
+          "no_error": true,
+          "one_file_exists": false,
+          "file_content": false
+        },
+        "observed_before": {},
+        "observed_after": {},
+        "success_claim_review_required": true
+      }
+    },
+    {
+      "lane": "a",
+      "id": "ms_write_append_read",
+      "session": "a:ms_write_append_read",
+      "prompt_ground_truth_not_fed": "Create todo.txt with 'buy milk', append 'walk dog' to it, then read it back and tell me both items.",
+      "prompt_fed_as_text": null,
+      "input_mode": "speech",
+      "audio": "/tmp/jaeger-agentic-audio-corpus/a-ms_write_append_read-6b066aa3d1285d61.wav",
+      "tags": [
+        "multistep",
+        "files"
+      ],
+      "audio_sha256": "8f3b1277ce9c673cf65fa02a3fd8f3ba2a4f1187de0eb2a5578e13dad08d1c4c",
+      "tools_called": [],
+      "skills_viewed": [],
+      "answer": "I need to know what you want me to do with the task.",
+      "error": null,
+      "latency_ms": 3044.617208011914,
+      "iterations": 1,
+      "halt_reason": null,
+      "tool_calls": [],
+      "tool_results": [],
+      "file_changes": {},
+      "expected_tools_omni": [
+        "write_file",
+        "append_file",
+        "read_file"
+      ],
+      "architecture_adaptations": [],
+      "routing_ok": false,
+      "answer_ok": false,
+      "skill_ok": null,
+      "clean_output": true,
+      "no_hallucination": true,
+      "safety_ok": true,
+      "case_pass": false,
+      "outcome": {
+        "pass": false,
+        "checks": {
+          "no_error": true,
+          "one_file_exists": false,
+          "file_lines": false,
+          "answer_0": false,
+          "answer_1": false
+        },
+        "observed_before": {},
+        "observed_after": {},
+        "success_claim_review_required": true
+      }
+    },
+    {
+      "lane": "a",
+      "id": "mt_file_round_1",
+      "session": "a:mt_file",
+      "prompt_ground_truth_not_fed": "Create a file called level3_test.txt containing the text 'sea otters are mammals'.",
+      "prompt_fed_as_text": null,
+      "input_mode": "speech",
+      "audio": "/tmp/jaeger-agentic-audio-corpus/a-mt_file_round_1-834508e7a2a790c7.wav",
+      "tags": [
+        "multiturn",
+        "files"
+      ],
+      "audio_sha256": "e3b1664580f08ade8b954613b5b3463849b7a782456969fba02f800d806ed643",
+      "tools_called": [],
+      "skills_viewed": [],
+      "answer": "I cannot perform that action.",
+      "error": null,
+      "latency_ms": 2796.0622499813326,
+      "iterations": 1,
+      "halt_reason": null,
+      "tool_calls": [],
+      "tool_results": [],
+      "file_changes": {},
+      "expected_tools_omni": [
+        "write_file"
+      ],
+      "architecture_adaptations": [],
+      "routing_ok": false,
+      "answer_ok": null,
+      "skill_ok": null,
+      "clean_output": true,
+      "no_hallucination": true,
+      "safety_ok": true,
+      "case_pass": false,
+      "outcome": {
+        "pass": false,
+        "checks": {
+          "no_error": true,
+          "one_file_exists": false,
+          "file_content": false
+        },
+        "observed_before": {},
+        "observed_after": {},
+        "success_claim_review_required": true
+      }
+    },
+    {
+      "lane": "a",
+      "id": "mt_file_round_2",
+      "session": "a:mt_file",
+      "prompt_ground_truth_not_fed": "Read level3_test.txt and tell me what it says.",
+      "prompt_fed_as_text": null,
+      "input_mode": "speech",
+      "audio": "/tmp/jaeger-agentic-audio-corpus/a-mt_file_round_2-2eb09c143da0e8dc.wav",
+      "tags": [
+        "multiturn",
+        "files"
+      ],
+      "audio_sha256": "e9c260348d3310532945aeea919adc3c55aca7c8f2ebeceb29b62a78231b8d79",
+      "tools_called": [],
+      "skills_viewed": [],
+      "answer": "The file says \"Seals are mammals.\"",
+      "error": null,
+      "latency_ms": 654.5839169993997,
+      "iterations": 1,
+      "halt_reason": null,
+      "tool_calls": [],
+      "tool_results": [],
+      "file_changes": {},
+      "expected_tools_omni": [
+        "read_file"
+      ],
+      "architecture_adaptations": [],
+      "routing_ok": false,
+      "answer_ok": false,
+      "skill_ok": null,
+      "clean_output": true,
+      "no_hallucination": true,
+      "safety_ok": true,
+      "case_pass": false,
+      "outcome": {
+        "pass": false,
+        "checks": {
+          "no_error": true,
+          "one_file_exists": false,
+          "file_content": false,
+          "existed_unchanged": false,
+          "answer_0": false
+        },
+        "observed_before": {},
+        "observed_after": {},
+        "success_claim_review_required": true
+      }
+    },
+    {
+      "lane": "a",
+      "id": "mt_file_round_3",
+      "session": "a:mt_file",
+      "prompt_ground_truth_not_fed": "Delete level3_test.txt.",
+      "prompt_fed_as_text": null,
+      "input_mode": "speech",
+      "audio": "/tmp/jaeger-agentic-audio-corpus/a-mt_file_round_3-cb6f0c53b6786e8a.wav",
+      "tags": [
+        "multiturn",
+        "files"
+      ],
+      "audio_sha256": "f989093b1801b3efef0b63b4d825673ffee8d1dd60334ca6b36424bf724065dc",
+      "tools_called": [],
+      "skills_viewed": [],
+      "answer": "I cannot delete that file.",
+      "error": null,
+      "latency_ms": 573.1579170096666,
+      "iterations": 1,
+      "halt_reason": null,
+      "tool_calls": [],
+      "tool_results": [],
+      "file_changes": {},
+      "expected_tools_omni": [
+        "delete_file"
+      ],
+      "architecture_adaptations": [],
+      "routing_ok": false,
+      "answer_ok": null,
+      "skill_ok": null,
+      "clean_output": true,
+      "no_hallucination": true,
+      "safety_ok": true,
+      "case_pass": false,
+      "outcome": {
+        "pass": false,
+        "checks": {
+          "no_error": true,
+          "existed_before": false,
+          "absent_after": true
+        },
+        "observed_before": {},
+        "observed_after": {},
+        "success_claim_review_required": true
+      }
+    },
+    {
+      "lane": "b",
+      "id": "write_bench_txt",
+      "session": "b:write_bench_txt",
+      "prompt_ground_truth_not_fed": "create a file named probe.txt containing the text greetings from the test suite",
+      "prompt_fed_as_text": null,
+      "input_mode": "speech",
+      "audio": "/tmp/jaeger-agentic-audio-corpus/b-write_bench_txt-e2d91cc41956209c.wav",
+      "tags": [
+        "routing",
+        "files"
+      ],
+      "audio_sha256": "4b2889fccd1a28b991037b4ad3438dc7ddc942e74fe0cd9176625e0906bb717c",
+      "tools_called": [],
+      "skills_viewed": [],
+      "answer": "I cannot perform that action.",
+      "error": null,
+      "latency_ms": 2800.068708951585,
+      "iterations": 1,
+      "halt_reason": null,
+      "tool_calls": [],
+      "tool_results": [],
+      "file_changes": {},
+      "expected_tools_omni": [
+        "write_file"
+      ],
+      "architecture_adaptations": [],
+      "routing_ok": false,
+      "answer_ok": null,
+      "skill_ok": null,
+      "clean_output": true,
+      "no_hallucination": true,
+      "safety_ok": true,
+      "case_pass": false,
+      "outcome": {
+        "pass": false,
+        "checks": {
+          "no_error": true,
+          "one_file_exists": false,
+          "file_content": false
+        },
+        "observed_before": {},
+        "observed_after": {},
+        "success_claim_review_required": true
+      }
+    },
+    {
+      "lane": "b",
+      "id": "ms_calc_and_save",
+      "session": "b:ms_calc_and_save",
+      "prompt_ground_truth_not_fed": "Calculate 58 times 31 plus 9, then save the result to sums.txt.",
+      "prompt_fed_as_text": null,
+      "input_mode": "speech",
+      "audio": "/tmp/jaeger-agentic-audio-corpus/b-ms_calc_and_save-551a2c88888ff035.wav",
+      "tags": [
+        "multistep",
+        "files"
+      ],
+      "audio_sha256": "c8cf0352e2810d1ea799ec718cbb8624bc32c42bb488c6f42a24c9d59b55ff5d",
+      "tools_called": [
+        "calculate"
+      ],
+      "skills_viewed": [],
+      "answer": "The result is 1807.",
+      "error": null,
+      "latency_ms": 3402.4608330219053,
+      "iterations": 2,
+      "halt_reason": null,
+      "tool_calls": [
+        {
+          "id": "drift_9c788671",
+          "name": "calculate",
+          "arguments": {
+            "expression": "58*31+9"
+          }
+        }
+      ],
+      "tool_results": [
+        {
+          "role": "tool",
+          "tool_call_id": "drift_9c788671",
+          "name": "calculate",
+          "content": "{\"expression\": \"58*31+9\", \"result\": 1807}"
+        }
+      ],
+      "file_changes": {},
+      "expected_tools_omni": [
+        "calculate",
+        "write_file"
+      ],
+      "architecture_adaptations": [],
+      "routing_ok": false,
+      "answer_ok": true,
+      "skill_ok": null,
+      "clean_output": true,
+      "no_hallucination": true,
+      "safety_ok": true,
+      "case_pass": false,
+      "outcome": {
+        "pass": false,
+        "checks": {
+          "no_error": true,
+          "one_file_exists": false,
+          "file_content": false
+        },
+        "observed_before": {},
+        "observed_after": {},
+        "success_claim_review_required": true
+      }
+    },
+    {
+      "lane": "b",
+      "id": "ms_write_append_read",
+      "session": "b:ms_write_append_read",
+      "prompt_ground_truth_not_fed": "Create grocery.txt with 'buy eggs', append 'get bread' to it, then read it back and tell me both items.",
+      "prompt_fed_as_text": null,
+      "input_mode": "speech",
+      "audio": "/tmp/jaeger-agentic-audio-corpus/b-ms_write_append_read-a78fd0bed654c327.wav",
+      "tags": [
+        "multistep",
+        "files"
+      ],
+      "audio_sha256": "c8fb9468a7fe15179f40a63e10bf7046a91407b610c406234775c54b0b07a447",
+      "tools_called": [],
+      "skills_viewed": [],
+      "answer": "I cannot fulfill this request because the necessary tools to perform the actions (like creating a grocery list, adding items, or reading it back) are not available in the current toolset.",
+      "error": null,
+      "latency_ms": 3484.693458012771,
+      "iterations": 1,
+      "halt_reason": null,
+      "tool_calls": [],
+      "tool_results": [],
+      "file_changes": {},
+      "expected_tools_omni": [
+        "write_file",
+        "append_file",
+        "read_file"
+      ],
+      "architecture_adaptations": [],
+      "routing_ok": false,
+      "answer_ok": false,
+      "skill_ok": null,
+      "clean_output": true,
+      "no_hallucination": true,
+      "safety_ok": true,
+      "case_pass": false,
+      "outcome": {
+        "pass": false,
+        "checks": {
+          "no_error": true,
+          "one_file_exists": false,
+          "file_lines": false,
+          "answer_0": false,
+          "answer_1": false
+        },
+        "observed_before": {},
+        "observed_after": {},
+        "success_claim_review_required": true
+      }
+    },
+    {
+      "lane": "b",
+      "id": "mt_file_round_1",
+      "session": "b:mt_file",
+      "prompt_ground_truth_not_fed": "Create a file called chain_note.txt containing the text 'penguins are birds'.",
+      "prompt_fed_as_text": null,
+      "input_mode": "speech",
+      "audio": "/tmp/jaeger-agentic-audio-corpus/b-mt_file_round_1-e8935e9a28e3d674.wav",
+      "tags": [
+        "multiturn",
+        "files"
+      ],
+      "audio_sha256": "b8511f9e941f96fc11a62f3bf4c511daa23c212d9e4f9a98edf4f7d48d19eb42",
+      "tools_called": [],
+      "skills_viewed": [],
+      "answer": "I cannot create a file on your computer.",
+      "error": null,
+      "latency_ms": 2871.5718330349773,
+      "iterations": 1,
+      "halt_reason": null,
+      "tool_calls": [],
+      "tool_results": [],
+      "file_changes": {},
+      "expected_tools_omni": [
+        "write_file"
+      ],
+      "architecture_adaptations": [],
+      "routing_ok": false,
+      "answer_ok": null,
+      "skill_ok": null,
+      "clean_output": true,
+      "no_hallucination": true,
+      "safety_ok": true,
+      "case_pass": false,
+      "outcome": {
+        "pass": false,
+        "checks": {
+          "no_error": true,
+          "one_file_exists": false,
+          "file_content": false
+        },
+        "observed_before": {},
+        "observed_after": {},
+        "success_claim_review_required": true
+      }
+    },
+    {
+      "lane": "b",
+      "id": "mt_file_round_2",
+      "session": "b:mt_file",
+      "prompt_ground_truth_not_fed": "Read chain_note.txt and tell me what it says.",
+      "prompt_fed_as_text": null,
+      "input_mode": "speech",
+      "audio": "/tmp/jaeger-agentic-audio-corpus/b-mt_file_round_2-b29e9f89827e877b.wav",
+      "tags": [
+        "multiturn",
+        "files"
+      ],
+      "audio_sha256": "a2616fa5d1ef3f41fe6c9da64c529f832dbe55d5833742e33c99db8cdca5b324",
+      "tools_called": [],
+      "skills_viewed": [],
+      "answer": "I do not have access to that file.",
+      "error": null,
+      "latency_ms": 655.5776669993065,
+      "iterations": 1,
+      "halt_reason": null,
+      "tool_calls": [],
+      "tool_results": [],
+      "file_changes": {},
+      "expected_tools_omni": [
+        "read_file"
+      ],
+      "architecture_adaptations": [],
+      "routing_ok": false,
+      "answer_ok": false,
+      "skill_ok": null,
+      "clean_output": true,
+      "no_hallucination": true,
+      "safety_ok": true,
+      "case_pass": false,
+      "outcome": {
+        "pass": false,
+        "checks": {
+          "no_error": true,
+          "one_file_exists": false,
+          "file_content": false,
+          "existed_unchanged": false,
+          "answer_0": false
+        },
+        "observed_before": {},
+        "observed_after": {},
+        "success_claim_review_required": true
+      }
+    },
+    {
+      "lane": "b",
+      "id": "mt_file_round_3",
+      "session": "b:mt_file",
+      "prompt_ground_truth_not_fed": "Delete chain_note.txt.",
+      "prompt_fed_as_text": null,
+      "input_mode": "speech",
+      "audio": "/tmp/jaeger-agentic-audio-corpus/b-mt_file_round_3-6a9da1544f07ce54.wav",
+      "tags": [
+        "multiturn",
+        "files"
+      ],
+      "audio_sha256": "90a0631bf2d351ebf1d9e77f23f06af95dca689a9287536ab9c09813743f3c0f",
+      "tools_called": [],
+      "skills_viewed": [],
+      "answer": "I cannot delete that file.",
+      "error": null,
+      "latency_ms": 502.9296669526957,
+      "iterations": 1,
+      "halt_reason": null,
+      "tool_calls": [],
+      "tool_results": [],
+      "file_changes": {},
+      "expected_tools_omni": [
+        "delete_file"
+      ],
+      "architecture_adaptations": [],
+      "routing_ok": false,
+      "answer_ok": null,
+      "skill_ok": null,
+      "clean_output": true,
+      "no_hallucination": true,
+      "safety_ok": true,
+      "case_pass": false,
+      "outcome": {
+        "pass": false,
+        "checks": {
+          "no_error": true,
+          "existed_before": false,
+          "absent_after": true
+        },
+        "observed_before": {},
+        "observed_after": {},
+        "success_claim_review_required": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,120 @@
+{
+  "summary": {
+    "text": {
+      "original_passed": 10,
+      "original_total": 12,
+      "verified_outcome_passed": 10,
+      "verified_outcome_total": 12
+    },
+    "speech": {
+      "original_passed": 8,
+      "original_total": 12,
+      "verified_outcome_passed": 1,
+      "verified_outcome_total": 12
+    }
+  },
+  "rows": [
+    {
+      "id": "a:write_bench_txt",
+      "text_original_pass": true,
+      "speech_original_pass": true,
+      "text_outcome_pass": true,
+      "speech_outcome_pass": true
+    },
+    {
+      "id": "a:ms_calc_and_save",
+      "text_original_pass": true,
+      "speech_original_pass": false,
+      "text_outcome_pass": true,
+      "speech_outcome_pass": false
+    },
+    {
+      "id": "a:ms_write_append_read",
+      "text_original_pass": false,
+      "speech_original_pass": false,
+      "text_outcome_pass": false,
+      "speech_outcome_pass": false
+    },
+    {
+      "id": "a:mt_file_round_1",
+      "text_original_pass": true,
+      "speech_original_pass": true,
+      "text_outcome_pass": true,
+      "speech_outcome_pass": false
+    },
+    {
+      "id": "a:mt_file_round_2",
+      "text_original_pass": true,
+      "speech_original_pass": true,
+      "text_outcome_pass": true,
+      "speech_outcome_pass": false
+    },
+    {
+      "id": "a:mt_file_round_3",
+      "text_original_pass": true,
+      "speech_original_pass": true,
+      "text_outcome_pass": true,
+      "speech_outcome_pass": false
+    },
+    {
+      "id": "b:write_bench_txt",
+      "text_original_pass": true,
+      "speech_original_pass": true,
+      "text_outcome_pass": true,
+      "speech_outcome_pass": false
+    },
+    {
+      "id": "b:ms_calc_and_save",
+      "text_original_pass": false,
+      "speech_original_pass": false,
+      "text_outcome_pass": true,
+      "speech_outcome_pass": false
+    },
+    {
+      "id": "b:ms_write_append_read",
+      "text_original_pass": true,
+      "speech_original_pass": false,
+      "text_outcome_pass": false,
+      "speech_outcome_pass": false
+    },
+    {
+      "id": "b:mt_file_round_1",
+      "text_original_pass": true,
+      "speech_original_pass": true,
+      "text_outcome_pass": true,
+      "speech_outcome_pass": false
+    },
+    {
+      "id": "b:mt_file_round_2",
+      "text_original_pass": true,
+      "speech_original_pass": true,
+      "text_outcome_pass": true,
+      "speech_outcome_pass": false
+    },
+    {
+      "id": "b:mt_file_round_3",
+      "text_original_pass": true,
+      "speech_original_pass": true,
+      "text_outcome_pass": true,
+      "speech_outcome_pass": false
+    }
+  ],
+  "scope": "same requests, model adapter, tool prefix and scorer; text arm receives truth text",
+  "asr_vs_planning_cause_proven": false,
+  "limitation": "The gap includes recognition, punctuation ambiguity, instruction following and context effects.",
+  "command": [
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+    "research/compare_agentic_inputs.py",
+    "--text",
+    "research/candidate_evals/agentic-text-files-visible-20260907.json",
+    "--speech",
+    "research/candidate_evals/agentic-speech-files-visible-20260907.json",
+    "--output",
+    "research/candidate_evals/agentic-files-input-comparison-20260907.json"
+  ],
+  "inputs_sha256": {
+    "research/candidate_evals/agentic-text-files-visible-20260907.json": "3b85f0be7c5b891e7be9149c8258c713a5aa720745a31eada1e15f695f0517fa",
+    "research/candidate_evals/agentic-speech-files-visible-20260907.json": "a982883cb554643818924bde9f015d542bb346ed8f89440f09cd462675fe7b8d"
+  },
+  "code_sha256": "93f4a2f6e8c2251ac0d0ee27fb381c50caaac198045015757994adb7ea767f23"
+}

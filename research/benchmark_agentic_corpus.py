@@ -317,6 +317,8 @@ def main() -> int:
                         help="research A/B: expose toolset descriptions and require capability discovery before declining")
     parser.add_argument("--bootstrap-skills", action="store_true",
                         help="research A/B: load initial skill tools before building the neural system prefix")
+    parser.add_argument("--bootstrap-files", action="store_true",
+                        help="research A/B: expose four concrete file schemas in the initial system prefix")
     parser.add_argument("--max-tokens", type=int, default=96)
     parser.add_argument("--case-timeout-s", type=float, default=45.0,
                         help="hard per-row deadline; zero disables")
@@ -335,6 +337,11 @@ def main() -> int:
         return 0
 
     workspace_context = tempfile.TemporaryDirectory(prefix="jaeger-deep-agent-")
+    if args.bootstrap_files:
+        from jaeger_agent_omni.core.agentic import omni_runtime
+        omni_runtime.OMNI_CORE_TOOLS = omni_runtime.OMNI_CORE_TOOLS | {
+            "write_file", "read_file", "append_file", "delete_file",
+        }
     if args.bootstrap_skills:
         from jaeger_agent_omni.core.agentic.workspace import ensure_bound
         from jaeger_agent_omni.core.agentic.runtime import _load_skills
@@ -468,6 +475,7 @@ def main() -> int:
         "input_mode": args.input_mode,
         "fixture_voice": args.voice,
         "discovery_hint": args.discovery_hint,
+        "bootstrap_files": args.bootstrap_files,
         "bootstrap_skills": args.bootstrap_skills,
         "initial_tools": [tool.name for tool in preparation.initial_tools],
         "system_sha256": hashlib.sha256(preparation.system.encode()).hexdigest(),

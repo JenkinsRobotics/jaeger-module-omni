@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+    "research/agentic_audio_diagnostic.py",
+    "--report",
+    "research/candidate_evals/agentic-speech-files-visible-20260907.json",
+    "--manifest",
+    "research/candidate_evals/agentic-file-asr-manifest-20260907.jsonl"
+  ],
+  "rows": 12,
+  "report_sha256": "a982883cb554643818924bde9f015d542bb346ed8f89440f09cd462675fe7b8d",
+  "manifest_sha256": "6c63cd00f681a5a05b63c46d5664c0eb10566816e6d1bfc2da47e8623b60ce7b",
+  "code_sha256": "6194deb5f75979fcc0c2c4e2fb2a9723886c51563c0b80ce7095ec21a62310b2",
+  "runtime_audio_reader_sha256": "93d52ff0bfd6d82d515a54f92d0fb39fe1fec5dcafae0275856419e0163b0a10",
+  "scope": "same resampled waveforms, separate ASR instruction; no transcript bridge"
+}
