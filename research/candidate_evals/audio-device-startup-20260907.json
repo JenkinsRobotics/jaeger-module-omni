@@ -1,0 +1,54 @@
+{
+  "recorded_at": "2026-09-08T06:36:51.407858+00:00",
+  "input": {
+    "name": "Elgato XLR Dock",
+    "index": 1,
+    "hostapi": 0,
+    "max_input_channels": 1,
+    "max_output_channels": 2,
+    "default_low_input_latency": 0.01,
+    "default_low_output_latency": 0.003416666666666667,
+    "default_high_input_latency": 0.1,
+    "default_high_output_latency": 0.01275,
+    "default_samplerate": 48000.0
+  },
+  "output": {
+    "name": "Mac Studio Speakers",
+    "index": 4,
+    "hostapi": 0,
+    "max_input_channels": 0,
+    "max_output_channels": 2,
+    "default_low_input_latency": 0.01,
+    "default_low_output_latency": 0.0079375,
+    "default_high_input_latency": 0.1,
+    "default_high_output_latency": 0.017270833333333332,
+    "default_samplerate": 48000.0
+  },
+  "input_settings": {
+    "channels": 1,
+    "samplerate": 16000,
+    "dtype": "float32"
+  },
+  "output_settings": {
+    "channels": 1,
+    "samplerate": 24000,
+    "dtype": "float32"
+  },
+  "settings_accepted": true,
+  "scope": "PortAudio format/device validation only; no physical capture claim",
+  "source_sha256": "6901c760832f11e9aa1fc482da38cda6d4fc65f330df049d74a7c6229ba9b953",
+  "invalid_device_check": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "jaeger_agent_omni.live",
+      "--device",
+      "99999",
+      "--no-speak"
+    ],
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "Audio startup check failed: Error querying device 99999. Use --list-devices and --device INDEX.\n",
+    "rejected_before_model_load": true
+  }
+}

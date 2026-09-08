@@ -33,7 +33,8 @@ class DemoAcceptanceTest(unittest.TestCase):
 
     def test_dispatch_counts_cannot_certify_physical_actions(self):
         suite = {'cases': [], 'input_sha256': {}, 'completion_min': .95}
-        reports = [{'phase': 'physical-room', 'errors': [], 'metrics': {
+        reports = [{'phase': 'physical-room', 'errors': [],
+            'audio_shutdown': {'completed': True, 'errors': []}, 'metrics': {
             'fed_seconds': 1800, 'dropped_seconds': 0, 'mic_queue_overflow_blocks': 0,
             'speech_delivery': {'completed_uninterrupted_replies': 10, 'failed_replies': 0},
             'agentic': {'tool_calls': 100}}, 'started_at': str(i*2+1),

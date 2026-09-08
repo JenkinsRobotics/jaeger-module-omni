@@ -24,6 +24,7 @@ is not.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import queue
 import sys
 import threading
@@ -168,6 +169,24 @@ def main() -> int:
 
     if a.list_devices:
         return list_devices()
+
+    # Fail before loading the model when the selected device/format is unusable.
+    try:
+        sd.check_input_settings(device=a.device, channels=1, samplerate=RATE,
+                                dtype='float32')
+        if not a.no_speak:
+            sd.check_output_settings(channels=1, samplerate=24000, dtype='float32')
+    except (sd.PortAudioError, ValueError) as exc:
+        raise SystemExit(f'Audio startup check failed: {exc}. Use --list-devices and --device INDEX.') from exc
+
+    package_root = Path(__file__).resolve().parent
+    runtime_sources = [Path(__file__), package_root / 'omni.py', package_root / 'voice.py',
+                       package_root / 'core/agentic/omni_runtime.py',
+                       package_root / 'core/agentic/loop/jaeger_agent.py',
+                       package_root / 'tools/files.py',
+                       *sorted((package_root / 'core/runtime').glob('*.py'))]
+    runtime_sha256 = {str(p.relative_to(package_root)): hashlib.sha256(p.read_bytes()).hexdigest()
+                      for p in runtime_sources}
 
     from jaeger_agent_omni.omni import SYSTEM, build
     from jaeger_agent_omni.core.runtime.companion import (
@@ -317,6 +336,8 @@ def main() -> int:
             barge_request.set()
 
     def on_block(indata, frames, t, status):
+        if stop.is_set():
+            return
         capture_health['last_callback'] = time.monotonic()
         capture_health['callbacks'] += 1
         if capture_health['failure'] is not None:
@@ -953,32 +974,29 @@ def main() -> int:
         interactions=interaction_policy.as_dicts(), errors=run_errors,
         artifacts={"recording_dir": a.record,
                    "meeting_minutes": a.meeting_minutes})
-    import hashlib
-    run_report['runtime_sha256'] = {
-        str(p.relative_to(Path(__file__).parent)): hashlib.sha256(p.read_bytes()).hexdigest()
-        for p in (Path(__file__), Path(__file__).parent/'core/runtime/speech_delivery.py')}
+    run_report['runtime_sha256'] = runtime_sha256
+    run_report['runtime_sources_changed_during_run'] = [
+        str(p.relative_to(package_root)) for p in runtime_sources
+        if not p.is_file() or hashlib.sha256(p.read_bytes()).hexdigest() !=
+        runtime_sha256[str(p.relative_to(package_root))]]
+    if run_report['runtime_sources_changed_during_run']:
+        run_report['errors'].append('Runtime source changed during physical run; identity is not stable')
+        run_report['passed_runtime'] = False
     saved_report = write_report(report_path, run_report)
     print(f"  report       {saved_report}")
-    if aec is not None:
-        aec.close()
     # Every artifact is on disk; only now is a PortAudio hang survivable.
     import os as _os
-
-    def _close_audio():
-        try:
-            mic_stream.abort()
-            mic_stream.close()
-        except Exception:                                  # noqa: BLE001
-            pass
-
-    closer = threading.Thread(target=_close_audio, daemon=True)
-    closer.start()
-    closer.join(timeout=5.0)
-    if closer.is_alive():
-        print("  (audio teardown wedged; artifacts saved — forcing exit)",
+    from jaeger_agent_omni.core.runtime.device_lifecycle import close_audio_stream
+    shutdown = close_audio_stream(mic_stream, after_close=aec.close if aec is not None else None)
+    run_report['audio_shutdown'] = shutdown
+    run_report['errors'].extend(shutdown['errors'])
+    run_report['passed_runtime'] = not run_report['errors']
+    write_report(report_path, run_report)
+    if not shutdown['completed'] or shutdown['errors']:
+        print("  (audio teardown failed; failure report saved — forcing exit)",
               flush=True)
-        _os._exit(0)
-    return 0
+        _os._exit(1)
+    return 1 if run_report['errors'] else 0
 
 
 def demo() -> None:

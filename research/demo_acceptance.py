@@ -15,11 +15,13 @@ def load(path):
 def physical_checks(report):
     m = report.get('metrics') or {}
     speech = m.get('speech_delivery') or {}
+    shutdown = report.get('audio_shutdown') or {}
     return {'physical_capture': report.get('phase') == 'physical-room',
             'thirty_minutes': float(m.get('fed_seconds', 0)) >= 1800,
             'zero_loop_drops': m.get('dropped_seconds') == 0,
             'zero_capture_overflows': m.get('mic_queue_overflow_blocks') == 0,
             'no_runtime_errors': report.get('errors') == [],
+            'device_shutdown_completed': shutdown.get('completed') is True and shutdown.get('errors') == [],
             'uninterrupted_speech': speech.get('completed_uninterrupted_replies', 0) >= 1,
             'no_speech_failures': speech.get('failed_replies') == 0,
             'tools_exercised': (m.get('agentic') or {}).get('tool_calls', 0) >= 3}
