@@ -39,6 +39,36 @@ SCRIPT = [
     (259, "Jaeger, stop counting. What is ten minus three?"),
     (279, "Jaeger, thank you. Goodbye."),
 ]
+DEMO_SCRIPT = [
+    (6, "Jaeger, create a file called workspace slash demo note dot txt containing the words blue cedar."),
+    (26, "Jaeger, read workspace slash demo note dot txt and tell me what it says."),
+    (46, "Jaeger, calculate forty seven times twenty three plus twelve using your calculator."),
+    (66, "Alex, please put the groceries in the kitchen. I am talking to Alex."),
+    (86, "Jaeger, explain how a rainbow forms in six sentences."),
+    (96, "Jaeger, stop. What is two plus two?"),
+    (116, "Jaeger, what time is it now? Use your clock."),
+    (136, "Jaeger, tell me a long story about a rabbit exploring a forest."),
+    (149, "Jaeger, stop the story. What color is a clear daytime sky?"),
+    (169, "Sam, the package is at the front door. That message is for Sam."),
+    (189, "Jaeger, remember that my favorite tree is cedar."),
+    (209, "Jaeger, what tree did I say was my favorite?"),
+    (229, "Jaeger, explain how plants use sunlight."),
+    (249, "Jaeger, count slowly from one to twenty."),
+    (259, "Jaeger, stop counting. What is ten minus three?"),
+    (279, "Jaeger, thank you. Goodbye."),
+]
+
+
+def actor_schedule(script, seconds, repeat=False):
+    """Fixed five-minute blocks; long soaks must continue exercising speech."""
+    offset = 0
+    while offset < seconds:
+        for when, words in script:
+            if offset + when < seconds:
+                yield offset + when, words
+        if not repeat:
+            break
+        offset += 300
 
 
 def fixture(words):
@@ -53,10 +83,10 @@ def prepare():
     engine = load_factory(load_package(ROOT / "jaeger_agent_omni/nodes/kokoro-tts"))(
         lang="a", device="cpu")
     CACHE.mkdir(parents=True, exist_ok=True)
-    for _, words in SCRIPT:
+    for _, words in SCRIPT + DEMO_SCRIPT:
         if not fixture(words).exists():
             sf.write(fixture(words), engine.synthesize(words, voice="am_adam"), 24000)
-    print(f"Prepared {len(SCRIPT)} physical actor fixtures on CPU")
+    print(f"Prepared physical actor fixtures for both scripts on CPU")
 
 
 def run(args):
@@ -65,7 +95,9 @@ def run(args):
     from jaeger_agent_omni.benchmark import _physical_payload
     from training.context_distill import refuse_gpu_contention
     refuse_gpu_contention()
-    missing = [str(fixture(words)) for _, words in SCRIPT if not fixture(words).is_file()]
+    script = DEMO_SCRIPT if args.script == 'demo-v1' else SCRIPT
+    schedule = list(actor_schedule(script, args.seconds, args.repeat_script))
+    missing = [str(fixture(words)) for _, words in script if not fixture(words).is_file()]
     if missing:
         raise RuntimeError("Run prepare before the GPU trial")
     args.output.parent.mkdir(parents=True, exist_ok=True)
@@ -78,7 +110,7 @@ def run(args):
 
     def actor():
         started = time.monotonic()
-        for offset, words in SCRIPT:
+        for offset, words in schedule:
             if offset >= args.seconds or stop.wait(max(0, started+offset-time.monotonic())):
                 break
             try:
@@ -133,6 +165,8 @@ def run(args):
                     process.terminate(); process.wait(timeout=15)
                 if thread:
                     thread.join(timeout=20)
+        from research.benchmark_agentic_corpus import artifact_snapshot
+        final_files = artifact_snapshot(workspace)
     payload = json.loads(native_report.read_text()) if native_report.exists() else {}
     passed, detail, metrics = _physical_payload(payload)
     report = {"command": [sys.executable, *sys.argv], "devices": devices,
@@ -140,6 +174,11 @@ def run(args):
               "actor_injected_into_model": False, "native_report": str(native_report),
               "log": str(log_path), "events": events, "actor_errors": errors,
               "child_exit_code": returncode, "physical_checks": metrics.get("checks"),
+              "script": args.script, "repeat_script": args.repeat_script,
+              "script_sha256": hashlib.sha256(json.dumps(script).encode()).hexdigest(),
+              "scheduled_events": len(schedule), "final_tool_files": final_files,
+              "speech_delivery": (payload.get('metrics') or {}).get('speech_delivery'),
+              "duration_seconds": (payload.get('metrics') or {}).get('wall_seconds'),
               "passed": passed and returncode == 0 and not errors,
               "detail": detail,
               "code_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}
@@ -190,6 +229,9 @@ def main():
     p.add_argument("--input-device", type=int, default=1)
     p.add_argument("--output-device", type=int, default=4)
     p.add_argument("--seconds", type=float, default=300)
+    p.add_argument('--script', choices=['original', 'demo-v1'], default='original')
+    p.add_argument('--repeat-script', action='store_true',
+                   help='repeat the selected fixed script every 300 seconds during long soaks')
     p.add_argument("--output", type=Path, default=ROOT/"research/candidate_evals/physical-acoustic-20260904.json")
     args = p.parse_args()
     if args.action == "prepare":

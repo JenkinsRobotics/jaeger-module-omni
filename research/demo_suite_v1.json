@@ -1,0 +1,286 @@
+{
+  "schema": 1,
+  "frozen_before_new_action_vision_results": true,
+  "cases": [
+    {
+      "id": "cases12:q00",
+      "kind": "answer",
+      "key": "cases12:q00"
+    },
+    {
+      "id": "cases12:q01",
+      "kind": "answer",
+      "key": "cases12:q01"
+    },
+    {
+      "id": "cases12:q02",
+      "kind": "answer",
+      "key": "cases12:q02"
+    },
+    {
+      "id": "cases12:q03",
+      "kind": "answer",
+      "key": "cases12:q03"
+    },
+    {
+      "id": "cases12:q04",
+      "kind": "answer",
+      "key": "cases12:q04"
+    },
+    {
+      "id": "cases12:q05",
+      "kind": "answer",
+      "key": "cases12:q05"
+    },
+    {
+      "id": "cases12:q06",
+      "kind": "answer",
+      "key": "cases12:q06"
+    },
+    {
+      "id": "cases12:q07",
+      "kind": "answer",
+      "key": "cases12:q07"
+    },
+    {
+      "id": "cases12:q08",
+      "kind": "answer",
+      "key": "cases12:q08"
+    },
+    {
+      "id": "cases12:q09",
+      "kind": "answer",
+      "key": "cases12:q09"
+    },
+    {
+      "id": "cases12:q10",
+      "kind": "answer",
+      "key": "cases12:q10"
+    },
+    {
+      "id": "cases12:q11",
+      "kind": "answer",
+      "key": "cases12:q11"
+    },
+    {
+      "id": "action:a:write_bench_txt",
+      "kind": "action",
+      "key": "a:write_bench_txt",
+      "audio_sha256": "2c489413586cd457a4c62f1f37f58394bd2e41f87f22833674974adb2a02bbf1",
+      "prompt_sha256": "b49eaf2a231d619436872998ee6bab85e77bad89ecb5e6ed0c1affcabef6977f"
+    },
+    {
+      "id": "action:a:ms_calc_and_save",
+      "kind": "action",
+      "key": "a:ms_calc_and_save",
+      "audio_sha256": "822ef872ff4d360f625b9465eb4151d69c6ebf2aa76cc1623f8ed7b7a100386e",
+      "prompt_sha256": "56b728b5181171d2b557c6f5cdc0577e79febb324fbe23cc84036824b31cbbd3"
+    },
+    {
+      "id": "action:a:ms_write_append_read",
+      "kind": "action",
+      "key": "a:ms_write_append_read",
+      "audio_sha256": "8f3b1277ce9c673cf65fa02a3fd8f3ba2a4f1187de0eb2a5578e13dad08d1c4c",
+      "prompt_sha256": "c072652c537920e999c8f6bee37b420a86eb5b6165510f49143eb15a59dbca44"
+    },
+    {
+      "id": "action:a:mt_file_round_1",
+      "kind": "action",
+      "key": "a:mt_file_round_1",
+      "audio_sha256": "e3b1664580f08ade8b954613b5b3463849b7a782456969fba02f800d806ed643",
+      "prompt_sha256": "f52342562440f5bbbccd1f45c2a0bca23e017f55b7427b68adc9a154b7583801"
+    },
+    {
+      "id": "action:a:mt_file_round_2",
+      "kind": "action",
+      "key": "a:mt_file_round_2",
+      "audio_sha256": "e9c260348d3310532945aeea919adc3c55aca7c8f2ebeceb29b62a78231b8d79",
+      "prompt_sha256": "0d3e5f7fb179b85617d66377b5404a4d5d5877fc9ab1ab65bf5556d0dec8262b"
+    },
+    {
+      "id": "action:a:mt_file_round_3",
+      "kind": "action",
+      "key": "a:mt_file_round_3",
+      "audio_sha256": "f989093b1801b3efef0b63b4d825673ffee8d1dd60334ca6b36424bf724065dc",
+      "prompt_sha256": "b33788e0be32b8b978faab2223dc5a0fa5d0f9ceb0b26a8b4e0050ba7a7e244b"
+    },
+    {
+      "id": "action:b:write_bench_txt",
+      "kind": "action",
+      "key": "b:write_bench_txt",
+      "audio_sha256": "4b2889fccd1a28b991037b4ad3438dc7ddc942e74fe0cd9176625e0906bb717c",
+      "prompt_sha256": "6c82106716d951a7b7a41f045b59b631ca0f154bf4df532e2ba35666a0d776e1"
+    },
+    {
+      "id": "action:b:ms_calc_and_save",
+      "kind": "action",
+      "key": "b:ms_calc_and_save",
+      "audio_sha256": "c8cf0352e2810d1ea799ec718cbb8624bc32c42bb488c6f42a24c9d59b55ff5d",
+      "prompt_sha256": "edb21c44e46915edef4975d8bb2048a6525d8eb909cdbd4f530b8b419339329e"
+    },
+    {
+      "id": "action:b:ms_write_append_read",
+      "kind": "action",
+      "key": "b:ms_write_append_read",
+      "audio_sha256": "c8fb9468a7fe15179f40a63e10bf7046a91407b610c406234775c54b0b07a447",
+      "prompt_sha256": "da80b11fbcbfd0839ed73e61d594f637f278883ff73ce494edf06200d0ebf75f"
+    },
+    {
+      "id": "action:b:mt_file_round_1",
+      "kind": "action",
+      "key": "b:mt_file_round_1",
+      "audio_sha256": "b8511f9e941f96fc11a62f3bf4c511daa23c212d9e4f9a98edf4f7d48d19eb42",
+      "prompt_sha256": "5f0a4d413eab816a424489d63e1e31010c542520d2284b2e214a9fc2129787bc"
+    },
+    {
+      "id": "action:b:mt_file_round_2",
+      "kind": "action",
+      "key": "b:mt_file_round_2",
+      "audio_sha256": "a2616fa5d1ef3f41fe6c9da64c529f832dbe55d5833742e33c99db8cdca5b324",
+      "prompt_sha256": "fc31c2d9733a353dee13a732b4c58538c75edc4be2f84cc41aab45c76e10bdf1"
+    },
+    {
+      "id": "action:b:mt_file_round_3",
+      "kind": "action",
+      "key": "b:mt_file_round_3",
+      "audio_sha256": "90a0631bf2d351ebf1d9e77f23f06af95dca689a9287536ab9c09813743f3c0f",
+      "prompt_sha256": "2534ddcf90f2b1c5f23613a3f20c385279eecdaaeb33d6af7aeb1e1318734930"
+    },
+    {
+      "id": "vision:triangle:visual answer",
+      "kind": "vision",
+      "key": "triangle: visual answer"
+    },
+    {
+      "id": "vision:triangle:spoken visual recall",
+      "kind": "vision",
+      "key": "triangle: spoken visual recall"
+    },
+    {
+      "id": "vision:triangle:typed label update",
+      "kind": "vision",
+      "key": "triangle: typed label update"
+    },
+    {
+      "id": "vision:triangle:spoken correction recall",
+      "kind": "vision",
+      "key": "triangle: spoken correction recall"
+    },
+    {
+      "id": "vision:square:visual answer",
+      "kind": "vision",
+      "key": "square: visual answer"
+    },
+    {
+      "id": "vision:square:spoken visual recall",
+      "kind": "vision",
+      "key": "square: spoken visual recall"
+    },
+    {
+      "id": "vision:square:typed label update",
+      "kind": "vision",
+      "key": "square: typed label update"
+    },
+    {
+      "id": "vision:square:spoken correction recall",
+      "kind": "vision",
+      "key": "square: spoken correction recall"
+    },
+    {
+      "id": "vision:circle:visual answer",
+      "kind": "vision",
+      "key": "circle: visual answer"
+    },
+    {
+      "id": "vision:circle:spoken visual recall",
+      "kind": "vision",
+      "key": "circle: spoken visual recall"
+    },
+    {
+      "id": "vision:circle:typed label update",
+      "kind": "vision",
+      "key": "circle: typed label update"
+    },
+    {
+      "id": "vision:circle:spoken correction recall",
+      "kind": "vision",
+      "key": "circle: spoken correction recall"
+    },
+    {
+      "id": "vision:rectangle:visual answer",
+      "kind": "vision",
+      "key": "rectangle: visual answer"
+    },
+    {
+      "id": "vision:rectangle:spoken visual recall",
+      "kind": "vision",
+      "key": "rectangle: spoken visual recall"
+    },
+    {
+      "id": "vision:rectangle:typed label update",
+      "kind": "vision",
+      "key": "rectangle: typed label update"
+    },
+    {
+      "id": "vision:rectangle:spoken correction recall",
+      "kind": "vision",
+      "key": "rectangle: spoken correction recall"
+    },
+    {
+      "id": "half:follow-up, no wake",
+      "kind": "duplex",
+      "session": "half",
+      "key": "follow-up, no wake"
+    },
+    {
+      "id": "half:ONE memory across voice+text",
+      "kind": "duplex",
+      "session": "half",
+      "key": "ONE memory across voice+text"
+    },
+    {
+      "id": "quasi:barge cuts playback",
+      "kind": "duplex",
+      "session": "quasi",
+      "key": "barge cuts playback"
+    },
+    {
+      "id": "quasi:barge speech answered",
+      "kind": "duplex",
+      "session": "quasi",
+      "key": "barge speech answered"
+    },
+    {
+      "id": "barge-continue:playback NOT cut (continue)",
+      "kind": "duplex",
+      "session": "barge-continue",
+      "key": "playback NOT cut (continue)"
+    },
+    {
+      "id": "barge-continue:overtalk heard and answered",
+      "kind": "duplex",
+      "session": "barge-continue",
+      "key": "overtalk heard and answered"
+    },
+    {
+      "id": "full:forming preview while listening",
+      "kind": "duplex",
+      "session": "full",
+      "key": "forming preview while listening"
+    },
+    {
+      "id": "full:long monologue answered",
+      "kind": "duplex",
+      "session": "full",
+      "key": "long monologue answered"
+    }
+  ],
+  "input_sha256": {
+    "research/candidate_evals/paired-omni-fixtures-20260907.json": "5952a720334b255001a959d7f0991cef83fb9b489d1a6404765ec80263ba9101",
+    "research/agentic_outcome_contract.json": "a5c3844431c9a262420c019a8ca49a3d3a770bd86335e4de92a1351de5841000"
+  },
+  "completion_min": 0.95,
+  "physical_runs": 3,
+  "physical_seconds_min": 1800,
+  "scope": "48 development demo tasks; not a fresh research lockbox or a MiniCPM superiority benchmark"
+}
