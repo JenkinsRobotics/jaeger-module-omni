@@ -139,6 +139,7 @@ def _checkpoint_values(adapter, base, args, step, sources, holdouts):
         "ce_step": np.array(step, dtype=np.int32),
         "learning_rate": np.array(args.learning_rate, np.float32),
         "text_teacher_weight": np.array(args.text_teacher_weight, np.float32),
+        "teacher_mode": np.array(args.teacher_mode),
         "anchor_weight": np.array(args.anchor_weight, np.float32),
         "accumulate": np.array(args.accumulate, np.int32),
         "trainable_parameters": np.array(args.trainable_parameters,
@@ -157,7 +158,19 @@ def _checkpoint_values(adapter, base, args, step, sources, holdouts):
         values["adapter_arch"] = np.array("cleanroom_context_causal_v1")
         values["causal"] = np.array([1], dtype=np.int32)
         values["stage"] = np.array("causal_port_human_ce_text_kl_bidir_anchor")
+        if args.teacher_mode == 'audio':
+            values["stage"] = np.array('causal_port_human_ce_audio_logits_kl')
     return values
+
+
+def audio_teacher_logits(module, ids, token_embeddings, original, start,
+                         n_audio, first, count):
+    """Frozen target distribution using the starting ear's audio span only."""
+    import mlx.core as mx
+    embeddings = mx.concatenate([
+        token_embeddings[:, :start], original[None, :] / math.sqrt(OUTPUT_DIM),
+        token_embeddings[:, start+n_audio:]], axis=1)
+    return mx.stop_gradient(module.target_logits(ids, embeddings, first, count))
 
 
 def command_train(args) -> None:
@@ -189,6 +202,7 @@ def command_train(args) -> None:
         "sources": sources, "holdouts": holdouts, "steps": args.steps,
         "learning_rate": args.learning_rate,
         "text_teacher_weight": args.text_teacher_weight,
+        "teacher_mode": args.teacher_mode,
         "anchor_weight": args.anchor_weight, "accumulate": args.accumulate,
         "allow_acoustic_variants": args.allow_acoustic_variants,
         "causal_port": args.causal,
@@ -310,20 +324,29 @@ def command_train(args) -> None:
         targets = mx.array(target_ids, dtype=mx.int32)[None, :]
         ce = nn.losses.cross_entropy(logits, targets, reduction="mean")
 
-        teacher_ids = mx.array(prefix + text_ids + suffix + target_ids,
-                               dtype=mx.int32)[None, :]
-        teacher_first = len(prefix) + len(text_ids) + len(suffix)
-        teacher_logits = mx.stop_gradient(module.target_logits(
-            teacher_ids,
-            module.backbone.language_model.model.embed_tokens(teacher_ids),
-            teacher_first, len(target_ids)))
+        original = mx.stop_gradient(anchor(cached))
+        if args.teacher_mode == 'audio':
+            # Distill the frozen medium ear's actual audio-conditioned token
+            # distribution. No full-future per-frame anchor is required.
+            teacher_logits = audio_teacher_logits(
+                module, ids, token_embeddings, original, start, n_audio,
+                first, len(target_ids))
+        else:
+            teacher_ids = mx.array(prefix + text_ids + suffix + target_ids,
+                                   dtype=mx.int32)[None, :]
+            teacher_first = len(prefix) + len(text_ids) + len(suffix)
+            teacher_logits = mx.stop_gradient(module.target_logits(
+                teacher_ids,
+                module.backbone.language_model.model.embed_tokens(teacher_ids),
+                teacher_first, len(target_ids)))
         log_teacher = teacher_logits - mx.logsumexp(
             teacher_logits, axis=-1, keepdims=True)
         log_student = logits - mx.logsumexp(logits, axis=-1, keepdims=True)
         text_kl = mx.mean(mx.sum(
             mx.exp(log_teacher) * (log_teacher - log_student), axis=-1))
 
-        original = mx.stop_gradient(anchor(cached))
+        if args.anchor_weight == 0:
+            return ce + args.text_teacher_weight * text_kl
         count = min(current.shape[0], original.shape[0])
         delta = current[:count] - original[:count]
         absolute = mx.abs(delta)
@@ -413,7 +436,9 @@ def build_parser():
                         default="all")
     parser.add_argument("--warmup", type=int, default=100)
     parser.add_argument("--weight-decay", type=float, default=0.01)
-    parser.add_argument("--text-teacher-weight", type=float, default=0.5)
+    parser.add_argument('--teacher-mode', choices=['text','audio'], default='text',
+                        help='audio distills the frozen starting ear through the same frozen Gemma')
+    parser.add_argument("--text-teacher-weight", '--teacher-weight', type=float, default=0.5)
     parser.add_argument("--anchor-weight", type=float, default=0.05)
     parser.add_argument("--max-target-tokens", type=int, default=160)
     parser.add_argument("--max-seconds", type=float, default=12.0)
