@@ -144,17 +144,21 @@ class BenchmarkHarnessTests(unittest.TestCase):
     def test_physical_gate_requires_every_release_interaction(self):
         payload = {
             "phase": "physical-room", "errors": [],
+            "audio_shutdown": {"completed": True, "errors": []},
             "configuration": {"duplex_mode": "full"},
             "metrics": {
                 "fed_seconds": 299.5, "dropped_seconds": 0,
                 "mic_queue_overflow_blocks": 0, "turns": 3,
                 "completed_replies": 3, "barge_events": 1,
+                "speech_delivery": {"completed_uninterrupted_replies": 1},
                 "barge_stops": 1, "interrupts": 1, "context_rolls": 1,
                 "vad": {"mode": "neural"},
                 "end_to_audio": {"n": 3, "median_ms": 600},
                 "aec": {"available": True, "seconds_cancelled": 4},
                 "companion": {"enabled": True, "respond": 2, "listen": 1},
-                "agentic": {"enabled": True, "tool_calls": 3},
+                "agentic": {"enabled": True, "tool_calls": 3,
+                    "tool_results": [{"name": "calculate", "tool_call_id": str(i),
+                                      "content": '{"result": 4}'} for i in range(3)]},
             },
         }
         self.assertTrue(_physical_payload(payload)[0])
@@ -163,6 +167,22 @@ class BenchmarkHarnessTests(unittest.TestCase):
         self.assertFalse(ok)
         self.assertIn("agent tools exercised", detail)
         self.assertFalse(metrics["checks"]["agent tools exercised"])
+
+    def test_failed_tools_and_interrupted_audio_do_not_make_a_physical_pass(self):
+        from jaeger_agent_omni.benchmark import successful_physical_tool_results
+        failed = {'tool_calls': 3, 'tool_results': [
+            {'name': 'load_tools', 'content': '{"ok": true}'},
+            {'name': 'calculate', 'content': '{"error": "invalid"}'},
+            {'name': 'write_file', 'content': '{"written": false}'}]}
+        self.assertEqual(successful_physical_tool_results(failed), [])
+        duplicate = {'name': 'calculate', 'tool_call_id': 'one', 'content': '{"result": 4}'}
+        self.assertEqual(len(successful_physical_tool_results({'tool_results': [duplicate]*3})), 1)
+        payload = {'errors': [], 'metrics': {'completed_replies': 3,
+            'speech_delivery': {'completed_uninterrupted_replies': 0}, 'agentic': failed}}
+        checks = _physical_payload(payload)[2]['checks']
+        self.assertFalse(checks['successful action tool results'])
+        self.assertFalse(checks['uninterrupted spoken reply'])
+        self.assertFalse(checks['audio shutdown completed'])
 
 
 if __name__ == "__main__":

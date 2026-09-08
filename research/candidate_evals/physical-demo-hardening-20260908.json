@@ -1,0 +1,373 @@
+{
+  "command": [
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+    "research/physical_omni_trial.py",
+    "run",
+    "--seconds",
+    "305",
+    "--script",
+    "demo-v1",
+    "--output",
+    "research/candidate_evals/physical-demo-hardening-20260908.json"
+  ],
+  "devices": {
+    "input": {
+      "name": "Elgato XLR Dock",
+      "index": 1,
+      "hostapi": 0,
+      "max_input_channels": 1,
+      "max_output_channels": 2,
+      "default_low_input_latency": 0.01,
+      "default_low_output_latency": 0.003416666666666667,
+      "default_high_input_latency": 0.1,
+      "default_high_output_latency": 0.01275,
+      "default_samplerate": 48000.0
+    },
+    "output": {
+      "name": "Mac Studio Speakers",
+      "index": 4,
+      "hostapi": 0,
+      "max_input_channels": 0,
+      "max_output_channels": 2,
+      "default_low_input_latency": 0.01,
+      "default_low_output_latency": 0.0079375,
+      "default_high_input_latency": 0.1,
+      "default_high_output_latency": 0.017270833333333332,
+      "default_samplerate": 48000.0
+    }
+  },
+  "kind": "physical_acoustic_replay_not_human_conversation",
+  "actor_injected_into_model": false,
+  "native_report": "research/candidate_evals/physical-demo-hardening-20260908.live.json",
+  "native_report_sha256": "ae5d0ae9aed17112bc86d7b29c01b75c65beccd1552d6919689dbf747053785b",
+  "log": "research/candidate_evals/physical-demo-hardening-20260908.log",
+  "events": [
+    {
+      "scheduled_s": 6,
+      "actual_s": 6.012571792001836,
+      "text": "Jaeger, create a file called workspace slash demo note dot txt containing the words blue cedar.",
+      "audio": "/tmp/jaeger-physical-actor/b2632d2502ab8cf58d16.wav",
+      "sha256": "e0396c5b4b0f309d9251f7b1f2558eb7fb3f84814b7015d360a73e99d64d7add"
+    },
+    {
+      "scheduled_s": 26,
+      "actual_s": 26.01273341703927,
+      "text": "Jaeger, read workspace slash demo note dot txt and tell me what it says.",
+      "audio": "/tmp/jaeger-physical-actor/f5f95d1ac7c36eac98ce.wav",
+      "sha256": "1d9a58b70542f30977cb847c9f618dc583fff328e4fb37d6d047495c740f5905"
+    },
+    {
+      "scheduled_s": 46,
+      "actual_s": 46.0061829170445,
+      "text": "Jaeger, calculate forty seven times twenty three plus twelve using your calculator.",
+      "audio": "/tmp/jaeger-physical-actor/610cf899c90eff103490.wav",
+      "sha256": "27773ee2e050bc0c9ec7796e09b626cccf1bc1ed4af9b1a0d6ae8f3fcfcadff4"
+    },
+    {
+      "scheduled_s": 66,
+      "actual_s": 66.00638212502236,
+      "text": "Alex, please put the groceries in the kitchen. I am talking to Alex.",
+      "audio": "/tmp/jaeger-physical-actor/15d178dee7df1a2e664c.wav",
+      "sha256": "1f4bf9be6860ab07450a886ae8d6337bb1b793bb49356e660d38dbca4248b222"
+    },
+    {
+      "scheduled_s": 86,
+      "actual_s": 86.01128045900259,
+      "text": "Jaeger, explain how a rainbow forms in six sentences.",
+      "audio": "/tmp/jaeger-physical-actor/cd87a01187f40735d539.wav",
+      "sha256": "a9c6bad8fcb71301c9b22055749b53b1971829f8a71bb240cd61c687573afbfa"
+    },
+    {
+      "scheduled_s": 96,
+      "actual_s": 96.00912545900792,
+      "text": "Jaeger, stop. What is two plus two?",
+      "audio": "/tmp/jaeger-physical-actor/62c73993767de9dc5957.wav",
+      "sha256": "bc3ca3dc64c6bf15f8e815d5f672a5ad6447c01de8b34ffeab9376c0acbc1cf5"
+    },
+    {
+      "scheduled_s": 116,
+      "actual_s": 116.01136066700565,
+      "text": "Jaeger, what time is it now? Use your clock.",
+      "audio": "/tmp/jaeger-physical-actor/169c3f9ccc1bc47137d6.wav",
+      "sha256": "97fddca7ded73ce19665933d766384c81f5a4f078dbf125e31869fce2279836a"
+    },
+    {
+      "scheduled_s": 136,
+      "actual_s": 136.01254383398918,
+      "text": "Jaeger, tell me a long story about a rabbit exploring a forest.",
+      "audio": "/tmp/jaeger-physical-actor/f43a9c23e0e1343060af.wav",
+      "sha256": "b3ade3539305c74243c16e031428c1d99eb239814b64f96b840ebaa00574de2f"
+    },
+    {
+      "scheduled_s": 149,
+      "actual_s": 149.00649554200936,
+      "text": "Jaeger, stop the story. What color is a clear daytime sky?",
+      "audio": "/tmp/jaeger-physical-actor/bf36fa448c0e66f2c337.wav",
+      "sha256": "9241ccfb51f53e680e565a655f7562ff9ef90ea4dadaaf7ca13966064f2773c9"
+    },
+    {
+      "scheduled_s": 169,
+      "actual_s": 169.00816758401925,
+      "text": "Sam, the package is at the front door. That message is for Sam.",
+      "audio": "/tmp/jaeger-physical-actor/25652e9ea38f77d67102.wav",
+      "sha256": "79c89e4ae99c7a81a76a4e462aaa415cc3ace2208c5d53aed46ecef508af3bd1"
+    },
+    {
+      "scheduled_s": 189,
+      "actual_s": 189.0119218750042,
+      "text": "Jaeger, remember that my favorite tree is cedar.",
+      "audio": "/tmp/jaeger-physical-actor/f20643be8869f4f74cf7.wav",
+      "sha256": "372b5d56cb0a1599fb58e24800cea2a2b90b01dcfe37ac903dedb0a4de86fe7e"
+    },
+    {
+      "scheduled_s": 209,
+      "actual_s": 209.0106473750202,
+      "text": "Jaeger, what tree did I say was my favorite?",
+      "audio": "/tmp/jaeger-physical-actor/75635c5f8414a03e969c.wav",
+      "sha256": "6dc70cb215bc815f8d44a9922308eb5d1727a859dd12a83428a1545ac52ec893"
+    },
+    {
+      "scheduled_s": 229,
+      "actual_s": 229.00589070899878,
+      "text": "Jaeger, explain how plants use sunlight.",
+      "audio": "/tmp/jaeger-physical-actor/c954ffe000abbbd2668e.wav",
+      "sha256": "bb01139ced16c746633f3dd37910e321e859d6eb41b9fd54ceae6848c3afdc80"
+    },
+    {
+      "scheduled_s": 249,
+      "actual_s": 249.01239074999467,
+      "text": "Jaeger, count slowly from one to twenty.",
+      "audio": "/tmp/jaeger-physical-actor/a8e18d0d07cf450155a6.wav",
+      "sha256": "97b8da53538cce8d241713452fc9a18f5af31584c00bb684fb959f28b2f03f30"
+    },
+    {
+      "scheduled_s": 259,
+      "actual_s": 259.0065181670361,
+      "text": "Jaeger, stop counting. What is ten minus three?",
+      "audio": "/tmp/jaeger-physical-actor/63b1439b3e1840088974.wav",
+      "sha256": "3a3b77b8e60bf854a504c17c65fa5bbe1e7aec32e4630b7c519c5d8668c96e96"
+    },
+    {
+      "scheduled_s": 279,
+      "actual_s": 279.01272804202745,
+      "text": "Jaeger, thank you. Goodbye.",
+      "audio": "/tmp/jaeger-physical-actor/35f9ddd09f4bd378f481.wav",
+      "sha256": "df2f6abac9dc35dc4770087b59daa3f103a9ca154b2d9cf724a88edc6ea1bba2"
+    }
+  ],
+  "actor_errors": [],
+  "child_exit_code": 0,
+  "physical_checks": {
+    "physical room": true,
+    "five minute capture": true,
+    "zero loop drops": true,
+    "zero mic overflow": true,
+    "neural VAD": true,
+    "full duplex": true,
+    "AEC exercised": true,
+    "turn and spoken reply": true,
+    "barge-in exercised": true,
+    "context rolled": true,
+    "companion both decisions": true,
+    "agent tools exercised": true,
+    "no runtime errors": true
+  },
+  "script": "demo-v1",
+  "repeat_script": false,
+  "script_sha256": "90359b99a649da895edab052134367e5e251532ced40caf033da852eae5db04b",
+  "scheduled_events": 16,
+  "final_tool_files": {},
+  "speech_delivery": {
+    "completed_uninterrupted_replies": 0,
+    "failed_replies": 0,
+    "interrupted_replies": 3,
+    "played_clauses": 0,
+    "rows": [
+      {
+        "cancel_reason": "barge",
+        "closed": true,
+        "error": null,
+        "finished_at": null,
+        "id": 1,
+        "played_clauses": 0,
+        "queued_clauses": 0,
+        "started_at": 291550.260545
+      },
+      {
+        "cancel_reason": "barge",
+        "closed": true,
+        "error": null,
+        "finished_at": null,
+        "id": 2,
+        "played_clauses": 0,
+        "queued_clauses": 0,
+        "started_at": 291567.552149083
+      },
+      {
+        "cancel_reason": "barge",
+        "closed": true,
+        "error": null,
+        "finished_at": null,
+        "id": 3,
+        "played_clauses": 0,
+        "queued_clauses": 1,
+        "started_at": 291588.1090535
+      },
+      {
+        "cancel_reason": "barge",
+        "closed": true,
+        "error": null,
+        "finished_at": null,
+        "id": 4,
+        "played_clauses": 0,
+        "queued_clauses": 0,
+        "started_at": 291606.53421025
+      },
+      {
+        "cancel_reason": "barge",
+        "closed": true,
+        "error": null,
+        "finished_at": null,
+        "id": 5,
+        "played_clauses": 0,
+        "queued_clauses": 1,
+        "started_at": 291625.643083958
+      },
+      {
+        "cancel_reason": "barge",
+        "closed": true,
+        "error": null,
+        "finished_at": null,
+        "id": 6,
+        "played_clauses": 0,
+        "queued_clauses": 0,
+        "started_at": 291632.960302875
+      },
+      {
+        "cancel_reason": "barge",
+        "closed": true,
+        "error": null,
+        "finished_at": null,
+        "id": 7,
+        "played_clauses": 0,
+        "queued_clauses": 1,
+        "started_at": 291634.738623416
+      },
+      {
+        "cancel_reason": "shutdown",
+        "closed": true,
+        "error": null,
+        "finished_at": null,
+        "id": 8,
+        "played_clauses": 0,
+        "queued_clauses": 0,
+        "started_at": 291655.098414416
+      },
+      {
+        "cancel_reason": "shutdown",
+        "closed": true,
+        "error": null,
+        "finished_at": null,
+        "id": 9,
+        "played_clauses": 0,
+        "queued_clauses": 0,
+        "started_at": 291675.804740791
+      },
+      {
+        "cancel_reason": "shutdown",
+        "closed": true,
+        "error": null,
+        "finished_at": null,
+        "id": 10,
+        "played_clauses": 0,
+        "queued_clauses": 0,
+        "started_at": 291689.465662458
+      },
+      {
+        "cancel_reason": "shutdown",
+        "closed": true,
+        "error": null,
+        "finished_at": null,
+        "id": 11,
+        "played_clauses": 0,
+        "queued_clauses": 0,
+        "started_at": 291710.096612166
+      },
+      {
+        "cancel_reason": "shutdown",
+        "closed": true,
+        "error": null,
+        "finished_at": null,
+        "id": 12,
+        "played_clauses": 0,
+        "queued_clauses": 0,
+        "started_at": 291712.021323041
+      },
+      {
+        "cancel_reason": "shutdown",
+        "closed": true,
+        "error": null,
+        "finished_at": null,
+        "id": 13,
+        "played_clauses": 0,
+        "queued_clauses": 0,
+        "started_at": 291728.725638416
+      },
+      {
+        "cancel_reason": "shutdown",
+        "closed": true,
+        "error": null,
+        "finished_at": null,
+        "id": 14,
+        "played_clauses": 0,
+        "queued_clauses": 0,
+        "started_at": 291747.953233583
+      },
+      {
+        "cancel_reason": "shutdown",
+        "closed": true,
+        "error": null,
+        "finished_at": null,
+        "id": 15,
+        "played_clauses": 0,
+        "queued_clauses": 0,
+        "started_at": 291767.826710375
+      },
+      {
+        "cancel_reason": "shutdown",
+        "closed": true,
+        "error": null,
+        "finished_at": null,
+        "id": 16,
+        "played_clauses": 0,
+        "queued_clauses": 0,
+        "started_at": 291789.77892675
+      },
+      {
+        "cancel_reason": "shutdown",
+        "closed": true,
+        "error": null,
+        "finished_at": null,
+        "id": 17,
+        "played_clauses": 0,
+        "queued_clauses": 0,
+        "started_at": 291798.609148916
+      },
+      {
+        "cancel_reason": "shutdown",
+        "closed": true,
+        "error": null,
+        "finished_at": null,
+        "id": 18,
+        "played_clauses": 0,
+        "queued_clauses": 0,
+        "started_at": 291828.75331775
+      }
+    ],
+    "shutdown_abandoned_replies": 0
+  },
+  "duration_seconds": 305.201745792001,
+  "passed": true,
+  "detail": "all physical gates",
+  "code_sha256": "8058d510de76e8b501b4a4397c4e00b7d6d9139db83fb2f6ec1bafd59ee2d5b6"
+}

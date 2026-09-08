@@ -13,6 +13,7 @@ def load(path):
 
 
 def physical_checks(report):
+    from jaeger_agent_omni.benchmark import successful_physical_tool_results
     m = report.get('metrics') or {}
     speech = m.get('speech_delivery') or {}
     shutdown = report.get('audio_shutdown') or {}
@@ -24,6 +25,7 @@ def physical_checks(report):
             'device_shutdown_completed': shutdown.get('completed') is True and shutdown.get('errors') == [],
             'uninterrupted_speech': speech.get('completed_uninterrupted_replies', 0) >= 1,
             'no_speech_failures': speech.get('failed_replies') == 0,
+            'successful_action_tool_results': len(successful_physical_tool_results(m.get('agentic') or {})) >= 3,
             'tools_exercised': (m.get('agentic') or {}).get('tool_calls', 0) >= 3}
 
 

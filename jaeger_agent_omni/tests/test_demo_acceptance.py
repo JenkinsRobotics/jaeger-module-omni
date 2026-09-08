@@ -31,13 +31,15 @@ class DemoAcceptanceTest(unittest.TestCase):
         self.assertEqual(schedule[-1],(1779,'bye'))
         self.assertEqual(len(list(actor_schedule([(6,'hello')],1800,False))),1)
 
-    def test_dispatch_counts_cannot_certify_physical_actions(self):
+    def test_successful_tools_still_require_reviewed_request_outcomes(self):
         suite = {'cases': [], 'input_sha256': {}, 'completion_min': .95}
         reports = [{'phase': 'physical-room', 'errors': [],
             'audio_shutdown': {'completed': True, 'errors': []}, 'metrics': {
             'fed_seconds': 1800, 'dropped_seconds': 0, 'mic_queue_overflow_blocks': 0,
             'speech_delivery': {'completed_uninterrupted_replies': 10, 'failed_replies': 0},
-            'agentic': {'tool_calls': 100}}, 'started_at': str(i*2+1),
+            'agentic': {'tool_calls': 100, 'tool_results': [
+                {'name': 'calculate', 'tool_call_id': str(j), 'content': '{"result": 4}'}
+                for j in range(3)]}}, 'started_at': str(i*2+1),
             'finished_at': str(i*2+2), 'runtime_sha256': {'live': 'same'}} for i in range(3)]
         self.assertTrue(all(all(physical_checks(p).values()) for p in reports))
         result = assess(suite, {}, {}, {}, {}, reports, physical_shas=['a', 'b', 'c'])

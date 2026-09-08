@@ -1,0 +1,21 @@
+{
+  "evidence_sha256": {
+    "research/candidate_evals/turn-echo-audit-para-turn-state-v0-20260908.json": "89e8cfb78a910b2fcc30eb9c833d9a55bbd259c4515d370452e5c6393c4da160",
+    "research/candidate_evals/turn-echo-audit-para-turn-state-neural-v1-20260908.json": "65b656ad4ac393344a0e1f490f92d35485623eb0c5c034b75cf0ff0a2dd05ef5"
+  },
+  "default_energy": {
+    "passed": 2,
+    "total": 2
+  },
+  "candidate_neural": {
+    "passed": 1,
+    "total": 2
+  },
+  "scripted_neural_campaign": [
+    27,
+    27
+  ],
+  "decision": "Reject default promotion: candidate responds to its own speech in the dedicated one-request/one-reply audit.",
+  "production_changed": false,
+  "next_requirement": "Qualify near-end/echo discrimination together with neural speech presence; frame-level VAD accuracy alone is insufficient."
+}

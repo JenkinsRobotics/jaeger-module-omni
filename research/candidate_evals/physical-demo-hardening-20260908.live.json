@@ -1,0 +1,752 @@
+{
+  "artifacts": {
+    "meeting_minutes": null,
+    "recording_dir": "research/candidate_evals/physical-demo-hardening-20260908.audio"
+  },
+  "audio_shutdown": {
+    "completed": true,
+    "errors": [],
+    "seconds": 0.13433620799332857
+  },
+  "configuration": {
+    "aec": true,
+    "aec_reference_mode": "contiguous",
+    "aec_requested": true,
+    "agentic": true,
+    "barge_policy": "stop",
+    "cooldown_s": 4.0,
+    "duplex_mode": "full",
+    "interaction_mode": "companion",
+    "max_context": 4500,
+    "observer_mode": false,
+    "seconds": 305.0,
+    "silence_ms": 510.0,
+    "speakers": 0,
+    "speed": 1.0,
+    "threshold": 0.012,
+    "vad": "neural",
+    "vad_close": 0.125,
+    "vad_open": 0.3,
+    "voice": "af_heart"
+  },
+  "errors": [],
+  "finished_at": "2026-09-08T07:38:14.611406+00:00",
+  "host": {
+    "hostname": "Mac-Studio-3.localdomain",
+    "pid": 18877,
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.11.9"
+  },
+  "interactions": [
+    {
+      "action": "stop",
+      "evidence": {
+        "clean_rms": 0.16474488377571106,
+        "raw_reference_correlation": 0.28849428243629466,
+        "raw_rms": 0.16979895532131195,
+        "residual_reference_correlation": 0.3076899003293911
+      },
+      "kind": "speech_during_agent_output",
+      "monotonic_s": 291589.516011958,
+      "sequence": 1,
+      "stage": "playback"
+    },
+    {
+      "action": "stop",
+      "evidence": {
+        "clean_rms": 0.16890880465507507,
+        "raw_reference_correlation": 0.2546871671405147,
+        "raw_rms": 0.1708528697490692,
+        "residual_reference_correlation": 0.20248039989851535
+      },
+      "kind": "speech_during_agent_output",
+      "monotonic_s": 291627.216380208,
+      "sequence": 2,
+      "stage": "playback"
+    },
+    {
+      "action": "stop",
+      "evidence": {
+        "clean_rms": 0.12094740569591522,
+        "raw_reference_correlation": 0.2002125519129896,
+        "raw_rms": 0.1205558329820633,
+        "residual_reference_correlation": 0.28783738337394893
+      },
+      "kind": "speech_during_agent_output",
+      "monotonic_s": 291635.817362875,
+      "sequence": 3,
+      "stage": "playback"
+    }
+  ],
+  "kind": "jaeger_duplex_run",
+  "metrics": {
+    "aec": {
+      "alignment_corrections": 0,
+      "attenuation_db": 0.46880839603876795,
+      "available": true,
+      "estimated_drift_ppm": 220.54618025320485,
+      "estimated_lag_ms": 0.375,
+      "raw_reference_correlation_last": 0.0,
+      "reference_mode": "contiguous",
+      "reference_overflow_seconds": 0.0,
+      "reference_underflow_seconds": 0.0,
+      "residual_reference_correlation_last": 0.0,
+      "seconds_cancelled": 9.9
+    },
+    "agentic": {
+      "enabled": true,
+      "last_halt_reason": null,
+      "last_iterations": 1,
+      "tool_calls": 3,
+      "tool_names": [
+        "load_tools",
+        "load_tools",
+        "computer_do"
+      ],
+      "tool_results": [
+        {
+          "content": "{\"ok\": false, \"error\": \"ValidationError: 1 validation error for LoadToolsArgs\\nname\\n  Input should be a valid string [type=string_type, input_value=None, input_type=NoneType]\\n    For further information visit https://errors.pydantic.dev/2.13/v/string_type\", \"error_type\": \"tool_error\", \"retryable\": true, \"loop_guard\": \"[loop warning: load_tools hit the same failure 1 time(s) this turn \u2014 one more identical failure halts the turn. Do not abandon tools; inspect the error above, fix the arguments or pick a different tool, and avoid retrying the exact same call.]\"}",
+          "name": "load_tools",
+          "role": "tool",
+          "tool_call_id": "drift_b3d7c092"
+        },
+        {
+          "content": "{\"ok\": false, \"error\": \"ValidationError: 1 validation error for LoadToolsArgs\\nname\\n  Input should be a valid string [type=string_type, input_value=None, input_type=NoneType]\\n    For further information visit https://errors.pydantic.dev/2.13/v/string_type\", \"error_type\": \"tool_error\", \"retryable\": true, \"loop_guard\": \"[loop warning: load_tools hit the same failure 2 time(s) this turn \u2014 one more identical failure halts the turn. Do not abandon tools; inspect the error above, fix the arguments or pick a different tool, and avoid retrying the exact same call.]\"}",
+          "name": "load_tools",
+          "role": "tool",
+          "tool_call_id": "drift_e67e3157"
+        },
+        {
+          "content": "{\"ok\": false, \"error\": \"PermissionDenied: confirmation refused for macos_computer.computer_do (tier EXTERNAL_EFFECT)\", \"error_type\": \"permission_denied\", \"retryable\": false, \"loop_guard\": \"[loop warning: computer_do hit the same failure 1 time(s) this turn \u2014 one more identical failure halts the turn. Do not abandon tools; inspect the error above, fix the arguments or pick a different tool, and avoid retrying the exact same call.]\"}",
+          "name": "computer_do",
+          "role": "tool",
+          "tool_call_id": "drift_2fe1e7d1"
+        }
+      ]
+    },
+    "audio_chunks": 15,
+    "barge_events": 3,
+    "barge_stops": 3,
+    "capture_health": {
+      "callbacks": 3049,
+      "failure": null,
+      "last_callback": 291839.614707083
+    },
+    "companion": {
+      "decisions": [
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 291551.674756958,
+          "raw": "[halted: hit the same load_tools failure 2 times]",
+          "reason": "malformed_control",
+          "response": "",
+          "speaker": null,
+          "valid": false
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 291569.230753541,
+          "raw": "I cannot access that file.",
+          "reason": "malformed_control",
+          "response": "",
+          "speaker": null,
+          "valid": false
+        },
+        {
+          "action": "respond",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 291588.545788,
+          "raw": "DECISION: RESPOND\nRESPONSE: The answer is 1026.",
+          "reason": "",
+          "response": "The answer is 1026.",
+          "speaker": null,
+          "valid": true
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": true,
+          "monotonic_s": 291606.843025166,
+          "raw": "DECISION: LISTEN\nREASON: other_speech",
+          "reason": "other_speech",
+          "response": "",
+          "speaker": null,
+          "valid": true
+        },
+        {
+          "action": "respond",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 291626.17381275,
+          "raw": "DECISION: RESPOND\nRESPONSE: A rainbow forms when sunlight shines through water droplets in the air.",
+          "reason": "",
+          "response": "A rainbow forms when sunlight shines through water droplets in the air.",
+          "speaker": null,
+          "valid": true
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": true,
+          "monotonic_s": 291633.259649,
+          "raw": "DECISION: LISTEN\nREASON: follow_up",
+          "reason": "follow_up",
+          "response": "",
+          "speaker": null,
+          "valid": true
+        },
+        {
+          "action": "respond",
+          "followup_open_at_speech_start": true,
+          "monotonic_s": 291635.015422041,
+          "raw": "DECISION: RESPOND\nRESPONSE: Four.",
+          "reason": "",
+          "response": "Four.",
+          "speaker": null,
+          "valid": true
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 291655.414736125,
+          "raw": "DECISION: LISTEN\nREASON: non_speech",
+          "reason": "non_speech",
+          "response": "",
+          "speaker": null,
+          "valid": true
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 291676.0643025,
+          "raw": "DECISION: LISTEN\nREASON: ambient",
+          "reason": "ambient",
+          "response": "",
+          "speaker": null,
+          "valid": true
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 291689.7240985,
+          "raw": "DECISION: LISTEN\nREASON: ambient",
+          "reason": "ambient",
+          "response": "",
+          "speaker": null,
+          "valid": true
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 291710.362477708,
+          "raw": "DECISION: LISTEN\nREASON: ambient",
+          "reason": "ambient",
+          "response": "",
+          "speaker": null,
+          "valid": true
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 291712.270636875,
+          "raw": "DECISION: LISTEN\nREASON: ambient",
+          "reason": "ambient",
+          "response": "",
+          "speaker": null,
+          "valid": true
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 291728.991692041,
+          "raw": "DECISION: LISTEN\nREASON: ambient",
+          "reason": "ambient",
+          "response": "",
+          "speaker": null,
+          "valid": true
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 291748.225352833,
+          "raw": "DECISION: LISTEN\nREASON: ambient",
+          "reason": "ambient",
+          "response": "",
+          "speaker": null,
+          "valid": true
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 291768.1026945,
+          "raw": "DECISION: LISTEN\nREASON: ambient",
+          "reason": "ambient",
+          "response": "",
+          "speaker": null,
+          "valid": true
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 291790.074942041,
+          "raw": "DECISION: LISTEN\nREASON: non_speech",
+          "reason": "non_speech",
+          "response": "",
+          "speaker": null,
+          "valid": true
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 291798.899267041,
+          "raw": "DECISION: LISTEN\nREASON: non_speech",
+          "reason": "non_speech",
+          "response": "",
+          "speaker": null,
+          "valid": true
+        },
+        {
+          "action": "listen",
+          "followup_open_at_speech_start": false,
+          "monotonic_s": 291829.088865208,
+          "raw": "DECISION: LISTEN\nREASON: non_speech",
+          "reason": "non_speech",
+          "response": "",
+          "speaker": null,
+          "valid": true
+        }
+      ],
+      "enabled": true,
+      "listen": 15,
+      "respond": 3
+    },
+    "completed_replies": 3,
+    "context_rolls": 2,
+    "dropped_seconds": 0.0,
+    "end_to_audio": {
+      "max_ms": 1065.0801659794524,
+      "median_ms": 787.6772499876097,
+      "n": 3,
+      "p95_ms": 1065.0801659794524
+    },
+    "endpoint_events": [
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "speech_end",
+      "speech_start",
+      "probably_ended",
+      "probably_ended",
+      "probably_ended",
+      "speech_end"
+    ],
+    "fed_seconds": 304.9,
+    "final_cache_tokens": 2496,
+    "generation_barge_vad": {
+      "confirm_frames": 3,
+      "frames": 10163,
+      "input": "raw_pcm",
+      "last_probability": 0.017125248908996582,
+      "node": "silero-vad",
+      "threshold": 0.3,
+      "update_ms_max": 6.710667046718299,
+      "update_ms_p95": 2.5191335822455585
+    },
+    "half_duplex_muted_seconds": 0.0,
+    "interrupt_rewind_failures": 0,
+    "interrupts": 0,
+    "memory": {
+      "mlx_active_mb": 4497.3,
+      "mlx_peak_mb": 5919.2,
+      "rss_peak_mb": 6906.7
+    },
+    "mic_queue_overflow_blocks": 0,
+    "mic_queue_overflow_seconds": 0.0,
+    "neural_perception_shadow": [
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      },
+      {
+        "available": false,
+        "controls_policy": false,
+        "reason": "selected adapter has no causal perception heads"
+      }
+    ],
+    "peak_loop_lag_ms": 172.7422919939272,
+    "speech_delivery": {
+      "completed_uninterrupted_replies": 0,
+      "failed_replies": 0,
+      "interrupted_replies": 3,
+      "played_clauses": 0,
+      "rows": [
+        {
+          "cancel_reason": "barge",
+          "closed": true,
+          "error": null,
+          "finished_at": null,
+          "id": 1,
+          "played_clauses": 0,
+          "queued_clauses": 0,
+          "started_at": 291550.260545
+        },
+        {
+          "cancel_reason": "barge",
+          "closed": true,
+          "error": null,
+          "finished_at": null,
+          "id": 2,
+          "played_clauses": 0,
+          "queued_clauses": 0,
+          "started_at": 291567.552149083
+        },
+        {
+          "cancel_reason": "barge",
+          "closed": true,
+          "error": null,
+          "finished_at": null,
+          "id": 3,
+          "played_clauses": 0,
+          "queued_clauses": 1,
+          "started_at": 291588.1090535
+        },
+        {
+          "cancel_reason": "barge",
+          "closed": true,
+          "error": null,
+          "finished_at": null,
+          "id": 4,
+          "played_clauses": 0,
+          "queued_clauses": 0,
+          "started_at": 291606.53421025
+        },
+        {
+          "cancel_reason": "barge",
+          "closed": true,
+          "error": null,
+          "finished_at": null,
+          "id": 5,
+          "played_clauses": 0,
+          "queued_clauses": 1,
+          "started_at": 291625.643083958
+        },
+        {
+          "cancel_reason": "barge",
+          "closed": true,
+          "error": null,
+          "finished_at": null,
+          "id": 6,
+          "played_clauses": 0,
+          "queued_clauses": 0,
+          "started_at": 291632.960302875
+        },
+        {
+          "cancel_reason": "barge",
+          "closed": true,
+          "error": null,
+          "finished_at": null,
+          "id": 7,
+          "played_clauses": 0,
+          "queued_clauses": 1,
+          "started_at": 291634.738623416
+        },
+        {
+          "cancel_reason": "shutdown",
+          "closed": true,
+          "error": null,
+          "finished_at": null,
+          "id": 8,
+          "played_clauses": 0,
+          "queued_clauses": 0,
+          "started_at": 291655.098414416
+        },
+        {
+          "cancel_reason": "shutdown",
+          "closed": true,
+          "error": null,
+          "finished_at": null,
+          "id": 9,
+          "played_clauses": 0,
+          "queued_clauses": 0,
+          "started_at": 291675.804740791
+        },
+        {
+          "cancel_reason": "shutdown",
+          "closed": true,
+          "error": null,
+          "finished_at": null,
+          "id": 10,
+          "played_clauses": 0,
+          "queued_clauses": 0,
+          "started_at": 291689.465662458
+        },
+        {
+          "cancel_reason": "shutdown",
+          "closed": true,
+          "error": null,
+          "finished_at": null,
+          "id": 11,
+          "played_clauses": 0,
+          "queued_clauses": 0,
+          "started_at": 291710.096612166
+        },
+        {
+          "cancel_reason": "shutdown",
+          "closed": true,
+          "error": null,
+          "finished_at": null,
+          "id": 12,
+          "played_clauses": 0,
+          "queued_clauses": 0,
+          "started_at": 291712.021323041
+        },
+        {
+          "cancel_reason": "shutdown",
+          "closed": true,
+          "error": null,
+          "finished_at": null,
+          "id": 13,
+          "played_clauses": 0,
+          "queued_clauses": 0,
+          "started_at": 291728.725638416
+        },
+        {
+          "cancel_reason": "shutdown",
+          "closed": true,
+          "error": null,
+          "finished_at": null,
+          "id": 14,
+          "played_clauses": 0,
+          "queued_clauses": 0,
+          "started_at": 291747.953233583
+        },
+        {
+          "cancel_reason": "shutdown",
+          "closed": true,
+          "error": null,
+          "finished_at": null,
+          "id": 15,
+          "played_clauses": 0,
+          "queued_clauses": 0,
+          "started_at": 291767.826710375
+        },
+        {
+          "cancel_reason": "shutdown",
+          "closed": true,
+          "error": null,
+          "finished_at": null,
+          "id": 16,
+          "played_clauses": 0,
+          "queued_clauses": 0,
+          "started_at": 291789.77892675
+        },
+        {
+          "cancel_reason": "shutdown",
+          "closed": true,
+          "error": null,
+          "finished_at": null,
+          "id": 17,
+          "played_clauses": 0,
+          "queued_clauses": 0,
+          "started_at": 291798.609148916
+        },
+        {
+          "cancel_reason": "shutdown",
+          "closed": true,
+          "error": null,
+          "finished_at": null,
+          "id": 18,
+          "played_clauses": 0,
+          "queued_clauses": 0,
+          "started_at": 291828.75331775
+        }
+      ],
+      "shutdown_abandoned_replies": 0
+    },
+    "synthesis": {
+      "max_ms": 532.5590840075165,
+      "median_ms": 347.5359159638174,
+      "n": 3,
+      "p95_ms": 532.5590840075165
+    },
+    "turns": 18,
+    "vad": {
+      "close_threshold": 0.125,
+      "frames": 10078,
+      "max": 0.9820342063903809,
+      "mean": 0.08305031947139521,
+      "mode": "neural",
+      "open_threshold": 0.3
+    },
+    "wall_seconds": 305.201745792001
+  },
+  "model": {
+    "checkpoint": "a7f96bfb8898",
+    "id": "jaegeromni-41m-medium",
+    "name": "JaegerOmni 41M Medium"
+  },
+  "passed_runtime": true,
+  "phase": "physical-room",
+  "replies": [
+    "The answer is 1026.",
+    "A rainbow forms when sunlight shines through water droplets in the air.",
+    "Four."
+  ],
+  "runtime_sha256": {
+    "core/agentic/loop/jaeger_agent.py": "c5c9d2376c1b4cdbb16415dc81e7ba29f28b8efa20c5a41673385957eadae541",
+    "core/agentic/omni_runtime.py": "aa4809da9bf5dd52dc1b08a229389cef3dcb68c8b7dace3ed4278b7fd2f88861",
+    "core/runtime/__init__.py": "4de752cd8ae190a42e1b5801fca9f0afb57ffb7eabc8398672fd331fea1ec2b0",
+    "core/runtime/aec.py": "8791c06889b53cf68eee88fadf0fd6d315a7267d6619a73fff77f3a5dd5c2092",
+    "core/runtime/companion.py": "23e0a8d56f7e87dbd65bcdd8d7f2358cac81fd7d466f729d0eeab5b8943fe546",
+    "core/runtime/device_lifecycle.py": "de8a36aba9ebe5d69fd9dd0c922be5d8ee65f7e6086b872d4ccbf21f32a834de",
+    "core/runtime/duplex.py": "6635d068c7eae61be0cee7db0f47aca49f9b2fde744df134dde02eb99a7cff26",
+    "core/runtime/duplex_mode.py": "9bbc1824f09ecf5eeafcf8dc77afe57118aede45ad315d3541db829928ab6f91",
+    "core/runtime/endpoint.py": "5ba150098028c091bd91a2d6e126f2d4d6a193e1b4d49c62275b0a13a22aa8a0",
+    "core/runtime/gemma_audio.py": "40ff4da10f929b3cc85139fac217c1376cc7e0c710022f5a4b765e1ce98632a3",
+    "core/runtime/interaction.py": "d985e2e93b54d92d7b0805c0d345041a2b3c470d01bd3cb57a65e26bc4890d4b",
+    "core/runtime/neural_vad.py": "c06a6b4b6ea872962f0423f68d2fe6229074f6f889ee36b99ce738041aa71291",
+    "core/runtime/reporting.py": "14b46a64d25eb305382c6b53aa4c8b8907fd0740c4be9f642797d7c5e2104d32",
+    "core/runtime/session.py": "c73c1924521475bf8f5d5173357a77cbc72a126740d63f93c7993257563aabf1",
+    "core/runtime/speaker.py": "d4e4ab30cfd349fa18c3d9c5b537212c8582731cc360142cff653d66c21e267e",
+    "core/runtime/speech_delivery.py": "0ae007c4a90e3becdbad7e37a818c0f52119d64a9a45afcae1317aed743cfbb6",
+    "core/runtime/stock_whisper.py": "dc65977e72ccafcb5216d92ce397e8f3724474cf52e9320e78aa4c1d8a6aea9f",
+    "core/runtime/token2wav_service.py": "29d48b5667b815720fca2a233b25f15086400fab337ca0d054fe92d6de3e9228",
+    "core/runtime/tuned_whisper.py": "3bcd5a8a7a147344f5b9831d53ea8ff8668b2c7cd25d08a8980b3227461bcf37",
+    "live.py": "6901c760832f11e9aa1fc482da38cda6d4fc65f330df049d74a7c6229ba9b953",
+    "omni.py": "298381680a88b3e877242ec1ec2ef7facabcc1389ad98d85727d7c7d61b40d7c",
+    "tools/files.py": "22f7b3fbe3ab5f8f3672c476758f8522ad699d68d5eb038c239e08e22338708d",
+    "voice.py": "a4710eeaf62375d92ffec69b618708766c9b41ad3842a3e1230a7daf044e8425"
+  },
+  "runtime_sources_changed_during_run": [],
+  "schema_version": 1,
+  "source": "Elgato XLR Dock",
+  "speaker_labels": [],
+  "started_at": "2026-09-08T07:33:05.988005+00:00"
+}

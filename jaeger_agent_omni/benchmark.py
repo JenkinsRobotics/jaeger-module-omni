@@ -142,6 +142,31 @@ def _kokoro_wav(path: Path):
     return assess
 
 
+def successful_physical_tool_results(agentic):
+    """Positive results for the scripted clock/math/file actions, not dispatch.
+
+    This is a necessary gate. Artifact/claim review still verifies whether the
+    successful operation fulfilled the user's actual request.
+    """
+    successful = []
+    file_flags = {'write_file': 'written', 'append_file': 'appended',
+                  'read_file': 'read', 'delete_file': 'deleted'}
+    for row in agentic.get('tool_results', []):
+        try:
+            result = json.loads(row.get('content', ''))
+        except (TypeError, ValueError):
+            continue
+        if not isinstance(result, dict) or result.get('error') or result.get('ok') is False:
+            continue
+        name = row.get('name')
+        passed = ((name == 'calculate' and 'result' in result) or
+                  (name == 'get_time' and bool(result.get('iso'))) or
+                  (name in file_flags and result.get(file_flags[name]) is True))
+        if passed:
+            successful.append(row.get('tool_call_id') or name)
+    return list(dict.fromkeys(successful))
+
+
 def _physical_payload(payload):
     metrics = payload.get("metrics") or {}
     config = payload.get("configuration") or {}
@@ -149,6 +174,8 @@ def _physical_payload(payload):
     aec = metrics.get("aec") or {}
     companion = metrics.get("companion") or {}
     agentic = metrics.get("agentic") or {}
+    speech = metrics.get('speech_delivery') or {}
+    shutdown = payload.get('audio_shutdown') or {}
     checks = {
         "physical room": payload.get("phase") == "physical-room",
         "five minute capture": float(metrics.get("fed_seconds", 0)) >= 295.0,
@@ -171,6 +198,9 @@ def _physical_payload(payload):
                                      int(companion.get("listen", 0)) >= 1),
         "agent tools exercised": (agentic.get("enabled") is True and
                                   int(agentic.get("tool_calls", 0)) >= 3),
+        "successful action tool results": len(successful_physical_tool_results(agentic)) >= 3,
+        "uninterrupted spoken reply": speech.get('completed_uninterrupted_replies', 0) >= 1,
+        "audio shutdown completed": shutdown.get('completed') is True and shutdown.get('errors') == [],
         "no runtime errors": not payload.get("errors"),
     }
     failed = [name for name, ok in checks.items() if not ok]

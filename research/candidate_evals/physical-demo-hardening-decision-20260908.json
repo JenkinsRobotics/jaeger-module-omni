@@ -1,0 +1,38 @@
+{
+  "native_report": "research/candidate_evals/physical-demo-hardening-20260908.live.json",
+  "native_sha256": "ae5d0ae9aed17112bc86d7b29c01b75c65beccd1552d6919689dbf747053785b",
+  "scorer_sha256": "27e957401e02d143bc84447a5290a3ce9a0a823683bfc91d24fe4fddd6e87ee5",
+  "legacy_physical_checks": [
+    13,
+    13
+  ],
+  "hardened_checks": {
+    "physical room": true,
+    "five minute capture": true,
+    "zero loop drops": true,
+    "zero mic overflow": true,
+    "neural VAD": true,
+    "full duplex": true,
+    "AEC exercised": true,
+    "turn and spoken reply": true,
+    "barge-in exercised": true,
+    "context rolled": true,
+    "companion both decisions": true,
+    "agent tools exercised": true,
+    "successful action tool results": false,
+    "uninterrupted spoken reply": false,
+    "audio shutdown completed": true,
+    "no runtime errors": true
+  },
+  "passed": false,
+  "detail": "failed: successful action tool results, uninterrupted spoken reply",
+  "successful_action_tool_results": 0,
+  "completed_uninterrupted_replies": 0,
+  "device_shutdown": {
+    "completed": true,
+    "errors": [],
+    "seconds": 0.13433620799332857
+  },
+  "decision": "Physical capture/runtime hardened successfully, but behavior is not demo-ready; no 30-minute acceptance runs yet.",
+  "scope": "real acoustic replay, not human conversation; original report retained unchanged"
+}
