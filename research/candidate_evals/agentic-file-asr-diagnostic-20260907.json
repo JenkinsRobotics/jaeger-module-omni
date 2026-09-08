@@ -1,0 +1,228 @@
+{
+  "command": [
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+    "research/converse_ear_wer.py",
+    "--tier",
+    "half",
+    "--manifest",
+    "research/candidate_evals/agentic-file-asr-manifest-20260907.jsonl",
+    "-n",
+    "12",
+    "--output",
+    "research/candidate_evals/agentic-file-asr-diagnostic-20260907.json"
+  ],
+  "node": "jaegeromni-41m-medium",
+  "tier": "half",
+  "manifest_sha256": "6c63cd00f681a5a05b63c46d5664c0eb10566816e6d1bfc2da47e8623b60ce7b",
+  "scorer_sha256": "339bd69040ee922bb3c89168d1b079060e33ac358a0e30faed283aae6221169e",
+  "system": null,
+  "speaker_context": null,
+  "adapter": "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/jaeger_agent_omni/nodes/jaegeromni-41m-medium/weights/adapter.npz",
+  "split": "candidate_evals",
+  "adapter_sha256": "a7f96bfb889866f75df7b838f84aae368a56ab10f6469e766511d700e32fe13a",
+  "encoder": "openai/whisper-medium (node-local snapshot)",
+  "evaluation_mode": "node_production_transcribe",
+  "teacher_forced": false,
+  "input_handoff": "raw_waveform_no_transcript",
+  "id_file": "research/candidate_evals/agentic-file-asr-manifest-20260907.jsonl",
+  "source_prefix": null,
+  "n": 12,
+  "wer": 0.30405405405405406,
+  "edits": 45,
+  "reference_words": 148,
+  "median_transcribe_s": 0.6270571250352077,
+  "rows": [
+    {
+      "id": "a-write_bench_txt",
+      "reference": "make a file called bench.txt with the message hello from the benchmark",
+      "hypothesis": "make a file called bench txd with the message hello from the benchmark",
+      "wer": 0.07692307692307693,
+      "metrics": {
+        "audio_s": 4.775,
+        "audio_tokens": 239,
+        "generated_tokens": 14,
+        "front_end_s": 0.3429863750352524,
+        "prepare_s": 0.3722067500348203,
+        "ttft_s": 0.2633080839877948,
+        "generation_s": 0.5673733340227045,
+        "total_s": 0.9403908750391565
+      }
+    },
+    {
+      "id": "a-ms_calc_and_save",
+      "reference": "Calculate 47 times 23 plus 12, then save the result to math.txt.",
+      "hypothesis": "calculate forty seven times twenty three plus twelve then save the result to math t x d",
+      "wer": 0.6153846153846154,
+      "metrics": {
+        "audio_s": 6.6,
+        "audio_tokens": 330,
+        "generated_tokens": 17,
+        "front_end_s": 0.06959058297798038,
+        "prepare_s": 0.07547104096738622,
+        "ttft_s": 0.25735754100605845,
+        "generation_s": 0.6303698329720646,
+        "total_s": 0.7058744579553604
+      }
+    },
+    {
+      "id": "a-ms_write_append_read",
+      "reference": "Create todo.txt with 'buy milk', append 'walk dog' to it, then read it back and tell me both items.",
+      "hypothesis": "create to do t x d with by milk append walk dog to it then read it back and tell me both items",
+      "wer": 0.45,
+      "metrics": {
+        "audio_s": 7.125,
+        "audio_tokens": 357,
+        "generated_tokens": 23,
+        "front_end_s": 0.06957158300792798,
+        "prepare_s": 0.07546354201622307,
+        "ttft_s": 0.2610487909987569,
+        "generation_s": 0.76702904101694,
+        "total_s": 0.8425217079930007
+      }
+    },
+    {
+      "id": "a-mt_file_round_1",
+      "reference": "Create a file called level3_test.txt containing the text 'sea otters are mammals'.",
+      "hypothesis": "create a file called level test txt containing the text sea otters are mammals",
+      "wer": 0.21428571428571427,
+      "metrics": {
+        "audio_s": 5.8,
+        "audio_tokens": 290,
+        "generated_tokens": 15,
+        "front_end_s": 0.06291579199023545,
+        "prepare_s": 0.06817595800384879,
+        "ttft_s": 0.2305397079908289,
+        "generation_s": 0.5588064159965143,
+        "total_s": 0.6270108330063522
+      }
+    },
+    {
+      "id": "a-mt_file_round_2",
+      "reference": "Read level3_test.txt and tell me what it says.",
+      "hypothesis": "read level test txd and tell me what it says",
+      "wer": 0.2,
+      "metrics": {
+        "audio_s": 3.7,
+        "audio_tokens": 185,
+        "generated_tokens": 11,
+        "front_end_s": 0.04908112494740635,
+        "prepare_s": 0.053220707981381565,
+        "ttft_s": 0.17917537497123703,
+        "generation_s": 0.41590899997390807,
+        "total_s": 0.4691537079634145
+      }
+    },
+    {
+      "id": "a-mt_file_round_3",
+      "reference": "Delete level3_test.txt.",
+      "hypothesis": "delete level three test txd",
+      "wer": 0.75,
+      "metrics": {
+        "audio_s": 2.85,
+        "audio_tokens": 143,
+        "generated_tokens": 6,
+        "front_end_s": 0.0434745829552412,
+        "prepare_s": 0.04728025000076741,
+        "ttft_s": 0.17593216703971848,
+        "generation_s": 0.305001542030368,
+        "total_s": 0.35230324999429286
+      }
+    },
+    {
+      "id": "b-write_bench_txt",
+      "reference": "create a file named probe.txt containing the text greetings from the test suite",
+      "hypothesis": "create a file named probe td containing the text greetings from the test suite",
+      "wer": 0.07142857142857142,
+      "metrics": {
+        "audio_s": 5.725,
+        "audio_tokens": 287,
+        "generated_tokens": 14,
+        "front_end_s": 0.06232258299132809,
+        "prepare_s": 0.06760229100473225,
+        "ttft_s": 0.23105716600548476,
+        "generation_s": 0.5376753750024363,
+        "total_s": 0.6053304999950342
+      }
+    },
+    {
+      "id": "b-ms_calc_and_save",
+      "reference": "Calculate 58 times 31 plus 9, then save the result to sums.txt.",
+      "hypothesis": "calculate fifty eight times thirty one plus nine then save the result to sums t x d",
+      "wer": 0.6153846153846154,
+      "metrics": {
+        "audio_s": 6.35,
+        "audio_tokens": 318,
+        "generated_tokens": 17,
+        "front_end_s": 0.0632365409983322,
+        "prepare_s": 0.0687519580242224,
+        "ttft_s": 0.23087004094850272,
+        "generation_s": 0.6019821249647066,
+        "total_s": 0.670764375012368
+      }
+    },
+    {
+      "id": "b-ms_write_append_read",
+      "reference": "Create grocery.txt with 'buy eggs', append 'get bread' to it, then read it back and tell me both items.",
+      "hypothesis": "create grocery txd with buy eggs append get bread to it then read it back and tell me both items",
+      "wer": 0.25,
+      "metrics": {
+        "audio_s": 7.125,
+        "audio_tokens": 357,
+        "generated_tokens": 21,
+        "front_end_s": 0.06278104102239013,
+        "prepare_s": 0.06891191599424928,
+        "ttft_s": 0.2641461250022985,
+        "generation_s": 0.7234004999627359,
+        "total_s": 0.7923593749874271
+      }
+    },
+    {
+      "id": "b-mt_file_round_1",
+      "reference": "Create a file called chain_note.txt containing the text 'penguins are birds'.",
+      "hypothesis": "create a file called chain note txd containing the text penguins are birds",
+      "wer": 0.23076923076923078,
+      "metrics": {
+        "audio_s": 5.675,
+        "audio_tokens": 284,
+        "generated_tokens": 14,
+        "front_end_s": 0.06154962501022965,
+        "prepare_s": 0.06692729203496128,
+        "ttft_s": 0.2347275000065565,
+        "generation_s": 0.5379821250098757,
+        "total_s": 0.6049388330429792
+      }
+    },
+    {
+      "id": "b-mt_file_round_2",
+      "reference": "Read chain_note.txt and tell me what it says.",
+      "hypothesis": "read chain note txd and tell me what it says",
+      "wer": 0.1,
+      "metrics": {
+        "audio_s": 3.5,
+        "audio_tokens": 175,
+        "generated_tokens": 11,
+        "front_end_s": 0.044948042021133006,
+        "prepare_s": 0.04895949998172,
+        "ttft_s": 0.1777502920012921,
+        "generation_s": 0.41348950000246987,
+        "total_s": 0.4624763330211863
+      }
+    },
+    {
+      "id": "b-mt_file_round_3",
+      "reference": "Delete chain_note.txt.",
+      "hypothesis": "delete chain note text",
+      "wer": 0.25,
+      "metrics": {
+        "audio_s": 2.2,
+        "audio_tokens": 110,
+        "generated_tokens": 4,
+        "front_end_s": 0.038709833985194564,
+        "prepare_s": 0.04172799998195842,
+        "ttft_s": 0.14805100002558902,
+        "generation_s": 0.2331296670017764,
+        "total_s": 0.27488379197893664
+      }
+    }
+  ]
+}

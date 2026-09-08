@@ -1,0 +1,798 @@
+{
+  "command": [
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+    "research/agentic_phoneme_audit.py",
+    "--report",
+    "research/candidate_evals/agentic-speech-files-visible-20260907.json",
+    "--output",
+    "research/candidate_evals/agentic-phoneme-audit-20260907.json"
+  ],
+  "code_sha256": "343f47a0fcf86f032817156c46ebeb3b00b11e5c587613477c53cbc2298a3b80",
+  "source_report": "research/candidate_evals/agentic-speech-files-visible-20260907.json",
+  "source_sha256": "a982883cb554643818924bde9f015d542bb346ed8f89440f09cd462675fe7b8d",
+  "libraries": {
+    "kokoro": "0.9.4",
+    "misaki": "0.9.4"
+  },
+  "scope": "current phonemizer audit; no waveform listening claim; frozen results unchanged",
+  "rows": [
+    {
+      "id": "a:write_bench_txt",
+      "text": "make a file called bench.txt with the message hello from the benchmark",
+      "phonemes": "m\u02ccAk \u0250 f\u02c8Il k\u02c8\u0254ld b\u02c8\u025bn\u02a7.t\u02cci\u02cc\u025bkst\u02c8i w\u026a\u00f0 \u00f0\u0259 m\u02c8\u025bs\u026a\u02a4 h\u0259l\u02c8O f\u0279\u028cm \u00f0\u0259 b\u02c8\u025bn\u02a7m\u02cc\u0251\u0279k",
+      "tokens": [
+        {
+          "text": "make",
+          "phonemes": "m\u02ccAk"
+        },
+        {
+          "text": "a",
+          "phonemes": "\u0250"
+        },
+        {
+          "text": "file",
+          "phonemes": "f\u02c8Il"
+        },
+        {
+          "text": "called",
+          "phonemes": "k\u02c8\u0254ld"
+        },
+        {
+          "text": "bench.txt",
+          "phonemes": "b\u02c8\u025bn\u02a7.t\u02cci\u02cc\u025bkst\u02c8i"
+        },
+        {
+          "text": "with",
+          "phonemes": "w\u026a\u00f0"
+        },
+        {
+          "text": "the",
+          "phonemes": "\u00f0\u0259"
+        },
+        {
+          "text": "message",
+          "phonemes": "m\u02c8\u025bs\u026a\u02a4"
+        },
+        {
+          "text": "hello",
+          "phonemes": "h\u0259l\u02c8O"
+        },
+        {
+          "text": "from",
+          "phonemes": "f\u0279\u028cm"
+        },
+        {
+          "text": "the",
+          "phonemes": "\u00f0\u0259"
+        },
+        {
+          "text": "benchmark",
+          "phonemes": "b\u02c8\u025bn\u02a7m\u02cc\u0251\u0279k"
+        }
+      ],
+      "empty_alphanumeric_or_underscore": []
+    },
+    {
+      "id": "a:ms_calc_and_save",
+      "text": "Calculate 47 times 23 plus 12, then save the result to math.txt.",
+      "phonemes": "k\u02c8\u00e6lkj\u0259l\u02ccAt f\u02c8\u0254\u0279Ti s\u02c8\u025bv\u0259n t\u02c8Imz tw\u02c8\u025bnti \u03b8\u0279\u02c8i pl\u02c8\u028cs tw\u02c8\u025blv, \u00f0\u02c8\u025bn s\u02c8Av \u00f0\u0259 \u0279\u0259z\u02c8\u028clt tu m\u02c8\u00e6\u03b8.t\u02cci\u02cc\u025bkst\u02c8i.",
+      "tokens": [
+        {
+          "text": "Calculate",
+          "phonemes": "k\u02c8\u00e6lkj\u0259l\u02ccAt"
+        },
+        {
+          "text": "47",
+          "phonemes": "f\u02c8\u0254\u0279Ti s\u02c8\u025bv\u0259n"
+        },
+        {
+          "text": "times",
+          "phonemes": "t\u02c8Imz"
+        },
+        {
+          "text": "23",
+          "phonemes": "tw\u02c8\u025bnti \u03b8\u0279\u02c8i"
+        },
+        {
+          "text": "plus",
+          "phonemes": "pl\u02c8\u028cs"
+        },
+        {
+          "text": "12",
+          "phonemes": "tw\u02c8\u025blv"
+        },
+        {
+          "text": ",",
+          "phonemes": ","
+        },
+        {
+          "text": "then",
+          "phonemes": "\u00f0\u02c8\u025bn"
+        },
+        {
+          "text": "save",
+          "phonemes": "s\u02c8Av"
+        },
+        {
+          "text": "the",
+          "phonemes": "\u00f0\u0259"
+        },
+        {
+          "text": "result",
+          "phonemes": "\u0279\u0259z\u02c8\u028clt"
+        },
+        {
+          "text": "to",
+          "phonemes": "tu"
+        },
+        {
+          "text": "math.txt",
+          "phonemes": "m\u02c8\u00e6\u03b8.t\u02cci\u02cc\u025bkst\u02c8i"
+        },
+        {
+          "text": ".",
+          "phonemes": "."
+        }
+      ],
+      "empty_alphanumeric_or_underscore": []
+    },
+    {
+      "id": "a:ms_write_append_read",
+      "text": "Create todo.txt with 'buy milk', append 'walk dog' to it, then read it back and tell me both items.",
+      "phonemes": "k\u0279i\u02c8At t\u0259d\u02c8u.t\u02cci\u02cc\u025bkst\u02c8i w\u026a\u00f0 \u201cb\u02c8I m\u02c8\u026alk\u201d, \u0259p\u02c8\u025bnd \u201cw\u02c8\u0254k d\u02c8\u0254\u0261\u201d t\u028a \u026at, \u00f0\u02c8\u025bn \u0279\u02c8id \u026at b\u02c8\u00e6k \u00e6nd t\u02c8\u025bl m\u02cci b\u02c8O\u03b8 \u02c8IT\u0259mz.",
+      "tokens": [
+        {
+          "text": "Create",
+          "phonemes": "k\u0279i\u02c8At"
+        },
+        {
+          "text": "todo.txt",
+          "phonemes": "t\u0259d\u02c8u.t\u02cci\u02cc\u025bkst\u02c8i"
+        },
+        {
+          "text": "with",
+          "phonemes": "w\u026a\u00f0"
+        },
+        {
+          "text": "'",
+          "phonemes": "\u201c"
+        },
+        {
+          "text": "buy",
+          "phonemes": "b\u02c8I"
+        },
+        {
+          "text": "milk",
+          "phonemes": "m\u02c8\u026alk"
+        },
+        {
+          "text": "'",
+          "phonemes": "\u201d"
+        },
+        {
+          "text": ",",
+          "phonemes": ","
+        },
+        {
+          "text": "append",
+          "phonemes": "\u0259p\u02c8\u025bnd"
+        },
+        {
+          "text": "'",
+          "phonemes": "\u201c"
+        },
+        {
+          "text": "walk",
+          "phonemes": "w\u02c8\u0254k"
+        },
+        {
+          "text": "dog",
+          "phonemes": "d\u02c8\u0254\u0261"
+        },
+        {
+          "text": "'",
+          "phonemes": "\u201d"
+        },
+        {
+          "text": "to",
+          "phonemes": "t\u028a"
+        },
+        {
+          "text": "it",
+          "phonemes": "\u026at"
+        },
+        {
+          "text": ",",
+          "phonemes": ","
+        },
+        {
+          "text": "then",
+          "phonemes": "\u00f0\u02c8\u025bn"
+        },
+        {
+          "text": "read",
+          "phonemes": "\u0279\u02c8id"
+        },
+        {
+          "text": "it",
+          "phonemes": "\u026at"
+        },
+        {
+          "text": "back",
+          "phonemes": "b\u02c8\u00e6k"
+        },
+        {
+          "text": "and",
+          "phonemes": "\u00e6nd"
+        },
+        {
+          "text": "tell",
+          "phonemes": "t\u02c8\u025bl"
+        },
+        {
+          "text": "me",
+          "phonemes": "m\u02cci"
+        },
+        {
+          "text": "both",
+          "phonemes": "b\u02c8O\u03b8"
+        },
+        {
+          "text": "items",
+          "phonemes": "\u02c8IT\u0259mz"
+        },
+        {
+          "text": ".",
+          "phonemes": "."
+        }
+      ],
+      "empty_alphanumeric_or_underscore": []
+    },
+    {
+      "id": "a:mt_file_round_1",
+      "text": "Create a file called level3_test.txt containing the text 'sea otters are mammals'.",
+      "phonemes": "k\u0279i\u02c8At \u0250 f\u02c8Il k\u02c8\u0254ld l\u02c8\u025bv\u1d4alt\u02c8\u025bst.t\u02cci\u02cc\u025bkst\u02c8i k\u0259nt\u02c8An\u026a\u014b \u00f0\u0259 t\u02c8\u025bkst \u201cs\u02c8i \u02c8\u0251T\u0259\u0279z \u0251\u0279 m\u02c8\u00e6m\u0259lz\u201d.",
+      "tokens": [
+        {
+          "text": "Create",
+          "phonemes": "k\u0279i\u02c8At"
+        },
+        {
+          "text": "a",
+          "phonemes": "\u0250"
+        },
+        {
+          "text": "file",
+          "phonemes": "f\u02c8Il"
+        },
+        {
+          "text": "called",
+          "phonemes": "k\u02c8\u0254ld"
+        },
+        {
+          "text": "level",
+          "phonemes": "l\u02c8\u025bv\u1d4al"
+        },
+        {
+          "text": "3",
+          "phonemes": ""
+        },
+        {
+          "text": "_",
+          "phonemes": ""
+        },
+        {
+          "text": "test",
+          "phonemes": "t\u02c8\u025bst"
+        },
+        {
+          "text": ".",
+          "phonemes": "."
+        },
+        {
+          "text": "txt",
+          "phonemes": "t\u02cci\u02cc\u025bkst\u02c8i"
+        },
+        {
+          "text": "containing",
+          "phonemes": "k\u0259nt\u02c8An\u026a\u014b"
+        },
+        {
+          "text": "the",
+          "phonemes": "\u00f0\u0259"
+        },
+        {
+          "text": "text",
+          "phonemes": "t\u02c8\u025bkst"
+        },
+        {
+          "text": "'",
+          "phonemes": "\u201c"
+        },
+        {
+          "text": "sea",
+          "phonemes": "s\u02c8i"
+        },
+        {
+          "text": "otters",
+          "phonemes": "\u02c8\u0251T\u0259\u0279z"
+        },
+        {
+          "text": "are",
+          "phonemes": "\u0251\u0279"
+        },
+        {
+          "text": "mammals",
+          "phonemes": "m\u02c8\u00e6m\u0259lz"
+        },
+        {
+          "text": "'",
+          "phonemes": "\u201d"
+        },
+        {
+          "text": ".",
+          "phonemes": "."
+        }
+      ],
+      "empty_alphanumeric_or_underscore": [
+        "3",
+        "_"
+      ]
+    },
+    {
+      "id": "a:mt_file_round_2",
+      "text": "Read level3_test.txt and tell me what it says.",
+      "phonemes": "\u0279\u02c8id l\u02c8\u025bv\u1d4alt\u02c8\u025bst.t\u02cci\u02cc\u025bkst\u02c8i \u00e6nd t\u02c8\u025bl m\u02cci w\u02cc\u028ct \u026at s\u02c8\u025bz.",
+      "tokens": [
+        {
+          "text": "Read",
+          "phonemes": "\u0279\u02c8id"
+        },
+        {
+          "text": "level",
+          "phonemes": "l\u02c8\u025bv\u1d4al"
+        },
+        {
+          "text": "3",
+          "phonemes": ""
+        },
+        {
+          "text": "_",
+          "phonemes": ""
+        },
+        {
+          "text": "test",
+          "phonemes": "t\u02c8\u025bst"
+        },
+        {
+          "text": ".",
+          "phonemes": "."
+        },
+        {
+          "text": "txt",
+          "phonemes": "t\u02cci\u02cc\u025bkst\u02c8i"
+        },
+        {
+          "text": "and",
+          "phonemes": "\u00e6nd"
+        },
+        {
+          "text": "tell",
+          "phonemes": "t\u02c8\u025bl"
+        },
+        {
+          "text": "me",
+          "phonemes": "m\u02cci"
+        },
+        {
+          "text": "what",
+          "phonemes": "w\u02cc\u028ct"
+        },
+        {
+          "text": "it",
+          "phonemes": "\u026at"
+        },
+        {
+          "text": "says",
+          "phonemes": "s\u02c8\u025bz"
+        },
+        {
+          "text": ".",
+          "phonemes": "."
+        }
+      ],
+      "empty_alphanumeric_or_underscore": [
+        "3",
+        "_"
+      ]
+    },
+    {
+      "id": "a:mt_file_round_3",
+      "text": "Delete level3_test.txt.",
+      "phonemes": "d\u0259l\u02c8it l\u02c8\u025bv\u1d4al \u03b8\u0279\u02c8i t\u02c8\u025bst.t\u02cci\u02cc\u025bkst\u02c8i.",
+      "tokens": [
+        {
+          "text": "Delete",
+          "phonemes": "d\u0259l\u02c8it"
+        },
+        {
+          "text": "level3_test.txt",
+          "phonemes": "l\u02c8\u025bv\u1d4al \u03b8\u0279\u02c8i t\u02c8\u025bst.t\u02cci\u02cc\u025bkst\u02c8i"
+        },
+        {
+          "text": ".",
+          "phonemes": "."
+        }
+      ],
+      "empty_alphanumeric_or_underscore": []
+    },
+    {
+      "id": "b:write_bench_txt",
+      "text": "create a file named probe.txt containing the text greetings from the test suite",
+      "phonemes": "k\u0279i\u02c8At \u0250 f\u02c8Il n\u02c8Amd p\u0279\u02c8Ob.t\u02cci\u02cc\u025bkst\u02c8i k\u0259nt\u02c8An\u026a\u014b \u00f0\u0259 t\u02c8\u025bkst \u0261\u0279\u02c8iT\u026a\u014bz f\u0279\u028cm \u00f0\u0259 t\u02c8\u025bst sw\u02c8it",
+      "tokens": [
+        {
+          "text": "create",
+          "phonemes": "k\u0279i\u02c8At"
+        },
+        {
+          "text": "a",
+          "phonemes": "\u0250"
+        },
+        {
+          "text": "file",
+          "phonemes": "f\u02c8Il"
+        },
+        {
+          "text": "named",
+          "phonemes": "n\u02c8Amd"
+        },
+        {
+          "text": "probe",
+          "phonemes": "p\u0279\u02c8Ob"
+        },
+        {
+          "text": ".",
+          "phonemes": "."
+        },
+        {
+          "text": "txt",
+          "phonemes": "t\u02cci\u02cc\u025bkst\u02c8i"
+        },
+        {
+          "text": "containing",
+          "phonemes": "k\u0259nt\u02c8An\u026a\u014b"
+        },
+        {
+          "text": "the",
+          "phonemes": "\u00f0\u0259"
+        },
+        {
+          "text": "text",
+          "phonemes": "t\u02c8\u025bkst"
+        },
+        {
+          "text": "greetings",
+          "phonemes": "\u0261\u0279\u02c8iT\u026a\u014bz"
+        },
+        {
+          "text": "from",
+          "phonemes": "f\u0279\u028cm"
+        },
+        {
+          "text": "the",
+          "phonemes": "\u00f0\u0259"
+        },
+        {
+          "text": "test",
+          "phonemes": "t\u02c8\u025bst"
+        },
+        {
+          "text": "suite",
+          "phonemes": "sw\u02c8it"
+        }
+      ],
+      "empty_alphanumeric_or_underscore": []
+    },
+    {
+      "id": "b:ms_calc_and_save",
+      "text": "Calculate 58 times 31 plus 9, then save the result to sums.txt.",
+      "phonemes": "k\u02c8\u00e6lkj\u0259l\u02ccAt f\u02c8\u026afti \u02c8At t\u02c8Imz \u03b8\u02c8\u025c\u0279Ti w\u02c8\u028cn pl\u02c8\u028cs n\u02c8In, \u00f0\u02c8\u025bn s\u02c8Av \u00f0\u0259 \u0279\u0259z\u02c8\u028clt tu s\u02c8\u028cmz.t\u02cci\u02cc\u025bkst\u02c8i.",
+      "tokens": [
+        {
+          "text": "Calculate",
+          "phonemes": "k\u02c8\u00e6lkj\u0259l\u02ccAt"
+        },
+        {
+          "text": "58",
+          "phonemes": "f\u02c8\u026afti \u02c8At"
+        },
+        {
+          "text": "times",
+          "phonemes": "t\u02c8Imz"
+        },
+        {
+          "text": "31",
+          "phonemes": "\u03b8\u02c8\u025c\u0279Ti w\u02c8\u028cn"
+        },
+        {
+          "text": "plus",
+          "phonemes": "pl\u02c8\u028cs"
+        },
+        {
+          "text": "9",
+          "phonemes": "n\u02c8In"
+        },
+        {
+          "text": ",",
+          "phonemes": ","
+        },
+        {
+          "text": "then",
+          "phonemes": "\u00f0\u02c8\u025bn"
+        },
+        {
+          "text": "save",
+          "phonemes": "s\u02c8Av"
+        },
+        {
+          "text": "the",
+          "phonemes": "\u00f0\u0259"
+        },
+        {
+          "text": "result",
+          "phonemes": "\u0279\u0259z\u02c8\u028clt"
+        },
+        {
+          "text": "to",
+          "phonemes": "tu"
+        },
+        {
+          "text": "sums.txt",
+          "phonemes": "s\u02c8\u028cmz.t\u02cci\u02cc\u025bkst\u02c8i"
+        },
+        {
+          "text": ".",
+          "phonemes": "."
+        }
+      ],
+      "empty_alphanumeric_or_underscore": []
+    },
+    {
+      "id": "b:ms_write_append_read",
+      "text": "Create grocery.txt with 'buy eggs', append 'get bread' to it, then read it back and tell me both items.",
+      "phonemes": "k\u0279i\u02c8At \u0261\u0279\u02c8Os\u0259\u0279\u0279i.t\u02cci\u02cc\u025bkst\u02c8i w\u026a\u00f0 \u201cb\u02c8I \u02c8\u025b\u0261z, \u0259p\u02c8\u025bnd \u201c\u0261\u025bt b\u0279\u02c8\u025bd\u201d t\u028a \u026at, \u00f0\u02c8\u025bn \u0279\u02c8id \u026at b\u02c8\u00e6k \u00e6nd t\u02c8\u025bl m\u02cci b\u02c8O\u03b8 \u02c8IT\u0259mz.",
+      "tokens": [
+        {
+          "text": "Create",
+          "phonemes": "k\u0279i\u02c8At"
+        },
+        {
+          "text": "grocery.txt",
+          "phonemes": "\u0261\u0279\u02c8Os\u0259\u0279\u0279i.t\u02cci\u02cc\u025bkst\u02c8i"
+        },
+        {
+          "text": "with",
+          "phonemes": "w\u026a\u00f0"
+        },
+        {
+          "text": "'",
+          "phonemes": "\u201c"
+        },
+        {
+          "text": "buy",
+          "phonemes": "b\u02c8I"
+        },
+        {
+          "text": "eggs'",
+          "phonemes": "\u02c8\u025b\u0261z"
+        },
+        {
+          "text": ",",
+          "phonemes": ","
+        },
+        {
+          "text": "append",
+          "phonemes": "\u0259p\u02c8\u025bnd"
+        },
+        {
+          "text": "'",
+          "phonemes": "\u201c"
+        },
+        {
+          "text": "get",
+          "phonemes": "\u0261\u025bt"
+        },
+        {
+          "text": "bread",
+          "phonemes": "b\u0279\u02c8\u025bd"
+        },
+        {
+          "text": "'",
+          "phonemes": "\u201d"
+        },
+        {
+          "text": "to",
+          "phonemes": "t\u028a"
+        },
+        {
+          "text": "it",
+          "phonemes": "\u026at"
+        },
+        {
+          "text": ",",
+          "phonemes": ","
+        },
+        {
+          "text": "then",
+          "phonemes": "\u00f0\u02c8\u025bn"
+        },
+        {
+          "text": "read",
+          "phonemes": "\u0279\u02c8id"
+        },
+        {
+          "text": "it",
+          "phonemes": "\u026at"
+        },
+        {
+          "text": "back",
+          "phonemes": "b\u02c8\u00e6k"
+        },
+        {
+          "text": "and",
+          "phonemes": "\u00e6nd"
+        },
+        {
+          "text": "tell",
+          "phonemes": "t\u02c8\u025bl"
+        },
+        {
+          "text": "me",
+          "phonemes": "m\u02cci"
+        },
+        {
+          "text": "both",
+          "phonemes": "b\u02c8O\u03b8"
+        },
+        {
+          "text": "items",
+          "phonemes": "\u02c8IT\u0259mz"
+        },
+        {
+          "text": ".",
+          "phonemes": "."
+        }
+      ],
+      "empty_alphanumeric_or_underscore": []
+    },
+    {
+      "id": "b:mt_file_round_1",
+      "text": "Create a file called chain_note.txt containing the text 'penguins are birds'.",
+      "phonemes": "k\u0279i\u02c8At \u0250 f\u02c8Il k\u02c8\u0254ld \u02a7\u02c8An n\u02c8Ot.t\u02cci\u02cc\u025bkst\u02c8i k\u0259nt\u02c8An\u026a\u014b \u00f0\u0259 t\u02c8\u025bkst \u201cp\u02c8\u025b\u014b\u0261w\u1d4anz \u0251\u0279 b\u02c8\u025c\u0279dz\u201d.",
+      "tokens": [
+        {
+          "text": "Create",
+          "phonemes": "k\u0279i\u02c8At"
+        },
+        {
+          "text": "a",
+          "phonemes": "\u0250"
+        },
+        {
+          "text": "file",
+          "phonemes": "f\u02c8Il"
+        },
+        {
+          "text": "called",
+          "phonemes": "k\u02c8\u0254ld"
+        },
+        {
+          "text": "chain_note.txt",
+          "phonemes": "\u02a7\u02c8An n\u02c8Ot.t\u02cci\u02cc\u025bkst\u02c8i"
+        },
+        {
+          "text": "containing",
+          "phonemes": "k\u0259nt\u02c8An\u026a\u014b"
+        },
+        {
+          "text": "the",
+          "phonemes": "\u00f0\u0259"
+        },
+        {
+          "text": "text",
+          "phonemes": "t\u02c8\u025bkst"
+        },
+        {
+          "text": "'",
+          "phonemes": "\u201c"
+        },
+        {
+          "text": "penguins",
+          "phonemes": "p\u02c8\u025b\u014b\u0261w\u1d4anz"
+        },
+        {
+          "text": "are",
+          "phonemes": "\u0251\u0279"
+        },
+        {
+          "text": "birds",
+          "phonemes": "b\u02c8\u025c\u0279dz"
+        },
+        {
+          "text": "'",
+          "phonemes": "\u201d"
+        },
+        {
+          "text": ".",
+          "phonemes": "."
+        }
+      ],
+      "empty_alphanumeric_or_underscore": []
+    },
+    {
+      "id": "b:mt_file_round_2",
+      "text": "Read chain_note.txt and tell me what it says.",
+      "phonemes": "\u0279\u02c8id \u02a7\u02c8An n\u02c8Ot.t\u02cci\u02cc\u025bkst\u02c8i \u00e6nd t\u02c8\u025bl m\u02cci w\u02cc\u028ct \u026at s\u02c8\u025bz.",
+      "tokens": [
+        {
+          "text": "Read",
+          "phonemes": "\u0279\u02c8id"
+        },
+        {
+          "text": "chain_note.txt",
+          "phonemes": "\u02a7\u02c8An n\u02c8Ot.t\u02cci\u02cc\u025bkst\u02c8i"
+        },
+        {
+          "text": "and",
+          "phonemes": "\u00e6nd"
+        },
+        {
+          "text": "tell",
+          "phonemes": "t\u02c8\u025bl"
+        },
+        {
+          "text": "me",
+          "phonemes": "m\u02cci"
+        },
+        {
+          "text": "what",
+          "phonemes": "w\u02cc\u028ct"
+        },
+        {
+          "text": "it",
+          "phonemes": "\u026at"
+        },
+        {
+          "text": "says",
+          "phonemes": "s\u02c8\u025bz"
+        },
+        {
+          "text": ".",
+          "phonemes": "."
+        }
+      ],
+      "empty_alphanumeric_or_underscore": []
+    },
+    {
+      "id": "b:mt_file_round_3",
+      "text": "Delete chain_note.txt.",
+      "phonemes": "d\u0259l\u02c8it \u02a7\u02c8An n\u02c8Ot.t\u02cci\u02cc\u025bkst\u02c8i.",
+      "tokens": [
+        {
+          "text": "Delete",
+          "phonemes": "d\u0259l\u02c8it"
+        },
+        {
+          "text": "chain_note.txt",
+          "phonemes": "\u02a7\u02c8An n\u02c8Ot.t\u02cci\u02cc\u025bkst\u02c8i"
+        },
+        {
+          "text": ".",
+          "phonemes": "."
+        }
+      ],
+      "empty_alphanumeric_or_underscore": []
+    }
+  ]
+}
