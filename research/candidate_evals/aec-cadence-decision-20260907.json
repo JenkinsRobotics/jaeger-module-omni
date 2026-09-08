@@ -1,0 +1,25 @@
+{
+  "inputs": {
+    "research/candidate_evals/aec-contiguous-20260904.json": "1b4d30272c2d79b83796d4f8c031577aac70f0b7e28b40aa74fe40ccdeca9c24",
+    "research/candidate_evals/aec-cadence100-control-20260907.json": "1ebfedc2e8b672f37d2b6c48a3546c5398bb9d1b20508d2d05c150dcaf362702",
+    "research/candidate_evals/aec-cadence20-20260907.json": "9498cefeeab640d53f523f6fb4314a4ca1af1f8cab6156537487776b015bab09"
+  },
+  "control_reproduces_previous_metrics": true,
+  "control": {
+    "false_barges": 0,
+    "detected": 43,
+    "recall_percent": 100.0,
+    "median_delay_ms": 188.40115379297018,
+    "p95_delay_ms": 601.9062767512157
+  },
+  "trial": {
+    "false_barges": 1,
+    "detected": 29,
+    "recall_percent": 67.44186046511628,
+    "median_delay_ms": 545.7261835140965,
+    "p95_delay_ms": 1736.434675659087
+  },
+  "promotion_pass": false,
+  "decision": "Reject 20 ms cadence: lower recall, false interruption, worse delay tail. Default callback and detector unchanged.",
+  "scope": "43 deterministic synthetic room waveforms; excludes device and callback compute delay"
+}

@@ -18,8 +18,10 @@ colouring, background noise, and mild loudspeaker non-linearity.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import math
+import sys
 from pathlib import Path
 
 import numpy as np
@@ -113,7 +115,8 @@ def _run_aec(mic: np.ndarray, far: np.ndarray,
              with_detector: bool = False,
              detector_options: dict | None = None,
              include_trace: bool = False,
-             reference_mode: str = "wallclock") -> tuple[np.ndarray, dict]:
+             reference_mode: str = "wallclock",
+             block_samples: int = BLOCK) -> tuple[np.ndarray, dict]:
     aec = SpeexEchoCanceller(RATE, reference_mode=reference_mode)
     detector = EchoAwareBargeIn(
         RATE, SPEECH_RMS, **(detector_options or {}))
@@ -122,9 +125,10 @@ def _run_aec(mic: np.ndarray, far: np.ndarray,
     old_first = None
     new_first = None
     trace = []
-    for start in range(0, len(mic), BLOCK):
+    for start in range(0, len(mic), block_samples):
         block = aec.process(
-            mic[start:start + BLOCK], captured_at=(start + BLOCK) / RATE)
+            mic[start:start + block_samples],
+            captured_at=min(start + block_samples, len(mic)) / RATE)
         cleaned.append(block)
         if with_detector:
             clean_rms = _rms(block)
@@ -162,7 +166,10 @@ def _run_aec(mic: np.ndarray, far: np.ndarray,
 def evaluate(count: int = 43, seed: int = 20260825,
              detector_options: dict | None = None,
              include_traces: bool = False,
-             reference_mode: str = "wallclock") -> dict:
+             reference_mode: str = "wallclock", callback_ms: int = 100) -> dict:
+    if callback_ms not in (20, 50, 100):
+        raise ValueError('callback_ms must be 20, 50 or 100')
+    block_samples = RATE * callback_ms // 1000
     far_paths = sorted((ROOT / "demo_out").glob("q*.wav"))
     near_paths = sorted((ROOT / "research/cases12").glob("q*.wav"))
     if not far_paths or not near_paths:
@@ -192,10 +199,11 @@ def evaluate(count: int = 43, seed: int = 20260825,
         near[begin:end] = _at_rms(voice, rng.uniform(0.025, 0.070))
 
         echo_clean, _ = _run_aec(
-            echo + noise, far, reference_mode=reference_mode)
+            echo + noise, far, reference_mode=reference_mode,
+            block_samples=block_samples)
         mixed_clean, decisions = _run_aec(
             echo + near + noise, far, True, detector_options, include_traces,
-            reference_mode=reference_mode)
+            reference_mode=reference_mode, block_samples=block_samples)
 
         # Measure a full second immediately before the near talker enters,
         # after at least two seconds of adaptive-filter convergence.
@@ -236,7 +244,11 @@ def evaluate(count: int = 43, seed: int = 20260825,
         "seed": seed,
         "reference_mode": reference_mode,
         "detector": detector_options or {},
-        "callback_ms": 100,
+        "callback_ms": callback_ms,
+        "waveform_sources_sha256": {str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest()
+                                    for p in far_paths + near_paths},
+        "code_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        "timing_scope": "synthetic sample clock; callback compute and physical device latency excluded",
         "echo_attenuation_median_db": float(np.median(
             [r["echo_attenuation_db"] for r in rows])),
         "near_survival_median_percent": float(100 * np.median(
@@ -302,6 +314,8 @@ def main() -> int:
                              "on the same corpus")
     parser.add_argument("--trace", action="store_true",
                         help="include per-callback detector telemetry")
+    parser.add_argument("--callback-ms", type=int, choices=(20, 50, 100), default=100,
+                        help="research cadence trial; does not alter the live callback")
     parser.add_argument("--json", type=Path,
                         default=Path("research/results/aec_stress.json"))
     args = parser.parse_args()
@@ -319,7 +333,8 @@ def main() -> int:
     }
     result = evaluate(
         args.cases, args.seed, detector_options, include_traces=args.trace,
-        reference_mode=args.reference_mode)
+        reference_mode=args.reference_mode, callback_ms=args.callback_ms)
+    result['command'] = [sys.executable, *sys.argv]
     old, new = result["old"], result["reference_aware"]
     def delay_text(value) -> str:
         return "n/a" if value is None else f"{value:.0f} ms"
