@@ -110,16 +110,34 @@ def _selected(suite: str, tags: list[str], ids: list[str],
     return rows
 
 
-def _fixture(cache: Path, lane: str, case: BenchCase, voice: str) -> Path:
+def spoken_file_names(text: str) -> str:
+    """Explicit filename dictation for a separately versioned fixture arm.
+
+    Kokoro/misaki can drop digits and underscores inside filename tokens.
+    This changes only synthetic fixture wording, never the frozen v1 audio.
+    """
+    digits = ('zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine')
+    def spell(match):
+        stem, extension = match.group(0).rsplit('.', 1)
+        stem = ''.join(' underscore ' if c == '_' else
+                       ' ' + digits[int(c)] + ' ' if c.isdigit() else c for c in stem)
+        return ' '.join((stem + ' dot ' + ' '.join(extension)).split())
+    return re.sub(r'\b[A-Za-z0-9_]+\.(?:txt|md|json|csv)\b', spell, text)
+
+
+def _fixture(cache: Path, lane: str, case: BenchCase, voice: str,
+             *, explicit_file_names: bool = False) -> Path:
     from jaeger_agent_omni.voice import speak_kokoro
 
+    words = spoken_file_names(case.prompt) if explicit_file_names else case.prompt
+    version = 'v2-explicit-file-names' if explicit_file_names else 'v1'
     digest = hashlib.sha256(
-        f"v1\0{voice}\0{case.prompt}".encode("utf-8")
+        f"{version}\0{voice}\0{words}".encode("utf-8")
     ).hexdigest()[:16]
     path = cache / f"{lane}-{case.id}-{digest}.wav"
     if not path.is_file():
         cache.mkdir(parents=True, exist_ok=True)
-        speak_kokoro(case.prompt, path, voice=voice, speed=1.0)
+        speak_kokoro(words, path, voice=voice, speed=1.0)
     return path
 
 
@@ -313,16 +331,27 @@ def main() -> int:
                         default=Path("/tmp/jaeger-agentic-audio-corpus"))
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--prepare-only", action="store_true")
+    parser.add_argument('--fixture-manifest', type=Path,
+                        help='write a new fixture identity manifest before model evaluation; refuses overwrite')
     parser.add_argument("--discovery-hint", action="store_true",
                         help="research A/B: expose toolset descriptions and require capability discovery before declining")
     parser.add_argument("--bootstrap-skills", action="store_true",
                         help="research A/B: load initial skill tools before building the neural system prefix")
     parser.add_argument("--bootstrap-files", action="store_true",
                         help="research A/B: expose four concrete file schemas in the initial system prefix")
+    parser.add_argument("--completion-hint", action="store_true",
+                        help="research A/B: request complete, grounded multi-step execution")
+    parser.add_argument('--spoken-file-names', action='store_true',
+                        help='separate v2 fixture arm: pronounce filename digits, underscores and extensions explicitly; v1 unchanged')
     parser.add_argument("--max-tokens", type=int, default=96)
     parser.add_argument("--case-timeout-s", type=float, default=45.0,
                         help="hard per-row deadline; zero disables")
     args = parser.parse_args()
+    source_snapshot = {name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest()
+                       for name in ('research/benchmark_agentic_corpus.py',
+                                    'jaeger_agent_omni/core/agentic/omni_runtime.py',
+                                    'jaeger_agent_omni/core/runtime/stock_whisper.py',
+                                    'jaeger_agent_omni/tools/files.py')}
     from research.agentic_outcomes import check_outcome
     contract_path = ROOT / 'research/agentic_outcome_contract.json'
     outcomes = json.loads(contract_path.read_text())['cases']
@@ -330,8 +359,21 @@ def main() -> int:
     selected = _selected(
         args.suite, [x for x in args.tags.split(",") if x],
         [x for x in args.ids.split(",") if x], args.limit)
-    fixtures = [(lane, case, _fixture(args.audio_cache, lane, case, args.voice))
+    fixtures = [(lane, case, _fixture(args.audio_cache, lane, case, args.voice,
+                                     explicit_file_names=args.spoken_file_names))
                 for lane, case in selected]
+    if args.fixture_manifest:
+        fixture_record = {'command': [sys.executable, *sys.argv],
+            'version': 'v2-explicit-file-names' if args.spoken_file_names else 'v1',
+            'code_sha256': source_snapshot['research/benchmark_agentic_corpus.py'],
+            'rows': [{'id': lane + ':' + case.id, 'request': case.prompt,
+                      'spoken_text': spoken_file_names(case.prompt) if args.spoken_file_names else case.prompt,
+                      'audio': str(wav), 'audio_sha256': hashlib.sha256(wav.read_bytes()).hexdigest()}
+                     for lane, case, wav in fixtures]}
+        args.fixture_manifest.parent.mkdir(parents=True, exist_ok=True)
+        with args.fixture_manifest.open('x') as output:
+            json.dump(fixture_record, output, indent=2)
+            output.write('\n')
     if args.prepare_only:
         print(f"prepared {len(fixtures)} audio fixtures in {args.audio_cache}")
         return 0
@@ -347,6 +389,13 @@ def main() -> int:
         from jaeger_agent_omni.core.agentic.runtime import _load_skills
         _load_skills(ensure_bound(workspace_context.name))
     preparation = prepare_agentic_system(SYSTEM)
+    if args.completion_hint:
+        preparation = replace(preparation, system=preparation.system + (
+            "\nFollow every step in the user's request, in order. After each tool "
+            "result, continue any unfinished steps. Remembering information does "
+            "not write a file. If a requested name or content is ambiguous, ask "
+            "for clarification. Report only completed actions supported by tool "
+            "results.\n"))
     if args.discovery_hint:
         from jaeger_agent_omni.core.agentic.omni_runtime import toolset_scoping
         catalog = json.dumps(toolset_scoping.all_toolsets(), sort_keys=True)
@@ -414,6 +463,7 @@ def main() -> int:
             files_after = artifact_snapshot(workspace)
             row = {
                 "lane": lane, "id": case.id, "session": session_key,
+                "fixture_text": spoken_file_names(case.prompt) if args.spoken_file_names else case.prompt,
                 "prompt_ground_truth_not_fed": case.prompt if args.input_mode == "speech" else None,
                 "prompt_fed_as_text": case.prompt if args.input_mode == "text" else None,
                 "input_mode": args.input_mode,
@@ -474,12 +524,17 @@ def main() -> int:
         "text_or_transcript_fed_to_model": args.input_mode == "text",
         "input_mode": args.input_mode,
         "fixture_voice": args.voice,
+        "fixture_version": 'v2-explicit-file-names' if args.spoken_file_names else 'v1',
         "discovery_hint": args.discovery_hint,
         "bootstrap_files": args.bootstrap_files,
+        "completion_hint": args.completion_hint,
         "bootstrap_skills": args.bootstrap_skills,
         "initial_tools": [tool.name for tool in preparation.initial_tools],
         "system_sha256": hashlib.sha256(preparation.system.encode()).hexdigest(),
-        "code_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        "code_sha256": source_snapshot['research/benchmark_agentic_corpus.py'],
+        "source_snapshot": source_snapshot,
+        "backbone_path": str(args.model),
+        "max_tokens": args.max_tokens,
         "case_sources_sha256": {
             name: hashlib.sha256((ROOT / "jaeger_agent_omni/core/agentic/bench" / name).read_bytes()).hexdigest()
             for name in ("cases.py", "cases_b.py")},

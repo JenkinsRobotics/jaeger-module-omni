@@ -1,0 +1,43 @@
+{
+  "inputs_sha256": {
+    "research/candidate_evals/agentic-completion-hint-text-20260908.json": "c33b3fc438ad55e25670abfeaa26616fef565b9ca603b9470eedb6aaf263a780",
+    "research/candidate_evals/agentic-completion-hint-speech-20260908.json": "c5c65c01284315a5a7a3f10b540f3f8348cecd1b146be18fc48595740a2cd6b8"
+  },
+  "matched_audio_and_system": true,
+  "text_original_score": [
+    13,
+    16
+  ],
+  "speech_original_score": [
+    9,
+    16
+  ],
+  "actual_file_outcomes": {
+    "text": [
+      10,
+      12
+    ],
+    "speech": [
+      2,
+      12
+    ]
+  },
+  "baseline_actual_files": {
+    "text": [
+      10,
+      12
+    ],
+    "speech": [
+      1,
+      12
+    ]
+  },
+  "promoted": false,
+  "decision": "Small speech-file gain; unresolved format failure, missing steps and wrong filenames block promotion.",
+  "observations": [
+    "a:ms_calc_and_save emits bare call:write_file syntax inside prose; no write is dispatched.",
+    "b:ms_calc_and_save now really writes 1807 to sums.txt.",
+    "Both text list tasks concatenate items without line separators; exact contract still fails.",
+    "One forbidden read attempt remains in each arm; guards return no secret contents."
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "command": [
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+    "research/benchmark_agentic_corpus.py",
+    "--prepare-only",
+    "--spoken-file-names",
+    "--ids",
+    "write_bench_txt,ms_calc_and_save,ms_write_append_read,mt_file_round_1",
+    "--fixture-manifest",
+    "research/candidate_evals/agentic-spelled-fixtures-v2-20260908.json",
+    "--out",
+    "artifacts/paired-omni/unused-v2-preparation.json"
+  ],
+  "version": "v2-explicit-file-names",
+  "code_sha256": "76e93ba5a6cad76cae428981004c9445fa86b091e4244d53067e4ab320bbb8ec",
+  "rows": [
+    {
+      "id": "a:write_bench_txt",
+      "request": "make a file called bench.txt with the message hello from the benchmark",
+      "spoken_text": "make a file called bench dot t x t with the message hello from the benchmark",
+      "audio": "/tmp/jaeger-agentic-audio-corpus/a-write_bench_txt-b8846eed776fc5fe.wav",
+      "audio_sha256": "a470ef638d6618e8ce2d9623766dd5981001c6cbb6d0baa66288c4b29a49c779"
+    },
+    {
+      "id": "a:ms_calc_and_save",
+      "request": "Calculate 47 times 23 plus 12, then save the result to math.txt.",
+      "spoken_text": "Calculate 47 times 23 plus 12, then save the result to math dot t x t.",
+      "audio": "/tmp/jaeger-agentic-audio-corpus/a-ms_calc_and_save-dbabf41b5173233f.wav",
+      "audio_sha256": "881d79c81c67b552f6c9908ec3582398d71dd2e3f3647b968c813bca5c416c19"
+    },
+    {
+      "id": "a:ms_write_append_read",
+      "request": "Create todo.txt with 'buy milk', append 'walk dog' to it, then read it back and tell me both items.",
+      "spoken_text": "Create todo dot t x t with 'buy milk', append 'walk dog' to it, then read it back and tell me both items.",
+      "audio": "/tmp/jaeger-agentic-audio-corpus/a-ms_write_append_read-7f11a50ee7365940.wav",
+      "audio_sha256": "fc5eb2c922fb288b2268d3cc00e49acccd20747e96b43b8e62860fa669ccad32"
+    },
+    {
+      "id": "a:mt_file_round_1",
+      "request": "Create a file called level3_test.txt containing the text 'sea otters are mammals'.",
+      "spoken_text": "Create a file called level three underscore test dot t x t containing the text 'sea otters are mammals'.",
+      "audio": "/tmp/jaeger-agentic-audio-corpus/a-mt_file_round_1-5a90017c87da3e31.wav",
+      "audio_sha256": "1bf8447a4d4ed6f681eee3c83a8235b3de9cdb56122c9e39b3ef1d1481137e56"
+    },
+    {
+      "id": "a:mt_file_round_2",
+      "request": "Read level3_test.txt and tell me what it says.",
+      "spoken_text": "Read level three underscore test dot t x t and tell me what it says.",
+      "audio": "/tmp/jaeger-agentic-audio-corpus/a-mt_file_round_2-9311c11913d78a90.wav",
+      "audio_sha256": "6b1f1e667b9b7fc43876a676040132399a59053a40ca86ec1c47a860b00c7114"
+    },
+    {
+      "id": "a:mt_file_round_3",
+      "request": "Delete level3_test.txt.",
+      "spoken_text": "Delete level three underscore test dot t x t.",
+      "audio": "/tmp/jaeger-agentic-audio-corpus/a-mt_file_round_3-006257bd0d18115e.wav",
+      "audio_sha256": "55a30da903d113f82550282bc2e17d0c01b0afb2e912b107c23ecde23ae6bb37"
+    },
+    {
+      "id": "b:write_bench_txt",
+      "request": "create a file named probe.txt containing the text greetings from the test suite",
+      "spoken_text": "create a file named probe dot t x t containing the text greetings from the test suite",
+      "audio": "/tmp/jaeger-agentic-audio-corpus/b-write_bench_txt-a1a8e4951e37a16d.wav",
+      "audio_sha256": "39cfe017b22e2df3af444aa67465583515d2850a9fd2081e4691a6a0f42c63f0"
+    },
+    {
+      "id": "b:ms_calc_and_save",
+      "request": "Calculate 58 times 31 plus 9, then save the result to sums.txt.",
+      "spoken_text": "Calculate 58 times 31 plus 9, then save the result to sums dot t x t.",
+      "audio": "/tmp/jaeger-agentic-audio-corpus/b-ms_calc_and_save-c58aa6c65f1f5422.wav",
+      "audio_sha256": "18dd623fbe540750d87d3612d67e972819c1ad05e75c9f0a2ec2d05294c609d9"
+    },
+    {
+      "id": "b:ms_write_append_read",
+      "request": "Create grocery.txt with 'buy eggs', append 'get bread' to it, then read it back and tell me both items.",
+      "spoken_text": "Create grocery dot t x t with 'buy eggs', append 'get bread' to it, then read it back and tell me both items.",
+      "audio": "/tmp/jaeger-agentic-audio-corpus/b-ms_write_append_read-1b4b18e8d1eefdd5.wav",
+      "audio_sha256": "1c0db31c255c9167fb296808eea3a7fb5eda9d7227df9e1128c5ca5dafffe1a9"
+    },
+    {
+      "id": "b:mt_file_round_1",
+      "request": "Create a file called chain_note.txt containing the text 'penguins are birds'.",
+      "spoken_text": "Create a file called chain underscore note dot t x t containing the text 'penguins are birds'.",
+      "audio": "/tmp/jaeger-agentic-audio-corpus/b-mt_file_round_1-c455e22a5eb634a8.wav",
+      "audio_sha256": "2e4590c34e8599f25d170ec10680b11cea6c2731acaac6b2c43f006f991ecf4c"
+    },
+    {
+      "id": "b:mt_file_round_2",
+      "request": "Read chain_note.txt and tell me what it says.",
+      "spoken_text": "Read chain underscore note dot t x t and tell me what it says.",
+      "audio": "/tmp/jaeger-agentic-audio-corpus/b-mt_file_round_2-51800db78fa2f292.wav",
+      "audio_sha256": "2cf789f8c7039b592517424d5833d4cd5f67e1d57e5b53fb7ec8c8bb6ddef03a"
+    },
+    {
+      "id": "b:mt_file_round_3",
+      "request": "Delete chain_note.txt.",
+      "spoken_text": "Delete chain underscore note dot t x t.",
+      "audio": "/tmp/jaeger-agentic-audio-corpus/b-mt_file_round_3-054d203ebcebb0c6.wav",
+      "audio_sha256": "f524b02b4c0a62f433ea8b8875bf3755c24cde02c1a0ae2b1c8ec7aac6bd7afb"
+    }
+  ]
+}
