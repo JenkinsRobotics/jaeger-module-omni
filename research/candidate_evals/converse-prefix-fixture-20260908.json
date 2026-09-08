@@ -1,0 +1,11 @@
+{
+  "source_audio_sha256": {
+    "jaeger_agent_omni/tests/simcache/hey_computer_i_really_need_your_help_planning_a_very_big_sur.npy": "04308769ab84e63e62ae6380c694c777cb06848fec33179b354e68fe5ca2340a",
+    "jaeger_agent_omni/tests/simcache/she_is_turning_thirty_years_old_this_month_and_she_truly_lov.npy": "2e5714439ce2df98b5d3001616e60d7572b316bdeb81d549d6467951df4ec5bb"
+  },
+  "output": "artifacts/paired-omni/converse-prefix-audio.npy",
+  "sha256": "5f171abf1ef9b2159c6ecbbccccaa81431f4345df1770a5e0a5a2ea83f51fcbe",
+  "sample_rate": 16000,
+  "seconds": 13.8,
+  "construction": "concatenate the two existing synthetic campaign clips, preserve samples; cost probe uses first 12 seconds"
+}

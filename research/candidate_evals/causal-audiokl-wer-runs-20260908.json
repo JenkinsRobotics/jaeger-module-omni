@@ -1,0 +1,74 @@
+[
+  {
+    "command": [
+      "training/run_gpu.sh",
+      "research/converse_ear_wer.py",
+      "--node",
+      "jaeger_agent_omni/nodes/jaegeromni-41m-medium-causal-audiokl50-v1",
+      "--manifest",
+      "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-eval-v1/devclean/manifest.jsonl",
+      "-n",
+      "64",
+      "--output",
+      "research/candidate_evals/causal-audiokl50-20260908-devclean64.json"
+    ],
+    "seconds": 59.64899512496777,
+    "exit_code": 0,
+    "log": "artifacts/paired-omni/audiokl50-devclean64.log",
+    "output": "research/candidate_evals/causal-audiokl50-20260908-devclean64.json"
+  },
+  {
+    "command": [
+      "training/run_gpu.sh",
+      "research/converse_ear_wer.py",
+      "--node",
+      "jaeger_agent_omni/nodes/jaegeromni-41m-medium-causal-audiokl50-v1",
+      "--manifest",
+      "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-expanded-v1/ami5_train_validation/manifest.jsonl",
+      "-n",
+      "64",
+      "--output",
+      "research/candidate_evals/causal-audiokl50-20260908-ami64.json"
+    ],
+    "seconds": 41.046977291989606,
+    "exit_code": 0,
+    "log": "artifacts/paired-omni/audiokl50-ami64.log",
+    "output": "research/candidate_evals/causal-audiokl50-20260908-ami64.json"
+  },
+  {
+    "command": [
+      "training/run_gpu.sh",
+      "research/converse_ear_wer.py",
+      "--node",
+      "jaeger_agent_omni/nodes/jaegeromni-41m-medium-causal-audiokl150-v1",
+      "--manifest",
+      "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-eval-v1/devclean/manifest.jsonl",
+      "-n",
+      "64",
+      "--output",
+      "research/candidate_evals/causal-audiokl150-20260908-devclean64.json"
+    ],
+    "seconds": 58.25873916596174,
+    "exit_code": 0,
+    "log": "artifacts/paired-omni/audiokl150-devclean64.log",
+    "output": "research/candidate_evals/causal-audiokl150-20260908-devclean64.json"
+  },
+  {
+    "command": [
+      "training/run_gpu.sh",
+      "research/converse_ear_wer.py",
+      "--node",
+      "jaeger_agent_omni/nodes/jaegeromni-41m-medium-causal-audiokl150-v1",
+      "--manifest",
+      "/Users/jonathanjenkins/models/jaeger-training-data/stock-whisper-medium-expanded-v1/ami5_train_validation/manifest.jsonl",
+      "-n",
+      "64",
+      "--output",
+      "research/candidate_evals/causal-audiokl150-20260908-ami64.json"
+    ],
+    "seconds": 41.3583995840163,
+    "exit_code": 0,
+    "log": "artifacts/paired-omni/audiokl150-ami64.log",
+    "output": "research/candidate_evals/causal-audiokl150-20260908-ami64.json"
+  }
+]

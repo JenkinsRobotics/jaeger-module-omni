@@ -1,0 +1,105 @@
+{
+  "comparisons": [
+    {
+      "step": 50,
+      "checks": [
+        {
+          "gate": "devclean64",
+          "baseline": "research/candidate_evals/medium-causal-full-20260904-devclean64.json",
+          "candidate": "research/candidate_evals/causal-audiokl50-20260908-devclean64.json",
+          "baseline_sha256": "ff884437d0c741534fb9feb6d74b711ca437bfcf26d3ae48fbed49ff065f751c",
+          "candidate_sha256": "622e7c2825f94dc120714398b890018a82e2c7f35825b700a33f6560b3f41936",
+          "baseline_edits": 48,
+          "candidate_edits": 57,
+          "reference_words": 955,
+          "baseline_wer": 0.050261780104712044,
+          "candidate_wer": 0.05968586387434555,
+          "population_verified": true,
+          "same_manifest_and_scorer": true
+        },
+        {
+          "gate": "ami64",
+          "baseline": "research/candidate_evals/medium-causal-full-20260904-ami64.json",
+          "candidate": "research/candidate_evals/causal-audiokl50-20260908-ami64.json",
+          "baseline_sha256": "c51ba8da336fda76191d68ea52a07151d59e802dfb2a9ad71dc3bf5c3f561a70",
+          "candidate_sha256": "e50486e9573f8a673630f9a4f6c166f98bddbeedcfa62de028b03a367105ed3c",
+          "baseline_edits": 190,
+          "candidate_edits": 216,
+          "reference_words": 673,
+          "baseline_wer": 0.2823179791976226,
+          "candidate_wer": 0.3209509658246657,
+          "population_verified": true,
+          "same_manifest_and_scorer": true
+        }
+      ],
+      "command": [
+        ".venv/bin/python",
+        "training/compare_candidate.py",
+        "medium-causal-full-20260904",
+        "causal-audiokl50-20260908",
+        "--gates",
+        "devclean64",
+        "ami64",
+        "--skip-cases12"
+      ],
+      "exit_code": 1,
+      "stdout": "gate                  baseline       candidate      delta\ndevclean64               48 edits      57 edits      +9\nami64                   190 edits     216 edits     +26\nREJECT: devclean64 +9 edits; ami64 +26 edits\n",
+      "stderr": "",
+      "promoted": false
+    },
+    {
+      "step": 150,
+      "checks": [
+        {
+          "gate": "devclean64",
+          "baseline": "research/candidate_evals/medium-causal-full-20260904-devclean64.json",
+          "candidate": "research/candidate_evals/causal-audiokl150-20260908-devclean64.json",
+          "baseline_sha256": "ff884437d0c741534fb9feb6d74b711ca437bfcf26d3ae48fbed49ff065f751c",
+          "candidate_sha256": "78a65b05315a4c925fa728d4e049aaecf91a3f8119d0b067aa667ffcbfb084fb",
+          "baseline_edits": 48,
+          "candidate_edits": 55,
+          "reference_words": 955,
+          "baseline_wer": 0.050261780104712044,
+          "candidate_wer": 0.05759162303664921,
+          "population_verified": true,
+          "same_manifest_and_scorer": true
+        },
+        {
+          "gate": "ami64",
+          "baseline": "research/candidate_evals/medium-causal-full-20260904-ami64.json",
+          "candidate": "research/candidate_evals/causal-audiokl150-20260908-ami64.json",
+          "baseline_sha256": "c51ba8da336fda76191d68ea52a07151d59e802dfb2a9ad71dc3bf5c3f561a70",
+          "candidate_sha256": "9087143cd2d3501330378ec190ac429f16967eb67aedea39c1c3a50f25b250e2",
+          "baseline_edits": 190,
+          "candidate_edits": 215,
+          "reference_words": 673,
+          "baseline_wer": 0.2823179791976226,
+          "candidate_wer": 0.31946508172362553,
+          "population_verified": true,
+          "same_manifest_and_scorer": true
+        }
+      ],
+      "command": [
+        ".venv/bin/python",
+        "training/compare_candidate.py",
+        "medium-causal-full-20260904",
+        "causal-audiokl150-20260908",
+        "--gates",
+        "devclean64",
+        "ami64",
+        "--skip-cases12"
+      ],
+      "exit_code": 1,
+      "stdout": "gate                  baseline       candidate      delta\ndevclean64               48 edits      55 edits      +7\nami64                   190 edits     215 edits     +25\nREJECT: devclean64 +7 edits; ami64 +25 edits\n",
+      "stderr": "",
+      "promoted": false
+    }
+  ],
+  "decision": "reject both checkpoints; both matched WER gates regress",
+  "selected_full_ear": "jaegeromni-41m-converse",
+  "selected_half_quasi_ear": "jaegeromni-41m-medium",
+  "production_changed": false,
+  "continuation": false,
+  "scope": "two development quality gates; no lockbox or answer evaluation after quality failure",
+  "weight_hash_verification": "both new nodes and unchanged source medium verified with node_registry.verify_weights"
+}

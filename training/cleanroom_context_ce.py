@@ -2,10 +2,11 @@
 """Continue the Qwen-free clean-room context adapter through frozen Gemma.
 
 This is the repository-owned trainer for ``cleanroom_context_v2``.  It keeps
-Whisper and Gemma frozen, trains every deployed connector parameter, and uses
-only human transcript labels: next-token CE plus same-Gemma text-equivalence
-KL.  A frozen-start output anchor protects the already measured acoustic map
-while a balanced multi-domain curriculum improves room robustness.
+Whisper and Gemma frozen and trains the connector with human-transcript CE.
+The optional KL teacher uses either truth text or the frozen starting adapter's
+audio-conditioned logits. A separately weighted output anchor is optional;
+the causal audio-KL trial disables it to avoid anchoring future-aware frames.
+Training losses alone do not establish improved recognition or streaming cost.
 """
 
 from __future__ import annotations

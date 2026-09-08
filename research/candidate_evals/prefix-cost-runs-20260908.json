@@ -1,0 +1,32 @@
+[
+  {
+    "command": [
+      "training/run_gpu.sh",
+      "research/converse_prefix_cost.py",
+      "--node",
+      "jaeger_agent_omni/nodes/jaegeromni-41m-converse",
+      "--audio",
+      "artifacts/paired-omni/converse-prefix-audio.npy",
+      "--output",
+      "research/candidate_evals/prefix-cost-jaegeromni-41m-converse-20260908.json"
+    ],
+    "exit_code": 0,
+    "seconds": 20.04000704200007,
+    "log": "artifacts/paired-omni/prefix-cost-jaegeromni-41m-converse.log"
+  },
+  {
+    "command": [
+      "training/run_gpu.sh",
+      "research/converse_prefix_cost.py",
+      "--node",
+      "jaeger_agent_omni/nodes/jaegeromni-41m-medium-causal-audiokl150-v1",
+      "--audio",
+      "artifacts/paired-omni/converse-prefix-audio.npy",
+      "--output",
+      "research/candidate_evals/prefix-cost-jaegeromni-41m-medium-causal-audiokl150-v1-20260908.json"
+    ],
+    "exit_code": 0,
+    "seconds": 19.43934733304195,
+    "log": "artifacts/paired-omni/prefix-cost-jaegeromni-41m-medium-causal-audiokl150-v1.log"
+  }
+]

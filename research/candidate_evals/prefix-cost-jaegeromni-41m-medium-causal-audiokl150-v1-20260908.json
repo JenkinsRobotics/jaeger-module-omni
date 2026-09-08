@@ -1,0 +1,123 @@
+{
+  "command": [
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+    "research/converse_prefix_cost.py",
+    "--node",
+    "jaeger_agent_omni/nodes/jaegeromni-41m-medium-causal-audiokl150-v1",
+    "--audio",
+    "artifacts/paired-omni/converse-prefix-audio.npy",
+    "--output",
+    "research/candidate_evals/prefix-cost-jaegeromni-41m-medium-causal-audiokl150-v1-20260908.json"
+  ],
+  "code_sha256": "b32b45dea96956befbfeb54423ed8044345e9eb4922ec8b23029df034831c768",
+  "node": "jaegeromni-41m-medium-causal-audiokl150-v1",
+  "node_sha256": "26f09d544a71574c130b4a96d6199325fc25c5a6fcbd4e15a434ed12ebb3218f",
+  "adapter_sha256": "6a69b8cc33887df4b341c56a3c9f22bf96ed47d5bc1468a89203facb2fa6921f",
+  "audio_sha256": "5f171abf1ef9b2159c6ecbbccccaa81431f4345df1770a5e0a5a2ea83f51fcbe",
+  "cadence_seconds": 2,
+  "max_tokens": 128,
+  "prefixes": [
+    {
+      "prefix_seconds": 2,
+      "hypothesis": "HEY COMPUTER I REALLY NEED",
+      "request_ms": 294.4017090485431,
+      "metrics": {
+        "audio_s": 2.0,
+        "audio_tokens": 100,
+        "generated_tokens": 5,
+        "front_end_s": 0.03383087494876236,
+        "prepare_s": 0.037254625000059605,
+        "ttft_s": 0.14988454099511728,
+        "generation_s": 0.2570703749661334,
+        "total_s": 0.294355749967508
+      }
+    },
+    {
+      "prefix_seconds": 4,
+      "hypothesis": "hey computer i really need your help planning a very big surprise b",
+      "request_ms": 549.4042080244981,
+      "metrics": {
+        "audio_s": 4.0,
+        "audio_tokens": 200,
+        "generated_tokens": 13,
+        "front_end_s": 0.055059083038941026,
+        "prepare_s": 0.0591323749977164,
+        "ttft_s": 0.20707787497667596,
+        "generation_s": 0.4901872919872403,
+        "total_s": 0.5493562500341795
+      }
+    },
+    {
+      "prefix_seconds": 6,
+      "hypothesis": "hey computer i really need your help planning a very big surprise birthday party for my younger sister sue",
+      "request_ms": 723.6850000335835,
+      "metrics": {
+        "audio_s": 6.0,
+        "audio_tokens": 300,
+        "generated_tokens": 19,
+        "front_end_s": 0.0644076659809798,
+        "prepare_s": 0.06987716595176607,
+        "ttft_s": 0.23824670794419944,
+        "generation_s": 0.653730749967508,
+        "total_s": 0.7236346249701455
+      }
+    },
+    {
+      "prefix_seconds": 8,
+      "hypothesis": "hey computer i really need your help planning a very big surprise birthday party for my younger sister soon she is turning thirty",
+      "request_ms": 889.2542910180055,
+      "metrics": {
+        "audio_s": 8.0,
+        "audio_tokens": 400,
+        "generated_tokens": 23,
+        "front_end_s": 0.08038437500363216,
+        "prepare_s": 0.08678195800166577,
+        "ttft_s": 0.2920868750079535,
+        "generation_s": 0.8023942909785546,
+        "total_s": 0.8892040829523467
+      }
+    },
+    {
+      "prefix_seconds": 10,
+      "hypothesis": "hey computer i really need your help planning a very big surprise birthday party for my younger sister soon she is turning thirty years old this month and she truly loves smoo",
+      "request_ms": 1167.0589579734951,
+      "metrics": {
+        "audio_s": 10.0,
+        "audio_tokens": 500,
+        "generated_tokens": 33,
+        "front_end_s": 0.09318745799828321,
+        "prepare_s": 0.10091295803431422,
+        "ttft_s": 0.3275934159755707,
+        "generation_s": 1.0660415409947746,
+        "total_s": 1.1669877910171635
+      }
+    },
+    {
+      "prefix_seconds": 12,
+      "hypothesis": "hey computer i really need your help planning a very big surprise birthday party for my younger sister soon she is turning thirty years old this month and she truly loves smooth jazz music rich chocolate",
+      "request_ms": 1324.942415987607,
+      "metrics": {
+        "audio_s": 12.0,
+        "audio_tokens": 600,
+        "generated_tokens": 36,
+        "front_end_s": 0.11001133301761001,
+        "prepare_s": 0.12462350004352629,
+        "ttft_s": 0.38443570805247873,
+        "generation_s": 1.2002095830393955,
+        "total_s": 1.3248767080367543
+      }
+    }
+  ],
+  "sum_request_seconds": 4.948746582085732,
+  "unique_audio_seconds": 12,
+  "total_audio_seconds_reencoded": 42,
+  "adapter_causal_prefix_max_abs_drift": 0.0,
+  "adapter_causality_probe_pass": true,
+  "peak_mlx_memory_bytes": 5249779736,
+  "production_changed": false,
+  "scope": "isolated growing-prefix ASR, warm model; no physical I/O or speech output",
+  "limits": [
+    "one audio fixture and one adapter prefix-integrity tensor",
+    "Whisper re-encodes prefixes; adapter causality does not make the encoder incremental"
+  ]
+}

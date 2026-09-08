@@ -1,0 +1,67 @@
+{
+  "rows": [
+    {
+      "node": "jaegeromni-41m-converse",
+      "report": "research/candidate_evals/prefix-cost-jaegeromni-41m-converse-20260908.json",
+      "sha256": "7f78d164b91150ab097e0541c745d309408e485781376def475456ac8aab7c1b",
+      "audio_sha256": "5f171abf1ef9b2159c6ecbbccccaa81431f4345df1770a5e0a5a2ea83f51fcbe",
+      "max_tokens": 128,
+      "prefix_seconds": [
+        2,
+        4,
+        6,
+        8,
+        10,
+        12
+      ],
+      "request_ms": [
+        294.63291697902605,
+        563.2544580148533,
+        722.6242909673601,
+        883.8715829770081,
+        1161.5782500011846,
+        1313.8945000246167
+      ],
+      "sum_request_seconds": 4.939855998964049,
+      "peak_mlx_memory_bytes": 5249861696,
+      "causality_probe_pass": true,
+      "adapter_prefix_drift": 0.0
+    },
+    {
+      "node": "jaegeromni-41m-medium-causal-audiokl150-v1",
+      "report": "research/candidate_evals/prefix-cost-jaegeromni-41m-medium-causal-audiokl150-v1-20260908.json",
+      "sha256": "184624cbe708dd21165284cc71e2b76c7cf3b3977904031d9bbbe7273ea8d2e3",
+      "audio_sha256": "5f171abf1ef9b2159c6ecbbccccaa81431f4345df1770a5e0a5a2ea83f51fcbe",
+      "max_tokens": 128,
+      "prefix_seconds": [
+        2,
+        4,
+        6,
+        8,
+        10,
+        12
+      ],
+      "request_ms": [
+        294.4017090485431,
+        549.4042080244981,
+        723.6850000335835,
+        889.2542910180055,
+        1167.0589579734951,
+        1324.942415987607
+      ],
+      "sum_request_seconds": 4.948746582085732,
+      "peak_mlx_memory_bytes": 5249779736,
+      "causality_probe_pass": true,
+      "adapter_prefix_drift": 0.0
+    }
+  ],
+  "cpu": "Apple M1 Max",
+  "physical_memory_bytes": 34359738368,
+  "platform": "macOS-26.6.2-arm64-arm-64bit",
+  "scope": "warm growing-prefix complete transcript generation; one fixture, no physical I/O, endpointing, TTS or model load; MLX allocation only, not whole-process/system memory",
+  "unique_audio_seconds": 12,
+  "total_audio_seconds_reencoded": 42,
+  "reencode_amplification": 3.5,
+  "decision": "Both adapters pass prefix-integrity probe. Whisper is still re-encoded; the new candidate fails quality and is not promoted. One timing trace is insufficient for a general speedup claim.",
+  "production_changed": false
+}
