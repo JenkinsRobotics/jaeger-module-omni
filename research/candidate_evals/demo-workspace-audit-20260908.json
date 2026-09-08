@@ -1,0 +1,26 @@
+{
+  "cpu_report": "research/candidate_evals/demo-hardening-cpu-final-20260908.json",
+  "cpu_report_sha256": "ff1b4e3f02fa024a95ae0587255268ead95a49653957dcbc509598cf9bc19401",
+  "scope": "CPU results are for the shared working tree, including user-owned pending changes/tests; these files are excluded from assistant commits.",
+  "user_owned_pending_paths_sha256": {
+    "Full DuplexDemo App/README.md": "8353f2b1c7b2436f58bbd2ead9004845a25a7ee170785723b047764dd0bec7d6",
+    "Full DuplexDemo App/omni_duplex_gui.py": "55492cb60e0084379a216acc463c4bb0e7fb73dde5032c8ddb7959216e426c70",
+    "jaeger_agent_omni/core/agentic/omni_runtime.py": "aa4809da9bf5dd52dc1b08a229389cef3dcb68c8b7dace3ed4278b7fd2f88861",
+    "jaeger_agent_omni/core/runtime/__init__.py": "4de752cd8ae190a42e1b5801fca9f0afb57ffb7eabc8398672fd331fea1ec2b0",
+    "jaeger_agent_omni/core/runtime/duplex.py": "6635d068c7eae61be0cee7db0f47aca49f9b2fde744df134dde02eb99a7cff26",
+    "jaeger_agent_omni/tests/test_agentic_omni.py": "a7e669f2b8e70efc7d30d8f7e4e80d529b2d4a11ddc4eb8dde0c7090cc779c61",
+    "HANDOFF.md": "e53fb069d3c5d839c076765dbbdef064daab01e33613d2243b3469fe64c09080",
+    "jaeger_agent_omni/core/agentic/observer.py": "f0b3296e44c933f7e939263b578b3a6c9594435fc3c1598dc548d5d5d4f4ac73",
+    "jaeger_agent_omni/core/runtime/duplex_mode.py": "9bbc1824f09ecf5eeafcf8dc77afe57118aede45ad315d3541db829928ab6f91",
+    "jaeger_agent_omni/tests/test_agentic_observer.py": "a1684edf0b2059329ece76333bef47fe438c541433b1febb112c5fa5170b8265",
+    "jaeger_agent_omni/tests/test_duplex_mode.py": "d7bcca1f93c13258e80827e65ca1095f52c3ae7a68f39af759ca30b8af32c279"
+  },
+  "documentation_links_checked": [
+    "docs/OMNI_DEMO_PROGRESS_20260907.md",
+    "docs/DEMO_READINESS_PLAN_20260907.md",
+    "docs/MULTIMODAL_DEMO.md"
+  ],
+  "missing_documentation_links": [],
+  "new_weights_committed": false,
+  "production_models_promoted": false
+}

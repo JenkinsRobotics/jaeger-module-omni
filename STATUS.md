@@ -1,6 +1,40 @@
-# Jaeger Agent Omni — measured state, 2026-09-05
+# Jaeger Agent Omni — measured state, 2026-09-08
 
 Measured ledger. Every claim here has a command that reproduces it.
+
+2026-09-08 measured checkpoint: frozen demo **35/48 (72.9%)**, below 95%.
+CPU **112 tests / 14 subtests**, converse selftest **18/18**. Half/quasi/full
+pass 23/23; the first barge-continue run fails 3/4, then passes 4/4 on diagnostic
+retry. A disabled neural endpoint passes a sequential 27/27 but fails the new
+one-request self-echo audit (1/2 versus old energy 2/2). No clean current default
+consecutive campaign is claimed.
+
+Physical replay captures **304.9 s**, no drops/overflows, clean 134 ms shutdown,
+but **zero successful actions and zero uninterrupted replies**. The original
+13/13 attempt-based scorer was wrong; the hardened gate fails **14/16**.
+No three 30-minute sessions have been attempted. The file-schema research arm
+has **10/12 text versus 1/12 speech** actual file outcomes; full speech corpus
+45/162 under the old scorer. Completion hints reach 2/12 files; separate,
+explicitly spelled v2 speech fixtures reach 4/12, without changing v1 scores.
+
+Joint image/audio/text in the same frozen MLX brain/cache passes **20/20** on
+synthetic coverage. The runnable multimodal demo passes three turns and saves
+three valid speech WAVs. All new model nodes remain disabled: **35 nodes /
+13 profiles**, medium half/quasi, existing causal full, speaker context opt-in.
+WavLM offline overlap F1 .873/.837 is disqualified by future audio and false
+alarms; bounded-window F1 .819/.798 also fails event reliability/delay gates.
+AEC control remains **601.9 ms p95**, above 300 ms. The distinct causal audio-KL
+trial is rejected: steps 50/150 yield **5.97/5.76% clean, 32.10/31.95% meeting**,
+regressing the unchanged full ear **5.03/28.23%** on both matched gates.
+
+Matched ASR favors MiniCPM-o 4.5 (**2.20% vs 4.82% clean; 13.82% vs 33.28%
+AMI**); both answer 12/12. Jaeger has lower complete-text request latency,
+excluding loading, endpointing and TTS. The different deployed quantizations
+and development populations limit the comparison. No overall win is claimed.
+Details, limits and reproducible evidence:
+[`docs/OMNI_DEMO_PROGRESS_20260907.md`](docs/OMNI_DEMO_PROGRESS_20260907.md).
+
+Older dated entries below retain their original scopes and scores.
 
 2026-09-05 physical acoustic replay: first run captured **299.9 s**, no drops
 or mic overflows, but all 34 generation attempts were cut (32 halted plus two

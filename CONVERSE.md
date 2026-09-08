@@ -5,6 +5,37 @@ its 27/27 campaign state (playground commit `9f1103b`). This is the full
 pipeline — real trained weights, real node graph, real duplex ladder — not a
 facade: text, vision, and audio in; text and audio out.
 
+## Current checkpoint · 2026-09-08
+
+Selected ears and quasi default are unchanged. The current campaign passes
+half 12/12, quasi 6/6 and full 5/5; barge-continue first fails 3/4 and then
+passes 4/4 on diagnostic retry. This is not a clean consecutive 27/27 result.
+The separate neural endpoint passes 27/27 but admits self-echo; its extra-reply
+audit fails, so the candidate stays disabled. Selftest remains **18/18**.
+
+New audio-KL causal checkpoints are rejected on the same manifests and scorer:
+
+| Ear | devclean64 WER | AMI64 WER |
+|---|---:|---:|
+| Current full | 5.03% | 28.23% |
+| Audio-KL step 50 | 5.97% | 32.10% |
+| Audio-KL step 150 | 5.76% | 31.95% |
+
+Both checkpoints have separate immutable nodes, disabled in all 13 profiles;
+registry now has **35 nodes**. One growing-prefix trace takes 4.94/4.95 seconds
+for control/step150 across six previews, re-encoding 42 seconds for 12 seconds
+of unique audio. Neither training quality nor preview cost supports promotion.
+
+The legacy shared-text vision fallback scores 19/20 on expanded coverage.
+A separate [single-brain multimodal demo](docs/MULTIMODAL_DEMO.md) now combines
+image/audio/text in one persistent MLX brain/cache; its synthetic joint probe
+passes 20/20. These use different protocols and do not establish a controlled
+accuracy gain. Speaker context remains opt-in.
+
+Full evidence, limits and remaining red gates:
+[execution report](docs/OMNI_DEMO_PROGRESS_20260907.md). Older sections below
+retain their dated measurements.
+
 ## Tier routing verified — 2026-09-04
 
 Half/quasi now select the unchanged `jaegeromni-41m-medium` pairing through

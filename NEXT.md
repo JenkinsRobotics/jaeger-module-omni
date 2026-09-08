@@ -1,5 +1,35 @@
 # Next steps — current plan
 
+2026-09-08 implementation and measured decisions:
+[`docs/OMNI_DEMO_PROGRESS_20260907.md`](docs/OMNI_DEMO_PROGRESS_20260907.md).
+Keep quasi default in converse, medium for half/quasi and the existing causal ear
+for full. No trial is promoted. The frozen demo suite is **35/48 (72.9%)**;
+112 CPU tests, 14 subtests and 18/18 selftest pass. The default barge campaign
+first fails 3/4, then passes 4/4; other tiers pass 23/23. A neural endpoint passes
+27/27 but triggers an extra reply to self-echo and is rejected.
+
+The five-minute physical replay records 304.9 seconds, zero drops/overflows and
+clean shutdown, but **zero successful actions and zero uninterrupted replies**.
+The corrected physical gate is 14/16, failed. Do not start the three 30-minute
+acceptance sessions until these behavioral failures are fixed.
+
+Next: fix self-echo admission and AEC tail together with an independent overlap
+model that passes event reliability, not just frame F1; then prove actual speech
+multi-step outcomes using acoustically unambiguous frozen requests. WavLM offline
+and bounded-window trials are rejected. Do not continue their recipes unchanged.
+The distinct causal audio-KL trial is also rejected: steps 50/150 score
+5.97/5.76% clean and 32.10/31.95% meeting versus the full control 5.03/28.23%.
+Keep both immutable candidates disabled; no continuation.
+
+A runnable [single-brain multimodal demo](docs/MULTIMODAL_DEMO.md) now accepts
+image/audio/text turns and saves spoken replies. It passes a three-turn smoke
+and the joint probe passes 20/20 synthetic checks. Expand to natural images,
+long sessions and matched MiniCPM visual/action/duplex tests. Current MiniCPM
+comparison covers ASR and 12 questions only: MiniCPM wins both ASR sets; Jaeger
+has lower complete-text request latency, excluding startup, endpointing and TTS.
+
+The dated checkpoints below remain historical evidence, not new release passes.
+
 2026-09-07 user-directed side research: develop biologically inspired local
 learning and internal prediction models. The CPU-only
 [`predictive coding lab`](research/predictive_coding/README.md) now demonstrates

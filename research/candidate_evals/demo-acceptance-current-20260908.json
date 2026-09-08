@@ -1,0 +1,386 @@
+{
+  "completion_rate": 0.7291666666666666,
+  "passed_cases": 35,
+  "total_cases": 48,
+  "cases": [
+    {
+      "id": "cases12:q00",
+      "kind": "answer",
+      "key": "cases12:q00",
+      "passed": true
+    },
+    {
+      "id": "cases12:q01",
+      "kind": "answer",
+      "key": "cases12:q01",
+      "passed": true
+    },
+    {
+      "id": "cases12:q02",
+      "kind": "answer",
+      "key": "cases12:q02",
+      "passed": true
+    },
+    {
+      "id": "cases12:q03",
+      "kind": "answer",
+      "key": "cases12:q03",
+      "passed": true
+    },
+    {
+      "id": "cases12:q04",
+      "kind": "answer",
+      "key": "cases12:q04",
+      "passed": true
+    },
+    {
+      "id": "cases12:q05",
+      "kind": "answer",
+      "key": "cases12:q05",
+      "passed": true
+    },
+    {
+      "id": "cases12:q06",
+      "kind": "answer",
+      "key": "cases12:q06",
+      "passed": true
+    },
+    {
+      "id": "cases12:q07",
+      "kind": "answer",
+      "key": "cases12:q07",
+      "passed": true
+    },
+    {
+      "id": "cases12:q08",
+      "kind": "answer",
+      "key": "cases12:q08",
+      "passed": true
+    },
+    {
+      "id": "cases12:q09",
+      "kind": "answer",
+      "key": "cases12:q09",
+      "passed": true
+    },
+    {
+      "id": "cases12:q10",
+      "kind": "answer",
+      "key": "cases12:q10",
+      "passed": true
+    },
+    {
+      "id": "cases12:q11",
+      "kind": "answer",
+      "key": "cases12:q11",
+      "passed": true
+    },
+    {
+      "id": "action:a:write_bench_txt",
+      "kind": "action",
+      "key": "a:write_bench_txt",
+      "audio_sha256": "2c489413586cd457a4c62f1f37f58394bd2e41f87f22833674974adb2a02bbf1",
+      "prompt_sha256": "b49eaf2a231d619436872998ee6bab85e77bad89ecb5e6ed0c1affcabef6977f",
+      "passed": true
+    },
+    {
+      "id": "action:a:ms_calc_and_save",
+      "kind": "action",
+      "key": "a:ms_calc_and_save",
+      "audio_sha256": "822ef872ff4d360f625b9465eb4151d69c6ebf2aa76cc1623f8ed7b7a100386e",
+      "prompt_sha256": "56b728b5181171d2b557c6f5cdc0577e79febb324fbe23cc84036824b31cbbd3",
+      "passed": false
+    },
+    {
+      "id": "action:a:ms_write_append_read",
+      "kind": "action",
+      "key": "a:ms_write_append_read",
+      "audio_sha256": "8f3b1277ce9c673cf65fa02a3fd8f3ba2a4f1187de0eb2a5578e13dad08d1c4c",
+      "prompt_sha256": "c072652c537920e999c8f6bee37b420a86eb5b6165510f49143eb15a59dbca44",
+      "passed": false
+    },
+    {
+      "id": "action:a:mt_file_round_1",
+      "kind": "action",
+      "key": "a:mt_file_round_1",
+      "audio_sha256": "e3b1664580f08ade8b954613b5b3463849b7a782456969fba02f800d806ed643",
+      "prompt_sha256": "f52342562440f5bbbccd1f45c2a0bca23e017f55b7427b68adc9a154b7583801",
+      "passed": false
+    },
+    {
+      "id": "action:a:mt_file_round_2",
+      "kind": "action",
+      "key": "a:mt_file_round_2",
+      "audio_sha256": "e9c260348d3310532945aeea919adc3c55aca7c8f2ebeceb29b62a78231b8d79",
+      "prompt_sha256": "0d3e5f7fb179b85617d66377b5404a4d5d5877fc9ab1ab65bf5556d0dec8262b",
+      "passed": false
+    },
+    {
+      "id": "action:a:mt_file_round_3",
+      "kind": "action",
+      "key": "a:mt_file_round_3",
+      "audio_sha256": "f989093b1801b3efef0b63b4d825673ffee8d1dd60334ca6b36424bf724065dc",
+      "prompt_sha256": "b33788e0be32b8b978faab2223dc5a0fa5d0f9ceb0b26a8b4e0050ba7a7e244b",
+      "passed": false
+    },
+    {
+      "id": "action:b:write_bench_txt",
+      "kind": "action",
+      "key": "b:write_bench_txt",
+      "audio_sha256": "4b2889fccd1a28b991037b4ad3438dc7ddc942e74fe0cd9176625e0906bb717c",
+      "prompt_sha256": "6c82106716d951a7b7a41f045b59b631ca0f154bf4df532e2ba35666a0d776e1",
+      "passed": false
+    },
+    {
+      "id": "action:b:ms_calc_and_save",
+      "kind": "action",
+      "key": "b:ms_calc_and_save",
+      "audio_sha256": "c8cf0352e2810d1ea799ec718cbb8624bc32c42bb488c6f42a24c9d59b55ff5d",
+      "prompt_sha256": "edb21c44e46915edef4975d8bb2048a6525d8eb909cdbd4f530b8b419339329e",
+      "passed": false
+    },
+    {
+      "id": "action:b:ms_write_append_read",
+      "kind": "action",
+      "key": "b:ms_write_append_read",
+      "audio_sha256": "c8fb9468a7fe15179f40a63e10bf7046a91407b610c406234775c54b0b07a447",
+      "prompt_sha256": "da80b11fbcbfd0839ed73e61d594f637f278883ff73ce494edf06200d0ebf75f",
+      "passed": false
+    },
+    {
+      "id": "action:b:mt_file_round_1",
+      "kind": "action",
+      "key": "b:mt_file_round_1",
+      "audio_sha256": "b8511f9e941f96fc11a62f3bf4c511daa23c212d9e4f9a98edf4f7d48d19eb42",
+      "prompt_sha256": "5f0a4d413eab816a424489d63e1e31010c542520d2284b2e214a9fc2129787bc",
+      "passed": false
+    },
+    {
+      "id": "action:b:mt_file_round_2",
+      "kind": "action",
+      "key": "b:mt_file_round_2",
+      "audio_sha256": "a2616fa5d1ef3f41fe6c9da64c529f832dbe55d5833742e33c99db8cdca5b324",
+      "prompt_sha256": "fc31c2d9733a353dee13a732b4c58538c75edc4be2f84cc41aab45c76e10bdf1",
+      "passed": false
+    },
+    {
+      "id": "action:b:mt_file_round_3",
+      "kind": "action",
+      "key": "b:mt_file_round_3",
+      "audio_sha256": "90a0631bf2d351ebf1d9e77f23f06af95dca689a9287536ab9c09813743f3c0f",
+      "prompt_sha256": "2534ddcf90f2b1c5f23613a3f20c385279eecdaaeb33d6af7aeb1e1318734930",
+      "passed": false
+    },
+    {
+      "id": "vision:triangle:visual answer",
+      "kind": "vision",
+      "key": "triangle: visual answer",
+      "passed": true
+    },
+    {
+      "id": "vision:triangle:spoken visual recall",
+      "kind": "vision",
+      "key": "triangle: spoken visual recall",
+      "passed": false
+    },
+    {
+      "id": "vision:triangle:typed label update",
+      "kind": "vision",
+      "key": "triangle: typed label update",
+      "passed": true
+    },
+    {
+      "id": "vision:triangle:spoken correction recall",
+      "kind": "vision",
+      "key": "triangle: spoken correction recall",
+      "passed": true
+    },
+    {
+      "id": "vision:square:visual answer",
+      "kind": "vision",
+      "key": "square: visual answer",
+      "passed": true
+    },
+    {
+      "id": "vision:square:spoken visual recall",
+      "kind": "vision",
+      "key": "square: spoken visual recall",
+      "passed": true
+    },
+    {
+      "id": "vision:square:typed label update",
+      "kind": "vision",
+      "key": "square: typed label update",
+      "passed": true
+    },
+    {
+      "id": "vision:square:spoken correction recall",
+      "kind": "vision",
+      "key": "square: spoken correction recall",
+      "passed": true
+    },
+    {
+      "id": "vision:circle:visual answer",
+      "kind": "vision",
+      "key": "circle: visual answer",
+      "passed": true
+    },
+    {
+      "id": "vision:circle:spoken visual recall",
+      "kind": "vision",
+      "key": "circle: spoken visual recall",
+      "passed": true
+    },
+    {
+      "id": "vision:circle:typed label update",
+      "kind": "vision",
+      "key": "circle: typed label update",
+      "passed": true
+    },
+    {
+      "id": "vision:circle:spoken correction recall",
+      "kind": "vision",
+      "key": "circle: spoken correction recall",
+      "passed": true
+    },
+    {
+      "id": "vision:rectangle:visual answer",
+      "kind": "vision",
+      "key": "rectangle: visual answer",
+      "passed": true
+    },
+    {
+      "id": "vision:rectangle:spoken visual recall",
+      "kind": "vision",
+      "key": "rectangle: spoken visual recall",
+      "passed": true
+    },
+    {
+      "id": "vision:rectangle:typed label update",
+      "kind": "vision",
+      "key": "rectangle: typed label update",
+      "passed": true
+    },
+    {
+      "id": "vision:rectangle:spoken correction recall",
+      "kind": "vision",
+      "key": "rectangle: spoken correction recall",
+      "passed": true
+    },
+    {
+      "id": "half:follow-up, no wake",
+      "kind": "duplex",
+      "session": "half",
+      "key": "follow-up, no wake",
+      "passed": true
+    },
+    {
+      "id": "half:ONE memory across voice+text",
+      "kind": "duplex",
+      "session": "half",
+      "key": "ONE memory across voice+text",
+      "passed": true
+    },
+    {
+      "id": "quasi:barge cuts playback",
+      "kind": "duplex",
+      "session": "quasi",
+      "key": "barge cuts playback",
+      "passed": true
+    },
+    {
+      "id": "quasi:barge speech answered",
+      "kind": "duplex",
+      "session": "quasi",
+      "key": "barge speech answered",
+      "passed": true
+    },
+    {
+      "id": "barge-continue:playback NOT cut (continue)",
+      "kind": "duplex",
+      "session": "barge-continue",
+      "key": "playback NOT cut (continue)",
+      "passed": true
+    },
+    {
+      "id": "barge-continue:overtalk heard and answered",
+      "kind": "duplex",
+      "session": "barge-continue",
+      "key": "overtalk heard and answered",
+      "passed": false
+    },
+    {
+      "id": "full:forming preview while listening",
+      "kind": "duplex",
+      "session": "full",
+      "key": "forming preview while listening",
+      "passed": true
+    },
+    {
+      "id": "full:long monologue answered",
+      "kind": "duplex",
+      "session": "full",
+      "key": "long monologue answered",
+      "passed": true
+    }
+  ],
+  "physical_checks": [
+    {
+      "physical_capture": true,
+      "thirty_minutes": false,
+      "zero_loop_drops": true,
+      "zero_capture_overflows": true,
+      "no_runtime_errors": true,
+      "device_shutdown_completed": true,
+      "uninterrupted_speech": false,
+      "no_speech_failures": true,
+      "successful_action_tool_results": false,
+      "tools_exercised": true
+    }
+  ],
+  "gates": {
+    "completion_at_least_95_percent": false,
+    "no_fabricated_action_success": false,
+    "three_consecutive_physical_runs": false
+  },
+  "physical_action_outcomes_reviewed": false,
+  "demo_acceptance_pass": false,
+  "standing_release_gates_waived": false,
+  "minicpm_superiority_claim": false,
+  "command": [
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/.venv/bin/python",
+    "research/demo_acceptance.py",
+    "--answers",
+    "research/candidate_evals/paired-jaeger-qualified-20260907.json",
+    "--actions",
+    "research/candidate_evals/agentic-speech-files-full-20260907.json",
+    "--vision",
+    "research/candidate_evals/converse-vision-expanded-20260908.json",
+    "--campaign",
+    "research/candidate_evals/converse-half-20260908.json",
+    "--campaign",
+    "research/candidate_evals/converse-quasi-20260908.json",
+    "--campaign",
+    "research/candidate_evals/converse-barge-continue-20260908.json",
+    "--campaign",
+    "research/candidate_evals/converse-full-20260908.json",
+    "--physical",
+    "research/candidate_evals/physical-demo-hardening-20260908.live.json",
+    "--review",
+    "research/candidate_evals/agentic-file-claim-review-20260907.json",
+    "--output",
+    "research/candidate_evals/demo-acceptance-current-20260908.json"
+  ],
+  "evidence_sha256": {
+    "/Users/jonathanjenkins/GITHUB/jaeger_agent_omni/research/demo_suite_v1.json": "160dc55436f1ef487446a069e1c0043d7c62f30225dbd3138f4d92fbae94cd8b",
+    "research/candidate_evals/paired-jaeger-qualified-20260907.json": "73332103f1e0b4b30ec8ada336134f2f0619a6d773dacf8d9fbc267f8f4dd931",
+    "research/candidate_evals/agentic-speech-files-full-20260907.json": "938f6fbac3fb7ae887da7b26e6f74d0e2e185e95dc1e558935da1e51cc37ff42",
+    "research/candidate_evals/converse-vision-expanded-20260908.json": "6098baf014c5e88fa168d2eb6a35d9df4533957273bb65b7fe2a97110e3ef2e7",
+    "research/candidate_evals/agentic-file-claim-review-20260907.json": "e1f5142ed7141315cd2d8f017485ef73434859b15f65d0b9cf62bedc534f9a9c",
+    "research/candidate_evals/converse-half-20260908.json": "756b56805d2305ead37ba114b69626078bb3205d361f704c20565c16193b7c01",
+    "research/candidate_evals/converse-quasi-20260908.json": "7dd6f929f76eced2b432ec1e8fde592ed8a6c01537663fda6261628d106d8dee",
+    "research/candidate_evals/converse-barge-continue-20260908.json": "e5889b28e90a459297fd2cc0e6aca872093103c106631036f8640649cd3ae9fb",
+    "research/candidate_evals/converse-full-20260908.json": "83e159dadedb264c296535064ab067f1d55c5b7f8048e622a875adae76a692ba",
+    "research/candidate_evals/physical-demo-hardening-20260908.live.json": "ae5d0ae9aed17112bc86d7b29c01b75c65beccd1552d6919689dbf747053785b"
+  }
+}
