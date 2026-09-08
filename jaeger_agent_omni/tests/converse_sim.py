@@ -441,6 +441,47 @@ def sc_vision_memory(mode):
     playback_done(mode)
 
 
+def sc_vision_extended(mode):
+    """New deterministic images, spoken follow-ups and explicit label corrections.
+
+    Synthetic visual grounding coverage, not a claim about natural-image QA.
+    No expected visual answer is fed to either model.
+    """
+    from PIL import Image, ImageDraw
+    cases = [('green', 'triangle', 'cedar'), ('orange', 'square', 'harbor'),
+             ('purple', 'circle', 'maple'), ('red', 'rectangle', 'river')]
+    for color, shape, label in cases:
+        picture = CACHE / f'vision-expanded-{color}-{shape}.png'
+        canvas = Image.new('RGB', (512, 512), 'white')
+        draw = ImageDraw.Draw(canvas)
+        if shape == 'triangle':
+            draw.polygon([(256, 65), (65, 440), (447, 440)], fill=color)
+        elif shape == 'circle':
+            draw.ellipse((80, 80, 432, 432), fill=color)
+        else:
+            draw.rectangle((80, 80 if shape == 'square' else 170, 432,
+                            432 if shape == 'square' else 342), fill=color)
+        canvas.save(picture)
+        NODES['text-input-v0'].submit(f'/image {picture}')
+        step(f'{shape}: image admitted', wait_for('[image queued', 30))
+        NODES['text-input-v0'].submit('Name the shape and its color in this new image.')
+        r = wait_for('⏵ agent:', 180)
+        step(f'{shape}: visual answer', r and color in r.lower() and shape in r.lower(), extra=r or '')
+        playback_done(mode)
+        MIC.say(user('Hey computer, what color was the shape in the most recent image?'))
+        r = wait_for('⏵ agent:', 120)
+        step(f'{shape}: spoken visual recall', r and color in r.lower(), extra=r or '')
+        playback_done(mode)
+        NODES['text-input-v0'].submit(f'Use the label {label} for that shape from now on. What label will you use?')
+        r = wait_for('⏵ agent:', 120)
+        step(f'{shape}: typed label update', r and label in r.lower(), extra=r or '')
+        playback_done(mode)
+        MIC.say(user('Hey computer, what label did I give the most recent shape?'))
+        r = wait_for('⏵ agent:', 120)
+        step(f'{shape}: spoken correction recall', r and label in r.lower(), extra=r or '')
+        playback_done(mode)
+
+
 SESSIONS = {
     "half":           ("half",  "stop",     [sc_wake, sc_followup,
                                              sc_hold_merge, sc_hold_expiry,
@@ -452,6 +493,7 @@ SESSIONS = {
     "full":           ("full",  "stop",     [sc_wake, sc_streaming,
                                              sc_dismissal]),
     "vision":         ("half", "stop", [sc_vision_memory]),
+    "vision-expanded": ("half", "stop", [sc_vision_extended]),
 }
 
 def main():
@@ -471,9 +513,14 @@ def main():
         rv.semantic_node_id = lambda _mode: args.full_ear
     signal.alarm(1500)                        # hard whole-session deadline
     sys.stdout = TEE
-    th = threading.Thread(
-        target=lambda: rv.converse(mode, barge, args.session == "vision", "nn", "nn"),
-        daemon=True)
+    runtime_errors = []
+    def run_converse():
+        try:
+            rv.converse(mode, barge, args.session.startswith('vision'), 'nn', 'nn')
+        except BaseException as exc:
+            runtime_errors.append(f'{type(exc).__name__}: {exc}')
+            traceback.print_exc(file=sys.__stdout__)
+    th = threading.Thread(target=run_converse, daemon=True)
     th.start()
     if not wait_for("Ctrl-C to quit", 600):
         print("[SIM] FATAL converse never became ready", flush=True)
@@ -501,6 +548,12 @@ def main():
             "session": args.session, "mode": mode, "barge": barge,
             "node": node_id, "adapter_sha256": manifest["adapter"]["sha256"],
             "converse_sha256": hashlib.sha256((V2 / "converse.py").read_bytes()).hexdigest(),
+            "harness_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+            "runtime_errors": runtime_errors, "runtime_stopped": not th.is_alive(),
+            "gate_valid": not runtime_errors and not th.is_alive(),
+            "visual_fixtures": {p.name: hashlib.sha256(p.read_bytes()).hexdigest()
+                                for p in sorted(CACHE.glob('vision*.png'))}
+                               if args.session.startswith('vision') else {},
             "perception_context": rv.CONTEXT_TO_LLM,
             "passed": npass, "total": len(RESULTS),
             "checks": [{"name": name, "passed": ok} for name, ok in RESULTS],
@@ -508,7 +561,7 @@ def main():
         }, indent=2) + "\n")
     print(f"SIM-SESSION {args.session}: {npass}/{len(RESULTS)} PASS",
           flush=True)
-    os._exit(0 if npass == len(RESULTS) else 1)
+    os._exit(0 if npass == len(RESULTS) and not runtime_errors and not th.is_alive() else 1)
 
 if __name__ == "__main__":
     main()

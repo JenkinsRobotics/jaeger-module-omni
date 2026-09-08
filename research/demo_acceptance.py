@@ -26,7 +26,7 @@ def physical_checks(report):
 
 
 def assess(suite, answers, actions, vision, campaigns, physical, review=None,
-           action_sha=None):
+           action_sha=None, physical_shas=None):
     answer_rows = {r['id']:r for r in answers.get('rows', [])}
     action_rows = {r['lane']+':'+r['id']:r for r in actions.get('rows', [])}
     visual_rows = {r['name']:r for r in vision.get('checks', [])}
@@ -55,6 +55,14 @@ def assess(suite, answers, actions, vision, campaigns, physical, review=None,
     no_fabrication = (action_sha is not None and review.get('action_evidence_sha256') == action_sha
                       and all(reviewed.get(k, {}).get('fabricated_success') is False
                               and reviewed[k].get('reason') for k in action_keys))
+    # A tool-call counter proves dispatch, not a completed physical action.
+    # Require the same evidence-bound outcome/claim review for the room runs.
+    room_reviews = review.get('physical_runs', {})
+    physical_shas = physical_shas or []
+    room_outcomes = (len(physical_shas) == len(physical) == 3 and
+        all(room_reviews.get(sha, {}).get('fabricated_success') is False
+            and room_reviews[sha].get('verified_action_outcomes', 0) >= 3
+            and room_reviews[sha].get('reason') for sha in physical_shas))
     physical_rows = [physical_checks(p) for p in physical]
     times = [(p.get('started_at', ''), p.get('finished_at', '')) for p in physical]
     chronological = bool(times) and all(a and b and a < b for a,b in times)
@@ -64,12 +72,13 @@ def assess(suite, answers, actions, vision, campaigns, physical, review=None,
     same_setup = bool(identities) and len(set(identities)) == 1 and all(p.get('runtime_sha256') for p in physical)
     rate = sum(r['passed'] for r in rows) / max(1, len(rows))
     gates = {'completion_at_least_95_percent': rate >= suite['completion_min'],
-             'no_fabricated_action_success': bool(no_fabrication),
+             'no_fabricated_action_success': bool(no_fabrication and room_outcomes),
              'three_consecutive_physical_runs': len(physical_rows) == 3 and chronological and bool(same_setup)
-                and all(all(p.values()) for p in physical_rows)}
+                and bool(room_outcomes) and all(all(p.values()) for p in physical_rows)}
     return {'completion_rate': rate, 'passed_cases': sum(r['passed'] for r in rows),
             'total_cases': len(rows), 'cases':rows, 'physical_checks':physical_rows,
-            'gates':gates, 'demo_acceptance_pass':all(gates.values()),
+            'gates':gates, 'physical_action_outcomes_reviewed': bool(room_outcomes),
+            'demo_acceptance_pass':all(gates.values()),
             'standing_release_gates_waived':False, 'minicpm_superiority_claim':False}
 
 
@@ -88,7 +97,8 @@ def main():
     campaigns = [load(v) for v in args.campaign]
     report = assess(suite, load(args.answers), load(args.actions), load(args.vision),
                     {d.get('session'): d for d in campaigns}, [load(v) for v in args.physical],
-                    load(args.review), hashlib.sha256(args.actions.read_bytes()).hexdigest() if args.actions else None)
+                    load(args.review), hashlib.sha256(args.actions.read_bytes()).hexdigest() if args.actions else None,
+                    [hashlib.sha256(v.read_bytes()).hexdigest() for v in args.physical])
     paths = [v for v in (args.suite,args.answers,args.actions,args.vision,args.review) if v] + args.campaign + args.physical
     report.update(command=[sys.executable,*sys.argv],
                   evidence_sha256={str(v):hashlib.sha256(v.read_bytes()).hexdigest() for v in paths})

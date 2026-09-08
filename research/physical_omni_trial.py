@@ -172,6 +172,7 @@ def run(args):
     report = {"command": [sys.executable, *sys.argv], "devices": devices,
               "kind": "physical_acoustic_replay_not_human_conversation",
               "actor_injected_into_model": False, "native_report": str(native_report),
+              "native_report_sha256": hashlib.sha256(native_report.read_bytes()).hexdigest() if native_report.exists() else None,
               "log": str(log_path), "events": events, "actor_errors": errors,
               "child_exit_code": returncode, "physical_checks": metrics.get("checks"),
               "script": args.script, "repeat_script": args.repeat_script,
