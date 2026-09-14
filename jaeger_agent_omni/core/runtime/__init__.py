@@ -10,7 +10,9 @@ model. Everything that turns that into a conversation is here:
 
 from .gemma_audio import CHUNK_S, GemmaAudioPrefiller, TOKENS_PER_CHUNK
 from .duplex import DuplexLoop, DuplexStats
+from .duplex_mode import DuplexModePolicy
 from .session import StreamingSession, TurnTiming
 
-__all__ = ["CHUNK_S", "DuplexLoop", "DuplexStats", "GemmaAudioPrefiller",
-           "StreamingSession", "TOKENS_PER_CHUNK", "TurnTiming"]
+__all__ = ["CHUNK_S", "DuplexLoop", "DuplexModePolicy", "DuplexStats",
+           "GemmaAudioPrefiller", "StreamingSession", "TOKENS_PER_CHUNK",
+           "TurnTiming"]

@@ -1,4 +1,4 @@
-# Jaeger Agent Omni — full-duplex demo
+# Jaeger Agent Omni — half/full duplex pipeline lab
 
 This is the repository's canonical live demo, adapted from the donated
 MiniCPM-o full-duplex desktop UI. Jaeger is the default engine; MiniCPM-o 4.5
@@ -26,6 +26,11 @@ microphone → selected audio ear → rolling Gemma cache → response tokens
   thoughts are explicitly silence cases. Malformed control output fails closed.
 - Half/full duplex are explicit. Half duplex withholds microphone blocks while
   Jaeger is active; full duplex keeps AEC and barge-in enabled.
+- The mode selector is live. Switching does not reload Gemma, replace the
+  audio ear, reset conversation memory, or create a second pipeline.
+- A runtime identity guard and the no-model `--check` enforce that the session,
+  loop, AEC, barge detector, queues, player, companion state, and interaction
+  policy remain the exact same objects across a mode change.
 - The cache rolls at 6000 tokens and carries recent assistant replies forward,
   so five-minute and longer sessions stay bounded.
 
@@ -72,6 +77,44 @@ The speech-during-output control separates detection from action: choose
 The **Companion** preset enables audio-native admission and full duplex. The
 direct-assistant mode remains available for ordinary 1:1 testing. See
 [`../COMPANION.md`](../COMPANION.md) for the behavior contract and release gate.
+
+## Compare half and full duplex in one session
+
+Start once, then use the duplex selector while the session is live:
+
+1. Select **Half duplex · turn based**. The input indicator changes to
+   `INPUT CLOSED` from the moment Jaeger accepts the turn until cognition,
+   every Kokoro clause, and the 120 ms loudspeaker tail have completed.
+   Pre-suppression capture is drained before the next user turn opens. This
+   follows the updated VoiceLLM sequential reference rather than merely muting
+   during `sd.play()`.
+2. Select **Full duplex · interruptible**. The same model session immediately
+   admits microphone audio during generation and playback. The exact playback
+   waveform remains the SpeexDSP far-end reference; residual near-end speech
+   triggers the selected barge policy.
+
+The right-hand mode indicator is the authoritative admission state. Reports
+record the initial mode, final mode, every live transition, and the amount of
+capture suppressed by half duplex, so a comparison is auditable afterward.
+
+## Agentic execution column
+
+The third column is driven by JaegerAgent's real callback surface. Check
+**Agentic tools** before Start to run the bundled planning/tool/skill/memory
+loop over the same native audio session. It displays:
+
+- model/agent pipeline stages and liveness;
+- plans derived from structured tool calls;
+- sanitized tool arguments, completion state, result previews, and timing;
+- loop iterations, interruptions, failures, and the currently active tools.
+
+It does not fabricate activity when agentic mode is off, speak tool markup, or
+create a transcript handoff. Executable tokens are buffered until JaegerAgent
+has parsed and dispatched them; only the final user-facing answer reaches
+Kokoro. The native runtime does not request Gemma's optional thinking channel.
+The panel reports only observable agent-loop recovery/activity events and
+structured decisions, and common credential fields in tool data are redacted.
+The same sanitized events are retained in the session report.
 
 The microphone is selectable in the window and its PortAudio callback health
 is visible throughout the run. Set `JAEGER_INPUT_DEVICE` to an input-device ID

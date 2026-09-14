@@ -36,6 +36,7 @@ from __future__ import annotations
 
 import argparse
 import ctypes
+import html
 import math
 import os
 import queue
@@ -44,6 +45,7 @@ import sys
 import threading
 import time
 from collections import deque
+from dataclasses import dataclass
 from pathlib import Path
 
 import numpy as np
@@ -61,6 +63,15 @@ from PySide6.QtWidgets import (
 HERE = Path(__file__).resolve().parent
 SAMPLE_RATE = 16000          # APM (whisper encoder) wants 16k
 TTS_SAMPLE_RATE = 24000      # Token2Wav emits 24k
+
+
+@dataclass(frozen=True)
+class _ResponseEnd:
+    """Playback-queue barrier tied to one generated response."""
+
+    response_id: int
+
+
 LLM_GGUF = Path(os.environ.get(
     "OMNI_LLM_GGUF",
     Path.home() / "models/MiniCPM-o-4_5-gguf/MiniCPM-o-4_5-Q8_0.gguf"))
@@ -504,6 +515,7 @@ class JaegerEngineWorker(QThread):
     speaker = Signal(str)
     metrics = Signal(str)
     barged = Signal(str)
+    agent_event = Signal(object)
     failed = Signal(str)
 
     def __init__(self, system_prompt: str = "", voice: str = "af_heart",
@@ -513,6 +525,7 @@ class JaegerEngineWorker(QThread):
                  front_end: str = JAEGER_DEFAULT_FRONT_END,
                  interaction_mode: str = "assistant",
                  duplex_mode: str = "full",
+                 agentic: bool = False,
                  vad_mode: str = "neural",
                  barge_policy: str = "stop", report_path: Path | None = None,
                  report_phase: str = "physical-room",
@@ -527,7 +540,9 @@ class JaegerEngineWorker(QThread):
         self.max_context = max_context
         self.speakers = speakers
         self.interaction_mode = interaction_mode
-        self.duplex_mode = duplex_mode
+        self.agentic_enabled = bool(agentic)
+        from jaeger_agent_omni.core.runtime.duplex_mode import DuplexModePolicy
+        self.mode_policy = DuplexModePolicy(duplex_mode)
         self.vad_mode = vad_mode
         self.barge_policy = barge_policy
         self.report_path = report_path
@@ -538,7 +553,7 @@ class JaegerEngineWorker(QThread):
         self.model_name = selection.label
         self.checkpoint_label = selection.checkpoint
         self.audio_q: queue.Queue[np.ndarray] = queue.Queue(maxsize=200)
-        self.say_q: queue.Queue[str | None] = queue.Queue()
+        self.say_q: queue.Queue[object] = queue.Queue()
         self._stop_evt = threading.Event()
         self.generating = threading.Event()
         self.barge_active = threading.Event()
@@ -548,6 +563,7 @@ class JaegerEngineWorker(QThread):
         self.session = None
         self.aec = None
         self.barge_detector = None
+        self.agentic_runtime = None
         self.raw_level = 0.0
         self.clean_level = 0.0
         self.fed_samples = 0
@@ -566,6 +582,9 @@ class JaegerEngineWorker(QThread):
         self._speaker_tracker = None
         self._turn_self_speech_overlap = False
         self._perception_turns: list[dict] = []
+        self._agent_events: list[dict] = []
+        from jaeger_agent_omni.core.agentic.observer import AgenticObserver
+        self._agent_observer = AgenticObserver(self._publish_agent_event)
         from jaeger_agent_omni.core.runtime.companion import CompanionState
         self.companion = (
             CompanionState() if interaction_mode == "companion" else None)
@@ -583,8 +602,14 @@ class JaegerEngineWorker(QThread):
                 "barge_policy": barge_policy,
                 "interaction_mode": interaction_mode,
                 "duplex_mode": duplex_mode,
+                "agentic": self.agentic_enabled,
                 "vad": vad_mode,
             })
+
+    def _publish_agent_event(self, event) -> None:
+        payload = event.as_dict() if hasattr(event, "as_dict") else dict(event)
+        self._agent_events.append(payload)
+        self.agent_event.emit(event)
 
     def _detect_barge(self, stage: str) -> None:
         """Publish one double-talk fact, then apply the configured policy."""
@@ -616,6 +641,53 @@ class JaegerEngineWorker(QThread):
                 self.say_q.get_nowait()
             except queue.Empty:
                 break
+        # A queue flush can discard the normal response-end marker. Reopen the
+        # capture barrier explicitly after stale output has been invalidated.
+        if self.mode_policy.mode == "half":
+            self._drain_audio_queue()
+        self.mode_policy.clear_responses()
+        if self.loop is not None:
+            self.loop.resume_capture()
+
+    def _drain_audio_queue(self) -> int:
+        """Drop capture that predates a half-duplex admission boundary."""
+        drained = 0
+        while True:
+            try:
+                drained += self.audio_q.get_nowait().size
+            except queue.Empty:
+                return drained
+
+    def pipeline_identity(self) -> dict[str, int]:
+        """Identity of every component that a duplex flip must preserve."""
+        return {
+            name: id(getattr(self, name))
+            for name in (
+                "session", "loop", "aec", "barge_detector", "audio_q",
+                "say_q", "player", "companion", "interaction_policy",
+                "agentic_runtime",
+            )
+        }
+
+    def set_duplex_mode(self, mode: str) -> None:
+        """Change capture admission without replacing pipeline components."""
+        pipeline_before = self.pipeline_identity()
+        transition = self.mode_policy.set_mode(mode)
+        if transition is None:
+            return
+        old, new = transition
+        drained = 0
+        if new == "half" and self.mode_policy.response_active:
+            drained = self._drain_audio_queue()
+        elif new == "full" and self.loop is not None:
+            self.loop.resume_capture()
+        if self.pipeline_identity() != pipeline_before:
+            raise RuntimeError(
+                "duplex switch replaced a shared pipeline component")
+        suffix = (f" · discarded {drained / SAMPLE_RATE:.2f}s pending capture"
+                  if drained else "")
+        self.status.emit(
+            f"duplex switched live: {old} → {new} · same model session{suffix}")
 
     def push_audio(self, samples: np.ndarray) -> None:
         """Capture-thread entry: cancel echo and detect speech during output."""
@@ -624,11 +696,11 @@ class JaegerEngineWorker(QThread):
         self.raw_level = float(np.sqrt(np.mean(np.square(raw)))) if raw.size else 0.0
         self.clean_level = (float(np.sqrt(np.mean(np.square(clean))))
                             if clean.size else 0.0)
-        if self.player.playing.is_set() and self.duplex_mode == "full":
+        mode = self.mode_policy.mode
+        if self.player.playing.is_set() and mode == "full":
             self._turn_self_speech_overlap = True
 
-        if (self.duplex_mode == "half" and
-                (self.player.playing.is_set() or self.generating.is_set())):
+        if not self.mode_policy.accepts_capture():
             self.half_muted_samples += clean.size
             return
 
@@ -696,7 +768,8 @@ class JaegerEngineWorker(QThread):
         residual_corr = getattr(
             self.aec, "residual_reference_correlation", 0.0)
         self.metrics.emit(
-            f"{self.model_name} @{self.checkpoint_label} · cache {cache} tok · "
+            f"{self.model_name} @{self.checkpoint_label} · "
+            f"{self.mode_policy.mode} duplex · cache {cache} tok · "
             f"fed {self.fed_samples/SAMPLE_RATE:.1f}s · "
             f"dropped {self.dropped_samples/SAMPLE_RATE:.1f}s · peak lag "
             f"{lag:.0f}ms · turns {turns} · interrupts {interrupts} · "
@@ -777,6 +850,25 @@ class JaegerEngineWorker(QThread):
                 "decisions": (self.companion.decisions
                               if self.companion is not None else []),
             },
+            "duplex": {
+                "initial_mode": self._report["configuration"]["duplex_mode"],
+                "final_mode": self.mode_policy.mode,
+                "transitions": self.mode_policy.transitions(),
+            },
+            "agentic": {
+                "enabled": self.agentic_enabled,
+                "events": list(self._agent_events),
+                "tool_calls": sum(
+                    event.get("kind") == "tool"
+                    and event.get("phase") == "done"
+                    for event in self._agent_events),
+                "iterations": (
+                    self.agentic_runtime.agent.last_iteration_count
+                    if self.agentic_runtime is not None else 0),
+                "halt_reason": (
+                    self.agentic_runtime.agent.last_halt_reason
+                    if self.agentic_runtime is not None else None),
+            },
             "neural_perception_shadow": self._perception_turns,
         }
         return finish_run_report(
@@ -809,6 +901,17 @@ class JaegerEngineWorker(QThread):
             clause = self.say_q.get()
             if clause is None:
                 break
+            if isinstance(clause, _ResponseEnd):
+                # Match the sequential VoiceLLM contract: hold capture across
+                # cognition + every clause + the physical speaker tail, clear
+                # anything queued before suppression, then admit a fresh turn.
+                time.sleep(0.12)
+                if self.mode_policy.mode == "half":
+                    self._drain_audio_queue()
+                    if self.loop is not None:
+                        self.loop.resume_capture()
+                self.mode_policy.finish_response(clause.response_id)
+                continue
             try:
                 t0 = time.monotonic()
                 speak_kokoro(clause, out, self.voice, self.speed)
@@ -871,20 +974,57 @@ class JaegerEngineWorker(QThread):
                 system = SYSTEM
                 if self.system_prompt:
                     system = f"{SYSTEM} {self.system_prompt}"
+            agentic_preparation = None
+            if self.agentic_enabled:
+                from jaeger_agent_omni.core.agentic.omni_runtime import (
+                    prepare_agentic_system,
+                )
+                agentic_preparation = prepare_agentic_system(system)
+                system = agentic_preparation.system
+                self._agent_observer.emit(
+                    "pipeline", "Agentic bootstrap",
+                    "Preparing native-audio tools, skills, memory, and safety.",
+                    phase="loading",
+                )
+            else:
+                self._agent_observer.emit(
+                    "disabled", "Agentic runtime disabled",
+                    "Enable Agentic tools before Start to expose planning and actions.",
+                    phase="idle",
+                )
             session, meta = build(
                 str(JAEGER_MODEL), self.front_end, system=system)
             self.session = session
             warm_ms = session.warmup()
+
+            if agentic_preparation is not None:
+                from jaeger_agent_omni.core.agentic.omni_runtime import (
+                    OmniAgentRuntime,
+                )
+                runtime = OmniAgentRuntime(
+                    session, agentic_preparation, eos_ids=meta["eos"],
+                    max_tokens=128, max_iterations=12,
+                    callbacks=self._agent_observer.callbacks(),
+                )
+                self.agentic_runtime = runtime
+                session.respond = runtime.respond_native
+                session.cancel = runtime.interrupt
+                names = runtime.agent.tool_names()
+                self._agent_observer.emit(
+                    "catalog", f"{len(names)} active tools",
+                    ", ".join(names), phase="ready",
+                )
 
             self.status.emit("warming Kokoro voice and SpeexDSP AEC…")
             from jaeger_agent_omni.voice import speak_kokoro
             WORK_DIR.mkdir(parents=True, exist_ok=True)
             speak_kokoro("ready", WORK_DIR / "jaeger_warm.wav",
                          self.voice, self.speed)
-            if self.duplex_mode == "full":
-                self.aec = SpeexEchoCanceller(SAMPLE_RATE)
-                self.barge_detector = EchoAwareBargeIn(
-                    SAMPLE_RATE, self.threshold)
+            # Keep one acoustic path resident so a live half→full switch does
+            # not rebuild the model session or open a second audio pipeline.
+            self.aec = SpeexEchoCanceller(SAMPLE_RATE)
+            self.barge_detector = EchoAwareBargeIn(
+                SAMPLE_RATE, self.threshold)
             if self.speakers:
                 self._speaker_tracker = OnlineSpeakerTracker(self.speakers)
 
@@ -898,48 +1038,87 @@ class JaegerEngineWorker(QThread):
                 self._turn_t0 = time.monotonic()
                 self.barge_active.clear()
                 self.barge_latched.clear()
+                response_id = self.mode_policy.begin_response()
+                if self.mode_policy.mode == "half":
+                    self._drain_audio_queue()
                 self.generating.set()
+                self._agent_observer.emit(
+                    "pipeline", "Native audio turn committed",
+                    ("JaegerAgent is selecting an answer or structured action."
+                     if self.agentic_enabled
+                     else "The shared voice model is generating a direct reply."),
+                    phase="running",
+                )
                 ids, consumed = [], 0
                 inner = kw.get("on_token")
 
                 def on_token(tid, n):
                     nonlocal consumed
-                    ids.append(tid)
-                    text = tok.decode(ids)
-                    if self.companion is not None:
-                        text = streaming_response(text)
-                    chunks, consumed = _ready_chunks(text, consumed)
-                    for chunk in chunks:
-                        self.say_q.put(chunk)
+                    # Agentic iterations may emit executable tool markup.
+                    # Buffer until JaegerAgent returns the final speakable
+                    # answer so Kokoro never voices a command or its args.
+                    if not getattr(session, "agentic_buffering", False):
+                        ids.append(tid)
+                        text = tok.decode(ids)
+                        if self.companion is not None:
+                            text = streaming_response(text)
+                        chunks, consumed = _ready_chunks(text, consumed)
+                        for chunk in chunks:
+                            self.say_q.put(chunk)
                     if inner:
                         inner(tid, n)
 
                 kw["on_token"] = on_token
                 try:
                     raw_answer = original_respond(**kw)
+                    if self.companion is not None:
+                        decision = parse_decision(raw_answer)
+                        self.companion.observe(decision)
+                        answer = (decision.response
+                                  if decision.should_respond else "")
+                        if not decision.should_respond:
+                            self._turn_t0 = None
+                        self.status.emit(
+                            f"companion {'RESPOND' if decision.should_respond else 'LISTEN'}"
+                            f" · {decision.reason or 'addressed'}")
+                    else:
+                        answer = raw_answer
+                    snapshot = getattr(
+                        session, "perception_snapshot",
+                        lambda: {"available": False,
+                                 "controls_policy": False})()
+                    self._perception_turns.append(snapshot)
+                    tail = answer[consumed:].split("<")[0].strip()
+                    # A complete one-word answer ("Four.", "Yes.") is still
+                    # a valid voice reply.  The old two-word floor made the
+                    # text path pass while producing no audio at all.
+                    if tail:
+                        self.say_q.put(tail)
+                    if self.agentic_runtime is not None:
+                        agent = self.agentic_runtime.agent
+                        self._agent_observer.emit(
+                            "pipeline", "Agentic turn complete",
+                            f"{agent.last_iteration_count} iteration(s) · "
+                            f"halt={agent.last_halt_reason or 'clean'}",
+                            phase="complete",
+                            ok=agent.last_halt_reason is None,
+                        )
+                        names = agent.tool_names()
+                        self._agent_observer.emit(
+                            "catalog", f"{len(names)} active tools",
+                            ", ".join(names), phase="ready",
+                        )
+                    else:
+                        self._agent_observer.emit(
+                            "pipeline", "Direct response ready",
+                            "No agentic tool loop was requested for this turn.",
+                            phase="complete",
+                        )
+                    return answer
                 finally:
                     self.generating.clear()
-                if self.companion is not None:
-                    decision = parse_decision(raw_answer)
-                    self.companion.observe(decision)
-                    answer = (decision.response
-                              if decision.should_respond else "")
-                    if not decision.should_respond:
-                        self._turn_t0 = None
-                    self.status.emit(
-                        f"companion {'RESPOND' if decision.should_respond else 'LISTEN'}"
-                        f" · {decision.reason or 'addressed'}")
-                else:
-                    answer = raw_answer
-                snapshot = getattr(
-                    session, "perception_snapshot",
-                    lambda: {"available": False,
-                             "controls_policy": False})()
-                self._perception_turns.append(snapshot)
-                tail = answer[consumed:].split("<")[0].strip()
-                if len(tail.split()) >= 2:
-                    self.say_q.put(tail)
-                return answer
+                    # Ordered after every clause already queued by on_token.
+                    self.say_q.put(_ResponseEnd(response_id))
 
             session.respond = streaming_respond
 
@@ -981,7 +1160,7 @@ class JaegerEngineWorker(QThread):
             self.status.emit(
                 f"LIVE · {self.model_name} @{self.checkpoint_label} · "
                 f"{meta['front_end']} embeddings · "
-                f"{self.interaction_mode} · {self.duplex_mode} duplex · "
+                f"{self.interaction_mode} · {self.mode_policy.mode} duplex · "
                 f"VAD {vad_label} · "
                 f"AEC {'on' if self.aec is not None else 'off'} · "
                 f"warmup {warm_ms:.0f}ms")
@@ -1074,7 +1253,7 @@ class OmniDuplexWindow(QMainWindow):
     def __init__(self) -> None:
         super().__init__()
         self.setWindowTitle("Jaeger Agent Omni — Full-Duplex Demo")
-        self.resize(1220, 760)
+        self.resize(1640, 820)
         self.worker = None                       # EngineWorker | JaegerEngineWorker
         self.mic_stream: sd.InputStream | None = None
         self.camera: QCamera | None = None
@@ -1083,6 +1262,8 @@ class OmniDuplexWindow(QMainWindow):
         self._mic_level = 0.0
         self._capture_errors = 0
         self._capture_error_text = ""
+        self._agent_tool_calls = 0
+        self._agent_iterations = 0
         self.source_wav: Path | None = None      # None = live microphone
         self._file_timer: QTimer | None = None
         self._rec: list[np.ndarray] = []
@@ -1097,7 +1278,10 @@ class OmniDuplexWindow(QMainWindow):
         split = QSplitter()
         split.addWidget(self._build_input_panel())
         split.addWidget(self._build_output_panel())
-        split.setSizes([560, 640])
+        split.addWidget(self._build_agent_panel())
+        for index in range(3):
+            split.setStretchFactor(index, 1)
+        split.setSizes([540, 590, 510])
         outer.addWidget(split, stretch=1)
         outer.addLayout(self._build_control_bar())
         self._on_engine_changed()
@@ -1107,7 +1291,7 @@ class OmniDuplexWindow(QMainWindow):
     # -- engine selector -----------------------------------------------------
     def _build_engine_bar(self):
         bar = QHBoxLayout()
-        title = QLabel("<b>Jaeger Agent Omni</b> — local full duplex")
+        title = QLabel("<b>Jaeger Agent Omni</b> — half/full duplex lab")
         bar.addWidget(title)
         bar.addStretch(1)
         self.engine_jaeger = QPushButton("Jaeger · audio-native live")
@@ -1156,6 +1340,8 @@ class OmniDuplexWindow(QMainWindow):
         self.video_check.setEnabled(minicpm)
         if not minicpm:
             self.video_check.setChecked(False)
+        else:
+            self.agentic_check.setChecked(False)
         self.mute_check.setEnabled(minicpm)
         self.hush_btn.setText("Force Listen")
         if minicpm:
@@ -1176,7 +1362,7 @@ class OmniDuplexWindow(QMainWindow):
                        self.threshold_spin, self.silence_spin,
                        self.cooldown_spin, self.context_spin,
                        self.front_end_combo, self.interaction_combo,
-                       self.duplex_combo):
+                       self.duplex_combo, self.agentic_check):
             widget.setEnabled(not minicpm)
         self._refresh_counts()
 
@@ -1247,28 +1433,35 @@ class OmniDuplexWindow(QMainWindow):
         self.prompt_edit.setPlaceholderText("optional extra system prompt, applied at Start")
         lay.addWidget(self.prompt_edit)
 
-        row = QHBoxLayout()
+        model_row = QHBoxLayout()
         self.front_end_combo = QComboBox()
         for model_id, spec in JAEGER_FRONT_ENDS.items():
-            self.front_end_combo.addItem(
-                f"{spec.label} · {spec.status}", model_id)
+            self.front_end_combo.addItem(spec.label, model_id)
+            self.front_end_combo.setItemData(
+                self.front_end_combo.count() - 1,
+                f"{spec.label} · {spec.status}", Qt.ToolTipRole)
         default_index = self.front_end_combo.findData(JAEGER_DEFAULT_FRONT_END)
         if default_index >= 0:
             self.front_end_combo.setCurrentIndex(default_index)
-        row.addWidget(QLabel("audio input:"))
-        row.addWidget(self.front_end_combo)
+        model_row.addWidget(QLabel("audio input:"))
+        model_row.addWidget(self.front_end_combo, stretch=1)
+        lay.addLayout(model_row)
+
+        format_row = QHBoxLayout()
         self.lang_combo = QComboBox()
         self.lang_combo.addItems(["en", "zh"])
-        row.addWidget(QLabel("language:"))
-        row.addWidget(self.lang_combo)
+        format_row.addWidget(QLabel("language:"))
+        format_row.addWidget(self.lang_combo)
         self.mute_check = QCheckBox(
-            "MiniCPM only: mute mic while speaking (reference path has no AEC)")
+            "MiniCPM: mute mic while speaking")
+        self.mute_check.setToolTip(
+            "The optional MiniCPM reference path has no acoustic echo canceller")
         self.mute_check.setChecked(True)
-        row.addWidget(self.mute_check)
-        row.addStretch(1)
-        lay.addLayout(row)
+        format_row.addWidget(self.mute_check)
+        format_row.addStretch(1)
+        lay.addLayout(format_row)
 
-        tuning = QHBoxLayout()
+        voice_tuning = QHBoxLayout()
         self.voice_combo = QComboBox()
         self.voice_combo.addItems([
             "af_heart", "af_bella", "af_nicole", "af_sarah", "af_sky",
@@ -1287,25 +1480,39 @@ class OmniDuplexWindow(QMainWindow):
         self.interaction_combo.addItem("direct assistant", "assistant")
         self.interaction_combo.addItem("always-on companion", "companion")
         self.duplex_combo = QComboBox()
-        self.duplex_combo.addItem("full duplex", "full")
-        self.duplex_combo.addItem("half duplex", "half")
+        self.duplex_combo.addItem("Full duplex · interruptible", "full")
+        self.duplex_combo.addItem("Half duplex · turn based", "half")
+        self.duplex_combo.setToolTip(
+            "Switch live without reloading Jaeger: half closes capture while "
+            "Jaeger thinks/speaks; full keeps echo-cancelled capture open")
+        self.duplex_combo.currentIndexChanged.connect(
+            self._on_duplex_mode_changed)
         self.vad_combo = QComboBox()
         self.vad_combo.addItem("neural VAD (Silero)", "neural")
         self.vad_combo.addItem("legacy energy gate", "energy")
-        tuning.addWidget(QLabel("voice:"))
-        tuning.addWidget(self.voice_combo)
-        tuning.addWidget(QLabel("speed:"))
-        tuning.addWidget(self.speed_spin)
-        tuning.addWidget(QLabel("room speakers:"))
-        tuning.addWidget(self.speaker_spin)
-        tuning.addWidget(QLabel("speech during output:"))
-        tuning.addWidget(self.barge_policy_combo)
-        tuning.addWidget(QLabel("behavior:"))
-        tuning.addWidget(self.interaction_combo)
-        tuning.addWidget(self.duplex_combo)
-        tuning.addWidget(self.vad_combo)
-        tuning.addStretch(1)
-        lay.addLayout(tuning)
+        self.agentic_check = QCheckBox("Agentic tools")
+        self.agentic_check.setToolTip(
+            "Enable JaegerAgent planning, tools, skills, and memory. "
+            "The right column shows sanitized observable execution.")
+        voice_tuning.addWidget(QLabel("voice:"))
+        voice_tuning.addWidget(self.voice_combo)
+        voice_tuning.addWidget(QLabel("speed:"))
+        voice_tuning.addWidget(self.speed_spin)
+        voice_tuning.addWidget(QLabel("room speakers:"))
+        voice_tuning.addWidget(self.speaker_spin)
+        voice_tuning.addWidget(QLabel("speech during output:"))
+        voice_tuning.addWidget(self.barge_policy_combo)
+        voice_tuning.addStretch(1)
+        lay.addLayout(voice_tuning)
+
+        behavior_tuning = QHBoxLayout()
+        behavior_tuning.addWidget(QLabel("behavior:"))
+        behavior_tuning.addWidget(self.interaction_combo)
+        behavior_tuning.addWidget(self.duplex_combo)
+        behavior_tuning.addWidget(self.vad_combo)
+        behavior_tuning.addWidget(self.agentic_check)
+        behavior_tuning.addStretch(1)
+        lay.addLayout(behavior_tuning)
 
         runtime = QHBoxLayout()
         self.threshold_spin = QDoubleSpinBox()
@@ -1391,6 +1598,9 @@ class OmniDuplexWindow(QMainWindow):
         lay.addWidget(self.ticker)
         self.counts_label = QLabel("0 frames → 0 listen, 0 SPEAK")
         lay.addWidget(self.counts_label)
+        self.duplex_state_label = QLabel("duplex mode applies when Start is pressed")
+        self.duplex_state_label.setStyleSheet("color:#888;")
+        lay.addWidget(self.duplex_state_label)
 
         lay.addWidget(QLabel("agent voice — real output waveform (flat when silent):"))
         self.agent_waveform = Waveform(color=(80, 160, 240))
@@ -1406,6 +1616,48 @@ class OmniDuplexWindow(QMainWindow):
         self.status_label = QLabel()
         self.status_label.setStyleSheet("color:#8aa;")
         lay.addWidget(self.status_label)
+        return box
+
+    def _build_agent_panel(self) -> QWidget:
+        box = QGroupBox("AGENTIC — observable execution")
+        lay = QVBoxLayout(box)
+
+        notice = QLabel(
+            "Shows observable stages, structured decisions, tool calls/results, "
+            "timing, and failures. This runtime does not request a separate "
+            "Gemma reasoning stream; common credential fields are redacted.")
+        notice.setWordWrap(True)
+        notice.setStyleSheet("color:#888;")
+        lay.addWidget(notice)
+
+        self.agent_state_label = QLabel("IDLE · Agentic tools disabled")
+        self.agent_state_label.setStyleSheet("color:#8aa;font-weight:bold;")
+        lay.addWidget(self.agent_state_label)
+
+        lay.addWidget(QLabel("Active tool surface:"))
+        self.agent_tools = QTextEdit()
+        self.agent_tools.setReadOnly(True)
+        self.agent_tools.setMaximumHeight(105)
+        self.agent_tools.setPlainText("Enable Agentic tools before Start.")
+        lay.addWidget(self.agent_tools)
+
+        lay.addWidget(QLabel("Plan — derived from structured actions:"))
+        self.agent_plan = QTextEdit()
+        self.agent_plan.setReadOnly(True)
+        self.agent_plan.setMaximumHeight(150)
+        self.agent_plan.setPlaceholderText("No structured action selected yet.")
+        lay.addWidget(self.agent_plan)
+
+        lay.addWidget(QLabel("Execution timeline:"))
+        self.agent_log = QTextEdit()
+        self.agent_log.setReadOnly(True)
+        self.agent_log.setPlaceholderText(
+            "Start a Jaeger session to observe the pipeline.")
+        lay.addWidget(self.agent_log, stretch=1)
+
+        self.agent_summary_label = QLabel("0 iterations · 0 tool calls")
+        self.agent_summary_label.setStyleSheet("color:#888;")
+        lay.addWidget(self.agent_summary_label)
         return box
 
     # -- session control -----------------------------------------------------
@@ -1443,6 +1695,16 @@ class OmniDuplexWindow(QMainWindow):
         self._set_status(
             "companion preset · neural RESPOND/LISTEN admission · full duplex")
 
+    def _on_duplex_mode_changed(self) -> None:
+        mode = self.duplex_combo.currentData()
+        if isinstance(self.worker, JaegerEngineWorker) and self.worker.isRunning():
+            self.worker.set_duplex_mode(mode)
+            return
+        label = ("turn-based; mic closes through think + speech"
+                 if mode == "half"
+                 else "continuous capture; AEC + interruption enabled")
+        self._set_status(f"{mode} duplex selected · {label}")
+
     def _start(self) -> None:
         self.counts = {"frames": 0, "listen": 0, "speak": 0,
                        "commits": 0, "turns": 0}
@@ -1452,7 +1714,19 @@ class OmniDuplexWindow(QMainWindow):
         self._rec = []
         self._capture_errors = 0
         self._capture_error_text = ""
+        self._agent_tool_calls = 0
+        self._agent_iterations = 0
+        self.agent_plan.clear()
+        self.agent_log.clear()
+        self.agent_tools.setPlainText(
+            "Loading tool catalog…" if self.agentic_check.isChecked()
+            else "Agentic tools disabled for this session.")
+        self.agent_summary_label.setText("0 iterations · 0 tool calls")
+        self.agent_state_label.setText(
+            "STARTING · agentic runtime" if self.agentic_check.isChecked()
+            else "STARTING · direct response mode")
         self.device_combo.setEnabled(False)
+        self.agentic_check.setEnabled(False)
         self.pause_btn.setChecked(False)
         if self.engine_jaeger.isChecked():
             if self.lang_combo.currentText() != "en":
@@ -1474,6 +1748,7 @@ class OmniDuplexWindow(QMainWindow):
                 front_end=self.front_end_combo.currentData(),
                 interaction_mode=self.interaction_combo.currentData(),
                 duplex_mode=self.duplex_combo.currentData(),
+                agentic=self.agentic_check.isChecked(),
                 vad_mode=self.vad_combo.currentData(),
                 barge_policy=self.barge_policy_combo.currentData(),
                 report_path=report_path, report_phase=phase,
@@ -1483,6 +1758,7 @@ class OmniDuplexWindow(QMainWindow):
             self.worker.speaker.connect(self._on_j_speaker)
             self.worker.metrics.connect(self.metrics_label.setText)
             self.worker.barged.connect(self._on_j_barge)
+            self.worker.agent_event.connect(self._on_agent_event)
         else:
             self.worker = EngineWorker(
                 language=self.lang_combo.currentText(),
@@ -1608,6 +1884,7 @@ class OmniDuplexWindow(QMainWindow):
 
     def _on_finished(self) -> None:
         self.device_combo.setEnabled(True)
+        self.agentic_check.setEnabled(self.engine_jaeger.isChecked())
         self.start_btn.setEnabled(True)
         self.stop_btn.setEnabled(False)
         self.hush_btn.setEnabled(False)
@@ -1656,6 +1933,50 @@ class OmniDuplexWindow(QMainWindow):
             f'policy={action}</span>')
         self.ticker.interrupt()
 
+    def _on_agent_event(self, event) -> None:
+        kind = str(getattr(event, "kind", "status"))
+        title = str(getattr(event, "title", "Agent event"))
+        detail = str(getattr(event, "detail", ""))
+        phase = str(getattr(event, "phase", ""))
+        ok = bool(getattr(event, "ok", True))
+        iteration = int(getattr(event, "iteration", 0) or 0)
+        elapsed = float(getattr(event, "elapsed_s", 0.0) or 0.0)
+
+        if iteration:
+            self._agent_iterations = max(self._agent_iterations, iteration)
+        if kind == "catalog":
+            self.agent_tools.setPlainText(detail or "No active tools")
+        elif kind == "plan":
+            row = title + (f"\n  {detail}" if detail else "")
+            self.agent_plan.append(html.escape(row))
+        elif kind == "tool" and phase == "done":
+            self._agent_tool_calls += 1
+
+        if kind == "heartbeat":
+            self.agent_state_label.setText(
+                f"WORKING · {detail or title}")
+        elif kind in {"pipeline", "disabled", "interrupt"}:
+            self.agent_state_label.setText(
+                f"{phase.upper() or kind.upper()} · {title}")
+
+        # Heartbeats update the live state without flooding the durable log.
+        if kind != "heartbeat":
+            color = "#c66" if not ok else (
+                "#69c" if kind == "tool" else
+                "#c90" if kind in {"plan", "activity"} else "#8aa")
+            timing = f" · {elapsed:.2f}s" if elapsed else ""
+            safe_title = html.escape(title)
+            safe_detail = html.escape(detail)
+            self.agent_log.append(
+                f'<span style="color:{color}"><b>{safe_title}</b>'
+                f'{html.escape(timing)}</span>'
+                + (f"<br><span style='color:#999'>{safe_detail}</span>"
+                   if safe_detail else ""))
+
+        self.agent_summary_label.setText(
+            f"{self._agent_iterations} iterations · "
+            f"{self._agent_tool_calls} tool calls")
+
     def _refresh_counts(self) -> None:
         c = self.counts
         if self.engine_jaeger.isChecked():
@@ -1670,6 +1991,23 @@ class OmniDuplexWindow(QMainWindow):
         w = self.worker
         player = getattr(w, "player", None) if w is not None else None
         self.agent_waveform.push(player.level if player is not None else 0.0)
+        if isinstance(w, JaegerEngineWorker):
+            mode = w.mode_policy.mode
+            if mode == "half" and w.mode_policy.response_active:
+                state = "HALF DUPLEX · INPUT CLOSED — Jaeger owns this turn"
+                color = "#c90"
+            elif mode == "half":
+                state = "HALF DUPLEX · LISTENING — user owns this turn"
+                color = "#397"
+            else:
+                state = "FULL DUPLEX · INPUT OPEN — AEC + interruption active"
+                color = "#397"
+            self.duplex_state_label.setText(state)
+            self.duplex_state_label.setStyleSheet(f"color:{color};")
+        else:
+            self.duplex_state_label.setText(
+                "MiniCPM reference · fixed native duplex behavior")
+            self.duplex_state_label.setStyleSheet("color:#888;")
         if self.mic_stream is not None:
             detail = (f" · last: {self._capture_error_text}"
                       if self._capture_error_text else "")
@@ -1745,6 +2083,7 @@ def check() -> int:
     optional = []
     try:
         from jaeger_agent_omni.core.runtime.aec import available
+        from jaeger_agent_omni.core.agentic.observer import AgenticEvent
         from jaeger_agent_omni.core.runtime.companion import parse_decision
         from jaeger_agent_omni.live import _ready_chunks
         from jaeger_agent_omni.node_registry import (
@@ -1757,6 +2096,54 @@ def check() -> int:
         if not parse_decision(
                 "DECISION: RESPOND\nRESPONSE: ready").should_respond:
             problems.append("companion admission parser failed")
+        # Exercise the GUI worker's actual live admission wiring without
+        # loading a model or opening an audio device.
+        probe = JaegerEngineWorker(duplex_mode="full", speakers=0)
+        class _IdentityAEC:
+            @staticmethod
+            def process(samples):
+                return samples
+
+        class _IdentityLoop:
+            resumes = 0
+
+            def resume_capture(self):
+                self.resumes += 1
+
+        probe.session = object()
+        probe.loop = _IdentityLoop()
+        probe.aec = _IdentityAEC()
+        probe.barge_detector = object()
+        pipeline_before = probe.pipeline_identity()
+        response_id = probe.mode_policy.begin_response()
+        probe.push_audio(np.zeros(1600, np.float32))
+        if probe.audio_q.qsize() != 1:
+            problems.append("full duplex did not admit response-time capture")
+        probe.set_duplex_mode("half")
+        if probe.audio_q.qsize() or probe.mode_policy.accepts_capture():
+            problems.append("live full→half switch did not close/drain capture")
+        muted_before = probe.half_muted_samples
+        probe.push_audio(np.zeros(1600, np.float32))
+        if probe.half_muted_samples != muted_before + 1600:
+            problems.append("half duplex did not account suppressed capture")
+        probe.mode_policy.finish_response(response_id)
+        probe.push_audio(np.zeros(1600, np.float32))
+        if probe.audio_q.qsize() != 1:
+            problems.append("half duplex did not reopen after response barrier")
+        probe.set_duplex_mode("full")
+        if not probe.mode_policy.accepts_capture() or probe.loop.resumes != 1:
+            problems.append("live half→full switch did not reopen capture")
+        if probe.pipeline_identity() != pipeline_before:
+            problems.append("duplex switch replaced a shared pipeline component")
+        win._on_agent_event(AgenticEvent(
+            kind="plan", title="Plan step 1: use calculate",
+            detail='{"expression": "2+2"}', phase="selected", iteration=1,
+        ))
+        if ("calculate" not in win.agent_plan.toPlainText()
+                or "calculate" not in win.agent_log.toPlainText()):
+            problems.append("agentic plan event did not reach the third column")
+        if win.agentic_check.isChecked():
+            problems.append("agentic tools must require explicit opt-in")
         if not available():
             problems.append("SpeexDSP missing (macOS: brew install speexdsp)")
         node_root = HERE.parent / "jaeger_agent_omni" / "nodes"
@@ -1803,9 +2190,10 @@ def check() -> int:
     for msg in optional:
         print(f"CHECK NOTE: {msg}")
     if not problems:
-        print("demo --check ok: window, Jaeger model, audio-native runtime, "
-              "companion admission, half/full duplex, verified neural VAD, "
-              "SpeexDSP AEC, clause streaming, and mic present")
+        print("demo --check ok: three-column window, Jaeger model, audio-native "
+              "runtime, observable agentic events, companion admission, "
+              "half/full duplex, verified neural VAD, SpeexDSP AEC, clause "
+              "streaming, and mic present")
         if not optional:
             print(f"MiniCPM reference detected: {SHIM}")
     win.close()
@@ -1925,7 +2313,8 @@ def jaeger_selftest(wav_path: Path, seconds: int, threshold: float,
                     report_path: Path | None = None,
                     interaction_mode: str = "assistant",
                     duplex_mode: str = "full",
-                    vad_mode: str = "neural") -> int:
+                    vad_mode: str = "neural",
+                    agentic: bool = False) -> int:
     """Paced-file test of the exact Jaeger worker used by the window."""
     from PySide6.QtCore import QCoreApplication
 
@@ -1947,7 +2336,7 @@ def jaeger_selftest(wav_path: Path, seconds: int, threshold: float,
         max_context=max_context, speakers=2, front_end=front_end,
         barge_policy=barge_policy, report_path=report_path,
         interaction_mode=interaction_mode, duplex_mode=duplex_mode,
-        vad_mode=vad_mode,
+        vad_mode=vad_mode, agentic=agentic,
         report_phase="direct-wav", report_source=str(wav_path.resolve()))
     tally = {"replies": 0, "failed": False, "speakers": []}
     state = {"i": 0, "started": 0.0}
@@ -2002,10 +2391,17 @@ def jaeger_selftest(wav_path: Path, seconds: int, threshold: float,
             f"{worker.barge_count} barge-ins · {worker.rolls} rolls · "
             f"speakers {','.join(tally['speakers']) or 'none'}{latency}")
         say(f"report: {report_path}")
-        app.exit(0 if tally["replies"] and not tally["failed"] else 2)
+        audible = bool(worker.end_audio_ms)
+        if tally["replies"] and not audible:
+            say("FAILED: text reply completed but no speech audio started")
+        app.exit(0 if tally["replies"] and audible and not tally["failed"] else 2)
 
     worker.status.connect(lambda msg: say(f"status: {msg}"))
     worker.metrics.connect(lambda msg: say(f"metrics: {msg}"))
+    worker.agent_event.connect(
+        lambda event: say(
+            f"agent: {event.kind}/{event.phase} · {event.title}"
+            + (f" · {event.detail}" if event.detail else "")))
     worker.ready.connect(ready, Qt.QueuedConnection)
     worker.reply.connect(replied)
     worker.speaker.connect(lambda label: tally["speakers"].append(label))
@@ -2047,6 +2443,8 @@ def main() -> int:
                     default="assistant")
     ap.add_argument("--duplex-mode", choices=("half", "full"),
                     default="full")
+    ap.add_argument("--agentic", action="store_true",
+                    help="enable JaegerAgent tools/skills/memory and events")
     ap.add_argument("--vad", choices=("neural", "energy"), default="neural")
     ap.add_argument("--report", type=Path,
                     help="JSON report path (default: GUI runtime/reports)")
@@ -2064,7 +2462,7 @@ def main() -> int:
             args.selftest_jaeger, args.seconds, args.threshold,
             args.silence_ms, args.cooldown, args.max_context, args.front_end,
             args.barge_policy, args.report, args.interaction_mode,
-            args.duplex_mode, args.vad)
+            args.duplex_mode, args.vad, args.agentic)
     if args.selftest_minicpm is not None:
         return minicpm_selftest(args.selftest_minicpm)
     app = QApplication([sys.argv[0]])

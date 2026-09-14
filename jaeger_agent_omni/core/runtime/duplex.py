@@ -127,6 +127,16 @@ class DuplexLoop:
     def stop(self):
         self._running = False
 
+    def resume_capture(self):
+        """Declare that an intentional capture barrier has just reopened.
+
+        Half duplex can suppress input for the entire assistant response.  The
+        first fresh block afterward must be timed from reopening, not from the
+        last pre-response drain, or intentional turn-taking looks like stale
+        queued audio and the new utterance onset is dropped.
+        """
+        self._last_drain = self.clock()
+
     # -- one tick ------------------------------------------------------------
     def _lag(self) -> float:
         """How far behind the incoming stream we are.
@@ -345,6 +355,18 @@ def demo():
     assert l2.stats.frames_dropped == 1, "stale frame must be dropped"
     assert l2.stats.audio_dropped == 1, "stale audio must be dropped"
     assert "v" not in s2.stream and "a" not in s2.stream
+
+    # An intentional half-duplex barrier is not stream lag.  Reopening resets
+    # the age baseline so the first new user block is admitted.
+    resumed_at = [20.0]
+    s2b = FakeSession()
+    l2b = DuplexLoop(
+        s2b, audio_source=lambda: np.zeros(1600, np.float32),
+        clock=lambda: resumed_at[0])
+    l2b._last_drain = 1.0
+    l2b.resume_capture()
+    l2b._pump_audio(resumed_at[0])
+    assert l2b.stats.audio_dropped == 0 and "a" in s2b.stream
 
     # --- barge-in during a reply rewinds and keeps listening ---------------
     s3 = FakeSession()

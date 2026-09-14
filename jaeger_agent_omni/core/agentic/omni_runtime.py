@@ -283,7 +283,7 @@ class OmniAgentRuntime:
                  *, eos_ids: Iterable[int] = (), max_tokens: int = 128,
                  max_iterations: int = 12,
                  workspace: str | Path | None = None,
-                 load_skills: bool = True) -> None:
+                 load_skills: bool = True, callbacks: Any = None) -> None:
         from .workspace import ensure_bound
 
         layout = ensure_bound(workspace)
@@ -305,6 +305,7 @@ class OmniAgentRuntime:
             # multi-step detector. Gemma must see each result to finish actions
             # and emit the companion control envelope when one is required.
             skip_final_tools=frozenset(),
+            callbacks=callbacks,
         )
         self.session = session
         self._native_cancel = session.cancel

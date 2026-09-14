@@ -1,12 +1,17 @@
 import threading
 import unittest
+from unittest.mock import patch
 
 from pydantic import BaseModel
 
 from jaeger_agent_omni.core.agentic.loop.jaeger_agent import JaegerAgent
+from jaeger_agent_omni.core.agentic.loop.callbacks import AgentCallbacks
+from jaeger_agent_omni.core.agentic.observer import AgenticObserver
 from jaeger_agent_omni.core.agentic.omni_runtime import (
+    AgenticPreparation,
     NATIVE_MULTIMODAL_TURN,
     OMNI_BLOCKED_TOOLS,
+    OmniAgentRuntime,
     OmniSessionAdapter,
     omni_tools,
     prepare_agentic_system,
@@ -69,6 +74,35 @@ class AgenticOmniTests(unittest.TestCase):
         self.assertEqual(len(session.controls), 1)
         self.assertIn('"tool_result"', session.controls[0])
         self.assertNotIn(NATIVE_MULTIMODAL_TURN, session.controls[0])
+
+    def test_native_tool_loop_emits_plan_dispatch_and_result_events(self):
+        tool = ToolDef(
+            name="unit_echo", description="Echo a value.",
+            args_model=_EchoArgs,
+            fn=lambda value: {"echo": value}, side_effect="read")
+        session = _FakeSession([
+            '<|tool_call>call:unit_echo{"value":"hello"}<tool_call|>',
+            "The echo is hello.",
+        ])
+        events = []
+        observer = AgenticObserver(events.append)
+        agent = JaegerAgent(
+            OmniSessionAdapter(session, initial_tools=[tool]),
+            tools=[tool], max_iterations=3,
+            blocked_tools=OMNI_BLOCKED_TOOLS,
+            callbacks=observer.callbacks(),
+        )
+
+        answer = agent.run_turn(NATIVE_MULTIMODAL_TURN)
+
+        self.assertEqual(answer, "The echo is hello.")
+        self.assertTrue(any(event.kind == "plan" for event in events))
+        self.assertTrue(any(
+            event.kind == "tool" and event.phase == "start"
+            for event in events))
+        self.assertTrue(any(
+            event.kind == "tool" and event.phase == "done" and event.ok
+            for event in events))
 
     def test_stripped_native_tool_boundaries_are_recovered(self):
         session = _FakeSession([])
@@ -139,6 +173,20 @@ class AgenticOmniTests(unittest.TestCase):
 
         OmniAgentRuntime.interrupt(Runtime())
         self.assertEqual(events, ["agent", "native"])
+
+    def test_runtime_installs_host_observability_callbacks(self):
+        callbacks = AgentCallbacks()
+        session = _FakeSession(["ready"])
+        with patch(
+            "jaeger_agent_omni.core.agentic.workspace.ensure_bound",
+            return_value=object(),
+        ):
+            runtime = OmniAgentRuntime(
+                session, AgenticPreparation("system", ()),
+                load_skills=False, callbacks=callbacks,
+            )
+
+        self.assertIs(runtime.agent.callbacks, callbacks)
 
 
 if __name__ == "__main__":
