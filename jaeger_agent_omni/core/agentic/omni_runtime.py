@@ -49,8 +49,13 @@ _CALL_BLOCKS = (
     re.compile(r"<\|tool_call>\s*call:[^<]*<tool_call\|>", re.DOTALL),
     re.compile(r"<tool_call>\s*.*?\s*</tool_call>", re.DOTALL),
 )
+# Gemma puts its bare ``call:name{args}`` form on its OWN line, frequently
+# after a sentence of prose ("Saving that now.\ncall:write_file{...}"). Anchor
+# to the line, not the whole response: a line that is exactly one call is
+# dispatched wherever it sits, while ``call:`` mid-sentence stays plain text.
 _BARE_GEMMA_CALL = re.compile(
-    r"^\s*call:[A-Za-z_][A-Za-z0-9_]*\s*\{.*\}\s*$", re.DOTALL,
+    r"^[ \t]*(call:[A-Za-z_][A-Za-z0-9_:/.\-]*\s*\{.*?\})[ \t]*$",
+    re.DOTALL | re.MULTILINE,
 )
 
 
@@ -245,19 +250,20 @@ class OmniSessionAdapter(ProviderAdapter):
         calls = extract_tool_calls(text)
         # The stock-Whisper session decodes with ``skip_special_tokens`` so
         # Gemma's <|tool_call> ... <tool_call|> boundary tokens can disappear
-        # while the semantic body survives. Recover only when the *entire*
-        # response is the native ``call:name{args}`` form; prose containing
-        # ``call:`` remains ordinary user-facing text.
-        bare_call = bool(_BARE_GEMMA_CALL.fullmatch(text))
-        if not calls and bare_call:
-            calls = extract_tool_calls(
-                f"<|tool_call>{text.strip()}<tool_call|>"
-            )
+        # while the semantic body survives. Recover any LINE that is exactly
+        # the native ``call:name{args}`` form; ``call:`` mid-sentence stays
+        # ordinary user-facing text. Only consulted when no wrapped call
+        # parsed, so a well-formed response never has a line silently
+        # stripped without dispatch.
+        bare = [] if calls else _BARE_GEMMA_CALL.findall(text)
+        if bare:
+            calls = extract_tool_calls("".join(
+                f"<|tool_call>{line}<tool_call|>" for line in bare))
         cleaned = text
         for pattern in _CALL_BLOCKS:
             cleaned = pattern.sub("", cleaned)
-        if calls and bare_call:
-            cleaned = ""
+        if calls and bare:
+            cleaned = _BARE_GEMMA_CALL.sub("", cleaned)
         message: Message = {
             "role": "assistant",
             "content": cleaned.strip() or None,

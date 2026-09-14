@@ -156,10 +156,20 @@ def append_file(path: str, content: str) -> dict[str, Any]:
         return {"appended": False, "error": str(exc)}
 
     target.parent.mkdir(parents=True, exist_ok=True)
+    # Line-separate by default. "Append 'walk dog' to todo.txt" must not
+    # produce "buy milkwalk dog" — that is wrong for a list, a log or a .py
+    # file alike. Only inserted when neither side already carries the break.
+    written = content
+    try:
+        existing = target.read_text(encoding="utf-8")
+    except OSError:
+        existing = ""
+    if existing and not existing.endswith("\n") and not content.startswith("\n"):
+        written = "\n" + content
     with target.open("a", encoding="utf-8") as fh:
-        fh.write(content)
+        fh.write(written)
     rel = _display_path(target, layout)
-    bytes_appended = len(content.encode("utf-8"))
+    bytes_appended = len(written.encode("utf-8"))
     _audit("append_file", {"path": rel, "bytes": bytes_appended})
     commit_sha = git_autocommit(layout, rel, f"agent: append {rel}")
     result: dict[str, Any] = {"appended": True, "path": rel, "bytes": bytes_appended}
@@ -562,7 +572,10 @@ def _t_write_file(path: str, content: str) -> dict:
                operation="append_file",
                summary="append to a file in the skills workspace")
 def _t_append_file(path: str, content: str) -> dict:
-    """Append text to an existing skills/ file."""
+    """Append text to an existing skills/ file. The appended text
+    starts on a new line unless the file already ends with one, so
+    list/log entries stay separate — do not add your own leading
+    newline."""
     return append_file(path=path, content=content)
 
 

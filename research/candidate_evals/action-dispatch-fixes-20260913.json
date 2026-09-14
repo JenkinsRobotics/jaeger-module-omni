@@ -1,0 +1,77 @@
+{
+ "schema": 1,
+ "scope": "12 frozen file-outcome contract cases only, run as an --ids subset of the same corpus/scorer; not the full 162-case corpus and not demo acceptance",
+ "changes": [
+  {
+   "file": "jaeger_agent_omni/core/agentic/omni_runtime.py",
+   "change": "bare Gemma call:name{args} recovery anchored to a whole LINE instead of the whole response, so a call emitted after prose is dispatched instead of leaking as spoken text",
+   "frozen_failure": "a:ms_calc_and_save emits bare call:write_file syntax inside prose; no write is dispatched."
+  },
+  {
+   "file": "jaeger_agent_omni/tools/files.py",
+   "change": "append_file line-separates: a newline is inserted when the existing file does not end with one and the appended text does not start with one",
+   "frozen_failure": "Both text list tasks concatenate items without line separators; exact contract still fails."
+  }
+ ],
+ "actual_file_outcomes": {
+  "text": {
+   "baseline": [
+    10,
+    12
+   ],
+   "now": [
+    12,
+    12
+   ]
+  },
+  "speech": {
+   "baseline": [
+    1,
+    12
+   ],
+   "now": [
+    1,
+    12
+   ]
+  }
+ },
+ "baseline_source": "research/candidate_evals/agentic-completion-hint-decision-20260908.json (baseline_actual_files)",
+ "original_scorer": {
+  "text": [
+   11,
+   12
+  ],
+  "speech": [
+   8,
+   12
+  ]
+ },
+ "speech_unchanged_reason": "every speech failure is a wrong filename or wrong content from the spoken request, or a turn that stops after the first tool \u2014 the frozen phoneme audit and ASR diagnostic already attribute these to the ear/fixture, not to call dispatch",
+ "text_original_scorer_note": "b:ms_write_append_read routes append_file twice instead of write_file+append_file; the ordered-tool grader fails it while the actual file outcome passes",
+ "cpu_tests": {
+  "pytest": 118,
+  "subtests": 14,
+  "converse_selftest": [
+   18,
+   18
+  ]
+ },
+ "demo_acceptance_action_score_unchanged": true,
+ "promoted": true,
+ "decision": "Both fixes are correctness fixes with runnable checks and are kept. Text file outcomes 10/12 -> 12/12. Speech stays 1/12, so the frozen demo suite action score does not move.",
+ "inputs_sha256": {
+  "research/candidate_evals/agentic-files-text-appendfix-20260913.json": "fbcf618c31c3bbc06fa3fb4f4100b577deace721abdb9cf74f06850badad7bdd",
+  "research/candidate_evals/agentic-files-speech-appendfix-20260913.json": "50bca9f3491d344bdc0b17ae36d6b221cf665f1cbffba46505c21ac666d3a31b"
+ },
+ "code_sha256": {
+  "jaeger_agent_omni/core/agentic/omni_runtime.py": "25b11505b71197a470495845c8e27aa5797ee276bc06358fee704a57ac6c946e",
+  "jaeger_agent_omni/tools/files.py": "aada2d9f2790dd5de2aaf0ed2be3875b6621e9f05c05648219742a6c322ebcae",
+  "jaeger_agent_omni/tests/test_file_append_lines.py": "7f7f042b74312c2aa872cc2a340cebbfefc26ecba8b17b0124634d00df16dd6c",
+  "jaeger_agent_omni/tests/test_agentic_omni.py": "a87555043d9934fb0d133e6a1187b2dc4fc84776d781743d95842c59f1cd892c"
+ },
+ "commands": [
+  ".venv/bin/python research/benchmark_agentic_corpus.py --bootstrap-files --input-mode text --ids write_bench_txt,ms_calc_and_save,ms_write_append_read,mt_file_round_1,mt_file_round_2,mt_file_round_3 --case-timeout-s 20 --out research/candidate_evals/agentic-files-text-appendfix-20260913.json",
+  ".venv/bin/python research/benchmark_agentic_corpus.py --bootstrap-files --input-mode speech --ids write_bench_txt,ms_calc_and_save,ms_write_append_read,mt_file_round_1,mt_file_round_2,mt_file_round_3 --case-timeout-s 20 --out research/candidate_evals/agentic-files-speech-appendfix-20260913.json",
+  ".venv/bin/python -m pytest jaeger_agent_omni/tests/ -q"
+ ]
+}
