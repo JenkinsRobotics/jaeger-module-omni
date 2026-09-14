@@ -1,6 +1,53 @@
-# Jaeger Agent Omni — measured state, 2026-09-08
+# Jaeger Agent Omni — measured state, 2026-09-13
 
 Measured ledger. Every claim here has a command that reproduces it.
+
+2026-09-13 action dispatch fixes, measured on the 12 frozen file-outcome
+contract cases with the same corpus, scorer and contract (an `--ids` subset,
+not the 162-case run). Two defects named in the frozen 2026-09-08 observations
+are fixed: Gemma's bare `call:name{args}` emitted *after prose* was never
+dispatched (the recovery used a whole-response `fullmatch`; it is now anchored
+to a whole line), and `append_file` concatenated without a separator. Text
+actual file outcomes move **10/12 → 12/12**; speech stays **1/12**, so the
+frozen demo suite action score and the **35/48** acceptance total do NOT move.
+Original scorer: text 11/12 (`b:ms_write_append_read` routes append twice while
+its file outcome passes), speech 8/12. Every remaining speech failure is a
+wrong filename or wrong content, or a turn that stops after the first tool —
+the ear and the frozen fixtures, not call dispatch. CPU **118 tests / 14
+subtests**, converse selftest **18/18**. Evidence:
+`research/candidate_evals/action-dispatch-fixes-20260913.json`.
+
+2026-09-13 barge-continue overtalk reproduced deterministically at **3/4** on
+the current tree without instrumentation, matching the frozen report; the prior
+4/4 came from the `OMNI_SIM_DIAG` run, so the loss is timing-sensitive and is
+NOT fixed. The overtalk utterance reaches no admission gate at all — no
+self-voice, overheard or unintelligible line is printed, so it is lost before
+`on_utterance`, not rejected by it. Repro:
+`research/candidate_evals/converse-barge-continue-repro-20260913.json`.
+
+2026-09-13 the half/quasi/full campaign was NOT validly re-run: a separate
+`JaegerAI` process held ~22% of memory and the load average reached 43, and
+every failing check under it was a wall-clock timing check (hold expiry) with
+nn latency at 4–6 s against the frozen 0.7–1.1 s. The run is discarded, not
+recorded as a regression. Converse is provably unaffected by the two changes —
+importing `jaeger_agent_omni.converse` pulls in neither `core/agentic/
+omni_runtime.py` nor `tools/files.py`. Re-run the campaign on a quiet machine
+before the next acceptance roll-up.
+
+2026-09-13 pipeline closeout audit. All 35 nodes have an explicit disposition
+in all 13 profiles; 10 are enabled in no profile. Three node manifests carried
+a status string that contradicted the measured verdict already recorded here
+and were reconciled (previous value retained as `previous_status`):
+`gemma4-vision-mlx-v1` said `pending_joint_cache_evaluation` after the joint
+probe had already returned 20/20 one-brain; `gemmaomni-v2-stream-bargein-93h`
+said `lockbox_pending` after being retired to packaged-disabled;
+`para-turn-state-neural-v1` did not carry its self-echo audit failure.
+`PIPELINES.md` called the rejected 50M Large an "active experimental branch"
+and now matches its `rejected_transfer_failure` manifest. The 41M-vs-50M
+selection is closed on measured evidence and needs no further runs. The only
+pipelines still open are training/data work — the untrained neural acoustic
+controller, joint vision beyond synthetic shapes, and the hidden-state Talker.
+Roster and per-pipeline dispositions: [`PIPELINES.md`](PIPELINES.md).
 
 2026-09-08 measured checkpoint: frozen demo **35/48 (72.9%)**, below 95%.
 CPU **112 tests / 14 subtests**, converse selftest **18/18**. Half/quasi/full

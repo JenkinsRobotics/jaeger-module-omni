@@ -1,5 +1,21 @@
 # Next steps — current plan
 
+2026-09-13 two action-dispatch defects fixed and measured: bare `call:` after
+prose is now dispatched, and `append_file` line-separates. Text actual file
+outcomes **10/12 → 12/12**; speech unchanged at **1/12**, so the frozen demo
+suite stays **35/48** and demo acceptance stays FAILED. The speech action gap
+is now isolated to the ear and the frozen spoken fixtures (wrong filenames,
+wrong content, turns that stop after the first tool) — no further parser or
+tool-layer work will move it. Barge-continue overtalk is reproduced at 3/4
+uninstrumented; the utterance is lost before `on_utterance`, not rejected by a
+gate, and remains open. Evidence:
+[`action-dispatch-fixes-20260913.json`](research/candidate_evals/action-dispatch-fixes-20260913.json).
+
+Unchanged blockers to shippable: 95% demo completion (now 35/48), three
+consecutive 30-minute physical sessions (zero attempted), physical
+uninterrupted speech (0 of 3 replies survived; all cut with `played_clauses: 0`
+under 0.47 dB measured AEC attenuation), and the 300 ms AEC p95 gate (601.9 ms).
+
 2026-09-08 implementation and measured decisions:
 [`docs/OMNI_DEMO_PROGRESS_20260907.md`](docs/OMNI_DEMO_PROGRESS_20260907.md).
 Keep quasi default in converse, medium for half/quasi and the existing causal ear

@@ -11,7 +11,7 @@
   "produces": [
     "gemma_image_embeddings_2560"
   ],
-  "status": "experimental_pending_joint_cache_evaluation",
+  "status": "experimental_joint_cache_evaluated_synthetic_only_disabled",
   "implementation": "runtime.py:build",
   "model": {
     "path": "weights/vision.safetensors",
@@ -33,5 +33,6 @@
   },
   "brain_loaded": false,
   "frozen": true,
-  "notes": "Only the pretrained vision tower/projector are loaded. Joint-cache injection is experimental and uses the unchanged MLX language brain."
+  "notes": "Only the pretrained vision tower/projector are loaded. Joint-cache injection is experimental and uses the unchanged MLX language brain. Joint image/audio/text in ONE frozen MLX brain/cache measured 20/20 on synthetic shapes, one brain instance, no caption or transcript bridge (joint-vision-probe-20260908.json). Stays disabled: synthetic scope only, natural images and long sessions unmeasured.",
+  "previous_status": "experimental_pending_joint_cache_evaluation"
 }

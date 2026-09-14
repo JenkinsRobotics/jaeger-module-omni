@@ -13,7 +13,7 @@
     "gemma_audio_embeddings_2560",
     "perception_events_25hz"
   ],
-  "status": "streaming_bargein_validated_lockbox_pending",
+  "status": "retired_superseded_by_jaegeromni-41m-converse_disabled",
   "implementation": "runtime.py:build",
   "encoder": {
     "id": "openai/whisper-medium",
@@ -93,5 +93,7 @@
     "causal attention recomputes over the full prefix per chunk (O(n^2) in turn length)"
   ],
   "upstream_id": "stock-whisper-medium-stream-bargein-93h",
-  "upstream": "VoiceLLM-Playground 'Omni Model/gemma omni v2' commit 9f1103b"
+  "upstream": "VoiceLLM-Playground 'Omni Model/gemma omni v2' commit 9f1103b",
+  "notes": "Retired to packaged-disabled 2026-09-03: 5.65% as converse wired it / 5.76% instructed on devclean64 against 5.03% for the consolidated jaegeromni-41m-converse on the same manifest and scorer. Kept immutable for provenance; its trained overlap head is the last trunk-riding perception head and is not promoted.",
+  "previous_status": "streaming_bargein_validated_lockbox_pending"
 }

@@ -17,7 +17,7 @@ corpus or duplex reports; never copy a best value from another checkpoint.
 | **JaegerOmni 41M Causal Balanced** | 85% Jaeger 41M + 15% latest causal GemmaOmni trunk; heads retained but uncalibrated | **12/12**, 5.03% clean, 28.23% AMI, **574.2 ms** warmed | Full-duplex development candidate; head revalidation pending |
 | **JaegerOmni 41M Audio Perception** | Frozen causal-balanced ear plus trained scene and conversation-event heads | **12/12**, 584 ms; scene **95.31% / 0.952 macro-F1**; unseen-AMI overlap 0.742 F1 | Selectable shadow candidate; speaker-change/turn-end do not control policy |
 | **JaegerOmni 50M Medium** | Jaeger's independently developed Medium connector | 11/12, 11.20% clean, 47.85% AMI, 619.7 ms same-harness | Viable historical adapter; not latency leader |
-| **JaegerOmni 50M Large** | Large-v3-turbo-paired connector, exactly 52,768,768 deployed parameters | 1/12, 17.80% clean, 413 ms | Transfer failed; active experimental branch |
+| **JaegerOmni 50M Large** | Large-v3-turbo-paired connector, exactly 52,768,768 deployed parameters | 1/12, 17.80% clean, 413 ms | **Closed — rejected** (`rejected_transfer_failure`); reachable only via `large-adapter-diagnostic-only`, which must set `allow_rejected` |
 
 AMI figures throughout are the 64-clip / 673-word training-adjacent,
 speaker-disjoint AMI validation slice — a ranking signal, not a deployable
@@ -28,6 +28,34 @@ pre-budget12 until remeasured.
 MiniCPM-o 4.5, the tuned-Whisper observer, the Whisper text cascade, and the
 hidden-state Talker remain references or downstream components. They are not
 additional active Jaeger audio-model identities.
+
+## Closeout — 2026-09-13
+
+The 41M-vs-50M question is settled and needs no further runs. On the same
+manifest and scorer, **41M beats 50M on every measured axis**: 4.82% vs 11.20%
+clean, 32.99% vs 47.85% AMI, 12/12 vs 11/12 cases12. 50M Large failed transfer
+outright at 1/12. Nothing below is waiting on a decision — only on training.
+
+| Pipeline | Disposition | Closed on |
+| --- | --- | --- |
+| JaegerOmni 41M Medium | **SELECTED** — default ear, half + quasi tiers | 4.82% clean · 12/12 · sha `a7f96bfb8898` |
+| JaegerOmni 41M Converse (causal) | **SELECTED** — full tier live preview only | 5.03% clean · prompt-coupling recovered exactly |
+| JaegerOmni 41M Causal Balanced | Development profile; heads uncalibrated | 5.03% / 28.23% · superseded at the converse seam |
+| JaegerOmni 41M Audio Perception | Shadow only — scene head validated, speaker-change/turn-end never control policy | 12/12 · needs a per-head eval on real audio |
+| GemmaOmni 41M Medium | Retained clean reference, not a candidate | 4.92% clean |
+| GemmaOmni 41M Final 4000 | Meeting specialist, not promoted | best AMI 22.88% but 10/12 and 6.81% clean |
+| GemmaOmni V2 stream-bargein 93h | **RETIRED** to packaged-disabled | 5.65% vs 5.03% on the same seam |
+| JaegerOmni 50M Medium | **CLOSED** — superseded, offline candidate only | 11.20% clean · 47.85% AMI · 11/12 |
+| JaegerOmni 50M Large | **CLOSED — rejected**, diagnostic profile only | 1/12 · 17.80% clean · transfer failed |
+| 5 causal port / audio-KL trials | **CLOSED — rejected**, disabled in all 13 profiles | every variant regressed both matched WER gates |
+| Parallel overlap NNs (2 TCN, 2 WavLM) | **CLOSED — rejected**, never packaged as nodes | miss the 0.81 F1 bar and the event-reliability gates |
+| Neural turn detector | **CLOSED — rejected** | 27/27 sequential but fails the self-echo audit 1/2 vs 2/2 |
+| Neural acoustic controller | **OPEN — needs training**, no checkpoint exists | architecture only, shadow-disabled |
+| Gemma-4 vision MLX (joint cache) | **OPEN — synthetic only** | 20/20 one-brain joint probe; natural images unmeasured |
+| Hidden-state Talker | **OPEN — needs training**; production speech is still decoded text → Kokoro | intelligibility/latency gates unmeasured |
+
+Every "CLOSED" row has its evidence JSON under `research/candidate_evals/`.
+The three OPEN rows are all training or data work, not selection work.
 
 ## What is actually selected
 
