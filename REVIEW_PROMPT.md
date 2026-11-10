@@ -8,7 +8,7 @@ answer influence the other before both reports are complete.
 Review the Jaeger Agent Omni repository as an independent senior audio/ML and
 real-time systems reviewer.
 
-Repository: `~/GITHUB/jaeger_agent_omni`
+Repository: `~/GITHUB/jaeger-module-omni`
 
 This is a **CPU-only, read-only review**. Do not start training, model
 inference, live benchmarks, downloads, or any GPU job. Do not edit files. A

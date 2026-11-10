@@ -7,7 +7,7 @@ recommend, and further develop the **final whisper (transcription) pipeline**
 and the other omni-model pipelines. Work incrementally, measure everything,
 and do not regress what is already green.
 
-Repo: `/Users/jonathanjenkins/GITHUB/jaeger_agent_omni`  ·  venv: `.venv`
+Repo: `/Users/jonathanjenkins/GITHUB/jaeger-module-omni`  ·  venv: `.venv`
 (Python 3.11.9). Read these first, in order: `NEXT.md` (the plan + operating
 model), `CONVERSE.md` (the ear scorecard + how the pieces relate), `STATUS.md`
 (measured ledger), `docs/GEMMA_OMNI_V2_WHITEPAPER.md` (architecture contract).

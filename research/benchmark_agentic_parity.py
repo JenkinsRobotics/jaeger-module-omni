@@ -68,7 +68,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--legacy-agent", type=Path,
-        default=Path.home() / "GITHUB/jaeger-agent",
+        default=Path.home() / "GITHUB/jaeger-module-agent",
     )
     parser.add_argument(
         "--legacy-os", type=Path, default=Path.home() / "GITHUB/JaegerOS",

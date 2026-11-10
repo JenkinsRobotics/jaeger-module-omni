@@ -259,7 +259,7 @@ def build_gates(args, run_dir: Path) -> list[GateSpec]:
         GateSpec("companion_scoring", "companion", "admission grader selfcheck",
                  (py, "research/companion_gate.py", "--selfcheck"), 30),
     ]
-    legacy = Path.home() / "GITHUB/jaeger-agent"
+    legacy = Path.home() / "GITHUB/jaeger-module-agent"
     legacy_os = Path.home() / "GITHUB/JaegerOS"
     parity = artifacts / "agentic-source-parity.json"
     if legacy.is_dir() and legacy_os.is_dir():

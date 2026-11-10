@@ -288,7 +288,7 @@ Use the OS scheduler; do not build one. macOS launchd, nightly at 01:00:
 <plist version="1.0"><dict>
   <key>Label</key><string>com.jenkinsrobotics.omni.nightly</string>
   <key>ProgramArguments</key><array>
-    <string>/Users/YOU/GITHUB/jaeger_agent_omni/training/nightly.sh</string>
+    <string>/Users/YOU/GITHUB/jaeger-module-omni/training/nightly.sh</string>
     <string>/path/to/corpus</string>
     <string>6</string>
   </array>

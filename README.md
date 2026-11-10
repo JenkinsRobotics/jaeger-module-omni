@@ -286,5 +286,5 @@ turn-taking    <|speak|> / <|listen|> are vocabulary tokens. Turn-taking is
 ## Ecosystem links
 
 - [JaegerOS](https://github.com/JenkinsRobotics/JaegerOS) — framework layer
-- [JaegerWhisperSTT](https://github.com/JenkinsRobotics/JaegerWhisperSTT) — the `stt` slot; its `OfflineTranscriber` batch-transcribes our corpus
+- [JaegerWhisperSTT](https://github.com/JenkinsRobotics/jaeger-module-whisper) — the `stt` slot; its `OfflineTranscriber` batch-transcribes our corpus
 - [`CONVENTIONS.md`](CONVENTIONS.md) · [`TAXONOMY.md`](TAXONOMY.md)
